@@ -29,28 +29,6 @@ QmlBarometerAltimeterSensor::sensor() const
   return m_sensor;
 }
 
-qreal
-QmlBarometerAltimeterSensor::altitude() const {
-  return dynamic_cast<QmlBarometerAltimeterReading *>(reading())->altitude();
-}
-
-void
-QmlBarometerAltimeterSensor::calibrate(qreal altitude) {
-  qInfo() << "QmlBarometerAltimeterSensor::calibrate" << altitude << (QmlBarometerAltimeterReading *)(reading());
-  ((QmlBarometerAltimeterReading *) reading())->calibrate(altitude);
-}
-
-qreal
-QmlBarometerAltimeterSensor::altitude_offset() const {
-  return dynamic_cast<QmlBarometerAltimeterReading *>(reading())->altitude_offset();
-}
-
-void
-QmlBarometerAltimeterSensor::set_altitude_offset(qreal offset) {
-  qInfo() << "QmlBarometerAltimeterSensor::set_altitude_offset" << offset;
-  //dynamic_cast<QmlBarometerAltimeterReading *>(reading())->set_altitude_offset(offset);
-}
-
 /**************************************************************************************************/
 
 // Freescale Semiconductor AN4528 (document has errors)
@@ -180,6 +158,7 @@ QmlBarometerAltimeterReading::pressure_to_altitude(qreal pressure) const
 void
 QmlBarometerAltimeterReading::set_altitude_offset(qreal offset)
 {
+  qInfo() << "set_altitude_offset" << offset;
   qreal old_altitude_offset = m_altitude_offset;
   m_altitude_offset = offset;
   Q_EMIT altitudeOffsetChanged();
@@ -192,7 +171,8 @@ QmlBarometerAltimeterReading::calibrate(qreal altitude)
 {
   qInfo() << "calibrate" << altitude;
   altitude -= m_altitude_offset;
-  m_pressure_sea_level = m_pressure / (1 - qPow(ALPHA*altitude, BETA));
+  m_pressure_sea_level = m_pressure / qPow(1 - ALPHA*altitude, BETA);
+  qInfo() << "pressure_sea_level" << m_pressure_sea_level;
   Q_EMIT pressureSeaLevelChanged();
   m_altitude = altitude;
   Q_EMIT altitudeChanged(); // versus readingUpdate ?

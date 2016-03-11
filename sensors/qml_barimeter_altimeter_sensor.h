@@ -17,22 +17,10 @@ class QmlBarometerAltimeterReading;
 class QmlBarometerAltimeterSensor : public QTQmlSensor
 {
   Q_OBJECT
-  Q_PROPERTY(qreal altitude READ altitude WRITE calibrate NOTIFY altitudeChanged)
-  Q_PROPERTY(qreal altitude_offset READ altitude_offset WRITE set_altitude_offset NOTIFY altitudeOffsetChanged)
 
 public:
   explicit QmlBarometerAltimeterSensor(QObject * parent = 0);
   ~QmlBarometerAltimeterSensor();
-
-  qreal altitude() const;
-  qreal altitude_offset() const;
-
-  void set_altitude_offset(qreal offset);
-  void calibrate(qreal altitude);
-
-Q_SIGNALS:
-  void altitudeChanged();
-  void altitudeOffsetChanged();
 
 private:
   QSensor * sensor() const Q_DECL_OVERRIDE;

@@ -1,4 +1,4 @@
-import QtQuick 2.2
+import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -35,7 +35,6 @@ Item {
         // altitude_offset: 40; // pressure_sensor.reading
 
         Component.onCompleted: {
-            // pressure_sensor.altitude_offset = -40.;
             pressure_sensor.reading.altitude_offset = -40.;
         }
 
@@ -55,7 +54,7 @@ Item {
         anchors.topMargin: 30
         spacing: 10
 
-        TextField {
+        TextInput {
             id: altitude_text_field
             // anchors.top: parent.top
             // anchors.horizontalCenter: parent.horizontalCenter
@@ -66,7 +65,14 @@ Item {
             // Layout.preferredWidth: parent.width
             // Layout.preferredHeight: 40
 
+            font.pointSize: 20
+            text: "9999"
+            inputMethodHints: Qt.ImhDigitsOnly
             validator: IntValidator {bottom: 0; top: 11000;}
+            onEditingFinished: {
+                console.info("clicked on calibrate", altitude_text_field.text);
+                pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
+            }
         }
 
         Button {
@@ -86,8 +92,7 @@ Item {
             // onClicked: stack_view.push(Qt.resolvedUrl("CalibrateAltimeter.qml"))
             onClicked: {
                 console.info("clicked on calibrate", altitude_text_field.text);
-                pressure_sensor.reading.altitude = 1500.1; // altitude_text_field.text;w
-                // pressure_sensor.altitude = 1500.1; // altitude_text_field.text;
+                pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
             }
         }
 
