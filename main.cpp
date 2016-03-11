@@ -28,8 +28,11 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QtQml>
 
 #include <QtDebug>
+
+#include "sensors/qml_barimeter_altimeter_sensor.h"
 
 /**************************************************************************************************/
 
@@ -49,10 +52,21 @@ main(int argc, char *argv[])
   // view.setSource(QUrl("qrc:///..."));
   // view.show();
 
+  const char * package = "QtCarto";
+  int major = 1;
+  int minor = 0;
+  // qmlRegisterSingletonType  <QmlSensorGlobal             >(package, major, minor, "QmlSensors", global_object_50);
+  // qmlRegisterUncreatableType<QmlSensorRange              >(package, major, minor, "Range",                QLatin1String("Cannot create Range"));
+  // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
+  // qmlRegisterUncreatableType<QmlSensor                   >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
+  // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
+  qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
+  qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
+
   // QQmlApplicationEngine provides a convenient way to load an application from a single QML file
   QQmlApplicationEngine engine;
   // engine.addImportPath(QStringLiteral(":/imports"));
-  engine.load(QUrl(QStringLiteral("qrc:///sensors.qml")));
+  engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
   if (engine.rootObjects().isEmpty())
     return -1;
 

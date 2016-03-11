@@ -1,5 +1,12 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/">
-  <file>sensors.qml</file>
-</qresource>
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/">
+    <file>main.qml</file>
+    <file>content/AndroidDelegate.qml</file>
+    <file>content/Altimeter.qml</file>
+    <file>content/Inclination.qml</file>
+    <file>images/navigation_next_item.png</file>
+    <file>images/navigation_previous_item.png</file>
+    <file>images/toolbar.png</file>
+  </qresource>
 </RCC>
