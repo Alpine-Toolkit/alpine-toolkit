@@ -10,7 +10,8 @@ ApplicationWindow {
 
     // Background
     Rectangle {
-        color: "#212126"
+        // color: "#212126"
+        color: "#555555"
         anchors.fill: parent
     }
 

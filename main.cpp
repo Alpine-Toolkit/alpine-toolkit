@@ -41,6 +41,7 @@ main(int argc, char *argv[])
 {
   QGuiApplication application(argc, argv);
   QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "QtCarto"));
+  QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   // Q_INIT_RESOURCE(sensors);
 
