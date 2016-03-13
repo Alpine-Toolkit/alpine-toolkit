@@ -1,10 +1,16 @@
-import QtQuick 2.5
+import QtQml 2.2
+import QtQuick 2.6
+
+import QtCarto 1.0
+import QtPositioning 5.5
+import QtSensors 5.1
+
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
-import QtSensors 5.1
-import QtCarto 1.0
-import QtQml 2.2
+
+// import Qt.labs.controls 1.0
+// import Qt.labs.controls.material 1.0
 
 Item {
     width: parent.width
@@ -35,7 +41,7 @@ Item {
         // altitude_offset: 40; // pressure_sensor.reading
 
         Component.onCompleted: {
-            pressure_sensor.reading.altitude_offset = -40.;
+            // pressure_sensor.reading.altitude_offset = -40.;
         }
 
         onReadingChanged: {
@@ -43,16 +49,28 @@ Item {
             var pressure = pressure_sensor.reading.pressure; // 82500 Pa
             var temperature = pressure_sensor.reading.temperature; // 0
             var altitude = pressure_sensor.reading.altitude;
-            pressure_label.text = pressure + " Pa";
-            altitude_label.text = altitude + " m";
+            pressure_label.text = Number(pressure).toLocaleString() + " Pa";
+            altitude_label.text = Number(altitude).toLocaleString() + " m";
             console.info(pressure, temperature, altitude);
+        }
+    }
+
+    PositionSource {
+        id: position_source
+        updateInterval: 10
+        active: true
+
+        onPositionChanged: {
+            var coordinate = position_source.position.coordinate;
+            position_label.text = coordinate.longitude + " " + coordinate.latitude + " +- " + position_source.position.horizontalAccuracy;
+            gps_altitude_label.text = coordinate.altitude + " +- " + position_source.position.verticalAccuracy;
         }
     }
 
     ColumnLayout {
         width: parent.width
         anchors.topMargin: 30
-        spacing: 10
+        spacing: 30
 
         TextInput {
             id: altitude_text_field
@@ -65,8 +83,9 @@ Item {
             // Layout.preferredWidth: parent.width
             // Layout.preferredHeight: 40
 
-            font.pointSize: 20
-            text: "9999"
+            font.pointSize: 32
+            color: "white"
+            text: "0"
             inputMethodHints: Qt.ImhDigitsOnly
             validator: IntValidator {bottom: 0; top: 11000;}
             onEditingFinished: {
@@ -77,7 +96,9 @@ Item {
 
         Button {
             id: calibrate_button
+
             style: touch_style
+            // Material.theme: Material.Light
 
             // anchors.horizontalCenter: parent.horizontalCenter
             // anchors.top: parent.top
@@ -100,8 +121,8 @@ Item {
             id: touch_style
             ButtonStyle {
                 panel: Item {
-                    implicitHeight: 50
-                    implicitWidth: 320
+                    implicitHeight: 120
+                    implicitWidth: 400
                     BorderImage {
                         anchors.fill: parent
                         antialiasing: true
@@ -115,7 +136,7 @@ Item {
                             text: control.text
                             anchors.centerIn: parent
                             color: "white"
-                            font.pixelSize: 23
+                            font.pointSize: 32
                             renderType: Text.NativeRendering
                         }
                     }
@@ -154,6 +175,24 @@ Item {
             Text {
                 color: "white"
                 id: altitude_label
+            }
+
+            Text {
+                color: "white"
+                text: "Position"
+            }
+            Text {
+                color: "white"
+                id: position_label
+            }
+
+            Text {
+                color: "white"
+                text: "GPS Altitude"
+            }
+            Text {
+                color: "white"
+                id: gps_altitude_label
             }
         }
     }

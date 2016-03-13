@@ -3,7 +3,9 @@ import QtQuick 2.2
 Item {
     id: root
     width: parent.width
-    height: 88
+    height: 100
+    // anchors.topMargin: 20
+    // anchors.bottomMargin: 20
 
     property alias text: text_item.text
     signal clicked
@@ -21,7 +23,7 @@ Item {
         anchors.left: parent.left
         anchors.leftMargin: 30
         color: "white"
-        font.pixelSize: 32
+        font.pointSize: 32
         text: modelData
     }
 

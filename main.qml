@@ -1,11 +1,14 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.2
+import QtQuick 2.6
+
+// import QtQuick.Controls 1.2
+import Qt.labs.controls 1.0
+import Qt.labs.controls.material 1.0
 
 import "content"
 
 ApplicationWindow {
     visible: true
-    width: 800
+    width: 800 // Fixme: mobile ?
     height: 1280
 
     // Background
@@ -15,9 +18,10 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
-    toolBar: BorderImage {
+    // toolBar: BorderImage {
+    header: BorderImage {
         width: parent.width
-        height: 100
+        height: 150
         border.bottom: 8
         source: "images/toolbar.png" // blue line at bottom
 
@@ -46,7 +50,7 @@ ApplicationWindow {
         }
 
         Text {
-            font.pixelSize: 42
+            font.pointSize: 32
             Behavior on x { NumberAnimation{ easing.type: Easing.OutCubic} }
             x: back_button.x + back_button.width + 20
             anchors.verticalCenter: parent.verticalCenter
@@ -67,8 +71,16 @@ ApplicationWindow {
             page: "content/Inclination.qml"
         }
         ListElement {
+            title: "Light"
+            page: "content/Light.qml"
+        }
+        ListElement {
             title: "GPS"
             page: "content/Gps.qml"
+        }
+        ListElement {
+            title: "Test"
+            page: "content/Test.qml"
         }
     }
 

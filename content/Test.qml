@@ -1,9 +1,13 @@
 import QtQml 2.2
-import QtQuick 2.5
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.1
+import QtQuick 2.6
+
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
+
+// import QtQuick.Controls 1.2
+// import QtQuick.Controls.Styles 1.1
+import Qt.labs.controls 1.0
+import Qt.labs.controls.material 1.0
 
 Item {
     width: parent.width
@@ -83,19 +87,18 @@ Item {
             // Style
             standardButtons: StandardButton.Save | StandardButton.Cancel
 
-            onAccepted: console.log("Saving the date " +
-            calendar.selectedDate.toLocaleDateString())
+            // onAccepted: console.log("Saving the date " + calendar.selectedDate.toLocaleDateString())
 
-            Calendar {
-                id: calendar
-                anchors.centerIn: parent // still overfit
-                onDoubleClicked: dialog.click(StandardButton.Save)
-            }
+            // Calendar {
+            //     id: calendar
+            //     anchors.centerIn: parent // still overfit
+            //     onDoubleClicked: dialog.click(StandardButton.Save)
+            // }
         }
 
         Button {
             id: button
-            style: touch_style
+            // style: touch_style
 
             Layout.alignment: Qt.AlignCenter
             // Layout.preferredWidth: parent.width
@@ -108,31 +111,31 @@ Item {
             }
         }
 
-        Component {
-            id: touch_style
-            ButtonStyle {
-                panel: Item {
-                    implicitHeight: 80
-                    implicitWidth: 320
-                    BorderImage {
-                        anchors.fill: parent
-                        antialiasing: true
-                        border.bottom: 8
-                        border.top: 8
-                        border.left: 8
-                        border.right: 8
-                        anchors.margins: control.pressed ? -4 : 0
-                        source: control.pressed ? "../images/button_pressed.png" : "../images/button_default.png"
-                        Text {
-                            text: control.text
-                            anchors.centerIn: parent
-                            color: "white"
-                            font.pixelSize: 23
-                            renderType: Text.NativeRendering
-                        }
-                    }
-                }
-            }
-        }
+        // Component {
+        //     id: touch_style
+        //     ButtonStyle {
+        //         panel: Item {
+        //             implicitHeight: 80
+        //             implicitWidth: 320
+        //             BorderImage {
+        //                 anchors.fill: parent
+        //                 antialiasing: true
+        //                 border.bottom: 8
+        //                 border.top: 8
+        //                 border.left: 8
+        //                 border.right: 8
+        //                 anchors.margins: control.pressed ? -4 : 0
+        //                 source: control.pressed ? "../images/button_pressed.png" : "../images/button_default.png"
+        //                 Text {
+        //                     text: control.text
+        //                     anchors.centerIn: parent
+        //                     color: "white"
+        //                     font.pixelSize: 23
+        //                     renderType: Text.NativeRendering
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 }

@@ -1,11 +1,14 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource prefix="/">
+    <file>qtlabscontrols.conf</file>
     <file>main.qml</file>
     <file>content/AndroidDelegate.qml</file>
     <file>content/Altimeter.qml</file>
     <file>content/CalibrateAltimeter.qml</file>
+    <file>content/Light.qml</file>
     <file>content/Inclination.qml</file>
+    <file>content/Test.qml</file>
     <file>images/navigation_next_item.png</file>
     <file>images/navigation_previous_item.png</file>
     <file>images/toolbar.png</file>
