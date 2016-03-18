@@ -1,35 +1,15 @@
 import QtQml 2.2
 import QtQuick 2.6
+import QtQuick.Window 2.2
 
-import QtSensors 5.1
-
-// import QtQuick.Controls 1.2
-// import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
-
 import Qt.labs.controls 1.0
 import Qt.labs.controls.material 1.0
 
-Item {
-    width: parent.width
-    height: parent.height
+import QtSensors 5.1
 
-    property real progress: 0
-
-    SequentialAnimation on progress {
-        loops: Animation.Infinite
-        running: true
-        NumberAnimation {
-            from: 0
-            to: 1
-            duration: 3000
-        }
-        NumberAnimation {
-            from: 1
-            to: 0
-            duration: 3000
-        }
-    }
+Pane {
+    id: gps_pane
 
     // property real azimuth;
     // property real x_tilt;
@@ -107,8 +87,13 @@ Item {
     Canvas {
         id: canvas
         anchors.centerIn: parent
-        width: parent.width * .9
-        height: parent.height * .9
+        width: parent.width * .9 * Screen.devicePixelRatio
+        height: parent.height * .9 * Screen.devicePixelRatio
+
+        // canvasSize: Qt.size(width * 2, height * 2);
+        antialiasing: true
+        scale: 1. /  Screen.devicePixelRatio
+        transformOrigin: Item.Center
 
         onPaint:{
             function degrees_to_radians(degrees) {
@@ -132,14 +117,27 @@ Item {
 
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
-            var azimuth = compass.reading.azimuth;
+            // var reading = compass.reading;
+            // var azimuth = reading ? reading.azimuth : 0;
+            // reading = tilt_sensor.reading;
+            // var x_tilt, y_tilt;
+            // if (reading) {
+            //     x_tilt = reading.xRotation;
+            //     y_tilt = reading.yRotation;
+            // } else {
+            //     x_tilt = 0;
+            //     y_tilt = 0;
+            // }
+
+            var azimuth = 25;
+            var x_tilt = 10;
+            var y_tilt = 10;
+
             var azimuth_rad = degrees_to_radians(azimuth);
             ctx.rotate(azimuth_rad);
 
-            ctx.fillStyle = 'rgb(255, 255, 0)';
+            ctx.fillStyle = 'black';
 
-            var x_tilt = tilt_sensor.reading.xRotation;
-            var y_tilt = tilt_sensor.reading.yRotation;
             ctx.beginPath();
             var x_bubble = - y_tilt / 90 * hemisphere_radius;
             var y_bubble = - x_tilt / 90 * hemisphere_radius;

@@ -1,35 +1,13 @@
 import QtQml 2.2
 import QtQuick 2.6
 
+import QtQuick.Layouts 1.1
+import Qt.labs.controls 1.0
+
 import QtSensors 5.1
 
-// import QtQuick.Controls 1.2
-// import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
-
-import Qt.labs.controls 1.0
-import Qt.labs.controls.material 1.0
-
-Item {
-    width: parent.width
-    height: parent.height
-
-    property real progress: 0
-
-    SequentialAnimation on progress {
-        loops: Animation.Infinite
-        running: true
-        NumberAnimation {
-            from: 0
-            to: 1
-            duration: 3000
-        }
-        NumberAnimation {
-            from: 1
-            to: 0
-            duration: 3000
-        }
-    }
+Pane {
+    id: light_pane
 
     LightSensor {
         id: light_sensor
@@ -42,9 +20,8 @@ Item {
     }
 
     ColumnLayout {
-        width: parent.width
-        anchors.topMargin: 30
-        spacing: 30
+        spacing: 40
+        anchors.fill: parent
 
         GridLayout {
             width: parent.width
@@ -62,13 +39,12 @@ Item {
             columns: 2
 
             Text {
-                color: "white"
                 text: "Illuminance"
             }
             Text {
-                color: "white"
                 id: illuminance_label
             }
         }
     }
+
 }

@@ -1,110 +1,173 @@
 import QtQuick 2.6
+import QtQuick.Window 2.2
 
-// import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.3
 import Qt.labs.controls 1.0
 import Qt.labs.controls.material 1.0
+import Qt.labs.settings 1.0
 
-import "content"
+// import "pages"
 
 ApplicationWindow {
+    id: application_window
+    width: 360
+    height: 520
     visible: true
-    width: 800 // Fixme: mobile ?
-    height: 1280
+    title: "α Ursae Minoris"
+    contentOrientation: Qt.PortraitOrientation // LandscapeOrientation PrimaryOrientation
 
-    // Background
-    Rectangle {
-        // color: "#212126"
-        color: "#555555"
-        anchors.fill: parent
+    // Settings {
+    //     id: settings
+    //     property string style: "Material"
+    // }
+
+    Component.onCompleted: {
+        // S5: 640 360 5535 3240 5.551839464882943 3
+        // 5.1 in 1080 x 1920 px ~432 dpi
+        // math.sqrt(1920**2+1080**2)/5.1 = 431.9425
+        // 1920 - 75 px for android bar = 1845
+        // 1080*3 = 3240   1845*3 = 5535
+        // 5.551839464882943*3*25.4 = 423
+        console.info(Screen.height, Screen.width,
+                     Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
+                     Screen.pixelDensity, Screen.devicePixelRatio);
     }
 
-    // toolBar: BorderImage {
-    header: BorderImage {
-        width: parent.width
-        height: 150
-        border.bottom: 8
-        source: "images/toolbar.png" // blue line at bottom
+    header: ToolBar {
+        id: app_bar
 
-        Rectangle {
-            id: back_button
-            opacity: stack_view.depth > 1 ? 1 : 0
-            width: opacity ? 60 : 0
-            height: 60
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
-            radius: 4
-            color: back_button_mouse_area.pressed ? "#222" : "transparent"
-            antialiasing: true
-            Behavior on opacity { NumberAnimation{} }
-            Image {
-                anchors.verticalCenter: parent.verticalCenter
-                source: "images/navigation_previous_item.png"
+        RowLayout {
+            spacing: 20
+            anchors.fill: parent
+
+            ToolButton {
+                id: nav_icon
+                label: Image {
+                    anchors.centerIn: parent
+                    source: "qrc:/images/drawer.png"
+                }
+                onClicked: drawer.open()
             }
-            MouseArea {
-                id: back_button_mouse_area
+
+            Label {
+                id: title_label
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                font.pixelSize: 20
+                elide: Label.ElideRight
+                text: "α Ursae Minoris"
+            }
+
+            ToolButton {
+                id: menu_icon
+                label: Image {
+                    anchors.centerIn: parent
+                    source: "qrc:/images/menu.png"
+                }
+                onClicked: options_menu.open()
+
+                Menu {
+                    id: options_menu
+                    x: parent.width - width
+                    transformOrigin: Menu.TopRight
+
+                    MenuItem {
+                        text: "Settings"
+                    }
+                    MenuItem {
+                        text: "About"
+                        onTriggered: about_dialog.open()
+                    }
+                }
+            }
+        }
+    }
+
+    Drawer {
+        id: drawer
+
+        Pane {
+            padding: 0
+            width: Math.min(application_window.width, application_window.height) / 3 * 2
+            height: application_window.height
+
+            ListView {
+                id: list_view
+                currentIndex: -1
                 anchors.fill: parent
-                anchors.margins: -10
-                onClicked: stack_view.pop()
+
+                delegate: ItemDelegate {
+                    width: parent.width
+                    text: model.title
+                    highlighted: ListView.isCurrentItem
+                    onClicked: {
+                        if (list_view.currentIndex != index) {
+                            list_view.currentIndex = index
+                            title_label.text = model.title
+                            stack_view.replace(model.source)
+                        }
+                        drawer.close()
+                    }
+                }
+
+                model: ListModel {
+                    ListElement { title: "Altimeter"; source: "qrc:/pages/Altimeter.qml" }
+                    ListElement { title: "Inclination"; source: "qrc:/pages/Inclination.qml" }
+                    ListElement { title: "Light"; source: "qrc:/pages/Light.qml" }
+                    ListElement { title: "GPS"; source: "qrc:/pages/Gps.qml" }
+                }
+
+                ScrollIndicator.vertical: ScrollIndicator {}
             }
         }
 
-        Text {
-            font.pointSize: 32
-            Behavior on x { NumberAnimation{ easing.type: Easing.OutCubic} }
-            x: back_button.x + back_button.width + 20
-            anchors.verticalCenter: parent.verticalCenter
-            color: "white"
-            text: "QtCarto"
-        }
-    }
-
-    // Pages
-    ListModel {
-        id: page_model
-        ListElement {
-            title: "Altimeter"
-            page: "content/Altimeter.qml"
-        }
-        ListElement {
-            title: "Inclination"
-            page: "content/Inclination.qml"
-        }
-        ListElement {
-            title: "Light"
-            page: "content/Light.qml"
-        }
-        ListElement {
-            title: "GPS"
-            page: "content/Gps.qml"
-        }
-        ListElement {
-            title: "Test"
-            page: "content/Test.qml"
-        }
+        onClicked: close()
     }
 
     StackView {
         id: stack_view
         anchors.fill: parent
-        // Implements back key navigation
-        focus: true
-        Keys.onReleased: if (event.key === Qt.Key_Back && stack_view.depth > 1) {
-                             stack_view.pop();
-                             event.accepted = true;
-                         }
 
-        initialItem: Item {
-            width: parent.width
-            height: parent.height
-            ListView {
-                model: page_model
-                anchors.fill: parent
-                delegate: AndroidDelegate {
-                    text: title
-                    // Fixme: page title
-                    onClicked: stack_view.push(Qt.resolvedUrl(page))
+        initialItem: Pane {
+            id: pane
+            anchors.fill: parent
+
+            Column {
+                spacing: 20
+
+                Label {
+                    font.bold: true
+                    text: "Main Page"
                 }
+            }
+        }
+    }
+
+    Popup {
+        id: about_dialog
+        modal: true
+        focus: true
+        x: (application_window.width - width) / 2
+        y: application_window.height / 6
+        width: Math.min(application_window.width, application_window.height) / 3 * 2
+        contentHeight: about_column.height
+        closePolicy: Popup.OnEscape | Popup.OnPressOutside
+
+        Column {
+            id: about_column
+            spacing: 20
+
+            Label {
+                font.bold: true
+                text: "About"
+            }
+
+            Label {
+                width: about_dialog.availableWidth
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+                text: "Lorem lipsum ..."
             }
         }
     }

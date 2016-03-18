@@ -1,30 +1,16 @@
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+
 import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
+
+import QtQuick.Layouts 1.1
+import Qt.labs.controls 1.0
+import Qt.labs.controls.material 1.0
+
 import QtSensors 5.1
 
-Item {
-    width: parent.width
-    height: parent.height
-
-    property real progress: 0
-
-    SequentialAnimation on progress {
-        loops: Animation.Infinite
-        running: true
-        NumberAnimation {
-            from: 0
-            to: 1
-            duration: 3000
-        }
-        NumberAnimation {
-            from: 1
-            to: 0
-            duration: 3000
-        }
-    }
+Pane {
+    id: inclination_pane
 
    TiltSensor {
        id: tilt_sensor

@@ -28,9 +28,12 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QSettings>
 #include <QtQml>
 
 #include <QtDebug>
+
+/**************************************************************************************************/
 
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 
@@ -39,11 +42,14 @@
 int
 main(int argc, char *argv[])
 {
-  QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "QtCarto"));
-  // QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "α Ursae Minoris"));
+  QGuiApplication::setOrganizationName("QtProject");
+  QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
   QGuiApplication application(argc, argv);
 
-  // Q_INIT_RESOURCE(sensors);
+  QSettings settings;
+  qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 
   // QQuickView class provides a window for displaying a Qt Quick user interface
   // QQuickView view;
@@ -53,6 +59,7 @@ main(int argc, char *argv[])
   // view.setSource(QUrl("qrc:///..."));
   // view.show();
 
+  // Register QML Types
   const char * package = "QtCarto";
   int major = 1;
   int minor = 0;
@@ -64,16 +71,10 @@ main(int argc, char *argv[])
   qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
   qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
 
-  // QQmlApplicationEngine provides a convenient way to load an application from a single QML file
   QQmlApplicationEngine engine;
-  // engine.addImportPath(QStringLiteral(":/imports"));
-  engine.load(QUrl(QStringLiteral("qrc:///main.qml")));
+  engine.load(QUrl("qrc:///main.qml"));
   if (engine.rootObjects().isEmpty())
     return -1;
-
-  QObject::connect(&engine, SIGNAL(quit()), qApp, SLOT(quit()));
-
-  // QObject * qml_application = engine.rootObjects().first();
 
   return application.exec();
 }

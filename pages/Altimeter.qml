@@ -1,37 +1,16 @@
 import QtQml 2.2
 import QtQuick 2.6
 
+import QtQuick.Layouts 1.1
+import Qt.labs.controls 1.0
+import Qt.labs.controls.material 1.0
+
 import QtCarto 1.0
 import QtPositioning 5.5
 import QtSensors 5.1
 
-import QtQuick.Controls 1.2
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
-
-// import Qt.labs.controls 1.0
-// import Qt.labs.controls.material 1.0
-
-Item {
-    width: parent.width
-    height: parent.height
-
-    property real progress: 0
-
-    SequentialAnimation on progress {
-        loops: Animation.Infinite
-        running: true
-        NumberAnimation {
-            from: 0
-            to: 1
-            duration: 3000
-        }
-        NumberAnimation {
-            from: 1
-            to: 0
-            duration: 3000
-        }
-    }
+Pane {
+    id: altimeter_pane
 
     // PressureSensor
     BarimeterAltimeterSensor {
@@ -84,7 +63,6 @@ Item {
             // Layout.preferredHeight: 40
 
             font.pointSize: 32
-            color: "white"
             text: "0"
             inputMethodHints: Qt.ImhDigitsOnly
             validator: IntValidator {bottom: 0; top: 11000;}
@@ -96,9 +74,6 @@ Item {
 
         Button {
             id: calibrate_button
-
-            style: touch_style
-            // Material.theme: Material.Light
 
             // anchors.horizontalCenter: parent.horizontalCenter
             // anchors.top: parent.top
@@ -114,33 +89,6 @@ Item {
             onClicked: {
                 console.info("clicked on calibrate", altitude_text_field.text);
                 pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
-            }
-        }
-
-        Component {
-            id: touch_style
-            ButtonStyle {
-                panel: Item {
-                    implicitHeight: 120
-                    implicitWidth: 400
-                    BorderImage {
-                        anchors.fill: parent
-                        antialiasing: true
-                        border.bottom: 8
-                        border.top: 8
-                        border.left: 8
-                        border.right: 8
-                        anchors.margins: control.pressed ? -4 : 0
-                        source: control.pressed ? "../images/button_pressed.png" : "../images/button_default.png"
-                        Text {
-                            text: control.text
-                            anchors.centerIn: parent
-                            color: "white"
-                            font.pointSize: 32
-                            renderType: Text.NativeRendering
-                        }
-                    }
-                }
             }
         }
 
@@ -160,38 +108,30 @@ Item {
             columns: 2
 
             Text {
-                color: "white"
                 text: "Pressure"
             }
             Text {
-                color: "white"
                 id: pressure_label
             }
 
             Text {
-                color: "white"
                 text: "Altitude"
             }
             Text {
-                color: "white"
                 id: altitude_label
             }
 
             Text {
-                color: "white"
                 text: "Position"
             }
             Text {
-                color: "white"
                 id: position_label
             }
 
             Text {
-                color: "white"
                 text: "GPS Altitude"
             }
             Text {
-                color: "white"
                 id: gps_altitude_label
             }
         }
