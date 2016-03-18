@@ -108,14 +108,14 @@ Pane {
             columns: 2
 
             Text {
-                text: "Pressure"
+                text: qsTr("Pressure")
             }
             Text {
                 id: pressure_label
             }
 
             Text {
-                text: "Altitude"
+                text: qsTr("Altitude")
             }
             Text {
                 id: altitude_label

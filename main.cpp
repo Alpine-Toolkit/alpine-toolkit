@@ -27,8 +27,10 @@
 /**************************************************************************************************/
 
 #include <QGuiApplication>
+#include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QSettings>
+#include <QTranslator>
 #include <QtQml>
 
 #include <QtDebug>
@@ -47,6 +49,16 @@ main(int argc, char *argv[])
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication application(argc, argv);
+
+  QTranslator translator;
+  QLocale locale;
+  if (translator.load(locale, "alpha-ursae-minoris", ".", ":/translations", ".qm")) {
+    // :/translations/alpha-ursae-minoris.fr_FR.qml
+    qInfo() << "Install translator for" << locale.name();
+    application.installTranslator(&translator);
+  } else {
+    qInfo() << "No translator for" << locale.name();
+  }
 
   QSettings settings;
   qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());

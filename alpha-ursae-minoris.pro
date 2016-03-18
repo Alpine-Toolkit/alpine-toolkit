@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = qtcarto
+TARGET = alpha-ursae-minoris
 
 CONFIG += c++14
 CONFIG += debug console qml_debug
@@ -11,15 +11,25 @@ HEADERS += \
   sensors/qmlsensor.h \
   sensors/qml_barimeter_altimeter_sensor.h
 
-SOURCES += main.cpp \
+SOURCES += \
+  main.cpp \
   sensors/qmlsensorrange.cpp \
   sensors/qmlsensor.cpp \
   sensors/qml_barimeter_altimeter_sensor.cpp
 
-RESOURCES += sensors.qrc
+lupdate_only{
+SOURCES += \
+  main.qml \
+  pages/*.qml
+}
 
 OTHER_FILES += \
   main.qml
+
+RESOURCES += alpha-ursae-minoris.qrc
+
+TRANSLATIONS = translations/alpha-ursae-minoris.fr_FR.ts
+# \ alpha-ursae-minoris-en.ts
 
 DISTFILES += \
     android/AndroidManifest.xml \
@@ -31,4 +41,3 @@ DISTFILES += \
     android/gradlew.bat
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-

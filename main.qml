@@ -112,10 +112,10 @@ ApplicationWindow {
                 }
 
                 model: ListModel {
-                    ListElement { title: "Altimeter"; source: "qrc:/pages/Altimeter.qml" }
-                    ListElement { title: "Inclination"; source: "qrc:/pages/Inclination.qml" }
-                    ListElement { title: "Light"; source: "qrc:/pages/Light.qml" }
-                    ListElement { title: "GPS"; source: "qrc:/pages/Gps.qml" }
+                    ListElement { title: qsTr("Altimeter"); source: "qrc:/pages/Altimeter.qml" }
+                    ListElement { title: qsTr("Inclination"); source: "qrc:/pages/Inclination.qml" }
+                    ListElement { title: qsTr("Illuminance"); source: "qrc:/pages/Illuminance.qml" }
+                    ListElement { title: qsTr("GPS"); source: "qrc:/pages/Gps.qml" }
                 }
 
                 ScrollIndicator.vertical: ScrollIndicator {}

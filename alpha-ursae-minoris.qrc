@@ -15,6 +15,7 @@
     <file>pages/CalibrateAltimeter.qml</file>
     <file>pages/Gps.qml</file>
     <file>pages/Inclination.qml</file>
-    <file>pages/Light.qml</file>
+    <file>pages/Illuminance.qml</file>
+    <file>translations/alpha-ursae-minoris.fr_FR.qm</file>
   </qresource>
 </RCC>

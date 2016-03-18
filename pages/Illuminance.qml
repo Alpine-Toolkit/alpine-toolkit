@@ -7,7 +7,7 @@ import Qt.labs.controls 1.0
 import QtSensors 5.1
 
 Pane {
-    id: light_pane
+    id: illuminance_pane
 
     LightSensor {
         id: light_sensor
