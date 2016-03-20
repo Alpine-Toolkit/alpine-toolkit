@@ -10,15 +10,19 @@ import Qt.labs.settings 1.0
 
 ApplicationWindow {
     id: application_window
-    width: 360
-    height: 520
+    // width: 360
+    // height: 520
     visible: true
     title: "α Ursae Minoris"
-    contentOrientation: Qt.PortraitOrientation // LandscapeOrientation PrimaryOrientation
+    // contentOrientation: Qt.PortraitOrientation // LandscapeOrientation PrimaryOrientation
 
     // Settings {
     //     id: settings
     //     property string style: "Material"
+    // }
+
+    // AndroidActivity {
+    //     id: android_activity
     // }
 
     Component.onCompleted: {
@@ -105,6 +109,7 @@ ApplicationWindow {
                         if (list_view.currentIndex != index) {
                             list_view.currentIndex = index
                             title_label.text = model.title
+                            android_activity.orientation_lock = model.lock_orientation;
                             stack_view.replace(model.source)
                         }
                         drawer.close()
@@ -112,10 +117,10 @@ ApplicationWindow {
                 }
 
                 model: ListModel {
-                    ListElement { title: qsTr("Altimeter"); source: "qrc:/pages/Altimeter.qml" }
-                    ListElement { title: qsTr("Inclination"); source: "qrc:/pages/Inclination.qml" }
-                    ListElement { title: qsTr("Illuminance"); source: "qrc:/pages/Illuminance.qml" }
-                    ListElement { title: qsTr("GPS"); source: "qrc:/pages/Gps.qml" }
+                    ListElement { title: qsTr("Altimeter"); source: "qrc:/pages/Altimeter.qml"; lock_orientation: false }
+                    ListElement { title: qsTr("Inclination"); source: "qrc:/pages/Inclination.qml"; lock_orientation: true  }
+                    ListElement { title: qsTr("Illuminance"); source: "qrc:/pages/Illuminance.qml"; lock_orientation: false  }
+                    ListElement { title: qsTr("GPS"); source: "qrc:/pages/Gps.qml"; lock_orientation: true  }
                 }
 
                 ScrollIndicator.vertical: ScrollIndicator {}

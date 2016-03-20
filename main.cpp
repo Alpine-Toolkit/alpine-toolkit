@@ -38,6 +38,7 @@
 /**************************************************************************************************/
 
 #include "sensors/qml_barimeter_altimeter_sensor.h"
+#include "android_activity.h"
 
 /**************************************************************************************************/
 
@@ -83,10 +84,15 @@ main(int argc, char *argv[])
   qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
   qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
 
+  // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
+
   QQmlApplicationEngine engine;
+  AndroidActivity * android_activity = new AndroidActivity(); // parent ?
+  engine.rootContext()->setContextProperty(QLatin1String("android_activity"), android_activity);
   engine.load(QUrl("qrc:///main.qml"));
   if (engine.rootObjects().isEmpty())
     return -1;
+
 
   return application.exec();
 }

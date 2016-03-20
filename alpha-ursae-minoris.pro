@@ -4,15 +4,17 @@ TARGET = alpha-ursae-minoris
 CONFIG += c++14
 CONFIG += debug console qml_debug
 
-QT += qml quick sensors
+QT += qml quick sensors androidextras
 
 HEADERS += \
+  android_activity.h \
   sensors/qmlsensorrange.h \
   sensors/qmlsensor.h \
   sensors/qml_barimeter_altimeter_sensor.h
 
 SOURCES += \
   main.cpp \
+  android_activity.cpp \
   sensors/qmlsensorrange.cpp \
   sensors/qmlsensor.cpp \
   sensors/qml_barimeter_altimeter_sensor.cpp
@@ -24,7 +26,9 @@ SOURCES += \
 }
 
 OTHER_FILES += \
-  main.qml
+  main.qml \
+  pages/*.qml \
+  android/AndroidManifest.xml
 
 RESOURCES += alpha-ursae-minoris.qrc
 
