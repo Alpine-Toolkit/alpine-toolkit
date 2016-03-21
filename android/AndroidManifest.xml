@@ -1,23 +1,8 @@
 <?xml version="1.0"?>
-<manifest
-    package="org.alpha_ursae_minoris"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionName="1.0"
-    android:versionCode="1"
-    android:installLocation="auto"
-    >
-  <application
-      android:name="org.qtproject.qt5.android.bindings.QtApplication"
-      android:label="-- %%INSERT_APP_NAME%% --"
-      android:hardwareAccelerated="true"
-      >
+<manifest package="org.alpha_ursae_minoris" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
+  <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:hardwareAccelerated="true">
     <!-- android:name="org.qtproject.qt5.android.bindings.QtActivity" -->
-    <activity
-	android:name="org.alpha_ursae_minoris.AumActivity"
-	android:label="-- %%INSERT_APP_NAME%% --"
-	android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation"
-	android:screenOrientation="unspecified"
-	android:launchMode="singleTop">
+    <activity android:name="org.alpha_ursae_minoris.AumActivity" android:label="-- %%INSERT_APP_NAME%% --" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:screenOrientation="unspecified" android:launchMode="singleTop">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -61,20 +46,14 @@
       <!-- auto screen scale factor -->
     </activity>
   </application>
-  <uses-sdk
-      android:minSdkVersion="21"
-      android:targetSdkVersion="21"
-      />
-  <supports-screens
-      android:largeScreens="true"
-      android:normalScreens="true"
-      android:anyDensity="true"
-      android:smallScreens="true"
-      />
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="21"/>
+  <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
   <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
        Remove the comment if you do not require these default permissions. -->
   <!-- %%INSERT_PERMISSIONS -->
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- Protection level: dangerous -->
+  <!-- <uses-permission android:name="android.permission.BATTERY_STATS"/> -->
 
   <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
        Remove the comment if you do not require these default features. -->

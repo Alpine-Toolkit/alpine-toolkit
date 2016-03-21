@@ -38,7 +38,10 @@
 /**************************************************************************************************/
 
 #include "sensors/qml_barimeter_altimeter_sensor.h"
+
+#ifdef ANDROID
 #include "android_activity.h"
+#endif
 
 /**************************************************************************************************/
 
@@ -87,8 +90,14 @@ main(int argc, char *argv[])
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
   QQmlApplicationEngine engine;
+#ifdef ANDROID
+  int on_android = 1;
   AndroidActivity * android_activity = new AndroidActivity(); // parent ?
   engine.rootContext()->setContextProperty(QLatin1String("android_activity"), android_activity);
+#else
+  int on_android = 0;
+#endif
+  engine.rootContext()->setContextProperty(QLatin1String("on_android"), on_android);
   engine.load(QUrl("qrc:///main.qml"));
   if (engine.rootObjects().isEmpty())
     return -1;

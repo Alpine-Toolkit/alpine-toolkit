@@ -1,5 +1,6 @@
 import QtQml 2.2
 import QtQuick 2.6
+import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
 import Qt.labs.controls 1.0
@@ -40,100 +41,124 @@ Pane {
         active: true
 
         onPositionChanged: {
-            var coordinate = position_source.position.coordinate;
-            position_label.text = coordinate.longitude + " " + coordinate.latitude + " +- " + position_source.position.horizontalAccuracy;
-            gps_altitude_label.text = coordinate.altitude + " +- " + position_source.position.verticalAccuracy;
+            var position = position_source.position;
+            var coordinate = position.coordinate;
+            // position_label.text = coordinate.longitude + " " + coordinate.latitude + " +- " + position_source.position.horizontalAccuracy;
+            if (coordinate.altitudeValid) {
+                gps_altitude_label.text = coordinate.altitude + " +- " + position.verticalAccuracy;
+            }
         }
     }
 
     ColumnLayout {
-        width: parent.width
+        anchors.fill: parent
         anchors.topMargin: 30
         spacing: 30
 
-        TextInput {
-            id: altitude_text_field
-            // anchors.top: parent.top
-            // anchors.horizontalCenter: parent.horizontalCenter
-            // anchors.topMargin: 30
-            // anchors.bottomMargin: 30
-
+        GridLayout {
+            width: parent.width
             Layout.alignment: Qt.AlignCenter
-            // Layout.preferredWidth: parent.width
-            // Layout.preferredHeight: 40
+            columns: 2
+            columnSpacing : 2 * Screen.devicePixelRatio
+            rowSpacing : 2 * Screen.devicePixelRatio
 
-            font.pointSize: 32
-            text: "0"
-            inputMethodHints: Qt.ImhDigitsOnly
-            validator: IntValidator {bottom: 0; top: 11000;}
-            onEditingFinished: {
-                console.info("clicked on calibrate", altitude_text_field.text);
-                pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
+            Label {
+                font.pointSize: 20
+                text: qsTr("Altitude")
+            }
+            Label {
+                font.pointSize: 20
+                id: altitude_label
+                text: "unknown"
+            }
+
+            Label {
+                font.pointSize: 20
+                text: "GPS Altitude"
+            }
+            Label {
+                font.pointSize: 20
+                id: gps_altitude_label
+                text: "unknown"
+            }
+
+            Label {
+                font.pointSize: 20
+                text: qsTr("Pressure")
+            }
+            Label {
+                font.pointSize: 20
+                id: pressure_label
+                text: "unknown"
             }
         }
 
         Button {
             id: calibrate_button
-
-            // anchors.horizontalCenter: parent.horizontalCenter
-            // anchors.top: parent.top
-            // anchors.topMargin: 30
-            // anchors.bottomMargin: 30
-
             Layout.alignment: Qt.AlignCenter
-            // Layout.preferredWidth: parent.width
-            // Layout.preferredHeight: 40
-
-            text: "Calibrate"
-            // onClicked: stack_view.push(Qt.resolvedUrl("CalibrateAltimeter.qml"))
+            text: qsTr("Calibrate")
             onClicked: {
-                console.info("clicked on calibrate", altitude_text_field.text);
-                pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
+                calibrate_popup.open()
             }
         }
+    }
 
-        GridLayout {
+    Popup {
+        id: calibrate_popup
+        modal: true
+        focus: true
+        // margins: 5 * Screen.devicePixelRatio // must be centered
+        x: (application_window.width - width) / 2
+        y: application_window.height / 6
+        width: application_window.width * .9
+        contentHeight: about_column.height
+        closePolicy: Popup.OnEscape | Popup.NoAutoClose
+
+        Column {
+            id: about_column
             width: parent.width
+            spacing: 5 * Screen.devicePixelRatio
 
-            // anchors.horizontalCenter: parent.horizontalCenter
-            // anchors.top: calibrate_button.top
-            // anchors.topMargin: 30
-            // anchors.bottomMargin: 30
-            // anchors.leftMargin: 30
-
-            Layout.alignment: Qt.AlignCenter
-            // Layout.preferredWidth: parent.width
-            // Layout.preferredHeight: 40
-
-            columns: 2
-
-            Text {
-                text: qsTr("Pressure")
-            }
-            Text {
-                id: pressure_label
+            Label {
+                font.pointSize: 20
+                font.bold: true
+                text: qsTr("Calibrate")
             }
 
-            Text {
-                text: qsTr("Altitude")
-            }
-            Text {
-                id: altitude_label
-            }
-
-            Text {
-                text: "Position"
-            }
-            Text {
-                id: position_label
+            TextField {
+                id: altitude_text_field
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pointSize: 32
+                placeholderText: "enter altitude"
+                inputMethodHints: Qt.ImhDigitsOnly
+                validator: IntValidator {bottom: 0; top: 11000;}
             }
 
-            Text {
-                text: "GPS Altitude"
-            }
-            Text {
-                id: gps_altitude_label
+            Row {
+                spacing: 5 * Screen.devicePixelRatio
+                anchors.right: parent.right
+
+                Button {
+                    text: "Cancel"
+                    onClicked: calibrate_popup.close()
+                    // label.color: "#42a5f5ff"
+                    background: null
+                }
+                Button {
+                    text: "Ok"
+                    onClicked: {
+                        if (altitude_text_field.text) {
+                            var altitude = Number.fromLocaleString(altitude_text_field.text);
+                            console.info("clicked on calibrate", altitude_text_field.text);
+                            pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
+                            // save sea_pressure_level in application
+                        }
+                        calibrate_popup.close()
+                    }
+                    background: null
+                }
             }
         }
     }
 }
+

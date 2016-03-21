@@ -6,15 +6,12 @@ import Qt.labs.controls 1.0
 import Qt.labs.controls.material 1.0
 import Qt.labs.settings 1.0
 
-// import "pages"
-
 ApplicationWindow {
     id: application_window
-    // width: 360
-    // height: 520
     visible: true
+    width: 360 // for desktop test
+    height: 520
     title: "α Ursae Minoris"
-    // contentOrientation: Qt.PortraitOrientation // LandscapeOrientation PrimaryOrientation
 
     // Settings {
     //     id: settings
@@ -24,6 +21,9 @@ ApplicationWindow {
     // AndroidActivity {
     //     id: android_activity
     // }
+
+    FontLoader { id: roboto_regular; source: "qrc:/fonts/Roboto-Regular.ttf" }
+    font.family: roboto_regular.name
 
     Component.onCompleted: {
         // S5: 640 360 5535 3240 5.551839464882943 3
@@ -48,7 +48,7 @@ ApplicationWindow {
                 id: nav_icon
                 label: Image {
                     anchors.centerIn: parent
-                    source: "qrc:/images/drawer.png"
+                    source: "qrc:/icons/menu-white.png"
                 }
                 onClicked: drawer.open()
             }
@@ -60,6 +60,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 font.pixelSize: 20
                 elide: Label.ElideRight
+                color: "white"
                 text: "α Ursae Minoris"
             }
 
@@ -67,7 +68,7 @@ ApplicationWindow {
                 id: menu_icon
                 label: Image {
                     anchors.centerIn: parent
-                    source: "qrc:/images/menu.png"
+                    source: "qrc:/icons/more-vert-white.png"
                 }
                 onClicked: options_menu.open()
 
@@ -103,13 +104,16 @@ ApplicationWindow {
 
                 delegate: ItemDelegate {
                     width: parent.width
+                    font.pixelSize: 16
                     text: model.title
                     highlighted: ListView.isCurrentItem
                     onClicked: {
                         if (list_view.currentIndex != index) {
                             list_view.currentIndex = index
                             title_label.text = model.title
-                            android_activity.orientation_lock = model.lock_orientation;
+                            if (on_android) {
+                                android_activity.orientation_lock = model.lock_orientation;
+                            }
                             stack_view.replace(model.source)
                         }
                         drawer.close()

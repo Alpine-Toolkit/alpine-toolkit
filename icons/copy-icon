@@ -1,0 +1,28 @@
+#! /bin/bash
+
+category=$1
+name=$2
+colour="white"
+dp="24"
+
+mdi_path="$HOME/home/developpement/qtcarto-application/material-design-ressources/material-design-icons"
+
+function copy_link() {
+  dpi=$1
+  scale=$2
+
+  subdir="${category}/drawable-${dpi}"
+  src="ic_${name}_${colour}_${dp}dp.png"
+  target=$(tr "_" "-" <<<"${name}-${colour}${scale}.png")
+  mkdir -p ${subdir}
+  cp ${mdi_path}/${subdir}/${src} ${subdir}
+  rm -f ${target}
+  ln -sf ${subdir}/${src} ${target}
+}
+
+copy_link mdpi
+copy_link xhdpi @2x
+copy_link xxhdpi @3x
+copy_link xxxhdpi @4x
+
+# end
