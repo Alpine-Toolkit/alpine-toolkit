@@ -74,7 +74,7 @@ Pane {
 
             Label {
                 font.pointSize: 20
-                text: "GPS Altitude"
+                text: "GPS"
             }
             Label {
                 font.pointSize: 20

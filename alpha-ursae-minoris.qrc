@@ -7,6 +7,7 @@
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
     <file>icons/more-vert-white@3x.png</file>
+    <file>js/gps.js</file>
     <file>main.qml</file>
     <file>pages/Altimeter.qml</file>
     <file>pages/Gps.qml</file>

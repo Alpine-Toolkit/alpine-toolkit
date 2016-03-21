@@ -22,13 +22,13 @@ Pane {
             var illuminance = light_sensor.reading.illuminance;
             illuminance_label.text = format_lux(Number(illuminance).toLocaleString());
         }
+    }
 
-        onComplete: {
-            console.info(light_sensor.identifier + "/" + light_sensor.description)
-            data_rates = light_sensor.availableDataRates;
-            for (var i = 0; i < data_rates.length; i += 1) {
-                console.info("rate", data_rates[i]);
-            }
+    Component.onCompleted: {
+        console.info(light_sensor.identifier + "/" + light_sensor.description) // 5 // TMG399X RGB Sensor AMS, Inc. v1
+        var data_rates = light_sensor.availableDataRates;
+        for (var i = 0; i < data_rates.length; i += 1) {
+            console.info("rate", data_rates[i]);
         }
     }
 

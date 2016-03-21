@@ -9,7 +9,7 @@ import Qt.labs.settings 1.0
 ApplicationWindow {
     id: application_window
     visible: true
-    width: 360 // for desktop test
+    width: 360 // set window size for desktop test
     height: 520
     title: "α Ursae Minoris"
 
@@ -18,10 +18,12 @@ ApplicationWindow {
     //     property string style: "Material"
     // }
 
+    // Done in main.cpp
     // AndroidActivity {
     //     id: android_activity
     // }
 
+    // Done by Material theme
     FontLoader { id: roboto_regular; source: "qrc:/fonts/Roboto-Regular.ttf" }
     font.family: roboto_regular.name
 
