@@ -4,18 +4,20 @@ TARGET = alpha-ursae-minoris
 CONFIG += c++14
 CONFIG += debug console qml_debug
 
-QT += qml quick sensors
+QT += qml quick sensors positioning
 
 HEADERS += \
   sensors/qmlsensorrange.h \
   sensors/qmlsensor.h \
-  sensors/qml_barimeter_altimeter_sensor.h
+  sensors/qml_barimeter_altimeter_sensor.h \
+  satellite_model.h
 
 SOURCES += \
   main.cpp \
   sensors/qmlsensorrange.cpp \
   sensors/qmlsensor.cpp \
-  sensors/qml_barimeter_altimeter_sensor.cpp
+  sensors/qml_barimeter_altimeter_sensor.cpp \
+  satellite_model.cpp
 
 lupdate_only{
 SOURCES += \

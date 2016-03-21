@@ -38,6 +38,7 @@
 /**************************************************************************************************/
 
 #include "sensors/qml_barimeter_altimeter_sensor.h"
+#include "satellite_model.h"
 
 #ifdef ANDROID
 #include "android_activity.h"
@@ -76,7 +77,7 @@ main(int argc, char *argv[])
   // view.show();
 
   // Register QML Types
-  const char * package = "QtCarto";
+  const char * package = "Local";
   int major = 1;
   int minor = 0;
   // qmlRegisterSingletonType  <QmlSensorGlobal             >(package, major, minor, "QmlSensors", global_object_50);
@@ -86,6 +87,8 @@ main(int argc, char *argv[])
   // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
   qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
   qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
+
+  qmlRegisterType<SatelliteModel>("Local", 1, 0, "SatelliteModel");
 
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
