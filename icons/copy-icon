@@ -2,14 +2,14 @@
 
 category=$1
 name=$2
-colour="white"
 dp="24"
 
 mdi_path="$HOME/home/developpement/qtcarto-application/material-design-ressources/material-design-icons"
 
 function copy_link() {
-  dpi=$1
-  scale=$2
+  colour=$1
+  dpi=$2
+  scale=$3
 
   subdir="${category}/drawable-${dpi}"
   src="ic_${name}_${colour}_${dp}dp.png"
@@ -20,9 +20,11 @@ function copy_link() {
   ln -sf ${subdir}/${src} ${target}
 }
 
-copy_link mdpi
-copy_link xhdpi @2x
-copy_link xxhdpi @3x
-copy_link xxxhdpi @4x
+for colour in white black ; do
+  copy_link ${colour} mdpi
+  copy_link ${colour} xhdpi @2x
+  copy_link ${colour} xxhdpi @3x
+  copy_link ${colour} xxxhdpi @4x
+done
 
 # end

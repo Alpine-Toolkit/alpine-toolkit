@@ -1,0 +1,14 @@
+copy-icon communication call
+copy-icon communication email
+copy-icon action explore
+copy-icon device gps_fixed
+copy-icon device gps_not_fixed
+copy-icon device gps_off
+copy-icon action help
+copy-icon action info
+copy-icon device location_searching
+copy-icon navigation menu
+copy-icon navigation more_vert
+copy-icon maps my_location
+copy-icon action settings
+copy-icon image wb_sunny
