@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <QtMath>
+#include <QtDebug>
 
 #include "ephemeride.h"
 
@@ -100,7 +101,7 @@ minutes_to_time(double minutes)
 
     return QTime(hour, minute, second);
   } else {
-    // Fixme
+    qWarning() << minutes;
     return QTime();
   }
 }
@@ -304,15 +305,79 @@ compute_solar_noon_utc_minutes(double julian_day, double longitude)
 /**************************************************************************************************/
 
 QTime
-compute_sunrise_set_utc(bool rise, double julian_day, double latitude, double longitude)
+compute_sunrise_utc(double julian_day, double latitude, double longitude)
 {
-  return minutes_to_time(compute_sunrise_set_minutes_utc(rise, julian_day, latitude, longitude));
+  return minutes_to_time(compute_sunrise_set_minutes_utc(true, julian_day, latitude, longitude));
+}
+
+QTime
+compute_sunset_utc(double julian_day, double latitude, double longitude)
+{
+  return minutes_to_time(compute_sunrise_set_minutes_utc(false, julian_day, latitude, longitude));
 }
 
 QTime
 compute_solar_noon_utc(double julian_day, double longitude)
 {
   return minutes_to_time(compute_solar_noon_utc_minutes(julian_day, longitude));
+}
+
+/**************************************************************************************************/
+
+Ephemeride::Ephemeride(QObject *parent)
+  : QObject(parent),
+    m_date(), m_coordinate()
+{}
+
+void
+Ephemeride::set_date(const QDate & date)
+{
+  m_date = date;
+  m_julian_day = compute_julian_day(date);
+  emit dataChanged();
+}
+
+QDate
+Ephemeride::date() const
+{
+  return m_date;
+}
+
+void
+Ephemeride::set_coordinate(const QGeoCoordinate & coordinate)
+{
+  m_coordinate = coordinate;
+  emit dataChanged();
+}
+
+QGeoCoordinate
+Ephemeride::coordinate() const
+{
+  return m_coordinate;
+}
+
+QTime
+Ephemeride::to_local_time(QTime utc_time) const
+{
+  return QDateTime(m_date, utc_time, Qt::UTC).toLocalTime().time();
+}
+
+QTime
+Ephemeride::sunrise() const
+{
+  return to_local_time(compute_sunrise_utc(m_julian_day, m_coordinate.latitude(), m_coordinate.longitude()));
+}
+
+QTime
+Ephemeride::solar_noon() const
+{
+  return to_local_time(compute_solar_noon_utc(m_julian_day, m_coordinate.longitude()));
+}
+
+QTime
+Ephemeride::sunset() const
+{
+  return to_local_time(compute_sunset_utc(m_julian_day, m_coordinate.latitude(), m_coordinate.longitude()));
 }
 
 /***************************************************************************************************

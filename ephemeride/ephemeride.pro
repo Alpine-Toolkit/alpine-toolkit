@@ -6,7 +6,7 @@ TEMPLATE = app
 CONFIG += c++14
 CONFIG += debug
 
-QT += core testlib
+QT += core testlib positioning
 
 SOURCES += \
   ephemeride.cpp \

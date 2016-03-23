@@ -46,6 +46,7 @@ private slots:
   void test_compute_julian_day();
   void test_compute_sunrise_set_data();
   void test_compute_sunrise_set();
+  void test_Ephemeride();
 };
 
 void
@@ -104,8 +105,8 @@ TestEphemeride::test_compute_sunrise_set()
 
   double julian_day = compute_julian_day(date);
 
-  QTime _sunrise = to_local_time(compute_sunrise_set_utc(true, julian_day, latitude, longitude));
-  QTime _sunset = to_local_time(compute_sunrise_set_utc(false, julian_day, latitude, longitude));
+  QTime _sunrise = to_local_time(compute_sunrise_utc(julian_day, latitude, longitude));
+  QTime _sunset = to_local_time(compute_sunset_utc(julian_day, latitude, longitude));
   QTime _noon = to_local_time(compute_solar_noon_utc(julian_day, longitude));
   qInfo() << _sunrise << _noon << _sunset;
   QVERIFY(_sunrise == sunrise);
@@ -114,6 +115,15 @@ TestEphemeride::test_compute_sunrise_set()
 
   // QDateTime sunrise_date(date, _sunrise, Qt::UTC);
   // qInfo() << sunrise_date << sunrise_date.toLocalTime();
+}
+
+void
+TestEphemeride::test_Ephemeride()
+{
+  Ephemeride ephemeride;
+  ephemeride.set_date(QDate(2016, 1, 1));
+  ephemeride.set_coordinate(QGeoCoordinate(48.87, 2.67));
+  qInfo() << ephemeride.sunrise() << ephemeride.solar_noon() << ephemeride.sunset();
 }
 
 /***************************************************************************************************/
