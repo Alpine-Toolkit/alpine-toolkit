@@ -16,6 +16,8 @@ public:
   void set_orientation_lock(bool orientation_lock);
   bool orientation_lock() const;
 
+  Q_INVOKABLE void issue_call(const QString & phone_number);
+
 signals:
   void orientationLockChanged();
 

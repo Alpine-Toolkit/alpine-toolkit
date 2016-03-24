@@ -39,3 +39,11 @@ AndroidActivity::updateOrientationLock()
     QtAndroid::androidActivity().callMethod<void>("unlock_orientation", "()V");
 }
 
+void
+AndroidActivity::issue_call(const QString & phone_number)
+{
+  qInfo() << "issue_call" << phone_number;
+  QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
+  // void issue_call(String phone_number)
+  QtAndroid::androidActivity().callMethod<void>("issue_call", "(Ljava/lang/String;)V", j_phone_number.object<jstring>());
+}

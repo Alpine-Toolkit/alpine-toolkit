@@ -3,6 +3,8 @@
   <qresource prefix="/">
     <file>fonts/Roboto-Medium.ttf</file>
     <file>fonts/Roboto-Regular.ttf</file>
+    <file>icons/explore-black.png</file>
+    <file>icons/explore-black@3x.png</file>
     <file>icons/menu-white.png</file>
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
@@ -10,6 +12,8 @@
     <file>js/gps.js</file>
     <file>main.qml</file>
     <file>pages/Altimeter.qml</file>
+    <file>pages/Emergency.qml</file>
+    <file>pages/Ephemeride.qml</file>
     <file>pages/Gps.qml</file>
     <file>pages/Illuminance.qml</file>
     <file>pages/Inclination.qml</file>

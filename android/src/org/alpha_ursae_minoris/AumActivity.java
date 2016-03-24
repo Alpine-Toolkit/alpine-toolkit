@@ -3,8 +3,10 @@ package org.alpha_ursae_minoris;
 import java.lang.reflect.Method;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -167,5 +169,12 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     if (android_id != null)
       Log.i("AumActivity", "Andoid ID: " + android_id);
+  }
+
+  public void issue_call(String phone_number) {
+    Log.i("AumActivity", "Issue call: " + phone_number);
+    Intent call_intent = new Intent(Intent.ACTION_CALL);
+    call_intent.setData(Uri.parse("tel:" + phone_number));
+    startActivity(call_intent);
   }
 }

@@ -109,6 +109,13 @@ ApplicationWindow {
                     font.pixelSize: 16
                     text: model.title
                     highlighted: ListView.isCurrentItem
+                    // indicator: Image {
+                    //     x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
+                    //     y: control.topPadding + (control.availableHeight - height) / 2
+
+                    //     visible: control.checked
+                    //     source: control.checkable ? "qrc:/qt-project.org/imports/Qt/labs/controls/images/check.png" : ""
+                    // }
                     onClicked: {
                         if (list_view.currentIndex != index) {
                             list_view.currentIndex = index
@@ -123,10 +130,42 @@ ApplicationWindow {
                 }
 
                 model: ListModel {
-                    ListElement { title: qsTr("Altimeter"); source: "qrc:/pages/Altimeter.qml"; lock_orientation: false }
-                    ListElement { title: qsTr("Inclination"); source: "qrc:/pages/Inclination.qml"; lock_orientation: true  }
-                    ListElement { title: qsTr("Illuminance"); source: "qrc:/pages/Illuminance.qml"; lock_orientation: false  }
-                    ListElement { title: qsTr("GPS"); source: "qrc:/pages/Gps.qml"; lock_orientation: true  }
+                    ListElement {
+                        title: qsTr("Altimeter")
+                        icon: ""
+                        source: "qrc:/pages/Altimeter.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("Ephemeride")
+                        icon: ""
+                        source: "qrc:/pages/Ephemeride.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("Emergency")
+                        icon: ""
+                        source: "qrc:/pages/Emergency.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("Inclination")
+                        icon: ""
+                        source: "qrc:/pages/Inclination.qml"
+                        lock_orientation: true
+                    }
+                    ListElement {
+                        title: qsTr("Illuminance")
+                        icon: ""
+                        source: "qrc:/pages/Illuminance.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("GPS")
+                        icon: "qrc:/icons/explore-black.png"
+                        source: "qrc:/pages/Gps.qml"
+                        lock_orientation: true
+                    }
                 }
 
                 ScrollIndicator.vertical: ScrollIndicator {}

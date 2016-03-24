@@ -26,19 +26,21 @@
 
 /**************************************************************************************************/
 
+#include <QFile>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QTranslator>
-#include <QtQml>
-
 #include <QtDebug>
+#include <QtQml>
 
 /**************************************************************************************************/
 
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 #include "satellite_model.h"
+#include "ephemeride/ephemeride.h"
 
 #ifdef ANDROID
 #include "android_activity.h"
@@ -50,7 +52,8 @@ int
 main(int argc, char *argv[])
 {
   QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "α Ursae Minoris"));
-  QGuiApplication::setOrganizationName("QtProject");
+  QGuiApplication::setApplicationName("α Ursae Minoris");
+  QGuiApplication::setOrganizationName("FabriceSalvaire"); // overridden ???
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   QGuiApplication application(argc, argv);
@@ -80,6 +83,7 @@ main(int argc, char *argv[])
   const char * package = "Local";
   int major = 1;
   int minor = 0;
+
   // qmlRegisterSingletonType  <QmlSensorGlobal             >(package, major, minor, "QmlSensors", global_object_50);
   // qmlRegisterUncreatableType<QmlSensorRange              >(package, major, minor, "Range",                QLatin1String("Cannot create Range"));
   // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
@@ -88,11 +92,13 @@ main(int argc, char *argv[])
   qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
   qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
 
-  qmlRegisterType<SatelliteModel>("Local", 1, 0, "SatelliteModel");
+  qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
 
+  // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
   QQmlApplicationEngine engine;
+
 #ifdef ANDROID
   int on_android = 1;
   AndroidActivity * android_activity = new AndroidActivity(); // parent ?
@@ -101,10 +107,24 @@ main(int argc, char *argv[])
   int on_android = 0;
 #endif
   engine.rootContext()->setContextProperty(QLatin1String("on_android"), on_android);
+
+  Ephemeride * ephemeride = new Ephemeride(); // parent ?
+  engine.rootContext()->setContextProperty(QLatin1String("ephemeride"), ephemeride);
+
   engine.load(QUrl("qrc:///main.qml"));
   if (engine.rootObjects().isEmpty())
     return -1;
 
+  QString directory = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+  qInfo() << "DataLocation" << directory;
+  // DataLocation = /data/data/org.alpha_ursae_minoris
+  // GenericDataLocation = <USER> = /storage/emulated/0" // root
+  // /storage/emulated/0/Android/data/org.xxx/files Alarms Download Notifications cache
+  QFile file(directory + "/out.txt");
+  if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    qWarning() << "couldn't write to file";
+  QTextStream out(&file);
+  out << "The magic number is: " << 49 << "\n";
 
   return application.exec();
 }

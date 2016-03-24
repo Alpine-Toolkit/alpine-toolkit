@@ -334,6 +334,7 @@ Ephemeride::set_date(const QDate & date)
 {
   m_date = date;
   m_julian_day = compute_julian_day(date);
+  qInfo() << "Ephemeride::set_date" << m_date << m_julian_day;
   emit dataChanged();
 }
 
@@ -347,6 +348,7 @@ void
 Ephemeride::set_coordinate(const QGeoCoordinate & coordinate)
 {
   m_coordinate = coordinate;
+  qInfo() << "Ephemeride::set_coordinate" << m_coordinate;
   emit dataChanged();
 }
 
@@ -359,7 +361,9 @@ Ephemeride::coordinate() const
 QTime
 Ephemeride::to_local_time(QTime utc_time) const
 {
-  return QDateTime(m_date, utc_time, Qt::UTC).toLocalTime().time();
+  QTime local_time = QDateTime(m_date, utc_time, Qt::UTC).toLocalTime().time();
+  qInfo() << "Ephemeride::to_local_time" << utc_time << local_time;
+  return local_time;
 }
 
 QTime
