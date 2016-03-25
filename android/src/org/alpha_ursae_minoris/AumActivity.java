@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -25,16 +27,19 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     m_instance = this;
   }
 
+  private PowerManager.WakeLock m_wave_lock = null;
+
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
     Log.i("AumActivity", ">>>>>>>>>> AumActivity.onCreate <<<<<<<<<<");
 
+    // Fixme: hardcoded
     set_status_bar_background_color(Color.parseColor("#3949ab"));
 
     super.onCreate(savedInstanceState);
 
-    get_display_metrics();
+    // get_display_metrics();
     // get_device_id();
   }
 
@@ -108,6 +113,21 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
   }
 
+  public void request_sensor_orientation() {
+    Log.i("AumActivity", "request_sensor_orientation");
+    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+  }
+
+  public void request_portrait_orientation() {
+    Log.i("AumActivity", "request_portrait_orientation");
+    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+  }
+
+  public void request_landscape_orientation() {
+    Log.i("AumActivity", "request_landscape_orientation");
+    this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+  }
+
   public void get_device_id() {
     // cf. http://developer.samsung.com/technical-doc/view.do?v=T000000103
 
@@ -172,9 +192,53 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   }
 
   public void issue_call(String phone_number) {
+    // Note: this Intent cannot be used to call emergency numbers.
+    // Applications can dial emergency numbers using ACTION_DIAL, however.
     Log.i("AumActivity", "Issue call: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_CALL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
     startActivity(call_intent);
+  }
+
+  public void issue_dial(String phone_number) {
+    Log.i("AumActivity", "Issue dial: " + phone_number);
+    Intent call_intent = new Intent(Intent.ACTION_DIAL);
+    call_intent.setData(Uri.parse("tel:" + phone_number));
+    startActivity(call_intent);
+  }
+
+  public void acquire_full_wake_lock() {
+    // Keep screen bright
+    // http://developer.android.com/reference/android/os/PowerManager.html
+    PowerManager power_manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+    m_wave_lock = power_manager.newWakeLock(PowerManager.FULL_WAKE_LOCK
+					    | PowerManager.ACQUIRE_CAUSES_WAKEUP
+					    | PowerManager.ON_AFTER_RELEASE,
+					    "AumActivity full wake lock");
+    m_wave_lock.acquire();
+  };
+
+  public void release_full_wake_lock() {
+    m_wave_lock.release();
+    m_wave_lock = null;
+  };
+
+  /* Checks if external storage is available for read and write */
+  public boolean isExternalStorageWritable() {
+    String state = Environment.getExternalStorageState();
+    if (Environment.MEDIA_MOUNTED.equals(state)) {
+      return true;
+    }
+    return false;
+  }
+
+  /* Checks if external storage is available to at least read */
+  public boolean isExternalStorageReadable() {
+    String state = Environment.getExternalStorageState();
+    if (Environment.MEDIA_MOUNTED.equals(state) ||
+        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+      return true;
+    }
+    return false;
   }
 }

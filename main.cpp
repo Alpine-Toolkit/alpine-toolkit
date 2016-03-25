@@ -48,6 +48,8 @@
 
 /**************************************************************************************************/
 
+/**************************************************************************************************/
+
 int
 main(int argc, char *argv[])
 {
@@ -115,6 +117,7 @@ main(int argc, char *argv[])
   if (engine.rootObjects().isEmpty())
     return -1;
 
+  /*
   QString directory = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
   qInfo() << "DataLocation" << directory;
   // DataLocation = /data/data/org.alpha_ursae_minoris
@@ -125,7 +128,10 @@ main(int argc, char *argv[])
     qWarning() << "couldn't write to file";
   QTextStream out(&file);
   out << "The magic number is: " << 49 << "\n";
+  */
 
+
+  
   return application.exec();
 }
 

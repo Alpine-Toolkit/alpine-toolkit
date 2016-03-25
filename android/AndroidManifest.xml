@@ -29,9 +29,7 @@
       <!--  Messages maps -->
 
       <!-- Splash screen -->
-      <!--
-          <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/>
-      -->
+      <!-- <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/logo"/> -->
       <!-- Splash screen -->
 
       <!-- Background running -->
@@ -53,7 +51,7 @@
        Remove the comment if you do not require these default permissions. -->
   <!-- %%INSERT_PERMISSIONS -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- Protection level: dangerous -->
-  <uses-permission android:name="android.permission.CALL_PHONE"/>
+  <!-- <uses-permission android:name="android.permission.CALL_PHONE"/> -->
   <!-- <uses-permission android:name="android.permission.BATTERY_STATS"/> -->
 
   <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.

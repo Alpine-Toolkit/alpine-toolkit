@@ -78,7 +78,7 @@ Pane {
                     onClicked: {
                         console.info("clicked on emergency call", on_android, android_activity)
                         if (on_android) {
-                            android_activity.issue_call("000000"); // double confirmation ?
+                            android_activity.issue_dial("000000"); // double confirmation ?
                         }
                     }
                 }
