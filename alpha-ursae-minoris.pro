@@ -6,12 +6,15 @@ CONFIG += debug console qml_debug
 
 QT += qml quick sensors positioning
 
+INCLUDEPATH += src
+
 HEADERS += \
   src/ephemeride/ephemeride.h \
   src/sensors/qmlsensorrange.h \
   src/sensors/qmlsensor.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
-  src/satellite_model.h
+  src/satellite_model.h \
+  src/refuge/refuge.h
 
 SOURCES += \
   main.cpp \
@@ -19,7 +22,8 @@ SOURCES += \
   src/sensors/qmlsensorrange.cpp \
   src/sensors/qmlsensor.cpp \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
-  src/satellite_model.cpp
+  src/satellite_model.cpp \
+  src/refuge/refuge.cpp
 
 lupdate_only{
 SOURCES += \
@@ -43,10 +47,10 @@ DEFINES += ANDROID
 QT += androidextras
 
 HEADERS += \
-  android_activity.h
+  src/android_activity.h
 
 SOURCES += \
-  android_activity.cpp
+  src/android_activity.cpp
 
 DISTFILES += \
     android/AndroidManifest.xml \

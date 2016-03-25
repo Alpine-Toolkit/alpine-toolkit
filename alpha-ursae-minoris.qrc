@@ -1,8 +1,10 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource prefix="/">
-    <file>fonts/Roboto-Medium.ttf</file>
-    <file>fonts/Roboto-Regular.ttf</file>
+    <!-- <file>fonts/Roboto-Medium.ttf</file> -->
+    <!-- <file>fonts/Roboto-Regular.ttf</file> -->
+    <file>icons/arrow-back-white.png</file>
+    <file>icons/arrow-back-white@3x.png</file>
     <file>icons/explore-black.png</file>
     <file>icons/explore-black@3x.png</file>
     <file>icons/menu-white.png</file>
@@ -17,7 +19,10 @@
     <file>pages/Gps.qml</file>
     <file>pages/Illuminance.qml</file>
     <file>pages/Inclination.qml</file>
+    <file>pages/RefugeDirectory.qml</file>
+    <file>pages/Refuge.qml</file>
     <file>qtlabscontrols.conf</file>
     <file>translations/alpha-ursae-minoris.fr_FR.qm</file>
+    <file>ffcam-refuges.json</file>
   </qresource>
 </RCC>

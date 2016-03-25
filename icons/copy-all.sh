@@ -7,6 +7,7 @@ copy-icon device gps_off
 copy-icon action help
 copy-icon action info
 copy-icon device location_searching
+copy-icon navigation arrow_back
 copy-icon navigation menu
 copy-icon navigation more_vert
 copy-icon maps my_location

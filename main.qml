@@ -24,8 +24,8 @@ ApplicationWindow {
     // }
 
     // Done by Material theme
-    FontLoader { id: roboto_regular; source: "qrc:/fonts/Roboto-Regular.ttf" }
-    font.family: roboto_regular.name
+    // FontLoader { id: roboto_regular; source: "qrc:/fonts/Roboto-Regular.ttf" }
+    // font.family: roboto_regular.name
 
     Component.onCompleted: {
         // S5: 640 360 5535 3240 5.551839464882943 3
@@ -42,6 +42,10 @@ ApplicationWindow {
     header: ToolBar {
         id: app_bar
 
+        states: [
+        State { name: "BACK" }
+        ]
+
         RowLayout {
             spacing: 20
             anchors.fill: parent
@@ -53,6 +57,23 @@ ApplicationWindow {
                     source: "qrc:/icons/menu-white.png"
                 }
                 onClicked: drawer.open()
+            }
+
+            ToolButton {
+                id: back_icon
+                visible: false
+                label: Image {
+                    anchors.centerIn: parent
+                    source: "qrc:/icons/arrow-back-white.png"
+                }
+                onClicked: {
+                    if (app_bar.state == "BACK") {
+                        app_bar.state == ""
+                        back_icon.visible = false
+                        nav_icon.visible = true
+                    }
+                    stack_view.pop(StackView.Transition)
+                }
             }
 
             Label {
@@ -165,6 +186,12 @@ ApplicationWindow {
                         icon: "qrc:/icons/explore-black.png"
                         source: "qrc:/pages/Gps.qml"
                         lock_orientation: true
+                    }
+                    ListElement {
+                        title: qsTr("Refuges")
+                        icon: ""
+                        source: "qrc:/pages/RefugeDirectory.qml"
+                        lock_orientation: false
                     }
                 }
 

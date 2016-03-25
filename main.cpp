@@ -38,12 +38,13 @@
 
 /**************************************************************************************************/
 
-#include "sensors/qml_barimeter_altimeter_sensor.h"
-#include "satellite_model.h"
 #include "ephemeride/ephemeride.h"
+#include "refuge/refuge.h"
+#include "satellite_model.h"
+#include "sensors/qml_barimeter_altimeter_sensor.h"
 
 #ifdef ANDROID
-#include "android_activity.h"
+#include "src/android_activity.h"
 #endif
 
 /**************************************************************************************************/
@@ -100,20 +101,31 @@ main(int argc, char *argv[])
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
   QQmlApplicationEngine engine;
+  QQmlContext * root_context = engine.rootContext();
 
 #ifdef ANDROID
   int on_android = 1;
   AndroidActivity * android_activity = new AndroidActivity(); // parent ?
-  engine.rootContext()->setContextProperty(QLatin1String("android_activity"), android_activity);
+  root_context->setContextProperty(QLatin1String("android_activity"), android_activity); // QLatin1String() ???
 #else
   int on_android = 0;
 #endif
-  engine.rootContext()->setContextProperty(QLatin1String("on_android"), on_android);
+  root_context->setContextProperty(QLatin1String("on_android"), on_android);
 
   Ephemeride * ephemeride = new Ephemeride(); // parent ?
-  engine.rootContext()->setContextProperty(QLatin1String("ephemeride"), ephemeride);
+  root_context->setContextProperty(QLatin1String("ephemeride"), ephemeride);
 
-  engine.load(QUrl("qrc:///main.qml"));
+  QList<Refuge *> refuges;
+  load_refuge_json(":/ffcam-refuges.json", refuges);
+  // for (const Refuge * refuge : refuges) {
+  //   qInfo() << refuge->name();
+  // }
+  QList<QObject *> refuges_;
+  for (Refuge * refuge : refuges)
+    refuges_.append((QObject *) refuge);
+  root_context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+
+  engine.load(QUrl("qrc:/main.qml"));
   if (engine.rootObjects().isEmpty())
     return -1;
 
@@ -130,8 +142,6 @@ main(int argc, char *argv[])
   out << "The magic number is: " << 49 << "\n";
   */
 
-
-  
   return application.exec();
 }
 
