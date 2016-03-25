@@ -7,19 +7,19 @@ CONFIG += debug console qml_debug
 QT += qml quick sensors positioning
 
 HEADERS += \
-  ephemeride/ephemeride.h \
-  sensors/qmlsensorrange.h \
-  sensors/qmlsensor.h \
-  sensors/qml_barimeter_altimeter_sensor.h \
-  satellite_model.h
+  src/ephemeride/ephemeride.h \
+  src/sensors/qmlsensorrange.h \
+  src/sensors/qmlsensor.h \
+  src/sensors/qml_barimeter_altimeter_sensor.h \
+  src/satellite_model.h
 
 SOURCES += \
   main.cpp \
-  ephemeride/ephemeride.cpp \
-  sensors/qmlsensorrange.cpp \
-  sensors/qmlsensor.cpp \
-  sensors/qml_barimeter_altimeter_sensor.cpp \
-  satellite_model.cpp
+  src/ephemeride/ephemeride.cpp \
+  src/sensors/qmlsensorrange.cpp \
+  src/sensors/qmlsensor.cpp \
+  src/sensors/qml_barimeter_altimeter_sensor.cpp \
+  src/satellite_model.cpp
 
 lupdate_only{
 SOURCES += \
