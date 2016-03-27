@@ -3,6 +3,9 @@
   <qresource prefix="/">
     <!-- <file>fonts/Roboto-Medium.ttf</file> -->
     <!-- <file>fonts/Roboto-Regular.ttf</file> -->
+    <file>application-icons/icon.svg</file>
+    <file>application-icons/icon-512.png</file>
+    <file>data/ffcam-refuges.json</file>
     <file>icons/arrow-back-white.png</file>
     <file>icons/arrow-back-white@3x.png</file>
     <file>icons/explore-black.png</file>
@@ -12,17 +15,16 @@
     <file>icons/more-vert-white.png</file>
     <file>icons/more-vert-white@3x.png</file>
     <file>js/gps.js</file>
-    <file>main.qml</file>
     <file>pages/Altimeter.qml</file>
     <file>pages/Emergency.qml</file>
     <file>pages/Ephemeride.qml</file>
     <file>pages/Gps.qml</file>
     <file>pages/Illuminance.qml</file>
     <file>pages/Inclination.qml</file>
-    <file>pages/RefugeDirectory.qml</file>
     <file>pages/Refuge.qml</file>
+    <file>pages/RefugeDirectory.qml</file>
+    <file>pages/main.qml</file>
     <file>qtlabscontrols.conf</file>
     <file>translations/alpha-ursae-minoris.fr_FR.qm</file>
-    <file>ffcam-refuges.json</file>
   </qresource>
 </RCC>

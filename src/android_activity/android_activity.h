@@ -28,65 +28,64 @@
 
 /**************************************************************************************************/
 
-#ifndef __EPHEMERIDE_H__
-#define __EPHEMERIDE_H__
+#ifndef ANDROID_ACTIVITY_H
+#define ANDROID_ACTIVITY_H
 
-/**************************************************************************************************/
-
-#include <QDate>
-#include <QGeoCoordinate>
 #include <QObject>
-#include <QTime>
 
 /**************************************************************************************************/
 
-double compute_julian_day(const QDate & date);
-
-/**************************************************************************************************/
-
-QTime compute_sunrise_utc(double julian_day, double latitude, double longitude);
-QTime compute_sunset_utc(double julian_day, double latitude, double longitude);
-QTime compute_solar_noon_utc(double julian_day, double longitude);
-
-/**************************************************************************************************/
-
-class Ephemeride : public QObject
+class AndroidActivity : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QDate date READ date WRITE set_date NOTIFY dataChanged)
-  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY dataChanged)
-  Q_PROPERTY(QTime sunrise READ sunrise)
-  Q_PROPERTY(QTime solar_noon READ solar_noon)
-  Q_PROPERTY(QTime sunset READ sunset)
+  Q_PROPERTY(bool orientation_lock READ orientation_lock WRITE set_orientation_lock NOTIFY orientation_lockChanged)
+  Q_PROPERTY(ScreenOrientation orientation READ orientation WRITE set_orientation NOTIFY orientationChanged)
+  Q_PROPERTY(bool full_wave_lock READ full_wave_lock WRITE set_full_wave_lock NOTIFY full_wave_lockChanged)
 
 public:
-  explicit Ephemeride(QObject *parent = nullptr);
+  explicit AndroidActivity(QObject *parent = 0);
 
-  QDate date() const;
-  void set_date(const QDate & date);
+  enum ScreenOrientation {
+    Unspecified = Qt::UserRole + 1,
+    Sensor,
+    Portrait,
+    Landscape,
+  };
+  typedef ScreenOrientation ScreenOrientation;
+  Q_ENUMS(ScreenOrientation)
 
-  QGeoCoordinate coordinate() const;
-  void set_coordinate(const QGeoCoordinate & coordinate);
+  void set_orientation_lock(bool orientation_lock);
+  bool orientation_lock() const;
 
-  QTime sunrise() const;
-  QTime solar_noon() const;
-  QTime sunset() const;
+  void set_orientation(ScreenOrientation orientation);
+  ScreenOrientation orientation() const;
+
+  void set_full_wave_lock(bool full_wave_lock);
+  bool full_wave_lock() const;
+
+  Q_INVOKABLE void issue_call(const QString & phone_number);
+  Q_INVOKABLE void issue_dial(const QString & phone_number);
+
 
 signals:
-  void dataChanged();
+  void orientation_lockChanged();
+  void orientationChanged();
+  void full_wave_lockChanged();
+
+private slots:
+  void update_orientation_lock();
+  void update_orientation();
+  void update_full_wave_lock();
 
 private:
-  QTime to_local_time(QTime utc_time) const;
-
-private:
-  QDate m_date;
-  QGeoCoordinate m_coordinate;
-  double m_julian_day;
+  bool m_orientation_lock;
+  ScreenOrientation m_orientation;
+  bool m_full_wave_lock;
 };
 
 /**************************************************************************************************/
 
-#endif /* __EPHEMERIDE_H__ */
+#endif // ANDROID_ACTIVITY_H
 
 /***************************************************************************************************
  *

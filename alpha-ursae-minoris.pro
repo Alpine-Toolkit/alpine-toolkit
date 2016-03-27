@@ -1,45 +1,54 @@
+####################################################################################################
+
 TEMPLATE = app
 TARGET = alpha-ursae-minoris
+
+####################################################################################################
 
 CONFIG += c++14
 CONFIG += debug console qml_debug
 
-QT += qml quick sensors positioning
+QT += qml quick
+QT += sensors
+QT += positioning
+QT += svg widgets gui # to support SVG
 
 INCLUDEPATH += src
 
 HEADERS += \
   src/ephemeride/ephemeride.h \
-  src/sensors/qmlsensorrange.h \
-  src/sensors/qmlsensor.h \
+  src/refuge/refuge.h \
+  src/satellite_model/satellite_model.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
-  src/satellite_model.h \
-  src/refuge/refuge.h
+  src/sensors/qmlsensor.h \
+  src/sensors/qmlsensorrange.h
 
 SOURCES += \
-  main.cpp \
   src/ephemeride/ephemeride.cpp \
-  src/sensors/qmlsensorrange.cpp \
-  src/sensors/qmlsensor.cpp \
+  src/main.cpp \
+  src/refuge/refuge.cpp \
+  src/satellite_model/satellite_model.cpp \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
-  src/satellite_model.cpp \
-  src/refuge/refuge.cpp
+  src/sensors/qmlsensor.cpp \
+  src/sensors/qmlsensorrange.cpp
 
 lupdate_only{
 SOURCES += \
-  main.qml \
   pages/*.qml
 }
 
-OTHER_FILES += \
-  main.qml \
-  pages/*.qml \
-  android/AndroidManifest.xml
+# OTHER_FILES += \
+#   pages/*.qml
 
 RESOURCES += alpha-ursae-minoris.qrc
 
 TRANSLATIONS = translations/alpha-ursae-minoris.fr_FR.ts
 # \ alpha-ursae-minoris-en.ts
+
+####################################################################################################
+#
+# Android
+#
 
 android {
 DEFINES += ANDROID
@@ -47,10 +56,13 @@ DEFINES += ANDROID
 QT += androidextras
 
 HEADERS += \
-  src/android_activity.h
+  src/android_activity/android_activity.h
 
 SOURCES += \
-  src/android_activity.cpp
+  src/android_activity/android_activity.cpp
+
+# OTHER_FILES += \
+#   android/AndroidManifest.xml
 
 DISTFILES += \
     android/AndroidManifest.xml \
@@ -63,3 +75,9 @@ DISTFILES += \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 }
+
+####################################################################################################
+#
+# End
+#
+####################################################################################################

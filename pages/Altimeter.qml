@@ -14,6 +14,7 @@ Pane {
     id: altimeter_pane
 
     // PressureSensor
+    // Fixme: If not available ???
     BarimeterAltimeterSensor {
         id: pressure_sensor
         // id: barimeter_altimeter_sensor

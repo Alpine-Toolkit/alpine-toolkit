@@ -46,8 +46,9 @@ Pane {
             }
         }
 
-        section.property: "first_letter" // short_name
+        // section.property: "short_name"
         // section.criteria: ViewSection.FirstCharacter
+        section.property: "first_letter"
         section.criteria: ViewSection.FullString
         section.delegate: section_heading
     }
