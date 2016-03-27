@@ -41,6 +41,7 @@ class AndroidActivity : public QObject
   Q_PROPERTY(bool orientation_lock READ orientation_lock WRITE set_orientation_lock NOTIFY orientation_lockChanged)
   Q_PROPERTY(ScreenOrientation orientation READ orientation WRITE set_orientation NOTIFY orientationChanged)
   Q_PROPERTY(bool full_wave_lock READ full_wave_lock WRITE set_full_wave_lock NOTIFY full_wave_lockChanged)
+  Q_PROPERTY(bool torch READ torch WRITE set_torch NOTIFY torchChanged)
 
 public:
   explicit AndroidActivity(QObject *parent = 0);
@@ -63,6 +64,9 @@ public:
   void set_full_wave_lock(bool full_wave_lock);
   bool full_wave_lock() const;
 
+  void set_torch(bool enabled);
+  bool torch() const;
+
   Q_INVOKABLE void issue_call(const QString & phone_number);
   Q_INVOKABLE void issue_dial(const QString & phone_number);
 
@@ -71,16 +75,19 @@ signals:
   void orientation_lockChanged();
   void orientationChanged();
   void full_wave_lockChanged();
+  void torchChanged();
 
 private slots:
   void update_orientation_lock();
   void update_orientation();
   void update_full_wave_lock();
+  void update_torch();
 
 private:
   bool m_orientation_lock;
   ScreenOrientation m_orientation;
   bool m_full_wave_lock;
+  bool m_torch_enabled;
 };
 
 /**************************************************************************************************/

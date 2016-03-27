@@ -5,7 +5,11 @@ import java.lang.reflect.Method;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +25,14 @@ import android.view.WindowManager;
 public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
   private static AumActivity m_instance;
+  private PowerManager.WakeLock m_wave_lock = null;
+  private Camera m_camera = null;
+  private boolean m_torch_enabled = false;
 
   public AumActivity()
   {
     m_instance = this;
   }
-
-  private PowerManager.WakeLock m_wave_lock = null;
 
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -41,6 +46,17 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
     // get_display_metrics();
     // get_device_id();
+    // set_torch_mode(true);
+  }
+
+  @Override
+  protected void onDestroy() {
+    if (m_camera != null) {
+      m_camera.stopPreview();
+      m_camera.release();
+      m_camera = null;
+    }
+    super.onDestroy();
   }
 
   public void get_display_metrics() {
@@ -240,5 +256,46 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
       return true;
     }
     return false;
+  }
+
+  public void set_torch_mode(boolean enabled) {
+    Log.i("AumActivity", "set_torch_mode: " + enabled);
+
+    if (m_torch_enabled == enabled)
+      return;
+
+    if (! m_torch_enabled) {
+      PackageManager package_manager = getPackageManager();
+      boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+      Log.i("AumActivity", "has_flash: " + has_flash);
+
+      if (has_flash) {
+	m_camera = Camera.open();
+	Camera.Parameters parameters = m_camera.getParameters();
+	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+	m_camera.setParameters(parameters);
+	m_camera.startPreview();
+	m_torch_enabled = true;
+      }
+    } else {
+      Camera.Parameters parameters = m_camera.getParameters();
+      parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+      m_camera.setParameters(parameters);
+      m_camera.stopPreview();
+      m_camera.release();
+      m_camera = null;
+      m_torch_enabled = false;
+    }
+
+    // CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+    // try {
+    //   for (String camera_id : manager.getCameraIdList()) {
+    // 	Log.i("AumActivity", "camera_id: " + camera_id);
+    // 	// CameraCharacteristics camera_characteristics = manager.getCameraCharacteristics (camera_id);
+    // 	// if (! camera_characteristics.get("FLASH_STATE_UNAVAILABLE"))
+    // 	// 	manager.setTorchMode(camera_id, enabled);
+    //   }
+    // } catch (Exception e) { // CameraAccessException
+    // }
   }
 }

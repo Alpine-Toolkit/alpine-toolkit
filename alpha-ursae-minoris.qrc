@@ -23,6 +23,8 @@
     <file>pages/Inclination.qml</file>
     <file>pages/Refuge.qml</file>
     <file>pages/RefugeDirectory.qml</file>
+    <file>pages/Torch.qml</file>
+    <file>pages/UiTest.qml</file>
     <file>pages/main.qml</file>
     <file>qtlabscontrols.conf</file>
     <file>translations/alpha-ursae-minoris.fr_FR.qm</file>

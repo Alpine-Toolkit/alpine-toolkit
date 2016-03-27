@@ -193,6 +193,18 @@ ApplicationWindow {
                         source: "qrc:/pages/RefugeDirectory.qml"
                         lock_orientation: false
                     }
+                    ListElement {
+                        title: qsTr("Torch")
+                        icon: ""
+                        source: "qrc:/pages/Torch.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("UI Test")
+                        icon: ""
+                        source: "qrc:/pages/UiTest.qml"
+                        lock_orientation: false
+                    }
                 }
 
                 ScrollIndicator.vertical: ScrollIndicator {}

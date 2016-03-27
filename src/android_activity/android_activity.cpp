@@ -38,11 +38,13 @@ AndroidActivity::AndroidActivity(QObject *parent)
   : QObject(parent),
     m_orientation_lock(false),
     m_orientation(Unspecified),
-    m_full_wave_lock(false)
+    m_full_wave_lock(false),
+    m_torch_enabled(false)
 {
   connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
   connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
   connect(this, SIGNAL(full_wave_lockChanged()), this, SLOT(update_full_wave_lock()));
+  connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
 }
 
 /**************************************************************************************************/
@@ -135,6 +137,32 @@ AndroidActivity::update_full_wave_lock()
     QtAndroid::androidActivity().callMethod<void>("acquire_lock_full_wave", "()V");
   else
     QtAndroid::androidActivity().callMethod<void>("release_full_wave", "()V");
+}
+
+/**************************************************************************************************/
+
+void
+AndroidActivity::set_torch(bool enabled)
+{
+  qInfo() << "set_torch" << enabled;
+
+  if (m_torch_enabled == enabled)
+    return;
+
+  m_torch_enabled = enabled;
+  emit torchChanged();
+}
+
+bool
+AndroidActivity::torch() const
+{
+  return m_torch_enabled;
+}
+
+void
+AndroidActivity::update_torch()
+{
+  QtAndroid::androidActivity().callMethod<void>("set_torch_mode", "(Z)V", m_torch_enabled);
 }
 
 /**************************************************************************************************/
