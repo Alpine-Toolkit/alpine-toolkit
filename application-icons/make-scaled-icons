@@ -1,0 +1,17 @@
+#! /bin/bash
+
+for i in 32 64 48 96 128 256 ; do
+    convert icon-512.png -resize $ix$i icon-$i.png
+done
+
+cp icon-256.png ../android/res/drawable-hdpi/icon.png
+cp icon-256.png ../android/res/drawable-hdpi/logo.png
+cp icon-128.png ../android/res/drawable-mdpi/icon.png
+cp icon-128.png ../android/res/drawable-mdpi/logo.png
+cp icon-64.png ../android/res/drawable-ldpi/icon.png
+cp icon-64.png ../android/res/drawable-ldpi/logo.png
+
+mkdir -p ../android/assets/application-icons
+cp icon.svg ../android/assets/application-icons/icon.svg
+
+# End
