@@ -1,3 +1,5 @@
+/**************************************************************************************************/
+
 package org.alpha_ursae_minoris;
 
 import java.lang.reflect.Method;
@@ -22,11 +24,25 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+/**************************************************************************************************/
+
+// class LampSignalRunnable implements Runnable {
+//   @Override
+//   public void run() {
+//     android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+//   }
+// }
+
+/**************************************************************************************************/
+
 public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
   private static AumActivity m_instance;
+
   private PowerManager.WakeLock m_wave_lock = null;
+
   private Camera m_camera = null;
+  private Camera.Parameters m_camera_parameters = null;
   private boolean m_torch_enabled = false;
 
   public AumActivity()
@@ -51,11 +67,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
   @Override
   protected void onDestroy() {
-    if (m_camera != null) {
-      m_camera.stopPreview();
-      m_camera.release();
-      m_camera = null;
-    }
+    release_camera();
     super.onDestroy();
   }
 
@@ -258,33 +270,45 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     return false;
   }
 
-  public void set_torch_mode(boolean enabled) {
-    Log.i("AumActivity", "set_torch_mode: " + enabled);
+  private boolean has_flash() {
+    PackageManager package_manager = getPackageManager();
+    boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+    Log.i("AumActivity", "has_flash: " + has_flash);
+    return has_flash;
+  }
 
-    if (m_torch_enabled == enabled)
-      return;
-
-    if (! m_torch_enabled) {
-      PackageManager package_manager = getPackageManager();
-      boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-      Log.i("AumActivity", "has_flash: " + has_flash);
-
-      if (has_flash) {
+  private void open_camera() {
+    if (m_camera == null) {
+      try {
+	// Open back-facing camera on a device with more than one camera
 	m_camera = Camera.open();
-	Camera.Parameters parameters = m_camera.getParameters();
-	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-	m_camera.setParameters(parameters);
-	m_camera.startPreview();
-	m_torch_enabled = true;
+	m_camera_parameters = m_camera.getParameters();
+	catch (Exception e) {
+	  // Camera is not available (in use or does not exist)
+	  // Fixme:
+	}
       }
-    } else {
-      Camera.Parameters parameters = m_camera.getParameters();
-      parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-      m_camera.setParameters(parameters);
+    }
+  }
+
+  private void release_camera() {
+    if (m_camera != null) {
       m_camera.stopPreview();
       m_camera.release();
       m_camera = null;
-      m_torch_enabled = false;
+    }
+  }
+
+  private void _set_torch_mode(boolean enabled) {
+    if (m_camera != null) {
+      String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+      m_camera_parameters.setFlashMode(flash_mode);
+      m_camera.setParameters(m_camera_parameters);
+      if (enabled)
+	m_camera.startPreview();
+      else
+	m_camera.stopPreview();
+      m_torch_enabled = enabled;
     }
 
     // CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -298,4 +322,61 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     // } catch (Exception e) { // CameraAccessException
     // }
   }
+
+  private void _enable_torch() {
+    _set_torch_mode(true);
+  }
+
+  private void _disable_torch() {
+    _set_torch_mode(false);
+  }
+
+  public void set_torch_mode(boolean enabled) {
+    Log.i("AumActivity", "set_torch_mode: " + enabled);
+    if (m_torch_enabled != enabled) {
+      if (enabled) {
+	if (has_flash()) {
+	  open_camera();
+	  _enable_torch();
+	}
+      } else {
+	_disable_torch();
+	release_camera();
+      }
+    }
+  }
+
+  public void perform_lamp_signal(String encoded_message, int rate_ms = 250) {
+    if (has_flash()) {
+      open_camera();
+
+      // Fixme: camera vs thread ???
+      // Fixme: stop thread
+      new Thread(new Runnable() {
+	  @Override
+	  public void run() {
+	    for (char bit : encoded_message.toCharArray()) {
+	      if (bit == '1')
+		_enable_torch();
+	      else
+		_disable_torch();
+	      try {
+		Thread.sleep(rate); // 1/4 s = 250 ms
+	      } catch (InterruptedException exception) {
+		// Fixme: disable torch ???
+		exception.printStackTrace();
+	      }
+	    }
+	  }
+	}).start();
+
+      release_camera();
+    }
+  }
 }
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/
