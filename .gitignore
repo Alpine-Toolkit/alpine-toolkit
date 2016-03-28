@@ -1,4 +1,6 @@
 *~
+*.o
+*.moc
 .directory
 translations/alpha-ursae-minoris.fr_FR.qm
 alpha-ursae-minoris.pro.user

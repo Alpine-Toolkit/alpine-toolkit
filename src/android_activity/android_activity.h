@@ -33,6 +33,8 @@
 
 #include <QObject>
 
+#include "international_morse_code_engine/international_morse_code_engine.h"
+
 /**************************************************************************************************/
 
 class AndroidActivity : public QObject
@@ -45,6 +47,7 @@ class AndroidActivity : public QObject
 
 public:
   explicit AndroidActivity(QObject *parent = 0);
+  ~AndroidActivity();
 
   enum ScreenOrientation {
     Unspecified = Qt::UserRole + 1,
@@ -69,7 +72,8 @@ public:
 
   Q_INVOKABLE void issue_call(const QString & phone_number);
   Q_INVOKABLE void issue_dial(const QString & phone_number);
-
+  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms); // const if not load_morse_code_engine
+  Q_INVOKABLE QString decode_morse(const QString & encoded_message);
 
 signals:
   void orientation_lockChanged();
@@ -84,10 +88,14 @@ private slots:
   void update_torch();
 
 private:
+  void load_morse_code_engine();
+
+private:
   bool m_orientation_lock;
   ScreenOrientation m_orientation;
   bool m_full_wave_lock;
   bool m_torch_enabled;
+  InternationalMorseCodeEngine * m_morse_code_engine;
 };
 
 /**************************************************************************************************/

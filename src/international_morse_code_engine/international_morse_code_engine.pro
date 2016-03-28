@@ -1,6 +1,6 @@
 ####################################################################################################
 
-TARGET = test_morse
+TARGET = test_international_morse_code_engine
 TEMPLATE = app
 
 CONFIG += c++14
@@ -9,12 +9,12 @@ CONFIG += debug
 QT += core testlib
 
 SOURCES += \
-  international-morse-code.cpp \
-  test_morse.cpp
+  international_morse_code_engine.cpp \
+  test_international_morse_code_engine.cpp
 
 HEADERS += \
-  international-morse-code.h \
-  international-morse-code-table.cpp
+  international_morse_code_engine.h \
+  international_morse_code_engine_table.cpp
 
 ####################################################################################################
 #

@@ -273,26 +273,27 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   private boolean has_flash() {
     PackageManager package_manager = getPackageManager();
     boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-    Log.i("AumActivity", "has_flash: " + has_flash);
+    // Log.i("AumActivity", "has_flash: " + has_flash);
     return has_flash;
   }
 
   private void open_camera() {
     if (m_camera == null) {
       try {
+	Log.i("AumActivity", "open_camera");
 	// Open back-facing camera on a device with more than one camera
 	m_camera = Camera.open();
 	m_camera_parameters = m_camera.getParameters();
-	catch (Exception e) {
-	  // Camera is not available (in use or does not exist)
-	  // Fixme:
-	}
+      } catch (Exception e) {
+	// Camera is not available (in use or does not exist)
+	// Fixme:
       }
     }
   }
 
   private void release_camera() {
     if (m_camera != null) {
+      Log.i("AumActivity", "release_camera");
       m_camera.stopPreview();
       m_camera.release();
       m_camera = null;
@@ -300,15 +301,18 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   }
 
   private void _set_torch_mode(boolean enabled) {
-    if (m_camera != null) {
-      String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
-      m_camera_parameters.setFlashMode(flash_mode);
-      m_camera.setParameters(m_camera_parameters);
-      if (enabled)
-	m_camera.startPreview();
-      else
-	m_camera.stopPreview();
-      m_torch_enabled = enabled;
+    if (m_torch_enabled != enabled) {
+      // Log.i("AumActivity", "_set_torch_mode: " + enabled);
+      if (m_camera != null) {
+	String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
+	m_camera_parameters.setFlashMode(flash_mode);
+	m_camera.setParameters(m_camera_parameters);
+	if (enabled)
+	  m_camera.startPreview();
+	else
+	  m_camera.stopPreview();
+	m_torch_enabled = enabled;
+      }
     }
 
     // CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -346,31 +350,32 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     }
   }
 
-  public void perform_lamp_signal(String encoded_message, int rate_ms = 250) {
+  public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
+    Log.i("AumActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
-      open_camera();
-
       // Fixme: camera vs thread ???
       // Fixme: stop thread
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
+	    Log.i("AumActivity", "perform_lamp_signal run");
+	    open_camera();
 	    for (char bit : encoded_message.toCharArray()) {
+	      // Log.i("AumActivity", "perform_lamp_signal bit: " + bit);
 	      if (bit == '1')
 		_enable_torch();
 	      else
 		_disable_torch();
 	      try {
-		Thread.sleep(rate); // 1/4 s = 250 ms
+		Thread.sleep(rate_ms); // 1/4 s = 250 ms
 	      } catch (InterruptedException exception) {
 		// Fixme: disable torch ???
 		exception.printStackTrace();
 	      }
 	    }
+	    release_camera();
 	  }
 	}).start();
-
-      release_camera();
     }
   }
 }

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __INTERNATIONAL_MORSE_CODE_H__
-#define __INTERNATIONAL_MORSE_CODE_H__
+#ifndef __INTERNATIONAL_MORSE_CODE_ENGINE_H__
+#define __INTERNATIONAL_MORSE_CODE_ENGINE_H__
 
 /**************************************************************************************************/
 
@@ -66,11 +66,11 @@ public:
 
 /**************************************************************************************************/
 
-class InternationalMorseCode
+class InternationalMorseCodeEngine
 {
 public:
-  InternationalMorseCode();
-  ~InternationalMorseCode();
+  InternationalMorseCodeEngine();
+  ~InternationalMorseCodeEngine();
 
   QString encode(const QString & message, bool use_bit = false, bool compress_bit = false) const;
   QString decode(const QString & message) const;
@@ -81,7 +81,7 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __INTERNATIONAL_MORSE_CODE_H__ */
+#endif /* __INTERNATIONAL_MORSE_CODE_ENGINE_H__ */
 
 /***************************************************************************************************
  *

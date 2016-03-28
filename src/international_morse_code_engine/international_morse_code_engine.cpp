@@ -26,8 +26,8 @@
 
 /**************************************************************************************************/
 
-#include "international-morse-code.h"
-#include "international-morse-code-table.cpp"
+#include "international_morse_code_engine.h"
+#include "international_morse_code_engine_table.cpp"
 
 #include <QtDebug>
 
@@ -97,7 +97,7 @@ MorseCodeDecoderNode::decode(QString::const_iterator & stream) const
 
 /**************************************************************************************************/
 
-InternationalMorseCode::InternationalMorseCode()
+InternationalMorseCodeEngine::InternationalMorseCodeEngine()
   : m_root_node()
 {
   for (int i = 0; i < 256; i++) {
@@ -110,13 +110,13 @@ InternationalMorseCode::InternationalMorseCode()
 
 /**************************************************************************************************/
 
-InternationalMorseCode::~InternationalMorseCode()
+InternationalMorseCodeEngine::~InternationalMorseCodeEngine()
 {}
 
 /**************************************************************************************************/
 
 QString
-InternationalMorseCode::encode(const QString & message, bool use_bit, bool compress_bit) const
+InternationalMorseCodeEngine::encode(const QString & message, bool use_bit, bool compress_bit) const
 {
   QString encoded_message;
   bool add_letter_space = false;
@@ -171,7 +171,7 @@ InternationalMorseCode::encode(const QString & message, bool use_bit, bool compr
 }
 
 QString
-InternationalMorseCode::decode(const QString & encoded_message) const
+InternationalMorseCodeEngine::decode(const QString & encoded_message) const
 {
   QString message;
   const MorseCodeDecoderNode * node = &m_root_node;

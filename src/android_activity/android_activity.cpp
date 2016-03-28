@@ -39,12 +39,19 @@ AndroidActivity::AndroidActivity(QObject *parent)
     m_orientation_lock(false),
     m_orientation(Unspecified),
     m_full_wave_lock(false),
-    m_torch_enabled(false)
+    m_torch_enabled(false),
+    m_morse_code_engine(nullptr)
 {
   connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
   connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
   connect(this, SIGNAL(full_wave_lockChanged()), this, SLOT(update_full_wave_lock()));
   connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
+}
+
+AndroidActivity::~AndroidActivity()
+{
+  if (m_morse_code_engine)
+    delete m_morse_code_engine;
 }
 
 /**************************************************************************************************/
@@ -183,6 +190,32 @@ AndroidActivity::issue_dial(const QString & phone_number)
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
   // void issue_dial(String phone_number)
   QtAndroid::androidActivity().callMethod<void>("issue_dial", "(Ljava/lang/String;)V", j_phone_number.object<jstring>());
+}
+
+/**************************************************************************************************/
+
+void
+AndroidActivity::load_morse_code_engine()
+{
+  if (!m_morse_code_engine)
+    m_morse_code_engine = new InternationalMorseCodeEngine();
+}
+
+void
+AndroidActivity::perform_lamp_signal(const QString & message, int rate_ms = 250)
+{
+  load_morse_code_engine();
+  QString encoded_message = m_morse_code_engine->encode(message, true);
+  qInfo() << "perform_lamp_signal" << message << encoded_message;
+  QAndroidJniObject j_encoded_message = QAndroidJniObject::fromString(encoded_message);
+  QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_encoded_message.object<jstring>(), rate_ms);
+}
+
+QString
+AndroidActivity::decode_morse(const QString & encoded_message)
+{
+  load_morse_code_engine();
+  return m_morse_code_engine->decode(encoded_message);
 }
 
 /***************************************************************************************************

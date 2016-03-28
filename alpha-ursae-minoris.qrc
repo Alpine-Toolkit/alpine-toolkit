@@ -21,6 +21,7 @@
     <file>pages/Gps.qml</file>
     <file>pages/Illuminance.qml</file>
     <file>pages/Inclination.qml</file>
+    <file>pages/LampSignal.qml</file>
     <file>pages/Refuge.qml</file>
     <file>pages/RefugeDirectory.qml</file>
     <file>pages/Torch.qml</file>

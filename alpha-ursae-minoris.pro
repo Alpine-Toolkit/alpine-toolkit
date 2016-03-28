@@ -21,7 +21,9 @@ HEADERS += \
   src/satellite_model/satellite_model.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
   src/sensors/qmlsensor.h \
-  src/sensors/qmlsensorrange.h
+  src/sensors/qmlsensorrange.h \
+  src/international_morse_code_engine/international_morse_code_engine.h \
+  src/international_morse_code_engine/international_morse_code_engine_table.cpp
 
 SOURCES += \
   src/ephemeride/ephemeride.cpp \
@@ -30,7 +32,8 @@ SOURCES += \
   src/satellite_model/satellite_model.cpp \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
   src/sensors/qmlsensor.cpp \
-  src/sensors/qmlsensorrange.cpp
+  src/sensors/qmlsensorrange.cpp \
+  src/international_morse_code_engine/international_morse_code_engine.cpp
 
 lupdate_only{
 SOURCES += \

@@ -33,37 +33,37 @@
 
 /**************************************************************************************************/
 
-#include "international-morse-code.h"
+#include "international_morse_code_engine.h"
 
 /***************************************************************************************************/
 
-class TestMorse: public QObject
+class TestInternationalMorseCodeEngine: public QObject
 {
   Q_OBJECT
 
 private slots:
-  void test_morse_encoder();
+  void test_morse_code_engine();
 };
 
 void
-TestMorse::test_morse_encoder()
+TestInternationalMorseCodeEngine::test_morse_code_engine()
 {
-  InternationalMorseCode morse_code;
+  InternationalMorseCodeEngine morse_code_engine;
   QString message("hello morse");
-  QString encoded_message = morse_code.encode(message);
+  QString encoded_message = morse_code_engine.encode(message);
   qInfo() << message << encoded_message;
-  qInfo() << morse_code.encode(message, true);
-  qInfo() << morse_code.encode(message, true, true);
-  QString message_back = morse_code.decode(encoded_message);
+  qInfo() << morse_code_engine.encode(message, true);
+  qInfo() << morse_code_engine.encode(message, true, true);
+  QString message_back = morse_code_engine.decode(encoded_message);
   qInfo() << message_back;
-  qInfo() << morse_code.decode(" // ");
-  qInfo() << morse_code.decode(" // /");
+  qInfo() << morse_code_engine.decode(" // ");
+  qInfo() << morse_code_engine.decode(" // /");
 }
 
 /***************************************************************************************************/
 
-QTEST_MAIN(TestMorse)
-#include "test_morse.moc"
+QTEST_MAIN(TestInternationalMorseCodeEngine)
+#include "test_international_morse_code_engine.moc"
 
 /***************************************************************************************************
  *

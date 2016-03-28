@@ -188,6 +188,12 @@ ApplicationWindow {
                         lock_orientation: true
                     }
                     ListElement {
+                        title: qsTr("Lamp Signal")
+                        icon: ""
+                        source: "qrc:/pages/LampSignal.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
                         title: qsTr("Refuges")
                         icon: ""
                         source: "qrc:/pages/RefugeDirectory.qml"
