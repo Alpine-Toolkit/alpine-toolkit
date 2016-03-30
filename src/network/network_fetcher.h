@@ -38,17 +38,23 @@
 #include <QList>
 #include <QMap>
 #include <QMutex>
-#include <QMutexLocker>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QObject>
-#include <QSize>
 #include <QTimer>
 
+#include "network_ressource_request.h"
 #include "network_reply.h"
 
 /**************************************************************************************************/
 
+/* The NetworkFetcher class manages a list of asynchronous requests.
+ *
+ * Note: QNetworkAccessManager queues the requests it receives. The
+ * number of requests executed in parallel is dependent on the
+ * protocol. Currently, for the HTTP protocol on desktop platforms, 6
+ * requests are executed in parallel for one host/port combination.
+ */
 class NetworkFetcher : public QObject
 {
   Q_OBJECT
@@ -61,18 +67,19 @@ public:
   // void set_connection_identifier();
 
 public slots:
-  void add_request(const QUrl & url);
-  void cancel_request(const QUrl & url);
+  void add_request(const NetworkRessourceRequest & request);
+  void cancel_request(const NetworkRessourceRequest & request);
 
 signals:
-  void request_finished(const QUrl & url); // & ???
-  void request_error(const QUrl &, const QString & errorString);
+  void download_progress(const NetworkRessourceRequest & request, qint64 percent);
+  void request_finished(const NetworkRessourceRequest & request, const QByteArray & payload); // & ???
+  void request_error(const NetworkRessourceRequest & request, const QString & error_string);
 
 protected:
   void timerEvent(QTimerEvent * event);
 
 private:
-  NetworkReply * get(const QUrl & url);
+  NetworkReply * get(const NetworkRessourceRequest & request);
   void handle_reply(NetworkReply * reply);
 
 private slots:
@@ -86,8 +93,8 @@ private:
   bool m_enabled;
   QBasicTimer m_timer;
   QMutex m_queue_mutex;
-  QList<QUrl> m_queue;
-  QHash<QUrl, NetworkReply *> m_invmap;
+  QList<NetworkRessourceRequest> m_queue;
+  QHash<NetworkRessourceRequest, NetworkReply *> m_invmap;
 };
 
 /**************************************************************************************************/

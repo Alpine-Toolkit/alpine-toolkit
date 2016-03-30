@@ -28,79 +28,47 @@
 
 /**************************************************************************************************/
 
-#ifndef __NETWORK_REPLY_H__
-#define __NETWORK_REPLY_H__
+#ifndef __NETWORK_RESSOURCE_REQUEST_H__
+#define __NETWORK_RESSOURCE_REQUEST_H__
 
 /**************************************************************************************************/
 
-#include <QNetworkReply>
-#include <QPointer>
-
-#include "network_ressource_request.h"
+#include <QHash>
+#include <QUrl>
+#include <QObject>
 
 /**************************************************************************************************/
 
-/* The NetworkReply class contains a request identifier and a QNetworkReply instance.
+/* The NetworkRessourceRequest class defines a network ressource request.
  *
  */
-class NetworkReply : public QObject
+class NetworkRessourceRequest : public QObject
 {
   Q_OBJECT
 
 public:
-  enum Error { // Fixme: check
-    NoError,
-    CommunicationError,
-    UnknownError
-  };
+  NetworkRessourceRequest();
+  NetworkRessourceRequest(const QUrl & url);
+  NetworkRessourceRequest(const NetworkRessourceRequest & other);
+  ~NetworkRessourceRequest();
 
-public:
-  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply);
-  // NetworkReply(Error error, const QString & error_string);
-  ~NetworkReply();
+  NetworkRessourceRequest & operator=(const NetworkRessourceRequest & other);
 
-  NetworkRessourceRequest request() const { return m_request; }
-  QNetworkReply * network_reply() const { return m_reply; }
+  inline QUrl url() const { return m_url; }
 
-  bool is_finished() const { return m_is_finished; }
-
-  Error error() const { return m_error; };
-  QString error_string() const { return m_error_string; };
-
-  const QByteArray & payload() const { return m_payload; };
-
-  void abort();
-
-signals:
-  void download_progress(const NetworkRessourceRequest & request, qint64 percent);
-  void finished();
-  void error(Error error, const QString & error_string = QString());
-
-protected:
-  void set_finished(bool finished);
-  void set_error(Error error, const QString & error_string);
+  bool operator==(const NetworkRessourceRequest & rhs) const;
 
 private:
-  Q_DISABLE_COPY(NetworkReply);
-  void release();
-
-private slots:
-  void _download_progress(qint64 bytes_received, qint64 bytes_total);
-  void reply_finished();
-  void reply_error(QNetworkReply::NetworkError error);
-
-private:
-  NetworkRessourceRequest m_request;
-  QPointer<QNetworkReply> m_reply;
-  bool m_is_finished;
-  Error m_error;
-  QString m_error_string;
-  QByteArray m_payload;
+  QUrl m_url;
 };
+
+unsigned int qHash(const NetworkRessourceRequest & request);
+
+QDebug operator<<(QDebug, const NetworkRessourceRequest & request);
 
 /**************************************************************************************************/
 
-#endif /* __NETWORK_REPLY_H__ */
+#endif /* __NETWORK_RESSOURCE_REQUEST_H__ */
 
 /***************************************************************************************************
  *

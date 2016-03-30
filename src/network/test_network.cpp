@@ -33,6 +33,7 @@
 
 #include "network_reply.h"
 #include "network_fetcher.h"
+#include "network_downloader.h"
 
 /***************************************************************************************************/
 
@@ -46,9 +47,14 @@ class NetworkFetcherHelper : public QObject
   }
 
  public slots:
-  void request_finished(const QUrl & url) {
-    qInfo() << "Url finished" << url;
+  void request_finished(const NetworkRessourceRequest & request) {
+    QUrl url = request.url();
+    qInfo() << "Url finished" << url.url();
     m_finished_request.push_back(url);;
+  }
+  void download_progress(const NetworkRessourceRequest & request, qint64 percent) {
+    QUrl url = request.url();
+    qInfo() << "download progress" << url.url() << percent;
   }
 
  private:
@@ -62,13 +68,15 @@ class TestNetwork: public QObject
   Q_OBJECT
 
 private slots:
-  void test_network();
+  void test_network_fetcher();
+  void test_network_downloader();
 };
 
-
 void
-TestNetwork::test_network()
+TestNetwork::test_network_fetcher()
 {
+  QSKIP("");
+
   NetworkFetcher network_fetcher;
 
   NetworkFetcherHelper network_fetcher_helper;
@@ -82,6 +90,28 @@ TestNetwork::test_network()
   network_fetcher.add_request(url);
   while (!network_fetcher_helper.has_received(url))
     QTest::qWait(200);
+}
+
+void
+TestNetwork::test_network_downloader()
+{
+  NetworkFetcher network_fetcher;
+  NetworkDownloader network_downloader(network_fetcher);
+
+  NetworkFetcherHelper network_fetcher_helper;
+  connect(&network_downloader, &NetworkDownloader::finished,
+  	  &network_fetcher_helper, &NetworkFetcherHelper::request_finished);
+  connect(&network_downloader, &NetworkDownloader::download_progress,
+  	  &network_fetcher_helper, &NetworkFetcherHelper::download_progress);
+
+  QUrl url;
+  url = QStringLiteral("http://127.0.0.1:5000/static/large-file.txt");
+  QString target_path = "request1.json";
+  NetworkDownloadRequest request(url, target_path);
+  network_downloader.add_request(request);
+  while (!network_fetcher_helper.has_received(url))
+    QTest::qWait(200);
+}
 
   // QNetworkAccessManager *manager = new QNetworkAccessManager(this);
   // manager->networkAccessible()
@@ -97,7 +127,6 @@ TestNetwork::test_network()
   //         this, SLOT(slotError(QNetworkReply::NetworkError)));
   // connect(reply, SIGNAL(sslErrors(QList<QSslError>)),
   //         this, SLOT(slotSslErrors(QList<QSslError>)));
-}
 
 /***************************************************************************************************/
 

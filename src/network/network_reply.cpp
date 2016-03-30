@@ -30,34 +30,29 @@
 
 /**************************************************************************************************/
 
-NetworkReply::NetworkReply(QNetworkReply * reply)
+NetworkReply::NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply)
   : QObject(),
-    m_error(NetworkReply::NoError),
-    m_is_finished(false),
+    m_request(request),
     m_reply(reply),
-    m_url(reply->url())
+    m_is_finished(false),
+    m_error(NetworkReply::NoError)
 {
   connect(m_reply, SIGNAL(finished()),
-	  this, SLOT(network_reply_finished()));
+	  this, SLOT(reply_finished()));
 
   connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-	  this, SLOT(network_reply_error(QNetworkReply::NetworkError)));
+	  this, SLOT(reply_error(QNetworkReply::NetworkError)));
 
-  // downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+  connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
+	  this, SLOT(_download_progress(qint64, qint64)));
 }
 
 NetworkReply::~NetworkReply()
 {
   if (m_reply) {
     m_reply->deleteLater();
-    m_reply = nullptr;
+    m_reply = nullptr; // dtor ???
   }
-}
-
-QUrl
-NetworkReply::url() const
-{
-  return m_url;
 }
 
 void NetworkReply::set_finished(bool finished)
@@ -65,12 +60,6 @@ void NetworkReply::set_finished(bool finished)
   m_is_finished = finished;
   if (m_is_finished)
     emit this->finished();
-}
-
-bool
-NetworkReply::is_finished() const
-{
-  return m_is_finished;
 }
 
 void
@@ -82,37 +71,27 @@ NetworkReply::set_error(NetworkReply::Error error, const QString & error_string)
   set_finished(true); // will emit finished as well !
 }
 
-NetworkReply::Error
-NetworkReply::error() const
-{
-  return m_error;
-}
-
-QString
-NetworkReply::error_string() const
-{
-  return m_error_string;
-}
-
-QNetworkReply *
-NetworkReply::network_reply() const
-{
-  return m_reply;
-}
-
 void
 NetworkReply::abort()
 {
   if (m_reply)
     m_reply->abort();
 
+  // ???
   // if (!is_finished())
   //   set_finished(true);
 }
 
+void
+NetworkReply::release() {
+  set_finished(true);
+  m_reply->deleteLater();
+  m_reply = nullptr;
+}
+
 // Handle a successful request : store image data
 void
-NetworkReply::network_reply_finished()
+NetworkReply::reply_finished()
 {
   if (!m_reply)
     return;
@@ -122,32 +101,31 @@ NetworkReply::network_reply_finished()
     return;
   }
 
-  QByteArray payload = m_reply->readAll();
-  qInfo() << "Data:" << payload;
-
-  // Fixme: duplicated code
-  set_finished(true);
-  m_reply->deleteLater();
-  m_reply = nullptr;
+  m_payload = m_reply->readAll();
+  release();
 }
 
 // Handle an unsuccessful request : set error message
 void
-NetworkReply::network_reply_error(QNetworkReply::NetworkError error)
+NetworkReply::reply_error(QNetworkReply::NetworkError error)
 {
   if (!m_reply)
     return;
 
   if (error != QNetworkReply::OperationCanceledError)
     set_error(NetworkReply::CommunicationError, m_reply->errorString());
+  release();
+}
 
-  set_finished(true);
-  m_reply->deleteLater();
-  m_reply = nullptr;
+void
+NetworkReply::_download_progress(qint64 bytes_received, qint64 bytes_total)
+{
+  // qInfo() << "_download_progress" << bytes_received << bytes_total;
+  emit download_progress(m_request, qRound64(100. * bytes_received / (qreal) bytes_total));
 }
 
 /***************************************************************************************************
  *
- * End
+ * end
  *
  **************************************************************************************************/
