@@ -29,18 +29,18 @@
 #include "network_fetcher.h"
 #include "network_reply.h"
 
+#include <QDebug>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
-#include <QDebug>
-
-// QC_BEGIN_NAMESPACE
+#include <QtCore/QTimerEvent>
 
 /**************************************************************************************************/
 
 NetworkFetcher::NetworkFetcher()
   : QObject(),
     m_network_manager(new QNetworkAccessManager(this)),
-    m_user_agent("")
+    m_user_agent(""),
+    m_enabled(true)
 {
   connect(m_network_manager,
 	  SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
@@ -51,30 +51,13 @@ NetworkFetcher::NetworkFetcher()
   // 	  this, SLOT(replyFinished(QNetworkReply*)));
 }
 
-// NetworkFetcher::~NetworkFetcher()
-// {}
+NetworkFetcher::~NetworkFetcher()
+{}
 
-NetworkReply *
-NetworkFetcher::get_url(const QString & url_string)
+void
+NetworkFetcher::set_user_agent(const QByteArray & user_agent)
 {
-  QUrl url = QUrl(url_string);
-  qInfo() << "Get" << url;
-
-  QNetworkRequest request;
-  request.setRawHeader("User-Agent", m_user_agent);
-  request.setUrl(url);
-
-  QNetworkReply * q_network_reply = m_network_manager->get(request);
-  if (q_network_reply->error() != QNetworkReply::NoError)
-    qWarning() << __FUNCTION__ << q_network_reply->errorString();
-
-  NetworkReply * reply = new NetworkReply(q_network_reply);
-
-  connect(reply, SIGNAL(finished()),
-	  this, SLOT(reply_finished()),
-	  Qt::QueuedConnection);
-
-  return reply;
+  m_user_agent = user_agent;
 }
 
 void
@@ -87,23 +70,131 @@ NetworkFetcher::on_authentication_request_slot(QNetworkReply * reply,
 }
 
 void
+NetworkFetcher::add_request(const QUrl & url)
+{
+  QMutexLocker mutex_locker(&m_queue_mutex);
+
+  m_queue += url;
+
+  // Start timer to fetch tiles from queue
+  if (m_enabled && !m_queue.isEmpty() && !m_timer.isActive()) {
+    m_timer.start(0, this);
+  }
+}
+
+void
+NetworkFetcher::cancel_request(const QUrl & url)
+{
+  QMutexLocker mutex_locker(&m_queue_mutex);
+
+  NetworkReply * reply = m_invmap.value(url, nullptr);
+  if (reply) { // url wasn't requested
+    m_invmap.remove(url);
+    reply->abort();
+    if (reply->is_finished())
+      reply->deleteLater(); // else done in handle_reply
+  }
+  m_queue.removeAll(url);
+}
+
+void
+NetworkFetcher::timerEvent(QTimerEvent * event)
+{
+  qInfo() << "NetworkFetcher::timerEvent";
+  if (event->timerId() != m_timer.timerId()) { // Fixme: when ?
+    QObject::timerEvent(event);
+    return;
+  } else if (m_queue.isEmpty()) {
+    m_timer.stop();
+    return;
+  } else
+    get_next_request();
+}
+
+void
+NetworkFetcher::get_next_request()
+{
+  QMutexLocker mutex_locker(&m_queue_mutex);
+
+  if (!m_enabled || m_queue.isEmpty())
+    return;
+
+  QUrl url = m_queue.takeFirst();
+
+  qInfo() << "NetworkFetcher::get_next_request" << url;
+  NetworkReply *reply = get(url);
+
+  // If the request is already finished then handle it
+  // Else connect the finished signal
+  if (reply->is_finished()) {
+    handle_reply(reply);
+  } else {
+    connect(reply, SIGNAL(finished()),
+	    this, SLOT(reply_finished()),
+	    Qt::QueuedConnection);
+    m_invmap.insert(url, reply);
+  }
+
+  if (m_queue.isEmpty())
+    m_timer.stop();
+}
+
+NetworkReply *
+NetworkFetcher::get(const QUrl & url)
+{
+  qInfo() << "Get" << url;
+
+  QNetworkRequest request;
+  request.setRawHeader("User-Agent", m_user_agent);
+  request.setUrl(url);
+  // request.setPriority();
+
+  QNetworkReply * q_network_reply = m_network_manager->get(request);
+  if (q_network_reply->error() != QNetworkReply::NoError)
+    qWarning() << __FUNCTION__ << q_network_reply->errorString();
+
+  NetworkReply * reply = new NetworkReply(q_network_reply);
+
+  return reply;
+}
+
+void
 NetworkFetcher::reply_finished()
 {
-  qInfo() << "NetworkFetcher::finished";
+  QMutexLocker mutex_locker(&m_queue_mutex);
 
   NetworkReply *reply = qobject_cast<NetworkReply *>(sender());
   if (!reply) { // Fixme: when ?
-    qWarning() << "reply is null";
+    qWarning() << "NetworkFetcher::reply_finished reply is null";
     return;
   }
 
-  // emit signal according to the reply status
-  if (reply->error() == NetworkReply::NoError) {
-    qInfo() << "NetworkFetcher::handle_reply emit tile_finished";
-    // emit finished(...);
+  QUrl url = reply->url();
+  qInfo() << "NetworkFetcher::finished" << url;
+  if (m_invmap.contains(url)) { // cancelled request
+    m_invmap.remove(url);
+    handle_reply(reply);
   } else {
-    qInfo() << "NetworkFetcher::handle_reply emit tile_error" << reply->error_string();
-    // emit error(..., reply->error_string());
+    qWarning() << "NetworkFetcher::reply_finished m_invmap doesn't have url";
+    reply->deleteLater();
+  }
+}
+
+void
+NetworkFetcher::handle_reply(NetworkReply * reply)
+{
+  QUrl url = reply->url();
+  qInfo() << "NetworkFetcher::handle_reply" << url;
+
+  if (m_enabled) {
+    // emit signal according to the reply status
+    if (reply->error() == NetworkReply::NoError) {
+      qInfo() << "NetworkFetcher::handle_reply emit tile_finished";
+      emit request_finished(url);
+    } else {
+      qInfo() << "NetworkFetcher::handle_reply emit tile_error" << reply->error_string();
+      emit request_error(url, reply->error_string());
+    }
   }
 
   reply->deleteLater();

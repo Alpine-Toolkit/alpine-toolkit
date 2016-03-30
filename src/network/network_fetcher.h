@@ -34,8 +34,16 @@
 /**************************************************************************************************/
 
 #include <QAuthenticator>
+#include <QHash>
+#include <QList>
+#include <QMap>
+#include <QMutex>
+#include <QMutexLocker>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QObject>
+#include <QSize>
+#include <QTimer>
 
 #include "network_reply.h"
 
@@ -47,27 +55,40 @@ class NetworkFetcher : public QObject
 
 public:
   NetworkFetcher();
+  ~NetworkFetcher();
 
-  void set_user_agent(const QByteArray & user_agent) {
-    m_user_agent = user_agent;
-  }
+  void set_user_agent(const QByteArray & user_agent);
+  // void set_connection_identifier();
 
-  NetworkReply * get_url(const QString & url);
+public slots:
+  void add_request(const QUrl & url);
+  void cancel_request(const QUrl & url);
+
+signals:
+  void request_finished(const QUrl & url); // & ???
+  void request_error(const QUrl &, const QString & errorString);
+
+protected:
+  void timerEvent(QTimerEvent * event);
+
+private:
+  NetworkReply * get(const QUrl & url);
+  void handle_reply(NetworkReply * reply);
 
 private slots:
+  void get_next_request();
   void reply_finished();
   void on_authentication_request_slot(QNetworkReply * reply, QAuthenticator * authenticator);
-
-// signals:
-//   void finished();
-//   void error(const QString & errorString);
 
 private:
   QNetworkAccessManager * m_network_manager;
   QByteArray m_user_agent;
+  bool m_enabled;
+  QBasicTimer m_timer;
+  QMutex m_queue_mutex;
+  QList<QUrl> m_queue;
+  QHash<QUrl, NetworkReply *> m_invmap;
 };
-
-// QC_END_NAMESPACE
 
 /**************************************************************************************************/
 

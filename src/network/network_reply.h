@@ -60,6 +60,8 @@ public:
   QString error_string() const;
   QNetworkReply * network_reply() const;
 
+  QUrl url() const;
+
   void abort();
 
 signals:
@@ -82,6 +84,7 @@ private:
   QString m_error_string;
   bool m_is_finished;
   QPointer<QNetworkReply> m_reply;
+  QUrl m_url;
 };
 
 /**************************************************************************************************/

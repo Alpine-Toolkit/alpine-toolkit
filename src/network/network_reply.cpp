@@ -34,7 +34,8 @@ NetworkReply::NetworkReply(QNetworkReply * reply)
   : QObject(),
     m_error(NetworkReply::NoError),
     m_is_finished(false),
-    m_reply(reply)
+    m_reply(reply),
+    m_url(reply->url())
 {
   connect(m_reply, SIGNAL(finished()),
 	  this, SLOT(network_reply_finished()));
@@ -51,6 +52,12 @@ NetworkReply::~NetworkReply()
     m_reply->deleteLater();
     m_reply = nullptr;
   }
+}
+
+QUrl
+NetworkReply::url() const
+{
+  return m_url;
 }
 
 void NetworkReply::set_finished(bool finished)

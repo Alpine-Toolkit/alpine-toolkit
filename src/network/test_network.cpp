@@ -36,6 +36,27 @@
 
 /***************************************************************************************************/
 
+class NetworkFetcherHelper : public QObject
+{
+  Q_OBJECT;
+
+ public:
+  bool has_received(const QUrl & url) {
+    return m_finished_request.contains(url);
+  }
+
+ public slots:
+  void request_finished(const QUrl & url) {
+    qInfo() << "Url finished" << url;
+    m_finished_request.push_back(url);;
+  }
+
+ private:
+  QList<QUrl> m_finished_request;
+};
+
+/**************************************************************************************************/
+
 class TestNetwork: public QObject
 {
   Q_OBJECT
@@ -49,8 +70,17 @@ void
 TestNetwork::test_network()
 {
   NetworkFetcher network_fetcher;
-  NetworkReply * reply = network_fetcher.get_url(QStringLiteral("http://127.0.0.1:5000/todos/todo1"));
-  while (! reply->is_finished())
+
+  NetworkFetcherHelper network_fetcher_helper;
+  connect(&network_fetcher, &NetworkFetcher::request_finished,
+  	  &network_fetcher_helper, &NetworkFetcherHelper::request_finished);
+
+  QUrl url;
+  url = QStringLiteral("http://127.0.0.1:5000/todos/todo1");
+  network_fetcher.add_request(url);
+  url = QStringLiteral("http://127.0.0.1:5000/todos/todo2");
+  network_fetcher.add_request(url);
+  while (!network_fetcher_helper.has_received(url))
     QTest::qWait(200);
 
   // QNetworkAccessManager *manager = new QNetworkAccessManager(this);
@@ -60,10 +90,6 @@ TestNetwork::test_network()
   // 	  this, SLOT(replyFinished(QNetworkReply*)));
 
   // manager->get(QNetworkRequest(QUrl("http://qt-project.org")));
-
-  // QNetworkRequest request;
-  // request.setUrl(QUrl("http://qt-project.org"));
-  // request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
 
   // QNetworkReply *reply = manager->get(request);
   // connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
