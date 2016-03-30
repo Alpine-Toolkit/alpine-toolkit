@@ -2,6 +2,7 @@
 
 package org.alpha_ursae_minoris;
 
+import java.lang.Character;
 import java.lang.reflect.Method;
 
 import android.content.Context;
@@ -350,6 +351,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     }
   }
 
+  /*
   public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
     Log.i("AumActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
@@ -368,6 +370,39 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 		_disable_torch();
 	      try {
 		Thread.sleep(rate_ms); // 1/4 s = 250 ms
+	      } catch (InterruptedException exception) {
+		// Fixme: disable torch ???
+		exception.printStackTrace();
+	      }
+	    }
+	    release_camera();
+	  }
+	}).start();
+    }
+  }
+  */
+
+  public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
+    Log.i("AumActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
+    if (has_flash()) {
+      // Fixme: camera vs thread ???
+      // Fixme: stop thread
+      new Thread(new Runnable() {
+	  @Override
+	  public void run() {
+	    Log.i("AumActivity", "perform_lamp_signal run");
+	    open_camera();
+	    boolean is_on = true;
+	    for (char run : encoded_message.toCharArray()) {
+	      int multiple = Character.digit(run, 10); // (int)c - (int)'0'
+	      Log.i("AumActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
+	      if (is_on)
+		_enable_torch();
+	      else
+		_disable_torch();
+	      is_on = !is_on;
+	      try {
+		Thread.sleep(rate_ms * multiple);
 	      } catch (InterruptedException exception) {
 		// Fixme: disable torch ???
 		exception.printStackTrace();

@@ -40,8 +40,16 @@ Pane {
                     id: message_textarea
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: lamp_signal_pane.height / 3
+                    height: 100
                     placeholderText: qsTr("Enter message")
+                }
+
+                Label {
+                    id: send_encoded_message
+                    width: parent.width
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 100
+                    wrapMode:Text.WordWrap
                 }
 
                 Row {
@@ -72,6 +80,7 @@ Pane {
                         if (on_android) {
                             var message = message_textarea.text;
                             if (message) {
+                                send_encoded_message.text = android_activity.encode_morse(message);
                                 var rate_ms = rate_ms_spinbox.value;
                                 android_activity.perform_lamp_signal(message, rate_ms);
                             }

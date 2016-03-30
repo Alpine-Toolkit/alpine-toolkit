@@ -205,10 +205,17 @@ void
 AndroidActivity::perform_lamp_signal(const QString & message, int rate_ms = 250)
 {
   load_morse_code_engine();
-  QString encoded_message = m_morse_code_engine->encode(message, true);
+  QString encoded_message = m_morse_code_engine->encode(message, true, true);
   qInfo() << "perform_lamp_signal" << message << encoded_message;
   QAndroidJniObject j_encoded_message = QAndroidJniObject::fromString(encoded_message);
   QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_encoded_message.object<jstring>(), rate_ms);
+}
+
+QString
+AndroidActivity::encode_morse(const QString & message)
+{
+  load_morse_code_engine();
+  return m_morse_code_engine->encode(message);
 }
 
 QString

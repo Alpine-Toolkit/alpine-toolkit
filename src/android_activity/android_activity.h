@@ -73,6 +73,7 @@ public:
   Q_INVOKABLE void issue_call(const QString & phone_number);
   Q_INVOKABLE void issue_dial(const QString & phone_number);
   Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms); // const if not load_morse_code_engine
+  Q_INVOKABLE QString encode_morse(const QString & message);
   Q_INVOKABLE QString decode_morse(const QString & encoded_message);
 
 signals:
