@@ -97,8 +97,8 @@ register_qml_types()
 
   qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
 
-  qmlRegisterType<Refuge>(package, major, minor, "Refuge");
-  qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
+  // qmlRegisterType<Refuge>(package, major, minor, "Refuge");
+  // qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
 
   // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
 }
@@ -128,10 +128,10 @@ set_context_properties(QQmlContext * context)
   QList<QObject *> refuges_; // QObject* is required
   for (Refuge & refuge : *refuges)
     refuges_.append(&refuge);
-  // context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+  context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
 
-  RefugeModel * refuge_model = new RefugeModel(*refuges);
-  context->setContextProperty("refuge_model", refuge_model);
+  // RefugeModel * refuge_model = new RefugeModel(*refuges);
+  // context->setContextProperty("refuge_model", refuge_model);
 }
 
 /**************************************************************************************************/

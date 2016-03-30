@@ -141,7 +141,7 @@ class RefugeModel : public QAbstractListModel //, public QQmlParserStatus
   // Q_INTERFACES(QQmlParserStatus)
 
 public:
-  RefugeModel();
+  // RefugeModel();
   explicit RefugeModel(const QList<Refuge> & refuges, QObject * parent = nullptr);
 
   enum Roles {
@@ -171,8 +171,8 @@ public:
 
   int entryCount() const;
 
-  Q_INVOKABLE Refuge & at(int index);
-  Q_INVOKABLE Refuge & operator[](int index);
+  // Q_INVOKABLE Refuge & at(int index);
+  // Q_INVOKABLE Refuge & operator[](int index);
 
 signals:
   void entryCountChanged();
@@ -193,8 +193,8 @@ void load_refuge_json(const QString & json_path, QList<Refuge> & refuges);
 // Q_DECLARE_TYPEINFO(Refuge, Q_COMPLEX_TYPE); // Q_MOVABLE_TYPE
 Q_DECLARE_METATYPE(Refuge)
 
-QML_DECLARE_TYPE(Refuge) // required ???
-QML_DECLARE_TYPE(RefugeModel)
+// QML_DECLARE_TYPE(Refuge) // required ???
+// QML_DECLARE_TYPE(RefugeModel)
 
 /**************************************************************************************************/
 

@@ -292,10 +292,10 @@ load_refuge_json(const QString & json_path, QList<Refuge> & refuges)
 
 /**************************************************************************************************/
 
-RefugeModel::RefugeModel()
-  : QAbstractListModel(nullptr),
-    m_refuges()
-{}
+// RefugeModel::RefugeModel()
+//   : QAbstractListModel(nullptr),
+//     m_refuges()
+// {}
 
 RefugeModel::RefugeModel(const QList<Refuge> & refuges, QObject * parent)
   : QAbstractListModel(parent),
@@ -396,17 +396,17 @@ RefugeModel::clearModel()
   endResetModel();
 }
 
-Refuge &
-RefugeModel::at(int index)
-{
-  return m_refuges[index];
-}
+// Refuge &
+// RefugeModel::at(int index)
+// {
+//   return m_refuges[index];
+// }
 
-Refuge &
-RefugeModel::operator[](int index)
-{
-  return at(index);
-}
+// Refuge &
+// RefugeModel::operator[](int index)
+// {
+//   return at(index);
+// }
 
 /***************************************************************************************************
  *

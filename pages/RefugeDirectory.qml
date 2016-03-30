@@ -41,9 +41,9 @@ Pane {
                 app_bar.state = "BACK"
                 nav_icon.visible = false
                 back_icon.visible = true
-                // var properties = {'model': refuge_model[model.index]}
-                console.info(refuge_model, model.index, refuge_model.at(model.index));
-                var properties = {'model': refuge_model.at(model.index)}
+                var properties = {'model': refuge_model[model.index]}
+                // console.info(refuge_model, model.index, refuge_model.at(model.index));
+                // var properties = {'model': refuge_model.at(model.index)}
                 stack_view.push("qrc:/pages/Refuge.qml", properties, StackView.Transition)
             }
         }
