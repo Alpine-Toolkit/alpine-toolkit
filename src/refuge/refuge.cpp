@@ -75,6 +75,7 @@ Refuge::operator=(const Refuge & other)
   if (this != &other) {
     // QObject::operator=(other); // ???
     m_name = other.m_name;
+    m_short_name = other.m_short_name;
     m_altitude = other.m_altitude;
     m_description = other.m_description;
     m_guardian = other.m_guardian;
@@ -248,7 +249,7 @@ Refuge::set_phone(const QString & phone)
 /**************************************************************************************************/
 
 void
-load_refuge_json(const QString & json_path, QList<Refuge *> & refuges)
+load_refuge_json(const QString & json_path, QList<Refuge> & refuges)
 {
   QFile json_file(json_path);
 
@@ -263,24 +264,26 @@ load_refuge_json(const QString & json_path, QList<Refuge *> & refuges)
   QJsonDocument json_document(QJsonDocument::fromJson(byte_array));
 
   QJsonArray array = json_document.array();
+  // refuges.reserve(array.size());
   for(const QJsonValueRef & ref : array) {
     QJsonObject json_refuge = ref.toObject();
 
-    Refuge * refuge = new Refuge();
-    refuge->set_name(json_refuge["name"].toString());
-    refuge->set_short_name(json_refuge["short_name"].toString());
-    refuge->set_altitude(json_refuge["altitude"].toInt());
-    refuge->set_description(json_refuge["description"].toString());
-    refuge->set_guardian(json_refuge["guardian"].toString());
-    refuge->set_picture_path(json_refuge["picture_path"].toString());
+    Refuge refuge;
+    refuge.set_name(json_refuge["name"].toString());
+    refuge.set_short_name(json_refuge["short_name"].toString());
+    refuge.set_altitude(json_refuge["altitude"].toInt());
+    refuge.set_description(json_refuge["description"].toString());
+    refuge.set_guardian(json_refuge["guardian"].toString());
+    refuge.set_picture_path(json_refuge["picture_path"].toString());
     float latitude = json_refuge["latitude"].toDouble();
     float longitude = json_refuge["longitude"].toDouble();
-    refuge->set_coordinate(QGeoCoordinate(latitude, longitude));
-    refuge->set_number_of_places(json_refuge["number_of_places"].toString());
-    refuge->set_region(json_refuge["region"].toString());
-    refuge->set_url(json_refuge["url"].toString());
-    refuge->set_phone(json_refuge["phone"].toString());
+    refuge.set_coordinate(QGeoCoordinate(latitude, longitude));
+    refuge.set_number_of_places(json_refuge["number_of_places"].toString());
+    refuge.set_region(json_refuge["region"].toString());
+    refuge.set_url(json_refuge["url"].toString());
+    refuge.set_phone(json_refuge["phone"].toString());
 
+    // QVector init in place ???
     refuges.append(refuge);
   }
 
@@ -289,20 +292,21 @@ load_refuge_json(const QString & json_path, QList<Refuge *> & refuges)
 
 /**************************************************************************************************/
 
-RefugeModel::RefugeModel(QObject * parent)
-  : QAbstractListModel(parent),
+RefugeModel::RefugeModel()
+  : QAbstractListModel(nullptr),
     m_refuges()
 {}
 
-// bool
-// RefugeModel::load_json(const QString & json_path)
-// {}
+RefugeModel::RefugeModel(const QList<Refuge> & refuges, QObject * parent)
+  : QAbstractListModel(parent),
+    m_refuges(refuges)
+{}
 
 int
 RefugeModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
-  return m_refuges.count();
+  return m_refuges.size();
 }
 
 QVariant
@@ -318,10 +322,32 @@ RefugeModel::data(const QModelIndex & index, int role) const
     return QVariant();
   }
 
-  const Refuge & refuge = m_refuges.at(index.row());
+  const Refuge & refuge = m_refuges[index.row()];
   switch (role) {
   case NameRole:
     return refuge.name();
+  case ShortNameRole:
+    return refuge.short_name();
+  case FirstLetterRole:
+    return refuge.first_letter();
+  case AltitudeRole:
+    return refuge.altitude();
+  case DescriptionRole:
+    return refuge.description();
+  case GuardianRole:
+    return refuge.guardian();
+  case PicturePathRole:
+    return refuge.picture_path();
+  case CoordinateRole:
+    return QVariant(); // refuge.coordinate()
+  case NumberOfPlacesRole:
+    return refuge.number_of_places();
+  case RegionRole:
+    return refuge.region();
+  case UrlRole:
+    return refuge.url();
+  case PhoneRole:
+    return refuge.phone();
   default:
     break;
   }
@@ -332,17 +358,20 @@ RefugeModel::data(const QModelIndex & index, int role) const
 QHash<int, QByteArray>
 RefugeModel::roleNames() const
 {
-  QHash<int, QByteArray> roleNames;
-  roleNames.insert(NameRole, "name");
-  roleNames.insert(AltitudeRole, "altitude");
-  roleNames.insert(DescriptionRole, "description");
-  roleNames.insert(GuardianRole, "guardian");
-  roleNames.insert(PicturePathRole, "picture_path");
-  roleNames.insert(CoordinateRole, "coordinate");
-  roleNames.insert(NumberOfPlacesRole, "number of places");
-  roleNames.insert(RegionRole, "region");
-  roleNames.insert(UrlRole, "url");
-  return roleNames;
+  QHash<int, QByteArray> role_names;
+  role_names[NameRole] = "name";
+  role_names[ShortNameRole] = "short_name";
+  role_names[FirstLetterRole] = "first_letter";
+  role_names[AltitudeRole] = "altitude";
+  role_names[DescriptionRole] = "description";
+  role_names[GuardianRole] = "guardian";
+  role_names[PicturePathRole] = "picture_path";
+  role_names[CoordinateRole] = "coordinate";
+  role_names[NumberOfPlacesRole] = "number_of_places";
+  role_names[RegionRole] = "region";
+  role_names[UrlRole] = "url";
+  role_names[PhoneRole] = "phone";
+  return role_names;
 }
 
 /*
@@ -356,7 +385,7 @@ RefugeModel::componentComplete()
 int
 RefugeModel::entryCount() const
 {
-  return m_refuges.count();
+  return m_refuges.size();
 }
 
 void
@@ -365,6 +394,18 @@ RefugeModel::clearModel()
   beginResetModel();
   m_refuges.clear();
   endResetModel();
+}
+
+Refuge &
+RefugeModel::at(int index)
+{
+  return m_refuges[index];
+}
+
+Refuge &
+RefugeModel::operator[](int index)
+{
+  return at(index);
 }
 
 /***************************************************************************************************

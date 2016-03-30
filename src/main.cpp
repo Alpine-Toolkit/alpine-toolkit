@@ -97,6 +97,9 @@ register_qml_types()
 
   qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
 
+  qmlRegisterType<Refuge>(package, major, minor, "Refuge");
+  qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
+
   // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
 }
 
@@ -117,15 +120,18 @@ set_context_properties(QQmlContext * context)
   Ephemeride * ephemeride = new Ephemeride(); // parent ?
   context->setContextProperty(QLatin1String("ephemeride"), ephemeride);
 
-  QList<Refuge *> refuges;
-  load_refuge_json(":/data/ffcam-refuges.json", refuges);
-  // for (const Refuge * refuge : refuges) {
-  //   qInfo() << refuge->name();
+  QList<Refuge> * refuges = new QList<Refuge>();
+  load_refuge_json(":/data/ffcam-refuges.json", *refuges);
+  // for (const Refuge & refuge : refuges) {
+  //   qInfo() << refuge.name();
   // }
-  QList<QObject *> refuges_; // QObject is required
-  for (Refuge * refuge : refuges)
-    refuges_.append((QObject *) refuge);
-  context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+  QList<QObject *> refuges_; // QObject* is required
+  for (Refuge & refuge : *refuges)
+    refuges_.append(&refuge);
+  // context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+
+  RefugeModel * refuge_model = new RefugeModel(*refuges);
+  context->setContextProperty("refuge_model", refuge_model);
 }
 
 /**************************************************************************************************/
