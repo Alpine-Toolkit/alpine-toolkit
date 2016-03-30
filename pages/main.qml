@@ -52,7 +52,7 @@ ApplicationWindow {
 
             ToolButton {
                 id: nav_icon
-                label: Image {
+                contentItem: Image {
                     anchors.centerIn: parent
                     source: "qrc:/icons/menu-white.png"
                 }
@@ -62,7 +62,7 @@ ApplicationWindow {
             ToolButton {
                 id: back_icon
                 visible: false
-                label: Image {
+                contentItem: Image {
                     anchors.centerIn: parent
                     source: "qrc:/icons/arrow-back-white.png"
                 }
@@ -89,7 +89,7 @@ ApplicationWindow {
 
             ToolButton {
                 id: menu_icon
-                label: Image {
+                contentItem: Image {
                     anchors.centerIn: parent
                     source: "qrc:/icons/more-vert-white.png"
                 }
@@ -226,7 +226,6 @@ ApplicationWindow {
 
         initialItem: Pane {
             id: pane
-            anchors.fill: parent
 
             Image {
                 anchors.centerIn: parent

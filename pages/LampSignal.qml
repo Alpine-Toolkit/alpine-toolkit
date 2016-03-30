@@ -97,6 +97,8 @@ Pane {
             width: swipe_view.width
             height: swipe_view.height
 
+            property int button_point_size: 30
+
             function decode_message() {
                 if (on_android) {
                     var message = encoded_message.text;
@@ -131,20 +133,18 @@ Pane {
                     columnSpacing : 2 * Screen.devicePixelRatio
                     rowSpacing : 2 * Screen.devicePixelRatio
 
-                    property int button_point_size: 30
-
                     Button {
-                        font.pointSize: button_point_size
+                        font.pointSize: message_decoder_pane.button_point_size
                         text: qsTr("Dot")
                         onClicked: encoded_message.text += "."
                     }
                     Button {
-                        font.pointSize: button_point_size
+                        font.pointSize: message_decoder_pane.button_point_size
                         text: qsTr("Dash")
                         onClicked: encoded_message.text += "-"
                     }
                     Button {
-                        font.pointSize: button_point_size
+                        font.pointSize: message_decoder_pane.button_point_size
                         text: qsTr("Letter")
                         onClicked: {
                             encoded_message.text += "/";
@@ -152,7 +152,7 @@ Pane {
                         }
                     }
                     Button {
-                        font.pointSize: button_point_size
+                        font.pointSize: message_decoder_pane.button_point_size
                         text: qsTr("Word")
                         onClicked: {
                             encoded_message.text += " ";
