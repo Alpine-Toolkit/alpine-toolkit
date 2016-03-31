@@ -51,7 +51,7 @@
        Remove the comment if you do not require these default permissions. -->
   <!-- %%INSERT_PERMISSIONS -->
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- Protection level: dangerous -->
-  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.FLASHLIGHT"/>
   <uses-feature android:name="android.hardware.camera" android:required="false"/>
   <!-- <uses-feature android:name="android.hardware.camera.autofocus" /> -->
