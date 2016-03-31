@@ -7,6 +7,7 @@ TARGET = alpha-ursae-minoris
 
 CONFIG += c++14
 CONFIG += debug console qml_debug
+CONFIG += qtquickcompiler
 
 QT += core network
 QT += qml quick
