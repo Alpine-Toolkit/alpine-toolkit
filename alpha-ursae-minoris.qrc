@@ -6,6 +6,7 @@
     <file>application-icons/icon.svg</file>
     <file>application-icons/icon-512.png</file>
     <file>data/ffcam-refuges.json</file>
+    <file>data/ffcam-refuges.sqlite</file>
     <file>icons/arrow-back-white.png</file>
     <file>icons/arrow-back-white@3x.png</file>
     <file>icons/explore-black.png</file>

@@ -30,6 +30,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
@@ -138,8 +139,8 @@ set_context_properties(QQmlContext * context)
 
 /**************************************************************************************************/
 
-void
-run_before_event_loop()
+QDir
+create_user_application_directory()
 {
   // on Android
   //   DataLocation = /data/data/org.alpha_ursae_minoris
@@ -158,6 +159,14 @@ run_before_event_loop()
     }
   }
 
+  return application_user_directory;
+}
+
+/**************************************************************************************************/
+
+void
+run_before_event_loop(const QDir & application_user_directory)
+{
   QFile output_file(application_user_directory.filePath("out.txt"));
   if (!output_file.open(QIODevice::WriteOnly | QIODevice::Text))
     qWarning() << "couldn't write to file";
@@ -197,14 +206,25 @@ main(int argc, char *argv[])
   // Settings file path: "/data/data/org.alpha_ursae_minoris/files/.config/FabriceSalvaire/α Ursae Minoris.conf" 0
   // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 
+  QDir application_user_directory = create_user_application_directory();
+
   register_qml_types();
 
   QQmlApplicationEngine engine;
   QQmlContext * root_context = engine.rootContext();
   set_context_properties(root_context);
 
+  QString sqlite_path_src_relative("assets:/data/ffcam-refuges.sqlite");
+  QFileInfo sqlite_file_info(sqlite_path_src_relative);
+  QString sqlite_path_src = sqlite_file_info.absoluteFilePath();
+  if (!sqlite_file_info.exists())
+    qInfo() << sqlite_path_src << "not found";
+  QString sqlite_path_dst = application_user_directory.filePath("ffcam-refuges.sqlite");
+  qInfo() << sqlite_path_src << sqlite_path_dst;
+  bool copy_success = QFile::copy(sqlite_path_src, sqlite_path_dst);
+  qInfo() << "copy:" << copy_success;
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-  db.setDatabaseName("/home/fabrice/qtcarto-application/alpha-ursae-minoris/data/ffcam-refuges.sqlite");
+  db.setDatabaseName(sqlite_path_dst);
   if (!db.open())
     qInfo() << "database not open"; // db.lastError();
   SqlQueryModel * sql_model = new SqlQueryModel();
@@ -215,7 +235,7 @@ main(int argc, char *argv[])
   if (engine.rootObjects().isEmpty())
     return EXIT_FAILURE;
 
-  run_before_event_loop();
+  run_before_event_loop(application_user_directory);
 
   return application.exec();
 }
