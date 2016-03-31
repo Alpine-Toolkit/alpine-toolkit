@@ -34,6 +34,7 @@
 #include <QLocale>
 #include <QQmlApplicationEngine>
 #include <QSettings>
+#include <QSqlDatabase>
 #include <QStandardPaths>
 #include <QTranslator>
 #include <QtDebug>
@@ -45,6 +46,7 @@
 #include "refuge/refuge.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
+#include "sql_model/SqlQueryModel.h"
 
 #ifdef ANDROID
 #include "android_activity/android_activity.h"
@@ -200,6 +202,15 @@ main(int argc, char *argv[])
   QQmlApplicationEngine engine;
   QQmlContext * root_context = engine.rootContext();
   set_context_properties(root_context);
+
+  QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+  db.setDatabaseName("/home/fabrice/qtcarto-application/alpha-ursae-minoris/data/ffcam-refuges.sqlite");
+  if (!db.open())
+    qInfo() << "database not open"; // db.lastError();
+  SqlQueryModel * sql_model = new SqlQueryModel();
+  sql_model->set_query("SELECT * FROM refuges", db);
+  root_context->setContextProperty("sql_model", sql_model);
+
   engine.load(QUrl("qrc:/pages/main.qml"));
   if (engine.rootObjects().isEmpty())
     return EXIT_FAILURE;

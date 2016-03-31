@@ -12,6 +12,7 @@ QT += core network
 QT += qml quick
 QT += sensors
 QT += positioning
+QT += sql
 QT += svg widgets gui # to support SVG
 
 INCLUDEPATH += src
@@ -24,7 +25,8 @@ HEADERS += \
   src/sensors/qmlsensor.h \
   src/sensors/qmlsensorrange.h \
   src/international_morse_code_engine/international_morse_code_engine.h \
-  src/international_morse_code_engine/international_morse_code_engine_table.cpp
+  src/international_morse_code_engine/international_morse_code_engine_table.cpp \
+  src/sql_model/SqlQueryModel.h
 
 SOURCES += \
   src/ephemeride/ephemeride.cpp \
@@ -34,7 +36,8 @@ SOURCES += \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
   src/sensors/qmlsensor.cpp \
   src/sensors/qmlsensorrange.cpp \
-  src/international_morse_code_engine/international_morse_code_engine.cpp
+  src/international_morse_code_engine/international_morse_code_engine.cpp \
+  src/sql_model/SqlQueryModel.cpp
 
 lupdate_only{
 SOURCES += \
