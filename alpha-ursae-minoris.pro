@@ -15,6 +15,7 @@ QT += sensors
 QT += positioning
 QT += sql
 QT += svg widgets gui # to support SVG
+QT += charts
 
 INCLUDEPATH += src
 

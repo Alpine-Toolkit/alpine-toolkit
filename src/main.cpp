@@ -31,6 +31,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QApplication>
 #include <QGuiApplication>
 #include <QLocale>
 #include <QQmlApplicationEngine>
@@ -195,7 +196,8 @@ main(int argc, char *argv[])
   // QGuiApplication::setOrganizationDomain("fabrice-salvaire.fr")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-  QGuiApplication application(argc, argv);
+  // QGuiApplication application(argc, argv);
+  QApplication application(argc, argv); // for charts
 
   QTranslator translator;
   load_translation(application, translator);

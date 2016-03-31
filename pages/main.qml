@@ -206,6 +206,18 @@ ApplicationWindow {
                         lock_orientation: false
                     }
                     ListElement {
+                        title: qsTr("Camera")
+                        icon: ""
+                        source: "qrc:/pages/Camera.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
+                        title: qsTr("Chart")
+                        icon: ""
+                        source: "qrc:/pages/Chart.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
                         title: qsTr("UI Test")
                         icon: ""
                         source: "qrc:/pages/UiTest.qml"
