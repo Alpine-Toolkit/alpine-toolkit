@@ -3,5 +3,5 @@
 *.moc
 .directory
 moc_*.cpp
-translations/alpha-ursae-minoris.fr_FR.qm
-alpha-ursae-minoris.pro.user
+translations/alpine-toolkit.fr_FR.qm
+alpine-toolkit.pro.user

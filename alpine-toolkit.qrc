@@ -32,6 +32,6 @@
     <file>pages/UiTest.qml</file>
     <file>pages/main.qml</file>
     <file>qtlabscontrols.conf</file>
-    <file>translations/alpha-ursae-minoris.fr_FR.qm</file>
+    <file>translations/alpine-toolkit.fr_FR.qm</file>
   </qresource>
 </RCC>

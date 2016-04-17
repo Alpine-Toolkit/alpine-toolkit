@@ -61,8 +61,8 @@ load_translation(QGuiApplication & application, QTranslator & translator)
 {
   QLocale locale;
 
-  if (translator.load(locale, "alpha-ursae-minoris", ".", ":/translations", ".qm")) {
-    // :/translations/alpha-ursae-minoris.fr_FR.qml
+  if (translator.load(locale, "alpine-toolkit", ".", ":/translations", ".qm")) {
+    // :/translations/alpine-toolkit.fr_FR.qml
     qInfo() << "Install translator for locale" << locale.name();
     application.installTranslator(&translator);
   } else {
@@ -144,7 +144,7 @@ QDir
 create_user_application_directory()
 {
   // on Android
-  //   DataLocation = /data/data/org.alpha_ursae_minoris
+  //   DataLocation = /data/data/org.alpine_toolkit
   //   GenericDataLocation = <USER> = /storage/emulated/0 = user land root
   // on Linux
   //   GenericDataLocation = /home/fabrice/.local/share
@@ -152,7 +152,7 @@ create_user_application_directory()
   qInfo() << "GenericDataLocation:" << generic_data_location_path;
   // /storage/emulated/0/Android/data/org.xxx/files Alarms Download Notifications cache
 
-  QString application_user_directory_path = QDir(generic_data_location_path).filePath("alpha-ursae-minoris");
+  QString application_user_directory_path = QDir(generic_data_location_path).filePath("alpine-toolkit");
   QDir application_user_directory(application_user_directory_path);
   if (! application_user_directory.exists()) {
     if (!application_user_directory.mkpath(application_user_directory.absolutePath())) {
@@ -190,8 +190,8 @@ run_before_event_loop(const QDir & application_user_directory)
 int
 main(int argc, char *argv[])
 {
-  // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "α Ursae Minoris"));
-  QGuiApplication::setApplicationName("α Ursae Minoris");
+  // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "Alpine Toolkit "));
+  QGuiApplication::setApplicationName("Alpine Toolkit");
   QGuiApplication::setOrganizationName("FabriceSalvaire"); // overridden ???
   // QGuiApplication::setOrganizationDomain("fabrice-salvaire.fr")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -204,8 +204,8 @@ main(int argc, char *argv[])
 
   QSettings settings;
   qInfo() << "Settings file path:" << settings.fileName() << settings.format();
-  // Settings file path: "/home/fabrice/.config/FabriceSalvaire/α Ursae Minoris.conf" 0
-  // Settings file path: "/data/data/org.alpha_ursae_minoris/files/.config/FabriceSalvaire/α Ursae Minoris.conf" 0
+  // Settings file path: "/home/fabrice/.config/FabriceSalvaire/Alpine Toolkit.conf" 0
+  // Settings file path: "/data/data/org.alpine_toolkit/files/.config/FabriceSalvaire/Alpine Toolkit.conf" 0
   // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 
   QDir application_user_directory = create_user_application_directory();

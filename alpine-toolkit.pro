@@ -1,7 +1,7 @@
 ####################################################################################################
 
 TEMPLATE = app
-TARGET = alpha-ursae-minoris
+TARGET = alpine-toolkit
 
 ####################################################################################################
 
@@ -49,10 +49,10 @@ SOURCES += \
 # OTHER_FILES += \
 #   pages/*.qml
 
-RESOURCES += alpha-ursae-minoris.qrc
+RESOURCES += alpine-toolkit.qrc
 
-TRANSLATIONS = translations/alpha-ursae-minoris.fr_FR.ts
-# \ alpha-ursae-minoris-en.ts
+TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
+# \ alpine-toolkit-en.ts
 
 ####################################################################################################
 #

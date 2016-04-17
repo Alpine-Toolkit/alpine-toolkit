@@ -11,7 +11,7 @@ ApplicationWindow {
     visible: true
     width: 360 // set window size for desktop test
     height: 520
-    title: "α Ursae Minoris"
+    title: "Alpine Toolkit"
 
     // Settings {
     //     id: settings
@@ -84,7 +84,7 @@ ApplicationWindow {
                 font.pixelSize: 20
                 elide: Label.ElideRight
                 color: "white"
-                text: "α Ursae Minoris"
+                text: "Alpine Toolkit"
             }
 
             ToolButton {

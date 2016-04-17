@@ -1,3 +1,3 @@
-lupdate alpha-ursae-minoris.pro
-linguist translations/alpha-ursae-minoris.fr_FR.ts
-lrelease alpha-ursae-minoris.pro
+lupdate alpine-toolkit.pro
+linguist translations/alpine-toolkit.fr_FR.ts
+lrelease alpine-toolkit.pro
