@@ -212,6 +212,12 @@ ApplicationWindow {
                         lock_orientation: false
                     }
                     ListElement {
+                        title: qsTr("Heart Rate")
+                        icon: ""
+                        source: "qrc:/pages/HeartRate.qml"
+                        lock_orientation: false
+                    }
+                    ListElement {
                         title: qsTr("Chart")
                         icon: ""
                         source: "qrc:/pages/Chart.qml"

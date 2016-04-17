@@ -6,18 +6,17 @@ import QtQuick.Layouts 1.1
 import Qt.labs.controls 1.0
 import Qt.labs.controls.material 1.0
 
-import Local 1.0
+// import Local 1.0
 import QtPositioning 5.5
-import QtSensors 5.1
+import QtSensors 5.8 // 1
 
 Pane {
     id: altimeter_pane
 
-    // PressureSensor
     // Fixme: If not available ???
-    BarimeterAltimeterSensor {
+    PressureSensor {
+    // BarimeterAltimeterSensor {
         id: pressure_sensor
-        // id: barimeter_altimeter_sensor
         active: true // ???
         // altitude_offset: 40; // pressure_sensor.reading
 
@@ -28,11 +27,13 @@ Pane {
         onReadingChanged: {
             // Mean Filter
             var pressure = pressure_sensor.reading.pressure; // 82500 Pa
-            var temperature = pressure_sensor.reading.temperature; // 0
+            // var temperature = pressure_sensor.reading.temperature; // 0
             var altitude = pressure_sensor.reading.altitude;
+            var sea_level_pressure = pressure_sensor.reading.seaLevelPressure;
             pressure_label.text = Number(pressure).toLocaleString() + " Pa";
+            // sea_level_pressure_label.text = Number(sea_level_pressure).toLocaleString() + " Pa";
             altitude_label.text = Number(altitude).toLocaleString() + " m";
-            console.info(pressure, temperature, altitude);
+            console.info(pressure, altitude, sea_level_pressure);
         }
     }
 
@@ -152,7 +153,7 @@ Pane {
                             var altitude = Number.fromLocaleString(altitude_text_field.text);
                             console.info("clicked on calibrate", altitude_text_field.text);
                             pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
-                            // save sea_pressure_level in application
+                            // save sea_level_pressure in application
                         }
                         calibrate_popup.close()
                     }

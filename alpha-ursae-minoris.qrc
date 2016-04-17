@@ -22,6 +22,7 @@
     <file>pages/Emergency.qml</file>
     <file>pages/Ephemeride.qml</file>
     <file>pages/Gps.qml</file>
+    <file>pages/HeartRate.qml</file>
     <file>pages/Illuminance.qml</file>
     <file>pages/Inclination.qml</file>
     <file>pages/LampSignal.qml</file>
