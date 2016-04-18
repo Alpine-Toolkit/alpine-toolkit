@@ -1,0 +1,3 @@
+[submodule "qtcarto"]
+	path = qtcarto
+	url = git@github.com:FabriceSalvaire/qtcarto.git
