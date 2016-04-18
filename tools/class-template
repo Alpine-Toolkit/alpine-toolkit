@@ -1,0 +1,102 @@
+#! /usr/bin/env python3
+# -*- Python -*-
+
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+import os
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='Generate CPP Class',
+                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+argument_parser.add_argument('--property', action='store_true')
+
+argument_parser.add_argument('class_file_name', metavar='class_file_name',
+                             help='class_definition_path')
+
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+copyright_header = """/***************************************************************************************************
+**
+** $QTCARTO_BEGIN_LICENSE:GPL3$
+**
+** Copyright (C) 2016 Fabrice Salvaire
+** Contact: http://www.fabrice-salvaire.fr
+**
+** This file is part of the QtCarto library.
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+** $QTCARTO_END_LICENSE$
+**
+***************************************************************************************************/
+"""
+
+rule = '/**************************************************************************************************/\n'
+
+footer = """
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/
+"""
+
+####################################################################################################
+
+class_name = os.path.basename(args.class_file_name).upper()
+
+output = args.class_file_name + '.h'
+if not os.path.exists(output):
+    with open(output, 'w') as f:
+        f.write("// -*- mode: c++ -*-\n")
+        f.write("\n{copyright_header}\n".format(copyright_header=copyright_header))
+        f.write(rule + '\n')
+        f.write("#ifndef __{class_name}_H__\n".format(class_name=class_name))
+        f.write("#define __{class_name}_H__\n".format(class_name=class_name))
+        f.write('\n' + rule)
+        f.write("""
+// QC_BEGIN_NAMESPACE
+// QC_END_NAMESPACE
+
+""")
+        f.write("#endif /* __{class_name}_H__ */\n".format(class_name=class_name))
+        f.write(footer)
+
+####################################################################################################
+
+output = args.class_file_name + '.cpp'
+if not os.path.exists(output):
+    with open(output, 'w') as f:
+        f.write("{copyright_header}\n".format(copyright_header=copyright_header))
+        f.write("""
+// QC_BEGIN_NAMESPACE
+// QC_END_NAMESPACE
+""")
+        f.write(footer)
+
+####################################################################################################
+#
+# End
+#
+####################################################################################################

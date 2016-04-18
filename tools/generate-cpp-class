@@ -1,0 +1,226 @@
+#! /usr/bin/env python3
+# -*- Python -*-
+
+####################################################################################################
+
+####################################################################################################
+
+import argparse
+import sys
+
+####################################################################################################
+#
+# Options
+#
+
+argument_parser = argparse.ArgumentParser(description='Generate CPP Class',
+                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+argument_parser.add_argument('--property', action='store_true')
+argument_parser.add_argument('--inline-setter', action='store_true')
+argument_parser.add_argument('--inline-getter', action='store_true')
+
+argument_parser.add_argument('class_definition_path', metavar='class_def_file',
+                             help='class_definition_path')
+
+argument_parser.add_argument('class_file_name', metavar='class_file_name',
+                             help='class_definition_path')
+
+args = argument_parser.parse_args()
+
+####################################################################################################
+
+copyright_header = """/***************************************************************************************************
+**
+** $QTCARTO_BEGIN_LICENSE:GPL3$
+**
+** Copyright (C) 2016 Fabrice Salvaire
+** Contact: http://www.fabrice-salvaire.fr
+**
+** This file is part of the QtCarto library.
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+** $QTCARTO_END_LICENSE$
+**
+***************************************************************************************************/
+"""
+
+rule = '/**************************************************************************************************/\n'
+
+footer = """
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/
+"""
+
+####################################################################################################
+
+with open(args.class_definition_path) as f:
+    class_definition = f.readlines()
+
+class_line = class_definition[0]
+if ':' in class_line:
+    class_name, parent_class = [x.strip() for x in class_line.split(':')]
+    if not parent_class:
+        parent_class = None
+else:
+    class_name = class_line
+    parent_class = None
+
+members = []
+for line in class_definition[1:]:
+    if line.endswith(';'):
+        line = line[-1]
+    l = line.rfind(' ')
+    type_ = line[:l].strip()
+    name = line[l:].strip()
+    if name.startswith('m_'):
+        name = name[2:]
+    member = {'type':type_, 'name':name}
+    member['getter_type'] = "const {type} &".format(**member) if type_.startswith('Q') else type_
+    member['setter_type'] = "const {type} &".format(**member) if type_.startswith('Q') else type_
+    members.append(member)
+
+####################################################################################################
+
+with open(args.class_file_name + '.h-generated', 'w') as f:
+
+    f.write("// -*- mode: c++ -*-\n")
+    f.write("\n{copyright_header}\n".format(copyright_header=copyright_header))
+    f.write(rule + '\n')
+    f.write("#ifndef __{class_name}_H__\n".format(class_name=class_name))
+    f.write("#define __{class_name}_H__\n".format(class_name=class_name))
+    f.write("""
+/**************************************************************************************************/
+
+#include <...>
+#include "..."
+
+/**************************************************************************************************/
+
+// QC_BEGIN_NAMESPACE
+
+""")
+
+    if parent_class is not None:
+        f.write("class {class_name} : public {parent_class}\n".format(class_name=class_name, parent_class=parent_class))
+    else:
+        f.write("class {class_name}\n".format(class_name=class_name))
+    f.write("""{\n  Q_OBJECT\n""")
+    if args.property:
+        for member in members:
+            f.write("  Q_PROPERTY({type} {name} READ {name} WRITE set_{name} NOTIFY {name}Changed)\n".format(**member))
+    f.write("\n")
+    f.write("public:\n")
+    f.write("  {class_name}(QObject * parent = 0);\n".format(class_name=class_name))
+    f.write("  {class_name}(const {class_name} & other);\n".format(class_name=class_name))
+    f.write("  ~{class_name}();\n".format(class_name=class_name))
+    f.write("\n")
+    f.write("  {class_name} & operator=(const {class_name} & other);\n".format(class_name=class_name))
+    for member in members:
+       f.write("\n")
+       if args.inline_getter:
+           f.write("  {getter_type} {name}() const {{ return m_{name}; }}\n".format(**member))
+       else:
+           f.write("  {getter_type} {name}() const;\n".format(**member))
+       if args.inline_setter:
+           f.write("  void set_{name}({setter_type} {name}) {{ m_{name} = {name}; }}\n".format(**member)) # const ... &
+       else:
+           f.write("  void set_{name}({setter_type} {name});\n".format(**member)) # const ... &
+    if args.property:
+        f.write("\n")
+        f.write("signals:\n")
+        for member in members:
+            f.write("  void {name}Changed();\n".format(**member))
+    f.write("\n")
+    f.write("private:\n")
+    for member in members:
+        f.write("  {type} m_{name};\n".format(**member))
+    f.write("};\n")
+
+    f.write("""
+// QC_END_NAMESPACE
+
+""")
+    f.write("#endif /* __{class_name}_H__ */\n".format(class_name=class_name))
+    f.write(footer)
+
+####################################################################################################
+
+with open(args.class_file_name + '.cpp-generated', 'w') as f:
+
+    f.write("{copyright_header}\n".format(copyright_header=copyright_header))
+
+    f.write("{class_name}::{class_name}()\n".format(class_name=class_name))
+    f.write("  : m_{name}(),\n".format(**members[0])) # parent_class
+    for member in members[1:-1]:
+        f.write("    m_{name}(),\n".format(**member))
+    f.write("    m_{name}()\n".format(**members[-1]))
+    f.write("{}\n")
+
+    f.write("\n")
+    f.write("{class_name}::{class_name}(const {class_name} & other)\n".format(class_name=class_name))
+    f.write("  : m_{name}(other.m_{name}),\n".format(**members[0]))
+    for member in members[1:-1]:
+       f.write("    m_{name}(other.m_{name}),\n".format(**member))
+    f.write("    m_{name}(other.m_{name})\n".format(**members[-1]))
+    f.write("{}\n")
+
+    f.write("\n")
+    f.write("{class_name}::~{class_name}()\n".format(class_name=class_name))
+    f.write("{}\n")
+
+    f.write("\n")
+    f.write("{class_name} &\n".format(class_name=class_name))
+    f.write("{class_name}::operator=(const {class_name} & other)\n".format(class_name=class_name))
+    f.write("{\n")
+    f.write("  if (this != &other) {\n")
+    for member in members:
+       f.write("    m_{name} = other.m_{name};\n".format(**member))
+    f.write("  }\n")
+    f.write("\n")
+    f.write("  return *this;\n")
+    f.write("}\n")
+
+    for member in members:
+       if not args.inline_getter:
+           f.write("\n")
+           f.write("{getter_type}\n".format(**member))
+           f.write("{class_name}::{name}() const\n".format(class_name=class_name, **member))
+           f.write("{\n")
+           f.write("  return m_{name};\n".format(**member))
+           f.write("}\n")
+        if not args.inline_setter:
+            f.write("\n")
+            f.write("void\n")
+            f.write("{class_name}::set_{name}({setter_type} {name})\n".format(class_name=class_name, **member))
+            f.write("{\n")
+            f.write("  m_{name} = {name};\n".format(**member))
+            if args.property:
+                f.write("  emit {name}Changed();\n".format(**member))
+            f.write("}\n")
+
+    f.write("""
+// QC_END_NAMESPACE
+""")
+    f.write(footer)
+
+####################################################################################################
+#
+# End
+#
+####################################################################################################
