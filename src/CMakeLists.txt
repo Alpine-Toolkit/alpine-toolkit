@@ -9,16 +9,14 @@
 
 ####################################################################################################
 #
-# Executable
+# Library
 #
 
-foreach(name
-    rrd
-    )
-  add_executable(test_${name} test_${name}.cpp)
-  target_link_libraries(test_${name} Qt5::Test alpine_toolkit)
-  add_test(NAME ${name} COMMAND test_${name})
-endforeach(name)
+set(qtcarto_files
+  rrd/rrd.cpp
+  )
+add_library(alpine_toolkit SHARED ${qtcarto_files})
+target_link_libraries(alpine_toolkit Qt5::Core) # Qt5::Gui Qt5::Network
 
 ####################################################################################################
 #
