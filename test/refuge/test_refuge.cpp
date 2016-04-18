@@ -31,7 +31,7 @@
 
 /**************************************************************************************************/
 
-#include "refuge.h"
+#include "refuge/refuge.h"
 
 /***************************************************************************************************/
 
@@ -57,10 +57,10 @@ TestRefuge::test_refuge_ctor()
 void
 TestRefuge::test_load_refuge_json()
 {
-  QList<Refuge *> refuges;
+  QList<Refuge> refuges;
   load_refuge_json("ffcam-refuges.json", refuges);
-  for (const Refuge * refuge : refuges) {
-    qInfo() << refuge->name();
+  for (const Refuge & refuge : refuges) {
+    qInfo() << refuge.name();
   }
 }
 
