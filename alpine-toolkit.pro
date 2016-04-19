@@ -20,6 +20,8 @@ QT += svg widgets gui # to support SVG
 INCLUDEPATH += src
 
 HEADERS += \
+  bleaudb/bleaudb.h \
+  bleaudb/bleaudb_json_loader.h \
   src/ephemeride/ephemeride.h \
   src/refuge/refuge.h \
   src/satellite_model/satellite_model.h \
@@ -28,17 +30,26 @@ HEADERS += \
   src/sensors/qmlsensorrange.h \
   src/international_morse_code_engine/international_morse_code_engine.h \
   src/international_morse_code_engine/international_morse_code_engine_table.cpp \
+  src/startup/startup.h \
   src/sql_model/SqlQueryModel.h
 
 SOURCES += \
+  bleaudb/bleaudb.cpp \
+  bleaudb/bleaudb_json_loader.cpp \
   src/ephemeride/ephemeride.cpp \
+  src/international_morse_code_engine/international_morse_code_engine.cpp \
   src/main.cpp \
   src/refuge/refuge.cpp \
   src/satellite_model/satellite_model.cpp \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
   src/sensors/qmlsensor.cpp \
   src/sensors/qmlsensorrange.cpp \
-  src/international_morse_code_engine/international_morse_code_engine.cpp \
+  src/startup/load_sqlite.cpp \
+  src/startup/load_translation.cpp \
+  src/startup/register_qml_type.cpp \
+  src/startup/set_context_properties.cpp \
+  src/startup/test.cpp \
+  src/startup/user_directory.cpp \
   src/sql_model/SqlQueryModel.cpp
 
 lupdate_only{

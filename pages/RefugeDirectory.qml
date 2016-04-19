@@ -31,8 +31,8 @@ Pane {
     ListView {
         id: list_view
         anchors.fill: parent
-        // model: refuge_model
-        model: sql_model
+        model: refuge_model
+        // model: sql_model
         delegate: ItemDelegate {
             width: parent.width
             font.pixelSize: 12
@@ -42,18 +42,18 @@ Pane {
                 app_bar.state = "BACK"
                 nav_icon.visible = false
                 back_icon.visible = true
-                // var properties = {'model': refuge_model[model.index]}
+                var properties = {'model': refuge_model[model.index]}
                 // console.info(refuge_model, model.index, refuge_model.at(model.index));
                 // var properties = {'model': refuge_model.at(model.index)}
-                var properties = {'model': {
-                    'altitude': model.altitude,
-                    'description': model.description,
-                    'guardian': model.guardian,
-                    'coordinate': {'latitude': model.latitude, 'longitude': model.longitude},
-                    'name': model.name,
-                    'phone': model.phone,
-                    'region': model.region
-                }};
+                // var properties = {'model': {
+                //     'altitude': model.altitude,
+                //     'description': model.description,
+                //     'guardian': model.guardian,
+                //     'coordinate': {'latitude': model.latitude, 'longitude': model.longitude},
+                //     'name': model.name,
+                //     'phone': model.phone,
+                //     'region': model.region
+                // }};
                 stack_view.push("qrc:/pages/Refuge.qml", properties, StackView.Transition)
             }
         }
