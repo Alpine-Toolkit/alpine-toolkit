@@ -10,7 +10,7 @@ CONFIG += debug console qml_debug
 CONFIG += qtquickcompiler
 
 QT += core network
-QT += qml quick
+QT += qml quick quickcontrols
 QT += sensors
 QT += positioning
 QT += sql

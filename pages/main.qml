@@ -53,7 +53,9 @@ ApplicationWindow {
             ToolButton {
                 id: nav_icon
                 contentItem: Image {
-                    anchors.centerIn: parent
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
                     source: "qrc:/icons/menu-white.png"
                 }
                 onClicked: drawer.open()
@@ -63,7 +65,9 @@ ApplicationWindow {
                 id: back_icon
                 visible: false
                 contentItem: Image {
-                    anchors.centerIn: parent
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
                     source: "qrc:/icons/arrow-back-white.png"
                 }
                 onClicked: {
@@ -90,7 +94,9 @@ ApplicationWindow {
             ToolButton {
                 id: menu_icon
                 contentItem: Image {
-                    anchors.centerIn: parent
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
                     source: "qrc:/icons/more-vert-white.png"
                 }
                 onClicked: options_menu.open()
@@ -114,128 +120,115 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
+        width: Math.min(application_window.width, application_window.height) / 3 * 2
+        height: application_window.height
 
-        Pane {
-            padding: 0
-            width: Math.min(application_window.width, application_window.height) / 3 * 2
-            height: application_window.height
+        ListView {
+            id: list_view
+            currentIndex: -1
+            anchors.fill: parent
 
-            ListView {
-                id: list_view
-                currentIndex: -1
-                anchors.fill: parent
-
-                delegate: ItemDelegate {
-                    width: parent.width
-                    font.pixelSize: 16
-                    text: model.title
-                    highlighted: ListView.isCurrentItem
-                    // indicator: Image {
-                    //     x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
-                    //     y: control.topPadding + (control.availableHeight - height) / 2
-
-                    //     visible: control.checked
-                    //     source: control.checkable ? "qrc:/qt-project.org/imports/Qt/labs/controls/images/check.png" : ""
-                    // }
-                    onClicked: {
-                        if (list_view.currentIndex != index) {
-                            list_view.currentIndex = index
-                            title_label.text = model.title
-                            if (on_android) {
-                                android_activity.orientation_lock = model.lock_orientation;
-                            }
-                            stack_view.replace(model.source)
+            delegate: ItemDelegate {
+                width: parent.width
+                font.pixelSize: 16
+                text: model.title
+                highlighted: ListView.isCurrentItem
+                onClicked: {
+                    if (list_view.currentIndex != index) {
+                        list_view.currentIndex = index
+                        title_label.text = model.title
+                        if (on_android) {
+                            android_activity.orientation_lock = model.lock_orientation;
                         }
-                        drawer.close()
+                        stack_view.replace(model.source)
                     }
+                    drawer.close()
                 }
-
-                model: ListModel {
-                    ListElement {
-                        title: qsTr("Altimeter")
-                        icon: ""
-                        source: "qrc:/pages/Altimeter.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Ephemeride")
-                        icon: ""
-                        source: "qrc:/pages/Ephemeride.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Emergency")
-                        icon: ""
-                        source: "qrc:/pages/Emergency.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Inclination")
-                        icon: ""
-                        source: "qrc:/pages/Inclination.qml"
-                        lock_orientation: true
-                    }
-                    ListElement {
-                        title: qsTr("Illuminance")
-                        icon: ""
-                        source: "qrc:/pages/Illuminance.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("GPS")
-                        icon: "qrc:/icons/explore-black.png"
-                        source: "qrc:/pages/Gps.qml"
-                        lock_orientation: true
-                    }
-                    ListElement {
-                        title: qsTr("Lamp Signal")
-                        icon: ""
-                        source: "qrc:/pages/LampSignal.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Refuges")
-                        icon: ""
-                        source: "qrc:/pages/RefugeDirectory.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Torch")
-                        icon: ""
-                        source: "qrc:/pages/Torch.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Camera")
-                        icon: ""
-                        source: "qrc:/pages/Camera.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Heart Rate")
-                        icon: ""
-                        source: "qrc:/pages/HeartRate.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("Chart")
-                        icon: ""
-                        source: "qrc:/pages/Chart.qml"
-                        lock_orientation: false
-                    }
-                    ListElement {
-                        title: qsTr("UI Test")
-                        icon: ""
-                        source: "qrc:/pages/UiTest.qml"
-                        lock_orientation: false
-                    }
-                }
-
-                ScrollIndicator.vertical: ScrollIndicator {}
             }
-        }
 
-        onClicked: close()
+            model: ListModel {
+                ListElement {
+                    title: qsTr("Altimeter")
+                    icon: ""
+                    source: "qrc:/pages/Altimeter.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Ephemeride")
+                    icon: ""
+                    source: "qrc:/pages/Ephemeride.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Emergency")
+                    icon: ""
+                    source: "qrc:/pages/Emergency.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Inclination")
+                    icon: ""
+                    source: "qrc:/pages/Inclination.qml"
+                    lock_orientation: true
+                }
+                ListElement {
+                    title: qsTr("Illuminance")
+                    icon: ""
+                    source: "qrc:/pages/Illuminance.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("GPS")
+                    icon: "qrc:/icons/explore-black.png"
+                    source: "qrc:/pages/Gps.qml"
+                    lock_orientation: true
+                }
+                ListElement {
+                    title: qsTr("Lamp Signal")
+                    icon: ""
+                    source: "qrc:/pages/LampSignal.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Refuges")
+                    icon: ""
+                    source: "qrc:/pages/RefugeDirectory.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Torch")
+                    icon: ""
+                    source: "qrc:/pages/Torch.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Camera")
+                    icon: ""
+                    source: "qrc:/pages/Camera.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Heart Rate")
+                    icon: ""
+                    source: "qrc:/pages/HeartRate.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("Chart")
+                    icon: ""
+                    source: "qrc:/pages/Chart.qml"
+                    lock_orientation: false
+                }
+                ListElement {
+                    title: qsTr("UI Test")
+                    icon: ""
+                    source: "qrc:/pages/UiTest.qml"
+                    lock_orientation: false
+                }
+            }
+
+            ScrollIndicator.vertical: ScrollIndicator { }
+        }
     }
 
     StackView {
@@ -266,7 +259,7 @@ ApplicationWindow {
         y: application_window.height / 6
         width: Math.min(application_window.width, application_window.height) / 3 * 2
         contentHeight: about_column.height
-        closePolicy: Popup.OnEscape | Popup.OnPressOutside
+        // closePolicy: Popup.OnEscape | Popup.OnPressOutside
 
         Column {
             id: about_column
