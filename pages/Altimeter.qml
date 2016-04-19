@@ -6,16 +6,16 @@ import QtQuick.Layouts 1.1
 import Qt.labs.controls 1.0
 import Qt.labs.controls.material 1.0
 
-// import Local 1.0
+import Local 1.0
 import QtPositioning 5.5
-import QtSensors 5.8 // 1
+import QtSensors 5.1 // .8
 
 Pane {
     id: altimeter_pane
 
     // Fixme: If not available ???
-    PressureSensor {
-    // BarimeterAltimeterSensor {
+    // PressureSensor
+    BarimeterAltimeterSensor {
         id: pressure_sensor
         active: true // ???
         // altitude_offset: 40; // pressure_sensor.reading
