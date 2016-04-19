@@ -20,8 +20,8 @@ QT += svg widgets gui # to support SVG
 INCLUDEPATH += src
 
 HEADERS += \
-  bleaudb/bleaudb.h \
-  bleaudb/bleaudb_json_loader.h \
+  src/bleaudb/bleaudb.h \
+  src/bleaudb/bleaudb_json_loader.h \
   src/ephemeride/ephemeride.h \
   src/refuge/refuge.h \
   src/satellite_model/satellite_model.h \
@@ -34,8 +34,8 @@ HEADERS += \
   src/sql_model/SqlQueryModel.h
 
 SOURCES += \
-  bleaudb/bleaudb.cpp \
-  bleaudb/bleaudb_json_loader.cpp \
+  src/bleaudb/bleaudb.cpp \
+  src/bleaudb/bleaudb_json_loader.cpp \
   src/ephemeride/ephemeride.cpp \
   src/international_morse_code_engine/international_morse_code_engine.cpp \
   src/main.cpp \
