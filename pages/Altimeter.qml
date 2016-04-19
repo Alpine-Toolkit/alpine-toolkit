@@ -47,7 +47,7 @@ Pane {
             var coordinate = position.coordinate;
             // position_label.text = coordinate.longitude + " " + coordinate.latitude + " +- " + position_source.position.horizontalAccuracy;
             if (coordinate.altitudeValid) {
-                gps_altitude_label.text = coordinate.altitude + " +- " + position.verticalAccuracy;
+                gps_altitude_label.text = coordinate.altitude; // + " +- " + position.verticalAccuracy;
             }
         }
     }
@@ -99,9 +99,7 @@ Pane {
             id: calibrate_button
             Layout.alignment: Qt.AlignCenter
             text: qsTr("Calibrate")
-            onClicked: {
-                calibrate_popup.open()
-            }
+            onClicked: calibrate_popup.open()
         }
     }
 
@@ -110,14 +108,14 @@ Pane {
         modal: true
         focus: true
         // margins: 5 * Screen.devicePixelRatio // must be centered
-        x: (application_window.width - width) / 2
+        x: (application_window.width - width) / 2 // Fixme; not centered
         y: application_window.height / 6
         width: application_window.width * .9
-        contentHeight: about_column.height
-        closePolicy: Popup.OnEscape | Popup.NoAutoClose
+        contentHeight: column.height
+        // closePolicy: Popup.OnEscape | Popup.NoAutoClose
 
         Column {
-            id: about_column
+            id: column
             width: parent.width
             spacing: 5 * Screen.devicePixelRatio
 
