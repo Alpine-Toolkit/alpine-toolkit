@@ -62,8 +62,8 @@ class Refuge : public QObject
   Q_PROPERTY(QString phone READ phone WRITE set_phone NOTIFY phoneChanged)
 
 public:
-  explicit Refuge(QObject *parent = nullptr);
-  Refuge(const Refuge & refuge, QObject *parent = nullptr);
+  explicit Refuge(QObject * parent = nullptr);
+  Refuge(const Refuge & refuge, QObject * parent = nullptr);
 
   Refuge & operator=(const Refuge & other); // not required for QML
 

@@ -39,7 +39,7 @@
 
 /**************************************************************************************************/
 
-Refuge::Refuge(QObject *parent)
+Refuge::Refuge(QObject * parent)
   : QObject(parent),
     m_name(),
     m_altitude(0),
@@ -54,7 +54,7 @@ Refuge::Refuge(QObject *parent)
 {
 }
 
-Refuge::Refuge(const Refuge & other, QObject *parent)
+Refuge::Refuge(const Refuge & other, QObject * parent)
   : QObject(parent),
     m_name(other.m_name),
     m_altitude(other.m_altitude),
