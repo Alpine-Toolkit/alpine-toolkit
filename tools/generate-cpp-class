@@ -83,8 +83,9 @@ else:
 
 members = []
 for line in class_definition[1:]:
+    line = line.strip()
     if line.endswith(';'):
-        line = line[-1]
+        line = line[:-1]
     l = line.rfind(' ')
     type_ = line[:l].strip()
     name = line[l:].strip()
@@ -126,8 +127,8 @@ with open(args.class_file_name + '.h-generated', 'w') as f:
             f.write("  Q_PROPERTY({type} {name} READ {name} WRITE set_{name} NOTIFY {name}Changed)\n".format(**member))
     f.write("\n")
     f.write("public:\n")
-    f.write("  {class_name}(QObject * parent = 0);\n".format(class_name=class_name))
-    f.write("  {class_name}(const {class_name} & other);\n".format(class_name=class_name))
+    f.write("  {class_name}(QObject * parent = nullptr);\n".format(class_name=class_name))
+    f.write("  {class_name}(const {class_name} & other, QObject * parent = nullptr);\n".format(class_name=class_name))
     f.write("  ~{class_name}();\n".format(class_name=class_name))
     f.write("\n")
     f.write("  {class_name} & operator=(const {class_name} & other);\n".format(class_name=class_name))
@@ -165,16 +166,18 @@ with open(args.class_file_name + '.cpp-generated', 'w') as f:
 
     f.write("{copyright_header}\n".format(copyright_header=copyright_header))
 
-    f.write("{class_name}::{class_name}()\n".format(class_name=class_name))
-    f.write("  : m_{name}(),\n".format(**members[0])) # parent_class
+    f.write("{class_name}::{class_name}(QObject * parent)\n".format(class_name=class_name))
+    f.write("  : QObject(parent),\n")
+    f.write("    m_{name}(),\n".format(**members[0])) # parent_class
     for member in members[1:-1]:
         f.write("    m_{name}(),\n".format(**member))
     f.write("    m_{name}()\n".format(**members[-1]))
     f.write("{}\n")
 
     f.write("\n")
-    f.write("{class_name}::{class_name}(const {class_name} & other)\n".format(class_name=class_name))
-    f.write("  : m_{name}(other.m_{name}),\n".format(**members[0]))
+    f.write("{class_name}::{class_name}(const {class_name} & other, QObject * parent)\n".format(class_name=class_name))
+    f.write("  : QObject(parent),\n")
+    f.write("    m_{name}(other.m_{name}),\n".format(**members[0]))
     for member in members[1:-1]:
        f.write("    m_{name}(other.m_{name}),\n".format(**member))
     f.write("    m_{name}(other.m_{name})\n".format(**members[-1]))
@@ -197,13 +200,13 @@ with open(args.class_file_name + '.cpp-generated', 'w') as f:
     f.write("}\n")
 
     for member in members:
-       if not args.inline_getter:
-           f.write("\n")
-           f.write("{getter_type}\n".format(**member))
-           f.write("{class_name}::{name}() const\n".format(class_name=class_name, **member))
-           f.write("{\n")
-           f.write("  return m_{name};\n".format(**member))
-           f.write("}\n")
+        if not args.inline_getter:
+            f.write("\n")
+            f.write("{getter_type}\n".format(**member))
+            f.write("{class_name}::{name}() const\n".format(class_name=class_name, **member))
+            f.write("{\n")
+            f.write("  return m_{name};\n".format(**member))
+            f.write("}\n")
         if not args.inline_setter:
             f.write("\n")
             f.write("void\n")
@@ -213,6 +216,10 @@ with open(args.class_file_name + '.cpp-generated', 'w') as f:
             if args.property:
                 f.write("  emit {name}Changed();\n".format(**member))
             f.write("}\n")
+
+    f.write("\n\n")
+    for member in members:
+            f.write(".set_{name}(json_object[QStringLiteral(\"{name}\")].toString());\n".format(class_name=class_name, **member))
 
     f.write("""
 // QC_END_NAMESPACE
