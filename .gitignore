@@ -3,5 +3,9 @@
 *.moc
 .directory
 moc_*.cpp
+Makefile
 translations/alpine-toolkit.fr_FR.qm
 alpine-toolkit.pro.user
+cmake-build
+qmake-build
+build
