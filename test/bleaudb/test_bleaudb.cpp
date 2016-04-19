@@ -55,11 +55,11 @@ void TestQcBleauDB::constructor()
   for (const BleauMassif & massif : bleaudb.massifs())
     qInfo() << massif.name();
 
-  for (const BleauCircuit & circuit : bleaudb.circuits()) {
-    qInfo() << circuit.number();
-    for (const BleauBoulder & boulder : circuit.boulders())
-      qInfo() << boulder.name();
-  }
+  // for (const BleauCircuit & circuit : bleaudb.circuits()) {
+  //   qInfo() << circuit.number();
+  //   for (const BleauBoulder & boulder : circuit.boulders())
+  //     qInfo() << boulder.name();
+  // }
 }
 
 /***************************************************************************************************/

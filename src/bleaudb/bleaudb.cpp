@@ -296,7 +296,7 @@ BleauCircuit::BleauCircuit(QObject * parent)
     m_creation_date(),
     m_gestion(),
     m_grade(),
-    m_massif(),
+    m_massif(nullptr),
     m_note(),
     m_number(),
     m_opener(),
@@ -365,7 +365,7 @@ BleauCircuit::set_coordinate(const QGeoCoordinate & coordinate)
 // }
 
 void
-BleauCircuit::append_boulder(const BleauBoulder & boulder)
+BleauCircuit::add_boulder(const BleauBoulder & boulder)
 {
   m_boulders.append(boulder);
   // emit bouldersChanged();
@@ -400,7 +400,7 @@ BleauCircuit::set_grade(BleauAlpineGrade grade)
 }
 
 void
-BleauCircuit::set_massif(BleauMassif massif)
+BleauCircuit::set_massif(BleauMassif * massif)
 {
   m_massif = massif;
   emit massifChanged();
@@ -486,43 +486,22 @@ BleauDB::~BleauDB()
 //   return *this;
 // }
 
-// void
-// BleauDB::set_places(const QList<BleauPlace> & places)
-// {
-//   m_places = places;
-//   emit placesChanged();
-// }
-
-// void
-// BleauDB::set_massifs(const QList<BleauMassif> & massifs)
-// {
-//   m_massifs = massifs;
-//   emit massifsChanged();
-// }
-
-// void
-// BleauDB::set_circuits(const QList<BleauCircuit> & circuits)
-// {
-//   m_circuits = circuits;
-//   emit circuitsChanged();
-// }
-
 void
-BleauDB::append_place(const BleauPlace & place)
+BleauDB::add_place(const BleauPlace & place)
 {
-  m_places.append(place);
+  m_places.insert(place.name(), place);
   // emit placesChanged();
 }
 
 void
-BleauDB::append_massif(const BleauMassif & massif)
+BleauDB::add_massif(const BleauMassif & massif)
 {
-  m_massifs.append(massif);
+  m_massifs.insert(massif.name(), massif);
   // emit massifsChanged();
 }
 
 void
-BleauDB::append_circuit(const BleauCircuit & circuit)
+BleauDB::add_circuit(const BleauCircuit & circuit)
 {
   m_circuits.append(circuit);
   // emit circuitsChanged();

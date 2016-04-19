@@ -33,10 +33,11 @@
 
 /**************************************************************************************************/
 
-#include <QObject>
-#include <QList>
-#include <QString>
 #include <QGeoCoordinate>
+#include <QHash>
+#include <QList>
+#include <QObject>
+#include <QString>
 
 // #include "map/geo_coordinate.h"
 
@@ -44,26 +45,37 @@
 
 // QC_BEGIN_NAMESPACE
 
-class BleauPlaceCategory : public QString
-{};
+// class BleauPlaceCategory : public QString
+// {};
 
-class BleauAlpineGrade : public QString
-{};
+// class BleauAlpineGrade : public QString
+// {};
 
-class BleauGrade : public QString
-{};
+// class BleauGrade : public QString
+// {};
 
-class BleauWayNumber : public QString
-{};
+// class BleauWayNumber : public QString
+// {};
 
-class BleauRefectionNote : public QString
-{};
+// class BleauRefectionNote : public QString
+// {};
 
-class BleauOpeners : public QString
-{};
+// class BleauOpeners : public QString
+// {};
 
-class BleauChaosType : public QString
-{};
+// class BleauChaosType : public QString
+// {};
+
+// class BleauPlaceCategory : public QString
+// {};
+
+#define BleauAlpineGrade QString
+#define BleauGrade QString
+#define BleauWayNumber QString
+#define BleauRefectionNote QString
+#define BleauOpeners QString
+#define BleauChaosType QString
+#define BleauPlaceCategory QString
 
 /**************************************************************************************************/
 
@@ -247,7 +259,7 @@ class BleauCircuit : public QObject
   Q_PROPERTY(unsigned int creation_date READ creation_date WRITE set_creation_date NOTIFY creation_dateChanged)
   Q_PROPERTY(QString gestion READ gestion WRITE set_gestion NOTIFY gestionChanged)
   Q_PROPERTY(BleauAlpineGrade grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(BleauMassif massif READ massif WRITE set_massif NOTIFY massifChanged)
+  // Q_PROPERTY(BleauMassif * massif READ massif WRITE set_massif NOTIFY massifChanged)
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
   Q_PROPERTY(unsigned int number READ number WRITE set_number NOTIFY numberChanged)
   Q_PROPERTY(BleauOpeners opener READ opener WRITE set_opener NOTIFY openerChanged)
@@ -268,7 +280,7 @@ public:
 
   BleauBoulderList boulders() const { return m_boulders; }
   // void set_boulders(BleauBoulderList boulders);
-  void append_boulder(const BleauBoulder & boulder);
+  void add_boulder(const BleauBoulder & boulder);
 
   const QString & colour() const { return m_colour; }
   void set_colour(const QString & colour);
@@ -282,8 +294,8 @@ public:
   BleauAlpineGrade grade() const { return m_grade; }
   void set_grade(BleauAlpineGrade grade);
 
-  BleauMassif massif() const { return m_massif; }
-  void set_massif(BleauMassif massif);
+  const BleauMassif * massif() const { return m_massif; }
+  void set_massif(BleauMassif * massif);
 
   const QString & note() const { return m_note; }
   void set_note(const QString & note);
@@ -329,7 +341,7 @@ private:
   unsigned int m_creation_date;
   QString m_gestion;
   BleauAlpineGrade m_grade;
-  BleauMassif m_massif;
+  BleauMassif * m_massif;
   QString m_note;
   unsigned int m_number;
   BleauOpeners m_opener;
@@ -357,17 +369,14 @@ public:
 
   // BleauDB & operator=(const BleauDB & other);
 
-  const QList<BleauPlace> & places() const { return m_places; }
-  // void set_places(const QList<BleauPlace> & places);
-  void append_place(const BleauPlace & place);
+  QHash<QString, BleauPlace> & places() { return m_places; }
+  void add_place(const BleauPlace & place);
 
-  const QList<BleauMassif> & massifs() const { return m_massifs; }
-  // void set_massifs(const QList<BleauMassif> & massifs);
-  void append_massif(const BleauMassif & massif);
+  QHash<QString, BleauMassif> & massifs() { return m_massifs; }
+  void add_massif(const BleauMassif & massif);
 
-  const QList<BleauCircuit> & circuits() const { return m_circuits; }
-  // void set_circuits(const QList<BleauCircuit> & circuits);
-  void append_circuit(const BleauCircuit & circuit);
+  QList<BleauCircuit> & circuits() { return m_circuits; }
+  void add_circuit(const BleauCircuit & circuit);
 
 // signals:
 //   void placesChanged();
@@ -375,8 +384,8 @@ public:
 //   void circuitsChanged();
 
 private:
-  QList<BleauPlace> m_places;
-  QList<BleauMassif> m_massifs;
+  QHash<QString, BleauPlace> m_places;
+  QHash<QString, BleauMassif> m_massifs;
   QList<BleauCircuit> m_circuits;
 };
 
