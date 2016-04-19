@@ -98,10 +98,20 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5Positioning REQUIRED)
 find_package(Qt5Qml REQUIRED)
 find_package(Qt5Quick REQUIRED) # QtQuickWidgets
+find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Sensors REQUIRED)
+find_package(Qt5Sql REQUIRED)
 find_package(Qt5Test REQUIRED)
+
+# only available for Android build
+# find_package(Qt5AndroidExtras REQUIRED)
+
 # find_package(Qt5Xml REQUIRED)
 # find_package(Qt5WebView REQUIRED)
+
+# charts
+# quickcontrols
+# svg
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_QML_DEBUG") # Fixme: right way to do?
 
