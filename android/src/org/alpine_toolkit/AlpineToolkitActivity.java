@@ -36,9 +36,9 @@ import android.view.WindowManager;
 
 /**************************************************************************************************/
 
-public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
+public class AlpineToolkitActivity extends org.qtproject.qt5.android.bindings.QtActivity
 {
-  private static AumActivity m_instance;
+  private static AlpineToolkitActivity m_instance;
 
   private PowerManager.WakeLock m_wave_lock = null;
 
@@ -46,7 +46,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   private Camera.Parameters m_camera_parameters = null;
   private boolean m_torch_enabled = false;
 
-  public AumActivity()
+  public AlpineToolkitActivity()
   {
     m_instance = this;
   }
@@ -54,7 +54,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
-    Log.i("AumActivity", ">>>>>>>>>> AumActivity.onCreate <<<<<<<<<<");
+    Log.i("AlpineToolkitActivity", ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
 
     // Fixme: hardcoded
     set_status_bar_background_color(Color.parseColor("#3949ab"));
@@ -75,18 +75,18 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   public void get_display_metrics() {
     DisplayMetrics metrics = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    // I/AumActivity(19529): height width px: 1920 1080
-    // I/AumActivity(19529): x y DPI: 422.03 424.069
-    // I/AumActivity(19529): density DPI: 480       // screen density DENSITY_XXHIGH
-    // I/AumActivity(19529): density: 3.0           // logical density of the display
-    // I/AumActivity(19529): scaled density: 3.0    // A scaling factor for fonts displayed on the display
+    // I/AlpineToolkitActivity(19529): height width px: 1920 1080
+    // I/AlpineToolkitActivity(19529): x y DPI: 422.03 424.069
+    // I/AlpineToolkitActivity(19529): density DPI: 480       // screen density DENSITY_XXHIGH
+    // I/AlpineToolkitActivity(19529): density: 3.0           // logical density of the display
+    // I/AlpineToolkitActivity(19529): scaled density: 3.0    // A scaling factor for fonts displayed on the display
     // 423 dpi / 160 dpi = 2.64
     // 480 / 160 = 3
-    Log.i("AumActivity", "height width px: " + metrics.heightPixels + " " + metrics.widthPixels);
-    Log.i("AumActivity", "x y DPI: " + metrics.xdpi + " " + metrics.ydpi);
-    Log.i("AumActivity", "density: " + metrics.density);
-    Log.i("AumActivity", "density DPI: " + metrics.densityDpi);
-    Log.i("AumActivity", "scaled density: " + metrics.scaledDensity);
+    Log.i("AlpineToolkitActivity", "height width px: " + metrics.heightPixels + " " + metrics.widthPixels);
+    Log.i("AlpineToolkitActivity", "x y DPI: " + metrics.xdpi + " " + metrics.ydpi);
+    Log.i("AlpineToolkitActivity", "density: " + metrics.density);
+    Log.i("AlpineToolkitActivity", "density DPI: " + metrics.densityDpi);
+    Log.i("AlpineToolkitActivity", "scaled density: " + metrics.scaledDensity);
   }
 
   public void set_status_bar_background_color(int color) {
@@ -133,37 +133,37 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
   public void lock_orientation()
   {
-    Log.i("AumActivity", "lock_orientation");
+    Log.i("AlpineToolkitActivity", "lock_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
   }
 
   public void unlock_orientation() {
-    Log.i("AumActivity", "unlock_orientation");
+    Log.i("AlpineToolkitActivity", "unlock_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
   }
 
   public void request_sensor_orientation() {
-    Log.i("AumActivity", "request_sensor_orientation");
+    Log.i("AlpineToolkitActivity", "request_sensor_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
   }
 
   public void request_portrait_orientation() {
-    Log.i("AumActivity", "request_portrait_orientation");
+    Log.i("AlpineToolkitActivity", "request_portrait_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 
   public void request_landscape_orientation() {
-    Log.i("AumActivity", "request_landscape_orientation");
+    Log.i("AlpineToolkitActivity", "request_landscape_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
   }
 
   public void get_device_id() {
     // cf. http://developer.samsung.com/technical-doc/view.do?v=T000000103
 
-    // I/AumActivity(11407): IMEI: 353414073315588
-    // I/AumActivity(11407): IMSI: 208015304147532
-    // I/AumActivity(11407): Serial No: a9e91f81
-    // I/AumActivity(11407): Andoid ID: 48a43365dba7923e
+    // I/AlpineToolkitActivity(11407): IMEI: 353414073315588
+    // I/AlpineToolkitActivity(11407): IMSI: 208015304147532
+    // I/AlpineToolkitActivity(11407): Serial No: a9e91f81
+    // I/AlpineToolkitActivity(11407): Andoid ID: 48a43365dba7923e
 
     String imei_string = null;
     String imsi_string = null;
@@ -183,7 +183,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
      */
     imei_string = telephonyManager.getDeviceId();
     if (imei_string != null)
-      Log.i("AumActivity", "IMEI: " + imei_string);
+      Log.i("AlpineToolkitActivity", "IMEI: " + imei_string);
 
     /*
      * getSubscriberId() function Returns the unique subscriber ID.
@@ -191,7 +191,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
      */
     imsi_string = telephonyManager.getSubscriberId();
     if (imsi_string != null)
-    Log.i("AumActivity", "IMSI: " + imsi_string);
+    Log.i("AlpineToolkitActivity", "IMSI: " + imsi_string);
 
     /*
      * Returns the serial number as unique number
@@ -207,7 +207,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     catch (Exception ignored) {
     }
     if (serial_number != null)
-      Log.i("AumActivity", "Serial No: " + serial_number);
+      Log.i("AlpineToolkitActivity", "Serial No: " + serial_number);
 
     /*
      * Returns the unique DeviceID
@@ -217,20 +217,20 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     // Also, there has been at least one widely-observed bug in a popular handset from a major manufacturer, where every instance has the same ANDROID_ID.
     android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     if (android_id != null)
-      Log.i("AumActivity", "Andoid ID: " + android_id);
+      Log.i("AlpineToolkitActivity", "Andoid ID: " + android_id);
   }
 
   public void issue_call(String phone_number) {
     // Note: this Intent cannot be used to call emergency numbers.
     // Applications can dial emergency numbers using ACTION_DIAL, however.
-    Log.i("AumActivity", "Issue call: " + phone_number);
+    Log.i("AlpineToolkitActivity", "Issue call: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_CALL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
     startActivity(call_intent);
   }
 
   public void issue_dial(String phone_number) {
-    Log.i("AumActivity", "Issue dial: " + phone_number);
+    Log.i("AlpineToolkitActivity", "Issue dial: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_DIAL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
     startActivity(call_intent);
@@ -243,7 +243,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     m_wave_lock = power_manager.newWakeLock(PowerManager.FULL_WAKE_LOCK
 					    | PowerManager.ACQUIRE_CAUSES_WAKEUP
 					    | PowerManager.ON_AFTER_RELEASE,
-					    "AumActivity full wake lock");
+					    "AlpineToolkitActivity full wake lock");
     m_wave_lock.acquire();
   };
 
@@ -274,14 +274,14 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   private boolean has_flash() {
     PackageManager package_manager = getPackageManager();
     boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-    // Log.i("AumActivity", "has_flash: " + has_flash);
+    // Log.i("AlpineToolkitActivity", "has_flash: " + has_flash);
     return has_flash;
   }
 
   private void open_camera() {
     if (m_camera == null) {
       try {
-	Log.i("AumActivity", "open_camera");
+	Log.i("AlpineToolkitActivity", "open_camera");
 	// Open back-facing camera on a device with more than one camera
 	m_camera = Camera.open();
 	m_camera_parameters = m_camera.getParameters();
@@ -294,7 +294,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
   private void release_camera() {
     if (m_camera != null) {
-      Log.i("AumActivity", "release_camera");
+      Log.i("AlpineToolkitActivity", "release_camera");
       m_camera.stopPreview();
       m_camera.release();
       m_camera = null;
@@ -303,7 +303,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
   private void _set_torch_mode(boolean enabled) {
     if (m_torch_enabled != enabled) {
-      // Log.i("AumActivity", "_set_torch_mode: " + enabled);
+      // Log.i("AlpineToolkitActivity", "_set_torch_mode: " + enabled);
       if (m_camera != null) {
 	String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
 	m_camera_parameters.setFlashMode(flash_mode);
@@ -319,7 +319,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
     // CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
     // try {
     //   for (String camera_id : manager.getCameraIdList()) {
-    // 	Log.i("AumActivity", "camera_id: " + camera_id);
+    // 	Log.i("AlpineToolkitActivity", "camera_id: " + camera_id);
     // 	// CameraCharacteristics camera_characteristics = manager.getCameraCharacteristics (camera_id);
     // 	// if (! camera_characteristics.get("FLASH_STATE_UNAVAILABLE"))
     // 	// 	manager.setTorchMode(camera_id, enabled);
@@ -337,7 +337,7 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   }
 
   public void set_torch_mode(boolean enabled) {
-    Log.i("AumActivity", "set_torch_mode: " + enabled);
+    Log.i("AlpineToolkitActivity", "set_torch_mode: " + enabled);
     if (m_torch_enabled != enabled) {
       if (enabled) {
 	if (has_flash()) {
@@ -353,17 +353,17 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
 
   /*
   public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
-    Log.i("AumActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
+    Log.i("AlpineToolkitActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
       // Fixme: camera vs thread ???
       // Fixme: stop thread
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
-	    Log.i("AumActivity", "perform_lamp_signal run");
+	    Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
 	    open_camera();
 	    for (char bit : encoded_message.toCharArray()) {
-	      // Log.i("AumActivity", "perform_lamp_signal bit: " + bit);
+	      // Log.i("AlpineToolkitActivity", "perform_lamp_signal bit: " + bit);
 	      if (bit == '1')
 		_enable_torch();
 	      else
@@ -383,19 +383,19 @@ public class AumActivity extends org.qtproject.qt5.android.bindings.QtActivity
   */
 
   public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
-    Log.i("AumActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
+    Log.i("AlpineToolkitActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
       // Fixme: camera vs thread ???
       // Fixme: stop thread
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
-	    Log.i("AumActivity", "perform_lamp_signal run");
+	    Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
 	    open_camera();
 	    boolean is_on = true;
 	    for (char run : encoded_message.toCharArray()) {
 	      int multiple = Character.digit(run, 10); // (int)c - (int)'0'
-	      Log.i("AumActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
+	      Log.i("AlpineToolkitActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
 	      if (is_on)
 		_enable_torch();
 	      else
