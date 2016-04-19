@@ -31,9 +31,9 @@
 
 /**************************************************************************************************/
 
-#include "network_reply.h"
-#include "network_fetcher.h"
-#include "network_downloader.h"
+#include "network/network_reply.h"
+#include "network/network_fetcher.h"
+#include "network/network_downloader.h"
 
 /***************************************************************************************************/
 
