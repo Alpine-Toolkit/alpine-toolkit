@@ -26,12 +26,16 @@
 
 /**************************************************************************************************/
 
+#include <algorithm>
+
 #include <QQmlContext>
 #include <QtDebug>
 
-#include "startup.h"
+#include "bleaudb/bleaudb.h"
+#include "bleaudb/bleaudb_json_loader.h"
 #include "ephemeride/ephemeride.h"
 #include "refuge/refuge.h"
+#include "startup.h"
 
 #ifdef ANDROID
 #include "android_activity/android_activity.h"
@@ -52,14 +56,28 @@ set_context_properties(QQmlContext * context)
   context->setContextProperty(QLatin1String("on_android"), on_android);
 
   Ephemeride * ephemeride = new Ephemeride(); // parent ?
-  context->setContextProperty(QLatin1String("ephemeride"), ephemeride);
+  context->setContextProperty(QLatin1Literal("ephemeride"), ephemeride);
 
   QList<Refuge> * refuges = new QList<Refuge>();
-  load_refuge_json(":/data/ffcam-refuges.json", *refuges);
+  QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
+  load_refuge_json(ffcam_refuge_json, *refuges);
   QList<QObject *> refuges_; // QObject* is required
   for (Refuge & refuge : *refuges)
     refuges_.append(&refuge);
   context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+
+  BleauDB * bleaudb = new BleauDB();
+  QString bleau_json_path = ":/data/bleau.json";
+  load_json_bleaudb(bleau_json_path, *bleaudb);
+  QList<QObject *> massifs_; // QObject* is required
+  for (BleauMassif & massif : bleaudb->massifs())
+    massifs_.append(&massif);
+  std::sort(massifs_.begin(), massifs_.end(),
+            // qLess<T>()
+            [](QObject * a, QObject * b) { return qobject_cast<BleauMassif *>(a)->name() < qobject_cast<BleauMassif *>(b)->name(); }
+            );
+
+  context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
 
   // RefugeModel * refuge_model = new RefugeModel(*refuges);
   // context->setContextProperty("refuge_model", refuge_model);

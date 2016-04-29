@@ -154,6 +154,12 @@ ApplicationWindow {
                     lock_orientation: false
                 }
                 ListElement {
+                    title: qsTr("Bleau")
+                    icon: ""
+                    source: "qrc:/pages/Bleau.qml"
+                    lock_orientation: false
+                }
+                ListElement {
                     title: qsTr("Ephemeride")
                     icon: ""
                     source: "qrc:/pages/Ephemeride.qml"
