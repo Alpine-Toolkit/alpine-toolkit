@@ -3,8 +3,8 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
-import Qt.labs.controls 1.0
-import Qt.labs.controls.material 1.0
+import QtQuick.Controls 2.0
+// import Qt.labs.controls.material 1.0
 
 import QtPositioning 5.5
 
@@ -29,7 +29,7 @@ Pane {
             // console.log("sunset:", ephemeride.sunset);
 
             date_label.text = date.toLocaleString(Qt.locale(), "dd/MM/yyyy");
-            coordinate_label.text = coordinate.longitude + " " + coordinate.latitude;
+            coordinate_label.text = coordinate.longitude + "\n" + coordinate.latitude;
             sunrise_label.text = ephemeride.sunrise.toLocaleTimeString(Qt.locale(), "hh:mm");
             noon_label.text = ephemeride.solar_noon.toLocaleTimeString(Qt.locale(), "hh:mm");
             sunset_label.text = ephemeride.sunset.toLocaleTimeString(Qt.locale(), "hh:mm");

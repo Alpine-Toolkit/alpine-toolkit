@@ -3,7 +3,7 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
-import Qt.labs.controls 1.0
+import QtQuick.Controls 2.0
 
 import QtSensors 5.1
 
@@ -63,7 +63,7 @@ Pane {
         y: application_window.height / 6
         width: application_window.width * .9
         contentHeight: about_column.height
-        closePolicy: Popup.OnEscape | Popup.OnPressOutside
+        // closePolicy: Popup.OnEscape | Popup.OnPressOutside
 
         Column {
             id: about_column
