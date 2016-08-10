@@ -36,8 +36,8 @@ Pane {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.topMargin: 10 * Screen.devicePixelRatio
-        spacing: 10 * Screen.devicePixelRatio
+        anchors.topMargin: 10
+        spacing: 10
 
         Label {
             id: illuminance_label
@@ -58,16 +58,15 @@ Pane {
         id: illuminance_help
         modal: true
         focus: true
-        // margins: 5 * Screen.devicePixelRatio // must be centered
+        // margins: 5 // must be centered
         x: (application_window.width - width) / 2
         y: application_window.height / 6
         width: application_window.width * .9
         contentHeight: about_column.height
-        // closePolicy: Popup.OnEscape | Popup.OnPressOutside
 
         Column {
             id: about_column
-            spacing: 5 * Screen.devicePixelRatio
+            spacing: 5
 
             Label {
                 font.pointSize: 20

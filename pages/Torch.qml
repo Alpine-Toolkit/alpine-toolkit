@@ -10,19 +10,16 @@ import QtMultimedia 5.5
 Pane {
     id: torch_pane
 
-    // Torch {
-    //     power: torch_slider.value * 100
-    //     enabled: torch_switch.checked
-    //     onEnabledChanged: {
-    //         console.info("Torch " + enabled + " " + power)
-    //     }
-    // }
-
     Column {
-        width: parent.width
-        anchors.top: parent.top
+        anchors.fill: parent
         anchors.topMargin: 50
         spacing: 30
+
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: 20
+            text: qsTr("Torch Switch")
+        }
 
         Switch {
             id: torch_switch
@@ -34,18 +31,5 @@ Pane {
                 }
             }
         }
-
-        // Label {
-        //     // anchors.topMargin: 50
-        //     anchors.horizontalCenter: parent.horizontalCenter
-        //     text: qsTr("Power")
-        // }
-
-        // Slider {
-        //     id: torch_slider
-        //     // anchors.topMargin: 10
-        //     anchors.horizontalCenter: parent.horizontalCenter
-        //     value: 1.
-        // }
     }
 }

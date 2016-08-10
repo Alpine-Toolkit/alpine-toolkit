@@ -3,8 +3,6 @@ import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
-// import Qt.labs.controls.material 1.0
-// import Qt.labs.settings 1.0
 
 ApplicationWindow {
     id: application_window
@@ -12,11 +10,6 @@ ApplicationWindow {
     width: 360 // set window size for desktop test
     height: 520
     title: "Alpine Toolkit"
-
-    // Settings {
-    //     id: settings
-    //     property string style: "Material"
-    // }
 
     // Done in main.cpp
     // AndroidActivity {
@@ -160,6 +153,12 @@ ApplicationWindow {
                     lock_orientation: false
                 }
                 ListElement {
+                    title: qsTr("Check List")
+                    icon: ""
+                    source: "qrc:/pages/Checklist.qml"
+                    lock_orientation: false
+                }
+                ListElement {
                     title: qsTr("Ephemeride")
                     icon: ""
                     source: "qrc:/pages/Ephemeride.qml"
@@ -207,6 +206,7 @@ ApplicationWindow {
                     source: "qrc:/pages/Torch.qml"
                     lock_orientation: false
                 }
+                /*
                 ListElement {
                     title: qsTr("Camera")
                     icon: ""
@@ -231,6 +231,7 @@ ApplicationWindow {
                     source: "qrc:/pages/UiTest.qml"
                     lock_orientation: false
                 }
+                */
             }
 
             ScrollIndicator.vertical: ScrollIndicator { }

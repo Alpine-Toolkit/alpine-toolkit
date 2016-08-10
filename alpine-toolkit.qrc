@@ -3,22 +3,33 @@
   <qresource prefix="/">
     <file>application-icons/icon-512.png</file>
     <file>application-icons/icon.svg</file>
+
     <file>data/bleau.json</file>
     <file>data/ffcam-refuges.json</file>
     <!-- <file>data/ffcam-refuges.sqlite</file> -->
+
+    <file>icons/add-black.png</file>
+    <file>icons/add-black@3x.png</file>
     <file>icons/arrow-back-white.png</file>
     <file>icons/arrow-back-white@3x.png</file>
+    <file>icons/call-black.png</file>
+    <file>icons/call-black@3x.png</file>
     <file>icons/explore-black.png</file>
     <file>icons/explore-black@3x.png</file>
     <file>icons/menu-white.png</file>
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
     <file>icons/more-vert-white@3x.png</file>
+    <file>icons/wb-sunny-black.png</file>
+    <file>icons/wb-sunny-black@3x.png</file>
+
     <file>js/gps.js</file>
+
     <file>pages/Altimeter.qml</file>
     <file>pages/Bleau.qml</file>
     <file>pages/Camera.qml</file>
     <file>pages/Chart.qml</file>
+    <file>pages/Checklist.qml</file>
     <file>pages/Emergency.qml</file>
     <file>pages/Ephemeride.qml</file>
     <file>pages/Gps.qml</file>
@@ -31,7 +42,9 @@
     <file>pages/Torch.qml</file>
     <file>pages/UiTest.qml</file>
     <file>pages/main.qml</file>
-    <!-- <file>qtquickcontrols2.conf</file> -->
+
+    <file>qtquickcontrols2.conf</file>
+
     <file>translations/alpine-toolkit.fr_FR.qm</file>
   </qresource>
 </RCC>

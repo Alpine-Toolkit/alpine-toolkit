@@ -43,8 +43,8 @@ Pane {
             width: parent.width
             Layout.alignment: Qt.AlignCenter
             columns: 2
-            columnSpacing : 2 * Screen.devicePixelRatio
-            rowSpacing : 2 * Screen.devicePixelRatio
+            columnSpacing : 2
+            rowSpacing : 2
 
             Label {
                 font.pointSize: 20

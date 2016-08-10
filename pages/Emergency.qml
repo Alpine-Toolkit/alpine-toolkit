@@ -11,6 +11,9 @@ import QtPositioning 5.5
 Pane {
     id: ephemeride_pane
 
+    property int font_size: 20
+    property string emergency_phone_number: "112"
+
     PositionSource {
         id: position_source
         active: true
@@ -37,21 +40,25 @@ Pane {
                 anchors.horizontalCenter: parent.horizontalCenter
                 Layout.alignment: Qt.AlignCenter
                 columns: 2
-                columnSpacing : 2 * Screen.devicePixelRatio
-                rowSpacing : 2 * Screen.devicePixelRatio
+                columnSpacing : 10
+                rowSpacing : 5
 
                 Label {
+                    font.pointSize: font_size
                     text: qsTr("Latitude")
                 }
                 Label {
                     id: latitude_label
+                    font.pointSize: font_size
                     text: "unknown"
                 }
                 Label {
+                    font.pointSize: font_size
                     text: qsTr("Longitude")
                 }
                 Label {
                     id: longitude_label
+                    font.pointSize: font_size
                     text: "unknown"
                 }
             }
@@ -70,15 +77,23 @@ Pane {
 
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
+                    font.pointSize: font_size
                     text: qsTr("Phone Number")
                 }
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pointSize: font_size
+                    text: emergency_phone_number
+                }
+
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("Emergency Call")
                     onClicked: {
                         console.info("clicked on emergency call", on_android, android_activity)
                         if (on_android) {
-                            android_activity.issue_dial("000000"); // double confirmation ?
+                            android_activity.issue_dial(emergency_phone_number); // double confirmation ?
                         }
                     }
                 }
