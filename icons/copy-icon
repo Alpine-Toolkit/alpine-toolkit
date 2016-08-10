@@ -4,7 +4,7 @@ category=$1
 name=$2
 dp="24"
 
-mdi_path="$HOME/home/developpement/qtcarto-application/material-design-ressources/material-design-icons"
+mdi_path="/home/doc/material-design-ressources/material-design-icons"
 
 function copy_link() {
   colour=$1
