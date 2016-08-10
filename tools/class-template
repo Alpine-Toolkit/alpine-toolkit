@@ -52,7 +52,7 @@ copyright_header = """/*********************************************************
 ***************************************************************************************************/
 """
 
-rule = '/**************************************************************************************************/\n'
+rule = '/**************************************************************************************************/'
 
 footer = """
 /***************************************************************************************************
@@ -64,23 +64,25 @@ footer = """
 
 ####################################################################################################
 
-class_name = os.path.basename(args.class_file_name).upper()
+class_name = os.path.basename(args.class_file_name)
+class_name_upper = class_name.upper()
 
 output = args.class_file_name + '.h'
 if not os.path.exists(output):
     with open(output, 'w') as f:
         f.write("// -*- mode: c++ -*-\n")
         f.write("\n{copyright_header}\n".format(copyright_header=copyright_header))
-        f.write(rule + '\n')
-        f.write("#ifndef __{class_name}_H__\n".format(class_name=class_name))
-        f.write("#define __{class_name}_H__\n".format(class_name=class_name))
-        f.write('\n' + rule)
+        f.write(rule + '\n' + '\n')
+        f.write("#ifndef __{class_name}_H__\n".format(class_name=class_name_upper))
+        f.write("#define __{class_name}_H__\n".format(class_name=class_name_upper))
+        f.write('\n' + rule + '\n')
         f.write("""
 // QC_BEGIN_NAMESPACE
 // QC_END_NAMESPACE
 
 """)
-        f.write("#endif /* __{class_name}_H__ */\n".format(class_name=class_name))
+        f.write(rule + '\n' + '\n')
+        f.write("#endif /* __{class_name}_H__ */\n".format(class_name=class_name_upper))
         f.write(footer)
 
 ####################################################################################################
@@ -88,7 +90,10 @@ if not os.path.exists(output):
 output = args.class_file_name + '.cpp'
 if not os.path.exists(output):
     with open(output, 'w') as f:
-        f.write("{copyright_header}\n".format(copyright_header=copyright_header))
+        f.write("{copyright_header}".format(copyright_header=copyright_header))
+        f.write('\n' + rule + '\n' + '\n')
+        f.write('#include "{0}.h"\n\n'.format(class_name))
+        f.write(rule + '\n')
         f.write("""
 // QC_BEGIN_NAMESPACE
 // QC_END_NAMESPACE
