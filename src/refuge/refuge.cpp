@@ -57,6 +57,7 @@ Refuge::Refuge(QObject * parent)
 Refuge::Refuge(const Refuge & other, QObject * parent)
   : QObject(parent),
     m_name(other.m_name),
+    m_short_name(other.m_short_name),
     m_altitude(other.m_altitude),
     m_description(other.m_description),
     m_guardian(other.m_guardian),
@@ -96,23 +97,11 @@ Refuge::operator<(const Refuge & other) const
   return m_short_name < other.m_short_name;
 }
 
-QString
-Refuge::name() const
-{
-  return m_name;
-}
-
 void
 Refuge::set_name(const QString & name)
 {
   m_name = name;
   emit nameChanged();
-}
-
-QString
-Refuge::short_name() const
-{
-  return m_short_name;
 }
 
 void
@@ -129,23 +118,11 @@ Refuge::first_letter() const
   // return m_short_name[0].toUpper();
 }
 
-int
-Refuge::altitude() const
-{
-  return m_altitude;
-}
-
 void
 Refuge::set_altitude(int altitude)
 {
   m_altitude = altitude;
   emit altitudeChanged();
-}
-
-QString
-Refuge::description() const
-{
-  return m_description;
 }
 
 void
@@ -155,23 +132,11 @@ Refuge::set_description(const QString & description)
   emit descriptionChanged();
 }
 
-QString
-Refuge::guardian() const
-{
-  return m_guardian;
-}
-
 void
 Refuge::set_guardian(const QString & guardian)
 {
   m_guardian = guardian;
   emit guardianChanged();
-}
-
-QString
-Refuge::picture_path() const
-{
-  return m_picture_path;
 }
 
 void
@@ -181,23 +146,11 @@ Refuge::set_picture_path(const QString & picture_path)
   emit picture_pathChanged();
 }
 
-QGeoCoordinate
-Refuge::coordinate() const
-{
-  return m_coordinate;
-}
-
 void
 Refuge::set_coordinate(const QGeoCoordinate & coordinate)
 {
   m_coordinate = coordinate;
   emit coordinateChanged();
-}
-
-QString
-Refuge::number_of_places() const
-{
-  return m_number_of_places;
 }
 
 void
@@ -207,12 +160,6 @@ Refuge::set_number_of_places(const QString & number_of_places)
   emit number_of_placesChanged();
 }
 
-QString
-Refuge::region() const
-{
-  return m_region;
-}
-
 void
 Refuge::set_region(const QString & region)
 {
@@ -220,23 +167,11 @@ Refuge::set_region(const QString & region)
   emit regionChanged();
 }
 
-QUrl
-Refuge::url() const
-{
-  return m_url;
-}
-
 void
 Refuge::set_url(const QUrl & url)
 {
   m_url = url;
   emit urlChanged();
-}
-
-QString
-Refuge::phone() const
-{
-  return m_phone;
 }
 
 void

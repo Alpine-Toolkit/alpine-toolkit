@@ -69,39 +69,39 @@ public:
 
   bool operator<(const Refuge & other) const;
 
-  QString name() const;
+  QString name() const { return m_name; }
   void set_name(const QString & name);
 
-  QString short_name() const;
+  QString short_name() const { return m_short_name; }
   void set_short_name(const QString & short_name);
 
   QChar first_letter() const;
 
-  int altitude() const;
+  int altitude() const { return m_altitude; }
   void set_altitude(int altitude);
 
-  QString description() const;
+  QString description() const { return m_description; }
   void set_description(const QString & description);
 
-  QString guardian() const;
+  QString guardian() const { return m_guardian; }
   void set_guardian(const QString & guardian);
 
-  QString picture_path() const;
+  QString picture_path() const { return m_picture_path; }
   void set_picture_path(const QString & picture_path);
 
-  QGeoCoordinate coordinate() const;
+  QGeoCoordinate coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & coordinate);
 
-  QString number_of_places() const;
+  QString number_of_places() const { return m_number_of_places; }
   void set_number_of_places(const QString & number_of_places);
 
-  QString region() const;
+  QString region() const { return m_region; }
   void set_region(const QString & region);
 
-  QUrl url() const;
+  QUrl url() const { return m_url; }
   void set_url(const QUrl & url);
 
-  QString phone() const;
+  QString phone() const { return m_phone; }
   void set_phone(const QString & phone);
 
 signals:
