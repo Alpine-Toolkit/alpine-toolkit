@@ -390,12 +390,13 @@ public class AlpineToolkitActivity extends org.qtproject.qt5.android.bindings.Qt
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
-	    Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
+	    // Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
 	    open_camera();
+            _disable_torch(); // else don't turn on first time
 	    boolean is_on = true;
 	    for (char run : encoded_message.toCharArray()) {
 	      int multiple = Character.digit(run, 10); // (int)c - (int)'0'
-	      Log.i("AlpineToolkitActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
+	      // Log.i("AlpineToolkitActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
 	      if (is_on)
 		_enable_torch();
 	      else
