@@ -160,11 +160,14 @@ InternationalMorseCodeEngine::encode(const QString & message, bool use_bit, bool
 	count += 1;
       } else {
 	// encoded_message += QString::asprintf("%d%c", count, (previous_bit == '0') ? 'f' : 't');
+        // Append previous
 	encoded_message += QString::asprintf("%i", count);
 	previous_bit = bit;
 	count = 1;
       }
     }
+    // Append last
+    encoded_message += QString::asprintf("%i", count);
   }
 
   return encoded_message;
