@@ -26,12 +26,12 @@
 
 /**************************************************************************************************/
 
-#include <QtMath>
-#include <QtSensors/QPressureSensor>
+#include "qml_barimeter_altimeter_sensor.h"
 
 #include <QtDebug>
-
-#include "qml_barimeter_altimeter_sensor.h"
+#include <QtGlobal>
+#include <QtMath>
+#include <QtSensors/QPressureSensor>
 
 /**************************************************************************************************/
 
@@ -113,41 +113,11 @@ QmlBarometerAltimeterReading::QmlBarometerAltimeterReading(QPressureSensor *sens
     m_temperature(0),
     m_altitude(0),
     m_altitude_offset(0),
-    m_pressure_sea_level(P0)
+    m_sea_level_pressure(P0)
 {}
 
 QmlBarometerAltimeterReading::~QmlBarometerAltimeterReading()
 {}
-
-qreal
-QmlBarometerAltimeterReading::pressure() const
-{
-  return m_pressure;
-}
-
-qreal
-QmlBarometerAltimeterReading::pressure_sea_level() const
-{
-  return m_pressure_sea_level;
-}
-
-qreal
-QmlBarometerAltimeterReading::temperature() const
-{
-  return m_temperature;
-}
-
-qreal
-QmlBarometerAltimeterReading::altitude() const
-{
-  return m_altitude;
-}
-
-qreal
-QmlBarometerAltimeterReading::altitude_offset() const
-{
-  return m_altitude_offset;
-}
 
 QSensorReading *
 QmlBarometerAltimeterReading::reading() const
@@ -176,7 +146,7 @@ QmlBarometerAltimeterReading::readingUpdate()
 qreal
 QmlBarometerAltimeterReading::pressure_to_altitude(qreal pressure) const
 {
-  qreal altitude = INVERSE_ALPHA * (1 - qPow(pressure/m_pressure_sea_level, INVERSE_BETA));
+  qreal altitude = INVERSE_ALPHA * (1 - qPow(pressure/m_sea_level_pressure, INVERSE_BETA));
   altitude += m_altitude_offset; // Fixme: only display ?
   return altitude;
 }
@@ -193,15 +163,30 @@ QmlBarometerAltimeterReading::set_altitude_offset(qreal offset)
 }
 
 void
+QmlBarometerAltimeterReading::set_sea_level_pressure(qreal sea_level_pressure)
+{
+  qInfo() << "set_sea_level_pressure" << sea_level_pressure << m_sea_level_pressure;
+  if (!qFuzzyCompare(sea_level_pressure, m_sea_level_pressure)) {
+    qInfo() << "set_sea_level_pressure yes";
+    m_sea_level_pressure = sea_level_pressure;
+    Q_EMIT pressureSeaLevelChanged();
+    m_altitude = pressure_to_altitude(m_pressure);
+    Q_EMIT altitudeChanged(); // versus readingUpdate ?
+  }
+}
+
+void
 QmlBarometerAltimeterReading::calibrate(qreal altitude)
 {
-  qInfo() << "calibrate" << altitude;
-  altitude -= m_altitude_offset;
-  m_pressure_sea_level = m_pressure / qPow(1 - ALPHA*altitude, BETA);
-  qInfo() << "pressure_sea_level" << m_pressure_sea_level;
-  Q_EMIT pressureSeaLevelChanged();
-  m_altitude = altitude;
-  Q_EMIT altitudeChanged(); // versus readingUpdate ?
+  if (!qFuzzyCompare(altitude, m_altitude)) {
+    qInfo() << "calibrate" << altitude;
+    altitude -= m_altitude_offset;
+    m_sea_level_pressure = m_pressure / qPow(1 - ALPHA*altitude, BETA);
+    qInfo() << "sea_level_pressure" << m_sea_level_pressure;
+    Q_EMIT pressureSeaLevelChanged();
+    m_altitude = altitude;
+    Q_EMIT altitudeChanged(); // versus readingUpdate ?
+  }
 }
 
 /***************************************************************************************************

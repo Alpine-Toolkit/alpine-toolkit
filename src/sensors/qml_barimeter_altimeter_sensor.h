@@ -63,7 +63,7 @@ class QmlBarometerAltimeterReading : public QTQmlSensorReading
 {
   Q_OBJECT
   Q_PROPERTY(qreal pressure READ pressure NOTIFY pressureChanged)
-  Q_PROPERTY(qreal pressure_sea_level READ pressure_sea_level NOTIFY pressureSeaLevelChanged)
+  Q_PROPERTY(qreal sea_level_pressure READ sea_level_pressure WRITE set_sea_level_pressure NOTIFY pressureSeaLevelChanged)
   Q_PROPERTY(qreal temperature READ temperature NOTIFY temperatureChanged REVISION 1)
   Q_PROPERTY(qreal altitude READ altitude WRITE calibrate NOTIFY altitudeChanged)
   Q_PROPERTY(qreal altitude_offset READ altitude_offset WRITE set_altitude_offset NOTIFY altitudeOffsetChanged)
@@ -72,12 +72,13 @@ public:
   explicit QmlBarometerAltimeterReading(QPressureSensor * sensor);
   ~QmlBarometerAltimeterReading();
 
-  qreal pressure() const;
-  qreal pressure_sea_level() const;
-  qreal temperature() const;
-  qreal altitude() const;
-  qreal altitude_offset() const;
+  qreal pressure() const { return m_pressure; }
+  qreal sea_level_pressure() const { return m_sea_level_pressure; }
+  qreal temperature() const { return m_temperature; }
+  qreal altitude() const { return m_altitude; }
+  qreal altitude_offset() const { return m_altitude_offset; }
 
+  void set_sea_level_pressure(qreal sea_level_pressure);
   void set_altitude_offset(qreal offset);
   void calibrate(qreal altitude);
 
@@ -99,7 +100,7 @@ private:
   qreal m_temperature;
   qreal m_altitude;
   qreal m_altitude_offset;
-  qreal m_pressure_sea_level;
+  qreal m_sea_level_pressure;
 };
 
 /**************************************************************************************************/

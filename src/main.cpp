@@ -43,16 +43,6 @@
 
 /**************************************************************************************************/
 
-// QQuickView class provides a window for displaying a Qt Quick user interface
-// QQuickView view;
-// QSurfaceFormat format = view.format();
-// format.setSamples(16);
-// view.setFormat(format);
-// view.setSource(QUrl("qrc:///..."));
-// view.show();
-
-/**************************************************************************************************/
-
 // constexpr int EXIT_FAILURE = -1; // also defined in <cstdlib>
 
 int
@@ -81,6 +71,9 @@ main(int argc, char *argv[])
   register_qml_types();
 
   QQmlApplicationEngine engine;
+  qInfo() << "offlineStoragePath" << engine.offlineStoragePath();
+  // /home/fabrice/.local/share/FabriceSalvaire/Alpine Toolkit/QML/OfflineStorage
+  engine.setOfflineStoragePath(application_user_directory.path());
   QQmlContext * root_context = engine.rootContext();
   set_context_properties(root_context);
 

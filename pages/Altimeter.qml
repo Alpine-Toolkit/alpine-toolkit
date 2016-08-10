@@ -4,51 +4,64 @@ import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
-// import Qt.labs.controls.material 1.0
 
 import Local 1.0
 import QtPositioning 5.5
 import QtSensors 5.1 // .8
 
+import Qt.labs.settings 1.0
+
 Pane {
     id: altimeter_pane
+
+    Settings {
+        id: settings
+        category: "Altimeter"
+        property real sea_level_pressure: 0
+    }
+
+    Component.onCompleted: {
+        if (pressure_sensor.reading) {
+            console.log("Restore sea level pressure", settings.sea_level_pressure)
+            pressure_sensor.reading.sea_level_pressure = settings.sea_level_pressure
+        }
+    }
+
+    Component.onDestruction: {
+        if (pressure_sensor.reading) {
+            var sea_level_pressure = pressure_sensor.reading.sea_level_pressure
+            console.log("Save sea level pressure", sea_level_pressure)
+            settings.sea_level_pressure = sea_level_pressure
+        }
+    }
 
     // Fixme: If not available ???
     // PressureSensor
     BarimeterAltimeterSensor {
         id: pressure_sensor
         active: true // ???
-        // altitude_offset: 40; // pressure_sensor.reading
-
-        Component.onCompleted: {
-            // pressure_sensor.reading.altitude_offset = -40.;
-        }
 
         onReadingChanged: {
-            // Mean Filter
-            var pressure = pressure_sensor.reading.pressure; // 82500 Pa
-            // var temperature = pressure_sensor.reading.temperature; // 0
-            var altitude = pressure_sensor.reading.altitude;
-            var sea_level_pressure = pressure_sensor.reading.seaLevelPressure;
-            pressure_label.text = Number(pressure).toLocaleString() + " Pa";
-            // sea_level_pressure_label.text = Number(sea_level_pressure).toLocaleString() + " Pa";
-            altitude_label.text = Number(altitude).toLocaleString() + " m";
-            console.info(pressure, altitude, sea_level_pressure);
+            // Fixme: Mean Filter
+            var pressure = pressure_sensor.reading.pressure // 82500 Pa
+            var altitude = pressure_sensor.reading.altitude
+            pressure_label.text = Number(pressure).toLocaleString() + " Pa"
+            altitude_label.text = Number(altitude).toLocaleString(Qt.locale(), "f", 2) + " m"
         }
     }
 
     PositionSource {
         id: position_source
-        updateInterval: 10
         active: true
+        updateInterval: 10 // ???
+        // D QtPositioning: Regular updates using GPS 1000
+        // D QtPositioning: Looper Thread startup time in ms: 1
+        // D QtPositioning: Regular updates using network 1000
 
         onPositionChanged: {
-            var position = position_source.position;
-            var coordinate = position.coordinate;
-            // position_label.text = coordinate.longitude + " " + coordinate.latitude + " +- " + position_source.position.horizontalAccuracy;
-            if (coordinate.altitudeValid) {
-                gps_altitude_label.text = coordinate.altitude; // + " +- " + position.verticalAccuracy;
-            }
+            var position = position_source.position
+            var coordinate = position.coordinate
+            gps_altitude_label.text = isNaN(coordinate.altitude) ? "unknown" : coordinate.altitude; // + " +- " + position.verticalAccuracy;
         }
     }
 
@@ -61,16 +74,16 @@ Pane {
             width: parent.width
             Layout.alignment: Qt.AlignCenter
             columns: 2
-            columnSpacing : 2 * Screen.devicePixelRatio
-            rowSpacing : 2 * Screen.devicePixelRatio
+            columnSpacing : 5
+            rowSpacing : 5
 
             Label {
                 font.pointSize: 20
                 text: qsTr("Altitude")
             }
             Label {
-                font.pointSize: 20
                 id: altitude_label
+                font.pointSize: 20
                 text: "unknown"
             }
 
@@ -79,8 +92,8 @@ Pane {
                 text: "GPS"
             }
             Label {
-                font.pointSize: 20
                 id: gps_altitude_label
+                font.pointSize: 20
                 text: "unknown"
             }
 
@@ -89,8 +102,8 @@ Pane {
                 text: qsTr("Pressure")
             }
             Label {
-                font.pointSize: 20
                 id: pressure_label
+                font.pointSize: 20
                 text: "unknown"
             }
         }
@@ -107,17 +120,16 @@ Pane {
         id: calibrate_popup
         modal: true
         focus: true
-        // margins: 5 * Screen.devicePixelRatio // must be centered
-        x: (application_window.width - width) / 2 // Fixme; not centered
+        // Fixme: not centered
+        x: (application_window.width - width) / 2
         y: application_window.height / 6
         width: application_window.width * .9
         contentHeight: column.height
-        // closePolicy: Popup.OnEscape | Popup.NoAutoClose
 
         Column {
             id: column
             width: parent.width
-            spacing: 5 * Screen.devicePixelRatio
+            spacing: 5
 
             Label {
                 font.pointSize: 20
@@ -135,7 +147,7 @@ Pane {
             }
 
             Row {
-                spacing: 5 * Screen.devicePixelRatio
+                spacing: 5
                 anchors.right: parent.right
 
                 Button {
@@ -151,7 +163,6 @@ Pane {
                             var altitude = Number.fromLocaleString(altitude_text_field.text);
                             console.info("clicked on calibrate", altitude_text_field.text);
                             pressure_sensor.reading.altitude = Number.fromLocaleString(altitude_text_field.text);
-                            // save sea_level_pressure in application
                         }
                         calibrate_popup.close()
                     }
