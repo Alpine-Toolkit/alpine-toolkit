@@ -17,7 +17,11 @@
 set(alpine_toolkit_library_files
   bleaudb/bleaudb.cpp
   bleaudb/bleaudb_json_loader.cpp
-  camptocamp/camptocamp.cpp
+  camptocamp/camptocamp_cache.cpp
+  camptocamp/camptocamp_client.cpp
+  camptocamp/camptocamp_document.cpp
+  camptocamp/camptocamp_login.cpp
+  database/database.cpp
   ephemeride/ephemeride.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp

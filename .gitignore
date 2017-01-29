@@ -9,3 +9,5 @@ alpine-toolkit.pro.user
 cmake-build
 qmake-build
 build
+#
+test/camptocamp/login.h

@@ -33,40 +33,16 @@
 
 /**************************************************************************************************/
 
+#include "camptocamp_login.h"
+#include "camptocamp_constant.h"
+
 #include <QDateTime>
+#include <QJsonDocument>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
-
-/**************************************************************************************************/
-
-class C2cLogin {
-public:
-  C2cLogin();
-  C2cLogin(const QString & username, const QString & password);
-  C2cLogin(const C2cLogin & other);
-  ~C2cLogin();
-
-  C2cLogin & operator=(const C2cLogin & other);
-
-  const QString & username() const { return m_username; }
-  void set_username(const QString & username) { m_username = username; }
-
-  const QString & password() const { return m_password; }
-  void set_password(const QString & password) { m_password = password; }
-
-  explicit operator bool() const { return not m_username.isEmpty(); }
-
-private:
-  QString m_username;
-  QString m_password;
-};
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLogin & login);
-#endif
 
 /**************************************************************************************************/
 
@@ -199,13 +175,10 @@ class C2cClient : public QObject
 {
   Q_OBJECT
 
-private:
-  static const QString OFFICIAL_API_URL;
-
 public:
-  C2cClient(const C2cLogin & login, const QString & api_url = OFFICIAL_API_URL, int port = -1);
+  C2cClient(const QString & api_url = c2c::OFFICIAL_API_URL, int port = -1);
 
-  void login(bool remember = true, bool discourse = true);
+  void login(const C2cLogin & login, bool remember = true, bool discourse = true);
   void update_login();
   bool is_logged() const { return m_login_data.is_valid(); }
 
@@ -228,7 +201,7 @@ public:
 signals:
   void logged();
   void login_failed();
-  void get_finished(); // QJsonDocument * json_document
+  void received_document(QJsonDocument * json_document);
   void get_failed();
 
 private:

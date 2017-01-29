@@ -26,61 +26,16 @@
 
 /**************************************************************************************************/
 
-#include "camptocamp/camptocamp.h"
+#include "camptocamp/camptocamp_client.h"
 
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkRequest>
 #include <QUrlQuery>
 #include <QList>
 #include <QtDebug>
 
-/**************************************************************************************************/
-
-C2cLogin::C2cLogin()
-  : m_username(),
-    m_password()
-{}
-
-C2cLogin::C2cLogin(const QString & username, const QString & password)
-  : m_username(username),
-    m_password(password)
-{}
-
-C2cLogin::C2cLogin(const C2cLogin & other)
-  : m_username(other.m_username),
-    m_password(other.m_password)
-{}
-
-C2cLogin::~C2cLogin()
-{}
-
-C2cLogin &
-C2cLogin::operator=(const C2cLogin & other)
-{
-  if (this != &other) {
-    m_username = other.m_username;
-    m_password = other.m_password;
-  }
-
-  return *this;
-}
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLogin & login)
-{
-  QDebugStateSaver saver(debug); // Fixme: ???
-
-  debug.nospace() << QLatin1Literal("C2cLogin(");
-  debug << login.username();
-  debug << QLatin1Literal(", ");
-  debug << login.password();
-  debug << ')';
-
-  return debug;
-}
-#endif
+using namespace c2c;
 
 /**************************************************************************************************/
 
@@ -267,51 +222,14 @@ C2cSearchSettings::type_letters() const
 
 /**************************************************************************************************/
 
-const QString C2cClient::OFFICIAL_API_URL = "https://api.camptocamp.org";
-
-const QString AREAS = "areas";
-const QString ARTICLES = "articles";
-const QString BOOKS = "books";
-const QString HEALTH = "health";
-const QString IMAGES = "images";
-const QString MAPS = "maps";
-const QString OUTINGS = "outings";
-const QString PROFILES = "profiles"; // ???
-const QString USERPROFILES = "userprofiles";
-const QString ROUTES = "routes";
-const QString WAYPOINTS = "waypoints";
-const QString XREPORTS = "xreports";
-
-const QString DESCRIPTION = "description";
-const QString DISCOURSE = "discourse";
-const QString DOCUMENT = "document";
-const QString DOCUMENT_ID = "document_id";
-const QString ERROR = "error";
-const QString ERRORS = "errors";
-const QString LOGIN = "login";
-const QString MESSAGE = "message";
-const QString PASSWORD = "password";
-const QString REMEMBER = "remember";
-const QString SEARCH = "search";
-const QString STATUS = "status";
-const QString TYPE = "type";
-const QString USERNAME = "username";
-const QString USERS = "users";
-
-C2cClient::C2cClient(const C2cLogin & login_, const QString & api_url, int port)
+C2cClient::C2cClient(const QString & api_url, int port)
   : QObject(),
     m_api_url(api_url),
     m_port(port),
-    m_login(login_),
+    m_login(),
     m_login_data(),
     m_network_manager()
-{
-  // connect(&m_network_manager, SIGNAL(finished(QNetworkReply*)),
-  //         this, SLOT(handle_reply(QNetworkReply*)));
-
-  if (m_login)
-    login();
-}
+{}
 
 QUrl
 C2cClient::make_url(const QString & endpoint) const
@@ -402,7 +320,7 @@ C2cClient::handle_get_reply(QNetworkReply * reply)
       QJsonDocument * json_document = reply_to_json(reply);
       // qInfo() << "Login Reply" << json_data;
       if (check_json_response(json_document)) {
-        emit get_finished(); // json_document
+        emit received_document(json_document);
       }
       // else emit
   } else {
@@ -414,13 +332,36 @@ C2cClient::handle_get_reply(QNetworkReply * reply)
 }
 
 void
-C2cClient::login(bool remember, bool discourse)
+C2cClient::post(const QNetworkRequest & request, const QJsonDocument * json_document)
 {
+  if (not is_logged())
+    return;
+  update_login();
+
+  QByteArray payload = json_document->toJson(QJsonDocument::Compact);
+  qInfo() << "POST" << request.url() << payload;
+
+  QNetworkReply * reply = m_network_manager.post(request, payload);
+  if (reply->isFinished())
+    handle_get_reply(reply);
+  else
+    connect(reply, SIGNAL(finished()),
+	    this, SLOT(get_reply_finished()),
+	    Qt::QueuedConnection);
+}
+
+void
+C2cClient::login(const C2cLogin & login, bool remember, bool discourse)
+{
+  m_login = login;
+  if (not login)
+    return;
+
   // info('Login to camptocamp.org with user {} ...'.format(self._client_login.username))
 
   QJsonObject json_object;
-  json_object[USERNAME] = m_login.username();
-  json_object[PASSWORD] = m_login.password();
+  json_object[USERNAME] = login.username();
+  json_object[PASSWORD] = login.password();
   json_object[REMEMBER] = remember;
   json_object[DISCOURSE] = discourse;
   QByteArray payload = QJsonDocument(json_object).toJson(QJsonDocument::Compact);
@@ -444,7 +385,7 @@ C2cClient::update_login()
 {
   if (is_logged() and m_login_data.is_expired()) {
     qInfo() << "Login expired";
-    login();
+    login(m_login); // Fixme:
   }
 }
 
@@ -639,25 +580,6 @@ C2cClient::make_url_for_document(const QJsonDocument * json_document) const
   QStringList string_list;
   string_list << endpoint << document_id;
   return make_url(string_list);
-}
-
-void
-C2cClient::post(const QNetworkRequest & request, const QJsonDocument * json_document)
-{
-  if (not is_logged())
-    return;
-  update_login();
-
-  QByteArray payload = json_document->toJson(QJsonDocument::Compact);
-  qInfo() << "POST" << request.url() << payload;
-
-  QNetworkReply * reply = m_network_manager.post(request, payload);
-  if (reply->isFinished())
-    handle_get_reply(reply);
-  else
-    connect(reply, SIGNAL(finished()),
-	    this, SLOT(get_reply_finished()),
-	    Qt::QueuedConnection);
 }
 
 void

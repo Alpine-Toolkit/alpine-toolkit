@@ -30,9 +30,36 @@
 #include <QtDebug>
 #include <QtTest/QtTest>
 
+#include <iostream>
+
 /**************************************************************************************************/
 
-#include "camptocamp/camptocamp.h"
+#include "camptocamp/camptocamp_client.h"
+#include "camptocamp/camptocamp_cache.h"
+#include "camptocamp/camptocamp_document.h"
+
+#include "login.h"
+
+/***************************************************************************************************/
+
+class MyC2cClient : public C2cClient
+{
+  Q_OBJECT
+
+public:
+  MyC2cClient(const QString & api_url = c2c::OFFICIAL_API_URL, int port = -1)
+    :  C2cClient(api_url, port)
+  {}
+
+public slots:
+  void handle_received_document(const QJsonDocument * json_document) {
+    // qInfo() << "Received document"; // << json_document->toJson(QJsonDocument::Indented);
+
+    C2cSearchResult search_result(json_document);
+    for (const auto & route : search_result.routes())
+      qInfo() << route.title(QStringLiteral("fr"));
+  }
+};
 
 /***************************************************************************************************/
 
@@ -44,13 +71,13 @@ private slots:
   void constructor();
 };
 
-void TestC2cClient::constructor()
+void
+TestC2cClient::constructor()
 {
-  QString username = "fabricesalvaire";
-  QString password = "YafL6U3N";
   C2cLogin login(username, password);
   qInfo() << login;
-  C2cClient client(login);
+  MyC2cClient client;
+  client.login(login);
   {
     QSignalSpy spy(&client, &C2cClient::logged);
     QVERIFY(spy.wait(5000)); // ms
@@ -58,26 +85,53 @@ void TestC2cClient::constructor()
 
   {
     client.health();
-    QSignalSpy spy(&client, &C2cClient::get_finished);
+    QSignalSpy spy(&client, &C2cClient::received_document);
     QVERIFY(spy.wait(5000)); // ms
   }
 
   {
     client.route(570170);
-    QSignalSpy spy(&client, &C2cClient::get_finished);
+    QSignalSpy spy(&client, &C2cClient::received_document);
     QVERIFY(spy.wait(5000)); // ms
   }
 
   {
+    connect(&client, &MyC2cClient::received_document,
+            &client, &MyC2cClient::handle_received_document);
     client.search("sonia calanque", C2cSearchSettings());
-    QSignalSpy spy(&client, &C2cClient::get_finished);
+    QSignalSpy spy(&client, &C2cClient::received_document);
     QVERIFY(spy.wait(5000)); // ms
   }
 }
 
 /***************************************************************************************************/
 
+class TestC2cCache: public QObject
+{
+  Q_OBJECT
+
+private slots:
+  void constructor();
+};
+
+void TestC2cCache::constructor()
+{
+  QString sqlite_path = "c2c-cache.sqlite3";
+  C2cCache cache(sqlite_path);
+
+  qInfo() << cache.login();
+
+  QString username = "fabricesalvaire";
+  QString password = "YafL6U3N";
+  C2cLogin login(username, password);
+  cache.save_login(login);
+  qInfo() << cache.login();
+}
+
+/***************************************************************************************************/
+
 QTEST_MAIN(TestC2cClient)
+// QTEST_MAIN(TestC2cCache)
 #include "test_camptocamp.moc"
 
 /***************************************************************************************************
