@@ -40,6 +40,8 @@
 #include <QJsonDocument>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QPointer>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
@@ -171,6 +173,43 @@ private:
 
 /**************************************************************************************************/
 
+class C2cClient;
+
+class C2cRequest : public QObject
+{
+  Q_OBJECT
+
+public:
+  C2cRequest(const QNetworkRequest & request); // parent
+  ~C2cRequest(); // Fixme: delete this and m_reply
+
+  const QUrl url() const { return m_request.url(); }
+  const QNetworkRequest & request() const { return m_request; }
+
+  void set_reply(C2cClient * client, QNetworkReply * network_reply);
+
+  C2cClient * client() const { return m_client; }
+
+  virtual void handle_reply(const QJsonDocument * json_data) = 0; // Fixme: const
+  virtual void handle_error(const QJsonDocument * json_data) = 0;
+  virtual void handle_network_error() = 0;
+
+private slots:
+  void finished();
+  // Fixme: void error(Error error, const QString & error_string = QString());
+
+private:
+  QJsonDocument * reply_to_json() const;
+  static bool check_json_response(const QJsonDocument * json_data);
+
+private:
+  QNetworkRequest m_request;
+  QPointer<QNetworkReply> m_network_reply;
+  QPointer<C2cClient> m_client;
+};
+
+/**************************************************************************************************/
+
 class C2cClient : public QObject
 {
   Q_OBJECT
@@ -201,26 +240,32 @@ public:
 signals:
   void logged();
   void login_failed();
-  void received_document(QJsonDocument * json_document);
-  void get_failed();
+  void received_health_status(const QJsonDocument * json_document);
+  void get_health_failed(const QJsonDocument * json_document);
+  void received_search(const QJsonDocument * json_document);
+  void search_failed(const QJsonDocument * json_document);
+  void received_document(const QJsonDocument * json_document);
+  void get_document_failed(const QJsonDocument * json_document);
 
 private:
   QUrl make_url(const QString & url) const;
   QUrl make_url(const QStringList & strings) const;
   QNetworkRequest create_network_request(const QUrl & url, bool token = false) const;
   QNetworkRequest create_network_request(const QStringList & strings, bool token = false) const;
-  QJsonDocument * reply_to_json(QNetworkReply * reply) const;
-  bool check_json_response(const QJsonDocument * json_data) const;
-  void get(const QNetworkRequest & request);
-  void handle_get_reply(QNetworkReply * reply);
+  void get(C2cRequest * request);
   void get_document(const QString & document_type, unsigned int document_id);
-  void handle_login_reply(QNetworkReply * reply);
   QUrl make_url_for_document(const QJsonDocument * json_document) const;
-  void post(const QNetworkRequest & request, const QJsonDocument * json_document);
+  void post(C2cRequest * request, const QJsonDocument * json_document, bool check_login = true);
 
-private slots:
-  void loggin_reply_finished();
-  void get_reply_finished();
+public: // Fixme: wrong design
+  void handle_login_reply(const QJsonDocument * json_data);
+  void handle_login_error(const QJsonDocument * json_data);
+  void handle_health_reply(const QJsonDocument * json_data);
+  void handle_health_error(const QJsonDocument * json_data);
+  void handle_search_reply(const QJsonDocument * json_data);
+  void handle_search_error(const QJsonDocument * json_data);
+  void handle_document_reply(const QJsonDocument * json_data);
+  void handle_document_error(const QJsonDocument * json_data);
 
 private:
   QString m_api_url;

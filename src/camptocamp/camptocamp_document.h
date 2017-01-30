@@ -49,6 +49,8 @@ public:
 
   C2cShortRoute & operator=(const C2cShortRoute & other);
 
+  unsigned int id() const;
+  QStringList activities() const;
   QString title(const QString & language) const;
 
 private:

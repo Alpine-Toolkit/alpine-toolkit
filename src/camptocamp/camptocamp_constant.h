@@ -53,6 +53,7 @@ namespace c2c {
   static const QString WAYPOINTS = "waypoints";
   static const QString XREPORTS = "xreports";
 
+  static const QString ACTIVITIES = "activities";
   static const QString DESCRIPTION = "description";
   static const QString DISCOURSE = "discourse";
   static const QString DOCUMENT = "document";

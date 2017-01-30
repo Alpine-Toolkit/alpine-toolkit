@@ -61,6 +61,24 @@ C2cShortRoute::operator=(const C2cShortRoute & other)
   return *this;
 }
 
+unsigned int
+C2cShortRoute::id() const
+{
+  return m_json_object[DOCUMENT_ID].toInt();
+}
+
+QStringList
+C2cShortRoute::activities() const
+{
+  QStringList activities;
+  QJsonArray array = m_json_object[ACTIVITIES].toArray();
+  for (const auto & ref : array) {
+    activities << ref.toString();
+  }
+
+  return activities;
+}
+
 QString
 C2cShortRoute::title(const QString & language) const
 {

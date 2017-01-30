@@ -30,7 +30,6 @@
 
 #include <QJsonArray>
 #include <QJsonObject>
-#include <QNetworkRequest>
 #include <QUrlQuery>
 #include <QList>
 #include <QtDebug>
@@ -222,6 +221,154 @@ C2cSearchSettings::type_letters() const
 
 /**************************************************************************************************/
 
+C2cRequest::C2cRequest(const QNetworkRequest & request)
+  : QObject(),
+    m_request(request)
+{}
+
+C2cRequest::~C2cRequest()
+{
+  // m_reply->deleteLater();
+}
+
+void
+C2cRequest::set_reply(C2cClient * client, QNetworkReply * network_reply)
+{
+  m_client = client;
+  m_network_reply = network_reply;
+
+  if (network_reply->isFinished())
+    finished();
+  else
+    connect(network_reply, SIGNAL(finished()),
+	    this, SLOT(finished()),
+	    Qt::QueuedConnection);
+  // QueuedConnection: The slot is invoked when control returns to the
+  // event loop of the receiver's thread. The slot is executed in the
+  // receiver's thread.
+}
+
+void
+C2cRequest::finished()
+{
+  if (m_network_reply->error() == QNetworkReply::NoError) {
+    QJsonDocument * json_document = reply_to_json();
+    if (check_json_response(json_document))
+      handle_reply(json_document);
+    else
+      handle_error(json_document);
+  } else
+    handle_network_error();
+}
+
+QJsonDocument *
+C2cRequest::reply_to_json() const
+{
+  QByteArray json_data = m_network_reply->readAll();
+  qInfo() << "Json reply" << url() << '\n' << json_data;
+  return new QJsonDocument(QJsonDocument::fromJson(json_data)); // Fixme: delete
+}
+
+bool
+C2cRequest::check_json_response(const QJsonDocument * json_document)
+{
+  QJsonObject root = json_document->object();
+  if (root.contains(STATUS) and root[STATUS].toString() == ERROR) {
+    // {'status': 'error', 'errors': [{'name': 'user', 'location': 'body', 'description': 'Login failed'}]}
+    QJsonArray array = root[ERRORS].toArray();
+    for (const auto & json_object : array)
+      qWarning() << json_object.toObject()[DESCRIPTION]; // error !
+    return false;
+  } else
+    return true;
+}
+
+/**************************************************************************************************/
+
+class C2cLoginRequest : public C2cRequest
+{
+public:
+  C2cLoginRequest(const QNetworkRequest & request)
+    : C2cRequest(request)
+  {}
+
+  void handle_reply(const QJsonDocument * json_document) {
+    client()->handle_login_reply(json_document);
+  }
+
+  void handle_error(const QJsonDocument * json_document) {
+    client()->handle_login_error(json_document);
+  }
+
+  void handle_network_error() {
+  }
+};
+
+/**************************************************************************************************/
+
+class C2cHealthRequest : public C2cRequest
+{
+public:
+  C2cHealthRequest(const QNetworkRequest & request)
+    : C2cRequest(request)
+  {}
+
+  void handle_reply(const QJsonDocument * json_document) {
+    client()->handle_health_reply(json_document);
+  }
+
+  void handle_error(const QJsonDocument * json_document) {
+    client()->handle_health_error(json_document);
+  }
+
+  void handle_network_error() {
+  }
+};
+
+/**************************************************************************************************/
+
+class C2cSearchRequest : public C2cRequest
+{
+public:
+  C2cSearchRequest(const QNetworkRequest & request)
+    : C2cRequest(request)
+  {}
+
+  void handle_reply(const QJsonDocument * json_document) {
+    client()->handle_search_reply(json_document);
+  }
+
+  void handle_error(const QJsonDocument * json_document) {
+    client()->handle_search_error(json_document);
+  }
+
+  void handle_network_error() {
+  }
+};
+
+/**************************************************************************************************/
+
+class C2cDocumentRequest : public C2cRequest
+{
+public:
+  C2cDocumentRequest(const QNetworkRequest & request)
+    : C2cRequest(request)
+  {}
+
+  void handle_reply(const QJsonDocument * json_document) {
+    client()->handle_document_reply(json_document);
+  }
+
+  void handle_error(const QJsonDocument * json_document) {
+    client()->handle_document_error(json_document);
+  }
+
+  void handle_network_error() {
+  }
+};
+
+/**************************************************************************************************/
+
 C2cClient::C2cClient(const QString & api_url, int port)
   : QObject(),
     m_api_url(api_url),
@@ -266,88 +413,27 @@ C2cClient::create_network_request(const QUrl & url, bool token) const
   return request;
 }
 
-QJsonDocument *
-C2cClient::reply_to_json(QNetworkReply * reply) const
+void
+C2cClient::get(C2cRequest * request)
 {
-  QByteArray json_data = reply->readAll();
-  qInfo() << "Json Reply" << json_data;
-  return new QJsonDocument(QJsonDocument::fromJson(json_data));
-}
-
-bool
-C2cClient::check_json_response(const QJsonDocument * json_document) const
-{
-  QJsonObject root = json_document->object();
-  if (root.contains(STATUS) and root[STATUS].toString() == ERROR) {
-    // {'status': 'error', 'errors': [{'name': 'user', 'location': 'body', 'description': 'Login failed'}]}
-    QJsonArray array = root[ERRORS].toArray();
-    for (const auto & json_object : array)
-      qWarning() << json_object.toObject()[DESCRIPTION]; // error !
-    return false;
-  } else
-    return true;
+  qInfo() << "Get" << request->url();
+  QNetworkReply * network_reply = m_network_manager.get(request->request());
+  request->set_reply(this, network_reply);
 }
 
 void
-C2cClient::get(const QNetworkRequest & request)
+C2cClient::post(C2cRequest * request, const QJsonDocument * json_document, bool check_login)
 {
-  qInfo() << "Get" << request.url();
-
-  QNetworkReply * reply = m_network_manager.get(request);
-  if (reply->isFinished())
-    handle_get_reply(reply);
-  else
-    connect(reply, SIGNAL(finished()),
-	    this, SLOT(get_reply_finished()),
-	    Qt::QueuedConnection);
-}
-
-void
-C2cClient::get_reply_finished()
-{
-  QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
-  if (reply)
-    handle_get_reply(reply);
-  else { // Fixme: when ?
-    qWarning() << __FUNCTION__ << "Reply is null";
+  if (check_login) {
+    if (not is_logged())
+      return; // Fixme: emit ?
+    update_login();
   }
-}
-
-void
-C2cClient::handle_get_reply(QNetworkReply * reply)
-{
-  if (reply->error() == QNetworkReply::NoError) {
-      QJsonDocument * json_document = reply_to_json(reply);
-      // qInfo() << "Login Reply" << json_data;
-      if (check_json_response(json_document)) {
-        emit received_document(json_document);
-      }
-      // else emit
-  } else {
-    qWarning() << "Get failed" << reply->errorString();
-    emit get_failed();
-  }
-
-  reply->deleteLater();
-}
-
-void
-C2cClient::post(const QNetworkRequest & request, const QJsonDocument * json_document)
-{
-  if (not is_logged())
-    return;
-  update_login();
 
   QByteArray payload = json_document->toJson(QJsonDocument::Compact);
-  qInfo() << "POST" << request.url() << payload;
-
-  QNetworkReply * reply = m_network_manager.post(request, payload);
-  if (reply->isFinished())
-    handle_get_reply(reply);
-  else
-    connect(reply, SIGNAL(finished()),
-	    this, SLOT(get_reply_finished()),
-	    Qt::QueuedConnection);
+  qInfo() << "Post" << request->url() << "payload" << '\n' << payload;
+  QNetworkReply * network_reply = m_network_manager.post(request->request(), payload);
+  request->set_reply(this, network_reply);
 }
 
 void
@@ -359,25 +445,34 @@ C2cClient::login(const C2cLogin & login, bool remember, bool discourse)
 
   // info('Login to camptocamp.org with user {} ...'.format(self._client_login.username))
 
+  QStringList string_list;
+  string_list << USERS << LOGIN;
+  C2cRequest * request = new C2cLoginRequest(create_network_request(string_list)); // Fixme: delete
+
   QJsonObject json_object;
   json_object[USERNAME] = login.username();
   json_object[PASSWORD] = login.password();
   json_object[REMEMBER] = remember;
   json_object[DISCOURSE] = discourse;
-  QByteArray payload = QJsonDocument(json_object).toJson(QJsonDocument::Compact);
+  QJsonDocument payload = QJsonDocument(json_object);
 
-  QStringList string_list;
-  string_list << USERS << LOGIN;
-  QNetworkRequest request = create_network_request(string_list);
-  qInfo() << "Post" << request.url() << payload;
+  post(request, &payload, false); // Fixme: QJsonDocument *
+}
 
-  QNetworkReply * reply = m_network_manager.post(request, payload);
-  if (reply->isFinished())
-    handle_login_reply(reply);
-  else
-    connect(reply, SIGNAL(finished()),
-	    this, SLOT(loggin_reply_finished()),
-	    Qt::QueuedConnection);
+void
+C2cClient::handle_login_reply(const QJsonDocument * json_document)
+{
+  m_login_data.from_json(json_document);
+  qInfo() << "Logged successfully" << '\n' << m_login_data;
+  // info("Logged successfully, connection will expire at {}".format(self._login_data.expire))
+  emit logged();
+}
+
+void
+C2cClient::handle_login_error(const QJsonDocument * json_document)
+{
+  m_login_data.reset();
+  emit login_failed();
 }
 
 void
@@ -389,48 +484,26 @@ C2cClient::update_login()
   }
 }
 
-void
-C2cClient::loggin_reply_finished()
-{
-  QNetworkReply * reply = qobject_cast<QNetworkReply *>(sender());
-  if (reply)
-    handle_login_reply(reply);
-  else { // Fixme: when ?
-    qWarning() << __FUNCTION__ << "Reply is null";
-  }
-}
-
-void
-C2cClient::handle_login_reply(QNetworkReply * reply)
-{
-  if (reply->error() == QNetworkReply::NoError) {
-    QJsonDocument * json_document = reply_to_json(reply);
-    // qInfo() << "Login Reply" << json_data;
-    if (check_json_response(json_document)) {
-      m_login_data.from_json(json_document);
-      qInfo() << "Logged successfully" << '\n' << m_login_data;
-      // info("Logged successfully, connection will expire at {}".format(self._login_data.expire))
-      emit logged();
-    } else {
-      m_login_data.reset();
-      // emit
-    }
-  } else {
-    qWarning() << "Login failed" << reply->errorString();
-    emit login_failed();
-  }
-
-  reply->deleteLater();
-}
-
 // Query the health of the REST API service
 void
 C2cClient::health()
 {
   QStringList string_list;
   string_list << HEALTH;
-  QNetworkRequest request = create_network_request(string_list);
+  C2cRequest * request = new C2cHealthRequest(create_network_request(string_list)); // Fixme: delete
   get(request);
+}
+
+void
+C2cClient::handle_health_reply(const QJsonDocument * json_document)
+{
+  emit received_health_status(json_document);
+}
+
+void
+C2cClient::handle_health_error(const QJsonDocument * json_document)
+{
+  emit get_health_failed(json_document);
 }
 
 void
@@ -438,8 +511,20 @@ C2cClient::get_document(const QString & document_type, unsigned int document_id)
 {
   QStringList string_list;
   string_list << document_type << QString::number(document_id);
-  QNetworkRequest request = create_network_request(string_list);
+  C2cRequest * request = new C2cDocumentRequest(create_network_request(string_list)); // Fixme: delete
   get(request);
+}
+
+void
+C2cClient::handle_document_reply(const QJsonDocument * json_document)
+{
+  emit received_document(json_document);
+}
+
+void
+C2cClient::handle_document_error(const QJsonDocument * json_document)
+{
+  emit get_document_failed(json_document);
 }
 
 void
@@ -534,8 +619,20 @@ C2cClient::search(const QString & search_string, const C2cSearchSettings & setti
   url_query.addQueryItem(QStringLiteral("limit"), QString::number(settings.limit()));
   url_query.addQueryItem(QStringLiteral("t"), settings.type_letters());
   url.setQuery(url_query);
-  QNetworkRequest request = create_network_request(url);
+  C2cRequest * request = new C2cSearchRequest(create_network_request(url)); // Fixme: delete
   get(request);
+}
+
+void
+C2cClient::handle_search_reply(const QJsonDocument * json_document)
+{
+  emit received_search(json_document);
+}
+
+void
+C2cClient::handle_search_error(const QJsonDocument * json_document)
+{
+  emit search_failed(json_document);
 }
 
 QUrl
@@ -587,7 +684,7 @@ C2cClient::post(const QJsonDocument * json_document)
 {
   QUrl url = make_url_for_document(json_document);
   QNetworkRequest request = create_network_request(url, true);
-  post(request, json_document);
+  // post(request, json_document);
 }
 
 void

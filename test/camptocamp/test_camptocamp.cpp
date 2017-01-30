@@ -26,6 +26,7 @@
 
 /**************************************************************************************************/
 
+#include <QMetaType>
 #include <QSignalSpy>
 #include <QtDebug>
 #include <QtTest/QtTest>
@@ -48,16 +49,41 @@ class MyC2cClient : public C2cClient
 
 public:
   MyC2cClient(const QString & api_url = c2c::OFFICIAL_API_URL, int port = -1)
-    :  C2cClient(api_url, port)
-  {}
+    : C2cClient(api_url, port)
+  {
+    connect(this, &C2cClient::received_health_status,
+            this, &MyC2cClient::received_health_status_hook);
+    connect(this, &C2cClient::received_document,
+            this, &MyC2cClient::received_document_hook);
+    connect(this, &C2cClient::received_search,
+            this, &MyC2cClient::received_search_hook);
+
+    // connect(this, SIGNAL(received_health_status),
+    //         this, SLOT(received_health_status_hook));
+    // connect(this, SIGNAL(received_document),
+    //         this, SLOT(received_document_hook));
+  }
+
+signals:
+  void received_response();
 
 public slots:
-  void handle_received_document(const QJsonDocument * json_document) {
-    // qInfo() << "Received document"; // << json_document->toJson(QJsonDocument::Indented);
+  void received_health_status_hook(const QJsonDocument * json_document) {
+    qInfo() << "Received health status" << json_document->toJson(QJsonDocument::Indented);
+    emit received_response();
+  }
 
+  void received_document_hook(const QJsonDocument * json_document) {
+    // qInfo() << "Received document"; // << json_document->toJson(QJsonDocument::Indented);
+    emit received_response();
+  }
+
+  void received_search_hook(const QJsonDocument * json_document) {
     C2cSearchResult search_result(json_document);
     for (const auto & route : search_result.routes())
-      qInfo() << route.title(QStringLiteral("fr"));
+      qInfo() << route.id() << route.title(QStringLiteral("fr")) << route.activities();
+
+    emit received_response();
   }
 };
 
@@ -85,21 +111,25 @@ TestC2cClient::constructor()
 
   {
     client.health();
-    QSignalSpy spy(&client, &C2cClient::received_document);
+    // Fixme: QSignalSpy: Unable to handle parameter 'json_document'
+    // of type 'const QJsonDocument*' of method
+    // 'received_health_status', use qRegisterMetaType to register it.
+    // QSignalSpy spy(&client, &C2cClient::received_health_status);
+    QSignalSpy spy(&client, &MyC2cClient::received_response);
     QVERIFY(spy.wait(5000)); // ms
   }
 
   {
     client.route(570170);
-    QSignalSpy spy(&client, &C2cClient::received_document);
+    // QSignalSpy spy(&client, &C2cClient::received_document);
+    QSignalSpy spy(&client, &MyC2cClient::received_response);
     QVERIFY(spy.wait(5000)); // ms
   }
 
   {
-    connect(&client, &MyC2cClient::received_document,
-            &client, &MyC2cClient::handle_received_document);
     client.search("sonia calanque", C2cSearchSettings());
-    QSignalSpy spy(&client, &C2cClient::received_document);
+    // QSignalSpy spy(&client, &C2cClient::received_document);
+    QSignalSpy spy(&client, &MyC2cClient::received_response);
     QVERIFY(spy.wait(5000)); // ms
   }
 }
