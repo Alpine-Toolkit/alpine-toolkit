@@ -63,6 +63,7 @@ void
 NetworkFetcher::on_authentication_request_slot(QNetworkReply * reply,
 					       QAuthenticator * authenticator)
 {
+  // Fixme: this code do nothing
   Q_UNUSED(reply);
   qInfo() << "on_authentication_request_slot";
   authenticator->setUser("");
@@ -76,11 +77,10 @@ NetworkFetcher::add_request(const NetworkRessourceRequest & request)
 
   // clone request : new NetworkRessourceRequest(request)
   // add to a list
-
   m_queue += request;
 
   // Start timer to fetch tiles from queue
-  if (m_enabled && !m_queue.isEmpty() && !m_timer.isActive()) {
+  if (m_enabled and not m_queue.isEmpty() and not m_timer.isActive()) {
     m_timer.start(0, this);
   }
 }
@@ -125,6 +125,7 @@ NetworkFetcher::get_next_request()
   NetworkRessourceRequest request = m_queue.takeFirst();
 
   qInfo() << "NetworkFetcher::get_next_request" << request;
+  // Fixme: could be Get Post ...
   NetworkReply *reply = get(request);
 
   // If the request is already finished then handle it
@@ -136,7 +137,7 @@ NetworkFetcher::get_next_request()
 	    this, SLOT(reply_finished()),
 	    Qt::QueuedConnection);
     // connect(reply, SIGNAL(download_progress(const NetworkRessourceRequest&, qint64)),
-    // 	    this, SLOT(download_progress(const NetworkRessourceRequest&, qint64)));
+    // 	       this, SLOT(download_progress(const NetworkRessourceRequest&, qint64)));
     connect(reply, &NetworkReply::download_progress,
     	    this, &NetworkFetcher::download_progress);
     m_invmap.insert(request, reply);
@@ -157,6 +158,9 @@ NetworkFetcher::get(const NetworkRessourceRequest & request)
   // request.setPriority();
 
   QNetworkReply * network_reply = m_network_manager->get(network_request);
+  // post(const QNetworkRequest &request, const QByteArray &data)
+  // put(const QNetworkRequest &request, const QByteArray &data)
+  // deleteResource(const QNetworkRequest &request)
   if (network_reply->error() != QNetworkReply::NoError)
     qWarning() << __FUNCTION__ << network_reply->errorString();
 
@@ -172,7 +176,7 @@ NetworkFetcher::reply_finished()
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  NetworkReply *reply = qobject_cast<NetworkReply *>(sender());
+  NetworkReply * reply = qobject_cast<NetworkReply *>(sender());
   if (!reply) { // Fixme: when ?
     qWarning() << "NetworkFetcher::reply_finished reply is null";
     return;
@@ -185,7 +189,7 @@ NetworkFetcher::reply_finished()
     handle_reply(reply);
   } else {
     qWarning() << "NetworkFetcher::reply_finished m_invmap doesn't have url";
-    reply->deleteLater();
+    reply->deleteLater(); // Fixme: cancelled ?
   }
 }
 

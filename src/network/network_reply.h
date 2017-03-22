@@ -55,7 +55,7 @@ public:
   };
 
 public:
-  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply);
+  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply); // Fixme: reply.request()
   // NetworkReply(Error error, const QString & error_string);
   ~NetworkReply();
 

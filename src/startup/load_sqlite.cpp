@@ -37,9 +37,13 @@
 
 // QC_BEGIN_NAMESPACE
 
+/* Load FFCAM Refuges SQlite Database
+ *
+ */
 void
 load_sqlite(const QDir & application_user_directory)
 {
+  // Fixme: use database api ?
   QString sqlite_path_src_relative("assets:/data/ffcam-refuges.sqlite");
   QFileInfo sqlite_file_info(sqlite_path_src_relative);
   QString sqlite_path_src = sqlite_file_info.absoluteFilePath();

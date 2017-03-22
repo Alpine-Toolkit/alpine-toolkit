@@ -41,12 +41,12 @@ class NetworkFetcherHelper : public QObject
 {
   Q_OBJECT;
 
- public:
+public:
   bool has_received(const QUrl & url) {
     return m_finished_request.contains(url);
   }
 
- public slots:
+public slots:
   void request_finished(const NetworkRessourceRequest & request) {
     QUrl url = request.url();
     qInfo() << "Url finished" << url.url();
@@ -57,7 +57,7 @@ class NetworkFetcherHelper : public QObject
     qInfo() << "download progress" << url.url() << percent;
   }
 
- private:
+private:
   QList<QUrl> m_finished_request;
 };
 
