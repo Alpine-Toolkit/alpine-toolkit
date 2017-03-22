@@ -53,7 +53,7 @@ void
 MorseCodeDecoderNode::add(QString code, QChar character, int level)
 {
   if (level == code.size()) {
-    if (m_character == '\0' && character.isLower())
+    if (m_character == QChar('\0') && character.isLower())
       m_character = character;
   } else {
     QChar part = code[level];
@@ -153,7 +153,7 @@ InternationalMorseCodeEngine::encode(const QString & message, bool use_bit, bool
     QChar previous_bit = '\0';
     int count = 0;
     for (QChar bit : bits) {
-      if (previous_bit == '\0') {
+      if (previous_bit == QChar('\0')) {
 	previous_bit = bit;
 	count = 1;
       } else if (bit == previous_bit) {
@@ -187,7 +187,7 @@ InternationalMorseCodeEngine::decode(const QString & encoded_message) const
     else {
       if (node) {
     	QChar character = node->character();
-    	if (character != '\0')
+        if (character != QChar('\0'))
     	  message += character;
 	else
 	  qWarning() << "Character is null";
