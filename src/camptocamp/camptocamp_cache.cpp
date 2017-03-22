@@ -132,7 +132,7 @@ void
 C2cCache::save_login(const C2cLogin & login)
 {
   update_metadata(USERNAME, login.username());
-  update_metadata(PASSWORD, login.password());
+  update_metadata(PASSWORD, login.password()); // Fixme: clear password !
   commit();
 }
 

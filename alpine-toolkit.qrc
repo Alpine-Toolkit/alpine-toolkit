@@ -20,6 +20,12 @@
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
     <file>icons/more-vert-white@3x.png</file>
+    <file>icons/person-black.png</file>
+    <file>icons/person-black@3x.png</file>
+    <file>icons/person-outline-black.png</file>
+    <file>icons/person-outline-black@3x.png</file>
+    <file>icons/search-black.png</file>
+    <file>icons/search-black@3x.png</file>
     <file>icons/wb-sunny-black.png</file>
     <file>icons/wb-sunny-black@3x.png</file>
 
@@ -27,6 +33,8 @@
 
     <file>pages/Altimeter.qml</file>
     <file>pages/Bleau.qml</file>
+    <file>pages/Camptocamp.qml</file>
+    <file>pages/CamptocampLogin.qml</file>
     <file>pages/Camera.qml</file>
     <file>pages/Chart.qml</file>
     <file>pages/Checklist.qml</file>

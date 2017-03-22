@@ -22,6 +22,13 @@ INCLUDEPATH += src
 HEADERS += \
   src/bleaudb/bleaudb.h \
   src/bleaudb/bleaudb_json_loader.h \
+  src/camptocamp/camptocamp_cache.h \
+  src/camptocamp/camptocamp_client.h \
+  src/camptocamp/camptocamp_constant.h \
+  src/camptocamp/camptocamp_document.h \
+  src/camptocamp/camptocamp_login.h \
+  src/camptocamp/camptocamp_qml.h \
+  src/database/database.h \
   src/ephemeride/ephemeride.h \
   src/refuge/refuge.h \
   src/satellite_model/satellite_model.h \
@@ -36,6 +43,12 @@ HEADERS += \
 SOURCES += \
   src/bleaudb/bleaudb.cpp \
   src/bleaudb/bleaudb_json_loader.cpp \
+  src/camptocamp/camptocamp_cache.cpp \
+  src/camptocamp/camptocamp_client.cpp \
+  src/camptocamp/camptocamp_document.cpp \
+  src/camptocamp/camptocamp_login.cpp \
+  src/camptocamp/camptocamp_qml.cpp \
+  src/database/database.cpp \
   src/ephemeride/ephemeride.cpp \
   src/international_morse_code_engine/international_morse_code_engine.cpp \
   src/main.cpp \

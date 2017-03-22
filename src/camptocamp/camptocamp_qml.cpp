@@ -26,61 +26,92 @@
 
 /**************************************************************************************************/
 
-#include "camptocamp/camptocamp_login.h"
-
-#include <QtDebug>
+#include "camptocamp/camptocamp_qml.h"
 
 /**************************************************************************************************/
 
-C2cLogin::C2cLogin()
-  : m_username(),
-    m_password()
-{}
-
-C2cLogin::C2cLogin(const QString & username, const QString & password)
-  : m_username(username),
-    m_password(password)
-{}
-
-C2cLogin::C2cLogin(const C2cLogin & other)
-  : m_username(other.m_username),
-    m_password(other.m_password)
-{}
-
-C2cLogin::~C2cLogin()
-{}
-
-C2cLogin &
-C2cLogin::operator=(const C2cLogin & other)
+C2cQmlClient::C2cQmlClient(const QString & sqlite_path)
+  : QObject(),
+    m_client(),
+    m_cache(sqlite_path),
+    m_login()
 {
-  if (this != &other) {
-    m_username = other.m_username;
-    m_password = other.m_password;
+  m_login = m_cache.login();
+
+  connect(&m_client, SIGNAL(logged()),
+          this, SLOT(on_logged()));
+  connect(&m_client, SIGNAL(login_failed()),
+          this, SLOT(on_loggin_failed()));
+
+  // connect(&m_client, SIGNAL(logged),
+  //         this, SLOT(logged));
+  // connect(&m_client, SIGNAL(login_failed),
+  //         this, SLOT(loggin_failed));
+}
+
+const QString &
+C2cQmlClient::username() const
+{
+  return m_login.username();
+}
+
+void
+C2cQmlClient::set_username(const QString & username)
+{
+  if (username != m_login.username()) {
+    m_login.set_username(username);
+    // save_login();
+    emit usernameChanged(); // username
   }
-
-  return *this;
 }
 
-bool
-C2cLogin::operator==(const C2cLogin & other) const
+const QString &
+C2cQmlClient::password() const
 {
-  return m_username == other.m_username and m_password == other.m_password;
+  return m_login.password();
 }
 
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLogin & login)
+void
+C2cQmlClient::set_password(const QString & password)
 {
-  QDebugStateSaver saver(debug); // Fixme: ???
-
-  debug.nospace() << QLatin1Literal("C2cLogin(");
-  debug << login.username();
-  debug << QLatin1Literal(", ");
-  debug << login.password();
-  debug << ')';
-
-  return debug;
+  if (password != m_login.password()) {
+    m_login.set_password(password);
+    // save_login();
+    emit passwordChanged(); // password
+  }
 }
-#endif
+
+void
+C2cQmlClient::save_login()
+{
+  m_cache.save_login(m_login);
+}
+
+void
+C2cQmlClient::login()
+{
+  m_client.login(m_login);
+}
+
+void
+C2cQmlClient::logout()
+{
+  // Fixme
+}
+
+void
+C2cQmlClient::on_logged()
+{
+  emit loginStatusChanged();
+  // emit logged();
+}
+
+void
+C2cQmlClient::on_loggin_failed()
+{
+  emit loginStatusChanged();
+  // emit on_loggin_failed();
+}
 
 /***************************************************************************************************
  *

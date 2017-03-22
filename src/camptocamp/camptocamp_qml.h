@@ -28,47 +28,61 @@
 
 /**************************************************************************************************/
 
-#ifndef __CAMPTOCAMP_LOGIN_H__
-#define __CAMPTOCAMP_LOGIN_H__
+#ifndef __CAMPTOCAMP_QML_H__
+#define __CAMPTOCAMP_QML_H__
 
 /**************************************************************************************************/
 
-#include <QString>
-#include <QtDebug>
+#include "camptocamp/camptocamp_client.h"
+#include "camptocamp/camptocamp_cache.h"
 
 /**************************************************************************************************/
 
-class C2cLogin {
+class C2cQmlClient :public QObject
+{
+  Q_OBJECT
+  Q_PROPERTY(bool logged READ is_logged NOTIFY loginStatusChanged)
+  Q_PROPERTY(QString username READ username WRITE set_username NOTIFY usernameChanged)
+  Q_PROPERTY(QString password READ password WRITE set_password NOTIFY passwordChanged)
+
 public:
-  C2cLogin();
-  C2cLogin(const QString & username, const QString & password);
-  C2cLogin(const C2cLogin & other);
-  ~C2cLogin();
+  C2cQmlClient(const QString & sqlite_path);
 
-  C2cLogin & operator=(const C2cLogin & other);
-
-  const QString & username() const { return m_username; }
-  void set_username(const QString & username) { m_username = username; }
-
-  const QString & password() const { return m_password; }
-  void set_password(const QString & password) { m_password = password; }
-
-  explicit operator bool() const { return not m_username.isEmpty(); }
-
-  bool operator==(const C2cLogin & other) const;
+  Q_INVOKABLE void save_login();
+  Q_INVOKABLE void login();
+  Q_INVOKABLE void logout();
 
 private:
-  QString m_username;
-  QString m_password;
-};
+  const QString & username() const;
+  void set_username(const QString & username);
 
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLogin & login);
-#endif
+  const QString & password() const;
+  void set_password(const QString & password);
+
+  bool is_logged() const {
+    return m_client.is_logged();
+  }
+
+signals:
+  void usernameChanged(); // const QString & username
+  void passwordChanged(); // const QString & password
+  void loginStatusChanged();
+  // void logged();
+  // void login_failed();
+
+private slots:
+  void on_logged();
+  void on_loggin_failed();
+
+private:
+  C2cClient m_client;
+  C2cCache m_cache;
+  C2cLogin m_login;
+};
 
 /**************************************************************************************************/
 
-#endif /* __CAMPTOCAMP_LOGIN_H__ */
+#endif /* __CAMPTOCAMP_QML_H__ */
 
 /***************************************************************************************************
  *

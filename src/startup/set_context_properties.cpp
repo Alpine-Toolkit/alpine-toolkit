@@ -28,11 +28,14 @@
 
 #include <algorithm>
 
+#include <QDir>
 #include <QQmlContext>
+#include <QQmlEngine>
 #include <QtDebug>
 
 #include "bleaudb/bleaudb.h"
 #include "bleaudb/bleaudb_json_loader.h"
+#include "camptocamp/camptocamp_qml.h"
 #include "ephemeride/ephemeride.h"
 #include "refuge/refuge.h"
 #include "startup.h"
@@ -46,6 +49,7 @@
 void
 set_context_properties(QQmlContext * context)
 {
+  // Create Android helper instances
 #ifdef ANDROID
   int on_android = 1;
   AndroidActivity * android_activity = new AndroidActivity(); // parent ?
@@ -55,9 +59,11 @@ set_context_properties(QQmlContext * context)
 #endif
   context->setContextProperty(QLatin1String("on_android"), on_android);
 
+  // Create Ephemeride instance
   Ephemeride * ephemeride = new Ephemeride(); // parent ?
   context->setContextProperty(QLatin1Literal("ephemeride"), ephemeride);
 
+  // Create FFCAM Refuge Model
   QList<Refuge> * refuges = new QList<Refuge>();
   QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
   load_refuge_json(ffcam_refuge_json, *refuges);
@@ -66,6 +72,7 @@ set_context_properties(QQmlContext * context)
     refuges_.append(&refuge);
   context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
 
+  // Create Bleau Model
   BleauDB * bleaudb = new BleauDB();
   QString bleau_json_path = ":/data/bleau.json";
   load_json_bleaudb(bleau_json_path, *bleaudb);
@@ -76,8 +83,14 @@ set_context_properties(QQmlContext * context)
             // qLess<T>()
             [](QObject * a, QObject * b) { return qobject_cast<BleauMassif *>(a)->name() < qobject_cast<BleauMassif *>(b)->name(); }
             );
-
   context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
+
+  // Create Camptocamp client
+  QDir offline_storage_path = QDir(context->engine()->offlineStoragePath()); // same as application_user_directory
+  QString c2c_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
+  qInfo() << "Camptocamp Cache" << c2c_cache_path;
+  C2cQmlClient * c2c_client = new C2cQmlClient(c2c_cache_path);
+  context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
   // RefugeModel * refuge_model = new RefugeModel(*refuges);
   // context->setContextProperty("refuge_model", refuge_model);

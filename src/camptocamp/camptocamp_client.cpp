@@ -221,6 +221,10 @@ C2cSearchSettings::type_letters() const
 
 /**************************************************************************************************/
 
+// Fixme:
+//  - public handle
+//  - free C2cRequest and json document
+
 C2cRequest::C2cRequest(const QNetworkRequest & request)
   : QObject(),
     m_request(request)
@@ -416,6 +420,7 @@ C2cClient::create_network_request(const QUrl & url, bool token) const
 void
 C2cClient::get(C2cRequest * request)
 {
+  // Fixme: if C2cClient is friend, then we can move this code in C2cRequest
   qInfo() << "Get" << request->url();
   QNetworkReply * network_reply = m_network_manager.get(request->request());
   request->set_reply(this, network_reply);

@@ -219,6 +219,7 @@ public:
 
   void login(const C2cLogin & login, bool remember = true, bool discourse = true);
   void update_login();
+  const C2cLogin & login_settings() const { return m_login; } // Fixme: name clash
   bool is_logged() const { return m_login_data.is_valid(); }
 
   void health();

@@ -7,6 +7,7 @@ copy-icon action info
 copy-icon action lock
 copy-icon action lock_open
 copy-icon action pan_tool
+copy-icon action search
 copy-icon action settings
 copy-icon action timeline
 copy-icon action touch_app
@@ -34,3 +35,6 @@ copy-icon navigation check
 copy-icon navigation close
 copy-icon navigation menu
 copy-icon navigation more_vert
+copy-icon social person
+copy-icon social person_outline
+copy-icon toggle star

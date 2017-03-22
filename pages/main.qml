@@ -153,6 +153,12 @@ ApplicationWindow {
                     lock_orientation: false
                 }
                 ListElement {
+                    title: qsTr("Camptocamp")
+                    icon: ""
+                    source: "qrc:/pages/Camptocamp.qml"
+                    lock_orientation: false
+                }
+                ListElement {
                     title: qsTr("Check List")
                     icon: ""
                     source: "qrc:/pages/Checklist.qml"

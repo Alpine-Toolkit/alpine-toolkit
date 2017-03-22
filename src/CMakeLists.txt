@@ -21,6 +21,7 @@ set(alpine_toolkit_library_files
   camptocamp/camptocamp_client.cpp
   camptocamp/camptocamp_document.cpp
   camptocamp/camptocamp_login.cpp
+  camptocamp/camptocamp_qml.cpp
   database/database.cpp
   ephemeride/ephemeride.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
