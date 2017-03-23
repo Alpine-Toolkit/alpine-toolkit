@@ -14,6 +14,10 @@
     <file>icons/arrow-back-white@3x.png</file>
     <file>icons/call-black.png</file>
     <file>icons/call-black@3x.png</file>
+    <file>icons/cloud-done-black.png</file>
+    <file>icons/cloud-done-black@3x.png</file>
+    <file>icons/cloud-download-black.png</file>
+    <file>icons/cloud-download-black@3x.png</file>
     <file>icons/explore-black.png</file>
     <file>icons/explore-black@3x.png</file>
     <file>icons/menu-white.png</file>
@@ -35,6 +39,7 @@
     <file>pages/Bleau.qml</file>
     <file>pages/Camptocamp.qml</file>
     <file>pages/CamptocampLogin.qml</file>
+    <file>pages/CamptocampRoute.qml</file>
     <file>pages/Camera.qml</file>
     <file>pages/Chart.qml</file>
     <file>pages/Checklist.qml</file>

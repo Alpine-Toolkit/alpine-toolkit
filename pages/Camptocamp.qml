@@ -9,18 +9,27 @@ Pane {
     id: camptocamp_pane
 
     Component.onCompleted: {
-        console.log("test console log")
+        console.info("test console log")
         /* c2c_client.logged.connect(on_logged) */
         /* c2c_client.login_failed.connect(on_login_failed) */
 
     }
 
-    /* Connections { */
-    /*     target: c2c_client */
-    /*     onLogged: { */
-    /*         console.log("Login " + c2c_client.logged) */
-    /*     } */
-    /* } */
+    Connections {
+        target: c2c_client
+        onReceivedDocument: {
+            console.info("Received document " + document_id)
+            app_bar.state = "BACK"
+            nav_icon.visible = false
+            back_icon.visible = true
+            // console.info("document " + c2c_client.get_document(document_id))
+            var properties = {'route': c2c_client.get_document(document_id)}
+            stack_view.push("qrc:/pages/CamptocampRoute.qml", properties, StackView.Transition)
+        }
+        // onLogged: {
+        //     console.log("Login " + c2c_client.logged)
+        // }
+    }
 
     ColumnLayout {
         anchors.horizontalCenter: parent.horizontalCenter
@@ -63,6 +72,14 @@ Pane {
                     source: "qrc:/icons/search-black.png"
                 }
                 // onClicked:
+            }
+
+            Button {
+                id: route_button
+                text: qsTr("Route")
+                onClicked: {
+                    c2c_client.route(570170)
+                }
             }
         }
     }

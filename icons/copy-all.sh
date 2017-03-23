@@ -28,6 +28,8 @@ copy-icon device gps_not_fixed
 copy-icon device gps_off
 copy-icon device location_searching
 copy-icon editor show_chart
+copy-icon file cloud_done
+copy-icon file cloud_download
 copy-icon image wb_sunny
 copy-icon maps my_location
 copy-icon navigation arrow_back

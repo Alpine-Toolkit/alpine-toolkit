@@ -133,6 +133,8 @@ private:
 
 /**************************************************************************************************/
 
+/* Implement Refuge Data as a list model
+ */
 class RefugeModel : public QAbstractListModel //, public QQmlParserStatus
 {
   Q_OBJECT

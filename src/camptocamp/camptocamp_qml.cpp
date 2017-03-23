@@ -43,6 +43,9 @@ C2cQmlClient::C2cQmlClient(const QString & sqlite_path)
   connect(&m_client, SIGNAL(login_failed()),
           this, SLOT(on_loggin_failed()));
 
+  connect(&m_client, SIGNAL(received_document(const QJsonDocument *)),
+          this, SLOT(on_received_document(const QJsonDocument *)));
+
   // connect(&m_client, SIGNAL(logged),
   //         this, SLOT(logged));
   // connect(&m_client, SIGNAL(login_failed),
@@ -111,6 +114,55 @@ C2cQmlClient::on_loggin_failed()
 {
   emit loginStatusChanged();
   // emit on_loggin_failed();
+}
+
+void
+C2cQmlClient::route(unsigned int document_id, bool use_cache)
+{
+  if (use_cache and m_cache.has_document(document_id))
+    emit receivedDocument(document_id);
+  else
+    m_client.route(document_id);
+}
+
+void
+C2cQmlClient::on_received_document(const QJsonDocument * json_document)
+{
+  // Fixme: ok ???
+  C2cDocument document(json_document->object());
+  C2cDocument * casted_document = document.cast();
+  unsigned int document_id = document.id();
+  m_documents.insert(document_id, casted_document);
+  qInfo() << "C2cQmlClient::on_received_document" << *casted_document;
+  emit receivedDocument(document_id);
+}
+
+bool
+C2cQmlClient::is_document_cached(unsigned int document_id)
+{
+  // Fixme: cache ?
+  return m_cache.has_document(document_id);
+}
+
+C2cDocument *
+C2cQmlClient::get_document(unsigned int document_id, bool use_cache)
+{
+  if (use_cache) {
+    C2cDocument * document = m_cache.get_document(document_id);
+    if (document) {
+      qInfo() << "Found document " << document_id << " in cache";
+      return document;
+    }
+  }
+  return m_documents.value(document_id, nullptr);
+}
+
+void
+C2cQmlClient::save_document(unsigned int document_id)
+{
+  C2cDocument * document = m_documents.value(document_id, nullptr);
+  if (document)
+    m_cache.save_document(*document);
 }
 
 /***************************************************************************************************

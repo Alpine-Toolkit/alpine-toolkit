@@ -28,18 +28,26 @@
 
 #include "camptocamp_cache.h"
 
+#include <QJsonDocument>
 #include <QSqlError>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-const QString KEY = "key";
-const QString METADATA = "metadata";
-const QString NULL_STRING = "";
-const QString PASSWORD = "password";
-const QString USERNAME = "username";
-const QString VALUE = "value";
-const QString VERSION = "version";
+// https://www.sqlite.org/json1.html
+
+/**************************************************************************************************/
+
+static const QString DATA = "data";
+static const QString DOCUMENT = "document";
+static const QString ID = "id";
+static const QString KEY = "key";
+static const QString METADATA = "metadata";
+static const QString NULL_STRING = "";
+static const QString PASSWORD = "password";
+static const QString USERNAME = "username";
+static const QString VALUE = "value";
+static const QString VERSION = "version";
 
 C2cCache::C2cCache(const QString & sqlite_path)
 {
@@ -59,6 +67,8 @@ C2cCache::create_tables()
   // # https://www.sqlite.org/autoinc.html
   // # Fixme: how to handle auto-increment overflow ?
 
+  // Fixme: migrate table using VERSION
+
   QList<QString> schemas;
 
   const QString metadata_schema =
@@ -67,6 +77,13 @@ C2cCache::create_tables()
     "value TEXT"
     ")";
   schemas << metadata_schema;
+
+  const QString document_schema =
+    "CREATE TABLE document ("
+    "id INTEGER NOT NULL,"
+    "data BLOB" // JSON HIDDEN
+    ")";
+  schemas << document_schema;
 
   QSqlQuery query = new_query();
   for (const auto & sql_query : schemas)
@@ -134,6 +151,54 @@ C2cCache::save_login(const C2cLogin & login)
   update_metadata(USERNAME, login.username());
   update_metadata(PASSWORD, login.password()); // Fixme: clear password !
   commit();
+}
+
+void
+C2cCache::save_document(const C2cDocument & document)
+{
+  unsigned int document_id = document.id();
+  if (has_document(document_id)) {
+    KeyValuePair kwargs_where;
+    kwargs_where[ID] = document_id;
+    KeyValuePair kwargs_update;
+    kwargs_update[DATA] = document.to_json();
+    QString where = format_simple_where(kwargs_where);
+    update(DOCUMENT, kwargs_update, where);
+    qInfo() << "Updated document " << document_id << " in cache";
+  } else  {
+    KeyValuePair kwargs;
+    kwargs[ID] = document_id;
+    kwargs[DATA] = document.to_json();
+    insert(DOCUMENT, kwargs);
+    qInfo() << "Inserted document " << document_id << " in cache";
+  }
+}
+
+bool
+C2cCache::has_document(unsigned int document_id) const
+{
+  KeyValuePair kwargs;
+  kwargs[ID] = document_id;
+  // Fixme: count
+  QString where = format_simple_where(kwargs);
+  QSqlRecord record = select_one(DOCUMENT, QStringList(ID), where);
+  return record.isEmpty() == false;
+}
+
+C2cDocument *
+C2cCache::get_document(unsigned int document_id) const
+{
+  KeyValuePair kwargs;
+  kwargs[ID] = document_id;
+  QString where = format_simple_where(kwargs);
+  QSqlRecord record = select_one(DOCUMENT, QStringList(DATA), where);
+  if (record.isEmpty())
+    return nullptr;
+  else {
+    QByteArray json_data = record.value(0).toByteArray();
+    QJsonDocument json_document = QJsonDocument::fromJson(json_data);
+    return C2cDocument(json_document.object()).cast(); // Fixme: delete
+  }
 }
 
 /***************************************************************************************************

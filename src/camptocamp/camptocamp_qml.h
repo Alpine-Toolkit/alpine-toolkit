@@ -35,6 +35,9 @@
 
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_cache.h"
+#include "camptocamp/camptocamp_document.h"
+
+#include <QHash>
 
 /**************************************************************************************************/
 
@@ -52,6 +55,21 @@ public:
   Q_INVOKABLE void login();
   Q_INVOKABLE void logout();
 
+  // Q_INVOKABLE void health();
+
+  // Q_INVOKABLE void area(unsigned int document_id);
+  // Q_INVOKABLE void image(unsigned int document_id);
+  // Q_INVOKABLE void map(unsigned int document_id);
+  // Q_INVOKABLE void outing(unsigned int document_id);
+  // Q_INVOKABLE void user_profile(unsigned int user_id = 0);
+  Q_INVOKABLE void route(unsigned int document_id, bool use_cache = true);
+  // Q_INVOKABLE void xreport(unsigned int document_id);
+  // Q_INVOKABLE void waypoint(unsigned int document_id);
+
+  Q_INVOKABLE C2cDocument * get_document(unsigned int document_id, bool use_cache = true);
+  Q_INVOKABLE bool is_document_cached(unsigned int document_id);
+  Q_INVOKABLE void save_document(unsigned int document_id);
+
 private:
   const QString & username() const;
   void set_username(const QString & username);
@@ -64,6 +82,8 @@ private:
   }
 
 signals:
+  void receivedDocument(unsigned int document_id);
+
   void usernameChanged(); // const QString & username
   void passwordChanged(); // const QString & password
   void loginStatusChanged();
@@ -73,11 +93,13 @@ signals:
 private slots:
   void on_logged();
   void on_loggin_failed();
+  void on_received_document(const QJsonDocument * json_document);
 
 private:
   C2cClient m_client;
   C2cCache m_cache;
   C2cLogin m_login;
+  QHash<unsigned int, C2cDocument *> m_documents; // Fixme: qpointer
 };
 
 /**************************************************************************************************/

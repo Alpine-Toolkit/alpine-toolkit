@@ -66,11 +66,11 @@ public:
   bool execute_query(const QString & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
 
-  QString format_kwarg(const KeyValuePair & kwargs, const QString & sperator = QStringLiteral(","));
-  QString format_simple_where(const KeyValuePair & kwargs);
+  QString format_kwarg(const KeyValuePair & kwargs, const QString & sperator = QStringLiteral(",")) const;
+  QString format_simple_where(const KeyValuePair & kwargs) const;
 
-  QSqlQuery select(const QString & table, const QStringList & fields, const QString & where = QStringLiteral(""));
-  QSqlRecord select_one(const QString & table, const QStringList & fields, const QString & where = QStringLiteral(""));
+  QSqlQuery select(const QString & table, const QStringList & fields, const QString & where = QStringLiteral("")) const;
+  QSqlRecord select_one(const QString & table, const QStringList & fields, const QString & where = QStringLiteral("")) const;
   QSqlQuery prepare_query(const QString & sql_query);
   QSqlQuery insert(const QString & table, const KeyValuePair & kwargs, bool commit = false);
   QSqlQuery update(const QString & table, const KeyValuePair & kwargs, const QString & where = QStringLiteral(""));

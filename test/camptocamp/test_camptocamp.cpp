@@ -74,7 +74,9 @@ public slots:
   }
 
   void received_document_hook(const QJsonDocument * json_document) {
-    // qInfo() << "Received document"; // << json_document->toJson(QJsonDocument::Indented);
+    C2cDocument document(json_document->object());
+    C2cDocument * casted_document = document.cast();
+    qInfo() << "Received document" << *casted_document; // << json_document->toJson(QJsonDocument::Indented);
     emit received_response();
   }
 
@@ -126,12 +128,12 @@ TestC2cClient::constructor()
     QVERIFY(spy.wait(5000)); // ms
   }
 
-  {
-    client.search("sonia calanque", C2cSearchSettings());
-    // QSignalSpy spy(&client, &C2cClient::received_document);
-    QSignalSpy spy(&client, &MyC2cClient::received_response);
-    QVERIFY(spy.wait(5000)); // ms
-  }
+  // {
+  //   client.search("sonia calanque", C2cSearchSettings());
+  //   // QSignalSpy spy(&client, &C2cClient::received_document);
+  //   QSignalSpy spy(&client, &MyC2cClient::received_response);
+  //   QVERIFY(spy.wait(5000)); // ms
+  // }
 }
 
 /***************************************************************************************************/

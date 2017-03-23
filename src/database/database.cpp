@@ -82,7 +82,7 @@ QcDatabase::execute_queries(const QStringList & sql_queries, bool commit_request
 }
 
 QString
-QcDatabase::format_kwarg(const KeyValuePair & kwargs, const QString & separator)
+QcDatabase::format_kwarg(const KeyValuePair & kwargs, const QString & separator) const
 {
   QString kwarg_string;
   int i = 0;
@@ -104,7 +104,7 @@ QcDatabase::format_kwarg(const KeyValuePair & kwargs, const QString & separator)
 }
 
 QString
-QcDatabase::format_simple_where(const KeyValuePair & kwargs)
+QcDatabase::format_simple_where(const KeyValuePair & kwargs) const
 {
   return format_kwarg(kwargs, QStringLiteral(" AND "));
 }
@@ -148,7 +148,7 @@ QcDatabase::insert(const QString & table, const KeyValuePair & kwargs, bool comm
 }
 
 QSqlQuery
-QcDatabase::select(const QString & table, const QStringList & fields, const QString & where)
+QcDatabase::select(const QString & table, const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = new_query();
   QString sql_query = QStringLiteral("SELECT ") + fields.join(',') + QStringLiteral(" FROM ") + table;
@@ -163,7 +163,7 @@ QcDatabase::select(const QString & table, const QStringList & fields, const QStr
 }
 
 QSqlRecord
-QcDatabase::select_one(const QString & table, const QStringList & fields, const QString & where)
+QcDatabase::select_one(const QString & table, const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = select(table, fields, where);
   QSqlRecord record;

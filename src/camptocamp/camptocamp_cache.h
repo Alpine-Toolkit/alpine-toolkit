@@ -35,6 +35,7 @@
 
 #include "database/database.h"
 #include "camptocamp/camptocamp_login.h"
+#include "camptocamp/camptocamp_document.h"
 
 #include <QString>
 
@@ -49,13 +50,16 @@ public:
   C2cLogin login(); // const
   void save_login(const C2cLogin & login);
 
+  void save_document(const C2cDocument & document);
+  bool has_document(unsigned int document_id) const;
+  C2cDocument * get_document(unsigned int document_id) const;
+
 private:
   void create_tables();
   void init();
   QString read_metadata(const QString & key);
   void init_metadata(const QString & key, const QString & value);
   void update_metadata(const QString & key, const QString & value);
-
 };
 
 /**************************************************************************************************/

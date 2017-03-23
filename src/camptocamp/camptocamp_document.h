@@ -36,26 +36,100 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QList>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
-class C2cShortRoute
+class C2cDocument : public QObject
 {
+public:
+  enum class Type {
+    Area,
+    Article,
+    Book,
+    Image,
+    Map,
+    Outing,
+    Route,
+    UserProfile,
+    XReport,
+    Waypoint
+  };
+  Q_ENUMS(Type)
+
+private:
+  Q_OBJECT // Q_GADGET ?
+
+  Q_PROPERTY(unsigned int id READ id CONSTANT)
+  Q_PROPERTY(Type type READ type CONSTANT)
+  // Q_PROPERTY(QString type READ type_string CONSTANT)
+
+public:
+  C2cDocument();
+  C2cDocument(const QJsonObject json_object);
+  C2cDocument(const C2cDocument & other);
+  ~C2cDocument();
+
+  C2cDocument & operator=(const C2cDocument & other);
+
+  unsigned int id() const;
+  Type type() const;
+  QString type_string() const;
+
+  C2cDocument * cast() const;
+
+  const QJsonObject & json_object() const { return m_json_object; }
+  QJsonDocument json_document() const { return QJsonDocument(m_json_object); }
+  QByteArray to_binary_data() const;
+  QByteArray to_json() const;
+
+private:
+  QJsonObject m_json_object;
+};
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const C2cDocument & document);
+#endif
+
+// Fixme: qmlRegisterUncreatableType
+Q_DECLARE_METATYPE(C2cDocument)
+Q_DECLARE_METATYPE(C2cDocument*)
+
+/**************************************************************************************************/
+
+class C2cShortRoute: public C2cDocument
+{
+  Q_OBJECT
+
 public:
   C2cShortRoute();
   C2cShortRoute(const QJsonObject json_object);
   C2cShortRoute(const C2cShortRoute & other);
   ~C2cShortRoute();
 
-  C2cShortRoute & operator=(const C2cShortRoute & other);
-
-  unsigned int id() const;
   QStringList activities() const;
-  QString title(const QString & language) const;
-
-private:
-  QJsonObject m_json_object;
+  Q_INVOKABLE QString title(const QString & language) const;
+  Q_INVOKABLE QString description(const QString & language) const;
 };
+
+Q_DECLARE_METATYPE(C2cShortRoute)
+Q_DECLARE_METATYPE(C2cShortRoute*)
+
+/**************************************************************************************************/
+
+class C2cRoute : public C2cShortRoute
+{
+  Q_OBJECT
+
+public:
+  C2cRoute();
+  C2cRoute(const QJsonObject json_object);
+  C2cRoute(const C2cRoute & other);
+  ~C2cRoute();
+};
+
+Q_DECLARE_METATYPE(C2cRoute)
+Q_DECLARE_METATYPE(C2cRoute*)
 
 /**************************************************************************************************/
 

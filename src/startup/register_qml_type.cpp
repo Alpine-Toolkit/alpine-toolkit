@@ -32,6 +32,7 @@
 
 #include "startup.h"
 #include "ephemeride/ephemeride.h"
+#include "camptocamp/camptocamp_document.h"
 #include "refuge/refuge.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
@@ -61,6 +62,9 @@ register_qml_types()
   // qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
 
   // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
+
+  qmlRegisterUncreatableType<C2cDocument >(package, major, minor, "C2cDocument", QLatin1String("Cannot create C2cDocument"));
+  qmlRegisterUncreatableType<C2cRoute >(package, major, minor, "C2cRoute", QLatin1String("Cannot create C2cRoute"));
 }
 
 /***************************************************************************************************
