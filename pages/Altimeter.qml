@@ -5,11 +5,12 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 
-import Local 1.0
 import QtPositioning 5.5
 import QtSensors 5.1 // .8
 
 import Qt.labs.settings 1.0
+
+import Local 1.0
 
 Pane {
     id: altimeter_pane

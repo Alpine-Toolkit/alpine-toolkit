@@ -6,8 +6,9 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 // import Qt.labs.controls.material 1.0
 
-import Local 1.0
 import QtSensors 5.1 // .8
+
+import Local 1.0
 
 Pane {
     id: altimeter_pane
