@@ -23,7 +23,6 @@ Pane {
         console.info("test console log")
         /* c2c_client.logged.connect(on_logged) */
         /* c2c_client.login_failed.connect(on_login_failed) */
-
     }
 
     Connections {
@@ -38,16 +37,14 @@ Pane {
             stack_view.push("qrc:/pages/CamptocampRoute.qml", properties, StackView.Transition)
         }
         onReceivedSearch: {
-            var search_result = c2c_client.search_result
-            var routes = search_result.routes
-            // route_model.clear()
-            // var i
-            // console.info("onReceivedSearch " + routes);
-            // for (i = 0; i < routes.length; i++) {
-            //     /* console.info("Route " + i + " " + routes[i].title); */
-            //     route_model.append({"title": routes[i].title});
-            // }
-            route_list.model = routes
+            var routes = c2c_client.search_result.routes
+            console.info("onReceivedSearch " + routes);
+            route_model.clear()
+            var i
+            for (i = 0; i < routes.length; i++) {
+                route_model.append({"title": routes[i].title("fr")});
+            }
+            // route_list.model = c2c_client.search_result.routes
         }
         // onLogged: {
         //     console.log("Login " + c2c_client.logged)
@@ -116,9 +113,9 @@ Pane {
             width: parent.width
             height: 600
 
-            model: null
+            // model: null
             // model: c2c_client.search_result.routes
-            // model: route_model
+            model: route_model
             delegate: Text { text: model.index + " " + model.title }
         }
     }

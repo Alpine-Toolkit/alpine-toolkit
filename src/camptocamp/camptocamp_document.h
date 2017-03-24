@@ -101,7 +101,7 @@ Q_DECLARE_METATYPE(C2cDocument)
 class C2cShortRoute: public C2cDocument
 {
   Q_OBJECT
-  Q_PROPERTY(QString title READ title_fr CONSTANT) // Fixme
+  Q_PROPERTY(QString title_fr READ title_fr CONSTANT) // Fixme
 
 public:
   C2cShortRoute();
@@ -146,7 +146,6 @@ Q_DECLARE_METATYPE(C2cRoute)
 class C2cSearchResult : public QObject
 {
   Q_OBJECT // Q_GADGET ?
-  // Q_PROPERTY(QList<QObject *> routes READ routes_obj NOTIFY updated)
   Q_PROPERTY(QQmlListProperty<C2cShortRoute> routes READ routes_list_property)
 
 public:
@@ -158,7 +157,6 @@ public:
   C2cSearchResult & operator=(const C2cSearchResult & other);
 
   const QList<C2cShortRoute> & routes() const { return m_routes; }
-  const QList<QObject *> & routes_obj() const { return m_routes_obj; }
   QQmlListProperty<C2cShortRoute> routes_list_property(); // const
 
   void update(const QJsonDocument * json_document);
@@ -167,12 +165,8 @@ private:
   static int routes_list_property_count(QQmlListProperty<C2cShortRoute> * list);
   static C2cShortRoute * routes_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index);
 
-signals:
-  void updated();
-
 private:
   QList<C2cShortRoute> m_routes;
-  QList<QObject *> m_routes_obj;
 };
 
 Q_DECLARE_METATYPE(C2cSearchResult)

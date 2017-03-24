@@ -289,24 +289,19 @@ C2cRoute::~C2cRoute()
 C2cSearchResult::C2cSearchResult()
   : QObject(),
     m_routes()
-{
-  qInfo() << "C2cSearchResult::C2cSearchResult()";
-}
+{}
 
 C2cSearchResult::C2cSearchResult(const QJsonDocument * json_document)
   : QObject(),
     m_routes()
 {
-  qInfo() << "C2cSearchResult::C2cSearchResult(json_document)";
   update(json_document);
 }
 
 C2cSearchResult::C2cSearchResult(const C2cSearchResult & other)
   : QObject(),
     m_routes(other.m_routes)
-{
-  qInfo() << "C2cSearchResult::C2cSearchResult(&)";
-}
+{}
 
 C2cSearchResult &
 C2cSearchResult::operator=(const C2cSearchResult & other)
@@ -317,23 +312,16 @@ C2cSearchResult::operator=(const C2cSearchResult & other)
     m_routes = other.m_routes;
   }
 
-  emit updated();
-
   return *this;
 }
 
 C2cSearchResult::~C2cSearchResult()
-{
-  qInfo() << "C2cSearchResult::~";
-}
+{}
 
 void
 C2cSearchResult::update(const QJsonDocument * json_document)
 {
-  qInfo() << "C2cSearchResult::update";
-
   m_routes.clear();
-  m_routes_obj.clear();
 
   QJsonObject root = json_document->object();
   // for (const auto & key : root.keys())
@@ -347,10 +335,7 @@ C2cSearchResult::update(const QJsonDocument * json_document)
     m_routes << C2cShortRoute(json_obj);
   }
 
-  for (auto & route : m_routes)
-    m_routes_obj << &route;
-
-  emit updated();
+  qInfo() << "C2cShortRoute::update " << m_routes.size();
 }
 
 QQmlListProperty<C2cShortRoute>
@@ -372,7 +357,8 @@ C2cShortRoute *
 C2cSearchResult::routes_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index)
 {
   C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
-  return &search_result->m_routes[index];
+  C2cShortRoute & route = search_result->m_routes[index];
+  return &route;
 }
 
 /***************************************************************************************************
