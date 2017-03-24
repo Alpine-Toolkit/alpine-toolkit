@@ -34,7 +34,7 @@ set(alpine_toolkit_library_files
   sql_model/SqlQueryModel.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
-target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network)
+target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml )
 
 ####################################################################################################
 #

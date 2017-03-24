@@ -51,7 +51,7 @@ static const QString VERSION = "version";
 
 C2cCache::C2cCache(const QString & sqlite_path)
 {
-  bool created = open(sqlite_path);
+  bool created = open(sqlite_path); // unused
 
   // if (!created)
 }

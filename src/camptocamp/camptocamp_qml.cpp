@@ -34,7 +34,8 @@ C2cQmlClient::C2cQmlClient(const QString & sqlite_path)
   : QObject(),
     m_client(),
     m_cache(sqlite_path),
-    m_login()
+    m_login(),
+    m_search_result()
 {
   m_login = m_cache.login();
 
@@ -43,13 +44,20 @@ C2cQmlClient::C2cQmlClient(const QString & sqlite_path)
   connect(&m_client, SIGNAL(login_failed()),
           this, SLOT(on_loggin_failed()));
 
-  connect(&m_client, SIGNAL(received_document(const QJsonDocument *)),
-          this, SLOT(on_received_document(const QJsonDocument *)));
-
   // connect(&m_client, SIGNAL(logged),
   //         this, SLOT(logged));
   // connect(&m_client, SIGNAL(login_failed),
   //         this, SLOT(loggin_failed));
+
+  connect(&m_client, SIGNAL(received_document(const QJsonDocument *)),
+          this, SLOT(on_received_document(const QJsonDocument *)));
+  // connect(&m_client, SIGNAL(get_document_failed(const QJsonDocument *)),
+  //         this, SLOT(on_get_document_failed(const QJsonDocument *)));
+
+  connect(&m_client, SIGNAL(received_search(const QJsonDocument *)),
+          this, SLOT(on_received_search(const QJsonDocument *)));
+  // connect(&m_client, SIGNAL(search_failed(const QJsonDocument *)),
+  //         this, SLOT(on_search_failed(const QJsonDocument *)));
 }
 
 const QString &
@@ -129,7 +137,7 @@ void
 C2cQmlClient::on_received_document(const QJsonDocument * json_document)
 {
   // Fixme: ok ???
-  C2cDocument document(json_document->object());
+  C2cDocument document(*json_document);
   C2cDocument * casted_document = document.cast();
   unsigned int document_id = document.id();
   m_documents.insert(document_id, casted_document);
@@ -163,6 +171,20 @@ C2cQmlClient::save_document(unsigned int document_id)
   C2cDocument * document = m_documents.value(document_id, nullptr);
   if (document)
     m_cache.save_document(*document);
+}
+
+void
+C2cQmlClient::search(const QString & search_string, const C2cSearchSettings & settings)
+{
+  m_client.search(search_string, settings);
+}
+
+void
+C2cQmlClient::on_received_search(const QJsonDocument * json_document)
+{
+  qInfo() << "C2cQmlClient::on_received_search";
+  m_search_result.update(json_document);
+  emit receivedSearch();
 }
 
 /***************************************************************************************************

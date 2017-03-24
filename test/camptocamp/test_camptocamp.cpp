@@ -82,8 +82,8 @@ public slots:
 
   void received_search_hook(const QJsonDocument * json_document) {
     C2cSearchResult search_result(json_document);
-    for (const auto & route : search_result.routes())
-      qInfo() << route.id() << route.title(QStringLiteral("fr")) << route.activities();
+    // for (const auto & route : search_result.routes())
+    //   qInfo() << route.id() << route.title(QStringLiteral("fr")) << route.activities();
 
     emit received_response();
   }

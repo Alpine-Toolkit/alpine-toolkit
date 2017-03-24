@@ -41,7 +41,11 @@ C2cDocument::C2cDocument()
     m_json_object()
 {}
 
-C2cDocument::C2cDocument(const QJsonObject json_object)
+C2cDocument::C2cDocument(const QJsonDocument & json_document)
+  : m_json_object(json_document.object())
+{}
+
+C2cDocument::C2cDocument(const QJsonObject & json_object)
   : m_json_object(json_object)
 {}
 
@@ -190,7 +194,11 @@ C2cShortRoute::C2cShortRoute()
   : C2cDocument()
 {}
 
-C2cShortRoute::C2cShortRoute(const QJsonObject json_object)
+C2cShortRoute::C2cShortRoute(const QJsonDocument & json_document)
+  : C2cDocument(json_document)
+{}
+
+C2cShortRoute::C2cShortRoute(const QJsonObject & json_object)
   : C2cDocument(json_object)
 {}
 
@@ -239,13 +247,33 @@ C2cShortRoute::description(const QString & language) const
   return QString();
 }
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const C2cShortRoute & document)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.nospace().noquote() << QLatin1Literal("C2cShortRoute");
+  debug << "(";
+  debug << document.id();
+  debug << ",";
+  debug << document.title_fr();
+  debug << ")";
+
+  return debug;
+}
+#endif
+
 /**************************************************************************************************/
 
 C2cRoute::C2cRoute()
   : C2cShortRoute()
 {}
 
-C2cRoute::C2cRoute(const QJsonObject json_object)
+C2cRoute::C2cRoute(const QJsonDocument & json_document)
+  : C2cShortRoute(json_document)
+{}
+
+C2cRoute::C2cRoute(const QJsonObject & json_object)
   : C2cShortRoute(json_object)
 {}
 
@@ -258,8 +286,55 @@ C2cRoute::~C2cRoute()
 
 /**************************************************************************************************/
 
-C2cSearchResult::C2cSearchResult(const QJsonDocument * json_document)
+C2cSearchResult::C2cSearchResult()
+  : QObject(),
+    m_routes()
 {
+  qInfo() << "C2cSearchResult::C2cSearchResult()";
+}
+
+C2cSearchResult::C2cSearchResult(const QJsonDocument * json_document)
+  : QObject(),
+    m_routes()
+{
+  qInfo() << "C2cSearchResult::C2cSearchResult(json_document)";
+  update(json_document);
+}
+
+C2cSearchResult::C2cSearchResult(const C2cSearchResult & other)
+  : QObject(),
+    m_routes(other.m_routes)
+{
+  qInfo() << "C2cSearchResult::C2cSearchResult(&)";
+}
+
+C2cSearchResult &
+C2cSearchResult::operator=(const C2cSearchResult & other)
+{
+  qInfo() << "C2cSearchResult::operator=";
+
+  if (this != &other) {
+    m_routes = other.m_routes;
+  }
+
+  emit updated();
+
+  return *this;
+}
+
+C2cSearchResult::~C2cSearchResult()
+{
+  qInfo() << "C2cSearchResult::~";
+}
+
+void
+C2cSearchResult::update(const QJsonDocument * json_document)
+{
+  qInfo() << "C2cSearchResult::update";
+
+  m_routes.clear();
+  m_routes_obj.clear();
+
   QJsonObject root = json_document->object();
   // for (const auto & key : root.keys())
   //   qInfo() << key;
@@ -268,13 +343,37 @@ C2cSearchResult::C2cSearchResult(const QJsonDocument * json_document)
   // qInfo() << "Number of routes:" << root_for_routes["total"].toInt();
   QJsonArray routes = root_for_routes[DOCUMENTS].toArray();
   for (const auto & ref : routes) {
-    QJsonObject route = ref.toObject();
-    m_routes << C2cShortRoute(route);
+    QJsonObject json_obj = ref.toObject();
+    m_routes << C2cShortRoute(json_obj);
   }
+
+  for (auto & route : m_routes)
+    m_routes_obj << &route;
+
+  emit updated();
 }
 
-C2cSearchResult::~C2cSearchResult()
-{}
+QQmlListProperty<C2cShortRoute>
+C2cSearchResult::routes_list_property()
+{
+  return QQmlListProperty<C2cShortRoute>(this, nullptr,
+                                         &C2cSearchResult::routes_list_property_count,
+                                         &C2cSearchResult::routes_list_property_at);
+}
+
+int
+C2cSearchResult::routes_list_property_count(QQmlListProperty<C2cShortRoute> * list)
+{
+  C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
+  return search_result->m_routes.size();
+}
+
+C2cShortRoute *
+C2cSearchResult::routes_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index)
+{
+  C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
+  return &search_result->m_routes[index];
+}
 
 /***************************************************************************************************
  *

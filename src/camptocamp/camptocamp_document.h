@@ -36,6 +36,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QList>
+#include <QQmlListProperty>
 #include <QtDebug>
 
 /**************************************************************************************************/
@@ -66,7 +67,8 @@ private:
 
 public:
   C2cDocument();
-  C2cDocument(const QJsonObject json_object);
+  C2cDocument(const QJsonDocument & json_object);
+  C2cDocument(const QJsonObject & json_object);
   C2cDocument(const C2cDocument & other);
   ~C2cDocument();
 
@@ -91,29 +93,36 @@ private:
 QDebug operator<<(QDebug debug, const C2cDocument & document);
 #endif
 
-// Fixme: qmlRegisterUncreatableType
 Q_DECLARE_METATYPE(C2cDocument)
-Q_DECLARE_METATYPE(C2cDocument*)
+// Q_DECLARE_METATYPE(C2cDocument*)
 
 /**************************************************************************************************/
 
 class C2cShortRoute: public C2cDocument
 {
   Q_OBJECT
+  Q_PROPERTY(QString title READ title_fr CONSTANT) // Fixme
 
 public:
   C2cShortRoute();
-  C2cShortRoute(const QJsonObject json_object);
+  C2cShortRoute(const QJsonDocument & json_document);
+  C2cShortRoute(const QJsonObject & json_object);
   C2cShortRoute(const C2cShortRoute & other);
   ~C2cShortRoute();
 
   QStringList activities() const;
   Q_INVOKABLE QString title(const QString & language) const;
   Q_INVOKABLE QString description(const QString & language) const;
+
+  QString title_fr() const { return title("fr"); };
 };
 
 Q_DECLARE_METATYPE(C2cShortRoute)
-Q_DECLARE_METATYPE(C2cShortRoute*)
+// Q_DECLARE_METATYPE(C2cShortRoute*)
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const C2cShortRoute & document);
+#endif
 
 /**************************************************************************************************/
 
@@ -123,27 +132,51 @@ class C2cRoute : public C2cShortRoute
 
 public:
   C2cRoute();
-  C2cRoute(const QJsonObject json_object);
+  C2cRoute(const QJsonDocument & json_document);
+  C2cRoute(const QJsonObject & json_object);
   C2cRoute(const C2cRoute & other);
   ~C2cRoute();
 };
 
 Q_DECLARE_METATYPE(C2cRoute)
-Q_DECLARE_METATYPE(C2cRoute*)
+// Q_DECLARE_METATYPE(C2cRoute*)
 
 /**************************************************************************************************/
 
-class C2cSearchResult
+class C2cSearchResult : public QObject
 {
+  Q_OBJECT // Q_GADGET ?
+  // Q_PROPERTY(QList<QObject *> routes READ routes_obj NOTIFY updated)
+  Q_PROPERTY(QQmlListProperty<C2cShortRoute> routes READ routes_list_property)
+
 public:
+  C2cSearchResult();
   C2cSearchResult(const QJsonDocument * json_document);
+  C2cSearchResult(const C2cSearchResult & other);
   ~C2cSearchResult();
 
+  C2cSearchResult & operator=(const C2cSearchResult & other);
+
   const QList<C2cShortRoute> & routes() const { return m_routes; }
+  const QList<QObject *> & routes_obj() const { return m_routes_obj; }
+  QQmlListProperty<C2cShortRoute> routes_list_property(); // const
+
+  void update(const QJsonDocument * json_document);
+
+private:
+  static int routes_list_property_count(QQmlListProperty<C2cShortRoute> * list);
+  static C2cShortRoute * routes_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index);
+
+signals:
+  void updated();
 
 private:
   QList<C2cShortRoute> m_routes;
+  QList<QObject *> m_routes_obj;
 };
+
+Q_DECLARE_METATYPE(C2cSearchResult)
+// Q_DECLARE_METATYPE(C2cSearchResult*)
 
 /**************************************************************************************************/
 

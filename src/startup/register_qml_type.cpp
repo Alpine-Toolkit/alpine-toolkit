@@ -32,6 +32,7 @@
 
 #include "startup.h"
 #include "ephemeride/ephemeride.h"
+#include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
 #include "refuge/refuge.h"
 #include "satellite_model/satellite_model.h"
@@ -53,8 +54,8 @@ register_qml_types()
   // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
   // qmlRegisterUncreatableType<QmlSensor                   >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
   // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
-  qmlRegisterType<QmlBarometerAltimeterSensor >(package, major, minor, "BarimeterAltimeterSensor");
-  qmlRegisterUncreatableType<QmlBarometerAltimeterReading >(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
+  qmlRegisterType<QmlBarometerAltimeterSensor>(package, major, minor, "BarimeterAltimeterSensor");
+  qmlRegisterUncreatableType<QmlBarometerAltimeterReading>(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
 
   qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
 
@@ -63,8 +64,13 @@ register_qml_types()
 
   // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
 
-  qmlRegisterUncreatableType<C2cDocument >(package, major, minor, "C2cDocument", QLatin1String("Cannot create C2cDocument"));
-  qmlRegisterUncreatableType<C2cRoute >(package, major, minor, "C2cRoute", QLatin1String("Cannot create C2cRoute"));
+  qmlRegisterType<C2cSearchSettings>(package, major, minor, "C2cSearchSettings");
+  // qRegisterMetaType<C2cSearchSettings>("C2cSearchSettings");
+
+  qmlRegisterUncreatableType<C2cDocument>(package, major, minor, "C2cDocument", QLatin1String("Cannot create C2cDocument"));
+  qmlRegisterUncreatableType<C2cRoute>(package, major, minor, "C2cRoute", QLatin1String("Cannot create C2cRoute"));
+  qmlRegisterUncreatableType<C2cShortRoute>(package, major, minor, "C2cShortRoute", QLatin1String("Cannot create C2cShortRoute"));
+  qmlRegisterUncreatableType<C2cSearchResult>(package, major, minor, "C2cSearchResult", QLatin1String("Cannot create C2cSearchResult"));
 }
 
 /***************************************************************************************************

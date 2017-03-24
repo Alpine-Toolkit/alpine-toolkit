@@ -109,14 +109,33 @@ QDebug operator<<(QDebug debug, const C2cLoginData & login_data);
 
 /**************************************************************************************************/
 
-class C2cSearchSettings
+class C2cSearchSettings : public QObject
 {
+  // Q_GADGET
+  Q_OBJECT
+  Q_PROPERTY(QString language READ language WRITE set_language) // NOTIFY
+  Q_PROPERTY(unsigned int limit READ limit WRITE set_limit)
+  Q_PROPERTY(bool area READ area WRITE set_area)
+  Q_PROPERTY(bool article READ article WRITE set_article)
+  Q_PROPERTY(bool book READ book WRITE set_book)
+  Q_PROPERTY(bool image READ image WRITE set_image)
+  Q_PROPERTY(bool map READ map WRITE set_map)
+  Q_PROPERTY(bool outing READ outing WRITE set_outing)
+  Q_PROPERTY(bool route READ route WRITE set_route)
+  Q_PROPERTY(bool userprofile READ userprofile WRITE set_userprofile)
+  Q_PROPERTY(bool waypoint READ waypoint WRITE set_waypoint)
+  Q_PROPERTY(bool xreport READ xreport WRITE set_xreport)
+
 public:
   C2cSearchSettings();
   C2cSearchSettings(const C2cSearchSettings & other);
   ~C2cSearchSettings();
 
   C2cSearchSettings & operator=(const C2cSearchSettings & other);
+
+  // operator==
+
+  Q_INVOKABLE void reset();
 
   const QString & language() const { return m_language; }
   void set_language(const QString & language) { m_language = language; }
@@ -170,6 +189,8 @@ private:
   bool m_waypoint;
   bool m_xreport;
 };
+
+Q_DECLARE_METATYPE(C2cSearchSettings) // Variant
 
 /**************************************************************************************************/
 

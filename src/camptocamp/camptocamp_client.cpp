@@ -138,22 +138,26 @@ QDebug operator<<(QDebug debug, const C2cLoginData & login_data)
 /**************************************************************************************************/
 
 C2cSearchSettings::C2cSearchSettings()
-  : m_language(QStringLiteral("fr")),
-    m_limit(7),
-    m_area(),
-    m_article(),
-    m_book(),
-    m_image(),
-    m_map(),
-    m_outing(),
-    m_route(),
-    m_userprofile(),
-    m_waypoint(),
-    m_xreport()
-{}
+  : QObject()
+  // : m_language(QStringLiteral("fr")),
+  //   m_limit(7),
+  //   m_area(false),
+  //   m_article(false),
+  //   m_book(false),
+  //   m_image(false),
+  //   m_map(false),
+  //   m_outing(false),
+  //   m_route(false),
+  //   m_userprofile(false),
+  //   m_waypoint(false),
+  //   m_xreport(false)
+{
+  reset();
+}
 
 C2cSearchSettings::C2cSearchSettings(const C2cSearchSettings & other)
-  : m_language(other.m_language),
+  : QObject(),
+    m_language(other.m_language),
     m_limit(other.m_limit),
     m_area(other.m_area),
     m_article(other.m_article),
@@ -169,6 +173,23 @@ C2cSearchSettings::C2cSearchSettings(const C2cSearchSettings & other)
 
 C2cSearchSettings::~C2cSearchSettings()
 {}
+
+void
+C2cSearchSettings::reset()
+{
+  m_language = QStringLiteral("fr");
+  m_limit = 7;
+  m_area = false;
+  m_article = false;
+  m_book = false;
+  m_image = false;
+  m_map = false;
+  m_outing = false;
+  m_route = false;
+  m_userprofile = false;
+  m_waypoint = false;
+  m_xreport = false;
+}
 
 C2cSearchSettings &
 C2cSearchSettings::operator=(const C2cSearchSettings & other)

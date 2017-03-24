@@ -47,6 +47,7 @@ class C2cQmlClient :public QObject
   Q_PROPERTY(bool logged READ is_logged NOTIFY loginStatusChanged)
   Q_PROPERTY(QString username READ username WRITE set_username NOTIFY usernameChanged)
   Q_PROPERTY(QString password READ password WRITE set_password NOTIFY passwordChanged)
+  Q_PROPERTY(C2cSearchResult* search_result READ search_result CONSTANT) // NOTIFY receivedSearch
 
 public:
   C2cQmlClient(const QString & sqlite_path);
@@ -70,6 +71,9 @@ public:
   Q_INVOKABLE bool is_document_cached(unsigned int document_id);
   Q_INVOKABLE void save_document(unsigned int document_id);
 
+  Q_INVOKABLE void search(const QString & search_string, const C2cSearchSettings & settings);
+  C2cSearchResult * search_result() { return &m_search_result; } // Fixme: const ???
+
 private:
   const QString & username() const;
   void set_username(const QString & username);
@@ -83,6 +87,7 @@ private:
 
 signals:
   void receivedDocument(unsigned int document_id);
+  void receivedSearch(); // searchReceived ???
 
   void usernameChanged(); // const QString & username
   void passwordChanged(); // const QString & password
@@ -94,12 +99,16 @@ private slots:
   void on_logged();
   void on_loggin_failed();
   void on_received_document(const QJsonDocument * json_document);
+  // void on_get_document_failed(const QJsonDocument * json_document);
+  void on_received_search(const QJsonDocument * json_document);
+  // void on_search_failed(const QJsonDocument * json_document);
 
 private:
   C2cClient m_client;
   C2cCache m_cache;
   C2cLogin m_login;
   QHash<unsigned int, C2cDocument *> m_documents; // Fixme: qpointer
+  C2cSearchResult m_search_result;
 };
 
 /**************************************************************************************************/
