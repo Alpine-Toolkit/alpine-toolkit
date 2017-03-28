@@ -495,7 +495,7 @@ C2cClient::handle_login_reply(const QJsonDocument * json_document)
 }
 
 void
-C2cClient::handle_login_error(const QJsonDocument * json_document)
+C2cClient::handle_login_error(const QJsonDocument * json_document) // json_document unused
 {
   m_login_data.reset();
   emit login_failed();

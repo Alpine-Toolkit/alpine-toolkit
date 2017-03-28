@@ -42,15 +42,18 @@ C2cDocument::C2cDocument()
 {}
 
 C2cDocument::C2cDocument(const QJsonDocument & json_document)
-  : m_json_object(json_document.object())
+  : QObject(),
+    m_json_object(json_document.object())
 {}
 
 C2cDocument::C2cDocument(const QJsonObject & json_object)
-  : m_json_object(json_object)
+  : QObject(),
+    m_json_object(json_object)
 {}
 
 C2cDocument::C2cDocument(const C2cDocument & other)
-  : m_json_object(other.m_json_object)
+  : QObject(),
+    m_json_object(other.m_json_object)
 {}
 
 C2cDocument::~C2cDocument()
