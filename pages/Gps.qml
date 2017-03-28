@@ -93,8 +93,8 @@ Pane {
            width: parent.width
            Layout.alignment: Qt.AlignCenter
            columns: 2
-           columnSpacing : 2 * Screen.devicePixelRatio
-           rowSpacing : 2 * Screen.devicePixelRatio
+           columnSpacing : 2
+           rowSpacing : 2
 
            Label {
                text: "Azimuth"
@@ -133,10 +133,8 @@ Pane {
        antialiasing: true
        // width: parent.width * .9
        // height: (parent.height - column_layout.height) * .9
-       width: (parent.width - horizontal_margin) * Screen.devicePixelRatio
-       height: (parent.height - column_layout.height) * Screen.devicePixelRatio
-       scale: 1. / Screen.devicePixelRatio
-       transformOrigin: Item.Center
+       width: parent.width - horizontal_margin
+       height: parent.height - column_layout.height
        property real horizontal_margin: 10
 
        onPaint: GpsHelper.paint_compass(canvas, compass, satellite_model)

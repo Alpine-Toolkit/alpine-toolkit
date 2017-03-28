@@ -19,7 +19,7 @@ function paint_compass(canvas, compass, satellite_model) {
   ctx.reset();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.font = "30px sans-serif"; // roboto ?
+  ctx.font = "15px sans-serif"; // roboto ?
 
   var canvas_radius = Math.min(canvas.width, canvas.height) / 2;
   var hemisphere_radius = canvas_radius * .9;
@@ -63,7 +63,7 @@ function paint_compass(canvas, compass, satellite_model) {
 
   ctx.strokeStyle = 'red'; // rgb(255, 0, 0)
   ctx.fillStyle = 'red';
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 2;
 
   // Draw elevation circles
   for (var i = 0; i < 3; i++) {
