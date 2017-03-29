@@ -32,6 +32,7 @@ copy-icon file cloud_done
 copy-icon file cloud_download
 copy-icon image wb_sunny
 copy-icon maps my_location
+copy-icon maps navigation
 copy-icon navigation arrow_back
 copy-icon navigation check
 copy-icon navigation close

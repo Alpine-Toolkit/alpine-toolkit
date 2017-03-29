@@ -77,7 +77,14 @@ Pane {
        repeat: true
        onTriggered: {
            var azimuth = compass.reading.azimuth;
-           azimuth_label.text = azimuth.toFixed(0);
+           azimuth_label.text = azimuth.toFixed(0) + ' °';
+	   var abs_azimuth = Math.abs(azimuth);
+	   if (abs_azimuth <= 2.5)
+	       azimuth_label.color = 'green';
+	   else if (abs_azimuth <= 5)
+	       azimuth_label.color = 'orange';
+	   else
+	       azimuth_label.color = 'red';
            canvas.requestPaint();
        }
    }
@@ -86,56 +93,56 @@ Pane {
        id: column_layout
        width: parent.width
        anchors.top: parent.top
-       anchors.topMargin: 30
-       spacing: 30
+       anchors.topMargin: 15
+       spacing: 5
 
-       GridLayout {
-           width: parent.width
-           Layout.alignment: Qt.AlignCenter
-           columns: 2
-           columnSpacing : 2
-           rowSpacing : 2
-
-           Label {
-               text: "Azimuth"
-           }
-           Label {
-               id: azimuth_label
-               text: "unknown"
-           }
-
-           // Label {
-           //     color: "white"
-           //     text: "X Tilt"
-           // }
-           // Label {
-           //     color: "white"
-           //     id: x_tilt_label
-           // }
-
-           // Label {
-           //     color: "white"
-           //     text: "Y Tilt"
-           // }
-           // Label {
-           //     color: "white"
-           //     id: y_tilt_label
-           // }
+       Image {
+	   Layout.alignment: Qt.AlignCenter
+           fillMode: Image.Pad
+           source: "qrc:/icons/navigation-black.png"
        }
+
+       Label {
+	   Layout.alignment: Qt.AlignCenter
+           text: "Azimuth"
+       }
+
+       Label {
+	   Layout.alignment: Qt.AlignCenter
+           id: azimuth_label
+           text: "unknown"
+       }
+
+       // Label {
+       //     color: "white"
+       //     text: "X Tilt"
+       // }
+       // Label {
+       //     color: "white"
+       //     id: x_tilt_label
+       // }
+
+       // Label {
+       //     color: "white"
+       //     text: "Y Tilt"
+       // }
+       // Label {
+       //     color: "white"
+       //     id: y_tilt_label
+       // }
    }
 
    Canvas {
        id: canvas
-       anchors.centerIn: parent // due to scaled size
-       // anchors.top: parent.top // column_layout.bottom
+       anchors.centerIn: parent
+       // anchors.top: column_layout.bottom
        // anchors.horizontalCenter: parent.horizontalCenter
+       // anchors.topMargin: 15
 
        antialiasing: true
-       // width: parent.width * .9
-       // height: (parent.height - column_layout.height) * .9
        width: parent.width - horizontal_margin
        height: parent.height - column_layout.height
-       property real horizontal_margin: 10
+       property real horizontal_margin: 0
 
        onPaint: GpsHelper.paint_compass(canvas, compass, satellite_model)
    }
@@ -173,7 +180,7 @@ Pane {
                            anchors.bottom: parent.bottom
                            width: parent.width
                            height: parent.height * signalStrength / 100
-                           color: isInUse ? "#4caf50" : "#f44336"
+                           color: isInUse ? "#4caf50" : "#f44336" // green and red colors
                        }
                        Text {
                            anchors.horizontalCenter: parent.horizontalCenter

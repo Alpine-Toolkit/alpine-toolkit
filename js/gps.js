@@ -22,7 +22,7 @@ function paint_compass(canvas, compass, satellite_model) {
   ctx.font = "15px sans-serif"; // roboto ?
 
   var canvas_radius = Math.min(canvas.width, canvas.height) / 2;
-  var hemisphere_radius = canvas_radius * .9;
+  var hemisphere_radius = canvas_radius - 2 * 15; // for NW
 
   // center frame
   ctx.translate(canvas.width / 2, canvas.height / 2);
@@ -43,14 +43,13 @@ function paint_compass(canvas, compass, satellite_model) {
     y_tilt = 0;
   }
 
-  ctx.fillStyle = 'black';
-
   // var radius_60 = hemisphere_radius * Math.cos(Math.PI/3);
   // var radius_30 = hemisphere_radius * Math.cos(Math.PI/6);
   var radius_60 = hemisphere_radius / 3;
   var radius_30 = hemisphere_radius * 2/3;
 
   // Draw bubble
+  ctx.fillStyle = '#c8c8c8';
   ctx.beginPath();
   var x_bubble = - y_tilt / 90 * hemisphere_radius;
   var y_bubble = - x_tilt / 90 * hemisphere_radius;
@@ -58,11 +57,12 @@ function paint_compass(canvas, compass, satellite_model) {
   ctx.arc(x_bubble, y_bubble, radius_bubble, 0, 2*Math.PI, true);
   ctx.fill();
 
+  // Draw compass
   var azimuth_rad = degrees_to_radians(azimuth);
   ctx.rotate(-azimuth_rad);
 
-  ctx.strokeStyle = 'red'; // rgb(255, 0, 0)
-  ctx.fillStyle = 'red';
+  ctx.strokeStyle = 'black';
+  ctx.fillStyle = 'black';
   ctx.lineWidth = 2;
 
   // Draw elevation circles
@@ -75,9 +75,11 @@ function paint_compass(canvas, compass, satellite_model) {
   }
   ctx.textAlign = 'left';
   var p_on_x = {x: radius_30, y: 0};
-  ctx.fillText("30°", p_on_x.x + 10, p_on_x.y + 10);
+  var label_offset_x = 5;
+  var label_offset_y = 15;
+  ctx.fillText("30°", p_on_x.x + label_offset_x, p_on_x.y + label_offset_y);
   p_on_x = {x: radius_60, y: 0};
-  ctx.fillText("60°", p_on_x.x + 10, p_on_x.y + 10);
+  ctx.fillText("60°", p_on_x.x + label_offset_x, p_on_x.y + label_offset_y);
 
   // Draw axes
   ctx.beginPath();
@@ -150,7 +152,7 @@ function paint_compass(canvas, compass, satellite_model) {
     var radius = hemisphere_radius * (1 - satellite_elevation / 90);
     var p_on_x = {x: radius, y: 0}
     var p = rotate_vector(p_on_x, satellite_azimuth - 90);
-    var dot_radius = 6;
+    var dot_radius = 3;
     ctx.beginPath();
     ctx.arc(p.x, p.y, dot_radius, 0, 2*Math.PI, true);
     ctx.fill();
