@@ -26,12 +26,6 @@
 
 project(AlpineToolkit)
 
-set(ALPINE_TOOLKIT_VERSION_MAJOR 1)
-set(ALPINE_TOOLKIT_VERSION_MINOR 0)
-set(ALPINE_TOOLKIT_VERSION_PATCH 0)
-
-set(ALPINE_TOOLKIT_VERSION ${ALPINE_TOOLKIT_VERSION_MAJOR}.${ALPINE_TOOLKIT_VERSION_MINOR}.${ALPINE_TOOLKIT_VERSION_PATCH})
-
 ####################################################################################################
 
 # check cmake version
@@ -42,23 +36,65 @@ if(POLICY CMP0990)
 endif()
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+
+include(alpine_toolkit_functions)
+
+####################################################################################################
+
+if(ANDROID)
+  message(STATUS "Android build")
+endif()
 
 ####################################################################################################
 #
 # Test
 #
 
-enable_testing()
+if(NOT ANDROID)
+  enable_testing()
+endif(NOT ANDROID)
+
+####################################################################################################
+#
+# Version
+#
+
+set(ALPINE_TOOLKIT_VERSION_MAJOR 1)
+set(ALPINE_TOOLKIT_VERSION_MINOR 0)
+set(ALPINE_TOOLKIT_VERSION_PATCH 0)
+
+set(ALPINE_TOOLKIT_VERSION ${ALPINE_TOOLKIT_VERSION_MAJOR}.${ALPINE_TOOLKIT_VERSION_MINOR}.${ALPINE_TOOLKIT_VERSION_PATCH})
+
+####################################################################################################
+#
+# Target Platform
+#
+
+if(ANDROID)
+ ADD_DEFINITIONS(-DON_ANDROID)
+endif(ANDROID)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  ADD_DEFINITIONS(-DON_LINUX)
+endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  ADD_DEFINITIONS(-DON_WINDOWS)
+endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 ####################################################################################################
 #
 # Compiler Options
 #
 
-# SET(CMAKE_BUILD_TYPE RELEASE)
-SET(CMAKE_BUILD_TYPE DEBUG)
-SET(CMAKE_VERBOSE_MAKEFILE ON)
+if(NOT ANDROID)
+  # SET(CMAKE_BUILD_TYPE RELEASE)
+  SET(CMAKE_BUILD_TYPE DEBUG)
+endif(NOT ANDROID)
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
@@ -85,50 +121,59 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 # Find Qt
 #
 
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
-# Instruct CMake to run rcc automatically when needed.
-set(CMAKE_AUTORCC ON)
+if(NOT ANDROID)
+    # Find includes in corresponding build directories
+    set(CMAKE_INCLUDE_CURRENT_DIR ON)
+    # Instruct CMake to run moc automatically when needed.
+    set(CMAKE_AUTOMOC ON)
+    # Instruct CMake to run rcc automatically when needed.
+    set(CMAKE_AUTORCC ON)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5Positioning REQUIRED)
-find_package(Qt5Qml REQUIRED)
-find_package(Qt5Quick REQUIRED) # QtQuickWidgets
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Sensors REQUIRED)
-find_package(Qt5Sql REQUIRED)
-find_package(Qt5Test REQUIRED)
+    find_package(Qt5Core REQUIRED)
+    find_package(Qt5Gui REQUIRED)
+    find_package(Qt5Network REQUIRED)
+    find_package(Qt5Positioning REQUIRED)
+    find_package(Qt5Qml REQUIRED)
+    find_package(Qt5Quick REQUIRED) # QtQuickWidgets
+    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt5Sensors REQUIRED)
+    find_package(Qt5Sql REQUIRED)
+    find_package(Qt5Test REQUIRED)
 
-# only available for Android build
-# find_package(Qt5AndroidExtras REQUIRED)
+    # only available for Android build
+    # find_package(Qt5AndroidExtras REQUIRED)
 
-# find_package(Qt5Xml REQUIRED)
-# find_package(Qt5WebView REQUIRED)
+    # find_package(Qt5Xml REQUIRED)
+    # find_package(Qt5WebView REQUIRED)
 
-# charts
-# quickcontrols
-# svg
+    # charts
+    # quickcontrols
+    # svg
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_QML_DEBUG") # Fixme: right way to do?
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_QML_DEBUG") # Fixme: right way to do?
 
-# INCLUDE_DIRECTORIES(${Qt5Core_INCLUDES})
-# ADD_DEFINITIONS(${Qt5Core_DEFINITIONS})
-# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+    # INCLUDE_DIRECTORIES(${Qt5Core_INCLUDES})
+    # ADD_DEFINITIONS(${Qt5Core_DEFINITIONS})
+    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+endif(NOT ANDROID)
 
 ####################################################################################################
 #
 # Sub directories
 #
 
-INCLUDE_DIRECTORIES(src)
+# if(ANDROID)
+add_subdirectory(third-parties)
+# endif(ANDROID)
 
-add_subdirectory(src)
-add_subdirectory(test)
-# add_subdirectory(imports)
+if(NOT ANDROID)
+  include_directories(src)
+  include_directories(third-parties/include)
+
+  add_subdirectory(src)
+  add_subdirectory(test)
+  # add_subdirectory(imports)
+endif(NOT ANDROID)
 
 ####################################################################################################
 #

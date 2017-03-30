@@ -55,7 +55,7 @@ Pane {
             font.pointSize: 12
             readOnly: true
             text: route.description("fr")
-            // textFormat: TextEdit.RichText
+            textFormat: TextEdit.RichText
             wrapMode: Text.WordWrap
         }
 
