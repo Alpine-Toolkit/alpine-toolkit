@@ -1,14 +1,4 @@
-function degrees_to_radians(degrees) {
-  return Math.PI/180 * degrees;
-}
-
-function rotate_vector(v, angle) {
-  var rad = degrees_to_radians(angle);
-  var c = Math.cos(rad);
-  var s = Math.sin(rad);
-  return {x: c * v.x - s * v.y,
-          y: s * v.x + c * v.y};
-}
+Qt.include('qrc:/js/math.js');
 
 function paint_compass(canvas, compass, satellite_model) {
   // X axis point to right

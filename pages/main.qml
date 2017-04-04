@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 360 // set window size for desktop test
     height: 520
-    title: "Alpine Toolkit"
+    title: 'Alpine Toolkit'
 
     // Done in main.cpp
     // AndroidActivity {
@@ -17,8 +17,10 @@ ApplicationWindow {
     // }
 
     // Done by Material theme
-    // FontLoader { id: roboto_regular; source: "qrc:/fonts/Roboto-Regular.ttf" }
+    // FontLoader { id: roboto_regular; source: 'qrc:/fonts/Roboto-Regular.ttf' }
     // font.family: roboto_regular.name
+
+    FontLoader { id: activities_font; source: 'qrc:/fonts/c2c-activities.ttf' } // name: icomoon
 
     Component.onCompleted: {
         // S5: 640 360 5535 3240 5.551839464882943 3
@@ -36,7 +38,7 @@ ApplicationWindow {
         id: app_bar
 
         states: [
-        State { name: "BACK" }
+        State { name: 'BACK' }
         ]
 
         RowLayout {
@@ -49,7 +51,7 @@ ApplicationWindow {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/menu-white.png"
+                    source: 'qrc:/icons/menu-white.png'
                 }
                 onClicked: drawer.open()
             }
@@ -61,11 +63,11 @@ ApplicationWindow {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/arrow-back-white.png"
+                    source: 'qrc:/icons/arrow-back-white.png'
                 }
                 onClicked: {
-                    if (app_bar.state == "BACK") {
-                        app_bar.state == ""
+                    if (app_bar.state == 'BACK') {
+                        app_bar.state == ''
                         back_icon.visible = false
                         nav_icon.visible = true
                     }
@@ -80,8 +82,8 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 font.pixelSize: 20
                 elide: Label.ElideRight
-                color: "white"
-                text: "Alpine Toolkit"
+                color: 'white'
+                text: 'Alpine Toolkit'
             }
 
             ToolButton {
@@ -90,7 +92,7 @@ ApplicationWindow {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/more-vert-white.png"
+                    source: 'qrc:/icons/more-vert-white.png'
                 }
                 onClicked: options_menu.open()
 
@@ -100,10 +102,10 @@ ApplicationWindow {
                     transformOrigin: Menu.TopRight
 
                     MenuItem {
-                        text: "Settings"
+                        text: 'Settings'
                     }
                     MenuItem {
-                        text: "About"
+                        text: 'About'
                         onTriggered: about_dialog.open()
                     }
                 }
@@ -141,100 +143,100 @@ ApplicationWindow {
 
             model: ListModel {
                 ListElement {
-                    title: qsTr("Altimeter")
-                    icon: ""
-                    source: "qrc:/pages/Altimeter.qml"
+                    title: qsTr('Altimeter')
+                    icon: ''
+                    source: 'qrc:/pages/Altimeter.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Bleau")
-                    icon: ""
-                    source: "qrc:/pages/Bleau.qml"
+                    title: qsTr('Bleau')
+                    icon: ''
+                    source: 'qrc:/pages/Bleau.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Camptocamp")
-                    icon: ""
-                    source: "qrc:/pages/Camptocamp.qml"
+                    title: qsTr('Camptocamp')
+                    icon: ''
+                    source: 'qrc:/pages/Camptocamp.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Check List")
-                    icon: ""
-                    source: "qrc:/pages/Checklist.qml"
+                    title: qsTr('Check List')
+                    icon: ''
+                    source: 'qrc:/pages/Checklist.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Ephemeride")
-                    icon: ""
-                    source: "qrc:/pages/Ephemeride.qml"
+                    title: qsTr('Ephemeride')
+                    icon: ''
+                    source: 'qrc:/pages/Ephemeride.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Emergency")
-                    icon: ""
-                    source: "qrc:/pages/Emergency.qml"
+                    title: qsTr('Emergency')
+                    icon: ''
+                    source: 'qrc:/pages/Emergency.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Inclination")
-                    icon: ""
-                    source: "qrc:/pages/Inclination.qml"
+                    title: qsTr('Inclination')
+                    icon: ''
+                    source: 'qrc:/pages/Inclination.qml'
                     lock_orientation: true
                 }
                 ListElement {
-                    title: qsTr("Illuminance")
-                    icon: ""
-                    source: "qrc:/pages/Illuminance.qml"
+                    title: qsTr('Illuminance')
+                    icon: ''
+                    source: 'qrc:/pages/Illuminance.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("GPS")
-                    icon: "qrc:/icons/explore-black.png"
-                    source: "qrc:/pages/Gps.qml"
+                    title: qsTr('GPS')
+                    icon: 'qrc:/icons/explore-black.png'
+                    source: 'qrc:/pages/Gps.qml'
                     lock_orientation: true
                 }
                 ListElement {
-                    title: qsTr("Lamp Signal")
-                    icon: ""
-                    source: "qrc:/pages/LampSignal.qml"
+                    title: qsTr('Lamp Signal')
+                    icon: ''
+                    source: 'qrc:/pages/LampSignal.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Refuges")
-                    icon: ""
-                    source: "qrc:/pages/RefugeDirectory.qml"
+                    title: qsTr('Refuges')
+                    icon: ''
+                    source: 'qrc:/pages/RefugeDirectory.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Torch")
-                    icon: ""
-                    source: "qrc:/pages/Torch.qml"
+                    title: qsTr('Torch')
+                    icon: ''
+                    source: 'qrc:/pages/Torch.qml'
                     lock_orientation: false
                 }
                 /*
                 ListElement {
-                    title: qsTr("Camera")
-                    icon: ""
-                    source: "qrc:/pages/Camera.qml"
+                    title: qsTr('Camera')
+                    icon: ''
+                    source: 'qrc:/pages/Camera.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Heart Rate")
-                    icon: ""
-                    source: "qrc:/pages/HeartRate.qml"
+                    title: qsTr('Heart Rate')
+                    icon: ''
+                    source: 'qrc:/pages/HeartRate.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("Chart")
-                    icon: ""
-                    source: "qrc:/pages/Chart.qml"
+                    title: qsTr('Chart')
+                    icon: ''
+                    source: 'qrc:/pages/Chart.qml'
                     lock_orientation: false
                 }
                 ListElement {
-                    title: qsTr("UI Test")
-                    icon: ""
-                    source: "qrc:/pages/UiTest.qml"
+                    title: qsTr('UI Test')
+                    icon: ''
+                    source: 'qrc:/pages/UiTest.qml'
                     lock_orientation: false
                 }
                 */
@@ -256,12 +258,21 @@ ApplicationWindow {
                 property int image_size: Math.min(parent.width, parent.height) * .9
                 width: image_size
                 height: image_size
-                // source: "asset:///application-icons/icon.svg"
-                source: "qrc:/application-icons/icon.svg"
+                // source: 'asset:///application-icons/icon.svg'
+                source: 'qrc:/application-icons/icon.svg'
                 // property int image_size: Math.min(Math.min(parent.width, parent.height) * .9, 512)
-                // source: "qrc:/application-icons/icon-512.png"
+                // source: 'qrc:/application-icons/icon-512.png'
             }
         }
+    }
+
+    function push_page(url, properties) {
+	properties = properties !== undefined ? properties : {}
+        app_bar.state = 'BACK'
+        nav_icon.visible = false
+        back_icon.visible = true
+	console.info('push_page ' + url + ' ' + JSON.stringify(properties))
+        return stack_view.push(url, properties, StackView.Transition)
     }
 
     Popup {
@@ -280,14 +291,14 @@ ApplicationWindow {
 
             Label {
                 font.bold: true
-                text: "About"
+                text: 'About'
             }
 
             Label {
                 width: about_dialog.availableWidth
                 wrapMode: Label.Wrap
                 font.pixelSize: 12
-                text: "Lorem lipsum ..."
+                text: 'Lorem lipsum ...'
             }
         }
     }

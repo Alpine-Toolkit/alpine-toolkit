@@ -1,8 +1,18 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-  <qresource prefix="/">
+    <qresource prefix="/C2cFilter">
+	<file alias="Filter.qml">pages/Components/C2cFilter/Filter.qml</file>
+	<file alias="ActivityFilter.qml">pages/Components/C2cFilter/ActivityFilter.qml</file>
+	<file alias="CheckBoxFilter.qml">pages/Components/C2cFilter/CheckBoxFilter.qml</file>
+	<file alias="CompassRoseFilter.qml">pages/Components/C2cFilter/CompassRoseFilter.qml</file>
+	<file alias="GradeRangeSliderFilter.qml">pages/Components/C2cFilter/GradeRangeSliderFilter.qml</file>
+	<file alias="RangeSliderFilter.qml">pages/Components/C2cFilter/RangeSliderFilter.qml</file>
+    </qresource>
+    <qresource prefix="/">
     <file>application-icons/icon-512.png</file>
     <file>application-icons/icon.svg</file>
+
+    <file>fonts/c2c-activities.ttf</file>
 
     <file>data/bleau.json</file>
     <file>data/ffcam-refuges.json</file>
@@ -20,6 +30,8 @@
     <file>icons/cloud-download-black@3x.png</file>
     <file>icons/explore-black.png</file>
     <file>icons/explore-black@3x.png</file>
+    <file>icons/filter-black.png</file>
+    <file>icons/filter-black@3x.png</file>
     <file>icons/menu-white.png</file>
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
@@ -35,13 +47,20 @@
     <file>icons/wb-sunny-black.png</file>
     <file>icons/wb-sunny-black@3x.png</file>
 
+    <file>js/math.js</file>
     <file>js/gps.js</file>
+    <file>js/set.js</file>
+    <file>js/camptocamp_definitions.js</file>
+    <file>js/camptocamp_search_filter_definitions.js</file>
+    <file>js/camptocamp_search_filter.js</file>
+    <file>js/compass_rose.js</file>
 
     <file>pages/Altimeter.qml</file>
     <file>pages/Bleau.qml</file>
     <file>pages/Camptocamp.qml</file>
     <file>pages/CamptocampLogin.qml</file>
     <file>pages/CamptocampRoute.qml</file>
+    <file>pages/CamptocampSearchFilter.qml</file>
     <file>pages/Camera.qml</file>
     <file>pages/Chart.qml</file>
     <file>pages/Checklist.qml</file>

@@ -1,0 +1,57 @@
+@font-face {
+  font-family: 'c2c-activities';
+  src:  url('fonts/c2c-activities.eot?4wpiql');
+  src:  url('fonts/c2c-activities.eot?4wpiql#iefix') format('embedded-opentype'),
+    url('fonts/c2c-activities.ttf?4wpiql') format('truetype'),
+    url('fonts/c2c-activities.woff?4wpiql') format('woff'),
+    url('fonts/c2c-activities.svg?4wpiql#c2c-activities') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'c2c-activities' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-hiking:before {
+  content: "\e900";
+}
+.icon-ice_climbing:before {
+  content: "\e901";
+}
+.icon-mountain_biking:before {
+  content: "\e902";
+}
+.icon-mountain_climbing:before {
+  content: "\e903";
+}
+.icon-paragliding:before {
+  content: "\e904";
+}
+.icon-rock_climbing:before {
+  content: "\e905";
+}
+.icon-skitouring:before {
+  content: "\e906";
+}
+.icon-snow_ice_mixed:before {
+  content: "\e907";
+}
+.icon-snowshoeing:before {
+  content: "\e908";
+}
+.icon-via_ferrata:before {
+  content: "\e909";
+}
+

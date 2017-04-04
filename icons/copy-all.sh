@@ -4,6 +4,7 @@ copy-icon action done
 copy-icon action explore
 copy-icon action help
 copy-icon action info
+copy-icon action find_in_page
 copy-icon action lock
 copy-icon action lock_open
 copy-icon action pan_tool

@@ -15,12 +15,14 @@ Pane {
         route: true
     }
 
+    property var search_filters_state: {}
+
     ListModel {
         id: route_model
     }
 
     Component.onCompleted: {
-        console.info("test console log")
+        console.info('test console log')
         /* c2c_client.logged.connect(on_logged) */
         /* c2c_client.login_failed.connect(on_login_failed) */
     }
@@ -28,26 +30,23 @@ Pane {
     Connections {
         target: c2c_client
         onReceivedDocument: {
-            console.info("Received document " + document_id)
-            app_bar.state = "BACK"
-            nav_icon.visible = false
-            back_icon.visible = true
-            // console.info("document " + c2c_client.get_document(document_id))
+            console.info('Received document ' + document_id)
+            // console.info('document ' + c2c_client.get_document(document_id))
             var properties = {'route': c2c_client.get_document(document_id)}
-            stack_view.push("qrc:/pages/CamptocampRoute.qml", properties, StackView.Transition)
+            push_page('qrc:/pages/CamptocampRoute.qml', properties)
         }
         onReceivedSearch: {
             var routes = c2c_client.search_result.routes
-            console.info("onReceivedSearch " + routes);
+            console.info('onReceivedSearch ' + routes);
             route_model.clear()
             var i
             for (i = 0; i < routes.length; i++) {
-                route_model.append({"title": routes[i].title("fr")});
+                route_model.append({'title': routes[i].title('fr')});
             }
             // route_list.model = c2c_client.search_result.routes
         }
         // onLogged: {
-        //     console.log("Login " + c2c_client.logged)
+        //     console.log('Login ' + c2c_client.logged)
         // }
     }
 
@@ -56,9 +55,11 @@ Pane {
         width: parent.width
 
         RowLayout {
-            spacing: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
+            // spacing: 10
+            // anchors.horizontalCenter: parent.horizontalCenter
+            // width: parent.width
+	    Layout.fillWidth: true
+	    Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
 
             ToolButton {
                 id: login_icon
@@ -66,22 +67,24 @@ Pane {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: c2c_client.logged ? "qrc:/icons/person-black.png" : "qrc:/icons/person-outline-black.png"
+                    source: c2c_client.logged ? 'qrc:/icons/person-black.png' : 'qrc:/icons/person-outline-black.png'
                 }
-                onClicked: stack_view.push("qrc:/pages/CamptocampLogin.qml", StackView.Transition)
+                onClicked: push_page('qrc:/pages/CamptocampLogin.qml')
             }
         }
 
         RowLayout {
-            spacing: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
+            // spacing: 10
+            // anchors.horizontalCenter: parent.horizontalCenter
+            // width: parent.width
+	    Layout.fillWidth: true
+	    Layout.alignment: Qt.AlignHCenter | Qt.AlignBaseline
 
             TextField {
                 id: search_textfield
                 Layout.fillWidth: true
-                placeholderText: qsTr("Search")
-                text: "la sonia"
+                placeholderText: qsTr('Search')
+                text: 'la sonia'
             }
 
             ToolButton {
@@ -90,7 +93,7 @@ Pane {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/search-black.png"
+                    source: 'qrc:/icons/search-black.png'
                 }
                 onClicked: {
                     /* var search_settings = C2cSearchSettings() */
@@ -98,13 +101,29 @@ Pane {
                 }
             }
 
-            Button {
-                id: route_button
-                text: qsTr("Route")
-                onClicked: {
-                    c2c_client.route(570170)
+            ToolButton {
+                id: filter_icon
+                contentItem: Image {
+                    fillMode: Image.Pad
+                    horizontalAlignment: Image.AlignHCenter
+                    verticalAlignment: Image.AlignVCenter
+                    source: 'qrc:/icons/filter-black.png'
                 }
+                onClicked: {
+		    var properties = { 'search_filters_state': search_filters_state }
+		    console.info('clicked ' + JSON.stringify(properties))
+		    var item = push_page('qrc:/pages/CamptocampSearchFilter.qml', properties)
+		    console.info('pushed ' + item)
+		}
             }
+
+            // Button {
+            //     id: route_button
+            //     text: qsTr('Route')
+            //     onClicked: {
+            //         c2c_client.route(570170)
+            //     }
+            // }
         }
 
         ListView {
@@ -116,15 +135,15 @@ Pane {
             // model: null
             // model: c2c_client.search_result.routes
             model: route_model
-            delegate: Text { text: model.index + " " + model.title }
+            delegate: Text { text: model.index + ' ' + model.title }
         }
     }
 
     function on_logged() {
-        console.log("Logged")
+        console.log('Logged')
     }
 
     function on_login_failed() {
-        console.log("Login failed")
+        console.log('Login failed')
     }
 }
