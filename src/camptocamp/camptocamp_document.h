@@ -106,6 +106,7 @@ class C2cShortRoute: public C2cDocument
 {
   Q_OBJECT
   Q_PROPERTY(QString title_fr READ title_fr CONSTANT) // Fixme
+  Q_PROPERTY(QStringList activities READ activities CONSTANT) // Fixme
 
 public:
   C2cShortRoute();

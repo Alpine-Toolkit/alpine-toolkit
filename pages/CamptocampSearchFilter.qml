@@ -5,7 +5,6 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 
-// import "qrc:/js/camptocamp_search_filter_definitions.js" as JsScriptD
 import "qrc:/js/camptocamp_search_filter.js" as JsScript
 
 import "qrc:/C2cFilter" as C2cFilter
