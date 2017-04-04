@@ -9,8 +9,6 @@ var rc = Qt.include('qrc:/js/camptocamp_search_filter_definitions.js');
 if (rc.status != 0)
     console.error('include error in camptocamp_search_filter_definitions.js')
 
-// console.error('include ' + rc + ' ' + rc.status) //  + ' ' + Qt.result.OK
-
 /**************************************************************************************************/
 
 var filter_for_activity = {}
@@ -71,45 +69,45 @@ var compass_rose_component = Qt.createComponent('qrc:/C2cFilter/CompassRoseFilte
 var components_are_ready = false;
 
 function range_slider_done() {
-    console.info('range_slider_done')
+    // console.info('range_slider_done')
     range_slider_component.statusChanged.disconnect(range_slider_done);
     update_filters();
 }
 
 function grade_range_slider_done() {
-    console.info('grade_range_slider_done')
+    // console.info('grade_range_slider_done')
     grade_range_slider_component.statusChanged.disconnect(grade_range_slider_done);
     update_filters();
 }
 
 function check_box_done() {
-    console.info('check_box_done')
+    // console.info('check_box_done')
     check_box_component.statusChanged.disconnect(check_box_done);
     update_filters();
 }
 
 function compass_rose_done() {
-    console.info('compass_rose_done')
+    // console.info('compass_rose_done')
     compass_rose_component.statusChanged.disconnect(compass_rose_done);
     update_filters();
 }
 
 function update_filters() {
-    console.info('update_filters ' + components_are_ready)
+    // console.info('update_filters ' + components_are_ready)
     if (components_are_ready)
 	finish_update_filters();
     else {
 	if (range_slider_component.status != Component.Ready) {
-	    console.info('range_slider not ready');
+	    // console.info('range_slider not ready');
 	    range_slider_component.statusChanged.connect(range_slider_done);
 	} else if (grade_range_slider_component.status != Component.Ready) {
-	    console.info('grade_range_slider not ready');
+	    // console.info('grade_range_slider not ready');
 	    grade_range_slider_component.statusChanged.connect(grade_range_slider_done);
 	} else if (check_box_component.status != Component.Ready) {
-	    console.info('check_box not ready');
+	    // console.info('check_box not ready');
 	    check_box_component.statusChanged.connect(check_box_done);
 	} else if (compass_rose_component.status != Component.Ready) {
-	    console.info('compass_rose not ready');
+	    // console.info('compass_rose not ready');
 	    compass_rose_component.statusChanged.connect(compass_rose_done);
 	} else {
 	    components_are_ready = true;
@@ -121,24 +119,27 @@ function update_filters() {
 var filter_objects = {};
 
 function finish_update_filters() {
-    console.info('finish_update_filters')
+    // console.info('finish_update_filters')
 
     var old_filters = []
     Object.keys(filter_objects).forEach(function(filter) {
 	old_filters.push(filter);
     });
 
+    // Fixme: default filter
     var current_filters = Set();
     get_activities().forEach(function(activity) {
 	filter_for_activity[activity].forEach(function(filter) {
-	    console.info('  ' + filter);
+	    // // console.info('  ' + filter);
 	    set_add(current_filters, filter);
 	});
     });
-    var foo = current_filters.sort(function(a, b) {
-	return filter_definitions[a].title < filter_definitions[b].title;
-    });
-    console.info(current_filters, foo);
+
+    // Fixme: Sort
+    // var foo = current_filters.sort(function(a, b) {
+    // 	return filter_definitions[a].title < filter_definitions[b].title;
+    // });
+    // console.info(current_filters, foo);
 
     var unused_filters = set_difference(old_filters, current_filters);
     unused_filters.forEach(function(filter) {
@@ -171,7 +172,7 @@ function finish_update_filters() {
 }
 
 function create_range_slider(filter) {
-    console.info('create_range_slider', filter)
+    // console.info('create_range_slider', filter)
     var filter_definition = filter_definitions[filter];
     var properties = {
 	title: filter_definition.title,
@@ -185,7 +186,7 @@ function create_range_slider(filter) {
 }
 
 function create_grade_range_slider(filter) {
-    console.info('create_grade_range_slider', filter)
+    // console.info('create_grade_range_slider', filter)
     var filter_definition = filter_definitions[filter];
     var properties = {
 	title: filter_definition.title,
@@ -196,7 +197,7 @@ function create_grade_range_slider(filter) {
 }
 
 function create_check_box(filter) {
-    console.info('create_check_box', filter)
+    // console.info('create_check_box', filter)
     var filter_definition = filter_definitions[filter];
     var properties = {
 	title: filter_definition.title,
@@ -207,7 +208,7 @@ function create_check_box(filter) {
 }
 
 function create_compass_rose(filter) {
-    console.info('create_compass_rose', filter)
+    // console.info('create_compass_rose', filter)
     var filter_definition = filter_definitions[filter];
     var properties = {
 	title: filter_definition.title,
@@ -248,7 +249,7 @@ function get_filters_state() {
 }
 
 function set_search_filters_state(search_filters_state) {
-    console.info('set_search_filters_state', JSON.stringify(search_filters_state));
+    // console.info('set_search_filters_state', JSON.stringify(search_filters_state));
     if (search_filters_state) {
 	if ('activities' in search_filters_state)
 	    set_activities();
@@ -266,7 +267,7 @@ function set_activities() {
 function set_filters_state() {
     var filters = search_filters_state.filters;
     Object.keys(filters).forEach(function(filter) {
-	console.info('set_filters_state', filter);
+	// console.info('set_filters_state', filter);
 	if (filter in filter_objects)
 	    filter_objects[filter].set_state(filters[filter]);
     });

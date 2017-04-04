@@ -13,12 +13,12 @@ C2cFilter.Filter {
 	    if (string.length > longest_string.length)
 		longest_string = string;
 	});
-	console.info('longest_value ' + longest_string);
+	// console.info('longest_value ' + longest_string);
 	return longest_string;
     }
 
     function get_value(index) {
-	console.info('get_value', index);
+	// console.info('get_value', index);
 	return values[Math.round(index)];
     }
 

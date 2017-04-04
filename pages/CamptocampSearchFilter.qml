@@ -5,12 +5,13 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 
+// import "qrc:/js/camptocamp_search_filter_definitions.js" as JsScriptD
 import "qrc:/js/camptocamp_search_filter.js" as JsScript
 
 import "qrc:/C2cFilter" as C2cFilter
 
 Pane {
-    id: camptocamp_search_filter
+    id: camptocamp_search_filter_pane
 
     property var search_filters_state: null
 
@@ -22,8 +23,9 @@ Pane {
         spacing: 10
 
 	Component.onCompleted: {
+	    console.info('camptocamp_search_filter_paner completed');
 	    JsScript.create_activity_buttons();
-	    JsScript.set_search_filters_state(search_filters_state);
+	    JsScript.set_search_filters_state(search_filters_state); // Fixme: qml: set_search_filters_state undefined
 	}
     }
 
@@ -45,23 +47,11 @@ Pane {
 	    width: parent.width - 40 // Fixme
             spacing: 10
 
-	    /* C2cFilter.CompassRoseFilter {} */
-
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.GradeRangeSliderFilter { title: 'foo'; values: ['a', 'b', 'c'] } */
-	    /* C2cFilter.CheckBoxFilter { title: 'foo'; values: ['aaa', 'bbb', 'ccc'] } */
-
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
-	    /* C2cFilter.RangeSliderFilter { title: 'foo' } */
+	    // Keep for test purpose
+	    // C2cFilter.CompassRoseFilter {}
+	    // C2cFilter.RangeSliderFilter { title: 'foo' }
+	    // C2cFilter.GradeRangeSliderFilter { title: 'foo'; values: ['a', 'b', 'c'] }
+	    // C2cFilter.CheckBoxFilter { title: 'foo'; values: ['aaa', 'bbb', 'ccc'] }
 	}
 
 	ScrollBar.vertical: ScrollBar { }
@@ -71,6 +61,6 @@ Pane {
 	search_filters_state = JsScript.get_search_filters_state()
 	// camptocamp_pane.search_filters_state = state // not defined
 	stack_view.get(stack_view.depth -1).search_filters_state = search_filters_state
-	console.info('onDestruction: ' + JSON.stringify(search_filters_state))
+	console.info('camptocamp_search_filter_pane nDestruction: ' + JSON.stringify(search_filters_state))
     }
 }
