@@ -61,6 +61,6 @@ Pane {
 	search_filters_state = JsScript.get_search_filters_state()
 	// camptocamp_pane.search_filters_state = state // not defined
 	stack_view.get(stack_view.depth -1).search_filters_state = search_filters_state
-	console.info('camptocamp_search_filter_pane nDestruction: ' + JSON.stringify(search_filters_state))
+	console.info('camptocamp_search_filter_pane onDestruction: ' + JSON.stringify(search_filters_state))
     }
 }

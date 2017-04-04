@@ -135,12 +135,6 @@ function finish_update_filters() {
 	});
     });
 
-    // Fixme: Sort
-    // var foo = current_filters.sort(function(a, b) {
-    // 	return filter_definitions[a].title < filter_definitions[b].title;
-    // });
-    // console.info(current_filters, foo);
-
     var unused_filters = set_difference(old_filters, current_filters);
     unused_filters.forEach(function(filter) {
 	filter_objects[filter].visible = false;
@@ -166,9 +160,32 @@ function finish_update_filters() {
 	filter_objects[filter] = obj;
     });
 
-    // var childrens = filter_container.children
-    // console.info('items ' + childrens.length)
-    // filter_container.children = childrens
+    // Sort
+    var sorted_filters = current_filters.sort(function(a, b) {
+	var title_a = filter_definitions[a].title;
+	var title_b = filter_definitions[b].title;
+    	return title_a.localeCompare(title_b);
+    });
+    console.info(sorted_filters);
+    sorted_filters.forEach(function (filter) {
+	console.info(filter, filter_definitions[filter].title);
+    });
+    var filters = [];
+    sorted_filters.forEach(function(filter) {
+	filters.push(filter_objects[filter]);
+    });
+    filter_container.children = filters;
+    // children is a List
+    // var childrens = [];
+    // for (var i = 0; i < filter_container.children.length; i++)
+    // 	childrens.push(filter_container.children[i]);
+    // childrens.sort(function(a, b) {
+    // 	var title_a = a.title;
+    // 	var title_b = b.title;
+    // 	return title_a.localeCompare(title_b);
+    // });
+    // filter_container.children = childrens;
+
 }
 
 function create_range_slider(filter) {

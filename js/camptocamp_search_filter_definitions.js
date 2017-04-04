@@ -1,3 +1,9 @@
+/**************************************************************************************************
+ *
+ * See v6_ui/c2corg_ui/templates/route/filters.html
+ *
+ **************************************************************************************************/
+
 var rc = Qt.include('qrc:/js/camptocamp_definitions.js');
 if (rc.status != 0)
     console.error('include error in camptocamp_definitions.js')
@@ -5,7 +11,6 @@ if (rc.status != 0)
 /**************************************************************************************************/
 
 var filter_definitions = {
-
     'elevation_max': {
 	key: 'rmaxa',
 	title: 'Max Altitude',
@@ -241,7 +246,7 @@ var filter_definitions = {
     // All
     'elevation_min': {
 	key: 'rmina',
-	title: 'Altitude Min',
+	title: 'Min Altitude',
 	activities: 'all',
 	type:'RangeSlider',
 	max: 6000,
