@@ -2,7 +2,7 @@ import QtQml 2.2
 import QtQuick 2.6
 
 import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.1
 
 import Local 1.0
 
@@ -42,6 +42,7 @@ Pane {
             for (i = 0; i < routes.length; i++) {
 		var route = routes[i];
 		var route_data = {
+                    'id': route.id,
 		    'title': route.title('fr'),
 		    'activities': route.activities,
 		};
@@ -147,53 +148,13 @@ Pane {
             Component {
                 id: route_delegate
 
-                Item {
-                    width: parent.width
-                    implicitHeight: container.height
-
-                    Column {
-                        id: container
-                        width: parent.width
-
-		        Text {
-			    width: parent.width
-			    text: title // Fixme: highlight search and show language
-		        }
-
-                        Row {
-                            width: parent.width
-
-                            Text {
-                                font.family: activities_font.name
-                                font.pointSize: 16
-                                text: C2cDefinition.activity_dict[activities[0]].glyph
-                            }
-                        }
-		    }
-
-                    Rectangle {
-                        id: background
-                        anchors.fill: parent
-                        color: 'transparent'
-                        z: -1
-                    }
-
-                     MouseArea {
-                         anchors.fill: parent
-                         hoverEnabled: true
-                         onClicked: console.info("clicked on", title)
-                         onEntered: background.color = '#EEE'
-                         onExited: background.color = 'transparent'
-                     }
-                }
-            }
-
-            Component {
-                id: route_delegate2
-
+                // Fixme: has a text properties
+                // cf. https://doc.qt.io/qt-5/qml-qtquick-controls2-itemdelegate.html
                 ItemDelegate {
                     width: parent.width
+                    padding: 5
 
+                    // redefine content item
                     contentItem: Column {
                         width: parent.width
 
@@ -206,6 +167,7 @@ Pane {
                             width: parent.width
 
                             Text {
+                                padding: 3
                                 font.family: activities_font.name
                                 font.pointSize: 16
                                 text: C2cDefinition.activity_dict[activities[0]].glyph
@@ -216,10 +178,9 @@ Pane {
                             //     // model: ['rock_climbing']
                             //     model: activities
                             //     Text {
-                            //         width: 50
                             //         font.family: activities_font.name
                             //         font.pointSize: 16
-                            //         text: modelData // C2cDefinition.activity_dict[modelData].glyph
+                            //         text: C2cDefinition.activity_dict[modelData].glyph
                             //     }
                             // }
                         }
@@ -227,7 +188,10 @@ Pane {
                         // Fixme: show max altitude and elevation loss
 		    }
 
-                    onClicked: console.info("clicked on", title)
+                    onClicked: {
+                        console.info("clicked on", title, id);
+                        c2c_client.route(id);
+                    }
                 }
             }
 
@@ -242,7 +206,7 @@ Pane {
 		// model: null
 		// model: c2c_client.search_result.routes
 		model: route_model
-		delegate: route_delegate2
+		delegate: route_delegate
 	    }
         }
     }
