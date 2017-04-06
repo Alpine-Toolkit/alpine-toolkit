@@ -293,7 +293,7 @@ C2cQmlClient::is_media_cached(const QString & media)
 }
 
 QByteArray *
-C2cQmlClient::get_media(const QString & media, bool use_cache)
+C2cQmlClient::get_media(const QString & media, bool use_cache) // unused
 {
   // Fixme: use_cache ???
   // if (use_cache) {

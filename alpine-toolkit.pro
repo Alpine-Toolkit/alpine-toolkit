@@ -22,12 +22,13 @@ INCLUDEPATH += src
 HEADERS += \
   src/bleaudb/bleaudb.h \
   src/bleaudb/bleaudb_json_loader.h \
-  src/camptocamp/camptocamp_cache.h \
   src/camptocamp/camptocamp_client.h \
-  src/camptocamp/camptocamp_constant.h \
   src/camptocamp/camptocamp_document.h \
   src/camptocamp/camptocamp_login.h \
+  src/camptocamp/camptocamp_login_data.h \
+  src/camptocamp/camptocamp_media_cache.h \
   src/camptocamp/camptocamp_qml.h \
+  src/camptocamp/camptocamp_search_settings.h \
   src/database/database.h \
   src/ephemeride/ephemeride.h \
   src/refuge/refuge.h \
@@ -43,11 +44,14 @@ HEADERS += \
 SOURCES += \
   src/bleaudb/bleaudb.cpp \
   src/bleaudb/bleaudb_json_loader.cpp \
-  src/camptocamp/camptocamp_cache.cpp \
+  src/camptocamp/camptocamp_api_cache.cpp \
   src/camptocamp/camptocamp_client.cpp \
   src/camptocamp/camptocamp_document.cpp \
   src/camptocamp/camptocamp_login.cpp \
+  src/camptocamp/camptocamp_login_data.cpp \
+  src/camptocamp/camptocamp_media_cache.cpp \
   src/camptocamp/camptocamp_qml.cpp \
+  src/camptocamp/camptocamp_search_settings.cpp \
   src/database/database.cpp \
   src/ephemeride/ephemeride.cpp \
   src/international_morse_code_engine/international_morse_code_engine.cpp \
@@ -77,6 +81,28 @@ RESOURCES += alpine-toolkit.qrc
 
 TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
 # \ alpine-toolkit-en.ts
+
+####################################################################################################
+#
+# Dependencies
+#
+
+INCLUDEPATH += $$PWD/third-parties/include # local/cmark/include
+
+linux:!android {
+LIBS += -L$$PWD/third-parties/local/cmark/lib -lcmark
+}
+android {
+LIBS += -L$$PWD/android-cmake-build/third-parties/cmark -lcmark
+# LIBS += -lcrypto -lssl
+}
+
+contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+    $$PWD/android-cmake-build/third-parties/cmark/libcmark.so \
+    # $$PWD/../third-parties/openssl-1.0.2h/libcrypto.so \
+    # $$PWD/../third-parties/openssl-1.0.2h/libssl.so
+}
 
 ####################################################################################################
 #
