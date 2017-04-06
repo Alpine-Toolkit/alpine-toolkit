@@ -48,6 +48,8 @@
 
 /**************************************************************************************************/
 
+// Fixme: check code against qtcarto
+
 /* The NetworkFetcher class manages a list of asynchronous requests.
  *
  * Note: QNetworkAccessManager queues the requests it receives. The

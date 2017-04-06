@@ -39,6 +39,8 @@
 
 /**************************************************************************************************/
 
+// Fixme: similar to QNetworkRequest
+
 /* The NetworkRessourceRequest class defines a network ressource request.
  *
  */

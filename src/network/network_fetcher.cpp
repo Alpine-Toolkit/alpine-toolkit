@@ -79,7 +79,7 @@ NetworkFetcher::add_request(const NetworkRessourceRequest & request)
   // add to a list
   m_queue += request;
 
-  // Start timer to fetch tiles from queue
+  // Start timer to fetch ressource from queue
   if (m_enabled and not m_queue.isEmpty() and not m_timer.isActive()) {
     m_timer.start(0, this);
   }
@@ -91,7 +91,7 @@ NetworkFetcher::cancel_request(const NetworkRessourceRequest & request)
   QMutexLocker mutex_locker(&m_queue_mutex);
 
   NetworkReply * reply = m_invmap.value(request, nullptr);
-  if (reply) { // url wasn't requested
+  if (reply) { // else url wasn't requested
     m_invmap.remove(request);
     reply->abort();
     if (reply->is_finished())
