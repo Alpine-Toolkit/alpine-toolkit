@@ -87,9 +87,10 @@ set_context_properties(QQmlContext * context)
 
   // Create Camptocamp client
   QDir offline_storage_path = QDir(context->engine()->offlineStoragePath()); // same as application_user_directory
-  QString c2c_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
-  qInfo() << "Camptocamp Cache" << c2c_cache_path;
-  C2cQmlClient * c2c_client = new C2cQmlClient(c2c_cache_path);
+  QString c2c_api_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
+  QString c2c_media_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("media"));
+  qInfo() << "Camptocamp Cache" << c2c_api_cache_path << c2c_media_cache_path;
+  C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
   context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
   // RefugeModel * refuge_model = new RefugeModel(*refuges);

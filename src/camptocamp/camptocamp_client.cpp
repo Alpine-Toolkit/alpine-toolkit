@@ -38,214 +38,6 @@ using namespace c2c;
 
 /**************************************************************************************************/
 
-C2cLoginData::C2cLoginData()
-  : m_language(),
-    m_expire(),
-    m_id(),
-    m_token(),
-    m_forum_username(),
-    m_name(),
-    m_roles(),
-    m_redirect_internal(),
-    m_username()
-{}
-
-C2cLoginData::C2cLoginData(const C2cLoginData & other)
-  : m_language(other.m_language),
-    m_expire(other.m_expire),
-    m_id(other.m_id),
-    m_token(other.m_token),
-    m_forum_username(other.m_forum_username),
-    m_name(other.m_name),
-    m_roles(other.m_roles),
-    m_redirect_internal(other.m_redirect_internal),
-    m_username(other.m_username)
-{}
-
-C2cLoginData::~C2cLoginData()
-{}
-
-void
-C2cLoginData::from_json(const QJsonDocument * json_document)
-{
-  QJsonObject root = json_document->object();
-  m_language = root[QStringLiteral("lang")].toString();
-  m_expire = QDateTime::fromMSecsSinceEpoch(static_cast<qint64>(root[QStringLiteral("expire")].toInt()) * 1000);
-  // set_expire(QDateTime::fromSecsSinceEpoch(root[QStringLiteral("expire")].toInt()));
-  m_id = root[QStringLiteral("id")].toInt();
-  m_token = root[QStringLiteral("token")].toString();
-  m_forum_username = root[QStringLiteral("forum_username")].toString();
-  m_name = root[QStringLiteral("name")].toString();
-  m_roles = root[QStringLiteral("roles")].toString();
-  m_redirect_internal = root[QStringLiteral("redirect_internal")].toString();
-  m_username = root[QStringLiteral("username")].toString();
-}
-
-void
-C2cLoginData::reset()
-{
-  m_id = 0;
-  m_expire = QDateTime();
-
-  m_language.clear();
-  m_token.clear();
-  m_forum_username.clear();
-  m_name.clear();
-  m_roles.clear();
-  m_redirect_internal.clear();
-  m_username.clear();
-}
-
-C2cLoginData &
-C2cLoginData::operator=(const C2cLoginData & other)
-{
-  if (this != &other) {
-    m_language = other.m_language;
-    m_expire = other.m_expire;
-    m_id = other.m_id;
-    m_token = other.m_token;
-    m_forum_username = other.m_forum_username;
-    m_name = other.m_name;
-    m_roles = other.m_roles;
-    m_redirect_internal = other.m_redirect_internal;
-    m_username = other.m_username;
-  }
-
-  return *this;
-}
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLoginData & login_data)
-{
-  QDebugStateSaver saver(debug); // Fixme: ???
-
-  debug.nospace() << QLatin1Literal("C2cLoginData(") << '\n'; // std::endl
-  debug << "  id: " << login_data.id() << '\n';
-  debug << "  username: " << login_data.username() << '\n';
-  debug << "  expire: " << login_data.expire() << '\n';
-  debug << "  token: " << login_data.token() << '\n';
-  debug << "  forum username: " << login_data.forum_username() << '\n';
-  debug << "  name: " << login_data.name() << '\n';
-  debug << "  language: " << login_data.language() << '\n';
-  debug << "  redirect interval: " << login_data.redirect_internal() << '\n';
-  debug << "  roles: " << login_data.roles() << '\n';
-  debug << ')';
-
-  return debug;
-}
-#endif
-
-/**************************************************************************************************/
-
-C2cSearchSettings::C2cSearchSettings()
-  : QObject()
-  // : m_language(QStringLiteral("fr")),
-  //   m_limit(7),
-  //   m_area(false),
-  //   m_article(false),
-  //   m_book(false),
-  //   m_image(false),
-  //   m_map(false),
-  //   m_outing(false),
-  //   m_route(false),
-  //   m_userprofile(false),
-  //   m_waypoint(false),
-  //   m_xreport(false)
-{
-  reset();
-}
-
-C2cSearchSettings::C2cSearchSettings(const C2cSearchSettings & other)
-  : QObject(),
-    m_language(other.m_language),
-    m_limit(other.m_limit),
-    m_area(other.m_area),
-    m_article(other.m_article),
-    m_book(other.m_book),
-    m_image(other.m_image),
-    m_map(other.m_map),
-    m_outing(other.m_outing),
-    m_route(other.m_route),
-    m_userprofile(other.m_userprofile),
-    m_waypoint(other.m_waypoint),
-    m_xreport(other.m_xreport)
-{}
-
-C2cSearchSettings::~C2cSearchSettings()
-{}
-
-void
-C2cSearchSettings::reset()
-{
-  m_language = QStringLiteral("fr");
-  m_limit = 7;
-  m_area = false;
-  m_article = false;
-  m_book = false;
-  m_image = false;
-  m_map = false;
-  m_outing = false;
-  m_route = false;
-  m_userprofile = false;
-  m_waypoint = false;
-  m_xreport = false;
-}
-
-C2cSearchSettings &
-C2cSearchSettings::operator=(const C2cSearchSettings & other)
-{
-  if (this != &other) {
-    m_language = other.m_language;
-    m_limit = other.m_limit;
-    m_area = other.m_area;
-    m_article = other.m_article;
-    m_book = other.m_book;
-    m_image = other.m_image;
-    m_map = other.m_map;
-    m_outing = other.m_outing;
-    m_route = other.m_route;
-    m_userprofile = other.m_userprofile;
-    m_waypoint = other.m_waypoint;
-    m_xreport = other.m_xreport;
-  }
-
-  return *this;
-}
-
-QString
-C2cSearchSettings::type_letters() const
-{
-  QStringList letters;
-  if (m_area)
-    letters << QStringLiteral("a");
-  if (m_article)
-    letters << QStringLiteral("c");
-  if (m_book)
-    letters << QStringLiteral("b");
-  if (m_image)
-    letters << QStringLiteral("i");
-  if (m_map)
-    letters << QStringLiteral("m");
-  if (m_outing)
-    letters << QStringLiteral("o");
-  if (m_route)
-    letters << QStringLiteral("r");
-  if (m_userprofile)
-    letters << QStringLiteral("u");
-  if (m_xreport)
-    letters << QStringLiteral("x");
-  if (m_waypoint)
-    letters << QStringLiteral("w");
-
-  return letters.join(',');
-}
-
-/**************************************************************************************************/
-
-// Fixme:
-//  - public handle
-//  - free C2cRequest and json document
-
 C2cRequest::C2cRequest(const QNetworkRequest & request)
   : QObject(),
     m_request(request)
@@ -273,10 +65,23 @@ C2cRequest::set_reply(C2cClient * client, QNetworkReply * network_reply)
   // receiver's thread.
 }
 
+/**************************************************************************************************/
+
+// Fixme:
+//  - public handle
+//  - free C2cApiRequest and json document
+
+C2cApiRequest::C2cApiRequest(const QNetworkRequest & request)
+  : C2cRequest(request)
+{}
+
+C2cApiRequest::~C2cApiRequest()
+{}
+
 void
-C2cRequest::finished()
+C2cApiRequest::finished()
 {
-  if (m_network_reply->error() == QNetworkReply::NoError) {
+  if (network_reply()->error() == QNetworkReply::NoError) {
     QJsonDocument * json_document = reply_to_json();
     if (check_json_response(json_document))
       handle_reply(json_document);
@@ -287,15 +92,15 @@ C2cRequest::finished()
 }
 
 QJsonDocument *
-C2cRequest::reply_to_json() const
+C2cApiRequest::reply_to_json() const
 {
-  QByteArray json_data = m_network_reply->readAll();
+  QByteArray json_data = network_reply()->readAll();
   qInfo() << "Json reply" << url() << '\n' << json_data;
   return new QJsonDocument(QJsonDocument::fromJson(json_data)); // Fixme: delete
 }
 
 bool
-C2cRequest::check_json_response(const QJsonDocument * json_document)
+C2cApiRequest::check_json_response(const QJsonDocument * json_document)
 {
   QJsonObject root = json_document->object();
   if (root.contains(STATUS) and root[STATUS].toString() == ERROR) {
@@ -310,11 +115,11 @@ C2cRequest::check_json_response(const QJsonDocument * json_document)
 
 /**************************************************************************************************/
 
-class C2cLoginRequest : public C2cRequest
+class C2cLoginRequest : public C2cApiRequest
 {
 public:
   C2cLoginRequest(const QNetworkRequest & request)
-    : C2cRequest(request)
+    : C2cApiRequest(request)
   {}
 
   void handle_reply(const QJsonDocument * json_document) {
@@ -331,11 +136,11 @@ public:
 
 /**************************************************************************************************/
 
-class C2cHealthRequest : public C2cRequest
+class C2cHealthRequest : public C2cApiRequest
 {
 public:
   C2cHealthRequest(const QNetworkRequest & request)
-    : C2cRequest(request)
+    : C2cApiRequest(request)
   {}
 
   void handle_reply(const QJsonDocument * json_document) {
@@ -352,11 +157,11 @@ public:
 
 /**************************************************************************************************/
 
-class C2cSearchRequest : public C2cRequest
+class C2cSearchRequest : public C2cApiRequest
 {
 public:
   C2cSearchRequest(const QNetworkRequest & request)
-    : C2cRequest(request)
+    : C2cApiRequest(request)
   {}
 
   void handle_reply(const QJsonDocument * json_document) {
@@ -373,11 +178,11 @@ public:
 
 /**************************************************************************************************/
 
-class C2cDocumentRequest : public C2cRequest
+class C2cDocumentRequest : public C2cApiRequest
 {
 public:
   C2cDocumentRequest(const QNetworkRequest & request)
-    : C2cRequest(request)
+    : C2cApiRequest(request)
   {}
 
   void handle_reply(const QJsonDocument * json_document) {
@@ -394,9 +199,31 @@ public:
 
 /**************************************************************************************************/
 
-C2cClient::C2cClient(const QString & api_url, int port)
+C2cMediaRequest::C2cMediaRequest(const QNetworkRequest & request)
+  : C2cRequest(request),
+    m_media(request.url().fileName())
+{
+}
+
+C2cMediaRequest::~C2cMediaRequest()
+{}
+
+void
+C2cMediaRequest::finished()
+{
+  if (network_reply()->error() == QNetworkReply::NoError) {
+    QByteArray data = network_reply()->readAll();
+    client()->handle_media_reply(m_media, data);
+  } else
+    client()->handle_media_error(m_media);
+}
+
+/**************************************************************************************************/
+
+C2cClient::C2cClient(const QString & api_url, const QString & media_url, int port)
   : QObject(),
     m_api_url(api_url),
+    m_media_url(media_url),
     m_port(port),
     m_login(),
     m_login_data(),
@@ -404,7 +231,7 @@ C2cClient::C2cClient(const QString & api_url, int port)
 {}
 
 QUrl
-C2cClient::make_url(const QString & endpoint) const
+C2cClient::make_api_url(const QString & endpoint) const
 {
   QUrl url(m_api_url + '/' + endpoint);
   url.setPort(m_port);
@@ -412,23 +239,31 @@ C2cClient::make_url(const QString & endpoint) const
 }
 
 QUrl
-C2cClient::make_url(const QStringList & strings) const
+C2cClient::make_api_url(const QStringList & strings) const
 {
-  return make_url(strings.join('/'));
+  return make_api_url(strings.join('/'));
+}
+
+QUrl
+C2cClient::make_media_url(const QString & media) const
+{
+  QUrl url(m_media_url + '/' + media);
+  // url.setPort(m_port);
+  return url;
 }
 
 QNetworkRequest
-C2cClient::create_network_request(const QStringList & strings, bool token) const
+C2cClient::create_network_api_request(const QStringList & strings, bool token) const
 {
-  return create_network_request(make_url(strings), token);
+  return create_network_api_request(make_api_url(strings), token);
 }
 
 QNetworkRequest
-C2cClient::create_network_request(const QUrl & url, bool token) const
+C2cClient::create_network_api_request(const QUrl & url, bool token) const
 {
   QNetworkRequest request(url);
   // QStringLiteral().toLatin1() QLatin1String
-  request.setRawHeader("User-Agent", "alpine-toolkit");
+  request.setRawHeader("User-Agent", "alpine-toolkit"); // Fixme: QStringLiteral
   request.setRawHeader("Content-Type", "application/json");
   if (token and is_logged()) {
     QString jwt_token = "JWT token=\"";
@@ -438,17 +273,26 @@ C2cClient::create_network_request(const QUrl & url, bool token) const
   return request;
 }
 
-void
-C2cClient::get(C2cRequest * request)
+QNetworkRequest
+C2cClient::create_network_media_request(const QString & media) const
 {
-  // Fixme: if C2cClient is friend, then we can move this code in C2cRequest
+  QUrl url = make_media_url(media);
+  QNetworkRequest request(url);
+  request.setRawHeader("User-Agent", "alpine-toolkit");
+  return request;
+}
+
+void
+C2cClient::get(C2cApiRequest * request)
+{
+  // Fixme: if C2cClient is friend, then we can move this code in C2cApiRequest
   qInfo() << "Get" << request->url();
   QNetworkReply * network_reply = m_network_manager.get(request->request());
   request->set_reply(this, network_reply);
 }
 
 void
-C2cClient::post(C2cRequest * request, const QJsonDocument * json_document, bool check_login)
+C2cClient::post(C2cApiRequest * request, const QJsonDocument * json_document, bool check_login)
 {
   if (check_login) {
     if (not is_logged())
@@ -473,7 +317,7 @@ C2cClient::login(const C2cLogin & login, bool remember, bool discourse)
 
   QStringList string_list;
   string_list << USERS << LOGIN;
-  C2cRequest * request = new C2cLoginRequest(create_network_request(string_list)); // Fixme: delete
+  C2cApiRequest * request = new C2cLoginRequest(create_network_api_request(string_list)); // Fixme: delete
 
   QJsonObject json_object;
   json_object[USERNAME] = login.username();
@@ -516,7 +360,7 @@ C2cClient::health()
 {
   QStringList string_list;
   string_list << HEALTH;
-  C2cRequest * request = new C2cHealthRequest(create_network_request(string_list)); // Fixme: delete
+  C2cApiRequest * request = new C2cHealthRequest(create_network_api_request(string_list)); // Fixme: delete
   get(request);
 }
 
@@ -537,7 +381,7 @@ C2cClient::get_document(const QString & document_type, unsigned int document_id)
 {
   QStringList string_list;
   string_list << document_type << QString::number(document_id);
-  C2cRequest * request = new C2cDocumentRequest(create_network_request(string_list)); // Fixme: delete
+  C2cApiRequest * request = new C2cDocumentRequest(create_network_api_request(string_list)); // Fixme: delete
   get(request);
 }
 
@@ -638,14 +482,28 @@ C2cClient::search(const QString & search_string, const C2cSearchSettings & setti
    */
 
   // settings = SearchSettings()
-  QUrl url = make_url(SEARCH);
+  QUrl url = make_api_url(SEARCH);
   QUrlQuery url_query(url);
+
   url_query.addQueryItem(QStringLiteral("q"), search_string);
   url_query.addQueryItem(QStringLiteral("pl"), settings.language());
   url_query.addQueryItem(QStringLiteral("limit"), QString::number(settings.limit()));
   url_query.addQueryItem(QStringLiteral("t"), settings.type_letters());
+
+  const C2cSearchSettings::FilterMap filters = settings.filters();
+  for (const auto & key : filters.keys()) { // Fixme: better ? pair ?
+    const QVariant & value = filters[key];
+    QString string_value;
+    if (value.type() == QVariant::StringList)
+      string_value = value.toStringList().join(',');
+    else
+      string_value = value.toString();
+    // qInfo() << key << value << value.toString() << string_value;
+    url_query.addQueryItem(key, string_value);
+  }
+
   url.setQuery(url_query);
-  C2cRequest * request = new C2cSearchRequest(create_network_request(url)); // Fixme: delete
+  C2cApiRequest * request = new C2cSearchRequest(create_network_api_request(url)); // Fixme: delete
   get(request);
 }
 
@@ -702,14 +560,14 @@ C2cClient::make_url_for_document(const QJsonDocument * json_document) const
   QString document_id = QString::number(root[DOCUMENT_ID].toInt());
   QStringList string_list;
   string_list << endpoint << document_id;
-  return make_url(string_list);
+  return make_api_url(string_list);
 }
 
 void
 C2cClient::post(const QJsonDocument * json_document)
 {
   QUrl url = make_url_for_document(json_document);
-  QNetworkRequest request = create_network_request(url, true);
+  QNetworkRequest request = create_network_api_request(url, true);
   // post(request, json_document);
 }
 
@@ -717,12 +575,32 @@ void
 C2cClient::update(const QJsonDocument * json_document, const QString & message)
 {
   QUrl url = make_url_for_document(json_document);
-  QNetworkRequest request = create_network_request(url, true);
+  QNetworkRequest request = create_network_api_request(url, true);
   QJsonDocument payload;
   QJsonObject root = payload.object();
   root[MESSAGE] = message;
   root[DOCUMENT] = json_document->object();
   // update(request, &payload);
+}
+
+void
+C2cClient::media(const QString & media)
+{
+  C2cMediaRequest * request = new C2cMediaRequest(create_network_media_request(media)); // Fixme: delete
+  QNetworkReply * network_reply = m_network_manager.get(request->request());
+  request->set_reply(this, network_reply);
+}
+
+void
+C2cClient::handle_media_reply(const QString & media, const QByteArray & data)
+{
+  emit received_media(media, data);
+}
+
+void
+C2cClient::handle_media_error(const QString & media)
+{
+  emit get_media_failed(media);
 }
 
 /***************************************************************************************************

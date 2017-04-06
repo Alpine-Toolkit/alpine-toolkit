@@ -1,5 +1,8 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
+    <qresource prefix="/Widgets">
+	<file alias="CompassRose.qml">pages/Components/Widgets/CompassRose.qml</file>
+    </qresource>
     <qresource prefix="/C2cFilter">
 	<file alias="Filter.qml">pages/Components/C2cFilter/Filter.qml</file>
 	<file alias="ActivityFilter.qml">pages/Components/C2cFilter/ActivityFilter.qml</file>

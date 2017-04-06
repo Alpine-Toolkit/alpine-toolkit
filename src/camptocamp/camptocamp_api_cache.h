@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __CAMPTOCAMP_CACHE_H__
-#define __CAMPTOCAMP_CACHE_H__
+#ifndef __CAMPTOCAMP_API_CACHE_H__
+#define __CAMPTOCAMP_API_CACHE_H__
 
 /**************************************************************************************************/
 
@@ -41,11 +41,11 @@
 
 /**************************************************************************************************/
 
-class C2cCache :  public QcSqliteDatabase
+class C2cApiCache : public QcSqliteDatabase
 {
 public:
-  C2cCache(const QString & sqlite_path);
-  ~C2cCache();
+  C2cApiCache(const QString & sqlite_path);
+  ~C2cApiCache();
 
   C2cLogin login(); // const
   void save_login(const C2cLogin & login);
@@ -64,7 +64,7 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __CAMPTOCAMP_CACHE_H__ */
+#endif /* __CAMPTOCAMP_API_CACHE_H__ */
 
 /***************************************************************************************************
  *

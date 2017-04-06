@@ -88,7 +88,7 @@ TestNetwork::test_network_fetcher()
   network_fetcher.add_request(url);
   url = QStringLiteral("http://127.0.0.1:5000/todos/todo2");
   network_fetcher.add_request(url);
-  while (!network_fetcher_helper.has_received(url))
+  while (!network_fetcher_helper.has_received(url)) // Fixme:
     QTest::qWait(200);
 }
 
@@ -109,24 +109,26 @@ TestNetwork::test_network_downloader()
   QString target_path = "request1.json";
   NetworkDownloadRequest request(url, target_path);
   network_downloader.add_request(request);
-  while (!network_fetcher_helper.has_received(url))
+  while (!network_fetcher_helper.has_received(url)) // Fixme:
     QTest::qWait(200);
 }
 
-  // QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-  // manager->networkAccessible()
+/**************************************************************************************************/
 
-  // connect(manager, SIGNAL(finished(QNetworkReply*)),
-  // 	  this, SLOT(replyFinished(QNetworkReply*)));
+// QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+// manager->networkAccessible()
 
-  // manager->get(QNetworkRequest(QUrl("http://qt-project.org")));
+// connect(manager, SIGNAL(finished(QNetworkReply*)),
+// 	  this, SLOT(replyFinished(QNetworkReply*)));
 
-  // QNetworkReply *reply = manager->get(request);
-  // connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-  // connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-  //         this, SLOT(slotError(QNetworkReply::NetworkError)));
-  // connect(reply, SIGNAL(sslErrors(QList<QSslError>)),
-  //         this, SLOT(slotSslErrors(QList<QSslError>)));
+// manager->get(QNetworkRequest(QUrl("http://qt-project.org")));
+
+// QNetworkReply *reply = manager->get(request);
+// connect(reply, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
+// connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+//         this, SLOT(slotError(QNetworkReply::NetworkError)));
+// connect(reply, SIGNAL(sslErrors(QList<QSslError>)),
+//         this, SLOT(slotSslErrors(QList<QSslError>)));
 
 /***************************************************************************************************/
 

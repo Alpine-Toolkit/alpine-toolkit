@@ -26,7 +26,7 @@
 
 /**************************************************************************************************/
 
-#include "camptocamp_cache.h"
+#include "camptocamp_api_cache.h"
 
 #include <QJsonDocument>
 #include <QSqlError>
@@ -49,18 +49,18 @@ static const QString USERNAME = "username";
 static const QString VALUE = "value";
 static const QString VERSION = "version";
 
-C2cCache::C2cCache(const QString & sqlite_path)
+C2cApiCache::C2cApiCache(const QString & sqlite_path)
 {
   bool created = open(sqlite_path); // unused
 
   // if (!created)
 }
 
-C2cCache::~C2cCache()
+C2cApiCache::~C2cApiCache()
 {}
 
 void
-C2cCache::create_tables()
+C2cApiCache::create_tables()
 {
   qInfo() << "Create Table"; // << sqlite_path();
 
@@ -95,7 +95,7 @@ C2cCache::create_tables()
 }
 
 QString
-C2cCache::read_metadata(const QString & key)
+C2cApiCache::read_metadata(const QString & key)
 {
   KeyValuePair kwargs;
   kwargs[KEY] = key;
@@ -105,7 +105,7 @@ C2cCache::read_metadata(const QString & key)
 }
 
 void
-C2cCache::init_metadata(const QString & key, const QString & value)
+C2cApiCache::init_metadata(const QString & key, const QString & value)
 {
   KeyValuePair kwargs;
   kwargs[KEY] = key;
@@ -114,7 +114,7 @@ C2cCache::init_metadata(const QString & key, const QString & value)
 }
 
 void
-C2cCache::update_metadata(const QString & key, const QString & value)
+C2cApiCache::update_metadata(const QString & key, const QString & value)
 {
   KeyValuePair kwargs_where;
   kwargs_where[KEY] = key;
@@ -125,7 +125,7 @@ C2cCache::update_metadata(const QString & key, const QString & value)
 }
 
 void
-C2cCache::init()
+C2cApiCache::init()
 {
   KeyValuePair kwargs;
 
@@ -138,7 +138,7 @@ C2cCache::init()
 }
 
 C2cLogin
-C2cCache::login() // Fixme: const
+C2cApiCache::login() // Fixme: const
 {
   QString username = read_metadata(USERNAME);
   QString password = read_metadata(PASSWORD);
@@ -146,7 +146,7 @@ C2cCache::login() // Fixme: const
 }
 
 void
-C2cCache::save_login(const C2cLogin & login)
+C2cApiCache::save_login(const C2cLogin & login)
 {
   update_metadata(USERNAME, login.username());
   update_metadata(PASSWORD, login.password()); // Fixme: clear password !
@@ -154,7 +154,7 @@ C2cCache::save_login(const C2cLogin & login)
 }
 
 void
-C2cCache::save_document(const C2cDocument & document)
+C2cApiCache::save_document(const C2cDocument & document)
 {
   unsigned int document_id = document.id();
   if (has_document(document_id)) {
@@ -175,7 +175,7 @@ C2cCache::save_document(const C2cDocument & document)
 }
 
 bool
-C2cCache::has_document(unsigned int document_id) const
+C2cApiCache::has_document(unsigned int document_id) const
 {
   KeyValuePair kwargs;
   kwargs[ID] = document_id;
@@ -186,7 +186,7 @@ C2cCache::has_document(unsigned int document_id) const
 }
 
 C2cDocument *
-C2cCache::get_document(unsigned int document_id) const
+C2cApiCache::get_document(unsigned int document_id) const
 {
   KeyValuePair kwargs;
   kwargs[ID] = document_id;

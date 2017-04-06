@@ -35,9 +35,10 @@
 
 /**************************************************************************************************/
 
+#include "camptocamp/camptocamp_api_cache.h"
 #include "camptocamp/camptocamp_client.h"
-#include "camptocamp/camptocamp_cache.h"
 #include "camptocamp/camptocamp_document.h"
+#include "camptocamp/camptocamp_media_cache.h"
 
 #include "login.h"
 
@@ -48,8 +49,10 @@ class MyC2cClient : public C2cClient
   Q_OBJECT
 
 public:
-  MyC2cClient(const QString & api_url = c2c::OFFICIAL_API_URL, int port = -1)
-    : C2cClient(api_url, port)
+  MyC2cClient(const QString & api_url = c2c::OFFICIAL_API_URL,
+              const QString & media_url = c2c::OFFICIAL_MEDIA_URL,
+              int port = -1)
+    : C2cClient(api_url, media_url, port)
   {
     connect(this, &C2cClient::received_health_status,
             this, &MyC2cClient::received_health_status_hook);
@@ -102,38 +105,45 @@ private slots:
 void
 TestC2cClient::constructor()
 {
-  C2cLogin login(username, password);
-  qInfo() << login;
+  // C2cLogin login(username, password);
+  // qInfo() << login;
   MyC2cClient client;
-  client.login(login);
-  {
-    QSignalSpy spy(&client, &C2cClient::logged);
-    QVERIFY(spy.wait(5000)); // ms
-  }
-
-  {
-    client.health();
-    // Fixme: QSignalSpy: Unable to handle parameter 'json_document'
-    // of type 'const QJsonDocument*' of method
-    // 'received_health_status', use qRegisterMetaType to register it.
-    // QSignalSpy spy(&client, &C2cClient::received_health_status);
-    QSignalSpy spy(&client, &MyC2cClient::received_response);
-    QVERIFY(spy.wait(5000)); // ms
-  }
-
-  {
-    client.route(570170);
-    // QSignalSpy spy(&client, &C2cClient::received_document);
-    QSignalSpy spy(&client, &MyC2cClient::received_response);
-    QVERIFY(spy.wait(5000)); // ms
-  }
+  // client.login(login);
+  // {
+  //   QSignalSpy spy(&client, &C2cClient::logged);
+  //   QVERIFY(spy.wait(5000)); // ms
+  // }
 
   // {
-  //   client.search("sonia calanque", C2cSearchSettings());
+  //   client.health();
+  //   // Fixme: QSignalSpy: Unable to handle parameter 'json_document'
+  //   // of type 'const QJsonDocument*' of method
+  //   // 'received_health_status', use qRegisterMetaType to register it.
+  //   // QSignalSpy spy(&client, &C2cClient::received_health_status);
+  //   QSignalSpy spy(&client, &MyC2cClient::received_response);
+  //   QVERIFY(spy.wait(5000)); // ms
+  // }
+
+  // {
+  //   client.route(570170);
   //   // QSignalSpy spy(&client, &C2cClient::received_document);
   //   QSignalSpy spy(&client, &MyC2cClient::received_response);
   //   QVERIFY(spy.wait(5000)); // ms
   // }
+
+  {
+    C2cSearchSettings search_settings;
+    search_settings.set_route(true);
+    search_settings.add_string_filter("act", "rock_climbing");
+    QStringList string_list;
+    string_list << "single" << "multi";
+    search_settings.add_string_list_filter("crtyp", string_list);
+    search_settings.add_int_pair_filter("rmaxa", 0, 1000);
+    client.search("sonia calanque", search_settings);
+    // QSignalSpy spy(&client, &C2cClient::received_document);
+    QSignalSpy spy(&client, &MyC2cClient::received_response);
+    QVERIFY(spy.wait(5000)); // ms
+  }
 }
 
 /***************************************************************************************************/
@@ -149,7 +159,7 @@ private slots:
 void TestC2cCache::constructor()
 {
   QString sqlite_path = "c2c-cache.sqlite3";
-  C2cCache cache(sqlite_path);
+  C2cApiCache cache(sqlite_path);
 
   qInfo() << cache.login();
 

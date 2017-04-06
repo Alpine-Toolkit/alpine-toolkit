@@ -50,7 +50,7 @@ markdown_to_html(const QString & markdown)
                                          CMARK_OPT_DEFAULT);
   QString html(html_c);
   free(html_c);
-  qInfo() << "markdown_to_html" << '\n' << markdown_fixed << '\n' << html;
+  // qInfo() << "markdown_to_html" << '\n' << markdown_fixed << '\n' << html;
   return html;
 }
 
@@ -99,6 +99,81 @@ QByteArray
 C2cDocument::to_json() const
 {
   return QJsonDocument(m_json_object).toJson(QJsonDocument::Compact);
+}
+
+QString
+C2cDocument::to_json_string() const
+{
+  return QJsonDocument(m_json_object).toJson(QJsonDocument::Indented);
+}
+
+QStringList
+C2cDocument::attributes() const
+{
+  return m_json_object.keys();
+}
+
+bool
+C2cDocument::has_attribute(const QString attribute_name) const
+{
+  return m_json_object.contains(attribute_name);
+}
+
+bool
+C2cDocument::get_bool(const QString attribute_name, bool default_value) const
+{
+  QJsonValue json_value = m_json_object[attribute_name];
+  if (json_value.isUndefined())
+    return default_value;
+  else
+    return json_value.toBool();
+}
+int
+C2cDocument::get_int(const QString attribute_name, int default_value) const
+{
+  QJsonValue json_value = m_json_object[attribute_name];
+  if (json_value.isUndefined())
+    return default_value;
+  else
+    return json_value.toInt();
+}
+
+double
+C2cDocument::get_double(const QString attribute_name, double default_value) const
+{
+  QJsonValue json_value = m_json_object[attribute_name];
+  if (json_value.isUndefined())
+    return default_value;
+  else
+    return json_value.toDouble();
+}
+QString
+C2cDocument::get_string(const QString attribute_name) const
+{
+  QJsonValue json_value = m_json_object[attribute_name];
+  if (json_value.isUndefined())
+    return QString();
+  else
+    return json_value.toString();
+}
+
+QStringList
+C2cDocument::get_string_list(const QString attribute_name) const
+{
+  QStringList string_list;
+  QJsonValue json_value = m_json_object[attribute_name];
+  if (!json_value.isUndefined()) {
+    const QJsonArray array = m_json_object[attribute_name].toArray();
+    for (const auto & ref : array)
+      string_list << ref.toString();
+  }
+  return string_list;
+}
+
+unsigned int
+C2cDocument::id() const
+{
+  return m_json_object[DOCUMENT_ID].toInt();
 }
 
 C2cDocument::Type
@@ -161,12 +236,6 @@ C2cDocument::type_string() const
   }
 }
 
-unsigned int
-C2cDocument::id() const
-{
-  return m_json_object[DOCUMENT_ID].toInt();
-}
-
 C2cDocument *
 C2cDocument::cast() const
 {
@@ -184,7 +253,7 @@ C2cDocument::cast() const
   case Type::Outing:
     return nullptr;
   case Type::Route:
-    return new C2cRoute(m_json_object);
+    return new C2cRoute(m_json_object); // Fixme: delete
   case Type::UserProfile:
     return nullptr;
   case Type::XReport:
@@ -194,6 +263,29 @@ C2cDocument::cast() const
     // Fixme:
     // default:
   }
+}
+
+QStringList C2cDocument::available_langs() const
+{
+  return get_string_list(AVAILABLE_LANGS);
+}
+
+bool
+C2cDocument::is_protected() const
+{
+  return m_json_object[PROTECTED].toBool();
+}
+
+QString
+C2cDocument::quality() const
+{
+  return m_json_object[QUALITY].toString();
+}
+
+unsigned int
+C2cDocument::version() const
+{
+  return m_json_object[VERSION].toInt();
 }
 
 #ifndef QT_NO_DEBUG_STREAM
@@ -210,6 +302,53 @@ QDebug operator<<(QDebug debug, const C2cDocument & document)
   return debug;
 }
 #endif
+
+/**************************************************************************************************/
+
+C2cImage::C2cImage()
+  : C2cDocument()
+{}
+
+C2cImage::C2cImage(const QJsonDocument & json_document)
+  : C2cDocument(json_document)
+{}
+
+C2cImage::C2cImage(const QJsonObject & json_object)
+  : C2cDocument(json_object)
+{}
+
+C2cImage::C2cImage(const C2cImage & other)
+  : C2cDocument(other)
+{}
+
+C2cImage::~C2cImage()
+{}
+
+QString
+C2cImage::author() const
+{
+  return get_string(AUTHOR);
+}
+
+QString
+C2cImage::filename() const
+{
+  return get_string(FILENAME);
+}
+
+QString
+C2cImage::title(const QString & language) const
+{
+  // Fixme: duplicate
+  const QJsonArray locales = json_object()[LOCALES].toArray();
+  for (const auto & ref : locales) {
+      const QJsonObject locale = ref.toObject();
+      if (locale[LANG].toString() == language)
+        return locale[TITLE].toString();
+  }
+
+  return QString();
+}
 
 /**************************************************************************************************/
 
@@ -235,13 +374,85 @@ C2cShortRoute::~C2cShortRoute()
 QStringList
 C2cShortRoute::activities() const
 {
-  QStringList activities;
-  const QJsonArray array = json_object()[ACTIVITIES].toArray();
-  for (const auto & ref : array) {
-    activities << ref.toString();
-  }
+  return get_string_list(ACTIVITIES);
+}
 
-  return activities;
+QString
+C2cShortRoute::aid_rating() const
+{
+  return get_string(AID_RATING);
+}
+
+// C2cShortRoute::areas() const
+
+unsigned int
+C2cShortRoute::elevation_max() const
+{
+  return get_int(ELEVATION_MAX);
+}
+
+QString
+C2cShortRoute::engagement_rating() const
+{
+  return get_string(ENGAGEMENT_RATING);
+}
+
+QString
+C2cShortRoute::equipment_rating() const
+{
+  return get_string(EQUIPMENT_RATING);
+}
+
+QString
+C2cShortRoute::exposition_rock_rating() const
+{
+  return get_string(EXPOSITION_ROCK_RATING);
+}
+
+// C2cShortRoute::geometry() const
+
+QString
+C2cShortRoute::global_rating() const
+{
+  return get_string(GLOBAL_RATING);
+}
+
+unsigned int
+C2cShortRoute::height_diff_difficulties() const
+{
+  return get_int(HEIGHT_DIFF_DIFFICULTIES);
+}
+
+unsigned int
+C2cShortRoute::height_diff_up() const
+{
+  return get_int(HEIGHT_DIFF_UP);
+}
+
+// C2cShortRoute::locales() const
+
+QStringList
+C2cShortRoute::orientations() const
+{
+  return get_string_list(ORIENTATIONS);
+}
+
+QString
+C2cShortRoute::risk_rating() const
+{
+  return get_string(RISK_RATING);
+}
+
+QString
+C2cShortRoute::rock_free_rating() const
+{
+  return get_string(ROCK_FREE_RATING);
+}
+
+QString
+C2cShortRoute::rock_required_rating() const
+{
+  return get_string(ROCK_REQUIRED_RATING);
 }
 
 QString
@@ -289,23 +500,130 @@ QDebug operator<<(QDebug debug, const C2cShortRoute & document)
 /**************************************************************************************************/
 
 C2cRoute::C2cRoute()
-  : C2cShortRoute()
+  : C2cShortRoute(),
+    m_images()
 {}
 
 C2cRoute::C2cRoute(const QJsonDocument & json_document)
-  : C2cShortRoute(json_document)
-{}
+  : C2cShortRoute(json_document),
+    m_images()
+{
+  init();
+}
 
 C2cRoute::C2cRoute(const QJsonObject & json_object)
-  : C2cShortRoute(json_object)
-{}
+  : C2cShortRoute(json_object),
+    m_images()
+{
+  init();
+}
 
 C2cRoute::C2cRoute(const C2cRoute & other)
-  : C2cShortRoute(other)
+  : C2cShortRoute(other),
+    m_images(other.m_images)
 {}
 
 C2cRoute::~C2cRoute()
 {}
+
+void
+C2cRoute::init()
+{
+  QJsonObject associations = json_object()[ASSOCIATIONS].toObject();
+  QJsonArray array = associations[IMAGES].toArray();
+  for (const auto & json_value : array) {
+    QJsonObject object = json_value.toObject();
+    m_images << new C2cImage(object); // Fixme: delete
+  }
+}
+
+QString
+C2cRoute::climbing_outdoor_type() const
+{
+  return get_string(CLIMBING_OUTDOOR_TYPE);
+}
+
+QStringList
+C2cRoute::configuration() const
+{
+  return get_string_list(CONFIGURATION);
+}
+
+unsigned int
+C2cRoute::difficulties_height() const
+{
+  return get_int(DIFFICULTIES_HEIGHT);
+}
+
+// durations() const
+
+unsigned int
+C2cRoute::elevation_min() const
+{
+  return get_int(ELEVATION_MIN);
+}
+
+QString
+C2cRoute::glacier_gear() const
+{
+  return get_string(GLACIER_GEAR);
+}
+
+unsigned int
+C2cRoute::height_diff_access() const
+{
+  return get_int(HEIGHT_DIFF_ACCESS);
+}
+
+unsigned int
+C2cRoute::height_diff_down() const
+{
+  return get_int(HEIGHT_DIFF_DOWN);
+}
+
+// C2cRoute::lift_access() const
+
+unsigned int
+C2cRoute::main_waypoint_id() const
+{
+  return get_int(MAIN_WAYPOINT_ID);
+}
+
+// maps() const
+
+QStringList
+C2cRoute::rock_types() const
+{
+  return get_string_list(ROCK_TYPES);
+}
+
+QStringList
+C2cRoute::route_types() const
+{
+  return get_string_list(ROUTE_TYPES);
+}
+
+QQmlListProperty<C2cImage>
+C2cRoute::image_list_property()
+{
+  return QQmlListProperty<C2cImage>(this, nullptr,
+                                    &C2cRoute::image_list_property_count,
+                                    &C2cRoute::image_list_property_at);
+}
+
+int
+C2cRoute::image_list_property_count(QQmlListProperty<C2cImage> * list)
+{
+  C2cRoute * route = qobject_cast<C2cRoute *>(list->object); // Fixme: func
+  return route->m_images.size();
+}
+
+C2cImage *
+C2cRoute::image_list_property_at(QQmlListProperty<C2cImage> * list, int index)
+{
+  C2cRoute * route = qobject_cast<C2cRoute *>(list->object);
+  return route->m_images[index];
+}
 
 /**************************************************************************************************/
 
@@ -362,22 +680,22 @@ C2cSearchResult::update(const QJsonDocument * json_document)
 }
 
 QQmlListProperty<C2cShortRoute>
-C2cSearchResult::routes_list_property()
+C2cSearchResult::route_list_property()
 {
   return QQmlListProperty<C2cShortRoute>(this, nullptr,
-                                         &C2cSearchResult::routes_list_property_count,
-                                         &C2cSearchResult::routes_list_property_at);
+                                         &C2cSearchResult::route_list_property_count,
+                                         &C2cSearchResult::route_list_property_at);
 }
 
 int
-C2cSearchResult::routes_list_property_count(QQmlListProperty<C2cShortRoute> * list)
+C2cSearchResult::route_list_property_count(QQmlListProperty<C2cShortRoute> * list)
 {
   C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
   return search_result->m_routes.size();
 }
 
 C2cShortRoute *
-C2cSearchResult::routes_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index)
+C2cSearchResult::route_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index)
 {
   C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
   C2cShortRoute & route = search_result->m_routes[index];

@@ -34,7 +34,9 @@
 /**************************************************************************************************/
 
 #include "camptocamp_login.h"
+#include "camptocamp_login_data.h"
 #include "camptocamp_constant.h"
+#include "camptocamp_search_settings.h"
 
 #include <QDateTime>
 #include <QJsonDocument>
@@ -45,152 +47,6 @@
 #include <QString>
 #include <QStringList>
 #include <QUrl>
-
-/**************************************************************************************************/
-
-class C2cLoginData
-{
-public:
-  C2cLoginData();
-  C2cLoginData(const C2cLoginData & other);
-  ~C2cLoginData();
-
-  C2cLoginData & operator=(const C2cLoginData & other);
-
-  void from_json(const QJsonDocument * json_document);
-  void reset();
-
-  bool is_valid() const { return m_id > 0; }
-  explicit operator bool() const { return is_valid(); }
-  bool is_expired() const { return QDateTime::currentDateTime() >= m_expire; }
-
-  const QString & language() const { return m_language; }
-  void set_language(const QString & language) { m_language = language; }
-
-  const QDateTime & expire() const { return m_expire; }
-  void set_expire(const QDateTime & expire) { m_expire = expire; }
-
-  unsigned int id() const { return m_id; }
-  void set_id(unsigned int id) { m_id = id; }
-
-  const QString & token() const { return m_token; }
-  void set_token(const QString & token) { m_token = token; }
-
-  const QString & forum_username() const { return m_forum_username; }
-  void set_forum_username(const QString & forum_username) { m_forum_username = forum_username; }
-
-  const QString & name() const { return m_name; }
-  void set_name(const QString & name) { m_name = name; }
-
-  const QString & roles() const { return m_roles; }
-  void set_roles(const QString & roles) { m_roles = roles; }
-
-  const QString & redirect_internal() const { return m_redirect_internal; }
-  void set_redirect_internal(const QString & redirect_internal) { m_redirect_internal = redirect_internal; }
-
-  const QString & username() const { return m_username; }
-  void set_username(const QString & username) { m_username = username; }
-
-private:
-  QString m_language;
-  QDateTime m_expire;
-  unsigned int m_id;
-  QString m_token;
-  QString m_forum_username;
-  QString m_name;
-  QString m_roles;
-  QString m_redirect_internal;
-  QString m_username;
-};
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const C2cLoginData & login_data);
-#endif
-
-/**************************************************************************************************/
-
-class C2cSearchSettings : public QObject
-{
-  // Q_GADGET
-  Q_OBJECT
-  Q_PROPERTY(QString language READ language WRITE set_language) // NOTIFY
-  Q_PROPERTY(unsigned int limit READ limit WRITE set_limit)
-  Q_PROPERTY(bool area READ area WRITE set_area)
-  Q_PROPERTY(bool article READ article WRITE set_article)
-  Q_PROPERTY(bool book READ book WRITE set_book)
-  Q_PROPERTY(bool image READ image WRITE set_image)
-  Q_PROPERTY(bool map READ map WRITE set_map)
-  Q_PROPERTY(bool outing READ outing WRITE set_outing)
-  Q_PROPERTY(bool route READ route WRITE set_route)
-  Q_PROPERTY(bool userprofile READ userprofile WRITE set_userprofile)
-  Q_PROPERTY(bool waypoint READ waypoint WRITE set_waypoint)
-  Q_PROPERTY(bool xreport READ xreport WRITE set_xreport)
-
-public:
-  C2cSearchSettings();
-  C2cSearchSettings(const C2cSearchSettings & other);
-  ~C2cSearchSettings();
-
-  C2cSearchSettings & operator=(const C2cSearchSettings & other);
-
-  // operator==
-
-  Q_INVOKABLE void reset();
-
-  const QString & language() const { return m_language; }
-  void set_language(const QString & language) { m_language = language; }
-
-  unsigned int limit() const { return m_limit; }
-  void set_limit(unsigned int limit) { m_limit = limit; }
-
-  bool area() const { return m_area; }
-  void set_area(bool area) { m_area = area; }
-
-  bool article() const { return m_article; }
-  void set_article(bool article) { m_article = article; }
-
-  bool book() const { return m_book; }
-  void set_book(bool book) { m_book = book; }
-
-  bool image() const { return m_image; }
-  void set_image(bool image) { m_image = image; }
-
-  bool map() const { return m_map; }
-  void set_map(bool map) { m_map = map; }
-
-  bool outing() const { return m_outing; }
-  void set_outing(bool outing) { m_outing = outing; }
-
-  bool route() const { return m_route; }
-  void set_route(bool route) { m_route = route; }
-
-  bool userprofile() const { return m_userprofile; }
-  void set_userprofile(bool userprofile) { m_userprofile = userprofile; }
-
-  bool waypoint() const { return m_waypoint; }
-  void set_waypoint(bool waypoint) { m_waypoint = waypoint; }
-
-  bool xreport() const { return m_xreport; }
-  void set_xreport(bool xreport) { m_xreport = xreport; }
-
-  QString type_letters() const;
-
-private:
-  QString m_language;
-  unsigned int m_limit;
-  bool m_area;
-  bool m_article;
-  bool m_book;
-  bool m_image;
-  bool m_map;
-  bool m_outing;
-  bool m_route;
-  bool m_userprofile;
-  bool m_waypoint;
-  bool m_xreport;
-};
-
-Q_DECLARE_METATYPE(C2cSearchSettings) // Variant
 
 /**************************************************************************************************/
 
@@ -210,6 +66,27 @@ public:
   void set_reply(C2cClient * client, QNetworkReply * network_reply);
 
   C2cClient * client() const { return m_client; }
+  QNetworkReply * network_reply() const { return m_network_reply; }
+
+private slots:
+  virtual void finished() = 0;
+  // Fixme: void error(Error error, const QString & error_string = QString());
+
+private:
+  QNetworkRequest m_request;
+  QPointer<QNetworkReply> m_network_reply;
+  QPointer<C2cClient> m_client;
+};
+
+/**************************************************************************************************/
+
+class C2cApiRequest : public C2cRequest
+{
+  Q_OBJECT
+
+public:
+  C2cApiRequest(const QNetworkRequest & request); // parent
+  ~C2cApiRequest();
 
   virtual void handle_reply(const QJsonDocument * json_data) = 0; // Fixme: const
   virtual void handle_error(const QJsonDocument * json_data) = 0;
@@ -222,11 +99,26 @@ private slots:
 private:
   QJsonDocument * reply_to_json() const;
   static bool check_json_response(const QJsonDocument * json_data);
+};
+
+/**************************************************************************************************/
+
+class C2cMediaRequest : public C2cRequest
+{
+  Q_OBJECT
+
+public:
+  C2cMediaRequest(const QNetworkRequest & request); // parent // const QString & media_url, const QString & media
+  ~C2cMediaRequest();
+
+  const QString & media() const { return m_media; }
+
+private slots:
+  void finished();
+  // Fixme: void error(Error error, const QString & error_string = QString());
 
 private:
-  QNetworkRequest m_request;
-  QPointer<QNetworkReply> m_network_reply;
-  QPointer<C2cClient> m_client;
+  QString m_media;
 };
 
 /**************************************************************************************************/
@@ -236,7 +128,9 @@ class C2cClient : public QObject
   Q_OBJECT
 
 public:
-  C2cClient(const QString & api_url = c2c::OFFICIAL_API_URL, int port = -1);
+  C2cClient(const QString & api_url = c2c::OFFICIAL_API_URL,
+            const QString & media_url = c2c::OFFICIAL_MEDIA_URL,
+            int port = -1);
 
   void login(const C2cLogin & login, bool remember = true, bool discourse = true);
   void update_login();
@@ -259,6 +153,8 @@ public:
   void post(const QJsonDocument * json_document);
   void update(const QJsonDocument * json_document, const QString & message = "");
 
+  void media(const QString & path);
+
 signals:
   void logged();
   void login_failed();
@@ -268,16 +164,20 @@ signals:
   void search_failed(const QJsonDocument * json_document);
   void received_document(const QJsonDocument * json_document);
   void get_document_failed(const QJsonDocument * json_document);
+  void received_media(const QString & media, const QByteArray data);
+  void get_media_failed(const QString & media);
 
 private:
-  QUrl make_url(const QString & url) const;
-  QUrl make_url(const QStringList & strings) const;
-  QNetworkRequest create_network_request(const QUrl & url, bool token = false) const;
-  QNetworkRequest create_network_request(const QStringList & strings, bool token = false) const;
-  void get(C2cRequest * request);
+  QUrl make_api_url(const QString & url) const;
+  QUrl make_api_url(const QStringList & strings) const;
+  QUrl make_media_url(const QString & media) const;
+  QNetworkRequest create_network_api_request(const QUrl & url, bool token = false) const;
+  QNetworkRequest create_network_api_request(const QStringList & strings, bool token = false) const;
+  QNetworkRequest create_network_media_request(const QString & media) const;
+  void get(C2cApiRequest * request);
   void get_document(const QString & document_type, unsigned int document_id);
   QUrl make_url_for_document(const QJsonDocument * json_document) const;
-  void post(C2cRequest * request, const QJsonDocument * json_document, bool check_login = true);
+  void post(C2cApiRequest * request, const QJsonDocument * json_document, bool check_login = true);
 
 public: // Fixme: wrong design
   void handle_login_reply(const QJsonDocument * json_data);
@@ -288,9 +188,12 @@ public: // Fixme: wrong design
   void handle_search_error(const QJsonDocument * json_data);
   void handle_document_reply(const QJsonDocument * json_data);
   void handle_document_error(const QJsonDocument * json_data);
+  void handle_media_reply(const QString & media, const QByteArray & data);
+  void handle_media_error(const QString & media);
 
 private:
   QString m_api_url;
+  QString m_media_url;
   int m_port;
   C2cLogin m_login;
   C2cLoginData m_login_data;

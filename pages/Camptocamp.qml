@@ -30,16 +30,17 @@ Pane {
     Connections {
         target: c2c_client
         onReceivedDocument: {
+            busy_indicator.running = false;
             console.info('Received document ' + document_id);
             // console.info('document ' + c2c_client.get_document(document_id))
             var properties = { 'route': c2c_client.get_document(document_id) };
             push_page('qrc:/pages/CamptocampRoute.qml', properties);
         }
         onReceivedSearch: {
+            busy_indicator.running = false;
             var routes = c2c_client.search_result.routes;
             route_model.clear();
-            var i;
-            for (i = 0; i < routes.length; i++) {
+            for (var i = 0; i < routes.length; i++) {
 		var route = routes[i];
 		var route_data = {
                     'id': route.id,
@@ -79,6 +80,12 @@ Pane {
                     }
                     onClicked: push_page('qrc:/pages/CamptocampLogin.qml')
 		}
+
+                BusyIndicator {
+                    id: busy_indicator
+                    height: login_icon.height
+                    running: false
+                }
             }
 
             RowLayout {
@@ -101,7 +108,9 @@ Pane {
                     }
                     onClicked: {
 			/* var search_settings = C2cSearchSettings() */
-			c2c_client.search(search_textfield.text, search_settings);
+			/* c2c_client.search(search_textfield.text, search_settings); */
+                        c2c_client.route(570170);
+                        busy_indicator.running = true;
                     }
 		}
 
@@ -139,7 +148,7 @@ Pane {
 		    color: 'black'
 		}
 
-		Text {
+		Label {
 		    width: parent.width
 		    text: 'Routes'
 		}
@@ -158,7 +167,7 @@ Pane {
                     contentItem: Column {
                         width: parent.width
 
-		        Text {
+		        Label {
 			    width: parent.width
 			    text: title // Fixme: highlight search and show language
 		        }
@@ -166,7 +175,7 @@ Pane {
                         Row {
                             width: parent.width
 
-                            Text {
+                            Label {
                                 padding: 3
                                 font.family: activities_font.name
                                 font.pointSize: 16
@@ -177,7 +186,7 @@ Pane {
                             // Repeater {
                             //     // model: ['rock_climbing']
                             //     model: activities
-                            //     Text {
+                            //     Label {
                             //         font.family: activities_font.name
                             //         font.pointSize: 16
                             //         text: C2cDefinition.activity_dict[modelData].glyph
@@ -190,6 +199,7 @@ Pane {
 
                     onClicked: {
                         console.info("clicked on", title, id);
+                        busy_indicator.running = true;
                         c2c_client.route(id);
                     }
                 }

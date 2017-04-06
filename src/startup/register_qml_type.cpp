@@ -68,6 +68,7 @@ register_qml_types()
   // qRegisterMetaType<C2cSearchSettings>("C2cSearchSettings");
 
   qmlRegisterUncreatableType<C2cDocument>(package, major, minor, "C2cDocument", QLatin1String("Cannot create C2cDocument"));
+  qmlRegisterUncreatableType<C2cImage>(package, major, minor, "C2cImage", QLatin1String("Cannot create C2cImage"));
   qmlRegisterUncreatableType<C2cRoute>(package, major, minor, "C2cRoute", QLatin1String("Cannot create C2cRoute"));
   qmlRegisterUncreatableType<C2cShortRoute>(package, major, minor, "C2cShortRoute", QLatin1String("Cannot create C2cShortRoute"));
   qmlRegisterUncreatableType<C2cSearchResult>(package, major, minor, "C2cSearchResult", QLatin1String("Cannot create C2cSearchResult"));
