@@ -3,6 +3,11 @@
 ####################################################################################################
 
 add_subdirectory(cmark)
+add_subdirectory(sqlite)
+add_subdirectory(proj4)
+add_subdirectory(geos)
+add_subdirectory(libiconv)
+add_subdirectory(spatialite)
 
 ####################################################################################################
 #

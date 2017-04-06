@@ -36,8 +36,9 @@ if(POLICY CMP0990)
 endif()
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/third-parties/cmake" ${CMAKE_MODULE_PATH})
 
 include(alpine_toolkit_functions)
 
@@ -127,7 +128,7 @@ if(NOT ANDROID)
     # Instruct CMake to run moc automatically when needed.
     set(CMAKE_AUTOMOC ON)
     # Instruct CMake to run rcc automatically when needed.
-    set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTORCC ON) # https://public.kitware.com/Bug/view.php?id=15074
 
     find_package(Qt5Core REQUIRED)
     find_package(Qt5Gui REQUIRED)

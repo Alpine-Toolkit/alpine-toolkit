@@ -1,0 +1,1 @@
+#cmakedefine LIBDIR @LIBDIR@
