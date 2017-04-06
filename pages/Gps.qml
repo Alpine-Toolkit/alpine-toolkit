@@ -182,7 +182,7 @@ Pane {
                            height: parent.height * signalStrength / 100
                            color: isInUse ? "#4caf50" : "#f44336" // green and red colors
                        }
-                       Text {
+                       Label {
                            anchors.horizontalCenter: parent.horizontalCenter
                            anchors.bottom: parent.bottom
                            text: satelliteIdentifier

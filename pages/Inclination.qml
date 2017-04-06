@@ -72,7 +72,7 @@ Pane {
        //         color: "#e5e5e5"
        //     }
 
-       //     tickmarkLabel: Text {
+       //     tickmarkLabel: Label {
        //         font.pixelSize: Math.max(6, outerRadius * 0.1)
        //         text: styleData.value
        //         color: styleData.value >= 80 ? "#e34c22" : "#e5e5e5"
