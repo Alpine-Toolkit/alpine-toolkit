@@ -59,7 +59,7 @@ set(alpine_toolkit_executable_files
   startup/test.cpp
   startup/user_directory.cpp
   )
-add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ../alpine-toolkit.qrc)
+add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ../ressources/alpine-toolkit.qrc)
 target_link_libraries(alpine-toolkit alpine_toolkit Qt5::Qml Qt5::Widgets Qt5::Sensors)
 
 ####################################################################################################

@@ -77,7 +77,7 @@ SOURCES += \
 # OTHER_FILES += \
 #   pages/*.qml
 
-RESOURCES += alpine-toolkit.qrc
+RESOURCES += ressources/alpine-toolkit.qrc
 
 TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
 # \ alpine-toolkit-en.ts
