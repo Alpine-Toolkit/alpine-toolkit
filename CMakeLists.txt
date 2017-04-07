@@ -172,7 +172,7 @@ if(NOT ANDROID)
   include_directories(third-parties/include)
 
   add_subdirectory(src)
-  add_subdirectory(test)
+  add_subdirectory(unit-tests)
   # add_subdirectory(imports)
 endif(NOT ANDROID)
 
