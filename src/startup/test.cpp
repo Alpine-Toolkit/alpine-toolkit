@@ -46,6 +46,7 @@ run_before_event_loop(const QDir & application_user_directory)
   QTextStream out(&output_file);
   out << "The magic number is: " << 49 << "\n";
 
+  /*
   QFile input_file("assets:/file1.txt");
   if (!input_file.open(QIODevice::ReadOnly | QIODevice::Text))
     qWarning() << "couldn't read to file";
@@ -53,6 +54,7 @@ run_before_event_loop(const QDir & application_user_directory)
     QByteArray line = input_file.readLine();
     qInfo() << line;
   }
+  */
 }
 
 /***************************************************************************************************
