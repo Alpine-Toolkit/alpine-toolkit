@@ -44,6 +44,7 @@
 // QC_BEGIN_NAMESPACE
 
 QDir create_user_application_directory();
+QString copy_file_from_asset(const QDir & destination, const QString & filename);
 void load_sqlite(const QDir & application_user_directory);
 void load_translation(QGuiApplication & application, QTranslator & translator);
 void register_qml_types();

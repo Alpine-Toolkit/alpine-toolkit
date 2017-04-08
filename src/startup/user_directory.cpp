@@ -60,6 +60,25 @@ create_user_application_directory()
   return application_user_directory;
 }
 
+QString
+copy_file_from_asset(const QDir & destination, const QString & filename)
+{
+  QString relative_source_path(QLatin1String("assets:/data/") + filename);
+  QFileInfo file_info(relative_source_path);
+  QString source_path = file_info.absoluteFilePath();
+  if (!file_info.exists())
+    qCritical() << "File" << filename << "not found in asset";
+  QString destination_path = destination.filePath(filename);
+  bool copy_success = QFile::copy(source_path, destination_path);
+  if (copy_success) {
+    qInfo() << "Copy" << source_path << "to" << destination_path;
+    return destination_path;
+  } else {
+    qCritical() << "Failed to copy" << source_path << "to" << destination_path;
+    return QString();
+  }
+}
+
 /***************************************************************************************************
  *
  * End
