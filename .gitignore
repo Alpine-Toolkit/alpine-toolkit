@@ -8,11 +8,10 @@ du.log
 #
 ####################################################################################################
 #
-translations/alpine-toolkit.fr_FR.qm
+ressources/translations/alpine-toolkit.fr_FR.qm
 #
 ####################################################################################################
 #
-Makefile
 alpine-toolkit.pro.user
 android-cmake-build/
 build
@@ -20,24 +19,24 @@ build-*/
 cmake-build
 compile_commands.json
 qmake-build
-third-parties/cmark/cmark.git/
 #
 ####################################################################################################
 #
-test/camptocamp/login.h
+unit-tests/camptocamp/login.h
 #
 ####################################################################################################
 #
+# third-parties/include/
+# third-parties/proj4
 third-parties/archives/
+third-parties/cmark/cmark.git/
 third-parties/geos/Android.mk
 third-parties/geos/geos-3.6.1/
 third-parties/geos/geos-sources
-# third-parties/include/
 third-parties/libiconv/Android.mk
 third-parties/libiconv/dist.cmake
 third-parties/libiconv/libiconv-1.13.1/
 third-parties/libiconv/libiconv-sources
-# third-parties/proj4
 third-parties/spatialite/libspatialite-4.4.0-RC1/
 third-parties/spatialite/spatialite-sources
 third-parties/sqlite/Android.mk
@@ -47,11 +46,11 @@ third-parties/sqlite/sqlite-amalgamation-3180000/
 ####################################################################################################
 #
 #android/assets/data/
+#cmake/modules/
 #doc/
 #fonts/Roboto-Medium.ttf
 #fonts/Roboto-Regular.ttf
 #icons/camptocamp/c2c-activities.zip
-#icons/camptocamp/c2c-activities/
 #icons/camptocamp/fonts-from-c2c/
 #icons/copy-all-idea.sh
 #icons/material-design-icons
@@ -65,10 +64,12 @@ third-parties/sqlite/sqlite-amalgamation-3180000/
 #qml-test/
 #read-rrd.py
 #script/
+#
+####################################################################################################
+#
 android/src/org/alpine_toolkit/AlpineToolkitActivity.java-basic
 class-def.txt
-cmake/modules/
-js/trash/
+ressources/js/trash/
 sonia.json
 spec-c2c.txt
 src/bleaudb/tmp/
