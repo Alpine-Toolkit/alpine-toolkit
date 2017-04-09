@@ -12,7 +12,7 @@ TEMPLATE = lib
 
 CONFIG += plugin
 CONFIG += c++11
-CONFIG += debug
+# CONFIG += debug
 
 QT -= gui
 QT += core-private sql-private
@@ -34,6 +34,7 @@ LIBS += $$PWD/../android-cmake-build/third-parties/sqlite/libsqlite.so
 }
 
 # CONFIG(release, debug|release):DEFINES *= NDEBUG
+# See sqlite CMakelist.txt
 DEFINES += SQLITE_OMIT_COMPLETE SQLITE_ENABLE_FTS3 SQLITE_ENABLE_FTS3_PARENTHESIS SQLITE_ENABLE_RTREE
 linux:!android {
 DEFINES += HAVE_POSIX_FALLOCATE=1
@@ -42,11 +43,13 @@ DEFINES += QT_NO_CAST_TO_ASCII QT_NO_CAST_FROM_ASCII
 
 OTHER_FILES += sqlite.json
 
-####################################################################################################
+android {
+DESTDIR = $$PWD/../plugins/sqldrivers
+# qsqlite-at.path = $$PWD/plugins-foo/sqldrivers
+# INSTALLS += qsqlite-at
+}
+linux:!android {
+# qsqlite-at.path += $$[QT_INSTALL_PLUGINS]/sqldrivers
+# INSTALLS += qsqlite-at
+}
 
-# Android Deployement
-
-# android-build/libs/armeabi-v7a/libplugins_sqldrivers_libqsqlite.so
-# /home/opt/Qt/5.9/android_armv7/plugins/sqldrivers/libqsqlite.so
-
-# see ANDROID_DEPLOYMENT_DEPENDENCIES

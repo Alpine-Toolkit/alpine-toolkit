@@ -201,15 +201,12 @@ void QSQLiteATResultPrivate::initColumns(bool emptyResultset)
     int nCols = sqlite3_column_count(stmt);
     if (nCols <= 0)
         return;
-    // qInfo() << "initColumns" << nCols;
 
     q->init(nCols);
 
     for (int i = 0; i < nCols; ++i) {
-        const void * pname = sqlite3_column_name16(stmt, i);
-        // qInfo() << "name" << pname;
         QString colName = QString(reinterpret_cast<const QChar *>(
-                    pname)
+                    sqlite3_column_name16(stmt, i))
                     ).remove(QLatin1Char('"'));
 
         // must use typeName for resolving the type to match QSqliteDriver::record
@@ -391,7 +388,6 @@ bool QSQLiteATResult::prepare(const QString &query)
 
     const void *pzTail = NULL;
 
-    qInfo() << "prepare" << query;
 #if (SQLITE_VERSION_NUMBER >= 3003011)
     int res = sqlite3_prepare16_v2(d->drv_d_func()->access, query.constData(), (query.size() + 1) * sizeof(QChar),
                                    &d->stmt, &pzTail);
@@ -568,7 +564,7 @@ QSQLiteATDriver::QSQLiteATDriver(QObject * parent)
 QSQLiteATDriver::QSQLiteATDriver(sqlite3 *connection, QObject *parent)
     : QSqlDriver(*new QSQLiteATDriverPrivate, parent)
 {
-    qInfo() << "Load SQLite AT Plugin"; // fabrice
+    qInfo() << "Load SQLite AT Plugin";
     Q_D(QSQLiteATDriver);
     d->access = connection;
     setOpen(true);
@@ -649,13 +645,7 @@ bool QSQLiteATDriver::open(const QString & db, const QString &, const QString &,
 
     if (sqlite3_open_v2(db.toUtf8().constData(), &d->access, openMode, NULL) == SQLITE_OK) {
         sqlite3_busy_timeout(d->access, timeOut);
-        sqlite3_enable_load_extension(d->access, 1); // Fabrice
-        // char *error_message;
-        // int rc = sqlite3_load_extension(d->access, "mod_spatialite", NULL, &error_message);
-        // if (rc == SQLITE_OK)
-        //   qInfo() << "sqlite3_load_extension loaded";
-        // else
-        //   qInfo() << "sqlite3_load_extension error" << rc << error_message;
+        sqlite3_enable_load_extension(d->access, 1);
         setOpen(true);
         setOpenError(false);
         return true;

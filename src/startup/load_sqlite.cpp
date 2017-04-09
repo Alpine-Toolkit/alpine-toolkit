@@ -45,6 +45,7 @@ void
 load_sqlite(const QDir & application_user_directory)
 {
   // Fixme: use database api ?
+  // Asset is a read-only virtual file system
   QString sqlite_path = copy_file_from_asset(application_user_directory, QLatin1String("ffcam-refuges.sqlite"));
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
   db.setDatabaseName(sqlite_path);
