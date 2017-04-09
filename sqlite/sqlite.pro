@@ -44,7 +44,7 @@ DEFINES += QT_NO_CAST_TO_ASCII QT_NO_CAST_FROM_ASCII
 OTHER_FILES += sqlite.json
 
 android {
-DESTDIR = $$PWD/../plugins/sqldrivers
+DESTDIR = $$OUT_PWD/../plugins/sqldrivers
 # qsqlite-at.path = $$PWD/plugins-foo/sqldrivers
 # INSTALLS += qsqlite-at
 }

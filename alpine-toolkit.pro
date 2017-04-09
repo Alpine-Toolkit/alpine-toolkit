@@ -108,7 +108,7 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
     # $$PWD/../third-parties/openssl-1.0.2h/libssl.so
     # $$PWD/android-cmake-build/third-parties/libiconv/libiconv.so \
 
-    ANDROID_EXTRA_PLUGINS += $$PWD/plugins
+    ANDROID_EXTRA_PLUGINS += $$OUT_PWD/plugins
 }
 
 ####################################################################################################
