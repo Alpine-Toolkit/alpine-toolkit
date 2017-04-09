@@ -81,7 +81,7 @@ main(int argc, char *argv[])
   if (engine.rootObjects().isEmpty())
     return EXIT_FAILURE;
 
-  // run_before_event_loop(application_user_directory);
+  run_before_event_loop(application_user_directory);
 
   return application.exec();
 }

@@ -42,6 +42,8 @@ ADD_DEFINITIONS(
   # -DENABLE_LIBXML2=1
   # -DENABLE_LWGEOM=1
   -DSQLITE_OMIT_BUILTIN_TEST=1
+
+  -DLOADABLE_EXTENSION=1
   )
 
 # ENABLE_GCP
@@ -300,7 +302,9 @@ add_library(spatialite
   SHARED
   ${SPATIALITE_SOURCES}
   )
-target_link_libraries(spatialite qtcarto_proj4 geos) # iconv proj geos libljson-c liblwgeom libxml2
+# missing function crc32 : z
+target_link_libraries(spatialite sqlite iconv qtcarto_proj4 geos z)
+# libljson-c liblwgeom libxml2
 
 ####################################################################################################
 #

@@ -87,7 +87,7 @@ add_library(sqlite
   SHARED
   ${SQLITE_SOURCE_PATH}/sqlite3.c
   )
-target_link_libraries(sqlite dl) # log
+target_link_libraries(sqlite dl log)
 
 ####################################################################################################
 #

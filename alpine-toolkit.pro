@@ -100,8 +100,15 @@ LIBS += -L$$PWD/android-cmake-build/third-parties/cmark -lcmark
 contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
     ANDROID_EXTRA_LIBS = \
     $$PWD/android-cmake-build/third-parties/cmark/libcmark.so \
+    $$PWD/android-cmake-build/third-parties/sqlite/libsqlite.so \
+    $$PWD/android-cmake-build/third-parties/libiconv/libiconv.so \
+    $$PWD/android-cmake-build/third-parties/geos/libgeos.so \
+    $$PWD/android-cmake-build/third-parties/proj4/libqtcarto_proj4.so \
+    $$PWD/android-cmake-build/third-parties/spatialite/libspatialite.so
     # $$PWD/../third-parties/openssl-1.0.2h/libcrypto.so \
     # $$PWD/../third-parties/openssl-1.0.2h/libssl.so
+
+    ANDROID_EXTRA_PLUGINS += $$PWD/plugins
 }
 
 ####################################################################################################
