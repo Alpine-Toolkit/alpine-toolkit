@@ -40,6 +40,8 @@
 #include "refuge/refuge.h"
 #include "startup.h"
 
+#include "service/client.h"
+
 #ifdef ANDROID
 #include "android_activity/android_activity.h"
 #endif
@@ -95,6 +97,10 @@ set_context_properties(QQmlContext * context)
 
   // RefugeModel * refuge_model = new RefugeModel(*refuges);
   // context->setContextProperty("refuge_model", refuge_model);
+
+  // Create Service Client
+  ServiceClient * service_client = new ServiceClient();
+  context->setContextProperty(QLatin1String("service"), service_client);
 }
 
 /***************************************************************************************************

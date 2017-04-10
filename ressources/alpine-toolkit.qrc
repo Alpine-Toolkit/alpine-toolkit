@@ -60,15 +60,18 @@
     <file>js/camptocamp_search_filter.js</file>
     <file>js/compass_rose.js</file>
 
+    <file>pages/main.qml</file>
+
     <file>pages/Altimeter.qml</file>
     <file>pages/Bleau.qml</file>
+    <file>pages/Camera.qml</file>
     <file>pages/Camptocamp.qml</file>
     <file>pages/CamptocampLogin.qml</file>
     <file>pages/CamptocampRoute.qml</file>
     <file>pages/CamptocampSearchFilter.qml</file>
-    <file>pages/Camera.qml</file>
     <file>pages/Chart.qml</file>
     <file>pages/Checklist.qml</file>
+    <file>pages/DataLogger.qml</file>
     <file>pages/Emergency.qml</file>
     <file>pages/Ephemeride.qml</file>
     <file>pages/Gps.qml</file>
@@ -80,7 +83,6 @@
     <file>pages/RefugeDirectory.qml</file>
     <file>pages/Torch.qml</file>
     <file>pages/UiTest.qml</file>
-    <file>pages/main.qml</file>
 
     <file>qtquickcontrols2.conf</file>
 

@@ -25,6 +25,8 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import org.qtproject.qt5.android.bindings.QtActivity;
+
 /**************************************************************************************************/
 
 // class LampSignalRunnable implements Runnable {
@@ -36,7 +38,7 @@ import android.view.WindowManager;
 
 /**************************************************************************************************/
 
-public class AlpineToolkitActivity extends org.qtproject.qt5.android.bindings.QtActivity
+public class AlpineToolkitActivity extends QtActivity
 {
   private static AlpineToolkitActivity m_instance;
 

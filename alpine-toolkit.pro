@@ -15,7 +15,34 @@ QT += sensors
 QT += positioning
 QT += sql
 QT += svg widgets gui # to support SVG
+QT += remoteobjects
 # QT += charts
+
+####################################################################################################
+
+INCLUDEPATH += $$PWD
+INCLUDEPATH += $$OUT_PWD
+
+####################################################################################################
+#
+# Service Replica
+#
+
+# INCLUDEPATH += service
+
+HEADERS += \
+  service/definitions.h \
+  service/client.h
+
+SOURCES += \
+  service/client.cpp
+
+REPC_REPLICA += service/service.rep
+
+####################################################################################################
+#
+# Sources
+#
 
 INCLUDEPATH += src
 
@@ -69,18 +96,24 @@ SOURCES += \
   src/startup/user_directory.cpp \
   src/sql_model/SqlQueryModel.cpp
 
-lupdate_only{
+####################################################################################################
+#
+# Android
+#
+
+android {
+DEFINES += ANDROID
+
+QT += androidextras
+
+HEADERS += \
+  src/android_activity/android_activity.h
+
 SOURCES += \
-  pages/*.qml
+  src/android_activity/android_activity.cpp
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 }
-
-# OTHER_FILES += \
-#   pages/*.qml
-
-RESOURCES += ressources/alpine-toolkit.qrc
-
-TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
-# \ alpine-toolkit-en.ts
 
 ####################################################################################################
 #
@@ -92,6 +125,7 @@ INCLUDEPATH += $$PWD/third-parties/include # local/cmark/include
 linux:!android {
 LIBS += -L$$PWD/third-parties/local/cmark/lib -lcmark
 }
+
 android {
 LIBS += -L$$PWD/android-cmake-build/third-parties/cmark -lcmark
 # LIBS += -lcrypto -lssl
@@ -113,23 +147,30 @@ contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
 
 ####################################################################################################
 #
-# Android
+# Resources
 #
 
-android {
-DEFINES += ANDROID
+RESOURCES += ressources/alpine-toolkit.qrc
 
-QT += androidextras
+####################################################################################################
+#
+# Translations
+#
 
-HEADERS += \
-  src/android_activity/android_activity.h
-
+lupdate_only{
 SOURCES += \
-  src/android_activity/android_activity.cpp
+  pages/*.qml
+}
 
-# OTHER_FILES += \
-#   android/AndroidManifest.xml
+TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
+# \ alpine-toolkit-en.ts
 
+####################################################################################################
+#
+# Dist
+#
+
+# Fixme: Complete
 DISTFILES += \
     android/AndroidManifest.xml \
     android/gradle/wrapper/gradle-wrapper.jar \
@@ -137,13 +178,6 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
-
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-}
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+    android/gradlew.bat \
+    android/src/org/alpine_toolkit/AlpineToolkitActivity.java \
+    android/src/org/alpine_toolkit/AlpineToolkitService.java

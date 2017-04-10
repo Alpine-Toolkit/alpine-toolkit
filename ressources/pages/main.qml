@@ -167,6 +167,12 @@ ApplicationWindow {
                     lock_orientation: false
                 }
                 ListElement {
+                    title: qsTr('Data Logger')
+                    icon: ''
+                    source: 'qrc:/pages/DataLogger.qml'
+                    lock_orientation: false
+                }
+                ListElement {
                     title: qsTr('Ephemeride')
                     icon: ''
                     source: 'qrc:/pages/Ephemeride.qml'
