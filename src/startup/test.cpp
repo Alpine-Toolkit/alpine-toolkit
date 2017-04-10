@@ -62,6 +62,7 @@ run_before_event_loop(const QDir & application_user_directory)
   }
   */
 
+  /*
   qInfo() << "SQLite Plugin Test";
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE-AT");
   // QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -108,6 +109,7 @@ run_before_event_loop(const QDir & application_user_directory)
     // QVariant(QByteArray,
     qInfo() << query.value(0).toString() << query.value(1);
   }
+  */
 }
 
 /***************************************************************************************************
