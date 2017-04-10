@@ -140,6 +140,7 @@ if(NOT ANDROID)
     find_package(Qt5Sensors REQUIRED)
     find_package(Qt5Sql REQUIRED)
     find_package(Qt5Test REQUIRED)
+    find_package(Qt5RemoteObjects REQUIRED)
 
     # only available for Android build
     # find_package(Qt5AndroidExtras REQUIRED)
@@ -171,6 +172,7 @@ if(NOT ANDROID)
   include_directories(src)
   include_directories(third-parties/include)
 
+  add_subdirectory(service)
   add_subdirectory(src)
   add_subdirectory(unit-tests)
   # add_subdirectory(imports)

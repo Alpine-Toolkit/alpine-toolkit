@@ -66,7 +66,9 @@ signals:
   void serviceStateChanged(bool started);
 
 private:
+#ifdef ANDROID
   static void call_service_static_method(const char * method);
+#endif
   void connect();
   void init_connections();
   void set_service_state(bool state);

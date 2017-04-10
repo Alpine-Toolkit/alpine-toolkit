@@ -5,9 +5,7 @@
 # Include directories
 #
 
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-####################################################################################################
+include_directories(${CMAKE_SOURCE_DIR})
 
 ####################################################################################################
 #
@@ -58,9 +56,11 @@ set(alpine_toolkit_executable_files
   startup/set_context_properties.cpp
   startup/test.cpp
   startup/user_directory.cpp
+  ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
+qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
 add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ../ressources/alpine-toolkit.qrc)
-target_link_libraries(alpine-toolkit alpine_toolkit Qt5::Qml Qt5::Widgets Qt5::Sensors)
+target_link_libraries(alpine-toolkit alpine_toolkit Qt5::Qml Qt5::Widgets Qt5::Sensors Qt5::RemoteObjects)
 
 ####################################################################################################
 #

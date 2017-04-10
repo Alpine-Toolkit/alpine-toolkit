@@ -28,10 +28,13 @@
 
 #include "service/client.h"
 
+#include <QtDebug>
+
+#ifdef ANDROID
 #include <QAndroidJniEnvironment>
 #include <QAndroidJniObject>
 #include <QtAndroid>
-#include <QtDebug>
+#endif
 
 #include "service/definitions.h"
 
@@ -53,6 +56,7 @@ ServiceClient::ServiceClient(QObject * parent)
 ServiceClient::~ServiceClient()
 {}
 
+#ifdef ANDROID
 void
 ServiceClient::call_service_static_method(const char * method)
 {
@@ -61,6 +65,7 @@ ServiceClient::call_service_static_method(const char * method)
                                             "(Landroid/content/Context;)V",
                                             QtAndroid::androidActivity().object());
 }
+#endif
 
 void
 ServiceClient::start_service()
@@ -69,7 +74,9 @@ ServiceClient::start_service()
     return;
 
   qInfo() << "Start Alpine Toolkit Service";
+#ifdef ANDROID
   call_service_static_method("start_service");
+#endif
   qInfo() << "Connect to Alpine Toolkit Service";
   connect();
   // init_connections();
@@ -91,7 +98,9 @@ ServiceClient::stop_service()
     return;
 
   qInfo() << "Stop Alpine Toolkit Service";
+#ifdef ANDROID
   call_service_static_method("stop_service");
+#endif
   // Fixme: disconnect
   m_replica.clear();
   set_service_state(false);
