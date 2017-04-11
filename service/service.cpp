@@ -38,7 +38,7 @@ Service::Service(QObject * parent)
   : ServiceSource(parent),
     m_timer(this)
 {
-  qInfo() << "Alpine Toolkit Service Source is started";
+  qInfo() << "Alpine Toolkit Service is started";
 
   connect(&m_timer, &QTimer::timeout, this, &Service::timer_slot);
   m_timer.setInterval(1000);
@@ -46,7 +46,7 @@ Service::Service(QObject * parent)
 
 Service::~Service()
 {
-  qInfo() << "Service::~Service";
+  qInfo() << "Alpine Toolkit Service: ~Service";
 }
 
 void
@@ -73,7 +73,7 @@ Service::stop_timer()
 void
 Service::timer_slot()
 {
-  qInfo() << "Service::timer_slot";
+  qInfo() << "Alpine Toolkit Service: timer slot";
 }
 
 // QC_END_NAMESPACE

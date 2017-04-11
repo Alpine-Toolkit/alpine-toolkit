@@ -50,12 +50,9 @@ public:
   ~Service();
 
   // Slots
-  void ping();
-  void start_timer();
-  void stop_timer();
-
-signals:
-  void pong();
+  void ping() override;
+  void start_timer() override;
+  void stop_timer() override;
 
 private slots:
   void timer_slot();

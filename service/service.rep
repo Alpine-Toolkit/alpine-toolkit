@@ -1,6 +1,6 @@
 class Service {
     SLOT(void ping());
+    SIGNAL(pong());
     SLOT(void start_timer());
     SLOT(void stop_timer());
-    SIGNAL(pong());
 }
