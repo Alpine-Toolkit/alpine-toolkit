@@ -162,7 +162,7 @@ SOURCES += \
   pages/*.qml
 }
 
-TRANSLATIONS = translations/alpine-toolkit.fr_FR.ts
+TRANSLATIONS = ressources/translations/alpine-toolkit.fr_FR.ts
 # \ alpine-toolkit-en.ts
 
 ####################################################################################################
