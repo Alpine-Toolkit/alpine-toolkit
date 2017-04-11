@@ -102,6 +102,8 @@ SOURCES += \
 #
 
 android {
+message("Android arch is $$ANDROID_TARGET_ARCH") # x86 armeabi-v7a
+
 DEFINES += ANDROID
 
 QT += androidextras
@@ -127,22 +129,22 @@ LIBS += -L$$PWD/third-parties/local/cmark/lib -lcmark
 }
 
 android {
-LIBS += -L$$PWD/android-cmake-build/third-parties/cmark -lcmark
+ANDROID_EXTRA_PLUGINS += $$OUT_PWD/plugins
+
+LIBS += -L$$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/cmark -lcmark
 # LIBS += -lcrypto -lssl
+
+ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/cmark/libcmark.so
+ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/sqlite/libsqlite.so
+contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
+    ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/geos/libgeos.so
+    ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/proj4/libqtcarto_proj4.so
+    ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/spatialite/libspatialite.so
 }
 
-contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
-    ANDROID_EXTRA_LIBS = \
-    $$PWD/android-cmake-build/third-parties/cmark/libcmark.so \
-    $$PWD/android-cmake-build/third-parties/sqlite/libsqlite.so \
-    $$PWD/android-cmake-build/third-parties/geos/libgeos.so \
-    $$PWD/android-cmake-build/third-parties/proj4/libqtcarto_proj4.so \
-    $$PWD/android-cmake-build/third-parties/spatialite/libspatialite.so
-    # $$PWD/../third-parties/openssl-1.0.2h/libcrypto.so \
-    # $$PWD/../third-parties/openssl-1.0.2h/libssl.so
-    # $$PWD/android-cmake-build/third-parties/libiconv/libiconv.so \
-
-    ANDROID_EXTRA_PLUGINS += $$OUT_PWD/plugins
+# $$PWD/../third-parties/openssl-1.0.2h/libcrypto.so \
+# $$PWD/../third-parties/openssl-1.0.2h/libssl.so
+# $$PWD/build-cmake-android/third-parties/libiconv/libiconv.so \
 }
 
 ####################################################################################################

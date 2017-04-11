@@ -28,9 +28,10 @@ linux:!android {
 # It crashes if we compile SQLite source in the plugin.
 LIBS += -lsqlite3
 }
+
 android {
 # SOURCES += $$PWD/sqlite3.c
-LIBS += $$PWD/../android-cmake-build/third-parties/sqlite/libsqlite.so
+LIBS += $$PWD/../build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/sqlite/libsqlite.so
 }
 
 # CONFIG(release, debug|release):DEFINES *= NDEBUG
