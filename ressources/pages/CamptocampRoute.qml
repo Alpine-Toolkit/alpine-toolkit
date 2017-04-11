@@ -4,7 +4,7 @@ import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
-import QtWebView 1.1
+// import QtWebView 1.1
 
 import "qrc:/js/camptocamp_definitions.js" as C2cDefinitions
 
@@ -37,7 +37,7 @@ Pane {
     Component.onCompleted: {
         /* console.info("camptocamp route pane\n" + route.to_json_string()); */
         compass_rose.set_state(route.orientations);
-        web_view.loadHtml(route.description("fr"), '');
+        // web_view.loadHtml(route.description("fr"), '');
         /* route.images.forEach(function (image) { */
         /*     console.info("Image", image.filename); */
         /* }); */
@@ -249,12 +249,12 @@ Pane {
             }
         }
 
-        Pane {
-            WebView {
-                id: web_view
-                anchors.fill: parent
-            }
-        }
+        // Pane {
+        //     WebView {
+        //         id: web_view
+        //         anchors.fill: parent
+        //     }
+        // }
 
         Pane {
             // Images
