@@ -1,0 +1,560 @@
+--- qsql_sqlite.h.orig	2017-04-09 19:29:32.780589887 +0200
++++ qsql_sqlite_at_p.h	2017-04-08 02:11:33.658210247 +0200
+@@ -37,8 +37,8 @@
+ **
+ ****************************************************************************/
+ 
+-#ifndef QSQL_SQLITE_H
+-#define QSQL_SQLITE_H
++#ifndef QSQL_SQLITE_AT_H
++#define QSQL_SQLITE_AT_H
+ 
+ //
+ //  W A R N I N G
+@@ -64,17 +64,17 @@
+ QT_BEGIN_NAMESPACE
+ 
+ class QSqlResult;
+-class QSQLiteDriverPrivate;
++class QSQLiteATDriverPrivate;
+ 
+-class Q_EXPORT_SQLDRIVER_SQLITE QSQLiteDriver : public QSqlDriver
++class Q_EXPORT_SQLDRIVER_SQLITE QSQLiteATDriver : public QSqlDriver
+ {
+-    Q_DECLARE_PRIVATE(QSQLiteDriver)
++    Q_DECLARE_PRIVATE(QSQLiteATDriver)
+     Q_OBJECT
+-    friend class QSQLiteResultPrivate;
++    friend class QSQLiteATResultPrivate;
+ public:
+-    explicit QSQLiteDriver(QObject *parent = 0);
+-    explicit QSQLiteDriver(sqlite3 *connection, QObject *parent = 0);
+-    ~QSQLiteDriver();
++    explicit QSQLiteATDriver(QObject *parent = 0);
++    explicit QSQLiteATDriver(sqlite3 *connection, QObject *parent = 0);
++    ~QSQLiteATDriver();
+     bool hasFeature(DriverFeature f) const Q_DECL_OVERRIDE;
+     bool open(const QString & db,
+                    const QString & user,
+@@ -103,4 +103,4 @@
+ 
+ QT_END_NAMESPACE
+ 
+-#endif // QSQL_SQLITE_H
++#endif // QSQL_SQLITE_AT_H
+--- qsql_sqlite.cpp.orig	2017-04-09 19:29:15.854619463 +0200
++++ qsql_sqlite_at.cpp	2017-04-09 19:28:37.914685758 +0200
+@@ -37,7 +37,7 @@
+ **
+ ****************************************************************************/
+ 
+-#include "qsql_sqlite_p.h"
++#include "qsql_sqlite_at_p.h"
+ 
+ #include <qcoreapplication.h>
+ #include <qdatetime.h>
+@@ -108,16 +108,16 @@
+                      type, QString::number(errorCode));
+ }
+ 
+-class QSQLiteResultPrivate;
++class QSQLiteATResultPrivate;
+ 
+-class QSQLiteResult : public QSqlCachedResult
++class QSQLiteATResult : public QSqlCachedResult
+ {
+-    Q_DECLARE_PRIVATE(QSQLiteResult)
+-    friend class QSQLiteDriver;
++    Q_DECLARE_PRIVATE(QSQLiteATResult)
++    friend class QSQLiteATDriver;
+ 
+ public:
+-    explicit QSQLiteResult(const QSQLiteDriver* db);
+-    ~QSQLiteResult();
++    explicit QSQLiteATResult(const QSQLiteATDriver* db);
++    ~QSQLiteATResult();
+     QVariant handle() const Q_DECL_OVERRIDE;
+ 
+ protected:
+@@ -133,25 +133,25 @@
+     void virtual_hook(int id, void *data) Q_DECL_OVERRIDE;
+ };
+ 
+-class QSQLiteDriverPrivate : public QSqlDriverPrivate
++class QSQLiteATDriverPrivate : public QSqlDriverPrivate
+ {
+-    Q_DECLARE_PUBLIC(QSQLiteDriver)
++    Q_DECLARE_PUBLIC(QSQLiteATDriver)
+ 
+ public:
+-    inline QSQLiteDriverPrivate() : QSqlDriverPrivate(), access(0) { dbmsType = QSqlDriver::SQLite; }
++    inline QSQLiteATDriverPrivate() : QSqlDriverPrivate(), access(0) { dbmsType = QSqlDriver::SQLite; }
+     sqlite3 *access;
+-    QList <QSQLiteResult *> results;
++    QList <QSQLiteATResult *> results;
+     QStringList notificationid;
+ };
+ 
+ 
+-class QSQLiteResultPrivate: public QSqlCachedResultPrivate
++class QSQLiteATResultPrivate: public QSqlCachedResultPrivate
+ {
+-    Q_DECLARE_PUBLIC(QSQLiteResult)
++    Q_DECLARE_PUBLIC(QSQLiteATResult)
+ 
+ public:
+-    Q_DECLARE_SQLDRIVER_PRIVATE(QSQLiteDriver)
+-    QSQLiteResultPrivate(QSQLiteResult *q, const QSQLiteDriver *drv);
++    Q_DECLARE_SQLDRIVER_PRIVATE(QSQLiteATDriver)
++    QSQLiteATResultPrivate(QSQLiteATResult *q, const QSQLiteATDriver *drv);
+     void cleanup();
+     bool fetchNext(QSqlCachedResult::ValueCache &values, int idx, bool initialFetch);
+     // initializes the recordInfo and the cache
+@@ -166,7 +166,7 @@
+     QVector<QVariant> firstRow;
+ };
+ 
+-QSQLiteResultPrivate::QSQLiteResultPrivate(QSQLiteResult *q, const QSQLiteDriver *drv)
++QSQLiteATResultPrivate::QSQLiteATResultPrivate(QSQLiteATResult *q, const QSQLiteATDriver *drv)
+     : QSqlCachedResultPrivate(q, drv),
+       stmt(0),
+       skippedStatus(false),
+@@ -174,9 +174,9 @@
+ {
+ }
+ 
+-void QSQLiteResultPrivate::cleanup()
++void QSQLiteATResultPrivate::cleanup()
+ {
+-    Q_Q(QSQLiteResult);
++    Q_Q(QSQLiteATResult);
+     finalize();
+     rInf.clear();
+     skippedStatus = false;
+@@ -186,7 +186,7 @@
+     q->cleanup();
+ }
+ 
+-void QSQLiteResultPrivate::finalize()
++void QSQLiteATResultPrivate::finalize()
+ {
+     if (!stmt)
+         return;
+@@ -195,9 +195,9 @@
+     stmt = 0;
+ }
+ 
+-void QSQLiteResultPrivate::initColumns(bool emptyResultset)
++void QSQLiteATResultPrivate::initColumns(bool emptyResultset)
+ {
+-    Q_Q(QSQLiteResult);
++    Q_Q(QSQLiteATResult);
+     int nCols = sqlite3_column_count(stmt);
+     if (nCols <= 0)
+         return;
+@@ -247,9 +247,9 @@
+     }
+ }
+ 
+-bool QSQLiteResultPrivate::fetchNext(QSqlCachedResult::ValueCache &values, int idx, bool initialFetch)
++bool QSQLiteATResultPrivate::fetchNext(QSqlCachedResult::ValueCache &values, int idx, bool initialFetch)
+ {
+-    Q_Q(QSQLiteResult);
++    Q_Q(QSQLiteATResult);
+     int res;
+     int i;
+ 
+@@ -269,8 +269,8 @@
+     }
+ 
+     if (!stmt) {
+-        q->setLastError(QSqlError(QCoreApplication::translate("QSQLiteResult", "Unable to fetch row"),
+-                                  QCoreApplication::translate("QSQLiteResult", "No query"), QSqlError::ConnectionError));
++        q->setLastError(QSqlError(QCoreApplication::translate("QSQLiteATResult", "Unable to fetch row"),
++                                  QCoreApplication::translate("QSQLiteATResult", "No query"), QSqlError::ConnectionError));
+         q->setAt(QSql::AfterLastRow);
+         return false;
+     }
+@@ -332,7 +332,7 @@
+         // SQLITE_ERROR is a generic error code and we must call sqlite3_reset()
+         // to get the specific error message.
+         res = sqlite3_reset(stmt);
+-        q->setLastError(qMakeError(drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++        q->setLastError(qMakeError(drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+                         "Unable to fetch row"), QSqlError::ConnectionError, res));
+         q->setAt(QSql::AfterLastRow);
+         return false;
+@@ -340,7 +340,7 @@
+     case SQLITE_BUSY:
+     default:
+         // something wrong, don't get col info, but still return false
+-        q->setLastError(qMakeError(drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++        q->setLastError(qMakeError(drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+                         "Unable to fetch row"), QSqlError::ConnectionError, res));
+         sqlite3_reset(stmt);
+         q->setAt(QSql::AfterLastRow);
+@@ -349,36 +349,36 @@
+     return false;
+ }
+ 
+-QSQLiteResult::QSQLiteResult(const QSQLiteDriver* db)
+-    : QSqlCachedResult(*new QSQLiteResultPrivate(this, db))
++QSQLiteATResult::QSQLiteATResult(const QSQLiteATDriver* db)
++    : QSqlCachedResult(*new QSQLiteATResultPrivate(this, db))
+ {
+-    Q_D(QSQLiteResult);
+-    const_cast<QSQLiteDriverPrivate*>(d->drv_d_func())->results.append(this);
++    Q_D(QSQLiteATResult);
++    const_cast<QSQLiteATDriverPrivate*>(d->drv_d_func())->results.append(this);
+ }
+ 
+-QSQLiteResult::~QSQLiteResult()
++QSQLiteATResult::~QSQLiteATResult()
+ {
+-    Q_D(QSQLiteResult);
++    Q_D(QSQLiteATResult);
+     if (d->drv_d_func())
+-        const_cast<QSQLiteDriverPrivate*>(d->drv_d_func())->results.removeOne(this);
++        const_cast<QSQLiteATDriverPrivate*>(d->drv_d_func())->results.removeOne(this);
+     d->cleanup();
+ }
+ 
+-void QSQLiteResult::virtual_hook(int id, void *data)
++void QSQLiteATResult::virtual_hook(int id, void *data)
+ {
+     QSqlCachedResult::virtual_hook(id, data);
+ }
+ 
+-bool QSQLiteResult::reset(const QString &query)
++bool QSQLiteATResult::reset(const QString &query)
+ {
+     if (!prepare(query))
+         return false;
+     return exec();
+ }
+ 
+-bool QSQLiteResult::prepare(const QString &query)
++bool QSQLiteATResult::prepare(const QString &query)
+ {
+-    Q_D(QSQLiteResult);
++    Q_D(QSQLiteATResult);
+     if (!driver() || !driver()->isOpen() || driver()->isOpenError())
+         return false;
+ 
+@@ -397,12 +397,12 @@
+ #endif
+ 
+     if (res != SQLITE_OK) {
+-        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+                      "Unable to execute statement"), QSqlError::StatementError, res));
+         d->finalize();
+         return false;
+     } else if (pzTail && !QString(reinterpret_cast<const QChar *>(pzTail)).trimmed().isEmpty()) {
+-        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+             "Unable to execute multiple statements at a time"), QSqlError::StatementError, SQLITE_MISUSE));
+         d->finalize();
+         return false;
+@@ -410,9 +410,9 @@
+     return true;
+ }
+ 
+-bool QSQLiteResult::exec()
++bool QSQLiteATResult::exec()
+ {
+-    Q_D(QSQLiteResult);
++    Q_D(QSQLiteATResult);
+     const QVector<QVariant> values = boundValues();
+ 
+     d->skippedStatus = false;
+@@ -423,7 +423,7 @@
+ 
+     int res = sqlite3_reset(d->stmt);
+     if (res != SQLITE_OK) {
+-        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++        setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+                      "Unable to reset statement"), QSqlError::StatementError, res));
+         d->finalize();
+         return false;
+@@ -483,14 +483,14 @@
+                 }
+             }
+             if (res != SQLITE_OK) {
+-                setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteResult",
++                setLastError(qMakeError(d->drv_d_func()->access, QCoreApplication::translate("QSQLiteATResult",
+                              "Unable to bind parameters"), QSqlError::StatementError, res));
+                 d->finalize();
+                 return false;
+             }
+         }
+     } else {
+-        setLastError(QSqlError(QCoreApplication::translate("QSQLiteResult",
++        setLastError(QSqlError(QCoreApplication::translate("QSQLiteATResult",
+                         "Parameter count mismatch"), QString(), QSqlError::StatementError));
+         return false;
+     }
+@@ -505,26 +505,26 @@
+     return true;
+ }
+ 
+-bool QSQLiteResult::gotoNext(QSqlCachedResult::ValueCache& row, int idx)
++bool QSQLiteATResult::gotoNext(QSqlCachedResult::ValueCache& row, int idx)
+ {
+-    Q_D(QSQLiteResult);
++    Q_D(QSQLiteATResult);
+     return d->fetchNext(row, idx, false);
+ }
+ 
+-int QSQLiteResult::size()
++int QSQLiteATResult::size()
+ {
+     return -1;
+ }
+ 
+-int QSQLiteResult::numRowsAffected()
++int QSQLiteATResult::numRowsAffected()
+ {
+-    Q_D(const QSQLiteResult);
++    Q_D(const QSQLiteATResult);
+     return sqlite3_changes(d->drv_d_func()->access);
+ }
+ 
+-QVariant QSQLiteResult::lastInsertId() const
++QVariant QSQLiteATResult::lastInsertId() const
+ {
+-    Q_D(const QSQLiteResult);
++    Q_D(const QSQLiteATResult);
+     if (isActive()) {
+         qint64 id = sqlite3_last_insert_rowid(d->drv_d_func()->access);
+         if (id)
+@@ -533,50 +533,51 @@
+     return QVariant();
+ }
+ 
+-QSqlRecord QSQLiteResult::record() const
++QSqlRecord QSQLiteATResult::record() const
+ {
+-    Q_D(const QSQLiteResult);
++    Q_D(const QSQLiteATResult);
+     if (!isActive() || !isSelect())
+         return QSqlRecord();
+     return d->rInf;
+ }
+ 
+-void QSQLiteResult::detachFromResultSet()
++void QSQLiteATResult::detachFromResultSet()
+ {
+-    Q_D(QSQLiteResult);
++    Q_D(QSQLiteATResult);
+     if (d->stmt)
+         sqlite3_reset(d->stmt);
+ }
+ 
+-QVariant QSQLiteResult::handle() const
++QVariant QSQLiteATResult::handle() const
+ {
+-    Q_D(const QSQLiteResult);
++    Q_D(const QSQLiteATResult);
+     return QVariant::fromValue(d->stmt);
+ }
+ 
+ /////////////////////////////////////////////////////////
+ 
+-QSQLiteDriver::QSQLiteDriver(QObject * parent)
+-    : QSqlDriver(*new QSQLiteDriverPrivate, parent)
++QSQLiteATDriver::QSQLiteATDriver(QObject * parent)
++    : QSqlDriver(*new QSQLiteATDriverPrivate, parent)
+ {
+ }
+ 
+-QSQLiteDriver::QSQLiteDriver(sqlite3 *connection, QObject *parent)
+-    : QSqlDriver(*new QSQLiteDriverPrivate, parent)
++QSQLiteATDriver::QSQLiteATDriver(sqlite3 *connection, QObject *parent)
++    : QSqlDriver(*new QSQLiteATDriverPrivate, parent)
+ {
+-    Q_D(QSQLiteDriver);
++    qInfo() << "Load SQLite AT Plugin";
++    Q_D(QSQLiteATDriver);
+     d->access = connection;
+     setOpen(true);
+     setOpenError(false);
+ }
+ 
+ 
+-QSQLiteDriver::~QSQLiteDriver()
++QSQLiteATDriver::~QSQLiteATDriver()
+ {
+     close();
+ }
+ 
+-bool QSQLiteDriver::hasFeature(DriverFeature f) const
++bool QSQLiteATDriver::hasFeature(DriverFeature f) const
+ {
+     switch (f) {
+     case BLOB:
+@@ -604,9 +605,9 @@
+    SQLite dbs have no user name, passwords, hosts or ports.
+    just file names.
+ */
+-bool QSQLiteDriver::open(const QString & db, const QString &, const QString &, const QString &, int, const QString &conOpts)
++bool QSQLiteATDriver::open(const QString & db, const QString &, const QString &, const QString &, int, const QString &conOpts)
+ {
+-    Q_D(QSQLiteDriver);
++    Q_D(QSQLiteATDriver);
+     if (isOpen())
+         close();
+ 
+@@ -644,6 +645,7 @@
+ 
+     if (sqlite3_open_v2(db.toUtf8().constData(), &d->access, openMode, NULL) == SQLITE_OK) {
+         sqlite3_busy_timeout(d->access, timeOut);
++        sqlite3_enable_load_extension(d->access, 1);
+         setOpen(true);
+         setOpenError(false);
+         return true;
+@@ -660,11 +662,11 @@
+     }
+ }
+ 
+-void QSQLiteDriver::close()
++void QSQLiteATDriver::close()
+ {
+-    Q_D(QSQLiteDriver);
++    Q_D(QSQLiteATDriver);
+     if (isOpen()) {
+-        for (QSQLiteResult *result : qAsConst(d->results))
++        for (QSQLiteATResult *result : qAsConst(d->results))
+             result->d_func()->finalize();
+ 
+         if (d->access && (d->notificationid.count() > 0)) {
+@@ -680,12 +682,12 @@
+     }
+ }
+ 
+-QSqlResult *QSQLiteDriver::createResult() const
++QSqlResult *QSQLiteATDriver::createResult() const
+ {
+-    return new QSQLiteResult(this);
++    return new QSQLiteATResult(this);
+ }
+ 
+-bool QSQLiteDriver::beginTransaction()
++bool QSQLiteATDriver::beginTransaction()
+ {
+     if (!isOpen() || isOpenError())
+         return false;
+@@ -700,7 +702,7 @@
+     return true;
+ }
+ 
+-bool QSQLiteDriver::commitTransaction()
++bool QSQLiteATDriver::commitTransaction()
+ {
+     if (!isOpen() || isOpenError())
+         return false;
+@@ -715,7 +717,7 @@
+     return true;
+ }
+ 
+-bool QSQLiteDriver::rollbackTransaction()
++bool QSQLiteATDriver::rollbackTransaction()
+ {
+     if (!isOpen() || isOpenError())
+         return false;
+@@ -730,7 +732,7 @@
+     return true;
+ }
+ 
+-QStringList QSQLiteDriver::tables(QSql::TableType type) const
++QStringList QSQLiteATDriver::tables(QSql::TableType type) const
+ {
+     QStringList res;
+     if (!isOpen())
+@@ -792,7 +794,7 @@
+     return ind;
+ }
+ 
+-QSqlIndex QSQLiteDriver::primaryIndex(const QString &tblname) const
++QSqlIndex QSQLiteATDriver::primaryIndex(const QString &tblname) const
+ {
+     if (!isOpen())
+         return QSqlIndex();
+@@ -806,7 +808,7 @@
+     return qGetTableInfo(q, table, true);
+ }
+ 
+-QSqlRecord QSQLiteDriver::record(const QString &tbl) const
++QSqlRecord QSQLiteATDriver::record(const QString &tbl) const
+ {
+     if (!isOpen())
+         return QSqlRecord();
+@@ -820,13 +822,13 @@
+     return qGetTableInfo(q, table);
+ }
+ 
+-QVariant QSQLiteDriver::handle() const
++QVariant QSQLiteATDriver::handle() const
+ {
+-    Q_D(const QSQLiteDriver);
++    Q_D(const QSQLiteATDriver);
+     return QVariant::fromValue(d->access);
+ }
+ 
+-QString QSQLiteDriver::escapeIdentifier(const QString &identifier, IdentifierType type) const
++QString QSQLiteATDriver::escapeIdentifier(const QString &identifier, IdentifierType type) const
+ {
+     Q_UNUSED(type);
+     return _q_escapeIdentifier(identifier);
+@@ -837,16 +839,16 @@
+ {
+     Q_UNUSED(aoperation);
+     Q_UNUSED(adbname);
+-    QSQLiteDriver *driver = static_cast<QSQLiteDriver *>(qobj);
++    QSQLiteATDriver *driver = static_cast<QSQLiteATDriver *>(qobj);
+     if (driver) {
+         QMetaObject::invokeMethod(driver, "handleNotification", Qt::QueuedConnection,
+                                   Q_ARG(QString, QString::fromUtf8(atablename)), Q_ARG(qint64, arowid));
+     }
+ }
+ 
+-bool QSQLiteDriver::subscribeToNotification(const QString &name)
++bool QSQLiteATDriver::subscribeToNotification(const QString &name)
+ {
+-    Q_D(QSQLiteDriver);
++    Q_D(QSQLiteATDriver);
+     if (!isOpen()) {
+         qWarning("Database not open.");
+         return false;
+@@ -865,9 +867,9 @@
+     return true;
+ }
+ 
+-bool QSQLiteDriver::unsubscribeFromNotification(const QString &name)
++bool QSQLiteATDriver::unsubscribeFromNotification(const QString &name)
+ {
+-    Q_D(QSQLiteDriver);
++    Q_D(QSQLiteATDriver);
+     if (!isOpen()) {
+         qWarning("Database not open.");
+         return false;
+@@ -885,15 +887,15 @@
+     return true;
+ }
+ 
+-QStringList QSQLiteDriver::subscribedToNotifications() const
++QStringList QSQLiteATDriver::subscribedToNotifications() const
+ {
+-    Q_D(const QSQLiteDriver);
++    Q_D(const QSQLiteATDriver);
+     return d->notificationid;
+ }
+ 
+-void QSQLiteDriver::handleNotification(const QString &tableName, qint64 rowid)
++void QSQLiteATDriver::handleNotification(const QString &tableName, qint64 rowid)
+ {
+-    Q_D(const QSQLiteDriver);
++    Q_D(const QSQLiteATDriver);
+     if (d->notificationid.contains(tableName)) {
+         emit notification(tableName);
+         emit notification(tableName, QSqlDriver::UnknownSource, QVariant(rowid));
