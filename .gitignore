@@ -13,12 +13,11 @@ ressources/translations/alpine-toolkit.fr_FR.qm
 ####################################################################################################
 #
 alpine-toolkit.pro.user
-android-cmake-build/
-build
+sqlite/sqlite.pro.user
+build/
 build-*/
-cmake-build
 compile_commands.json
-qmake-build
+sqlite/Qt5.9-gcc_64
 #
 ####################################################################################################
 #
@@ -77,3 +76,4 @@ src/camptocamp/foo
 src/camptocamp/tmp.cpp
 src/camptocamp/trash/
 v6-screenshots/
+sqlite/qt-pro-files/
