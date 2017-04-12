@@ -28,45 +28,39 @@
 
 /**************************************************************************************************/
 
-#ifndef __SERVICE_H__
-#define __SERVICE_H__
+#ifndef __SERVICE_APPLICATION_H__
+#define __SERVICE_APPLICATION_H__
 
 /**************************************************************************************************/
 
-#include <QTimer>
+#include <QCoreApplication>
+#include <QRemoteObjectHost>
 
-#include "rep_service_source.h"
+#include "service.h"
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
 
-class Service : public ServiceSource
+class ServiceApplication : public QCoreApplication
 {
   Q_OBJECT
 
 public:
-  Service(QObject * parent = nullptr);
-  ~Service();
+  static Service * service;
 
-public slots:
-  void ping() override;
-  void start_timer() override;
-  void stop_timer() override;
-  void stop_service();
-
-private slots:
-  void timer_slot();
+public:
+  ServiceApplication(int & argc, char ** argv);
 
 private:
-  QTimer m_timer;
+  QRemoteObjectHost host_node;
 };
 
 // QC_END_NAMESPACE
 
 /**************************************************************************************************/
 
-#endif /* __SERVICE_H__ */
+#endif /* __SERVICE_APPLICATION_H__ */
 
 /***************************************************************************************************
  *

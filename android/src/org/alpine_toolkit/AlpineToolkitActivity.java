@@ -11,8 +11,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -228,7 +226,7 @@ public class AlpineToolkitActivity extends QtActivity
     Log.i("AlpineToolkitActivity", "Issue call: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_CALL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
-    startActivity(call_intent);
+    startActivity(call_intent); // CALL_PHONE Permission
   }
 
   public void issue_dial(String phone_number) {

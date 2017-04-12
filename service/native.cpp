@@ -1,5 +1,3 @@
-// -*- mode: c++ -*-
-
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -28,45 +26,56 @@
 
 /**************************************************************************************************/
 
-#ifndef __SERVICE_H__
-#define __SERVICE_H__
+#include <jni.h>
+
+#include <QtAndroidExtras>
+#include <QMetaObject>
+#include <QtDebug>
+
+#include "service_application.h"
 
 /**************************************************************************************************/
 
-#include <QTimer>
+// Define our native static functions
+// these are the functions that Java part will call directly from Android UI thread
 
-#include "rep_service_source.h"
-
-/**************************************************************************************************/
-
-// QC_BEGIN_NAMESPACE
-
-class Service : public ServiceSource
+static void
+stop_service(JNIEnv * /*env*/, jobject /*obj*/)
 {
-  Q_OBJECT
+  qInfo() << "invoke stop_service";
+  QMetaObject::invokeMethod(ServiceApplication::service,
+                            "stop_service",
+                            Qt::QueuedConnection
+                            );
+}
 
-public:
-  Service(QObject * parent = nullptr);
-  ~Service();
+/**************************************************************************************************/
 
-public slots:
-  void ping() override;
-  void start_timer() override;
-  void stop_timer() override;
-  void stop_service();
-
-private slots:
-  void timer_slot();
-
-private:
-  QTimer m_timer;
+// Create a vector with all our JNINativeMethod(s)
+static JNINativeMethod methods[] = {
+    {"stop_service", "()V", (void *) stop_service},
 };
 
-// QC_END_NAMESPACE
+// this method is called automatically by Java after the .so file is loaded
+JNIEXPORT jint
+JNI_OnLoad(JavaVM * vm, void * /*reserved*/)
+{
+    JNIEnv * env;
+    // get the JNIEnv pointer.
+    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK)
+      return JNI_ERR;
 
-/**************************************************************************************************/
+    // search for Java class which declares the native methods
+    jclass javaClass = env->FindClass("org/alpine_toolkit/NativeFunctions");
+    if (!javaClass)
+      return JNI_ERR;
 
-#endif /* __SERVICE_H__ */
+    // register our native methods
+    if (env->RegisterNatives(javaClass, methods, sizeof(methods) / sizeof(methods[0])) < 0)
+      return JNI_ERR;
+
+    return JNI_VERSION_1_6;
+}
 
 /***************************************************************************************************
  *

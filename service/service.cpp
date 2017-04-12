@@ -76,6 +76,12 @@ Service::timer_slot()
   qInfo() << "Alpine Toolkit Service: timer slot";
 }
 
+void
+Service::stop_service()
+{
+  qInfo() << "Alpine Toolkit Service: stop_service";
+}
+
 // QC_END_NAMESPACE
 
 /***************************************************************************************************

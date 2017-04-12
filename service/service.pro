@@ -14,6 +14,10 @@ QT += sensors
 # QT += positioning
 # QT += sql
 
+android {
+QT += androidextras
+}
+
 ####################################################################################################
 #
 # Sources
@@ -26,8 +30,14 @@ REPC_SOURCE += service.rep
 
 HEADERS += \
   definitions.h \
-  service.h
+  service.h \
+  service_application.h
 
 SOURCES += \
   main.cpp \
-  service.cpp
+  service.cpp \
+  service_application.cpp \
+
+android {
+SOURCES += native.cpp
+}

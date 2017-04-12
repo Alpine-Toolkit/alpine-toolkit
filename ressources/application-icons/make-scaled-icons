@@ -11,19 +11,25 @@ icon_path=../../../ressources/application-icons
 
 pushd drawable-hdpi
 s=256
+rm *.png
 ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
 ln -sf ${icon_path}/icon-${s}.png logo.png
 popd
 
 pushd drawable-mdpi
 s=128
+rm *.png
 ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
 ln -sf ${icon_path}/icon-${s}.png logo.png
 popd
 
 pushd drawable-ldpi
 s=64
+rm *.png
 ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
 ln -sf ${icon_path}/icon-${s}.png logo.png
 popd
 

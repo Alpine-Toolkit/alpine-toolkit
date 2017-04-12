@@ -26,11 +26,7 @@
 
 /**************************************************************************************************/
 
-#include <QCoreApplication>
-#include <QtDebug>
-
-#include "definitions.h"
-#include "service.h"
+#include "service_application.h"
 
 /**************************************************************************************************/
 
@@ -39,14 +35,7 @@
 int
 main(int argc, char * argv[])
 {
-  qInfo() << "Start Apline Tookit Service";
-
-  QCoreApplication application(argc, argv);
-
-  QRemoteObjectHost host_node(QUrl(QStringLiteral(SERVICE_URL)));
-  Service service;
-  host_node.enableRemoting(&service);
-
+  ServiceApplication application(argc, argv);
   return application.exec();
 }
 

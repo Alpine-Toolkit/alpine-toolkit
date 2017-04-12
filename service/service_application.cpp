@@ -1,5 +1,3 @@
-// -*- mode: c++ -*-
-
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -28,45 +26,27 @@
 
 /**************************************************************************************************/
 
-#ifndef __SERVICE_H__
-#define __SERVICE_H__
+#include "service_application.h"
+
+#include "definitions.h"
+
+#include <QtDebug>
 
 /**************************************************************************************************/
 
-#include <QTimer>
+Service * ServiceApplication::service = nullptr;
 
-#include "rep_service_source.h"
-
-/**************************************************************************************************/
-
-// QC_BEGIN_NAMESPACE
-
-class Service : public ServiceSource
+ServiceApplication::ServiceApplication(int & argc, char ** argv)
+  : QCoreApplication(argc, argv),
+    host_node(QUrl(QStringLiteral(SERVICE_URL)))
 {
-  Q_OBJECT
+  qInfo() << "Start Apline Tookit Service";
 
-public:
-  Service(QObject * parent = nullptr);
-  ~Service();
-
-public slots:
-  void ping() override;
-  void start_timer() override;
-  void stop_timer() override;
-  void stop_service();
-
-private slots:
-  void timer_slot();
-
-private:
-  QTimer m_timer;
-};
+  service = new Service();
+  host_node.enableRemoting(service);
+}
 
 // QC_END_NAMESPACE
-
-/**************************************************************************************************/
-
-#endif /* __SERVICE_H__ */
 
 /***************************************************************************************************
  *
