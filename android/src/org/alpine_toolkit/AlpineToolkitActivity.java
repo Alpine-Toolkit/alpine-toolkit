@@ -1,3 +1,29 @@
+/***************************************************************************************************
+**
+** $QTCARTO_BEGIN_LICENSE:GPL3$
+**
+** Copyright (C) 2017 Fabrice Salvaire
+** Contact: http://www.fabrice-salvaire.fr
+**
+** This file is part of the QtCarto library.
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+** $QTCARTO_END_LICENSE$
+**
+***************************************************************************************************/
+
 /**************************************************************************************************/
 
 package org.alpine_toolkit;
@@ -38,6 +64,8 @@ import org.qtproject.qt5.android.bindings.QtActivity;
 
 public class AlpineToolkitActivity extends QtActivity
 {
+  private static final String LOG_TAG = "AlpineToolkitActivity";
+
   private static AlpineToolkitActivity m_instance;
 
   private PowerManager.WakeLock m_wave_lock = null;
@@ -46,15 +74,19 @@ public class AlpineToolkitActivity extends QtActivity
   private Camera.Parameters m_camera_parameters = null;
   private boolean m_torch_enabled = false;
 
+  /**********************************************/
+
   public AlpineToolkitActivity()
   {
     m_instance = this;
   }
 
+  /**********************************************/
+
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
-    Log.i("AlpineToolkitActivity", ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
+    Log.i(LOG_TAG, ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
 
     // Fixme: hardcoded
     set_status_bar_background_color(Color.parseColor("#3949ab"));
@@ -72,7 +104,10 @@ public class AlpineToolkitActivity extends QtActivity
     super.onDestroy();
   }
 
-  public void get_display_metrics() {
+  /**********************************************/
+
+  public void get_display_metrics()
+  {
     DisplayMetrics metrics = new DisplayMetrics();
     getWindowManager().getDefaultDisplay().getMetrics(metrics);
     // I/AlpineToolkitActivity(19529): height width px: 1920 1080
@@ -82,14 +117,17 @@ public class AlpineToolkitActivity extends QtActivity
     // I/AlpineToolkitActivity(19529): scaled density: 3.0    // A scaling factor for fonts displayed on the display
     // 423 dpi / 160 dpi = 2.64
     // 480 / 160 = 3
-    Log.i("AlpineToolkitActivity", "height width px: " + metrics.heightPixels + " " + metrics.widthPixels);
-    Log.i("AlpineToolkitActivity", "x y DPI: " + metrics.xdpi + " " + metrics.ydpi);
-    Log.i("AlpineToolkitActivity", "density: " + metrics.density);
-    Log.i("AlpineToolkitActivity", "density DPI: " + metrics.densityDpi);
-    Log.i("AlpineToolkitActivity", "scaled density: " + metrics.scaledDensity);
+    Log.i(LOG_TAG, "height width px: " + metrics.heightPixels + " " + metrics.widthPixels);
+    Log.i(LOG_TAG, "x y DPI: " + metrics.xdpi + " " + metrics.ydpi);
+    Log.i(LOG_TAG, "density: " + metrics.density);
+    Log.i(LOG_TAG, "density DPI: " + metrics.densityDpi);
+    Log.i(LOG_TAG, "scaled density: " + metrics.scaledDensity);
   }
 
-  public void set_status_bar_background_color(int color) {
+  /**********************************************/
+
+  public void set_status_bar_background_color(int color)
+  {
     if (Build.VERSION.SDK_INT >= 21) {
       Window window = getWindow();
 
@@ -114,6 +152,8 @@ public class AlpineToolkitActivity extends QtActivity
     }
   }
 
+  /**********************************************/
+
   // SCREEN_ORIENTATION_BEHIND
   // SCREEN_ORIENTATION_FULL_SENSOR
   // SCREEN_ORIENTATION_FULL_USER
@@ -133,37 +173,44 @@ public class AlpineToolkitActivity extends QtActivity
 
   public void lock_orientation()
   {
-    Log.i("AlpineToolkitActivity", "lock_orientation");
+    Log.i(LOG_TAG, "lock_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
   }
 
-  public void unlock_orientation() {
-    Log.i("AlpineToolkitActivity", "unlock_orientation");
+  public void unlock_orientation()
+  {
+    Log.i(LOG_TAG, "unlock_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
   }
 
-  public void request_sensor_orientation() {
-    Log.i("AlpineToolkitActivity", "request_sensor_orientation");
+  public void request_sensor_orientation()
+  {
+    Log.i(LOG_TAG, "request_sensor_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
   }
 
-  public void request_portrait_orientation() {
-    Log.i("AlpineToolkitActivity", "request_portrait_orientation");
+  public void request_portrait_orientation()
+  {
+    Log.i(LOG_TAG, "request_portrait_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
   }
 
-  public void request_landscape_orientation() {
-    Log.i("AlpineToolkitActivity", "request_landscape_orientation");
+  public void request_landscape_orientation()
+  {
+    Log.i(LOG_TAG, "request_landscape_orientation");
     this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
   }
 
-  public void get_device_id() {
+  /**********************************************/
+
+  public void get_device_id()
+  {
     // cf. http://developer.samsung.com/technical-doc/view.do?v=T000000103
 
-    // I/AlpineToolkitActivity(11407): IMEI: 353414073315588
-    // I/AlpineToolkitActivity(11407): IMSI: 208015304147532
-    // I/AlpineToolkitActivity(11407): Serial No: a9e91f81
-    // I/AlpineToolkitActivity(11407): Andoid ID: 48a43365dba7923e
+    // I/AlpineToolkitActivity(11407): IMEI: 3534140...
+    // I/AlpineToolkitActivity(11407): IMSI: 2080153...
+    // I/AlpineToolkitActivity(11407): Serial No: a9e...
+    // I/AlpineToolkitActivity(11407): Andoid ID: 48a433...
 
     String imei_string = null;
     String imsi_string = null;
@@ -183,7 +230,7 @@ public class AlpineToolkitActivity extends QtActivity
      */
     imei_string = telephonyManager.getDeviceId();
     if (imei_string != null)
-      Log.i("AlpineToolkitActivity", "IMEI: " + imei_string);
+      Log.i(LOG_TAG, "IMEI: " + imei_string);
 
     /*
      * getSubscriberId() function Returns the unique subscriber ID.
@@ -191,7 +238,7 @@ public class AlpineToolkitActivity extends QtActivity
      */
     imsi_string = telephonyManager.getSubscriberId();
     if (imsi_string != null)
-    Log.i("AlpineToolkitActivity", "IMSI: " + imsi_string);
+    Log.i(LOG_TAG, "IMSI: " + imsi_string);
 
     /*
      * Returns the serial number as unique number
@@ -207,7 +254,7 @@ public class AlpineToolkitActivity extends QtActivity
     catch (Exception ignored) {
     }
     if (serial_number != null)
-      Log.i("AlpineToolkitActivity", "Serial No: " + serial_number);
+      Log.i(LOG_TAG, "Serial No: " + serial_number);
 
     /*
      * Returns the unique DeviceID
@@ -217,26 +264,33 @@ public class AlpineToolkitActivity extends QtActivity
     // Also, there has been at least one widely-observed bug in a popular handset from a major manufacturer, where every instance has the same ANDROID_ID.
     android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     if (android_id != null)
-      Log.i("AlpineToolkitActivity", "Andoid ID: " + android_id);
+      Log.i(LOG_TAG, "Andoid ID: " + android_id);
   }
 
-  public void issue_call(String phone_number) {
+  /**********************************************/
+
+  public void issue_call(String phone_number)
+  {
     // Note: this Intent cannot be used to call emergency numbers.
     // Applications can dial emergency numbers using ACTION_DIAL, however.
-    Log.i("AlpineToolkitActivity", "Issue call: " + phone_number);
+    Log.i(LOG_TAG, "Issue call: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_CALL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
     startActivity(call_intent); // CALL_PHONE Permission
   }
 
-  public void issue_dial(String phone_number) {
-    Log.i("AlpineToolkitActivity", "Issue dial: " + phone_number);
+  public void issue_dial(String phone_number)
+  {
+    Log.i(LOG_TAG, "Issue dial: " + phone_number);
     Intent call_intent = new Intent(Intent.ACTION_DIAL);
     call_intent.setData(Uri.parse("tel:" + phone_number));
     startActivity(call_intent);
   }
 
-  public void acquire_full_wake_lock() {
+  /**********************************************/
+
+  public void acquire_full_wake_lock()
+  {
     // Keep screen bright
     // http://developer.android.com/reference/android/os/PowerManager.html
     PowerManager power_manager = (PowerManager) getSystemService(Context.POWER_SERVICE);
@@ -252,8 +306,11 @@ public class AlpineToolkitActivity extends QtActivity
     m_wave_lock = null;
   };
 
+  /**********************************************/
+
   /* Checks if external storage is available for read and write */
-  public boolean isExternalStorageWritable() {
+  public boolean isExternalStorageWritable()
+  {
     String state = Environment.getExternalStorageState();
     if (Environment.MEDIA_MOUNTED.equals(state)) {
       return true;
@@ -262,7 +319,8 @@ public class AlpineToolkitActivity extends QtActivity
   }
 
   /* Checks if external storage is available to at least read */
-  public boolean isExternalStorageReadable() {
+  public boolean isExternalStorageReadable()
+  {
     String state = Environment.getExternalStorageState();
     if (Environment.MEDIA_MOUNTED.equals(state) ||
         Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
@@ -271,17 +329,21 @@ public class AlpineToolkitActivity extends QtActivity
     return false;
   }
 
-  private boolean has_flash() {
+  /**********************************************/
+
+  private boolean has_flash()
+  {
     PackageManager package_manager = getPackageManager();
     boolean has_flash = package_manager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-    // Log.i("AlpineToolkitActivity", "has_flash: " + has_flash);
+    // Log.i(LOG_TAG, "has_flash: " + has_flash);
     return has_flash;
   }
 
-  private void open_camera() {
+  private void open_camera()
+  {
     if (m_camera == null) {
       try {
-	Log.i("AlpineToolkitActivity", "open_camera");
+	Log.i(LOG_TAG, "open_camera");
 	// Open back-facing camera on a device with more than one camera
 	m_camera = Camera.open();
 	m_camera_parameters = m_camera.getParameters();
@@ -292,18 +354,20 @@ public class AlpineToolkitActivity extends QtActivity
     }
   }
 
-  private void release_camera() {
+  private void release_camera()
+  {
     if (m_camera != null) {
-      Log.i("AlpineToolkitActivity", "release_camera");
+      Log.i(LOG_TAG, "release_camera");
       m_camera.stopPreview();
       m_camera.release();
       m_camera = null;
     }
   }
 
-  private void _set_torch_mode(boolean enabled) {
+  private void _set_torch_mode(boolean enabled)
+  {
     if (m_torch_enabled != enabled) {
-      // Log.i("AlpineToolkitActivity", "_set_torch_mode: " + enabled);
+      // Log.i(LOG_TAG, "_set_torch_mode: " + enabled);
       if (m_camera != null) {
 	String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
 	m_camera_parameters.setFlashMode(flash_mode);
@@ -319,7 +383,7 @@ public class AlpineToolkitActivity extends QtActivity
     // CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
     // try {
     //   for (String camera_id : manager.getCameraIdList()) {
-    // 	Log.i("AlpineToolkitActivity", "camera_id: " + camera_id);
+    // 	Log.i(LOG_TAG, "camera_id: " + camera_id);
     // 	// CameraCharacteristics camera_characteristics = manager.getCameraCharacteristics (camera_id);
     // 	// if (! camera_characteristics.get("FLASH_STATE_UNAVAILABLE"))
     // 	// 	manager.setTorchMode(camera_id, enabled);
@@ -328,16 +392,19 @@ public class AlpineToolkitActivity extends QtActivity
     // }
   }
 
-  private void _enable_torch() {
+  private void _enable_torch()
+  {
     _set_torch_mode(true);
   }
 
-  private void _disable_torch() {
+  private void _disable_torch()
+  {
     _set_torch_mode(false);
   }
 
-  public void set_torch_mode(boolean enabled) {
-    Log.i("AlpineToolkitActivity", "set_torch_mode: " + enabled);
+  public void set_torch_mode(boolean enabled)
+  {
+    Log.i(LOG_TAG, "set_torch_mode: " + enabled);
     if (m_torch_enabled != enabled) {
       if (enabled) {
 	if (has_flash()) {
@@ -353,17 +420,17 @@ public class AlpineToolkitActivity extends QtActivity
 
   /*
   public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
-    Log.i("AlpineToolkitActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
+    Log.i(LOG_TAG, "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
       // Fixme: camera vs thread ???
       // Fixme: stop thread
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
-	    Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
+	    Log.i(LOG_TAG, "perform_lamp_signal run");
 	    open_camera();
 	    for (char bit : encoded_message.toCharArray()) {
-	      // Log.i("AlpineToolkitActivity", "perform_lamp_signal bit: " + bit);
+	      // Log.i(LOG_TAG, "perform_lamp_signal bit: " + bit);
 	      if (bit == '1')
 		_enable_torch();
 	      else
@@ -382,21 +449,22 @@ public class AlpineToolkitActivity extends QtActivity
   }
   */
 
-  public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
-    Log.i("AlpineToolkitActivity", "perform_lamp_signal: " + encoded_message + " " + rate_ms);
+  public void perform_lamp_signal(final String encoded_message, final int rate_ms)
+  {
+    Log.i(LOG_TAG, "perform_lamp_signal: " + encoded_message + " " + rate_ms);
     if (has_flash()) {
       // Fixme: camera vs thread ???
       // Fixme: stop thread
       new Thread(new Runnable() {
 	  @Override
 	  public void run() {
-	    // Log.i("AlpineToolkitActivity", "perform_lamp_signal run");
+	    // Log.i(LOG_TAG, "perform_lamp_signal run");
 	    open_camera();
             _disable_torch(); // else don't turn on first time
 	    boolean is_on = true;
 	    for (char run : encoded_message.toCharArray()) {
 	      int multiple = Character.digit(run, 10); // (int)c - (int)'0'
-	      // Log.i("AlpineToolkitActivity", "perform_lamp_signal run: " + multiple + " " + is_on);
+	      // Log.i(LOG_TAG, "perform_lamp_signal run: " + multiple + " " + is_on);
 	      if (is_on)
 		_enable_torch();
 	      else

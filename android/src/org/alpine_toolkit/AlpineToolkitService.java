@@ -1,3 +1,29 @@
+/***************************************************************************************************
+**
+** $QTCARTO_BEGIN_LICENSE:GPL3$
+**
+** Copyright (C) 2017 Fabrice Salvaire
+** Contact: http://www.fabrice-salvaire.fr
+**
+** This file is part of the QtCarto library.
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+** $QTCARTO_END_LICENSE$
+**
+***************************************************************************************************/
+
 /**************************************************************************************************/
 
 package org.alpine_toolkit;
@@ -28,27 +54,31 @@ public class AlpineToolkitService extends QtService
 
   final int NOTIFICATION_ID = 1; // The identifier for this notification, must not be 0.
 
-  public static void start_service(Context ctx) {
+  public static void start_service(Context ctx)
+  {
     Log.i(LOG_TAG, "start_service");
     ctx.startService(new Intent(ctx, AlpineToolkitService.class));
   }
 
-  public static void stop_service(Context ctx) {
+  public static void stop_service(Context ctx)
+  {
     Log.i(LOG_TAG, "stop_service");
     ctx.stopService(new Intent(ctx, AlpineToolkitService.class));
   }
 
   @Override
-  public void onCreate() {
+  public void onCreate()
+  {
     Log.i(LOG_TAG, "onCreate");
     super.onCreate();
   }
 
   @Override
-  public int onStartCommand(Intent intent, int flags, int start_id) {
+  public int onStartCommand(Intent intent, int flags, int start_id)
+  {
     String action = intent.getAction();
     Log.i(LOG_TAG, "onStartCommand " + action);
-    if (action == STOP_ACTION)
+    if (action.equals(STOP_ACTION))
       stop_foreground_service();
     else // null
       start_foreground_service();
@@ -56,34 +86,39 @@ public class AlpineToolkitService extends QtService
   }
 
   @Override
-  public void onDestroy() {
+  public void onDestroy()
+  {
     Log.i(LOG_TAG, "onDestroy");
     super.onDestroy();
   }
 
   @Override
-  public IBinder onBind(Intent intent) {
+  public IBinder onBind(Intent intent)
+  {
     Log.i(LOG_TAG, "onBind");
     return super.onBind(intent);
     // Used only in case of bound services.
     // return null;
   }
 
-  private void start_foreground_service() {
+  private void start_foreground_service()
+  {
     Log.i(LOG_TAG, "start_foreground_service");
     // cf. https://developer.android.com/guide/components/services.html#Foreground
     // Make this service run in the foreground, supplying the ongoing notification to be shown to the user while in this state.
     startForeground(NOTIFICATION_ID, build_notification());
   }
 
-  private void stop_foreground_service() {
+  private void stop_foreground_service()
+  {
     Log.i(LOG_TAG, "stop_foreground_service");
     stopForeground(true);
     NativeFunctions.stop_service();
     // stopSelf();
   }
 
-  private Notification build_notification() {
+  private Notification build_notification()
+  {
     Intent notification_intent = new Intent(this, AlpineToolkitActivity.class);
     // notification_intent.setAction(Constants.ACTION.MAIN);
     // notification_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
