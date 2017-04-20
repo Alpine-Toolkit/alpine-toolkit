@@ -42,11 +42,6 @@
 
 // QC_BEGIN_NAMESPACE
 
-// static ServiceClient * service_client;
-// ServiceClient * ServiceClient::service_server = nullptr;
-// if (!service_server)
-//   service_server = new ServiceClient();
-
 ServiceClient::ServiceClient(QObject * parent)
   : QObject(parent),
     m_started(false),
@@ -65,6 +60,8 @@ ServiceClient::call_service_static_method(const char * method)
                                             "(Landroid/content/Context;)V",
                                             QtAndroid::androidActivity().object());
 }
+#else
+QProcess * ServiceClient::m_service_process = nullptr;
 #endif
 
 void
@@ -76,6 +73,10 @@ ServiceClient::start_service()
   qInfo() << "Start Alpine Toolkit Service";
 #ifdef ANDROID
   call_service_static_method("start_service");
+#else
+    m_service_process = new QProcess(this);
+    m_service_process->start(QStringLiteral("alpine-toolkit-service"));
+    // Fixme: connect to signals
 #endif
   qInfo() << "Connect to Alpine Toolkit Service";
   connect();
@@ -100,6 +101,8 @@ ServiceClient::stop_service()
   qInfo() << "Stop Alpine Toolkit Service";
 #ifdef ANDROID
   call_service_static_method("stop_service");
+#else
+  m_service_process->close();
 #endif
   // Fixme: disconnect
   m_replica.clear();
@@ -117,7 +120,7 @@ ServiceClient::connect()
   m_replica.reset(m_node.acquire<ServiceReplica>());
 
   // Blocking call
-  // Fixme: use stateChanged signal ?
+  // Fixme: use stateChanged signal else it blocks ui
   int timeout = 30 * 1000; // ms
   rc = m_replica->waitForSource(timeout);
   if (!rc)

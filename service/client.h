@@ -33,6 +33,8 @@
 
 /**************************************************************************************************/
 
+#include <QProcess>
+
 // Generated at root
 #include "rep_service_replica.h"
 
@@ -72,6 +74,11 @@ private:
   void connect();
   void init_connections();
   void set_service_state(bool state);
+
+private:
+#ifndef ANDROID
+  static QProcess * m_service_process;
+#endif
 
 private:
   bool m_started;
