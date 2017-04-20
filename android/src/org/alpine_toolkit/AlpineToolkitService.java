@@ -78,9 +78,10 @@ public class AlpineToolkitService extends QtService
   {
     String action = intent.getAction();
     Log.i(LOG_TAG, "onStartCommand " + action);
-    if (action.equals(STOP_ACTION))
-      stop_foreground_service();
-    else // null
+    if (action != null) {
+      if (action.equals(STOP_ACTION))
+        stop_foreground_service();
+    } else // null
       start_foreground_service();
     return super.onStartCommand(intent, flags, start_id);
   }
