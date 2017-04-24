@@ -341,6 +341,56 @@ class Type:
     def from_variant(self):
         return self.__TYPE_TO_VARIANT__[self.type]
 
+    ##############################################
+
+    def to_ref(self):
+
+        return Type(self._type, ref=True)
+
+    ##############################################
+
+    def to_const_ref(self):
+
+        return Type(self._type, const=True, ref=True)
+
+    ##############################################
+
+    @property
+    def getter_type(self):
+
+        if self._type.startswith('Q'):
+            return self.to_ref()
+        else:
+            return self
+
+    ##############################################
+
+    @property
+    def setter_type(self):
+
+        if self._type.startswith('Q'):
+            return self.to_const_ref()
+        else:
+            return Type(*Type.args_tuple(self)) # Fixme: to_type()
+
+    ##############################################
+
+    def to_getter_type(self, const_ref=False):
+
+        if const_ref:
+            return self.to_ref()
+        else:
+            return self.getter_type
+
+    ##############################################
+
+    def to_setter_type(self, const_ref=False):
+
+        if const_ref:
+            return self.to_const_ref()
+        else:
+            return self.setter_type
+
 ####################################################################################################
 
 class Variable(Type):
@@ -923,23 +973,16 @@ class ClassDefinition(ClassMixin):
 
     def getter_definition(self, member, const_ref=False):
 
-        if const_ref or member.type.startswith('Q'):
-            return_type = Type(member.type, const=True, ref=True)
-        else:
-            return_type = Type(member.type)
-
         return MethodDefinition(self, member.name,
-                                return_type=return_type,
+                                return_type=member.to_getter_type(const_ref),
                                 const=True)
 
     ##############################################
 
     def setter_definition(self, member, const_ref=False):
 
-        if const_ref or member.type.startswith('Q'):
-            value = Argument('value', member.type, const=True, ref=True)
-        else:
-            value = Argument('value', member.type)
+        args = Type.args_tuple(member.to_setter_type(const_ref))
+        value = Argument('value', *args)
 
         return MethodDefinition(self, 'set_' + member.name,
                                 [value],

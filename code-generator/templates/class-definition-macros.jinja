@@ -1,0 +1,24 @@
+{%- macro q_property(member) -%}
+  Q_PROPERTY({{member.type}} {{member.name}} READ {{member.name}} WRITE set_{{member.name}} NOTIFY {{member.name}}Changed)
+{%- endmacro -%}
+
+{% macro cdtor(class_name) %}
+  {{class_name}}();
+  {{class_name}}(const {{class_name}} & other);
+  ~{{class_name}}();
+
+  {{class_name}} & operator=(const {{class_name}} & other);
+{% endmacro %}
+
+{% macro property_accessor(member) %}
+  {{member.getter_type}} {{member.name}}() const { return {{member.m_name}} };
+  void set_{{member.name}}({{member.setter_type}} value);
+{%- endmacro -%}
+
+{%- macro property_signal(member) -%}
+  void {{member.name}}Changed();
+{%- endmacro -%}
+
+{%- macro private_member(member) -%}
+  {{member.type}} {{member.m_name}};
+{%- endmacro -%}

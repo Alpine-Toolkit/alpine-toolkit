@@ -1,0 +1,27 @@
+{% import "class-definition-macros.jinja" as macros -%}
+class {{class_name}}{% if base_classes %} : {% for base_class in base_classes %}public {{base_class}}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+{
+{%- if 'QObject' in base_classes %}
+  Q_OBJECT
+{%- endif %}
+{%- for member in members %}
+  {{ macros.q_property(member) }}
+{%- endfor %}
+
+public:
+{{- macros.cdtor(class_name) }}
+
+{%- for member in members %}
+  {{- macros.property_accessor(member) -}}
+{% endfor %}
+
+signals:
+{%- for member in members %}
+  {{ macros.property_signal(member) }}
+{%- endfor %}
+
+private:
+{%- for member in members %}
+  {{ macros.private_member(member) }}
+{%- endfor %}
+};

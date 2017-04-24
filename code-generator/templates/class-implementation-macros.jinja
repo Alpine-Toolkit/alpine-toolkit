@@ -1,0 +1,53 @@
+{%- macro cdtor(class_name, base_classes, members) -%}
+{{class_name}}::{{class_name}}()
+{%- for base_class in base_classes %}
+{% if loop.first %} : {% else %}   {% endif %}{{ base_class }}(){% if not loop.last or members %},{% endif %}
+{%- endfor %}
+{%- for member in members %}
+   {{member.m_name}}(){% if not loop.last %},{% endif %}
+{%- endfor %}
+{}
+
+{{class_name}}::{{class_name}}(const {{class_name}} & other)
+{%- for base_class in base_classes %}
+{% if loop.first %} : {% else %}   {% endif %}{{ base_class }}(){% if not loop.last or members %},{% endif %}
+{%- endfor %}
+{%- for member in members %}
+   {{member.m_name}}(other.{{member.m_name}}){% if not loop.last %},{% endif %}
+{%- endfor %}
+{}
+
+{{class_name}}::~{{class_name}}()
+{}
+
+{{class_name}} &
+{{class_name}}::operator=(const {{class_name}} & other)
+{
+  if (this != &other) {
+{%- for member in members %}
+    {{member.m_name}} = other.{{member.m_name}};
+{%- endfor %}
+  }
+
+  return *this;
+}
+{%- endmacro -%}
+
+{%- macro getter(class_name, member) %}
+{{member.getter_type}}
+{{class_name}}::{{member.name}}() const
+{
+  return {{member.m_name}};
+}
+{%- endmacro -%}
+
+{%- macro setter(class_name, member) %}
+void
+{{class_name}}::set_{{member.name}}({{member.setter_type}} value)
+{
+  if ({{member.m_name}} != value) {
+    {{member.m_name}} = value;
+    emit {{member.name}}Changed();
+  }
+}
+{%- endmacro -%}

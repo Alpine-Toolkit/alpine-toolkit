@@ -1,0 +1,7 @@
+{% import "class-implementation-macros.jinja" as macros -%}
+{{ macros.cdtor(class_name, base_classes, members) }}
+
+{%- for member in members %}
+{{ macros.getter(class_name, member) }}
+{{ macros.setter(class_name, member) }}
+{%- endfor -%}

@@ -30,11 +30,11 @@
 ####################################################################################################
 
 import argparse
-import sys
 
-from CppCodeGenerator import (Variable,
-                              Header, ClassDefinition,
-                              Source, ClassImplementation)
+from CppCodeGenerator import Variable
+
+from CppClassGenerator import CppClassGenerator
+from TemplateGenerator import TemplateGenerator
 
 from GeneratorSettings import generator_settings
 
@@ -46,9 +46,11 @@ from GeneratorSettings import generator_settings
 argument_parser = argparse.ArgumentParser(description='Generate CPP Class',
                                           formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
+argument_parser.add_argument('--mode', default='template', help='template or generator')
 argument_parser.add_argument('--property', action='store_true')
 argument_parser.add_argument('--inline-setter', action='store_true')
 argument_parser.add_argument('--inline-getter', action='store_true')
+argument_parser.add_argument('--suffix', default='-generated', help='file suffix')
 
 argument_parser.add_argument('class_definition_path', metavar='class_def_file',
                              help='class_definition_path')
@@ -87,94 +89,27 @@ for line in class_definition[1:]:
 
 ####################################################################################################
 
-header = Header(class_name, generator_settings)
-header.cpp_mode()
-header.header()
-header.include('QObject')
-header.include('...')
-header.include('...', local=True)
-header.new_line()
-header.rule()
-header.new_line()
-header.comment('QC_BEGIN_NAMESPACE')
-header.new_line()
+if args.mode == 'template':
+    template_generator = TemplateGenerator()
+    class_definition = dict(
+        filename=args.class_file_name,
+        class_name=class_name,
+        base_classes=(parent_class,),
+        members=members,
+    )
+    header = template_generator.render('class-header.jinja', class_definition)
+    source = template_generator.render('class-source.jinja', class_definition)
 
-class_definition = ClassDefinition(class_name.title(), parent_class, members, generator_settings)
-class_definition.begin()
-if args.property:
-    for member in members:
-        class_definition.property(member)
-class_definition.public()
-class_definition.ctor()
-class_definition.dtor()
-class_definition.new_line()
-class_definition.copy_operator()
-for member in members:
-    class_definition.new_line()
-    if args.inline_getter:
-        class_definition.inline_getter(member)
-    else:
-        class_definition.getter(member)
-    if args.inline_setter:
-        class_definition.inline_setter(member)
-    else:
-        class_definition.setter(member)
-if args.property:
-    class_definition.signals()
-    for member in members:
-        class_definition.property_changed_signal(member)
-class_definition.private()
-# class_definition.append_members()
-for member in members:
-    class_definition.member(member.to_member())
-class_definition.close()
-
-header.append(class_definition)
-header.new_line()
-header.comment('QC_END_NAMESPACE')
-header.footer()
+elif args.mode == 'generator':
+    generator = CppClassGenerator(class_name, parent_class, members, generator_settings)
+    header = generator.generate_header(args.property, args.inline_getter, args.inline_setter)
+    source = generator.generate_source(args.class_file_name)
 
 # print(str(header))
-
-with open(args.class_file_name + '.h-generated', 'w') as f:
-    f.write(str(header))
-
-####################################################################################################
-
-source = Source(class_name, generator_settings)
-source.header()
-source.include(args.class_file_name, local=True)
-source.new_line()
-source.rule()
-source.new_line()
-source.comment('QC_BEGIN_NAMESPACE')
-source.new_line()
-
-class_implementation = class_definition.to_implementation()
-class_implementation.ctor()
-class_implementation.new_line()
-class_implementation.copy_ctor()
-class_implementation.new_line()
-class_implementation.dtor()
-class_implementation.new_line()
-class_implementation.copy_operator_ctor()
-
-for member in members:
-    class_implementation.new_line()
-    class_implementation.getter(member)
-    class_implementation.new_line()
-    class_implementation.setter(member)
-
-# self.format('\n\n')
-# for member in members:
-#     self.format('.set_{name}(json_object[QStringLiteral(\'{name}\')].toString());\n'.format(class_name=class_name, **member))
-
-source.append(class_implementation)
-source.new_line()
-source.comment('QC_END_NAMESPACE')
-source.footer()
-
 # print(str(source))
 
-with open(args.class_file_name + '.cpp-generated', 'w') as f:
+with open(args.class_file_name + '.h' + args.suffix, 'w') as f:
+    f.write(str(header))
+
+with open(args.class_file_name + '.cpp' + args.suffix, 'w') as f:
     f.write(str(source))
