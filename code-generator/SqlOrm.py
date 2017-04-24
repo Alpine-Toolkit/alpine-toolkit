@@ -26,6 +26,7 @@
 
 ####################################################################################################
 
+import datetime
 import json
 
 from CppCodeGenerator import (Header, Source, ClassDefinition, Variable, MethodDefinition, Type)
@@ -130,7 +131,11 @@ class Schema:
 
         members = [field.to_variable() for field in self]
 
+        generator_comment = "This document was automatically generated on {}".format(datetime.datetime.now())
+
         header = Header(name, generator_settings)
+        header.cpp_mode()
+        header.comment(generator_comment)
         header.header()
         header.include('QJsonObject')
         header.include('QObject')
@@ -167,6 +172,7 @@ class Schema:
         header.footer()
 
         source = Source(name, generator_settings)
+        source.comment(generator_comment)
         source.header()
         source.include(name, local=True)
         source.new_line()

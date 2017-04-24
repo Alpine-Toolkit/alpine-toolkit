@@ -176,7 +176,7 @@ class CodeMixin:
 
     def comment(self, text):
 
-        self.line('\\\\ ' + text)
+        self.line('// ' + text)
 
     ##############################################
 
@@ -194,15 +194,13 @@ class CodeMixin:
 
     def cpp_mode(self):
 
-        self.append('// -*- mode: c++ -*-')
-        self.new_line()
+        self.line('// -*- mode: c++ -*-')
 
     ##############################################
 
     def rule(self):
 
-        self.append(self._generator_settings.rule)
-        self.new_line()
+        self.line(self._generator_settings.rule)
 
     ##############################################
 
@@ -912,7 +910,7 @@ class ClassDefinition(ClassMixin):
 
     def copy_operator(self):
 
-        self.indented_line_c(self.copy_ctor_definition)
+        self.indented_line_c(self.copy_operator_definition)
 
     ##############################################
 
@@ -945,7 +943,7 @@ class ClassDefinition(ClassMixin):
 
         return MethodDefinition(self, 'set_' + member.name,
                                 [value],
-                                'void', const=True)
+                                'void')
 
     ##############################################
 
@@ -1062,7 +1060,7 @@ class ClassImplementation(CodeMixin):
         implementation.indented_line_c('QJsonObject json_object')
         implementation.new_line()
         for member in self._class_definition.members:
-            implementation.format_indented_line_c('json_object.insert({0.name}, QJsonValue({0.m_name}))', member)
+            implementation.format_indented_line_c('json_object.insert(QLatin1String("{0.name}"), QJsonValue({0.m_name}))', member)
         implementation.new_line()
         implementation.indented_line_c('return json_object')
         self.append(implementation)
@@ -1130,7 +1128,7 @@ class Header(CodeMixin):
 
     def header(self):
 
-        self.cpp_mode()
+        # self.cpp_mode()
         self.copyright_header()
         self.new_line()
         self.rule()
