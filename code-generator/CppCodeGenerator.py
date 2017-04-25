@@ -359,9 +359,9 @@ class Type:
     def getter_type(self):
 
         if self._type.startswith('Q'):
-            return self.to_ref()
+            return self.to_const_ref()
         else:
-            return self
+            return Type(*Type.args_tuple(self)) # Fixme: to_type()
 
     ##############################################
 
@@ -897,11 +897,10 @@ class ClassDefinition(ClassMixin):
 
     @property
     def ctor_definition(self):
+        arguments = []
         if self._parent_class == 'QObject':
-            parent = Argument.from_string('QObject * parent = nullptr')
-        else:
-            parent = ''
-        return CtorDefinition(self, [parent])
+            arguments.append(Argument.from_string('QObject * parent = nullptr'))
+        return CtorDefinition(self, arguments)
 
     @property
     def copy_ctor_definition(self):
@@ -1007,7 +1006,7 @@ class ClassDefinition(ClassMixin):
         definition = self.getter_definition(member, const_ref)
         implementation = definition.to_inline_implementation()
         implementation.format_c('return {0.m_name}', member)
-        self.indented_line_c(implementation)
+        self.indented_line(implementation)
         self._methods.append(definition) # implementation ?
 
     ##############################################
@@ -1017,7 +1016,7 @@ class ClassDefinition(ClassMixin):
         definition = self.setter_definition(member, const_ref)
         implementation = definition.to_inline_implementation()
         implementation.format_c('{0.m_name} = value', member)
-        self.indented_line_c(implementation)
+        self.indented_line(implementation)
         self._methods.append(definition) # implementation ?
 
     ##############################################

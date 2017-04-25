@@ -41,7 +41,7 @@ class CppClassGenerator:
         self._members = members
         self._generator_settings = generator_settings
 
-        self._class_definition = ClassDefinition(self._class_name.title(),
+        self._class_definition = ClassDefinition(self._class_name, # .title()
                                                  self._parent_class,
                                                  self._members,
                                                  generator_settings)
