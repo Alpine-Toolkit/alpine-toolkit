@@ -33,6 +33,7 @@ set(alpine_toolkit_library_files
   network/network_ressource_request.cpp
   refuge/refuge.cpp
   rrd/rrd.cpp
+  settings/settings_database.cpp
   sql_model/SqlQueryModel.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
