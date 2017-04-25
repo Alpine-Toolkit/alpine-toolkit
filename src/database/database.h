@@ -83,6 +83,7 @@ public:
   QSqlRecord select_one(const QStringList & fields, const KeyValuePair & kwargs) const {
     return select_one(fields, format_simple_where(kwargs));
   }
+  // select_one(const QList<QcSchemaField> & fields, const KeyValuePair & kwargs) // -> success/error callback, return QList<QVariant> ?
   QSqlQuery insert(const KeyValuePair & kwargs, bool commit = false);
   QSqlQuery update(const KeyValuePair & kwargs, const QString & where = QString());
   QSqlQuery update(const KeyValuePair & kwargs, const KeyValuePair & where_kwargs) {
@@ -160,10 +161,10 @@ public:
 class QcSqliteDatabase : public QcDatabase
 {
 public:
-  QcSqliteDatabase();
+  QcSqliteDatabase(); // Fixme: const QString & path ???
   virtual ~QcSqliteDatabase();
 
-  bool open(QString sqlite_path);
+  bool open(const QString & sqlite_path);
 };
 
 /**************************************************************************************************/

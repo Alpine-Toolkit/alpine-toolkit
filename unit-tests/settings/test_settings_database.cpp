@@ -45,7 +45,7 @@ private slots:
 void TestSettingsDatabase::constructor()
 {
   QString sqlite_path("settings_database.sqlite"); // Fixme:
-  SettingsDatabase settings_database(sqlite_path);
+  SqliteSettingsDatabase settings_database(sqlite_path);
 
   QVERIFY(settings_database.contains("foo") == false);
   QStringList keys;

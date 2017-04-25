@@ -41,7 +41,7 @@
 
 /**************************************************************************************************/
 
-class SettingsDatabase : public QcSqliteDatabase
+class SettingsDatabase
 {
 public:
   typedef QHash<QString, QVariant> KeyValueMap;
@@ -50,8 +50,10 @@ private:
   typedef QHash<int, QString> PathCache;
 
 public:
-  SettingsDatabase(const QString & sqlite_path);
+  SettingsDatabase(QcDatabase & database);
   ~SettingsDatabase();
+
+  void register_tables();
 
   bool contains(const QString & key);
   QVariant value(const QString & key);
@@ -65,7 +67,6 @@ public:
   // void vacuum(); // Fixme: implement vacuum directory table
 
 private:
-  void create_tables();
   int add_directory(const QString & directory, int parent);
   int get_directory_id(const QString & directory);
   QString directory_part(const QString & key) const;
@@ -75,8 +76,31 @@ private:
   QString parent_to_path(int parent, PathCache & paths);
 
 private:
+  QcDatabase & m_database;
   QcDatabaseTable * m_directory_table;
   QcDatabaseTable * m_key_value_table;
+};
+
+/**************************************************************************************************/
+
+class SqliteSettingsDatabase : public QcSqliteDatabase // , public SettingsDatabase
+{
+public:
+  SqliteSettingsDatabase(const QString & sqlite_path);
+  ~SqliteSettingsDatabase();
+
+  // Fixme: better ?
+  bool contains(const QString & key) { return m_settings_database.contains(key); }
+  QVariant value(const QString & key)  { return m_settings_database.value(key); }
+  void set_value(const QString & key, const QVariant & value)  { return m_settings_database.set_value(key, value); }
+  void remove(const QString & key)  { return m_settings_database.remove(key); }
+
+  QStringList keys(const QString & path)  { return m_settings_database.keys(path); }
+
+  SettingsDatabase::KeyValueMap to_map() { return m_settings_database.to_map(); }
+
+private:
+  SettingsDatabase m_settings_database;
 };
 
 /**************************************************************************************************/

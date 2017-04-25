@@ -347,14 +347,14 @@ QcSqliteDatabase::~QcSqliteDatabase()
 {}
 
 bool
-QcSqliteDatabase::open(QString sqlite_path)
+QcSqliteDatabase::open(const QString & sqlite_path)
 {
-  bool created = !QFile(sqlite_path).exists();
+  bool created = not QFile(sqlite_path).exists();
 
   // Set the connection name to sqlite_path
   m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), sqlite_path);
   m_database.setDatabaseName(sqlite_path);
-  if (!m_database.open())
+  if (not m_database.open())
     qWarning() << m_database.lastError().text();
 
   return created;

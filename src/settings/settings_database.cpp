@@ -40,39 +40,43 @@ static const QString PARENT = "parent";
 static const QString VALUE = "value";
 static const QString ROWID = "rowid";
 
-SettingsDatabase::SettingsDatabase(const QString & sqlite_path)
-  : m_directory_table(nullptr),
+SettingsDatabase::SettingsDatabase(QcDatabase & database)
+  : m_database(database),
+    m_directory_table(nullptr),
     m_key_value_table(nullptr)
-{
-  bool created = open(sqlite_path); // unused
+{}
 
+SettingsDatabase::~SettingsDatabase()
+{}
+
+void
+SettingsDatabase::register_tables()
+{
   // rowid https://sqlite.org/autoinc.html
 
   QcSchema directory_schema(DIRECTORY);
   directory_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
   directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
-  m_directory_table = &register_table(directory_schema);
+  m_directory_table = &m_database.register_table(directory_schema);
 
   QcSchema key_value_schema(KEY_VALUE);
   key_value_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
   key_value_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
   key_value_schema << QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
-  m_key_value_table = &register_table(key_value_schema);
+  m_key_value_table = &m_database.register_table(key_value_schema);
 }
-
-SettingsDatabase::~SettingsDatabase()
-{}
 
 int
 SettingsDatabase::add_directory(const QString & directory, int parent)
 {
-    QcDatabaseTable::KeyValuePair kwargs;
-    kwargs[NAME] = directory;
-    kwargs[PARENT] = parent;
-    QSqlQuery query = m_directory_table->insert(kwargs);
-    int row_id = query.lastInsertId().toInt();
-    qInfo() << "added directory" << directory << parent << row_id;
-    return row_id;
+  // Fixme: KeyValuePair namespace ?
+  QcDatabaseTable::KeyValuePair kwargs;
+  kwargs[NAME] = directory;
+  kwargs[PARENT] = parent;
+  QSqlQuery query = m_directory_table->insert(kwargs);
+  int row_id = query.lastInsertId().toInt();
+  qInfo() << "added directory" << directory << parent << row_id;
+  return row_id;
 }
 
 int
@@ -87,7 +91,7 @@ SettingsDatabase::get_directory_id(const QString & directory)
     kwargs[PARENT] = parent;
     QSqlRecord record = m_directory_table->select_one(QStringList(ROWID), kwargs);
     if (record.isEmpty() == false)
-      parent = record.value(0).toInt();
+      parent = record.value(0).toInt(); // Fixme: how to simplify ?
     else
       parent = add_directory(directory, parent); // not const
   }
@@ -252,6 +256,20 @@ SettingsDatabase::to_map()
 
   return key_values;
 }
+
+/**************************************************************************************************/
+
+SqliteSettingsDatabase::SqliteSettingsDatabase(const QString & sqlite_path)
+  : QcSqliteDatabase(),
+    m_settings_database(*this)
+    // SettingsDatabase(*this)
+{
+  open(sqlite_path);
+  m_settings_database.register_tables();
+}
+
+SqliteSettingsDatabase::~SqliteSettingsDatabase()
+{}
 
 /***************************************************************************************************
  *
