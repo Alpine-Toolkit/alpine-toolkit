@@ -76,8 +76,9 @@ for table in schema_repository:
     print('Table', table.name)
     print(table.to_sql())
     header, source = table.generate_source(table.name, generator_settings)
-    print(header)
-    print(source)
+    # header, source = table.generate_source(table.name)
+    # print(header)
+    # print(source)
     with open(os.path.join(document_dir, 'document.h'), 'w') as f:
         f.write(str(header))
     with open(os.path.join(document_dir, 'document.cpp'), 'w') as f:

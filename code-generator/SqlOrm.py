@@ -30,6 +30,7 @@ import datetime
 import json
 
 from CppCodeGenerator import (Header, Source, ClassDefinition, Variable, MethodDefinition, Type)
+from TemplateGenerator import TemplateGenerator
 
 ####################################################################################################
 
@@ -127,6 +128,15 @@ class Schema:
 
     ##############################################
 
+    @staticmethod
+    def includes(members):
+
+        include_classes = set([member.type for member in members if member.type.startswith('Q')])
+        include_classes |= set(('QObject', 'QJsonObject'))
+        return sorted(include_classes)
+
+    ##############################################
+
     def generate_source(self, name, generator_settings):
 
         members = [field.to_variable() for field in self]
@@ -137,8 +147,8 @@ class Schema:
         header.cpp_mode()
         header.comment(generator_comment)
         header.header()
-        header.include('QJsonObject')
-        header.include('QObject')
+        for include in self.includes(members):
+            header.include(include)
         header.new_line()
         class_definition = ClassDefinition(self._name.title(), 'QObject',
                                            members,
@@ -205,6 +215,28 @@ class Schema:
         source.footer()
 
         return str(header), str(source)
+
+    ##############################################
+
+    def generate_source_using_template(self, name):
+
+        members = [field.to_variable() for field in self]
+
+        template_generator = TemplateGenerator()
+
+        class_definition = dict(
+            date=datetime.datetime.now(),
+            filename=name,
+            class_name=self._name.title(),
+            base_classes=('QObject',),
+            members=members,
+            include_classes=self.includes(),
+        )
+
+        header = template_generator.render('json-class-header.jinja', class_definition)
+        source = template_generator.render('class-source.jinja', class_definition)
+
+        return header, source
 
 ####################################################################################################
 
