@@ -50,84 +50,61 @@ static const QString VALUE = "value";
 static const QString VERSION = "version";
 
 C2cApiCache::C2cApiCache(const QString & sqlite_path)
+  : m_metadata_table(nullptr),
+    m_document_table(nullptr)
 {
   bool created = open(sqlite_path); // unused
 
-  // if (!created)
+  // Fixme: migrate table using VERSION
+
+  QcSchema metadata_schema(METADATA);
+  metadata_schema << QcSchemaField(KEY, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
+  metadata_schema << QcSchemaField(VALUE, QLatin1String("QString"), QLatin1String("TEXT"));
+  m_metadata_table = &register_table(metadata_schema);
+
+  QcSchema document_schema(METADATA);
+  // # https://www.sqlite.org/autoinc.html
+  // # Fixme: how to handle auto-increment overflow ?
+  metadata_schema << QcSchemaField(ID, QLatin1String("int"), QLatin1String("INTEGER"), QLatin1String("NOT NULL"));
+  metadata_schema << QcSchemaField(DATA, QLatin1String("QByteArray"), QLatin1String("BLOB")); // JSON HIDDEN
+  m_document_table = &register_table(document_schema);
 }
 
 C2cApiCache::~C2cApiCache()
 {}
 
-void
-C2cApiCache::create_tables()
-{
-  qInfo() << "Create Table"; // << sqlite_path();
-
-  // # https://www.sqlite.org/autoinc.html
-  // # Fixme: how to handle auto-increment overflow ?
-
-  // Fixme: migrate table using VERSION
-
-  QList<QString> schemas;
-
-  const QString metadata_schema =
-    "CREATE TABLE metadata ("
-    "key TEXT NOT NULL,"
-    "value TEXT"
-    ")";
-  schemas << metadata_schema;
-
-  const QString document_schema =
-    "CREATE TABLE document ("
-    "id INTEGER NOT NULL,"
-    "data BLOB" // JSON HIDDEN
-    ")";
-  schemas << document_schema;
-
-  QSqlQuery query = new_query();
-  for (const auto & sql_query : schemas)
-    if (!query.exec(sql_query))
-      qWarning() << query.lastError().text();
-
-  init();
-  commit();
-}
-
 QString
 C2cApiCache::read_metadata(const QString & key)
 {
-  KeyValuePair kwargs;
+  QcDatabaseTable::KeyValuePair kwargs;
   kwargs[KEY] = key;
-  QString where = format_simple_where(kwargs);
-  QSqlRecord record = select_one(METADATA, QStringList(VALUE), where);
+  QSqlRecord record = m_metadata_table->select_one(QStringList(VALUE), kwargs);
   return record.value(0).toString();
 }
 
 void
 C2cApiCache::init_metadata(const QString & key, const QString & value)
 {
-  KeyValuePair kwargs;
+  QcDatabaseTable::KeyValuePair kwargs;
   kwargs[KEY] = key;
   kwargs[VALUE] = value;
-  insert(METADATA, kwargs);
+  m_metadata_table->insert(kwargs);
 }
 
 void
 C2cApiCache::update_metadata(const QString & key, const QString & value)
 {
-  KeyValuePair kwargs_where;
+  QcDatabaseTable::KeyValuePair kwargs_where;
   kwargs_where[KEY] = key;
-  KeyValuePair kwargs_update;
+  QcDatabaseTable::KeyValuePair kwargs_update;
   kwargs_update[VALUE] = value;
-  QString where = format_simple_where(kwargs_where);
-  update(METADATA, kwargs_update, where);
+  m_metadata_table->update(kwargs_update, kwargs_where);
 }
 
 void
 C2cApiCache::init()
 {
-  KeyValuePair kwargs;
+  QcDatabaseTable::KeyValuePair kwargs;
 
   // Set version
   init_metadata(VERSION, QString::number(1));
@@ -158,18 +135,17 @@ C2cApiCache::save_document(const C2cDocument & document)
 {
   unsigned int document_id = document.id();
   if (has_document(document_id)) {
-    KeyValuePair kwargs_where;
+    QcDatabaseTable::KeyValuePair kwargs_where;
     kwargs_where[ID] = document_id;
-    KeyValuePair kwargs_update;
+    QcDatabaseTable::KeyValuePair kwargs_update;
     kwargs_update[DATA] = document.to_json();
-    QString where = format_simple_where(kwargs_where);
-    update(DOCUMENT, kwargs_update, where);
+    m_document_table->update(kwargs_update, kwargs_where);
     qInfo() << "Updated document " << document_id << " in cache";
   } else  {
-    KeyValuePair kwargs;
+    QcDatabaseTable::KeyValuePair kwargs;
     kwargs[ID] = document_id;
     kwargs[DATA] = document.to_json();
-    insert(DOCUMENT, kwargs);
+    m_document_table->insert(kwargs);
     qInfo() << "Inserted document " << document_id << " in cache";
   }
 }
@@ -177,21 +153,19 @@ C2cApiCache::save_document(const C2cDocument & document)
 bool
 C2cApiCache::has_document(unsigned int document_id) const
 {
-  KeyValuePair kwargs;
+  QcDatabaseTable::KeyValuePair kwargs;
   kwargs[ID] = document_id;
   // Fixme: count
-  QString where = format_simple_where(kwargs);
-  QSqlRecord record = select_one(DOCUMENT, QStringList(ID), where);
+  QSqlRecord record = m_document_table->select_one(QStringList(ID), kwargs);
   return record.isEmpty() == false;
 }
 
 C2cDocument *
 C2cApiCache::get_document(unsigned int document_id) const
 {
-  KeyValuePair kwargs;
+  QcDatabaseTable::KeyValuePair kwargs;
   kwargs[ID] = document_id;
-  QString where = format_simple_where(kwargs);
-  QSqlRecord record = select_one(DOCUMENT, QStringList(DATA), where);
+  QSqlRecord record = m_document_table->select_one(QStringList(DATA), kwargs);
   if (record.isEmpty())
     return nullptr;
   else {

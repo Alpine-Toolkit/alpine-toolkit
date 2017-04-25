@@ -39,14 +39,242 @@
 
 /**************************************************************************************************/
 
-QcDatabase::QcDatabase()
-  : m_database()
+QString
+QcDatabaseTable::format_kwarg(const KeyValuePair & kwargs, const QString & separator)
+{
+  QString kwarg_string;
+  int i = 0;
+  // for (const auto & pair: kwargs) {
+  for (const auto & field: kwargs.keys()) {
+    if (i)
+      kwarg_string += separator;
+    kwarg_string += field + '=';
+    QVariant variant = kwargs[field];
+    bool is_string = variant.canConvert<QString>();
+    if (is_string)
+      kwarg_string += '"';
+    kwarg_string += variant.toString();
+    if (is_string)
+      kwarg_string += '"';
+    i++;
+  }
+  return kwarg_string;
+}
+
+QString
+QcDatabaseTable::format_simple_where(const KeyValuePair & kwargs)
+{
+  return format_kwarg(kwargs, QStringLiteral(" AND "));
+}
+
+QcDatabaseTable::QcDatabaseTable()
+  : m_database(nullptr),
+    m_schema(),
+    m_name()
 {}
+
+QcDatabaseTable::QcDatabaseTable(QcDatabase * database, const QString & name)
+  : m_database(database),
+    m_schema(name),
+    m_name(name)
+{}
+
+QcDatabaseTable::QcDatabaseTable(QcDatabase * database, const QcSchema & schema)
+  : m_database(database),
+    m_schema(schema),
+    m_name(schema.name())
+{}
+
+QcDatabaseTable::QcDatabaseTable(const QcDatabaseTable & other)
+  : m_database(other.m_database),
+    m_schema(other.m_schema),
+    m_name(other.m_name)
+{}
+
+QcDatabaseTable::~QcDatabaseTable()
+{}
+
+QcDatabaseTable &
+QcDatabaseTable::operator=(const QcDatabaseTable & other)
+{
+  if (this != &other) {
+    m_database = other.m_database;
+    m_schema = other.m_schema;
+    m_name = other.m_name;
+  }
+
+  return *this;
+}
+
+bool
+QcDatabaseTable::exists() const
+{
+  QStringList tables = m_database->database().tables(QSql::Tables);
+  return tables.contains(m_name);
+}
+
+bool
+QcDatabaseTable::create()
+{
+  QString sql_query = QLatin1String("CREATE TABLE ");
+  sql_query += m_name;
+  sql_query += QLatin1String(" (");
+  QStringList sql_fields;
+  for (const auto & field : m_schema.fields())
+    sql_fields << field.to_sql_definition();
+  sql_query += sql_fields.join(QLatin1String(", "));
+  sql_query += ')';
+  return m_database->execute_query(sql_query);
+}
+
+bool
+QcDatabaseTable::drop()
+{
+  QString sql_query = QLatin1String("DROP TABLE ") + m_name;
+  return m_database->execute_query(sql_query);
+}
+
+
+QSqlQuery
+QcDatabaseTable::insert(const KeyValuePair & kwargs, bool commit_request)
+{
+  QSqlQuery query = m_database->new_query();
+  QStringList fields = kwargs.keys();
+  QString sql_query =
+    QStringLiteral("INSERT INTO ") + m_name +
+    QStringLiteral(" (") + fields.join(',') + QStringLiteral(") VALUES (");
+  for (int i = 0; i < fields.size(); i++) {
+    if (i > 0)
+      sql_query += ',';
+    sql_query += '?';
+  }
+  sql_query += ')';
+  qInfo() << sql_query << kwargs;
+  query.prepare(sql_query);
+
+  for (const auto & value : kwargs.values())
+    query.addBindValue(value);
+
+  if (!query.exec())
+    qWarning() << query.lastError().text();
+
+  if (commit_request)
+    m_database->commit();
+
+  return query;
+}
+
+QSqlQuery
+QcDatabaseTable::select(const QStringList & fields, const QString & where) const
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query = QStringLiteral("SELECT ") + fields.join(',') + QStringLiteral(" FROM ") + m_name;
+  if (!where.isEmpty())
+    sql_query += QStringLiteral(" WHERE ") + where;
+  qInfo() << sql_query << fields;
+
+  if (!query.exec(sql_query))
+    qWarning() << query.lastError().text();
+
+  return query;
+}
+
+QSqlRecord
+QcDatabaseTable::select_one(const QStringList & fields, const QString & where) const
+{
+  QSqlQuery query = select(fields, where);
+  QSqlRecord record;
+  if (query.next()) {
+    record = query.record();
+    if (query.next())
+      qWarning() << "More than one rows returned";
+  } else
+    qWarning() << "Any row";
+
+  return record; // test with isEmpty()
+}
+
+
+QSqlQuery
+QcDatabaseTable::update(const KeyValuePair & kwargs, const QString & where)
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query = QStringLiteral("UPDATE ") + m_name + QStringLiteral(" SET ") + format_kwarg(kwargs);
+  if (!where.isEmpty())
+    sql_query += QStringLiteral(" WHERE ") + where;
+  qInfo() << sql_query << kwargs;
+
+  if (!query.exec(sql_query))
+    qWarning() << query.lastError().text();
+
+  return query;
+}
+
+QSqlQuery
+QcDatabaseTable::delete_row(const QString & where)
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query = QStringLiteral("DELETE FROM ") + m_name;
+  if (!where.isEmpty())
+    sql_query += QStringLiteral(" WHERE ") + where;
+  qInfo() << sql_query;
+
+  if (!query.exec(sql_query))
+    qWarning() << query.lastError().text();
+
+  return query;
+}
+
+/**************************************************************************************************/
+
+QcDatabase::QcDatabase()
+  : m_database(),
+    m_tables()
+{}
+
+// Database must be opened before to create table !
+/*
+QcDatabase::QcDatabase(const QList<QcSchema> & schemas)
+  : QcDatabase()
+{
+  for (const auto & schema : schemas)
+    register_table(schema);
+}
+*/
 
 QcDatabase::~QcDatabase()
 {
   if (m_database.isValid())
     m_database.close();
+}
+
+QcDatabaseTable &
+QcDatabase::register_table(const QString & name)
+{
+  m_tables[name] =  QcDatabaseTable(this, name);
+  return m_tables[name];
+}
+
+QcDatabaseTable &
+QcDatabase::register_table(const QcSchema & schema)
+{
+  const QString & name = schema.name();
+  m_tables[name] = QcDatabaseTable(this, schema);
+  QcDatabaseTable & table = m_tables[name];
+  if (not table.exists()) {
+    table.create();
+    m_database.commit();
+  }
+  return table;
+}
+
+QSqlQuery
+QcDatabase::prepare_query(const QString & sql_query)
+{
+  transaction();
+  QSqlQuery query = new_query();
+  query.prepare(sql_query);
+  return query;
 }
 
 bool
@@ -76,136 +304,9 @@ QcDatabase::execute_queries(const QStringList & sql_queries, bool commit_request
     }
 
   if (commit_request)
-    commit();
+    m_database.commit();
 
   return ok;
-}
-
-QString
-QcDatabase::format_kwarg(const KeyValuePair & kwargs, const QString & separator) const
-{
-  QString kwarg_string;
-  int i = 0;
-  // for (const auto & pair: kwargs) {
-  for (const auto & field: kwargs.keys()) {
-    if (i)
-      kwarg_string += separator;
-    kwarg_string += field + '=';
-    QVariant variant = kwargs[field];
-    bool is_string = variant.canConvert<QString>();
-    if (is_string)
-      kwarg_string += '"';
-    kwarg_string += variant.toString();
-    if (is_string)
-      kwarg_string += '"';
-    i++;
-  }
-  return kwarg_string;
-}
-
-QString
-QcDatabase::format_simple_where(const KeyValuePair & kwargs) const
-{
-  return format_kwarg(kwargs, QStringLiteral(" AND "));
-}
-
-QSqlQuery
-QcDatabase::prepare_query(const QString & sql_query)
-{
-  transaction();
-  QSqlQuery query = new_query();
-  query.prepare(sql_query);
-  return query;
-}
-
-QSqlQuery
-QcDatabase::insert(const QString & table, const KeyValuePair & kwargs, bool commit_request)
-{
-  QSqlQuery query = new_query();
-  QStringList fields = kwargs.keys();
-  QString sql_query =
-    QStringLiteral("INSERT INTO ") + table +
-    QStringLiteral(" (") + fields.join(',') + QStringLiteral(") VALUES (");
-  for (int i = 0; i < fields.size(); i++) {
-    if (i > 0)
-      sql_query += ',';
-    sql_query += '?';
-  }
-  sql_query += ')';
-  qInfo() << sql_query << kwargs;
-  query.prepare(sql_query);
-
-  for (const auto & value : kwargs.values())
-    query.addBindValue(value);
-
-  if (!query.exec())
-    qWarning() << query.lastError().text();
-
-  if (commit_request)
-    commit();
-
-  return query;
-}
-
-QSqlQuery
-QcDatabase::select(const QString & table, const QStringList & fields, const QString & where) const
-{
-  QSqlQuery query = new_query();
-  QString sql_query = QStringLiteral("SELECT ") + fields.join(',') + QStringLiteral(" FROM ") + table;
-  if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query << fields;
-
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
-
-  return query;
-}
-
-QSqlRecord
-QcDatabase::select_one(const QString & table, const QStringList & fields, const QString & where) const
-{
-  QSqlQuery query = select(table, fields, where);
-  QSqlRecord record;
-  if (query.next()) {
-    record = query.record();
-    if (query.next())
-      qWarning() << "More than one rows returned";
-  } else
-    qWarning() << "Any row";
-
-  return record; // test with isEmpty()
-}
-
-
-QSqlQuery
-QcDatabase::update(const QString & table, const KeyValuePair & kwargs, const QString & where)
-{
-  QSqlQuery query = new_query();
-  QString sql_query = QStringLiteral("UPDATE ") + table + QStringLiteral(" SET ") + format_kwarg(kwargs);
-  if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query << kwargs;
-
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
-
-  return query;
-}
-
-QSqlQuery
-QcDatabase::delete_row(const QString & table, const QString & where)
-{
-  QSqlQuery query = new_query();
-  QString sql_query = QStringLiteral("DELETE FROM ") + table;
-  if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query;
-
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
-
-  return query;
 }
 
 /**************************************************************************************************/
@@ -227,11 +328,6 @@ QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
   m_database.setPassword(connection_data.password);
   if (!m_database.open())
     qWarning() << m_database.lastError().text();
-
-  QStringList tables = m_database.tables();
-  // qInfo() << "Tables" << tables;
-  if (tables.empty())
-    create_tables();
 }
 
 bool
@@ -260,9 +356,6 @@ QcSqliteDatabase::open(QString sqlite_path)
   m_database.setDatabaseName(sqlite_path);
   if (!m_database.open())
     qWarning() << m_database.lastError().text();
-
-  if (created)
-    create_tables();
 
   return created;
 }

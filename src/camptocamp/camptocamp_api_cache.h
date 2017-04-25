@@ -55,11 +55,14 @@ public:
   C2cDocument * get_document(unsigned int document_id) const;
 
 private:
-  void create_tables();
   void init();
   QString read_metadata(const QString & key);
   void init_metadata(const QString & key, const QString & value);
   void update_metadata(const QString & key, const QString & value);
+
+private:
+  QcDatabaseTable * m_metadata_table;
+  QcDatabaseTable * m_document_table;
 };
 
 /**************************************************************************************************/

@@ -40,44 +40,93 @@
 #include <QStringList>
 #include <QVariant>
 
+#include "database/schema.h"
+
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
 
 /**************************************************************************************************/
 
-class QcDatabase
+class QcDatabase;
+
+class QcDatabaseTable
 {
 public:
   typedef QHash<QString, QVariant> KeyValuePair;
 
+  static QString format_kwarg(const KeyValuePair & kwargs, const QString & sperator = QStringLiteral(","));
+  static QString format_simple_where(const KeyValuePair & kwargs);
+
+public:
+  QcDatabaseTable();
+  QcDatabaseTable(QcDatabase * database, const QString & name);
+  QcDatabaseTable(QcDatabase * database, const QcSchema & schema);
+  QcDatabaseTable(const QcDatabaseTable & other);
+  ~QcDatabaseTable();
+
+  QcDatabaseTable & operator=(const QcDatabaseTable & other);
+
+  inline QcDatabase * database() { return m_database; }
+  inline const QcSchema & schema() { return m_schema; }
+  inline const QString & name() { return m_name; } // m_schema.name()
+
+  bool exists() const;
+  bool create();
+  bool drop();
+
+  QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
+  QSqlQuery select(const QStringList & fields, const KeyValuePair & kwargs) const {
+    return select(fields, format_simple_where(kwargs));
+  }
+  QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
+  QSqlRecord select_one(const QStringList & fields, const KeyValuePair & kwargs) const {
+    return select_one(fields, format_simple_where(kwargs));
+  }
+  QSqlQuery insert(const KeyValuePair & kwargs, bool commit = false);
+  QSqlQuery update(const KeyValuePair & kwargs, const QString & where = QString());
+  QSqlQuery update(const KeyValuePair & kwargs, const KeyValuePair & where_kwargs) {
+    return update(kwargs, format_simple_where(where_kwargs));
+  }
+  QSqlQuery delete_row(const QString & where = QString());
+  QSqlQuery delete_row(const KeyValuePair & kwargs) {
+    return delete_row(format_simple_where(kwargs));
+  }
+
+private:
+  QcDatabase * m_database;
+  QcSchema m_schema;
+  QString m_name;
+};
+
+/**************************************************************************************************/
+
+class QcDatabase
+{
 public:
   QcDatabase();
+  // QcDatabase(const QList<QcSchema> & schemas);
   virtual ~QcDatabase();
 
-  virtual void create_tables() = 0;
-
   inline QSqlDatabase & database () { return m_database; }
+
+  QcDatabaseTable & register_table(const QString & name);
+  QcDatabaseTable & register_table(const QcSchema & schema);
+
+  QcDatabaseTable & table(const QString & name) { return m_tables[name]; } // Fixme: wrong name ?
+  QcDatabaseTable & operator[](const QString & name) { return m_tables[name]; }
 
   inline bool transaction() { return m_database.transaction(); }
   inline bool commit() { return m_database.commit(); }
   inline QSqlQuery new_query() const { return QSqlQuery(m_database); }
 
+  QSqlQuery prepare_query(const QString & sql_query);
   bool execute_query(const QString & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
 
-  QString format_kwarg(const KeyValuePair & kwargs, const QString & sperator = QStringLiteral(",")) const;
-  QString format_simple_where(const KeyValuePair & kwargs) const;
-
-  QSqlQuery select(const QString & table, const QStringList & fields, const QString & where = QStringLiteral("")) const;
-  QSqlRecord select_one(const QString & table, const QStringList & fields, const QString & where = QStringLiteral("")) const;
-  QSqlQuery prepare_query(const QString & sql_query);
-  QSqlQuery insert(const QString & table, const KeyValuePair & kwargs, bool commit = false);
-  QSqlQuery update(const QString & table, const KeyValuePair & kwargs, const QString & where = QStringLiteral(""));
-  QSqlQuery delete_row(const QString & table, const QString & where);
-
 protected:
   QSqlDatabase m_database;
+  QHash<QString, QcDatabaseTable> m_tables; // => QcDatabaseTable() => QcDatabase *
 };
 
 /**************************************************************************************************/
