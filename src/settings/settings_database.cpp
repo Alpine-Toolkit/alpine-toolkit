@@ -89,11 +89,12 @@ SettingsDatabase::get_directory_id(const QString & directory)
     QcDatabaseTable::KeyValuePair kwargs;
     kwargs[NAME] = directory;
     kwargs[PARENT] = parent;
-    QSqlRecord record = m_directory_table->select_one(QStringList(ROWID), kwargs);
-    if (record.isEmpty() == false)
-      parent = record.value(0).toInt(); // Fixme: how to simplify ?
-    else
+    QSqlRecord record_ = m_directory_table->select_one(QStringList(ROWID), kwargs);
+    QcSqlRecordWrapper record(record_); // Fixme: must keep object alive!
+    if (record.is_empty())
       parent = add_directory(directory, parent); // not const
+    else
+      parent = record.to_int(); // Fixme: how to simplify ?
   }
 
   return parent;
@@ -133,8 +134,9 @@ SettingsDatabase::contains(const QString & key)
   QcDatabaseTable::KeyValuePair kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
-  QSqlRecord record = m_key_value_table->select_one(QStringList(ROWID), kwargs);
-  return record.isEmpty() == false;
+  QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
+  QcSqlRecordWrapper record(record_);
+  return record.is_not_empty();
 }
 
 int
@@ -143,11 +145,12 @@ SettingsDatabase::rowid_of(const QString & key)
   QcDatabaseTable::KeyValuePair kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
-  QSqlRecord record = m_key_value_table->select_one(QStringList(ROWID), kwargs);
-  if (record.isEmpty() == false)
-    return record.value(0).toInt();
-  else
+  QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
+  QcSqlRecordWrapper record(record_);
+  if (record.is_empty())
     return -1;
+  else
+    return record.to_int(0);
 }
 
 QVariant
@@ -214,10 +217,11 @@ SettingsDatabase::parent_to_path(int parent, PathCache & paths)
     while (parent) {
       QcDatabaseTable::KeyValuePair kwargs;
       kwargs[ROWID] = parent;
-      QSqlRecord record = m_directory_table->select_one(fields, kwargs);
+      QSqlRecord record_ = m_directory_table->select_one(fields, kwargs);
+      QcSqlRecordWrapper record(record_);
       // if (record.isEmpty() == false)
-      directories.prepend(record.value(0).toString());
-      parent = record.value(1).toInt();
+      directories.prepend(record.to_string(0));
+      parent = record.to_int(1);
       if (paths.contains(parent)) {
         directories.prepend(paths[parent]);
         break;

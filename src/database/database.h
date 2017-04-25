@@ -33,6 +33,7 @@
 
 /**************************************************************************************************/
 
+#include <QByteArray>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlRecord>
@@ -45,6 +46,38 @@
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
+
+/**************************************************************************************************/
+
+class QcSqlRecordWrapper
+{
+public:
+  inline QcSqlRecordWrapper(const QSqlRecord & record)
+    : m_record(record)
+  {}
+
+  inline const QSqlRecord & record() const { return m_record; }
+
+  inline bool is_empty() const { return m_record.isEmpty(); }
+  inline bool is_not_empty() const { return not is_empty(); }
+
+  inline int to_int(int position = 0) const {
+    return m_record.value(position).toInt();
+  }
+
+  inline QByteArray to_byte_array(int position = 0) const {
+    return m_record.value(position).toByteArray();
+  }
+
+  inline QString to_string(int position = 0) const {
+    return m_record.value(position).toString();
+  }
+
+private:
+  const QSqlRecord & m_record;
+};
+
+// Fixme: same QSqlQuery ?
 
 /**************************************************************************************************/
 
