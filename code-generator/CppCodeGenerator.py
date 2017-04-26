@@ -26,6 +26,12 @@
 
 ####################################################################################################
 
+import os
+
+from jinja2 import Template, Environment, PackageLoader, FileSystemLoader
+
+####################################################################################################
+
 class GeneratorSettings:
 
     __LINE_WIDTH__ = 100
@@ -43,6 +49,17 @@ class GeneratorSettings:
         self._copyright_header = copyright_header
         self._footer = footer
         self._indent = indent
+
+        self._template_path = os.path.join(os.path.dirname(__file__), 'code-generator-templates')
+
+        self._environment = Environment(
+            # loader=PackageLoader('', 'templates'),
+            loader=FileSystemLoader(self._template_path),
+
+            # trim_blocks=True,
+            # lstrip_blocks=True,
+            # keep_trailing_newline
+        )
 
     ##############################################
 
@@ -73,6 +90,12 @@ class GeneratorSettings:
     @property
     def indent(self):
         return self._indent
+
+    ##############################################
+
+    def render(self, template, context):
+
+        return self._environment.get_template(template).render(**context)
 
 ####################################################################################################
 
@@ -189,6 +212,7 @@ class CodeMixin:
             else:
                 self.line(' *')
         self.append(self._generator_settings.rule_close)
+        self.new_line()
 
     ##############################################
 
@@ -207,7 +231,6 @@ class CodeMixin:
     def copyright_header(self):
 
         self.comment_block(self._generator_settings.copyright_header)
-        self.new_line()
 
     ##############################################
 
@@ -225,10 +248,17 @@ class CodeMixin:
         code = '#include '
         code += '"' if local else "<"
         code += include
-        if local:
+        if local and not include.endswith('.h'):
             code += '.h'
         code += '"' if local else ">"
         self.line(code)
+
+    ##############################################
+
+    def render(self, template, **kwargs):
+
+        self.append(self._generator_settings.render(template, kwargs))
+        self.new_line() # Fixme: why \n is removed ???
 
 ####################################################################################################
 
@@ -670,6 +700,7 @@ class JsonSerializerDefinition(MethodDefinition):
     def __init__(self, class_definition, generator_settings=None):
 
         MethodDefinition.__init__(self, class_definition, 'to_json',
+                                  [Argument('only_changed', 'bool', default='False')],
                                   return_type=Type('QJsonObject'), const=True,
                                   generator_settings=generator_settings)
 
@@ -823,19 +854,20 @@ class ClassMixin(CodeMixin):
 
     ##############################################
 
-    def __init__(self, name, parent_class, members, generator_settings):
+    def __init__(self, name, parent_class, members, generator_settings, private_members=[]):
 
         CodeMixin.__init__(self, generator_settings)
         self._name = name
         self._parent_class = parent_class
         self._members = members # Fixme: ???
+        self._private_members = private_members
         self._methods = []
 
     ##############################################
 
     def args_tuple(self):
 
-        return (self._name, self._parent_class, self._members, self._generator_settings)
+        return (self._name, self._parent_class, self._members, self._private_members, self._generator_settings)
 
     ##############################################
 
@@ -851,6 +883,14 @@ class ClassMixin(CodeMixin):
     def members(self):
         return self._members
 
+    @property
+    def private_members(self):
+        return self._private_members
+
+    @property
+    def all_members(self):
+        return self._private_members + self._members
+
 ####################################################################################################
 
 class ClassDefinition(ClassMixin):
@@ -860,9 +900,9 @@ class ClassDefinition(ClassMixin):
     def begin(self):
 
         if self._parent_class is not None:
-            self.format_indented_line("class {0._name} : public {0._parent_class}", self)
+            self.format_indented_line('class {0._name} : public {0._parent_class}', self)
         else:
-            self.format_indented_line("class {0._name}", self)
+            self.format_indented_line('class {0._name}', self)
         self.indented_line('{')
         self.indent()
         if self._parent_class == 'QObject':
@@ -898,8 +938,8 @@ class ClassDefinition(ClassMixin):
     @property
     def ctor_definition(self):
         arguments = []
-        if self._parent_class == 'QObject':
-            arguments.append(Argument.from_string('QObject * parent = nullptr'))
+        # if self._parent_class == 'QObject':
+        #     arguments.append(Argument.from_string('QObject * parent = nullptr'))
         return CtorDefinition(self, arguments)
 
     @property
@@ -1059,101 +1099,125 @@ class ClassImplementation(CodeMixin):
 
     def ctor(self):
 
-        definition = self._class_definition.ctor_definition
-        implementation = definition.to_ctor_implementation()
-        if self._class_definition.parent_class == 'QObject':
-            implementation.add_initializer('QObject', 'parent')
-        for member in self._class_definition.members:
-            implementation.add_initializer(member.m_name)
-        self.append(implementation)
+        # definition = self._class_definition.ctor_definition
+        # implementation = definition.to_ctor_implementation()
+        # if self._class_definition.parent_class == 'QObject':
+        #     implementation.add_initializer('QObject', 'parent')
+        # for member in self._class_definition.members:
+        #     implementation.add_initializer(member.m_name)
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('ctor.cpp', class_name=self._class_definition.name, members=self._class_definition.all_members)
 
     ##############################################
 
     def copy_ctor(self):
 
-        definition = self._class_definition.copy_ctor_definition
-        implementation = definition.to_ctor_implementation()
-        # if self._class_definition.parent_class == 'QObject':
-        #     implementation.add_initializer('QObject', 'parent')
-        for member in self._class_definition.members:
-            name = member.m_name
-            implementation.add_initializer(name, 'other.' + name)
-        self.append(implementation)
+        # definition = self._class_definition.copy_ctor_definition
+        # implementation = definition.to_ctor_implementation()
+        # # if self._class_definition.parent_class == 'QObject':
+        # #     implementation.add_initializer('QObject', 'parent')
+        # for member in self._class_definition.members:
+        #     name = member.m_name
+        #     implementation.add_initializer(name, 'other.' + name)
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('copy-ctor.cpp', class_name=cdef.name, members=cdef.all_members)
 
     ##############################################
 
     def json_ctor(self):
 
-        definition = self._class_definition.json_ctor_definition
-        implementation = definition.to_ctor_implementation()
-        implementation.add_initializer(definition.name)
-        for member in self._class_definition.members:
-            template = '{0.m_name} = json_object[QLatin1String("{0.name}")].{0.from_variant}()'
-            implementation.format_indented_line_c(template, member)
-            # QStringLiteral QLatin1String
-        self.append(implementation)
+        # definition = self._class_definition.json_ctor_definition
+        # implementation = definition.to_ctor_implementation()
+        # implementation.add_initializer(definition.name)
+        # for member in self._class_definition.members:
+        #     template = '{0.m_name} = json_object[QLatin1String("{0.name}")].{0.from_variant}()'
+        #     implementation.format_indented_line_c(template, member)
+        #     # QStringLiteral QLatin1String
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('json-ctor.cpp', class_name=cdef.name, members=cdef.members)
 
     ##############################################
 
     def json_serializer(self):
- 
-        definition = self._class_definition.json_serializer_definition
-        implementation = definition.to_implementation()
-        implementation.indented_line_c('QJsonObject json_object')
-        implementation.new_line()
-        for member in self._class_definition.members:
-            implementation.format_indented_line_c('json_object.insert(QLatin1String("{0.name}"), QJsonValue({0.m_name}))', member)
-        implementation.new_line()
-        implementation.indented_line_c('return json_object')
-        self.append(implementation)
+
+        # definition = self._class_definition.json_serializer_definition
+        # implementation = definition.to_implementation()
+        # implementation.indented_line_c('QJsonObject json_object')
+        # implementation.new_line()
+        # for member in self._class_definition.members:
+        #     implementation.format_indented_line_c('json_object.insert(QLatin1String("{0.name}"), QJsonValue({0.m_name}))', member)
+        # implementation.new_line()
+        # implementation.indented_line_c('return json_object')
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('json-serializer.cpp', class_name=cdef.name, members=cdef.members)
 
     ##############################################
 
     def dtor(self):
 
-        definition = self._class_definition.dtor_definition
-        implementation = definition.to_ctor_implementation()
-        self.append(implementation)
+        # definition = self._class_definition.dtor_definition
+        # implementation = definition.to_ctor_implementation()
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('dtor.cpp', class_name=cdef.name)
 
     ##############################################
 
     def copy_operator_ctor(self):
 
-        definition = self._class_definition.copy_operator_definition
-        implementation = definition.to_ctor_implementation()
-        implementation.indented_line('if (this != &other) {')
-        implementation.indent();
-        for member in self._class_definition.members:
-            name = member.m_name
-            implementation.format_indented_line_c('{0} = other.{0}', name)
-        implementation.unindent();
-        implementation.indented_line('}')
-        implementation.new_line()
-        implementation.indented_line_c('return *this')
-        self.append(implementation)
+        # definition = self._class_definition.copy_operator_definition
+        # implementation = definition.to_ctor_implementation()
+        # implementation.indented_line('if (this != &other) {')
+        # implementation.indent();
+        # for member in self._class_definition.members:
+        #     name = member.m_name
+        #     implementation.format_indented_line_c('{0} = other.{0}', name)
+        # implementation.unindent();
+        # implementation.indented_line('}')
+        # implementation.new_line()
+        # implementation.indented_line_c('return *this')
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('copy-operator.cpp', class_name=cdef.name, members=cdef.all_members)
 
     ##############################################
 
     def getter(self, member, const_ref=False):
 
-        definition = self._class_definition.getter_definition(member, const_ref)
-        implementation = definition.to_implementation()
-        implementation.format_indented_line_c('return {0.m_name}', member)
-        self.append(implementation)
+        # definition = self._class_definition.getter_definition(member, const_ref)
+        # implementation = definition.to_implementation()
+        # implementation.format_indented_line_c('return {0.m_name}', member)
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('getter.cpp', class_name=cdef.name, member=member)
 
     ##############################################
 
     def setter(self, member, const_ref=False):
 
-        definition = self._class_definition.setter_definition(member, const_ref)
-        implementation = definition.to_implementation()
-        implementation.format_indented_line('if ({0.m_name} != value) {{', member)
-        implementation.indent();
-        implementation.format_indented_line_c('{0.m_name} = value', member)
-        implementation.format_indented_line_c('emit {0.name}Changed()', member)
-        implementation.unindent();
-        implementation.indented_line('}')
-        self.append(implementation)
+        # definition = self._class_definition.setter_definition(member, const_ref)
+        # implementation = definition.to_implementation()
+        # implementation.format_indented_line('if ({0.m_name} != value) {{', member)
+        # implementation.indent();
+        # implementation.format_indented_line_c('{0.m_name} = value', member)
+        # implementation.format_indented_line_c('emit {0.name}Changed()', member)
+        # implementation.unindent();
+        # implementation.indented_line('}')
+        # self.append(implementation)
+
+        cdef = self._class_definition
+        self.render('setter.cpp', class_name=cdef.name, member=member)
 
 ####################################################################################################
 
