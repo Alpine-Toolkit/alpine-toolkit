@@ -44,6 +44,14 @@
 
 /**************************************************************************************************/
 
+/*
+ * To complete:
+ *  field enum to get position efficiently
+ *  number of fields
+ *  field iterator -> position, name, variant
+ *
+ */
+
 // Fixme: template ?
 class QcSchemaField
 {

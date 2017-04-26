@@ -30,16 +30,24 @@
 ####################################################################################################
 
 import os
-import json
+import sys
 
-from SqlOrm import SchemaRepository
+code_generator_path = os.path.dirname(os.path.abspath(__file__))
+source_path = os.path.dirname(code_generator_path)
+# print(source_path)
 
-from GeneratorSettings import generator_settings
+sys.path.insert(0, code_generator_path)
 
 ####################################################################################################
 
-source_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# print(source_path)
+import json
+
+from CodeGenerator.SqlOrm import SchemaRepository
+
+from CodeGenerator.GeneratorSettings import generator_settings
+
+####################################################################################################
+
 
 document_dir = os.path.join(source_path, 'src', 'document')
 
@@ -56,15 +64,16 @@ document_dir = os.path.join(source_path, 'src', 'document')
 ####################################################################################################
 
 json_schema = {
-    'document': {
-        'name': { 'type':'text' },
-        'author': { 'type':'text' },
-        'version': { 'type':'integer' },
-        'date': { 'type':'text', 'qt_type':'QDateTime' },
-        'description': { 'type':'text' },
-        'url': { 'type':'text', 'qt_type':'QUrl' },
-        'size': { 'type':'integer' },
-    }
+    'Document': (
+        { 'name': 'id', 'type':'integer' },
+        { 'name': 'name', 'type':'text' },
+        { 'name': 'author', 'type':'text' },
+        { 'name': 'version', 'type':'integer' },
+        { 'name': 'date', 'type':'text', 'qt_type':'QDateTime' },
+        { 'name': 'description', 'type':'text' },
+        { 'name': 'url', 'type':'text', 'qt_type':'QUrl' },
+        { 'name': 'size', 'type':'integer' },
+    )
 }
 
 json_data = json.dumps(json_schema, indent=4)
@@ -72,10 +81,11 @@ json_data = json.dumps(json_schema, indent=4)
 
 schema_repository = SchemaRepository(json_data)
 
+# Fixme: 
 for table in schema_repository:
-    print('Table', table.name)
-    print(table.to_sql())
-    header, source = table.generate_source(table.name, generator_settings)
+    # print('Table', table.name)
+    # print(table.to_sql())
+    header, source = table.generate_source('document', generator_settings)
     # header, source = table.generate_source(table.name)
     # print(header)
     # print(source)

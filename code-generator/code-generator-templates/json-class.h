@@ -1,5 +1,31 @@
+{# -*- mode: fundamental -*- -#}
 {%- with class_name = class_name + 'Schema' %}
-{% include "singleton.h" %}
+{#- {% include "includes/singleton.h" %} -#}
+class {{class_name}} : public QcSchema
+{
+public:
+  enum FieldPosition {
+{%- for member in members %}
+    {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
+  };
+
+public:
+  static {{class_name}} & instance()
+  {
+    static {{class_name}} m_instance;
+    return m_instance;
+  }
+
+  // delete copy and move constructors and assign operators
+  {{class_name}}(const {{class_name}} &) = delete;              // Copy constructor
+  {{class_name}}({{class_name}} &&) = delete;                   // Move constructor
+  {{class_name}} & operator=(const {{class_name}} &) = delete;  // Copy assign
+  {{class_name}} & operator=({{class_name}} &&) = delete;       // Move assign
+
+protected:
+  {{class_name}}();
+  ~{{class_name}}();
+};
 {%- endwith %}
 
 /**************************************************************************************************/
@@ -8,27 +34,26 @@ class {{class_name}} : public QObject
 {
   Q_OBJECT
 {%- for member in members %}
-  Q_PROPERTY(QString {{member.name}} READ {{member.name}} WRITE set_{{member.name}} NOTIFY {{member.name}}Changed){% endfor %}
-
-public:
-  enum FieldPosition {
-{%- for member in members %}
-    {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
-  };
+  Q_PROPERTY({{member.type}} {{member.name}} READ {{member.name}} WRITE set_{{member.name}} NOTIFY {{member.name}}Changed){% endfor %}
 
 public:
   {{class_name}}();
   {{class_name}}(const {{class_name}} & other);
   {{class_name}}(const QJsonObject & json_object);
+  {{class_name}}(const QVariantMap & variant_map);
   ~{{class_name}}();
 
   {{class_name}} & operator=(const {{class_name}} & other);
 
-{%- for member in members %}
-  const QString & {{member.name}}() const { return m_{{member.name}}; }
-  void set_{{member.name}}(const QString & value);
+  bool operator==(const {{class_name}} & other);
+{% for member in members %}
+  inline {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
+  void set_{{member.name}}({{member.setter_type}} value);
 {% endfor %}
-  QJsonObject to_json(bool only_changed = False) const;
+  QJsonObject to_json(bool only_changed = false) const;
+  QVariantMap to_variant_map(bool only_changed = false) const;
+{% for member in members %}
+  inline bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::FieldPosition::{{member.name|upper}}]; }{% endfor %}
 
 signals:
 {%- for member in members %}
@@ -37,9 +62,9 @@ signals:
 private:
   QBitArray m_bits;
 {%- for member in members %}
-  QString m_{{member.name}};{% endfor %}
+  {{member.type}} m_{{member.name}};{% endfor %}
 };
 
-{% include "data-stream-operator.h" %}
+{% include "includes/data-stream-operator.h" %}
 
-{% include "debug.h" %}
+{% include "includes/debug.h" %}

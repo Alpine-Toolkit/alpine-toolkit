@@ -26,8 +26,6 @@
 
 ####################################################################################################
 
-import os
-
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader
 
 ####################################################################################################
@@ -36,9 +34,9 @@ class TemplateGenerator:
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, template_path):
 
-        self._template_path = os.path.join(os.path.dirname(__file__), 'templates')
+        self._template_path = template_path
 
         self._environment = Environment(
             # loader=PackageLoader('', 'templates'),

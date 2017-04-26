@@ -29,14 +29,25 @@
 
 ####################################################################################################
 
+import os
+import sys
+
+code_generator_path = os.path.dirname(os.path.abspath(__file__))
+source_path = os.path.dirname(code_generator_path)
+# print(source_path)
+
+sys.path.insert(0, code_generator_path)
+
+####################################################################################################
+
 import argparse
 
-from CppCodeGenerator import Variable
+from CodeGenerator.CppCodeGenerator import Variable
 
-from CppClassGenerator import CppClassGenerator
-from TemplateGenerator import TemplateGenerator
+from CodeGenerator.CppClassGenerator import CppClassGenerator
+from CodeGenerator.TemplateGenerator import TemplateGenerator
 
-from GeneratorSettings import generator_settings
+from CodeGenerator.GeneratorSettings import generator_settings
 
 ####################################################################################################
 #

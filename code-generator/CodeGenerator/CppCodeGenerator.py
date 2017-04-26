@@ -30,6 +30,8 @@ import os
 
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader
 
+from .TemplateGenerator import TemplateGenerator
+
 ####################################################################################################
 
 class GeneratorSettings:
@@ -50,16 +52,10 @@ class GeneratorSettings:
         self._footer = footer
         self._indent = indent
 
-        self._template_path = os.path.join(os.path.dirname(__file__), 'code-generator-templates')
+        self._template_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                                           'code-generator-templates')
 
-        self._environment = Environment(
-            # loader=PackageLoader('', 'templates'),
-            loader=FileSystemLoader(self._template_path),
-
-            # trim_blocks=True,
-            # lstrip_blocks=True,
-            # keep_trailing_newline
-        )
+        self._template_generator = TemplateGenerator(self._template_path)
 
     ##############################################
 
@@ -91,11 +87,15 @@ class GeneratorSettings:
     def indent(self):
         return self._indent
 
+    @property
+    def template_path(self):
+        return self._template_path
+
     ##############################################
 
     def render(self, template, context):
 
-        return self._environment.get_template(template).render(**context)
+        return self._template_generator.render(template, context)
 
 ####################################################################################################
 
@@ -268,8 +268,6 @@ class Type:
         'bool': 'toBool',
         'int': 'toInt',
         'double': 'toDouble',
-        'QString': 'toString',
-        # array object
         }
 
     ##############################################
@@ -304,7 +302,7 @@ class Type:
 
     def args_tuple(self):
 
-        return (self.type, self.is_const, self.is_ref, self.is_ptr)
+        return (self._type, self.is_const, self.is_ref, self.is_ptr)
 
     ##############################################
 
@@ -348,6 +346,12 @@ class Type:
 
     ##############################################
 
+    @property
+    def is_q_type(self):
+        return self._type.startswith('Q')
+
+    ##############################################
+
     def __str__(self):
 
         if self._const:
@@ -363,13 +367,67 @@ class Type:
             elif self._ptr:
                 return self.ptr_type
             else:
-                return self.type
+                return self._type
 
     ##############################################
 
     @property
     def from_variant(self):
-        return self.__TYPE_TO_VARIANT__[self.type]
+
+        # QVariant().toXxx()
+
+        if self.is_q_type:
+            return 'to' + self._type[1:]
+        else:
+            return self.__TYPE_TO_VARIANT__[self._type]
+
+    ##############################################
+
+    @property
+    def from_json(self):
+
+        # QJsonValue).toXxx()
+
+        if self._type in ('int', 'unsigned int'):
+            return 'toInt'
+        elif self._type in ('float', 'double', 'qreal'):
+            return 'toDouble'
+        elif self._type in ('QString', 'QUrl'):
+            return 'toString'
+        elif self._type in ('QDateTime',):
+            return 'toVariant().' + self.from_variant
+        # toArray
+        # toObject
+        else:
+            raise ValueError("Don't know how to convert {} from JSON".format(self._type))
+
+    ##############################################
+
+    @property
+    def from_json_cast(self):
+
+        # Cast for JSON value
+
+        return None
+
+        # if self._type == 'QDateTime':
+        #     return 'QDateTime::fromString'
+        # else:
+        #     return None
+
+    ##############################################
+
+    @property
+    def m_to_json(self):
+
+        # Member to JSON value
+
+        if self._type == 'QDateTime':
+            return '{0.m_name}.toString(Qt::ISODate)'.format(self)
+        elif self._type in ('QUrl'):
+            return '{0.m_name}.toString()'.format(self)
+        else:
+            return self.m_name
 
     ##############################################
 
@@ -388,7 +446,7 @@ class Type:
     @property
     def getter_type(self):
 
-        if self._type.startswith('Q'):
+        if self.is_q_type:
             return self.to_const_ref()
         else:
             return Type(*Type.args_tuple(self)) # Fixme: to_type()
@@ -398,7 +456,7 @@ class Type:
     @property
     def setter_type(self):
 
-        if self._type.startswith('Q'):
+        if self.is_q_type:
             return self.to_const_ref()
         else:
             return Type(*Type.args_tuple(self)) # Fixme: to_type()
@@ -440,17 +498,18 @@ class Variable(Type):
 
     ##############################################
 
-    def __init__(self, name, data_type, const=False, ref=False, ptr=False):
+    def __init__(self, name, data_type, const=False, ref=False, ptr=False, value=None):
 
         Type.__init__(self, data_type, const, ref, ptr)
 
         self._name = name
+        self._value = value
 
     ##############################################
 
     def args_tuple(self):
 
-        return tuple([self._name] + list(Type.args_tuple(self)))
+        return tuple([self._name] + list(Type.args_tuple(self)) + [self._value])
 
     ##############################################
 
@@ -459,11 +518,19 @@ class Variable(Type):
         return self._name
 
     @property
+    def is_m_name(self):
+        return self._name.startswith('m_')
+
+    @property
     def m_name(self):
-        if self.name.startswith('m_'):
+        if self.is_m_name:
             return self._name
         else:
             return 'm_' + self._name
+
+    @property
+    def value(self):
+        return self._value
 
     ##############################################
 
@@ -501,7 +568,7 @@ class Variable(Type):
 
     def to_member(self):
 
-        if self._name.startswith('m_'):
+        if self.is_m_name:
             return self
         else:
             args = Type.args_tuple(self)

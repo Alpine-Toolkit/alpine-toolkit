@@ -26,7 +26,7 @@
 
 ####################################################################################################
 
-from CppCodeGenerator import Header, ClassDefinition, Source, ClassImplementation
+from .CppCodeGenerator import Header, ClassDefinition, Source, ClassImplementation
 
 ####################################################################################################
 

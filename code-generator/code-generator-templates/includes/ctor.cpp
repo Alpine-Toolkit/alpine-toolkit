@@ -6,6 +6,6 @@
 {%- endfor %}
 -#}
 {%- for member in members %}
-{% if loop.first %}  : {% else %}    {% endif %}{{member.m_name}}(){% if not loop.last %},{% endif %}
+{% if loop.first %}  : {% else %}    {% endif %}{{member.m_name}}({% if member.value %}{{member.value}}{% endif %}){% if not loop.last %},{% endif %}
 {%- endfor %}
 {}

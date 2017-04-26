@@ -1,22 +1,37 @@
-{%- with members = all_members %}
-{% include "ctor.cpp" %}
+{# -*- mode: fundamental -*- -#}
+{{class_name}}Schema::{{class_name}}Schema()
+: QcSchema(QLatin1String("{{class_name}}"))
+{
+{%- for field in fields %}
+  add_field(QcSchemaField(QLatin1String("{{field.name}}"),
+                          QLatin1String("{{field.qt_type}}"),
+                          QLatin1String("{{field.sql_type}}")));{% endfor %}
+}
 
-{% include "copy-ctor.cpp" %}
+{{class_name}}Schema::~{{class_name}}Schema()
+{}
+
+/**************************************************************************************************/
+{% with members = all_members %}
+{% include "includes/ctor.cpp" %}
+
+{% include "includes/copy-ctor.cpp" %}
 {%- endwith %}
 
-{% include "json-ctor.cpp" %}
+{% include "includes/json-ctor.cpp" %}
 
-{% include "dtor.cpp" %}
-
-{%- with members = all_members %}
-{% include "copy-operator.cpp" %}
+{% include "includes/dtor.cpp" %}
+{% with members = all_members %}
+{% include "includes/copy-operator.cpp" %}
 {%- endwith %}
-
-{%- for member in members %}
-{% include "setter.cpp" %}
+{% with members = all_members %}
+{% include "includes/equal-operator.cpp" %}
+{%- endwith %}
+{% for member in members %}
+{% include "includes/setter.cpp" %}
 {% endfor %}
-{% include "json-serializer.cpp" %}
+{% include "includes/json-serializer.cpp" %}
 
-{% include "data-stream-operator.cpp" %}
+{% include "includes/data-stream-operator.cpp" %}
 
-{% include "debug.cpp" %}
+{% include "includes/debug.cpp" %}
