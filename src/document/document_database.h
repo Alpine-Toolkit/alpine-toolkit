@@ -43,6 +43,9 @@ public:
   DocumentDatabase(const QString & sqlite_path);
   ~DocumentDatabase();
 
+  // Fixme: import table API ???
+  QcDatabaseTable * table() { return m_document_table; }
+
 private:
   QcDatabaseTable * m_document_table;
 };
