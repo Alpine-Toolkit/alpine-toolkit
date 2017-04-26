@@ -147,6 +147,7 @@ class Schema:
         class_name = self._name.title()
 
         members = [field.to_variable() for field in self]
+        member_types = set([member.type for member in members])
         private_members = [Variable('bits', 'QBitArray')]
         all_members = private_members + members
 
@@ -161,20 +162,31 @@ class Schema:
         header.new_line()
         header.include('database/schema.h', local=True)
         header.new_line()
-
         header.rule()
         header.new_line()
+        header.render('json-class.h', class_name=self._name.title(), members=members)
+        header.new_line()
+        header.footer()
 
-        # header.render('singleton.h', class_name=self._name.title() + 'Schema')
-        # header.new_line()
+        source = Source(name, generator_settings)
+        source.comment(generator_comment)
+        source.header()
+        source.include(name, local=True)
+        source.new_line()
+        source.rule()
+        source.new_line()
+        source.comment('QC_BEGIN_NAMESPACE')
+        source.render('json-class.cpp',
+                      class_name=self._name.title(),
+                      members=members, all_members=all_members, member_types=member_types)
+        source.new_line()
+        source.comment('QC_END_NAMESPACE')
+        source.footer()
 
-        # header.rule()
-        # header.new_line()
-
-        class_definition = ClassDefinition(class_name, 'QObject',
-                                           members,
-                                           private_members=private_members,
-                                           generator_settings=generator_settings)
+        # class_definition = ClassDefinition(class_name, 'QObject',
+        #                                    members,
+        #                                    private_members=private_members,
+        #                                    generator_settings=generator_settings)
         # class_definition.begin()
         # for member in members:
         #     class_definition.property(member)
@@ -193,8 +205,6 @@ class Schema:
         #     class_definition.setter(member)
         # class_definition.new_line()
         # class_definition.json_serializer()
-        # # to_json_method = MethodDefinition(class_definition, 'to_json', return_type=Type('QJsonObject'), const=True)
-        # # class_definition.append_method(to_json_method)
         # class_definition.signals()
         # for member in members:
         #     class_definition.property_changed_signal(member)
@@ -203,26 +213,9 @@ class Schema:
         #     class_definition.member(member)
         # class_definition.close()
         # header.append(class_definition)
-        # header.format_indented_line_c('QDataStream & operator<<(QDataStream & out, const {0.name} & obj)', self)
-        # header.format_indented_line_c('QDataStream & operator>>(QDataStream & in, {0.name} & obj)', self)
-        # header.format_indented_line_c('qRegisterMetaTypeStreamOperators<{0.name}>("{0.name}")', self)
         # header.render('data-stream-operator.h', class_name=class_name);
         # header.new_line()
         # header.render('debug.h', class_name=class_name);
-        # header.new_line()
-        header.render('json-class.h', class_name=self._name.title(), members=members)
-        header.new_line()
-        header.footer()
-
-        source = Source(name, generator_settings)
-        source.comment(generator_comment)
-        source.header()
-        source.include(name, local=True)
-        source.new_line()
-        source.rule()
-        source.new_line()
-        source.comment('QC_BEGIN_NAMESPACE')
-        # source.new_line()
 
         # class_implementation = class_definition.to_implementation()
         # class_implementation.ctor()
@@ -234,25 +227,16 @@ class Schema:
         # class_implementation.dtor()
         # class_implementation.new_line()
         # class_implementation.copy_operator_ctor()
-
         # for member in members:
         #     class_implementation.new_line()
         #     class_implementation.setter(member)
-
         # class_implementation.new_line()
         # class_implementation.json_serializer()
-
         # source.append(class_implementation)
         # source.new_line()
-        member_types = set([member.type for member in members])
         # source.render('data-stream-operator.cpp', class_name=class_name, members=members, member_types=member_types);
         # source.new_line()
         # source.render('debug.cpp', class_name=class_name, members=members);
-
-        source.render('json-class.cpp', class_name=self._name.title(), members=members, all_members=all_members, member_types=member_types)
-        source.new_line()
-        source.comment('QC_END_NAMESPACE')
-        source.footer()
 
         return str(header), str(source)
 
