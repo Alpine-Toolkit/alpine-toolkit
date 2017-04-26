@@ -40,6 +40,7 @@
 #include <QString>
 #include <QStringList>
 #include <QVariant>
+#include <QVariantHash>
 
 #include "database/schema.h"
 
@@ -86,10 +87,8 @@ class QcDatabase;
 class QcDatabaseTable
 {
 public:
-  typedef QHash<QString, QVariant> KeyValuePair;
-
-  static QString format_kwarg(const KeyValuePair & kwargs, const QString & sperator = QStringLiteral(","));
-  static QString format_simple_where(const KeyValuePair & kwargs);
+  static QString format_kwarg(const QVariantHash & kwargs, const QString & sperator = QStringLiteral(","));
+  static QString format_simple_where(const QVariantHash & kwargs);
 
 public:
   QcDatabaseTable();
@@ -109,21 +108,21 @@ public:
   bool drop();
 
   QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
-  QSqlQuery select(const QStringList & fields, const KeyValuePair & kwargs) const {
+  QSqlQuery select(const QStringList & fields, const QVariantHash & kwargs) const {
     return select(fields, format_simple_where(kwargs));
   }
   QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
-  QSqlRecord select_one(const QStringList & fields, const KeyValuePair & kwargs) const {
+  QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
     return select_one(fields, format_simple_where(kwargs));
   }
-  // select_one(const QList<QcSchemaField> & fields, const KeyValuePair & kwargs) // -> success/error callback, return QList<QVariant> ?
-  QSqlQuery insert(const KeyValuePair & kwargs, bool commit = false);
-  QSqlQuery update(const KeyValuePair & kwargs, const QString & where = QString());
-  QSqlQuery update(const KeyValuePair & kwargs, const KeyValuePair & where_kwargs) {
+  // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
+  QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
+  QSqlQuery update(const QVariantHash & kwargs, const QString & where = QString());
+  QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
     return update(kwargs, format_simple_where(where_kwargs));
   }
   QSqlQuery delete_row(const QString & where = QString());
-  QSqlQuery delete_row(const KeyValuePair & kwargs) {
+  QSqlQuery delete_row(const QVariantHash & kwargs) {
     return delete_row(format_simple_where(kwargs));
   }
 

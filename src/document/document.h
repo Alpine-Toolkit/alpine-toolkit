@@ -95,7 +95,7 @@ public:
   Document();
   Document(const Document & other);
   Document(const QJsonObject & json_object);
-  Document(const QVariantMap & variant_map);
+  Document(const QVariantHash & variant_hash);
   ~Document();
 
   Document & operator=(const Document & other);
@@ -127,7 +127,7 @@ public:
   void set_size(int value);
 
   QJsonObject to_json(bool only_changed = false) const;
-  QVariantMap to_variant_map(bool only_changed = false) const;
+  QVariantHash to_variant_hash(bool only_changed = false) const;
 
   inline bool is_id_modified() const { return m_bits[DocumentSchema::FieldPosition::ID]; }
   inline bool is_name_modified() const { return m_bits[DocumentSchema::FieldPosition::NAME]; }

@@ -31,7 +31,7 @@
 
 /**************************************************************************************************/
 
-#include "document/document_database.h"
+#include "document/document.h"
 
 #include <QJsonDocument>
 #include <QtDebug>
@@ -48,29 +48,30 @@ private slots:
 
 void TestDocument::constructor()
 {
-  QVariantMap variant_map;
-  variant_map["name"] = "ffcam-refuges.json";
-  variant_map["author"] = "Fabrice Salvaire";
-  variant_map["version"] = 1;
-  variant_map["date"] = "2017-04-21T18:28:11Z";
-  variant_map["description"] = "Base de données des refuges FFCAM";
-  variant_map["url"] = "filer_public/ef/c7/efc713f4-e797-458c-9844-9bc3ae8fe3eb/ffcam-refuges.json";
-  variant_map["size"] = 74840;
+  QVariantHash variant_hash;
+  variant_hash["id"] = "1"; // Should be read-only !
+  variant_hash["name"] = "ffcam-refuges.json";
+  variant_hash["author"] = "Fabrice Salvaire";
+  variant_hash["version"] = 1;
+  variant_hash["date"] = "2017-04-21T18:28:11Z";
+  variant_hash["description"] = "Base de données des refuges FFCAM";
+  variant_hash["url"] = "filer_public/ef/c7/efc713f4-e797-458c-9844-9bc3ae8fe3eb/ffcam-refuges.json";
+  variant_hash["size"] = 74840;
 
   // QJsonParseError parse_error;
   // QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
   // if (parse_error.error != QJsonParseError::NoError)
   //   qCritical() << parse_error.errorString();
 
-  Document document_from_variant_map(variant_map);
-  qInfo() << document_from_variant_map;
-  QVariantMap bootstraped_variant_map = document_from_variant_map.to_variant_map();
-  // qInfo() << bootstraped_variant_map;
-  // QVERIFY(bootstraped_variant_map == variant_map); // fail ???
-  for (const auto & key : variant_map.keys())
-    QVERIFY(variant_map[key] == bootstraped_variant_map[key]);
+  Document document_from_variant_hash(variant_hash);
+  qInfo() << document_from_variant_hash;
+  QVariantHash bootstraped_variant_hash = document_from_variant_hash.to_variant_hash();
+  // qInfo() << bootstraped_variant_hash;
+  // QVERIFY(bootstraped_variant_hash == variant_hash); // fail ???
+  for (const auto & key : variant_hash.keys())
+    QVERIFY(variant_hash[key] == bootstraped_variant_hash[key]);
 
-  QJsonDocument json_document = QJsonDocument::fromVariant(variant_map);
+  QJsonDocument json_document = QJsonDocument::fromVariant(variant_hash);
   qInfo() << json_document.toJson();
   Document document_from_json(json_document.object());
   QJsonObject json_object = document_from_json.to_json();
@@ -84,13 +85,13 @@ void TestDocument::constructor()
   QVERIFY(document_copy == document_from_json);
   QVERIFY(document_copy_2 == document_from_json);
 
-  Document document(document_from_variant_map);
+  Document document(document_from_variant_hash);
   QVERIFY(document.is_name_modified() == false);
   QString name = "John Doe";
   document.set_name(name);
   QVERIFY(document.name() == name);
   QVERIFY(document.is_name_modified() == true);
-  qInfo() << document.to_variant_map(true);
+  qInfo() << document.to_variant_hash(true);
   qInfo() << document.to_json(true);
 }
 

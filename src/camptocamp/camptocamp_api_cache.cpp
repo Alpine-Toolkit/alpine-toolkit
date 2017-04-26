@@ -76,7 +76,7 @@ C2cApiCache::~C2cApiCache()
 QString
 C2cApiCache::read_metadata(const QString & key)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[KEY] = key;
   QSqlRecord record = m_metadata_table->select_one(QStringList(VALUE), kwargs);
   return record.value(0).toString();
@@ -85,7 +85,7 @@ C2cApiCache::read_metadata(const QString & key)
 void
 C2cApiCache::init_metadata(const QString & key, const QString & value)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[KEY] = key;
   kwargs[VALUE] = value;
   m_metadata_table->insert(kwargs);
@@ -94,9 +94,9 @@ C2cApiCache::init_metadata(const QString & key, const QString & value)
 void
 C2cApiCache::update_metadata(const QString & key, const QString & value)
 {
-  QcDatabaseTable::KeyValuePair kwargs_where;
+  QVariantHash kwargs_where;
   kwargs_where[KEY] = key;
-  QcDatabaseTable::KeyValuePair kwargs_update;
+  QVariantHash kwargs_update;
   kwargs_update[VALUE] = value;
   m_metadata_table->update(kwargs_update, kwargs_where);
 }
@@ -104,7 +104,7 @@ C2cApiCache::update_metadata(const QString & key, const QString & value)
 void
 C2cApiCache::init()
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
 
   // Set version
   init_metadata(VERSION, QString::number(1));
@@ -135,14 +135,14 @@ C2cApiCache::save_document(const C2cDocument & document)
 {
   unsigned int document_id = document.id();
   if (has_document(document_id)) {
-    QcDatabaseTable::KeyValuePair kwargs_where;
+    QVariantHash kwargs_where;
     kwargs_where[ID] = document_id;
-    QcDatabaseTable::KeyValuePair kwargs_update;
+    QVariantHash kwargs_update;
     kwargs_update[DATA] = document.to_json();
     m_document_table->update(kwargs_update, kwargs_where);
     qInfo() << "Updated document " << document_id << " in cache";
   } else  {
-    QcDatabaseTable::KeyValuePair kwargs;
+    QVariantHash kwargs;
     kwargs[ID] = document_id;
     kwargs[DATA] = document.to_json();
     m_document_table->insert(kwargs);
@@ -153,7 +153,7 @@ C2cApiCache::save_document(const C2cDocument & document)
 bool
 C2cApiCache::has_document(unsigned int document_id) const
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[ID] = document_id;
   // Fixme: count
   QSqlRecord record = m_document_table->select_one(QStringList(ID), kwargs);
@@ -163,7 +163,7 @@ C2cApiCache::has_document(unsigned int document_id) const
 C2cDocument *
 C2cApiCache::get_document(unsigned int document_id) const
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[ID] = document_id;
   QSqlRecord record = m_document_table->select_one(QStringList(DATA), kwargs);
   if (record.isEmpty())

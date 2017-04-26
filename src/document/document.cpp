@@ -103,17 +103,17 @@ Document::Document(const QJsonObject & json_object)
    m_size = json_object[QLatin1String("size")].toInt();
 }
 
-Document::Document(const QVariantMap & variant_map)
+Document::Document(const QVariantHash & variant_hash)
  : Document()
 {
-   m_id = variant_map[QLatin1String("id")].toInt();
-   m_name = variant_map[QLatin1String("name")].toString();
-   m_author = variant_map[QLatin1String("author")].toString();
-   m_version = variant_map[QLatin1String("version")].toInt();
-   m_date = variant_map[QLatin1String("date")].toDateTime();
-   m_description = variant_map[QLatin1String("description")].toString();
-   m_url = variant_map[QLatin1String("url")].toUrl();
-   m_size = variant_map[QLatin1String("size")].toInt();
+   m_id = variant_hash[QLatin1String("id")].toInt();
+   m_name = variant_hash[QLatin1String("name")].toString();
+   m_author = variant_hash[QLatin1String("author")].toString();
+   m_version = variant_hash[QLatin1String("version")].toInt();
+   m_date = variant_hash[QLatin1String("date")].toDateTime();
+   m_description = variant_hash[QLatin1String("description")].toString();
+   m_url = variant_hash[QLatin1String("url")].toUrl();
+   m_size = variant_hash[QLatin1String("size")].toInt();
 }
 
 Document::~Document()
@@ -278,40 +278,40 @@ Document::to_json(bool only_changed) const
   return json_object;
 }
 
-QVariantMap
-Document::to_variant_map(bool only_changed) const
+QVariantHash
+Document::to_variant_hash(bool only_changed) const
 {
-  QVariantMap variant_map;
+  QVariantHash variant_hash;
 
  if (only_changed) {
     if (is_id_modified())
-      variant_map[QLatin1String("id")] = m_id;
+      variant_hash[QLatin1String("id")] = m_id;
     if (is_name_modified())
-      variant_map[QLatin1String("name")] = m_name;
+      variant_hash[QLatin1String("name")] = m_name;
     if (is_author_modified())
-      variant_map[QLatin1String("author")] = m_author;
+      variant_hash[QLatin1String("author")] = m_author;
     if (is_version_modified())
-      variant_map[QLatin1String("version")] = m_version;
+      variant_hash[QLatin1String("version")] = m_version;
     if (is_date_modified())
-      variant_map[QLatin1String("date")] = m_date;
+      variant_hash[QLatin1String("date")] = m_date;
     if (is_description_modified())
-      variant_map[QLatin1String("description")] = m_description;
+      variant_hash[QLatin1String("description")] = m_description;
     if (is_url_modified())
-      variant_map[QLatin1String("url")] = m_url;
+      variant_hash[QLatin1String("url")] = m_url;
     if (is_size_modified())
-      variant_map[QLatin1String("size")] = m_size;
+      variant_hash[QLatin1String("size")] = m_size;
   } else {
-    variant_map[QLatin1String("id")] = m_id;
-    variant_map[QLatin1String("name")] = m_name;
-    variant_map[QLatin1String("author")] = m_author;
-    variant_map[QLatin1String("version")] = m_version;
-    variant_map[QLatin1String("date")] = m_date;
-    variant_map[QLatin1String("description")] = m_description;
-    variant_map[QLatin1String("url")] = m_url;
-    variant_map[QLatin1String("size")] = m_size;
+    variant_hash[QLatin1String("id")] = m_id;
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("author")] = m_author;
+    variant_hash[QLatin1String("version")] = m_version;
+    variant_hash[QLatin1String("date")] = m_date;
+    variant_hash[QLatin1String("description")] = m_description;
+    variant_hash[QLatin1String("url")] = m_url;
+    variant_hash[QLatin1String("size")] = m_size;
   }
 
-  return variant_map;
+  return variant_hash;
 }
 
 QDataStream &
@@ -332,9 +332,9 @@ operator<<(QDataStream & out, const Document & obj)
 QDataStream &
 operator>>(QDataStream & in, Document & obj)
 {
-  QDateTime _QDateTime;
-  int _int;
   QUrl _QUrl;
+  int _int;
+  QDateTime _QDateTime;
   QString _QString;
 
   in >> _int;

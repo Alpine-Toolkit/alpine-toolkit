@@ -13,9 +13,9 @@ json_object[QLatin1String("{{member.name}}")].{{member.from_json}}()
   {%- endif %}{% endfor %}
 }
 
-{{class_name}}::{{class_name}}(const QVariantMap & variant_map)
+{{class_name}}::{{class_name}}(const QVariantHash & variant_hash)
  : {{class_name}}()
 {
 {%- for member in members %}
-   m_{{member.name}} = variant_map[QLatin1String("{{member.name}}")].{{member.from_variant}}();{% endfor %}
+   m_{{member.name}} = variant_hash[QLatin1String("{{member.name}}")].{{member.from_variant}}();{% endfor %}
 }

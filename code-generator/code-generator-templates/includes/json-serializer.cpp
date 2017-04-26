@@ -22,14 +22,14 @@ QJsonObject
   return json_object;
 }
 
-QVariantMap
-{{class_name}}::to_variant_map(bool only_changed) const
+QVariantHash
+{{class_name}}::to_variant_hash(bool only_changed) const
 {
-  QVariantMap variant_map;
+  QVariantHash variant_hash;
 
  if (only_changed) {
 {%- macro insert(member) -%}
-variant_map[QLatin1String("{{member.name}}")] = {{member.m_name}};
+variant_hash[QLatin1String("{{member.name}}")] = {{member.m_name}};
 {%- endmacro -%}
 {%- for member in members %}
     {#- if (m_bits[{{class_name}}Schema::FieldPosition::{{member.name|upper}}]) #}
@@ -42,5 +42,5 @@ variant_map[QLatin1String("{{member.name}}")] = {{member.m_name}};
 {%- endfor %}
   }
 
-  return variant_map;
+  return variant_hash;
 }

@@ -40,7 +40,7 @@ public:
   {{class_name}}();
   {{class_name}}(const {{class_name}} & other);
   {{class_name}}(const QJsonObject & json_object);
-  {{class_name}}(const QVariantMap & variant_map);
+  {{class_name}}(const QVariantHash & variant_hash);
   ~{{class_name}}();
 
   {{class_name}} & operator=(const {{class_name}} & other);
@@ -51,7 +51,7 @@ public:
   void set_{{member.name}}({{member.setter_type}} value);
 {% endfor %}
   QJsonObject to_json(bool only_changed = false) const;
-  QVariantMap to_variant_map(bool only_changed = false) const;
+  QVariantHash to_variant_hash(bool only_changed = false) const;
 {% for member in members %}
   inline bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::FieldPosition::{{member.name|upper}}]; }{% endfor %}
 

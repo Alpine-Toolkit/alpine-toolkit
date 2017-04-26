@@ -69,8 +69,7 @@ SettingsDatabase::register_tables()
 int
 SettingsDatabase::add_directory(const QString & directory, int parent)
 {
-  // Fixme: KeyValuePair namespace ?
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[NAME] = directory;
   kwargs[PARENT] = parent;
   QSqlQuery query = m_directory_table->insert(kwargs);
@@ -86,7 +85,7 @@ SettingsDatabase::get_directory_id(const QString & directory)
 
   int parent = 0; // start at root
   for (const auto & directory : directories) {
-    QcDatabaseTable::KeyValuePair kwargs;
+    QVariantHash kwargs;
     kwargs[NAME] = directory;
     kwargs[PARENT] = parent;
     QSqlRecord record_ = m_directory_table->select_one(QStringList(ROWID), kwargs);
@@ -131,7 +130,7 @@ SettingsDatabase::parent_of(const QString & key)
 bool
 SettingsDatabase::contains(const QString & key)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
   QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
@@ -142,7 +141,7 @@ SettingsDatabase::contains(const QString & key)
 int
 SettingsDatabase::rowid_of(const QString & key)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
   QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
@@ -156,7 +155,7 @@ SettingsDatabase::rowid_of(const QString & key)
 QVariant
 SettingsDatabase::value(const QString & key)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
   QSqlRecord record = m_key_value_table->select_one(QStringList(VALUE), kwargs);
@@ -168,16 +167,16 @@ SettingsDatabase::set_value(const QString & key, const QVariant & value)
 {
   int rowid = rowid_of(key);
   if (rowid == -1) {
-    QcDatabaseTable::KeyValuePair kwargs;
+    QVariantHash kwargs;
     kwargs[NAME] = name_part(key);
     kwargs[PARENT] = parent_of(key);
     kwargs[VALUE] = value;
     QSqlQuery query = m_key_value_table->insert(kwargs);
     qInfo() << "added key" << key << value;
   } else {
-    QcDatabaseTable::KeyValuePair kwargs_where;
+    QVariantHash kwargs_where;
     kwargs_where[ROWID] = rowid;
-    QcDatabaseTable::KeyValuePair kwargs_update;
+    QVariantHash kwargs_update;
     qInfo() << "value is of type" << value.typeName();
     kwargs_update[VALUE] = value;
     m_key_value_table->update(kwargs_update, kwargs_where);
@@ -188,7 +187,7 @@ SettingsDatabase::set_value(const QString & key, const QVariant & value)
 void
 SettingsDatabase::remove(const QString & key)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[NAME] = name_part(key);
   kwargs[PARENT] = parent_of(key);
   m_key_value_table->delete_row(kwargs);
@@ -197,7 +196,7 @@ SettingsDatabase::remove(const QString & key)
 QStringList
 SettingsDatabase::keys(const QString & path)
 {
-  QcDatabaseTable::KeyValuePair kwargs;
+  QVariantHash kwargs;
   kwargs[PARENT] = parent_of(path + '/'); // Fixme:
   QSqlQuery query = m_key_value_table->select(QStringList(NAME), kwargs);
   QStringList keys;
@@ -215,7 +214,7 @@ SettingsDatabase::parent_to_path(int parent, PathCache & paths)
     QStringList fields;
     fields << NAME << PARENT;
     while (parent) {
-      QcDatabaseTable::KeyValuePair kwargs;
+      QVariantHash kwargs;
       kwargs[ROWID] = parent;
       QSqlRecord record_ = m_directory_table->select_one(fields, kwargs);
       QcSqlRecordWrapper record(record_);

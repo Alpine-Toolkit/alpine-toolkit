@@ -40,7 +40,7 @@
 /**************************************************************************************************/
 
 QString
-QcDatabaseTable::format_kwarg(const KeyValuePair & kwargs, const QString & separator)
+QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separator)
 {
   QString kwarg_string;
   int i = 0;
@@ -62,7 +62,7 @@ QcDatabaseTable::format_kwarg(const KeyValuePair & kwargs, const QString & separ
 }
 
 QString
-QcDatabaseTable::format_simple_where(const KeyValuePair & kwargs)
+QcDatabaseTable::format_simple_where(const QVariantHash & kwargs)
 {
   return format_kwarg(kwargs, QStringLiteral(" AND "));
 }
@@ -136,7 +136,7 @@ QcDatabaseTable::drop()
 
 
 QSqlQuery
-QcDatabaseTable::insert(const KeyValuePair & kwargs, bool commit_request)
+QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit_request)
 {
   QSqlQuery query = m_database->new_query();
   QStringList fields = kwargs.keys();
@@ -196,7 +196,7 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
 
 
 QSqlQuery
-QcDatabaseTable::update(const KeyValuePair & kwargs, const QString & where)
+QcDatabaseTable::update(const QVariantHash & kwargs, const QString & where)
 {
   QSqlQuery query = m_database->new_query();
   QString sql_query = QStringLiteral("UPDATE ") + m_name + QStringLiteral(" SET ") + format_kwarg(kwargs);
