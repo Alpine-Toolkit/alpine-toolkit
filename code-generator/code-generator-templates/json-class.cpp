@@ -5,7 +5,12 @@
 {%- for field in fields %}
   add_field(QcSchemaField(QLatin1String("{{field.name}}"),
                           QLatin1String("{{field.qt_type}}"),
-                          QLatin1String("{{field.sql_type}}")));{% endfor %}
+                          QLatin1String("{{field.sql_type}}"),
+                          QLatin1String("{{field.sql_qualifier}}"),
+                          QLatin1String("{{field.sql_name}}"),
+                          QLatin1String("{{field.json_name}}"),
+                          QLatin1String("{{field.title}}"),
+                          QLatin1String("{{field.description}}")));{% endfor %}
 }
 
 {{class_name}}Schema::~{{class_name}}Schema()
@@ -31,6 +36,8 @@
 {% include "includes/setter.cpp" %}
 {% endfor %}
 {% include "includes/json-serializer.cpp" %}
+
+{% include "includes/json-accessor.cpp" %}
 
 {% include "includes/data-stream-operator.cpp" %}
 

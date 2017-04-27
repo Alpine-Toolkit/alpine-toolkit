@@ -37,28 +37,68 @@ DocumentSchema::DocumentSchema()
 {
   add_field(QcSchemaField(QLatin1String("id"),
                           QLatin1String("int"),
-                          QLatin1String("integer")));
+                          QLatin1String("integer"),
+                          QLatin1String(""),
+                          QLatin1String("id"),
+                          QLatin1String("id"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("name"),
                           QLatin1String("QString"),
-                          QLatin1String("text")));
+                          QLatin1String("text"),
+                          QLatin1String(""),
+                          QLatin1String("name"),
+                          QLatin1String("name"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("author"),
                           QLatin1String("QString"),
-                          QLatin1String("text")));
+                          QLatin1String("text"),
+                          QLatin1String(""),
+                          QLatin1String("author"),
+                          QLatin1String("author"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("version"),
                           QLatin1String("int"),
-                          QLatin1String("integer")));
+                          QLatin1String("integer"),
+                          QLatin1String(""),
+                          QLatin1String("version"),
+                          QLatin1String("version"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("date"),
                           QLatin1String("QDateTime"),
-                          QLatin1String("text")));
+                          QLatin1String("text"),
+                          QLatin1String(""),
+                          QLatin1String("date"),
+                          QLatin1String("date"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("description"),
                           QLatin1String("QString"),
-                          QLatin1String("text")));
+                          QLatin1String("text"),
+                          QLatin1String(""),
+                          QLatin1String("description"),
+                          QLatin1String("description"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("url"),
                           QLatin1String("QUrl"),
-                          QLatin1String("text")));
+                          QLatin1String("text"),
+                          QLatin1String(""),
+                          QLatin1String("url"),
+                          QLatin1String("url"),
+                          QLatin1String(""),
+                          QLatin1String("")));
   add_field(QcSchemaField(QLatin1String("size"),
                           QLatin1String("int"),
-                          QLatin1String("integer")));
+                          QLatin1String("integer"),
+                          QLatin1String(""),
+                          QLatin1String("size"),
+                          QLatin1String("size"),
+                          QLatin1String(""),
+                          QLatin1String("")));
 }
 
 DocumentSchema::~DocumentSchema()
@@ -116,6 +156,45 @@ Document::Document(const QVariantHash & variant_hash)
    m_size = variant_hash[QLatin1String("size")].toInt();
 }
 
+Document::Document(const QVariantList & variants)
+ : Document()
+{
+   m_id = variants[0].toInt();
+   m_name = variants[1].toString();
+   m_author = variants[2].toString();
+   m_version = variants[3].toInt();
+   m_date = variants[4].toDateTime();
+   m_description = variants[5].toString();
+   m_url = variants[6].toUrl();
+   m_size = variants[7].toInt();
+}
+
+Document::Document(const QSqlRecord & record)
+ : Document()
+{
+   m_id = record.value(0).toInt();
+   m_name = record.value(1).toString();
+   m_author = record.value(2).toString();
+   m_version = record.value(3).toInt();
+   m_date = record.value(4).toDateTime();
+   m_description = record.value(5).toString();
+   m_url = record.value(6).toUrl();
+   m_size = record.value(7).toInt();
+}
+
+Document::Document(const QSqlQuery & query)
+ : Document()
+{
+   m_id = query.value(0).toInt();
+   m_name = query.value(1).toString();
+   m_author = query.value(2).toString();
+   m_version = query.value(3).toInt();
+   m_date = query.value(4).toDateTime();
+   m_description = query.value(5).toString();
+   m_url = query.value(6).toUrl();
+   m_size = query.value(7).toInt();
+}
+
 Document::~Document()
 {}
 
@@ -167,7 +246,7 @@ Document::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::ID);
+    m_bits.setBit(DocumentSchema::Fields::ID);
     emit idChanged();
   }
 }
@@ -177,7 +256,7 @@ Document::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::NAME);
+    m_bits.setBit(DocumentSchema::Fields::NAME);
     emit nameChanged();
   }
 }
@@ -187,7 +266,7 @@ Document::set_author(const QString & value)
 {
   if (m_author != value) {
     m_author = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::AUTHOR);
+    m_bits.setBit(DocumentSchema::Fields::AUTHOR);
     emit authorChanged();
   }
 }
@@ -197,7 +276,7 @@ Document::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::VERSION);
+    m_bits.setBit(DocumentSchema::Fields::VERSION);
     emit versionChanged();
   }
 }
@@ -207,7 +286,7 @@ Document::set_date(const QDateTime & value)
 {
   if (m_date != value) {
     m_date = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::DATE);
+    m_bits.setBit(DocumentSchema::Fields::DATE);
     emit dateChanged();
   }
 }
@@ -217,7 +296,7 @@ Document::set_description(const QString & value)
 {
   if (m_description != value) {
     m_description = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::DESCRIPTION);
+    m_bits.setBit(DocumentSchema::Fields::DESCRIPTION);
     emit descriptionChanged();
   }
 }
@@ -227,7 +306,7 @@ Document::set_url(const QUrl & value)
 {
   if (m_url != value) {
     m_url = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::URL);
+    m_bits.setBit(DocumentSchema::Fields::URL);
     emit urlChanged();
   }
 }
@@ -237,7 +316,7 @@ Document::set_size(int value)
 {
   if (m_size != value) {
     m_size = value;
-    m_bits.setBit(DocumentSchema::FieldPosition::SIZE);
+    m_bits.setBit(DocumentSchema::Fields::SIZE);
     emit sizeChanged();
   }
 }
@@ -283,7 +362,7 @@ Document::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
- if (only_changed) {
+  if (only_changed) {
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
     if (is_name_modified())
@@ -314,6 +393,123 @@ Document::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
+QVariantHash
+Document::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_id_modified())
+      variant_hash[QLatin1String("id")] = m_id;
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_author_modified())
+      variant_hash[QLatin1String("author")] = m_author;
+    if (is_version_modified())
+      variant_hash[QLatin1String("version")] = m_version;
+    if (is_date_modified())
+      variant_hash[QLatin1String("date")] = m_date;
+    if (is_description_modified())
+      variant_hash[QLatin1String("description")] = m_description;
+    if (is_url_modified())
+      variant_hash[QLatin1String("url")] = m_url;
+    if (is_size_modified())
+      variant_hash[QLatin1String("size")] = m_size;
+  } else {
+    variant_hash[QLatin1String("id")] = m_id;
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("author")] = m_author;
+    variant_hash[QLatin1String("version")] = m_version;
+    variant_hash[QLatin1String("date")] = m_date;
+    variant_hash[QLatin1String("description")] = m_description;
+    variant_hash[QLatin1String("url")] = m_url;
+    variant_hash[QLatin1String("size")] = m_size;
+  }
+
+  return variant_hash;
+}
+
+QVariantHash
+Document::to_variant_hash_json(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_id_modified())
+      variant_hash[QLatin1String("id")] = m_id;
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_author_modified())
+      variant_hash[QLatin1String("author")] = m_author;
+    if (is_version_modified())
+      variant_hash[QLatin1String("version")] = m_version;
+    if (is_date_modified())
+      variant_hash[QLatin1String("date")] = m_date;
+    if (is_description_modified())
+      variant_hash[QLatin1String("description")] = m_description;
+    if (is_url_modified())
+      variant_hash[QLatin1String("url")] = m_url;
+    if (is_size_modified())
+      variant_hash[QLatin1String("size")] = m_size;
+  } else {
+    variant_hash[QLatin1String("id")] = m_id;
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("author")] = m_author;
+    variant_hash[QLatin1String("version")] = m_version;
+    variant_hash[QLatin1String("date")] = m_date;
+    variant_hash[QLatin1String("description")] = m_description;
+    variant_hash[QLatin1String("url")] = m_url;
+    variant_hash[QLatin1String("size")] = m_size;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+Document::to_variant_list() const
+{
+  QVariantList variants;
+  variants << m_id;
+  variants << m_name;
+  variants << m_author;
+  variants << m_version;
+  variants << m_date;
+  variants << m_description;
+  variants << m_url;
+  variants << m_size;
+
+  return variants;
+}
+QVariant
+Document::field(int position) const
+{
+  switch(position) {
+   case DocumentSchema::Fields::ID: return m_id;
+   case DocumentSchema::Fields::NAME: return m_name;
+   case DocumentSchema::Fields::AUTHOR: return m_author;
+   case DocumentSchema::Fields::VERSION: return m_version;
+   case DocumentSchema::Fields::DATE: return m_date;
+   case DocumentSchema::Fields::DESCRIPTION: return m_description;
+   case DocumentSchema::Fields::URL: return m_url;
+   case DocumentSchema::Fields::SIZE: return m_size;
+  }
+}
+
+void
+Document::set_field(int position, const QVariant & value)
+{
+  switch(position) {
+   case DocumentSchema::Fields::ID: m_id = value.toInt();
+   case DocumentSchema::Fields::NAME: m_name = value.toString();
+   case DocumentSchema::Fields::AUTHOR: m_author = value.toString();
+   case DocumentSchema::Fields::VERSION: m_version = value.toInt();
+   case DocumentSchema::Fields::DATE: m_date = value.toDateTime();
+   case DocumentSchema::Fields::DESCRIPTION: m_description = value.toString();
+   case DocumentSchema::Fields::URL: m_url = value.toUrl();
+   case DocumentSchema::Fields::SIZE: m_size = value.toInt();
+  }
+}
+
 QDataStream &
 operator<<(QDataStream & out, const Document & obj)
 {
@@ -332,10 +528,10 @@ operator<<(QDataStream & out, const Document & obj)
 QDataStream &
 operator>>(QDataStream & in, Document & obj)
 {
-  QUrl _QUrl;
   int _int;
-  QDateTime _QDateTime;
   QString _QString;
+  QUrl _QUrl;
+  QDateTime _QDateTime;
 
   in >> _int;
   obj.set_id(_int);

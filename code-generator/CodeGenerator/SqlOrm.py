@@ -42,15 +42,34 @@ class Field:
 
     ##############################################
 
-    def __init__(self, name, sql_type, sql_attributes, qt_type):
+    def __init__(self, name,
+                 sql_type,
+                 sql_qualifier='',
+                 qt_type=None,
+                 sql_name=None,
+                 json_name=None,
+                 title='',
+                 description='',
+    ):
 
         self._name = name
         self._sql_type = sql_type
-        self._sql_attributes = sql_attributes
+        self._sql_qualifier = sql_qualifier
 
         if qt_type is None:
             qt_type = self.__TYPE_TO_CPP__[sql_type]
         self._qt_type = qt_type
+
+        if sql_name is None:
+            sql_name = name
+        self._sql_name = sql_name
+
+        if json_name is None:
+            json_name = name
+        self._json_name = json_name
+
+        self._title = title
+        self._description = description
 
         self._variable = Variable(self._name, self._qt_type)
 
@@ -65,12 +84,28 @@ class Field:
         return self._sql_type
 
     @property
-    def sql_attributes(self):
-        return self._sql_attributes
+    def sql_qualifier(self):
+        return self._sql_qualifier
 
     @property
     def qt_type(self):
         return self._qt_type
+
+    @property
+    def sql_name(self):
+        return self._sql_name
+
+    @property
+    def json_name(self):
+        return self._json_name
+
+    @property
+    def title(self):
+        return self._title
+
+    @property
+    def description(self):
+        return self._description
 
     @property
     def variable(self):
@@ -140,6 +175,10 @@ class Schema:
             # 'QObject',
             'QDataStream',
             'QJsonObject',
+            'QSqlQuery',
+            'QSqlRecord',
+            'QVariant',
+            'QVariantList',
             'QtDebug',
         ))
         return sorted(include_classes)

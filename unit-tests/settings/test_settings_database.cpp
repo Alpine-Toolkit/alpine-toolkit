@@ -28,6 +28,9 @@
 
 #include <QtTest/QtTest>
 
+#include <QFile>
+#include <QtDebug>
+
 /**************************************************************************************************/
 
 #include "settings/settings_database.h"
@@ -45,6 +48,9 @@ private slots:
 void TestSettingsDatabase::constructor()
 {
   QString sqlite_path("settings_database.sqlite"); // Fixme:
+  QFile file(sqlite_path);
+  if (file.exists())
+    file.remove();
   SqliteSettingsDatabase settings_database(sqlite_path);
 
   QVERIFY(settings_database.contains("foo") == false);

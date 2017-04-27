@@ -131,10 +131,12 @@ public:
   QcSchema & operator=(const QcSchema & other);
 
   const QString & name() const { return m_name; }
-  const QList<QcSchemaField> & fields() const { return m_fields; }
+  const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
 
   void add_field(const QcSchemaField & field);
   QcSchema & operator<<(const QcSchemaField & field);
+
+  const QcSchemaField & operator[](int position) const { return m_fields[position]; }
 
 private:
   QString m_name;

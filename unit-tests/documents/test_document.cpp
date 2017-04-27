@@ -80,6 +80,9 @@ void TestDocument::constructor()
   Document bootstraped_document(json_object);
   QVERIFY(bootstraped_document == document_from_json);
 
+  Document document_from_list(document_from_json.to_variant_list());
+  QVERIFY(document_from_list == document_from_json);
+
   Document document_copy(document_from_json);
   Document document_copy_2 = document_from_json;
   QVERIFY(document_copy == document_from_json);

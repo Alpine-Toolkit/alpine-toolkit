@@ -4,7 +4,7 @@
 class {{class_name}} : public QcSchema
 {
 public:
-  enum FieldPosition {
+  enum Fields {
 {%- for member in members %}
     {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
   };
@@ -41,6 +41,9 @@ public:
   {{class_name}}(const {{class_name}} & other);
   {{class_name}}(const QJsonObject & json_object);
   {{class_name}}(const QVariantHash & variant_hash);
+  {{class_name}}(const QVariantList & variants);
+  {{class_name}}(const QSqlRecord & record);
+  {{class_name}}(const QSqlQuery & query);
   ~{{class_name}}();
 
   {{class_name}} & operator=(const {{class_name}} & other);
@@ -50,10 +53,16 @@ public:
   inline {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
   void set_{{member.name}}({{member.setter_type}} value);
 {% endfor %}
-  QJsonObject to_json(bool only_changed = false) const;
+QJsonObject to_json(bool only_changed = false) const;
   QVariantHash to_variant_hash(bool only_changed = false) const;
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantHash to_variant_hash_json(bool only_changed = false) const;
+  QVariantList to_variant_list() const;
 {% for member in members %}
-  inline bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::FieldPosition::{{member.name|upper}}]; }{% endfor %}
+  inline bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::Fields::{{member.name|upper}}]; }{% endfor %}
+
+  QVariant field(int position) const;
+  void set_field(int position, const QVariant & value);
 
 signals:
 {%- for member in members %}

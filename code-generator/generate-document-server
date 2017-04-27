@@ -65,14 +65,14 @@ document_dir = os.path.join(source_path, 'src', 'document')
 
 json_schema = {
     'Document': (
-        { 'name': 'id', 'type':'integer' },
-        { 'name': 'name', 'type':'text' },
-        { 'name': 'author', 'type':'text' },
-        { 'name': 'version', 'type':'integer' },
-        { 'name': 'date', 'type':'text', 'qt_type':'QDateTime' },
-        { 'name': 'description', 'type':'text' },
-        { 'name': 'url', 'type':'text', 'qt_type':'QUrl' },
-        { 'name': 'size', 'type':'integer' },
+        { 'name': 'id', 'type': 'integer' },
+        { 'name': 'name', 'type': 'text' },
+        { 'name': 'author', 'type': 'text' },
+        { 'name': 'version', 'type': 'integer' },
+        { 'name': 'date', 'type': 'text', 'qt_type': 'QDateTime' },
+        { 'name': 'description', 'type': 'text' },
+        { 'name': 'url', 'type': 'text', 'qt_type': 'QUrl' },
+        { 'name': 'size', 'type': 'integer' },
     )
 }
 

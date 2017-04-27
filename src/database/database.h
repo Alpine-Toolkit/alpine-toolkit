@@ -87,7 +87,9 @@ class QcDatabase;
 class QcDatabaseTable
 {
 public:
-  static QString format_kwarg(const QVariantHash & kwargs, const QString & sperator = QStringLiteral(","));
+  static QString format_prepare(int number_of_fields);
+  static QString format_prepare_update(const QStringList & fields);
+  static QString format_kwarg(const QVariantHash & kwargs, const QString & separator = QStringLiteral(","));
   static QString format_simple_where(const QVariantHash & kwargs);
 
 public:
@@ -111,20 +113,44 @@ public:
   QSqlQuery select(const QStringList & fields, const QVariantHash & kwargs) const {
     return select(fields, format_simple_where(kwargs));
   }
+  QSqlQuery select(const QString & where = QString()) const {
+    return select(QStringList(QLatin1String("*")), where);
+  }
+  QSqlQuery select(const QVariantHash & kwargs) const {
+    return select(QStringList(QLatin1String("*")), format_simple_where(kwargs));
+  }
+
   QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
   QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
     return select_one(fields, format_simple_where(kwargs));
   }
+  QSqlRecord select_one(const QString & where = QString()) const {
+    return select_one(QStringList(QLatin1String("*")), where);
+  }
+  QSqlRecord select_one(const QVariantHash & kwargs) const  {
+    return select_one(QStringList(QLatin1String("*")), format_simple_where(kwargs));
+  }
   // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
+
+  QSqlQuery prepare_complete_insert(int number_of_fields);
+  QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
+  QSqlQuery prepare_insert(const QStringList & fields);
+
   QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
+
+  QSqlQuery prepare_update(const QStringList & fields, const QString & where);
   QSqlQuery update(const QVariantHash & kwargs, const QString & where = QString());
   QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
     return update(kwargs, format_simple_where(where_kwargs));
   }
+
   QSqlQuery delete_row(const QString & where = QString());
   QSqlQuery delete_row(const QVariantHash & kwargs) {
     return delete_row(format_simple_where(kwargs));
   }
+
+private:
+  void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
 
 private:
   QcDatabase * m_database;
@@ -136,6 +162,13 @@ private:
 
 class QcDatabase
 {
+public:
+  static bool exec_and_check_prepared_query(QSqlQuery & query);
+  static bool exec_and_check(QSqlQuery & query, const QString & sql_query);
+
+private:
+  static void log_query_error_message(const QSqlQuery & query);
+
 public:
   QcDatabase();
   // QcDatabase(const QList<QcSchema> & schemas);
@@ -151,9 +184,12 @@ public:
 
   inline bool transaction() { return m_database.transaction(); }
   inline bool commit() { return m_database.commit(); }
+
   inline QSqlQuery new_query() const { return QSqlQuery(m_database); }
+  // inline QSqlQuery new_query(const QString & sql_query) const; { return QSqlQuery(sql_query, m_database); } // exec query
 
   QSqlQuery prepare_query(const QString & sql_query);
+
   bool execute_query(const QString & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
 

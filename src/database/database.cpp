@@ -40,13 +40,42 @@
 /**************************************************************************************************/
 
 QString
+QcDatabaseTable::format_prepare(int number_of_fields)
+{
+  QString string;
+  for (int i = 0; i < number_of_fields; i++) {
+    if (i > 0)
+      string += ',';
+    string += '?';
+  }
+  return string;
+}
+
+QString
+QcDatabaseTable::format_prepare_update(const QStringList & fields)
+{
+  // QStringList string_list;
+  // for (const auto & field : fields)
+  //   string_list << field + QLatin1String("= ?")
+  // return fields.join(',');
+  QString string;
+  int i = 0;
+  for (const auto & field : fields) {
+    if (i++)
+      string += ',';
+    string += field + QLatin1String("=?");
+  }
+  return string;
+}
+
+QString
 QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separator)
 {
   QString kwarg_string;
   int i = 0;
   // for (const auto & pair: kwargs) {
   for (const auto & field: kwargs.keys()) {
-    if (i)
+    if (i++)
       kwarg_string += separator;
     kwarg_string += field + '=';
     QVariant variant = kwargs[field];
@@ -56,7 +85,6 @@ QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separ
     kwarg_string += variant.toString();
     if (is_string)
       kwarg_string += '"';
-    i++;
   }
   return kwarg_string;
 }
@@ -64,7 +92,7 @@ QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separ
 QString
 QcDatabaseTable::format_simple_where(const QVariantHash & kwargs)
 {
-  return format_kwarg(kwargs, QStringLiteral(" AND "));
+  return format_kwarg(kwargs, QLatin1String(" AND "));
 }
 
 QcDatabaseTable::QcDatabaseTable()
@@ -134,32 +162,63 @@ QcDatabaseTable::drop()
   return m_database->execute_query(sql_query);
 }
 
-
 QSqlQuery
-QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit_request)
+QcDatabaseTable::prepare_complete_insert(int number_of_fields)
 {
   QSqlQuery query = m_database->new_query();
-  QStringList fields = kwargs.keys();
   QString sql_query =
-    QStringLiteral("INSERT INTO ") + m_name +
-    QStringLiteral(" (") + fields.join(',') + QStringLiteral(") VALUES (");
-  for (int i = 0; i < fields.size(); i++) {
-    if (i > 0)
-      sql_query += ',';
-    sql_query += '?';
-  }
-  sql_query += ')';
-  qInfo() << sql_query << kwargs;
+    QLatin1String("INSERT INTO ") + m_name + QLatin1String(" VALUES (") + format_prepare(number_of_fields) + ')';
   query.prepare(sql_query);
+
+  return query;
+}
+
+QSqlQuery
+QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
+{
+  QSqlQuery query = prepare_complete_insert(variants.size());
+  qInfo() << query.lastQuery() << variants;
+
+  for (const auto & value : variants)
+    query.addBindValue(value);
+
+  // Fixme: namesapce ???
+  if (QcDatabase::exec_and_check_prepared_query(query) and commit)
+    m_database->commit();
+
+  return query;
+}
+
+void
+QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit)
+{
+  // qInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
     query.addBindValue(value);
 
-  if (!query.exec())
-    qWarning() << query.lastError().text();
-
-  if (commit_request)
+  if (QcDatabase::exec_and_check_prepared_query(query) and commit)
     m_database->commit();
+}
+
+QSqlQuery
+QcDatabaseTable::prepare_insert(const QStringList & fields)
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query =
+    QLatin1String("INSERT INTO ") + m_name +
+    QLatin1String(" (") + fields.join(',') + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
+  query.prepare(sql_query);
+
+  return query;
+}
+
+QSqlQuery
+QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
+{
+  QSqlQuery query = prepare_insert(kwargs.keys());
+  qInfo() << query.lastQuery() << kwargs;
+  bind_and_exec(query, kwargs, commit);
 
   return query;
 }
@@ -168,13 +227,11 @@ QSqlQuery
 QcDatabaseTable::select(const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = m_database->new_query();
-  QString sql_query = QStringLiteral("SELECT ") + fields.join(',') + QStringLiteral(" FROM ") + m_name;
+  QString sql_query = QLatin1String("SELECT ") + fields.join(',') + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
+    sql_query += QLatin1String(" WHERE ") + where;
   qInfo() << sql_query << fields;
-
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
+  QcDatabase::exec_and_check(query, sql_query);
 
   return query;
 }
@@ -194,19 +251,25 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
   return record; // test with isEmpty()
 }
 
+QSqlQuery
+QcDatabaseTable::prepare_update(const QStringList & fields, const QString & where)
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query = QLatin1String("UPDATE ") + m_name + QLatin1String(" SET ") + format_prepare_update(fields);
+  if (!where.isEmpty())
+    sql_query += QLatin1String(" WHERE ") + where;
+  query.prepare(sql_query);
+
+  return query;
+}
 
 QSqlQuery
 QcDatabaseTable::update(const QVariantHash & kwargs, const QString & where)
 {
-  QSqlQuery query = m_database->new_query();
-  QString sql_query = QStringLiteral("UPDATE ") + m_name + QStringLiteral(" SET ") + format_kwarg(kwargs);
-  if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query << kwargs;
+  QSqlQuery query = prepare_update(kwargs.keys(), where);
+  bind_and_exec(query, kwargs, true);
 
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
-
+  // Fixme: return ?
   return query;
 }
 
@@ -214,13 +277,11 @@ QSqlQuery
 QcDatabaseTable::delete_row(const QString & where)
 {
   QSqlQuery query = m_database->new_query();
-  QString sql_query = QStringLiteral("DELETE FROM ") + m_name;
+  QString sql_query = QLatin1String("DELETE FROM ") + m_name;
   if (!where.isEmpty())
-    sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query;
-
-  if (!query.exec(sql_query))
-    qWarning() << query.lastError().text();
+    sql_query += QLatin1String(" WHERE ") + where;
+  // Fixme: execute_query ?
+  QcDatabase::exec_and_check(query, sql_query);
 
   return query;
 }
@@ -251,7 +312,7 @@ QcDatabase::~QcDatabase()
 QcDatabaseTable &
 QcDatabase::register_table(const QString & name)
 {
-  m_tables[name] =  QcDatabaseTable(this, name);
+  m_tables[name] = QcDatabaseTable(this, name);
   return m_tables[name];
 }
 
@@ -277,15 +338,47 @@ QcDatabase::prepare_query(const QString & sql_query)
   return query;
 }
 
-bool
-QcDatabase::execute_query(const QString & sql_query)
+void
+QcDatabase::log_query_error_message(const QSqlQuery & query)
 {
-  QSqlQuery query = new_query();
-  if (!query.exec(sql_query)) {
-    qWarning() << query.lastError().text();
+  qCritical() << QLatin1String("SQL error on") << query.lastQuery()
+              << QLatin1String(": ") << query.lastError().text();
+}
+
+bool
+QcDatabase::exec_and_check_prepared_query(QSqlQuery & query)
+{
+  qInfo().noquote() << "Exec SQL Query:" << query.lastQuery();
+  if (!query.exec()) {
+    log_query_error_message(query);
     return false;
   } else
     return true;
+}
+
+bool
+QcDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
+{
+  qInfo().noquote() << "Exec SQL Query:" << sql_query;
+  if (!query.exec(sql_query)) {
+    log_query_error_message(query);
+    return false;
+  } else
+    return true;
+}
+
+bool
+QcDatabase::execute_query(const QString & sql_query)
+{
+  // QSqlQuery query = QSqlQuery(sql_query, m_database);
+  // if (query.lastError().type() == QSqlError::NoError)
+  //   return true;
+  // else {
+  //   log_query_error_message(query);
+  //   return false;
+  // }
+  QSqlQuery query = new_query();
+  return exec_and_check(query, sql_query);
 }
 
 bool
@@ -295,13 +388,10 @@ QcDatabase::execute_queries(const QStringList & sql_queries, bool commit_request
   if (commit_request)
     transaction();
 
-  QSqlQuery query = new_query();
   bool ok = true;
   for (const auto & sql_query : sql_queries)
-    if (!query.exec(sql_query)) {
+    if (not execute_query(sql_query))
       ok = false;
-      qWarning() << query.lastError().text();
-    }
 
   if (commit_request)
     m_database.commit();
@@ -352,7 +442,7 @@ QcSqliteDatabase::open(const QString & sqlite_path)
   bool created = not QFile(sqlite_path).exists();
 
   // Set the connection name to sqlite_path
-  m_database = QSqlDatabase::addDatabase(QStringLiteral("QSQLITE"), sqlite_path);
+  m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), sqlite_path);
   m_database.setDatabaseName(sqlite_path);
   if (not m_database.open())
     qWarning() << m_database.lastError().text();
