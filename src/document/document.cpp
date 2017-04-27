@@ -480,6 +480,7 @@ Document::to_variant_list() const
 
   return variants;
 }
+
 QVariant
 Document::field(int position) const
 {
@@ -528,10 +529,10 @@ operator<<(QDataStream & out, const Document & obj)
 QDataStream &
 operator>>(QDataStream & in, Document & obj)
 {
-  int _int;
-  QString _QString;
-  QUrl _QUrl;
   QDateTime _QDateTime;
+  int _int;
+  QUrl _QUrl;
+  QString _QString;
 
   in >> _int;
   obj.set_id(_int);

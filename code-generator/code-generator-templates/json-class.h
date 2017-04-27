@@ -37,6 +37,9 @@ class {{class_name}} : public QObject
   Q_PROPERTY({{member.type}} {{member.name}} READ {{member.name}} WRITE set_{{member.name}} NOTIFY {{member.name}}Changed){% endfor %}
 
 public:
+  static {{class_name}}Schema & schema() { return {{class_name}}Schema::instance(); }
+
+public:
   {{class_name}}();
   {{class_name}}(const {{class_name}} & other);
   {{class_name}}(const QJsonObject & json_object);

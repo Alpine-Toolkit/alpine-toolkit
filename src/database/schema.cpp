@@ -116,17 +116,20 @@ QcSchemaField::to_sql_definition() const
 
 QcSchema::QcSchema()
   : m_name(),
-    m_fields()
+    m_fields(),
+    m_field_map()
 {}
 
 QcSchema::QcSchema(const QString & name)
   : m_name(name),
-    m_fields()
+    m_fields(),
+    m_field_map()
 {}
 
 QcSchema::QcSchema(const QcSchema & other)
   : m_name(other.m_name),
-    m_fields(other.m_fields)
+    m_fields(other.m_fields),
+    m_field_map(other.m_field_map)
 {}
 
 QcSchema::~QcSchema()
@@ -138,6 +141,7 @@ QcSchema::operator=(const QcSchema & other)
   if (this != &other) {
     m_name = other.m_name;
     m_fields = other.m_fields;
+    m_field_map = other.m_field_map;
   }
 
   return *this;
@@ -147,7 +151,9 @@ void
 QcSchema::add_field(const QcSchemaField & field)
 {
   m_fields << field;
-  m_fields.last().set_position(m_fields.size() -1);
+  QcSchemaField & owned_field = m_fields.last();
+  owned_field.set_position(m_fields.size() -1);
+  m_field_map.insert(owned_field.name(), &owned_field);
 }
 
 QcSchema &

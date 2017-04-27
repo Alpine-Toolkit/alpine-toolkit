@@ -33,6 +33,7 @@
 
 /**************************************************************************************************/
 
+#include <QHash>
 #include <QList>
 #include <QMetaType>
 #include <QString>
@@ -47,10 +48,10 @@
 /*
  * To complete:
  *  field enum to get position efficiently
- *  number of fields
- *  field iterator -> position, name, variant
  *
  */
+
+/**************************************************************************************************/
 
 // Fixme: template ?
 class QcSchemaField
@@ -130,17 +131,27 @@ public:
 
   QcSchema & operator=(const QcSchema & other);
 
-  const QString & name() const { return m_name; }
-  const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
-
   void add_field(const QcSchemaField & field);
   QcSchema & operator<<(const QcSchemaField & field);
 
+  const QString & name() const { return m_name; }
+
+  int number_of_fields() { return m_fields.size(); }
+  const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
+  QStringList field_names() { return m_field_map.keys(); }
+
   const QcSchemaField & operator[](int position) const { return m_fields[position]; }
+  const QcSchemaField & operator[](const QString & name) const { return *m_field_map[name]; }
+
+  QList<QcSchemaField>::iterator begin() { return m_fields.begin(); }
+  QList<QcSchemaField>::iterator end() { return m_fields.end(); }
+  QList<QcSchemaField>::const_iterator cbegin() const { return m_fields.cbegin(); }
+  QList<QcSchemaField>::const_iterator cend() const { return m_fields.cend(); }
 
 private:
   QString m_name;
   QList<QcSchemaField> m_fields;
+  QHash<QString, QcSchemaField *> m_field_map;
 };
 
 /**************************************************************************************************/

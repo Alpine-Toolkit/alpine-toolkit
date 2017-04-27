@@ -96,6 +96,9 @@ class Document : public QObject
   Q_PROPERTY(int size READ size WRITE set_size NOTIFY sizeChanged)
 
 public:
+  static DocumentSchema & schema() { return DocumentSchema::instance(); }
+
+public:
   Document();
   Document(const Document & other);
   Document(const QJsonObject & json_object);
