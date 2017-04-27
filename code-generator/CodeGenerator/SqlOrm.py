@@ -190,7 +190,7 @@ class Schema:
         class_name = self._name # .title()
 
         members = [field.variable for field in self]
-        member_types = set([member.type for member in members])
+        member_types = sorted(set([member.type for member in members]))
         private_members = [Variable('bits', 'QBitArray', value=len(members))]
         all_members = private_members + members
 
