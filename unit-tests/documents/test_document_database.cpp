@@ -70,31 +70,33 @@ void TestDocumentDatabase::constructor()
 
   Document document(variant_hash);
   table->complete_insert(document.to_variant_list());
-  document.set_id(2);
-  table->insert(document.to_variant_hash(), true);
-  QString name = "John Doe";
-  document.set_name(name);
-  qInfo() << document_schema[DocumentSchema::Fields::ID].sql_name();
-  QVariantHash where_kwargs;
-  where_kwargs["id"] = document.id();
-  table->update(document.to_variant_hash(true), where_kwargs);
 
-  where_kwargs.clear();
+  QVariantHash where_kwargs;
   where_kwargs["id"] = document.id();
   QSqlRecord record = table->select_one(where_kwargs);
   Document document_from_sql(record);
   qInfo() << document_from_sql;
   qInfo() << document;
-  // QVERIFY(document_from_sql == document);
-  for (const auto & key : document_schema.field_names()) {
-    const char * key_c = key.toLatin1().data();
-    qInfo() << document.property(key_c) << document_from_sql.property(key_c);
-    QVERIFY(document.property(key_c) == document_from_sql.property(key_c));
-  }
-  for (int i = 0; i < document_schema.number_of_fields(); i++) {
-    qInfo() << document.field(i) << document_from_sql.field(i);
-    QVERIFY(document.field(i) == document_from_sql.field(i));
-  }
+  QVERIFY(document_from_sql == document);
+  // for (const auto & key : document_schema.field_names()) {
+  //   const char * key_c = key.toLatin1().data();
+  //   qInfo() << document.property(key_c) << document_from_sql.property(key_c);
+  //   QVERIFY(document.property(key_c) == document_from_sql.property(key_c));
+  // }
+  // for (int i = 0; i < document_schema.number_of_fields(); i++) {
+  //   qInfo() << document.field(i) << document_from_sql.field(i);
+  //   QVERIFY(document.field(i) == document_from_sql.field(i));
+  // }
+
+  document.set_id(2);
+  table->insert(document.to_variant_hash(), true);
+
+  QString author = "John Doe";
+  document.set_author(author);
+  qInfo() << document_schema[DocumentSchema::Fields::ID].sql_name();
+  where_kwargs.clear();
+  where_kwargs["id"] = document.id();
+  table->update(document.to_variant_hash(true), where_kwargs);
 }
 
 /***************************************************************************************************/
