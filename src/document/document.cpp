@@ -529,10 +529,10 @@ operator<<(QDataStream & out, const Document & obj)
 QDataStream &
 operator>>(QDataStream & in, Document & obj)
 {
-  QDateTime _QDateTime;
-  int _int;
   QUrl _QUrl;
   QString _QString;
+  int _int;
+  QDateTime _QDateTime;
 
   in >> _int;
   obj.set_id(_int);

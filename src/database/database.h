@@ -53,24 +53,24 @@
 class QcSqlRecordWrapper
 {
 public:
-  inline QcSqlRecordWrapper(const QSqlRecord & record)
+  QcSqlRecordWrapper(const QSqlRecord & record)
     : m_record(record)
   {}
 
-  inline const QSqlRecord & record() const { return m_record; }
+  const QSqlRecord & record() const { return m_record; }
 
-  inline bool is_empty() const { return m_record.isEmpty(); }
-  inline bool is_not_empty() const { return not is_empty(); }
+  bool is_empty() const { return m_record.isEmpty(); }
+  bool is_not_empty() const { return not is_empty(); }
 
-  inline int to_int(int position = 0) const {
+  int to_int(int position = 0) const {
     return m_record.value(position).toInt();
   }
 
-  inline QByteArray to_byte_array(int position = 0) const {
+  QByteArray to_byte_array(int position = 0) const {
     return m_record.value(position).toByteArray();
   }
 
-  inline QString to_string(int position = 0) const {
+  QString to_string(int position = 0) const {
     return m_record.value(position).toString();
   }
 
@@ -101,9 +101,9 @@ public:
 
   QcDatabaseTable & operator=(const QcDatabaseTable & other);
 
-  inline QcDatabase * database() { return m_database; }
-  inline const QcSchema & schema() { return m_schema; }
-  inline const QString & name() { return m_name; } // m_schema.name()
+  QcDatabase * database() { return m_database; }
+  const QcSchema & schema() { return m_schema; }
+  const QString & name() { return m_name; } // m_schema.name()
 
   bool exists() const;
   bool create();
@@ -174,7 +174,7 @@ public:
   // QcDatabase(const QList<QcSchema> & schemas);
   virtual ~QcDatabase();
 
-  inline QSqlDatabase & database () { return m_database; }
+  QSqlDatabase & database () { return m_database; }
 
   QcDatabaseTable & register_table(const QString & name);
   QcDatabaseTable & register_table(const QcSchema & schema);
@@ -182,11 +182,11 @@ public:
   QcDatabaseTable & table(const QString & name) { return m_tables[name]; } // Fixme: wrong name ?
   QcDatabaseTable & operator[](const QString & name) { return m_tables[name]; }
 
-  inline bool transaction() { return m_database.transaction(); }
-  inline bool commit() { return m_database.commit(); }
+  bool transaction() { return m_database.transaction(); }
+  bool commit() { return m_database.commit(); }
 
-  inline QSqlQuery new_query() const { return QSqlQuery(m_database); }
-  // inline QSqlQuery new_query(const QString & sql_query) const; { return QSqlQuery(sql_query, m_database); } // exec query
+  QSqlQuery new_query() const { return QSqlQuery(m_database); }
+  // QSqlQuery new_query(const QString & sql_query) const; { return QSqlQuery(sql_query, m_database); } // exec query
 
   QSqlQuery prepare_query(const QString & sql_query);
 

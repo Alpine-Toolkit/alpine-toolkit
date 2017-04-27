@@ -39,7 +39,7 @@
 
 /**************************************************************************************************/
 
-// Fixme: similar to QNetworkRequest
+// Fixme: This class is similar to QNetworkRequest
 
 /* The NetworkRessourceRequest class defines a network ressource request.
  *
@@ -56,7 +56,7 @@ public:
 
   NetworkRessourceRequest & operator=(const NetworkRessourceRequest & other);
 
-  inline QUrl url() const { return m_url; }
+  QUrl url() const { return m_url; }
 
   bool operator==(const NetworkRessourceRequest & rhs) const;
 

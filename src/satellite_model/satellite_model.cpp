@@ -218,7 +218,7 @@ SatelliteModel::error(QGeoSatelliteInfoSource::Error error)
 }
 
 QT_BEGIN_NAMESPACE
-inline bool
+bool
 operator<(const QGeoSatelliteInfo & a, const QGeoSatelliteInfo & b)
 {
   return a.satelliteIdentifier() < b.satelliteIdentifier();

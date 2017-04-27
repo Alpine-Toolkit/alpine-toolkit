@@ -53,7 +53,7 @@ public:
 
   bool operator==(const {{class_name}} & other);
 {% for member in members %}
-  inline {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
+  {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
   void set_{{member.name}}({{member.setter_type}} value);
 {% endfor %}
 QJsonObject to_json(bool only_changed = false) const;
@@ -62,7 +62,7 @@ QJsonObject to_json(bool only_changed = false) const;
   QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 {% for member in members %}
-  inline bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::Fields::{{member.name|upper}}]; }{% endfor %}
+  bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::Fields::{{member.name|upper}}]; }{% endfor %}
 
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);

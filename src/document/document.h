@@ -112,28 +112,28 @@ public:
 
   bool operator==(const Document & other);
 
-  inline int id() const { return m_id; }
+  int id() const { return m_id; }
   void set_id(int value);
 
-  inline const QString & name() const { return m_name; }
+  const QString & name() const { return m_name; }
   void set_name(const QString & value);
 
-  inline const QString & author() const { return m_author; }
+  const QString & author() const { return m_author; }
   void set_author(const QString & value);
 
-  inline int version() const { return m_version; }
+  int version() const { return m_version; }
   void set_version(int value);
 
-  inline const QDateTime & date() const { return m_date; }
+  const QDateTime & date() const { return m_date; }
   void set_date(const QDateTime & value);
 
-  inline const QString & description() const { return m_description; }
+  const QString & description() const { return m_description; }
   void set_description(const QString & value);
 
-  inline const QUrl & url() const { return m_url; }
+  const QUrl & url() const { return m_url; }
   void set_url(const QUrl & value);
 
-  inline int size() const { return m_size; }
+  int size() const { return m_size; }
   void set_size(int value);
 
 QJsonObject to_json(bool only_changed = false) const;
@@ -142,14 +142,14 @@ QJsonObject to_json(bool only_changed = false) const;
   QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
-  inline bool is_id_modified() const { return m_bits[DocumentSchema::Fields::ID]; }
-  inline bool is_name_modified() const { return m_bits[DocumentSchema::Fields::NAME]; }
-  inline bool is_author_modified() const { return m_bits[DocumentSchema::Fields::AUTHOR]; }
-  inline bool is_version_modified() const { return m_bits[DocumentSchema::Fields::VERSION]; }
-  inline bool is_date_modified() const { return m_bits[DocumentSchema::Fields::DATE]; }
-  inline bool is_description_modified() const { return m_bits[DocumentSchema::Fields::DESCRIPTION]; }
-  inline bool is_url_modified() const { return m_bits[DocumentSchema::Fields::URL]; }
-  inline bool is_size_modified() const { return m_bits[DocumentSchema::Fields::SIZE]; }
+  bool is_id_modified() const { return m_bits[DocumentSchema::Fields::ID]; }
+  bool is_name_modified() const { return m_bits[DocumentSchema::Fields::NAME]; }
+  bool is_author_modified() const { return m_bits[DocumentSchema::Fields::AUTHOR]; }
+  bool is_version_modified() const { return m_bits[DocumentSchema::Fields::VERSION]; }
+  bool is_date_modified() const { return m_bits[DocumentSchema::Fields::DATE]; }
+  bool is_description_modified() const { return m_bits[DocumentSchema::Fields::DESCRIPTION]; }
+  bool is_url_modified() const { return m_bits[DocumentSchema::Fields::URL]; }
+  bool is_size_modified() const { return m_bits[DocumentSchema::Fields::SIZE]; }
 
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
