@@ -103,3 +103,5 @@ for cls in (
 with open('camptocamp-orm.json', 'w') as fd:
     json.dump(json_root, fd, indent=4, sort_keys=True)
 
+with open('camptocamp-orm-compact.json', 'w') as fd:
+    json.dump(json_root, fd, sort_keys=True)

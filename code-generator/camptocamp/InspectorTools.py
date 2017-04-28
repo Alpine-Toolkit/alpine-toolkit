@@ -78,9 +78,9 @@ def table_to_json(cls):
     columns = {}
     for column in cls.__table__.columns:
         column_type = column.type
-        print('\n' + column.name)
-        print(column.__dict__)
-        print(column_type.__dict__)
+        # print('\n' + column.name)
+        # print(column.__dict__)
+        # print(column_type.__dict__)
         # printi(repr(column_type))
         # printi(type(column_type))
         json_column = {}

@@ -23,7 +23,7 @@ import InspectorTools as IT
 
 json_root = {}
 
-json_root['v6_version'] = {
+json_root['__v6_version__'] = {
     directory: IT.git_head_hex(os.path.join(generator_path, directory))
     for directory in ('v6_common', 'v6_api')}
 
@@ -85,3 +85,6 @@ json_root['sortable_search_attributes'] = {
 
 with open('camptocamp-definitions.json', 'w') as fd:
     json.dump(json_root, fd, indent=4, sort_keys=True)
+
+with open('camptocamp-definitions-compact.json', 'w') as fd:
+    json.dump(json_root, fd, sort_keys=True)
