@@ -1,0 +1,143 @@
+#! /usr/bin/env python3
+# -*- mode: python -*-
+
+####################################################################################################
+
+import importlib
+import json
+import os
+import pprint
+import sys
+
+from sqlalchemy import Enum
+
+import pygit2 as git
+
+import c2corg_common
+import c2corg_api
+
+####################################################################################################
+
+generator_path = os.path.dirname(os.path.abspath(__file__))
+# source_path = os.path.dirname(code_generator_path)
+
+# sys.path.insert(0, generator_path)
+
+####################################################################################################
+
+def yield_module_attributes(module, *types):
+
+    module_dict = module.__dict__
+    for obj_name, obj in module_dict.items():
+        if (not obj_name.startswith('_') and
+            (not types or isinstance(obj, types))):
+            yield obj_name, obj
+
+####################################################################################################
+
+def yield_list_in_module(module):
+    yield from yield_module_attributes(module, (list, tuple))
+
+def yield_dict_in_module(module):
+    yield from yield_module_attributes(module, dict)
+
+def yield_string_in_module(module):
+    yield from yield_module_attributes(module, str)
+
+def yield_sqlachemy_enum(module):
+    yield from yield_module_attributes(module, Enum)
+
+####################################################################################################
+
+def git_head_hex(path):
+    repository_path = git.discover_repository(path)
+    repository = git.Repository(repository_path)
+    commit = repository.revparse_single('HEAD')
+    return commit.hex
+
+####################################################################################################
+
+def print_rule():
+    print('\n' + '-'*100 + '\n')
+
+####################################################################################################
+
+pretty_printer = pprint.PrettyPrinter(indent=4)
+
+####################################################################################################
+
+json_root = {}
+
+json_root['v6_version'] = {directory: git_head_hex(os.path.join(generator_path, directory))
+                           for directory in ('v6_common', 'v6_api')}
+
+####################################################################################################
+#
+# Definitions
+#
+
+# associations
+associations = {}
+for parent, child in c2corg_common.associations.valid_associations:
+    if parent not in associations:
+        associations[parent] = []
+    associations[parent].append(child)
+json_root['associations'] = associations
+
+# attributes
+json_root['attributes'] = {}
+for obj_name, obj in yield_list_in_module(c2corg_common.attributes):
+    json_root['attributes'][obj_name] = obj
+#     print("\nAttribute {0}:\n  {1}".format(obj_name, obj))
+# print_rule()
+
+# document_types
+json_root['document_types'] = {}
+for obj_name, obj in yield_string_in_module(c2corg_common.document_types):
+    if obj_name.endswith('_TYPE'):
+        obj_name = obj_name.lower().replace('_type', '')
+        json_root['document_types'][obj_name] = obj
+    # print("\nDocument type {0}:\n  {1}".format(obj_name, obj))
+# print_rule()
+
+json_root['document_fields'] = {}
+for document_type in (
+        'area',
+        'article',
+        'book',
+        'image',
+        'outing',
+        'route',
+        'topo_map',
+        'user_profile',
+        'waypoint',
+        'xreport',
+        ):
+    submodule = 'fields_' + document_type
+    module_name = 'c2corg_common.' + submodule
+    # module = __import__()
+    module = importlib.import_module(module_name)
+    fields = getattr(module, submodule)
+    json_root['document_fields'][document_type] = fields
+    # fields_string = pretty_printer.pprint(fields)
+    # fields_string = json.dumps(fields, indent=4)
+    # print("\n{0}:\n  {1}".format(document_type, fields_string))
+
+json_root['sortable_search_attributes'] = {}
+for obj_name, obj in yield_dict_in_module(c2corg_common.sortable_search_attributes):
+    json_root['sortable_search_attributes'][obj_name] = obj
+
+####################################################################################################
+#
+# PostgreSQL Enums
+#
+
+# for obj_name, enum in yield_sqlachemy_enum(c2corg_api.models.enums):
+#     # print(obj_name, enum, type(enum))
+#     print("\nEnum {0}:\n  {1.name}\n  {1.enums}\n  {1.schema}".format(obj_name, enum))
+
+####################################################################################################
+
+# print(json.dumps(json_root, indent=4))
+with open('camptocamp-definitions.json', 'w') as fd:
+    json.dump(json_root, fd, indent=4, sort_keys=True)
