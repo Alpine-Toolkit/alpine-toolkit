@@ -1,0 +1,105 @@
+#! /usr/bin/env python3
+# -*- mode: python -*-
+
+####################################################################################################
+
+import json
+import os
+import sys
+
+####################################################################################################
+
+generator_path = os.path.dirname(os.path.abspath(__file__))
+# source_path = os.path.dirname(code_generator_path)
+
+sys.path.insert(0, generator_path)
+
+####################################################################################################
+
+import InspectorTools as IT
+
+####################################################################################################
+
+json_root = {}
+
+json_root['__v6_version__'] = {
+    directory: IT.git_head_hex(os.path.join(generator_path, directory))
+    for directory in ('v6_common', 'v6_api')}
+
+####################################################################################################
+
+# CREATE TABLE area_associations (
+#     document_id integer NOT NULL,
+#     area_id integer NOT NULL
+# );
+
+# CREATE TABLE associations (
+#     parent_document_id integer NOT NULL,
+#     parent_document_type character varying(1) NOT NULL,
+#     child_document_id integer NOT NULL,
+#     child_document_type character varying(1) NOT NULL
+# );
+
+# CREATE TABLE documents_geometries (
+#     version integer NOT NULL,
+#     document_id integer NOT NULL,
+#     geom public.geometry(Point,3857),
+#     geom_detail public.geometry,
+#     CONSTRAINT enforce_srid_geom_detail CHECK ((public.st_srid(geom_detail) = 3857))
+# );
+
+# CREATE TABLE map_associations (
+#     document_id integer NOT NULL,
+#     topo_map_id integer NOT NULL
+# );
+
+####################################################################################################
+
+from c2corg_api.models.area import Area
+from c2corg_api.models.area_association import AreaAssociation
+from c2corg_api.models.article import Article
+from c2corg_api.models.association import Association
+from c2corg_api.models.book import Book
+from c2corg_api.models.document import Document, DocumentLocale, DocumentGeometry
+from c2corg_api.models.document_history import DocumentVersion
+from c2corg_api.models.document_topic import DocumentTopic
+from c2corg_api.models.image import Image
+from c2corg_api.models.outing import Outing, OutingLocale
+from c2corg_api.models.route import Route, RouteLocale
+from c2corg_api.models.topo_map import TopoMap
+from c2corg_api.models.topo_map_association import TopoMapAssociation
+from c2corg_api.models.user import User, UserProfile
+from c2corg_api.models.waypoint import Waypoint, WaypointLocale
+from c2corg_api.models.xreport import Xreport, XreportLocale
+
+for cls in (
+        Area,
+        AreaAssociation,
+        Association,
+        Article,
+        Book,
+        Document,
+        DocumentGeometry,
+        DocumentLocale,
+        DocumentTopic,
+        DocumentVersion,
+        Image,
+        TopoMap,
+        TopoMapAssociation,
+        Outing,
+        OutingLocale,
+        Route,
+        RouteLocale,
+        User,
+        UserProfile,
+        Waypoint,
+        WaypointLocale,
+        Xreport,
+        XreportLocale,
+):
+    table_name, columns = IT.table_to_json(cls)
+    json_root[table_name] = columns
+
+with open('camptocamp-orm.json', 'w') as fd:
+    json.dump(json_root, fd, indent=4, sort_keys=True)
+
