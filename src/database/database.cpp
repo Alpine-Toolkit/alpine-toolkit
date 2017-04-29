@@ -174,17 +174,6 @@ QcDatabaseTable::prepare_complete_insert(int number_of_fields)
   return query;
 }
 
-void
-bind_value(QSqlQuery & query, const QVariant & value)
-{
-  // Keep data time timezone
-  // Fixme: https://bugreports.qt.io/browse/QTBUG-60456
-  if (value.type() == QVariant::DateTime)
-    query.addBindValue(value.toDateTime().toString(Qt::ISODate));
-  else
-    query.addBindValue(value);
-}
-
 QSqlQuery
 QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
 {
@@ -192,7 +181,7 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
   qInfo() << query.lastQuery() << variants;
 
   for (const auto & value : variants)
-    bind_value(query, value);
+    query.addBindValue(value);
 
   // Fixme: namesapce ???
   if (QcDatabase::exec_and_check_prepared_query(query) and commit)
@@ -207,7 +196,7 @@ QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, b
   // qInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
-    bind_value(query, value);
+    query.addBindValue(value);
 
   if (QcDatabase::exec_and_check_prepared_query(query) and commit)
     m_database->commit();

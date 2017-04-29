@@ -69,7 +69,7 @@ void TestDocumentDatabase::constructor()
   QcSchema document_schema = DocumentSchema::instance();
 
   Document document(variant_hash);
-  table->complete_insert(document.to_variant_list());
+  table->complete_insert(document.to_variant_list_sql());
 
   QVariantHash where_kwargs;
   where_kwargs["id"] = document.id();
@@ -89,14 +89,14 @@ void TestDocumentDatabase::constructor()
   // }
 
   document.set_id(2);
-  table->insert(document.to_variant_hash(), true);
+  table->insert(document.to_variant_hash_sql(), true);
 
   QString author = "John Doe";
   document.set_author(author);
   qInfo() << document_schema[DocumentSchema::Fields::ID].sql_name();
   where_kwargs.clear();
   where_kwargs["id"] = document.id();
-  table->update(document.to_variant_hash(true), where_kwargs);
+  table->update(document.to_variant_hash_sql(true), where_kwargs);
 }
 
 /***************************************************************************************************/

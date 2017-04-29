@@ -46,17 +46,3 @@ variants[{{i}}].{{field.variable.from_variant}}()
 {%- for field in fields %}
   {{ set_member(field.name, from_variant_list(loop.index0, field), field.variable.cast_from_variant) }}{% endfor %}
 }
-
-{{class_name}}::{{class_name}}(const QSqlRecord & record)
- : {{class_name}}()
-{
-{%- for field in fields %}
-  {{ set_member(field.name, from_record(loop.index0, field), field.variable.cast_from_variant) }}{% endfor %}
-}
-
-{{class_name}}::{{class_name}}(const QSqlQuery & query)
- : {{class_name}}()
-{
-{%- for field in fields %}
-  {{ set_member(field.name, from_query(loop.index0, field), field.variable.cast_from_variant) }}{% endfor %}
-}

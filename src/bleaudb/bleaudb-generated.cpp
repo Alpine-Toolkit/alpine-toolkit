@@ -240,6 +240,7 @@ BBleauPlace::to_json(bool only_changed) const
   return json_object;
 }
 
+
 QVariantHash
 BBleauPlace::to_variant_hash(bool only_changed) const
 {
@@ -264,7 +265,6 @@ BBleauPlace::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BBleauPlace::to_variant_list() const
 {
@@ -276,6 +276,44 @@ BBleauPlace::to_variant_list() const
 
   return variants;
 }
+
+QVariantHash
+BBleauPlace::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_category_modified())
+      variant_hash[QLatin1String("category")] = m_category;
+    if (is_note_modified())
+      variant_hash[QLatin1String("note")] = m_note;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("category")] = m_category;
+    variant_hash[QLatin1String("note")] = m_note;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauPlace::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_name;
+  variants << m_category;
+  variants << m_note;
+
+  return variants;
+}
+
+
 
 QVariant
 BBleauPlace::field(int position) const
@@ -289,9 +327,12 @@ BBleauPlace::field(int position) const
      return m_category;
    case BBleauPlaceSchema::Fields::NOTE:
      return m_note;
-   default: return QVariant(); // error
+   default:
+     return QVariant(); // error
   }
-}void
+}
+
+void
 BBleauPlace::set_field(int position, const QVariant & value)
 {
   switch(position) {
@@ -597,6 +638,7 @@ BBleauBoulder::to_json(bool only_changed) const
   return json_object;
 }
 
+
 QVariantHash
 BBleauBoulder::to_variant_hash(bool only_changed) const
 {
@@ -624,7 +666,6 @@ BBleauBoulder::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BBleauBoulder::to_variant_list() const
 {
@@ -637,6 +678,48 @@ BBleauBoulder::to_variant_list() const
 
   return variants;
 }
+
+QVariantHash
+BBleauBoulder::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_comment_modified())
+      variant_hash[QLatin1String("comment")] = m_comment;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("comment")] = m_comment;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("number")] = m_number;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauBoulder::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_name;
+  variants << m_comment;
+  variants << m_grade;
+  variants << m_number;
+
+  return variants;
+}
+
+
 
 QVariant
 BBleauBoulder::field(int position) const
@@ -652,9 +735,12 @@ BBleauBoulder::field(int position) const
      return m_grade;
    case BBleauBoulderSchema::Fields::NUMBER:
      return m_number;
-   default: return QVariant(); // error
+   default:
+     return QVariant(); // error
   }
-}void
+}
+
+void
 BBleauBoulder::set_field(int position, const QVariant & value)
 {
   switch(position) {
@@ -1186,6 +1272,7 @@ BBleauCircuit::to_json(bool only_changed) const
   return json_object;
 }
 
+
 QVariantHash
 BBleauCircuit::to_variant_hash(bool only_changed) const
 {
@@ -1234,7 +1321,6 @@ BBleauCircuit::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BBleauCircuit::to_variant_list() const
 {
@@ -1254,6 +1340,76 @@ BBleauCircuit::to_variant_list() const
 
   return variants;
 }
+
+QVariantHash
+BBleauCircuit::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_colour_modified())
+      variant_hash[QLatin1String("colour")] = m_colour;
+    if (is_creation_date_modified())
+      variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    if (is_gestion_modified())
+      variant_hash[QLatin1String("gestion")] = m_gestion;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_note_modified())
+      variant_hash[QLatin1String("note")] = m_note;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+    if (is_opener_modified())
+      variant_hash[QLatin1String("opener")] = m_opener;
+    if (is_refection_date_modified())
+      variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    if (is_refection_note_modified())
+      variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    if (is_status_modified())
+      variant_hash[QLatin1String("status")] = m_status;
+    if (is_topos_modified())
+      variant_hash[QLatin1String("topos")] = m_topos;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("colour")] = m_colour;
+    variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    variant_hash[QLatin1String("gestion")] = m_gestion;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("note")] = m_note;
+    variant_hash[QLatin1String("number")] = m_number;
+    variant_hash[QLatin1String("opener")] = m_opener;
+    variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    variant_hash[QLatin1String("status")] = m_status;
+    variant_hash[QLatin1String("topos")] = m_topos;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauCircuit::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_colour;
+  variants << m_creation_date;
+  variants << m_gestion;
+  variants << m_grade;
+  variants << m_note;
+  variants << m_number;
+  variants << m_opener;
+  variants << m_refection_date;
+  variants << m_refection_note;
+  variants << m_status;
+  variants << m_topos;
+
+  return variants;
+}
+
+
 
 QVariant
 BBleauCircuit::field(int position) const
@@ -1283,9 +1439,12 @@ BBleauCircuit::field(int position) const
      return m_status;
    case BBleauCircuitSchema::Fields::TOPOS:
      return m_topos;
-   default: return QVariant(); // error
+   default:
+     return QVariant(); // error
   }
-}void
+}
+
+void
 BBleauCircuit::set_field(int position, const QVariant & value)
 {
   switch(position) {
@@ -1820,6 +1979,7 @@ BBleauMassif::to_json(bool only_changed) const
   return json_object;
 }
 
+
 QVariantHash
 BBleauMassif::to_variant_hash(bool only_changed) const
 {
@@ -1862,7 +2022,6 @@ BBleauMassif::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BBleauMassif::to_variant_list() const
 {
@@ -1880,6 +2039,68 @@ BBleauMassif::to_variant_list() const
 
   return variants;
 }
+
+QVariantHash
+BBleauMassif::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_access_modified())
+      variant_hash[QLatin1String("access")] = m_access;
+    if (is_alternative_name_modified())
+      variant_hash[QLatin1String("alternative_name")] = m_alternative_name;
+    if (is_chaos_type_modified())
+      variant_hash[QLatin1String("chaos_type")] = m_chaos_type;
+    if (is_note_modified())
+      variant_hash[QLatin1String("note")] = m_note;
+    if (is_parcelles_modified())
+      variant_hash[QLatin1String("parcelles")] = m_parcelles;
+    if (is_rdv_modified())
+      variant_hash[QLatin1String("rdv")] = m_rdv;
+    if (is_secteur_modified())
+      variant_hash[QLatin1String("secteur")] = m_secteur;
+    if (is_velo_modified())
+      variant_hash[QLatin1String("velo")] = m_velo;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("access")] = m_access;
+    variant_hash[QLatin1String("alternative_name")] = m_alternative_name;
+    variant_hash[QLatin1String("chaos_type")] = m_chaos_type;
+    variant_hash[QLatin1String("note")] = m_note;
+    variant_hash[QLatin1String("parcelles")] = m_parcelles;
+    variant_hash[QLatin1String("rdv")] = m_rdv;
+    variant_hash[QLatin1String("secteur")] = m_secteur;
+    variant_hash[QLatin1String("velo")] = m_velo;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauMassif::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_name;
+  variants << m_access;
+  variants << m_alternative_name;
+  variants << m_chaos_type;
+  variants << m_note;
+  variants << m_parcelles;
+  variants << m_rdv;
+  variants << m_secteur;
+  variants << m_velo;
+
+  return variants;
+}
+
+
 
 QVariant
 BBleauMassif::field(int position) const
@@ -1905,9 +2126,12 @@ BBleauMassif::field(int position) const
      return m_secteur;
    case BBleauMassifSchema::Fields::VELO:
      return m_velo;
-   default: return QVariant(); // error
+   default:
+     return QVariant(); // error
   }
-}void
+}
+
+void
 BBleauMassif::set_field(int position, const QVariant & value)
 {
   switch(position) {

@@ -102,17 +102,19 @@ public:
 public:
   Document();
   Document(const Document & other);
-  Document(const QJsonObject & json_object);
+  Document(const QJsonObject & json_object); // JSON deserializer
   Document(const QVariantHash & variant_hash);
   Document(const QVariantList & variants);
-  Document(const QSqlRecord & record);
-  Document(const QSqlQuery & query);
+  Document(const QSqlRecord & record); // SQL deserializer
+  Document(const QSqlQuery & query); // SQL deserializer
   ~Document();
 
   Document & operator=(const Document & other);
 
   bool operator==(const Document & other);
 
+  // Getter/Setter
+  
   int id() const { return m_id; }
   void set_id(int value);
 
@@ -137,12 +139,19 @@ public:
   int size() const { return m_size; }
   void set_size(int value);
 
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
   bool is_id_modified() const { return m_bits[DocumentSchema::Fields::ID]; }
   bool is_name_modified() const { return m_bits[DocumentSchema::Fields::NAME]; }
   bool is_author_modified() const { return m_bits[DocumentSchema::Fields::AUTHOR]; }
@@ -152,6 +161,7 @@ public:
   bool is_url_modified() const { return m_bits[DocumentSchema::Fields::URL]; }
   bool is_size_modified() const { return m_bits[DocumentSchema::Fields::SIZE]; }
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 

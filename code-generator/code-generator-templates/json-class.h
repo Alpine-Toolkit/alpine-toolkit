@@ -29,28 +29,41 @@ public:
 public:
   {{class_name}}();
   {{class_name}}(const {{class_name}} & other);
-  {{class_name}}(const QJsonObject & json_object);
+  {{class_name}}(const QJsonObject & json_object); // JSON deserializer
   {{class_name}}(const QVariantHash & variant_hash);
   {{class_name}}(const QVariantList & variants);
-  {{class_name}}(const QSqlRecord & record);
-  {{class_name}}(const QSqlQuery & query);
+  {{class_name}}(const QSqlRecord & record); // SQL deserializer
+  {{class_name}}(const QSqlQuery & query); // SQL deserializer
   ~{{class_name}}();
 
   {{class_name}} & operator=(const {{class_name}} & other);
 
   bool operator==(const {{class_name}} & other);
-{% for member in members %}
+
+  // Getter/Setter
+  {# #}
+{%- for member in members %}
   {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
   void set_{{member.name}}({{member.setter_type}} value);
-{% endfor %}
+{% endfor -%}
+  {# #}
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
-{% for member in members %}
+
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
+{%- for member in members %}
   bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::Fields::{{member.name|upper}}]; }{% endfor %}
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 

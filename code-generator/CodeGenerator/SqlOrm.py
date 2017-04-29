@@ -33,6 +33,7 @@ import os
 from .CppCodeGenerator import (Variable, Type,
                                ClassDefinition, MethodDefinition,
                                Header, Source)
+from .CppType import TypeConversion
 
 ####################################################################################################
 
@@ -124,6 +125,10 @@ class Field:
     def variable(self):
         return self._variable
 
+    @property
+    def context(self):
+        return self.__context__
+
     ##############################################
 
     def to_sql(self):
@@ -166,6 +171,34 @@ class DateTimeField(Field):
 class GeoCoordinateField(Field):
     def __init__(self, **kwargs):
         Field.__init__(self, name=None, sql_type='text', qt_type='QGeoCoordinate', **kwargs)
+
+####################################################################################################
+
+class IsoDateTimeField(DateTimeField):
+
+    __context__ = TypeConversion(
+        # Fixme: handle None
+        cast_from_json = 'json_helper::load_datetime',
+        cast_to_json = 'json_helper::dump_datetime',
+        cast_from_sql_variant = 'json_helper::load_sql_datetime',
+        cast_to_sql_variant = 'json_helper::dump_sql_datetime'
+    )
+
+
+class UnixDateTimeField(Field):
+
+    __context__ = TypeConversion(
+        # Fixme: handle None
+        cast_from_json = 'json_helper::load_datetime',
+        cast_to_json = 'json_helper::dump_datetime',
+        cast_from_sql_variant = 'json_helper::load_sql_datetime_as_epoch',
+        cast_to_sql_variant = 'json_helper::dump_sql_datetime_as_epoch'
+    )
+
+    ##############################################
+
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='integer', qt_type='QDateTime', **kwargs)
 
 ####################################################################################################
 

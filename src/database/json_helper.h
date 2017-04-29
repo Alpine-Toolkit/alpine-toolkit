@@ -37,6 +37,7 @@
 #include <QJsonValue>
 #include <QStringList>
 #include <QUrl>
+#include <QVariant>
 
 /**************************************************************************************************/
 
@@ -50,10 +51,28 @@ namespace json_helper {
   QJsonArray dump_string_list(const QStringList & string_list);
 
   inline QDateTime load_datetime(const QJsonValue & json_value) {
+    // return json_value.toVariant().toDateTime();
     return QDateTime::fromString(json_value.toString());
   }
   inline QString dump_datetime(const QDateTime & datetime) {
     return datetime.toString(Qt::ISODate);
+  }
+
+  inline QDateTime load_sql_datetime(const QVariant & variant) {
+    // return json_value.toVariant().toDateTime();
+    return QDateTime::fromString(variant.toString());
+  }
+  inline QString dump_sql_datetime(const QDateTime & datetime) {
+    return datetime.toString(Qt::ISODate);
+  }
+
+  inline QDateTime load_sql_datetime_as_epoch(const QVariant & variant) {
+    QDateTime datetime;
+    datetime.setSecsSinceEpoch(variant.toInt());
+    return datetime;
+  }
+  inline qint64 dump_sql_datetime_as_epoch(const QDateTime & datetime) {
+    return datetime.toSecsSinceEpoch();
   }
 
   inline QString dump_url(const QUrl & url) {

@@ -77,14 +77,16 @@ class TypeConversion:
     def __init__(self,
                  cast_from_json=None,
                  cast_to_json=None,
-                 cast_from_variant=None,
-                 cast_to_variant=None,
+                 # cast_from_variant=None,
+                 # cast_to_variant=None,
+                 cast_from_sql_variant=None,
+                 cast_to_sql_variant=None,
     ):
 
         self._cast_from_json = cast_from_json
         self._cast_to_json = cast_to_json
-        self._cast_from_variant = cast_from_variant
-        self._cast_to_variant = cast_to_variant
+        self._cast_from_sql_variant = cast_from_sql_variant
+        self._cast_to_sql_variant = cast_to_sql_variant
 
     ##############################################
 
@@ -97,12 +99,12 @@ class TypeConversion:
         return self._cast_to_json
 
     @property
-    def cast_from_variant(self):
-        return self._cast_from_variant
+    def cast_from_sql_variant(self):
+        return self._cast_from_sql_variant
 
     @property
-    def cast_to_variant(self):
-        return self._cast_to_variant
+    def cast_to_sql_variant(self):
+        return self._cast_to_sql_variant
 
 ####################################################################################################
 

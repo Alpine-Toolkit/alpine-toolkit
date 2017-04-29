@@ -94,17 +94,19 @@ public:
 public:
   BBleauPlace();
   BBleauPlace(const BBleauPlace & other);
-  BBleauPlace(const QJsonObject & json_object);
+  BBleauPlace(const QJsonObject & json_object); // JSON deserializer
   BBleauPlace(const QVariantHash & variant_hash);
   BBleauPlace(const QVariantList & variants);
-  BBleauPlace(const QSqlRecord & record);
-  BBleauPlace(const QSqlQuery & query);
+  BBleauPlace(const QSqlRecord & record); // SQL deserializer
+  BBleauPlace(const QSqlQuery & query); // SQL deserializer
   ~BBleauPlace();
 
   BBleauPlace & operator=(const BBleauPlace & other);
 
   bool operator==(const BBleauPlace & other);
 
+  // Getter/Setter
+  
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -117,17 +119,25 @@ public:
   const QString & note() const { return m_note; }
   void set_note(const QString & value);
 
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
   bool is_coordinate_modified() const { return m_bits[BBleauPlaceSchema::Fields::COORDINATE]; }
   bool is_name_modified() const { return m_bits[BBleauPlaceSchema::Fields::NAME]; }
   bool is_category_modified() const { return m_bits[BBleauPlaceSchema::Fields::CATEGORY]; }
   bool is_note_modified() const { return m_bits[BBleauPlaceSchema::Fields::NOTE]; }
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
@@ -202,17 +212,19 @@ public:
 public:
   BBleauBoulder();
   BBleauBoulder(const BBleauBoulder & other);
-  BBleauBoulder(const QJsonObject & json_object);
+  BBleauBoulder(const QJsonObject & json_object); // JSON deserializer
   BBleauBoulder(const QVariantHash & variant_hash);
   BBleauBoulder(const QVariantList & variants);
-  BBleauBoulder(const QSqlRecord & record);
-  BBleauBoulder(const QSqlQuery & query);
+  BBleauBoulder(const QSqlRecord & record); // SQL deserializer
+  BBleauBoulder(const QSqlQuery & query); // SQL deserializer
   ~BBleauBoulder();
 
   BBleauBoulder & operator=(const BBleauBoulder & other);
 
   bool operator==(const BBleauBoulder & other);
 
+  // Getter/Setter
+  
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -228,18 +240,26 @@ public:
   const QString & number() const { return m_number; }
   void set_number(const QString & value);
 
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
   bool is_coordinate_modified() const { return m_bits[BBleauBoulderSchema::Fields::COORDINATE]; }
   bool is_name_modified() const { return m_bits[BBleauBoulderSchema::Fields::NAME]; }
   bool is_comment_modified() const { return m_bits[BBleauBoulderSchema::Fields::COMMENT]; }
   bool is_grade_modified() const { return m_bits[BBleauBoulderSchema::Fields::GRADE]; }
   bool is_number_modified() const { return m_bits[BBleauBoulderSchema::Fields::NUMBER]; }
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
@@ -330,17 +350,19 @@ public:
 public:
   BBleauCircuit();
   BBleauCircuit(const BBleauCircuit & other);
-  BBleauCircuit(const QJsonObject & json_object);
+  BBleauCircuit(const QJsonObject & json_object); // JSON deserializer
   BBleauCircuit(const QVariantHash & variant_hash);
   BBleauCircuit(const QVariantList & variants);
-  BBleauCircuit(const QSqlRecord & record);
-  BBleauCircuit(const QSqlQuery & query);
+  BBleauCircuit(const QSqlRecord & record); // SQL deserializer
+  BBleauCircuit(const QSqlQuery & query); // SQL deserializer
   ~BBleauCircuit();
 
   BBleauCircuit & operator=(const BBleauCircuit & other);
 
   bool operator==(const BBleauCircuit & other);
 
+  // Getter/Setter
+  
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -377,12 +399,19 @@ public:
   const QStringList & topos() const { return m_topos; }
   void set_topos(const QStringList & value);
 
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
   bool is_coordinate_modified() const { return m_bits[BBleauCircuitSchema::Fields::COORDINATE]; }
   bool is_colour_modified() const { return m_bits[BBleauCircuitSchema::Fields::COLOUR]; }
   bool is_creation_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::CREATION_DATE]; }
@@ -396,6 +425,7 @@ public:
   bool is_status_modified() const { return m_bits[BBleauCircuitSchema::Fields::STATUS]; }
   bool is_topos_modified() const { return m_bits[BBleauCircuitSchema::Fields::TOPOS]; }
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
@@ -496,17 +526,19 @@ public:
 public:
   BBleauMassif();
   BBleauMassif(const BBleauMassif & other);
-  BBleauMassif(const QJsonObject & json_object);
+  BBleauMassif(const QJsonObject & json_object); // JSON deserializer
   BBleauMassif(const QVariantHash & variant_hash);
   BBleauMassif(const QVariantList & variants);
-  BBleauMassif(const QSqlRecord & record);
-  BBleauMassif(const QSqlQuery & query);
+  BBleauMassif(const QSqlRecord & record); // SQL deserializer
+  BBleauMassif(const QSqlQuery & query); // SQL deserializer
   ~BBleauMassif();
 
   BBleauMassif & operator=(const BBleauMassif & other);
 
   bool operator==(const BBleauMassif & other);
 
+  // Getter/Setter
+  
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -537,12 +569,19 @@ public:
   const QString & velo() const { return m_velo; }
   void set_velo(const QString & value);
 
+  // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
   QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantHash to_variant_hash_json(bool only_changed = false) const;
   QVariantList to_variant_list() const;
 
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
   bool is_coordinate_modified() const { return m_bits[BBleauMassifSchema::Fields::COORDINATE]; }
   bool is_name_modified() const { return m_bits[BBleauMassifSchema::Fields::NAME]; }
   bool is_access_modified() const { return m_bits[BBleauMassifSchema::Fields::ACCESS]; }
@@ -554,6 +593,7 @@ public:
   bool is_secteur_modified() const { return m_bits[BBleauMassifSchema::Fields::SECTEUR]; }
   bool is_velo_modified() const { return m_bits[BBleauMassifSchema::Fields::VELO]; }
 
+  // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 

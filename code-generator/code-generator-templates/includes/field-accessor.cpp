@@ -1,11 +1,19 @@
 {# -*- mode: fundamental -*- -#}
 
-{%-  macro field_enum(field) -%}
+{%- macro field_enum(field) -%}
 {{class_name}}Schema::Fields::{{field.name|upper}}
 {%- endmacro -%}
 
 {%- macro cast_to_variant(field) -%}
 {% if field.variable.cast_variant %}QVariant::fromValue(m_{{field.name}}){% else %}m_{{field.name}}{% endif %}
+{%- endmacro -%}
+
+{%-  macro from_variant(field, value) -%}
+value.{{field.variable.from_variant}}()
+{%- endmacro -%}
+
+{%-  macro set_member(name, value, cast) -%}
+m_{{name}} = {% if cast -%}{{cast}}({{ value }}){%- else -%}{{ value }}{%- endif %}
 {%- endmacro -%}
 
 QVariant
@@ -15,17 +23,10 @@ QVariant
 {%- for field in fields %}
    case {{ field_enum(field) }}:
      return {{ cast_to_variant(field) }};{% endfor %}
-   default: return QVariant(); // error
+   default:
+     return QVariant(); // error
   }
 }
-
-{%-  macro from_variant(field, value) -%}
-value.{{field.variable.from_variant}}()
-{%- endmacro -%}
-
-{%-  macro set_member(name, value, cast) -%}
-m_{{name}} = {% if cast -%}{{cast}}({{ value }}){%- else -%}{{ value }}{%- endif %}
-{%- endmacro -%}
 
 void
 {{class_name}}::set_field(int position, const QVariant & value)

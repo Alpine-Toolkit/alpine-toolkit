@@ -25,6 +25,8 @@
 
 {% include "includes/json-ctor.cpp" %}
 
+{% include "includes/sql-ctor.cpp" %}
+
 {% include "includes/dtor.cpp" %}
 {% with members = all_members %}
 {% include "includes/copy-operator.cpp" %}
@@ -37,7 +39,9 @@
 {% endfor %}
 {% include "includes/json-serializer.cpp" %}
 
-{% include "includes/json-accessor.cpp" %}
+{% include "includes/variant-serializer.cpp" %}
+
+{% include "includes/field-accessor.cpp" %}
 
 {% include "includes/data-stream-operator.cpp" %}
 

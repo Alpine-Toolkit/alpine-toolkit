@@ -44,7 +44,8 @@ import json
 
 from CodeGenerator.SqlOrm import (SchemaRepository,
                                   Schema,
-                                  IntegerField, StringField, UrlField, DateTimeField)
+                                  IntegerField, StringField, UrlField,
+                                  DateTimeField, IsoDateTimeField, UnixDateTimeField)
 
 from CodeGenerator.GeneratorSettings import generator_settings
 
@@ -77,7 +78,7 @@ class Document(Schema):
     name= StringField()
     author= StringField()
     version = IntegerField()
-    date = DateTimeField()
+    date = UnixDateTimeField()
     description= StringField()
     url = UrlField()
     size = IntegerField()
