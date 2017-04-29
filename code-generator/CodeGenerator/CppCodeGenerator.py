@@ -260,6 +260,43 @@ class CodeMixin:
         self.append(self._generator_settings.render(template, kwargs))
         self.new_line() # Fixme: why \n is removed ???
 
+
+####################################################################################################
+
+class TypeConversion:
+
+    ##############################################
+
+    def __init__(self,
+                 cast_from_json=None,
+                 cast_to_json=None,
+                 cast_from_variant=None,
+                 cast_to_variant=None,
+    ):
+
+        self._cast_from_json = cast_from_json
+        self._cast_to_json = cast_to_json
+        self._cast_from_variant = cast_from_variant
+        self._cast_to_variant = cast_to_variant
+
+    ##############################################
+
+    @property
+    def cast_from_json(self):
+        return self._cast_from_json
+
+    @property
+    def cast_to_json(self):
+        return self._cast_to_json
+
+    @property
+    def cast_from_variant(self):
+        return self._cast_from_variant
+
+    @property
+    def cast_to_variant(self):
+        return self._cast_to_variant
+
 ####################################################################################################
 
 class Type:
@@ -267,6 +304,7 @@ class Type:
     __TYPE_TO_VARIANT__ = {
         'bool': 'toBool',
         'int': 'toInt',
+        'unsigned int': 'toUInt',
         'double': 'toDouble',
         }
 
@@ -288,7 +326,7 @@ class Type:
 
     ##############################################
 
-    def __init__(self, data_type, const=False, ref=False, ptr=False):
+    def __init__(self, data_type, const=False, ref=False, ptr=False, context=None):
 
         if ref and ptr:
             raise ValueError("Variable {} cannot be ref and ptr.format(name)")
@@ -297,12 +335,19 @@ class Type:
         self._const = const
         self._ref = ref
         self._ptr = ptr
+        self._context = context
 
     ##############################################
 
     def args_tuple(self):
 
-        return (self._type, self.is_const, self.is_ref, self.is_ptr)
+        return (self._type, self._const, self._ref, self._ptr, self._context)
+
+    ##############################################
+
+    def __repr__(self):
+
+        return '{0.__class__.__name__} {0._name}'.format(self)
 
     ##############################################
 
@@ -376,10 +421,66 @@ class Type:
 
         # QVariant().toXxx()
 
-        if self.is_q_type:
-            return 'to' + self._type[1:]
+        if self.cast_variant:
+            return 'value<{0.type}>'.format(self)
+        elif self.is_q_type:
+            data_type = self._type[1:]
+            location = data_type.find('<')
+            if location != -1:
+                data_type = data_type[:location]
+            return 'to' + data_type
         else:
             return self.__TYPE_TO_VARIANT__[self._type]
+
+    ##############################################
+
+    @property
+    def cast_variant(self):
+
+        if self._type in (
+                'QBitArray',
+                'bool',
+                'QByteArray',
+                'QChar',
+                'QDate',
+                'QDateTime',
+                'double',
+                'QEasingCurve',
+                'float',
+                'QHash<QString, QVariant>',
+                'int',
+                'QJsonArray',
+                'QJsonDocument',
+                'QJsonObject',
+                'QJsonValue',
+                'QLine',
+                'QLineF',
+                'QList<QVariant>',
+                'QLocale',
+                'qlonglong',
+                'QMap<QString, QVariant>',
+                'QModelIndex',
+                'QPersistentModelIndex',
+                'QPoint',
+                'QPointF',
+                'qreal',
+                'QRect',
+                'QRectF',
+                'QRegExp',
+                'QRegularExpression',
+                'QSize',
+                'QSizeF',
+                'QString',
+                'QStringList',
+                'QTime',
+                'uint',
+                'qulonglong',
+                'QUrl',
+                'QUuid',
+                ):
+            return False
+        else:
+            return True
 
     ##############################################
 
@@ -394,52 +495,75 @@ class Type:
             return 'toDouble'
         elif self._type in ('QString', 'QUrl'):
             return 'toString'
-        elif self._type in ('QDateTime',):
-            return 'toVariant().' + self.from_variant
-        # toArray
-        # toObject
+        # elif self._type in ('QDateTime',):
+        #     return 'toVariant().' + self.from_variant
+        elif self._type in ('QDateTime', 'QGeoCoordinate', 'QStringList'):
+            return None
+        # toArray / toObject
         else:
             raise ValueError("Don't know how to convert {} from JSON".format(self._type))
 
     ##############################################
 
     @property
-    def from_json_cast(self):
+    def cast_from_json(self):
 
         # Cast for JSON value
 
-        return None
-
-        # if self._type == 'QDateTime':
-        #     return 'QDateTime::fromString'
-        # else:
-        #     return None
+        if self._context is not None:
+            return self._context.cast_from_json
+        elif self._type == 'QDateTime':
+            return 'json_helper::load_datetime'
+        elif self._type == 'QStringList':
+            return 'json_helper::load_string_list'
+        # elif self._type == 'QUrl':
+        #     return 'json_helper::load_url'
+        else:
+            return None
 
     ##############################################
 
     @property
-    def m_to_json(self):
+    def cast_to_json(self):
 
-        # Member to JSON value
+        # Cast to JSON value
 
-        if self._type == 'QDateTime':
-            return '{0.m_name}.toString(Qt::ISODate)'.format(self)
-        elif self._type in ('QUrl'):
-            return '{0.m_name}.toString()'.format(self)
+        if self._context is not None:
+            return self._context.cast_to_json
+        elif self._type == 'QDateTime':
+            return 'json_helper::dump_datetime'
+        elif self._type == 'QStringList':
+            return 'json_helper::dump_string_list'
+        elif self._type == 'QUrl':
+            return 'json_helper::dump_url'
         else:
-            return self.m_name
+            return None
+
+    ##############################################
+
+    # @property
+    # def m_to_json(self):
+
+    #     # Member to JSON value
+
+    #     if self._type == 'QDateTime':
+    #         return '{0.m_name}.toString(Qt::ISODate)'.format(self)
+    #     elif self._type in ('QUrl'):
+    #         return '{0.m_name}.toString()'.format(self)
+    #     else:
+    #         return self.m_name
 
     ##############################################
 
     def to_ref(self):
 
-        return Type(self._type, ref=True)
+        return Type(self._type, ref=True, context=self._context)
 
     ##############################################
 
     def to_const_ref(self):
 
-        return Type(self._type, const=True, ref=True)
+        return Type(self._type, const=True, ref=True, context=self._context)
 
     ##############################################
 
@@ -498,9 +622,9 @@ class Variable(Type):
 
     ##############################################
 
-    def __init__(self, name, data_type, const=False, ref=False, ptr=False, value=None):
+    def __init__(self, name, data_type, const=False, ref=False, ptr=False, context=None, value=None):
 
-        Type.__init__(self, data_type, const, ref, ptr)
+        Type.__init__(self, data_type, const, ref, ptr, context)
 
         self._name = name
         self._value = value
@@ -602,9 +726,9 @@ class Argument(Variable):
 
     ##############################################
 
-    def __init__(self, name, data_type, const=False, ref=False, ptr=False, default=None):
+    def __init__(self, name, data_type, const=False, ref=False, ptr=False, context=None, default=None):
 
-        Variable.__init__(self, name, data_type, const, ref, ptr)
+        Variable.__init__(self, name, data_type, const, ref, ptr, context)
 
         self._default = default
 
@@ -1309,7 +1433,7 @@ class Header(CodeMixin):
 #ifndef __{name}_H__
 #define __{name}_H__
 '''
-        self.format(template, name=self._name.upper())
+        self.format(template, name=self._name.upper().replace('-', '_'))
         self.new_line()
         self.rule()
         self.new_line()

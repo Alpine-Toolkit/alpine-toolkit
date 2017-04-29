@@ -42,14 +42,11 @@ sys.path.insert(0, code_generator_path)
 
 import json
 
-from CodeGenerator.SqlOrm import SchemaRepository
+from CodeGenerator.SqlOrm import (SchemaRepository,
+                                  Schema,
+                                  IntegerField, StringField, UrlField, DateTimeField)
 
 from CodeGenerator.GeneratorSettings import generator_settings
-
-####################################################################################################
-
-
-document_dir = os.path.join(source_path, 'src', 'document')
 
 ####################################################################################################
 
@@ -63,33 +60,32 @@ document_dir = os.path.join(source_path, 'src', 'document')
 
 ####################################################################################################
 
-json_schema = {
-    'Document': (
-        { 'name': 'id', 'type': 'integer' },
-        { 'name': 'name', 'type': 'text' },
-        { 'name': 'author', 'type': 'text' },
-        { 'name': 'version', 'type': 'integer' },
-        { 'name': 'date', 'type': 'text', 'qt_type': 'QDateTime' },
-        { 'name': 'description', 'type': 'text' },
-        { 'name': 'url', 'type': 'text', 'qt_type': 'QUrl' },
-        { 'name': 'size', 'type': 'integer' },
+class Document(Schema):
+
+    __order__ = (
+        'id',
+        'name',
+        'author',
+        'version',
+        'date',
+        'description',
+        'url',
+        'size',
     )
-}
 
-json_data = json.dumps(json_schema, indent=4)
-# print(json_data)
+    id = IntegerField()
+    name= StringField()
+    author= StringField()
+    version = IntegerField()
+    date = DateTimeField()
+    description= StringField()
+    url = UrlField()
+    size = IntegerField()
 
-schema_repository = SchemaRepository(json_data)
+####################################################################################################
 
-# Fixme: 
-for table in schema_repository:
-    # print('Table', table.name)
-    # print(table.to_sql())
-    header, source = table.generate_source('document', generator_settings)
-    # header, source = table.generate_source(table.name)
-    # print(header)
-    # print(source)
-    with open(os.path.join(document_dir, 'document.h'), 'w') as f:
-        f.write(str(header))
-    with open(os.path.join(document_dir, 'document.cpp'), 'w') as f:
-        f.write(str(source))
+schema_repository = SchemaRepository(Document)
+
+output_dir = os.path.join(source_path, 'src', 'document')
+path = os.path.join(output_dir, 'document')
+schema_repository.write_source(path, generator_settings)

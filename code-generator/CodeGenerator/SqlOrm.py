@@ -28,37 +28,33 @@
 
 import datetime
 import json
+import os
 
-from .CppCodeGenerator import (Header, Source, ClassDefinition, Variable, MethodDefinition, Type)
+from .CppCodeGenerator import (Variable, Type,
+                               ClassDefinition, MethodDefinition,
+                               Header, Source)
 
 ####################################################################################################
 
 class Field:
 
-    __TYPE_TO_CPP__ = {
-        'integer': 'int',
-        'text': 'QString',
-        }
+    __context__ = None
 
     ##############################################
 
     def __init__(self, name,
                  sql_type,
+                 qt_type,
                  sql_qualifier='',
-                 qt_type=None,
                  sql_name=None,
                  json_name=None,
                  title='',
                  description='',
     ):
 
-        self._name = name
         self._sql_type = sql_type
-        self._sql_qualifier = sql_qualifier
-
-        if qt_type is None:
-            qt_type = self.__TYPE_TO_CPP__[sql_type]
         self._qt_type = qt_type
+        self._sql_qualifier = sql_qualifier
 
         if sql_name is None:
             sql_name = name
@@ -71,13 +67,30 @@ class Field:
         self._title = title
         self._description = description
 
-        self._variable = Variable(self._name, self._qt_type)
+        self.name = name
+
+    ##############################################
+
+    def __repr__(self):
+
+        return '{0.__class__.__name__} {0._name}'.format(self)
 
     ##############################################
 
     @property
     def name(self):
         return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+        self._variable = Variable(self._name, self._qt_type, context=self.__context__)
+        if self._sql_name is None:
+            self._sql_name = name
+        if self._json_name is None:
+            self._json_name = name
+
+    ##############################################
 
     @property
     def sql_type(self):
@@ -122,26 +135,67 @@ class Field:
 
 ####################################################################################################
 
+class IntegerField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='integer', qt_type='int', **kwargs)
+
+class UnsignedIntegerField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='integer', qt_type='unsigned int', **kwargs)
+
+class RealField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='real', qt_type='qreal', **kwargs)
+
+class StringField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='text', qt_type='QString', **kwargs)
+
+class StringListField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='text', qt_type='QStringList', **kwargs)
+
+class UrlField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='text', qt_type='QUrl', **kwargs)
+
+class DateTimeField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='text', qt_type='QDateTime', **kwargs)
+
+class GeoCoordinateField(Field):
+    def __init__(self, **kwargs):
+        Field.__init__(self, name=None, sql_type='text', qt_type='QGeoCoordinate', **kwargs)
+
+####################################################################################################
+
 class Schema:
 
+    __custom_header__ = None
+    __custom_source__ = None
+
     ##############################################
 
-    def __init__(self, name, json_data):
+    def __init__(self):
 
-        self._name = name
+        self._name = self.__class__.__name__
+
         self._fields = []
-        self._parse_json_data(json_data)
+        d = self.__class__.__dict__
+        if '__order__' in d:
+            field_names = d['__order__']
+        else:
+            field_names = d.keys()
+        for name in field_names:
+            field = d[name]
+            if isinstance(field, Field):
+                field.name  = name
+                self._fields.append(field)
 
-    ##############################################
-
-    def _parse_json_data(self, json_data):
-
-        for field in json_data:
-            field = Field(field['name'],
-                          field['type'],
-                          field.get('sql_attributes', ''),
-                          field.get('qt_type', None))
-            self._fields.append(field)
+        self._members = [field.variable for field in self._fields]
+        self._member_types = sorted(set([member.type for member in self._members]))
+        self._private_members = [Variable('bits', 'QBitArray', value=len(self._members))]
+        self._all_members = self._private_members + self._members
 
     ##############################################
 
@@ -167,12 +221,13 @@ class Schema:
 
     ##############################################
 
-    @staticmethod
-    def includes(members):
+    @property
+    def includes(self):
 
-        include_classes = set([member.type for member in members if member.type.startswith('Q')])
+        include_classes = set([member.type for member in self._members if member.type.startswith('Q')])
         include_classes |= set((
             # 'QObject',
+            'QBitArray',
             'QDataStream',
             'QJsonObject',
             'QSqlQuery',
@@ -185,46 +240,28 @@ class Schema:
 
     ##############################################
 
-    def generate_source(self, filename, generator_settings):
+    def generate_header(self, header):
 
-        class_name = self._name # .title()
+        header.render('json-class.h',
+                      class_name=self._name,
+                      members=self._members,
+                      custom_header=self.__custom_header__
+        )
 
-        members = [field.variable for field in self]
-        member_types = sorted(set([member.type for member in members]))
-        private_members = [Variable('bits', 'QBitArray', value=len(members))]
-        all_members = private_members + members
+    ##############################################
 
-        generator_comment = "This file was automatically generated by SqlOrm" # on {}".format(datetime.datetime.now())
+    def generate_source(self, source):
 
-        header = Header(filename, generator_settings)
-        header.cpp_mode()
-        header.comment(generator_comment)
-        header.header()
-        for include in self.includes(all_members):
-            header.include(include)
-        header.new_line()
-        header.include('database/schema.h', local=True)
-        header.new_line()
-        header.rule()
-        header.new_line()
-        header.render('json-class.h', class_name=class_name, members=members)
-        header.new_line()
-        header.footer()
-
-        source = Source(filename, generator_settings)
-        source.comment(generator_comment)
-        source.header()
-        source.include(filename, local=True)
-        source.new_line()
-        source.rule()
-        source.new_line()
-        source.comment('QC_BEGIN_NAMESPACE')
         source.render('json-class.cpp',
-                      class_name=class_name,
-                      members=members, all_members=all_members, member_types=member_types, fields=self._fields)
-        source.new_line()
-        source.comment('QC_END_NAMESPACE')
-        source.footer()
+                      class_name=self._name,
+                      members=self._members,
+                      all_members=self._all_members,
+                      member_types=self._member_types,
+                      fields=self._fields,
+                      custom_source=self.__custom_source__
+        )
+
+    ##############################################
 
         # class_definition = ClassDefinition(class_name, 'QObject',
         #                                    members,
@@ -274,25 +311,98 @@ class Schema:
         # class_implementation.json_serializer()
         # source.append(class_implementation)
 
-        return str(header), str(source)
-
 ####################################################################################################
 
 class SchemaRepository:
 
     ##############################################
 
-    def __init__(self, json_data):
+    def __init__(self, *classes):
 
-        self._tables = []
-
-        json_dict = json.loads(json_data)
-        for name, d in json_dict.items():
-            table = Schema(name, d)
-            self._tables.append(table)
+        self._tables = [class_() for class_ in classes]
 
     ##############################################
 
     def __iter__(self):
 
         return iter(self._tables)
+
+    ##############################################
+
+    @property
+    def includes(self):
+
+        include_classes = set()
+        for schema in self:
+            include_classes |= set(schema.includes)
+        return sorted(include_classes)
+
+    ##############################################
+
+    def generate_source(self, filename, generator_settings,
+                        pre_header=None, post_header=None,
+                        pre_source=None, post_source=None):
+
+        generator_comment = "This file was automatically generated by SqlOrm" # on {}".format(datetime.datetime.now())
+
+        header = Header(filename, generator_settings)
+        header.cpp_mode()
+        header.comment(generator_comment)
+        header.header()
+        for include in self.includes:
+            header.include(include)
+        header.new_line()
+        header.include('database/schema.h', local=True)
+        header.new_line()
+        header.rule()
+        header.new_line()
+        if pre_header is not None:
+            header.render(pre_header)
+        for schema in self:
+            schema.generate_header(header)
+            header.new_line()
+            header.rule()
+            header.new_line()
+        if post_header is not None:
+            header.render(post_header)
+        header.footer()
+
+        source = Source(filename, generator_settings)
+        source.comment(generator_comment)
+        source.header()
+        source.include(filename, local=True)
+        # Fixme: auto ? / function in CppCodeGenerator ?
+        #! if 'QStringList' in self.includes:
+        source.new_line()
+        source.include('database/json_helper.h', local=True)
+        source.new_line()
+        source.rule()
+        source.new_line()
+        source.comment('QC_BEGIN_NAMESPACE')
+        source.new_line()
+        if pre_source is not None:
+            source.render(pre_source)
+        for schema in self:
+            schema.generate_source(source)
+            source.new_line()
+            source.rule()
+            source.new_line()
+        if post_source is not None:
+            source.render(post_source)
+        source.comment('QC_END_NAMESPACE')
+        source.footer()
+
+        return str(header), str(source)
+
+    ##############################################
+
+    def write_source(self, path, *args, **kwargs):
+
+        filename = os.path.basename(path)
+        header, source = self.generate_source(filename, *args, **kwargs)
+
+        with open(path + '.h', 'w') as f:
+            f.write(str(header))
+        with open(path + '.cpp', 'w') as f:
+            f.write(str(source))
+

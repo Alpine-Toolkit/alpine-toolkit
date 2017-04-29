@@ -49,6 +49,7 @@
 
 /**************************************************************************************************/
 
+
 class DocumentSchema : public QcSchema
 {
 public:
@@ -136,7 +137,7 @@ public:
   int size() const { return m_size; }
   void set_size(int value);
 
-QJsonObject to_json(bool only_changed = false) const;
+  QJsonObject to_json(bool only_changed = false) const;
   QVariantHash to_variant_hash(bool only_changed = false) const;
   QVariantHash to_variant_hash_sql(bool only_changed = false) const;
   QVariantHash to_variant_hash_json(bool only_changed = false) const;
@@ -183,6 +184,8 @@ QDataStream & operator>>(QDataStream & in, Document & obj);
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const Document & obj);
 #endif
+
+/**************************************************************************************************/
 
 #endif /* __DOCUMENT_H__ */
 

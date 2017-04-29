@@ -12,7 +12,7 @@ QDataStream &
 operator>>(QDataStream & in, {{class_name}} & obj)
 {
 {%- for type in member_types %}
-  {{type}} _{{type}};{% endfor %}
+  {{type}} _{{type|replace(' ', '_')}};{% endfor %}
 {% for member in members %}
   in >> _{{member.type}};
   obj.set_{{member.name}}(_{{member.type}});{% endfor %}

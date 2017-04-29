@@ -1,5 +1,5 @@
-class {{class_name}}
-{
+{# -*- mode: fundamental -*- -#}
+{%- macro singleton(class_name) -%}
 public:
   static {{class_name}} & instance()
   {
@@ -16,4 +16,4 @@ public:
 protected:
   {{class_name}}();
   ~{{class_name}}();
-};
+{%- endmacro -%}

@@ -1,7 +1,14 @@
 {# -*- mode: fundamental -*- -#}
-{%- macro insert(field) -%}
-  json_object.insert(QLatin1String("{{field.json_name}}"), QJsonValue({{field.variable.m_to_json}}));
+
+{%- macro to_json(field) -%}
+{% if field.variable.cast_to_json %}{{field.variable.cast_to_json}}(m_{{field.name}}){% else %}QJsonValue(m_{{field.name}}){% endif %}
 {%- endmacro -%}
+
+{%- macro insert(field) -%}
+  {#- json_object[] = -#}
+  json_object.insert(QLatin1String("{{field.json_name}}"), {{ to_json(field) }});
+{%- endmacro -%}
+
 QJsonObject
 {{class_name}}::to_json(bool only_changed) const
 {
@@ -9,7 +16,6 @@ QJsonObject
 
  if (only_changed) {
 {%- for field in fields %}
-    {#- if (m_bits[{{class_name}}Schema::Fields::{{field.name|upper}}]) #}
     if (is_{{field.name}}_modified())
       {{ insert(field) }}
 {%- endfor %}
@@ -22,7 +28,11 @@ QJsonObject
   return json_object;
 }
 
-{%- macro to_variant(prefix) -%}
+{%- macro insert(field) -%}
+variant_hash[QLatin1String("{{field.name}}")] = {{ cast_to_variant(field) }};
+{%- endmacro -%}
+
+{%- macro to_variant(prefix) %}
 QVariantHash
 {{class_name}}::to_variant_hash{{prefix}}(bool only_changed) const
 {
@@ -30,7 +40,6 @@ QVariantHash
 
   if (only_changed) {
 {%- for field in fields %}
-    {#- if (m_bits[{{class_name}}Schema::Fields::{{field.name|upper}}]) #}
     if (is_{{field.name}}_modified())
       {{ insert(field) }}
 {%- endfor %}
@@ -42,22 +51,14 @@ QVariantHash
 
   return variant_hash;
 }
-{%- endmacro %}
+{% endmacro -%}
 
-{% macro insert(field) -%}
-variant_hash[QLatin1String("{{field.name}}")] = m_{{field.name}};
+{%- macro cast_to_variant(field) -%}
+{% if field.variable.cast_variant %}QVariant::fromValue(m_{{field.name}}){% else %}m_{{field.name}}{% endif %}
 {%- endmacro -%}
+
+{# fix blank line #}
 {{ to_variant('') }}
-
-{% macro insert(field) -%}
-variant_hash[QLatin1String("{{field.sql_name}}")] = m_{{field.name}};
-{%- endmacro -%}
-{{ to_variant('_sql') }}
-
-{% macro insert(field) -%}
-variant_hash[QLatin1String("{{field.json_name}}")] = m_{{field.name}};
-{%- endmacro -%}
-{{ to_variant('_json') }}
 
 QVariantList
 {{class_name}}::to_variant_list() const
@@ -65,7 +66,7 @@ QVariantList
   QVariantList variants;
 
 {%- for field in fields %}
-  variants << m_{{field.name}};
+  variants << {{ cast_to_variant(field) }};
 {%- endfor %}
 
   return variants;

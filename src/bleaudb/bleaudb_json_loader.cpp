@@ -73,7 +73,7 @@ load_json_bleaudb(const QString & json_path, BleauDB & bleaudb)
   QString NUMBER("number");
 
   QJsonArray json_places = root[QStringLiteral("places")].toArray();
-  for (const QJsonValue & json_value : json_places) {
+  for (const auto & json_value : json_places) {
     QJsonObject json_object = json_value.toObject();
     BleauPlace place;
     place.set_coordinate(load_coordinate(json_object));
@@ -84,7 +84,7 @@ load_json_bleaudb(const QString & json_path, BleauDB & bleaudb)
   }
 
   QJsonArray json_massifs = root[QStringLiteral("massifs")].toArray();
-  for (const QJsonValue & json_value : json_massifs) {
+  for (const auto & json_value : json_massifs) {
     QJsonObject json_object = json_value.toObject();
     BleauMassif massif;
     massif.set_coordinate(load_coordinate(json_object));
@@ -101,7 +101,7 @@ load_json_bleaudb(const QString & json_path, BleauDB & bleaudb)
   }
 
   QJsonArray json_circuits = root[QStringLiteral("circuits")].toArray();
-  for (const QJsonValue & json_value : json_circuits) {
+  for (const auto & json_value : json_circuits) {
     QJsonObject json_object = json_value.toObject();
     BleauCircuit circuit;
     QString massif_name = json_object[QStringLiteral("massif")].toString();
@@ -121,7 +121,7 @@ load_json_bleaudb(const QString & json_path, BleauDB & bleaudb)
     // circuit.set_topos(json_object[QStringLiteral("topos")].toString()); // Fixme:
 
     QJsonArray json_boulders = json_object[QStringLiteral("boulders")].toArray();
-    for (const QJsonValue & json_value : json_boulders) {
+    for (const auto & json_value : json_boulders) {
       QJsonObject json_object = json_value.toObject();
       BleauBoulder boulder;
       boulder.set_coordinate(load_coordinate(json_object));

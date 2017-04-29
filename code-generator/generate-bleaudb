@@ -1,0 +1,226 @@
+#! /usr/bin/env python3
+# -*- Python -*-
+
+####################################################################################################
+#
+# $QTCARTO_BEGIN_LICENSE:GPL3$
+#
+# Copyright (C) 2016 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+#
+# This file is part of the QtCarto library.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# $QTCARTO_END_LICENSE$
+#
+####################################################################################################
+
+####################################################################################################
+
+import os
+import sys
+
+code_generator_path = os.path.dirname(os.path.abspath(__file__))
+source_path = os.path.dirname(code_generator_path)
+# print(source_path)
+
+sys.path.insert(0, code_generator_path)
+
+####################################################################################################
+
+import json
+
+from CodeGenerator.CppCodeGenerator import TypeConversion
+from CodeGenerator.SqlOrm import (SchemaRepository,
+                                  Schema,
+                                  IntegerField, UnsignedIntegerField,
+                                  StringField, StringListField, UrlField,
+                                  DateTimeField,
+                                  GeoCoordinateField)
+
+from CodeGenerator.GeneratorSettings import generator_settings
+
+####################################################################################################
+
+# "places": [
+#   {
+#     "category": "point d'eau",
+#     "coordinate": {
+#       "latitude": 48.41661764548987,
+#       "longitude": 2.725392699242297
+#     },
+#     "name": "Fontaine d'Avon",
+#     "note": null
+#   }, ... ]
+
+# "boulders": [
+#   {
+#     "comment": "mur.",
+#     "coordinate": null,
+#     "grade": "5-",
+#     "name": "",
+#     "number": 1
+#   }, ... ]
+
+# "circuits": [
+#   {
+#     "boulders": [ ... ]
+#     "colour": "rouge",
+#     "coordinate": {
+#       "latitude": 48.377501,
+#       "longitude": 2.519742
+#     "creation_date": null,
+#     "gestion": "ONF77",
+#     "grade": "TD-",
+#     "massif": "91_1",
+#     "note": null,
+#     "number": 1,
+#     "opener": "...",
+#     "refection_date": 2011,
+#     "refection_note": null,
+#     "status": "liste SNE",
+#     "topos": [
+#       "http://..."
+#     ]
+# },
+
+# "massifs": [
+#   {
+#     "acces": "...",
+#     "alternative_name": null,
+#     "chaos_type": "E/D",
+#     "coordinate": {
+#       "latitude": 48.37722,
+#       "longitude": 2.51919
+#     },
+#     "name": "91_1",
+#     "note": null,
+#     "parcelles": "135 141 TP",
+#     "rdv": "...",
+#     "secteur": "Trois Pignons",
+#     "velo": "..."
+#   }, ... ]
+
+####################################################################################################
+
+class BleauGeoCoordinateField(GeoCoordinateField):
+    __context__ = TypeConversion(
+        cast_from_json = 'bleaudb::load_json_coordinate',
+        cast_to_json = 'bleaudb::dump_json_coordinate'
+    )
+
+####################################################################################################
+
+class BBleauPlace(Schema):
+
+    __order__ = (
+        'coordinate',
+        'name',
+        'category',
+        'note',
+    )
+
+    coordinate = BleauGeoCoordinateField() #! Fixme: { 'latitude': , 'longitude': }
+    name = StringField()
+    category = StringField() # BleauPlaceCategory = QString
+    note = StringField()
+
+####################################################################################################
+
+class BBleauBoulder(Schema):
+
+    __order__ = (
+        'coordinate',
+        'name',
+        'comment',
+        'grade',
+        'number',
+    )
+
+    coordinate = BleauGeoCoordinateField()
+    name = StringField()
+    comment = StringField()
+    grade = StringField() # BleauGrade
+    number = StringField() # BleauWayNumber
+
+####################################################################################################
+
+class BBleauCircuit(Schema):
+
+    __order__ = (
+        'coordinate',
+        'colour',
+        'creation_date',
+        'gestion',
+        'grade',
+        'note',
+        'number',
+        'opener',
+        'refection_date',
+        'refection_note',
+        'status',
+        'topos',
+        )
+
+    coordinate = BleauGeoCoordinateField()
+    # 'boulders': { }, # BleauBoulderList
+    colour = StringField()
+    creation_date = IntegerField() # UnsignedIntegerField()
+    gestion = StringField()
+    grade = StringField() # BleauAlpineGrade
+    #! 'massif': {}, # BleauMassif *
+    note = StringField()
+    number = IntegerField() # UnsignedIntegerField()
+    opener = StringField() # BleauOpeners
+    refection_date = IntegerField() # UnsignedIntegerField()
+    refection_note = StringField() # BleauRefectionNote
+    status = StringField()
+    topos = StringListField()
+
+####################################################################################################
+
+class BBleauMassif(Schema):
+
+    __order__ = (
+        'coordinate',
+        'name',
+        'access',
+        'alternative_name',
+        'chaos_type',
+        'note',
+        'parcelles',
+        'rdv',
+        'secteur',
+        'velo',
+    )
+
+    coordinate = BleauGeoCoordinateField()
+    name = StringField()
+    access = StringField()
+    alternative_name = StringField()
+    chaos_type = StringField() # BleauChaosType
+    note = StringField()
+    parcelles = StringField()
+    rdv = StringField()
+    secteur = StringField()
+    velo = StringField()
+
+####################################################################################################
+
+schema_repository = SchemaRepository(BBleauPlace, BBleauBoulder, BBleauCircuit, BBleauMassif)
+
+output_dir = os.path.join(source_path, 'src', 'bleaudb')
+path = os.path.join(output_dir, 'bleaudb-generated')
+schema_repository.write_source(path, generator_settings, pre_source='bleaudb/pre_source.cpp')
