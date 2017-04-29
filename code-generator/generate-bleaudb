@@ -42,7 +42,7 @@ sys.path.insert(0, code_generator_path)
 
 import json
 
-from CodeGenerator.CppCodeGenerator import TypeConversion
+from CodeGenerator.CppType import TypeConversion
 from CodeGenerator.SqlOrm import (SchemaRepository,
                                   Schema,
                                   IntegerField, UnsignedIntegerField,
