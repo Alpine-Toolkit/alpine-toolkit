@@ -1,0 +1,24 @@
+{% extends "includes/source-template.jinja" %}
+
+{% block include %}
+#include <QtDebug>
+{% endblock %}
+
+{% block content %}
+{% include "includes/ctor.cpp" %}
+
+{% include "includes/copy-ctor.cpp" %}
+
+{% include "includes/dtor.cpp" %}
+
+{% include "includes/copy-operator.cpp" %}
+
+{% include "includes/equal-operator.cpp" %}
+{% for member in members %}
+{%- if not has_inline_getter %}{% include "includes/getter.cpp" %}{% endif %}
+
+{% if not has_inline_setter %}{% include "includes/setter.cpp" %}{% endif %}
+{% endfor -%}
+{# #}
+{% include "includes/debug.cpp" %}
+{% endblock %}

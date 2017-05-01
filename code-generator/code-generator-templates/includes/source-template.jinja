@@ -1,18 +1,12 @@
-{% from 'settings.jinja' import copyright, generator_comment -%}
-{% block generator_comment %}{{ generator_comment(date) }}{% endblock %}
-// -*- mode: c++ -*-
-
+{% from 'includes/settings.jinja' import copyright -%}
+{#- {% block generator_comment %}{% endblock %} -#}
 {% block copyright %}{{ copyright() }}{% endblock %}
 
 /**************************************************************************************************/
 
-{% set HEADER_NAME = filename|replace('.h', '')|upper  -%}
-#ifndef __{{ HEADER_NAME }}_H__
-#define __{{ HEADER_NAME }}_H__
+#include "{{ filename|replace('.h', '')|replace('.cpp', '') }}.h"
 
-/**************************************************************************************************/
-
-{% block include -%}{%- endblock %}
+{% block include %}{% endblock -%}
 
 /**************************************************************************************************/
 
@@ -22,10 +16,9 @@
 
 // QC_END_NAMESPACE
 
-#endif /* __{{ HEADER_NAME }}_H__ */
-
 /***************************************************************************************************
  *
  * End
  *
  **************************************************************************************************/
+{# #}

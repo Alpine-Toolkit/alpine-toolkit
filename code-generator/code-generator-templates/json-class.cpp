@@ -31,9 +31,7 @@
 {% with members = all_members %}
 {% include "includes/copy-operator.cpp" %}
 {%- endwith %}
-{% with members = all_members %}
 {% include "includes/equal-operator.cpp" %}
-{%- endwith %}
 {% for member in members %}
 {% include "includes/setter.cpp" %}
 {% endfor %}

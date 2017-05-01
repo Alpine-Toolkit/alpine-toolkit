@@ -1,0 +1,102 @@
+{# -*- mode: fundamental -*- -#}
+{% extends "includes/header-template.jinja" %}
+{%- from "includes/property.h" import property, property_signal -%}
+
+{%- macro class_inheritance(base_classes) -%}
+{% if base_classes %} : {% for base_class in base_classes %}public {{base_class}}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
+{%- endmacro -%}
+
+{%- macro q_object(base_class) -%}
+{%- if 'QObject' in base_classes %}
+  Q_OBJECT{% endif %}
+{%- endmacro -%}
+
+{%- macro properties(members) -%}
+{%- for member in members %}
+  {{ property(member.name, member.type) }}{% endfor %}
+{%- endmacro -%}
+
+{% macro ctor(class_name) -%}
+{{class_name}}();
+{%- endmacro -%}
+
+{%- macro copy_ctor(class_name) -%}
+{{class_name}}(const {{class_name}} & other);
+{%- endmacro -%}
+
+{%- macro dtor(class_name) -%}
+~{{class_name}}();
+{%- endmacro -%}
+
+{%- macro copy_operator(class_name) -%}
+{{class_name}} & operator=(const {{class_name}} & other);
+{%- endmacro -%}
+
+{%- macro equal_operator(class_name) -%}
+bool operator==(const {{class_name}} & other);
+{%- endmacro -%}
+
+{%- macro getter(member) -%}
+{{member.getter_type}} {{member.name}}() const;
+{%- endmacro -%}
+
+{%- macro inline_getter(member) -%}
+{{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
+{%- endmacro -%}
+
+{%- macro setter(member) -%}
+void set_{{member.name}}({{member.setter_type}} value);
+{%- endmacro -%}
+
+{%- macro inline_setter(member) -%}
+void set_{{member.name}}({{member.setter_type}} value) { m_{{member.name}} = value; }
+{%- endmacro -%}
+
+{%- macro signal_properties(members) -%}
+signals:
+{%- for member in members %}
+  {{ property_signal(member.name) }}{% endfor %}
+{%- endmacro -%}
+
+{%- macro m_member(name, type) -%}
+{{type}} m_{{name}};
+{%- endmacro -%}
+
+{%- macro m_members(members) -%}
+{%- for member in members %}
+  {{ m_member(member.name, member.type) }};{% endfor %}
+{%- endmacro -%}
+
+
+
+{% block content -%}
+class {{class_name}}{{ class_inheritance(base_classes) }}
+{
+{{ q_object(base_classes) }}
+{%- if has_property %}{{ properties(members) }}{% endif -%}
+public:
+  {{class_name}}();
+  {{class_name}}(const {{class_name}} & other);
+  ~{{class_name}}();
+
+  {{class_name}} & operator=(const {{class_name}} & other);
+
+  bool operator==(const {{class_name}} & other);
+
+  // Getter/Setter
+{# #}
+{%- for member in members %}
+  {% if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter(member) }}{% endif %}
+  {% if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter(member) }}{% endif %}
+{% endfor -%}
+{# #}
+{%- if has_property %}
+{{ signal_properties(members) }}
+{% endif -%}
+{# #}
+private:
+{{- m_members(members) }}
+};
+
+{% include "includes/debug.h" %}
+{%- endblock %}

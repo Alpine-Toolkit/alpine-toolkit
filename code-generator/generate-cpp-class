@@ -101,11 +101,16 @@ for line in class_definition[1:]:
 ####################################################################################################
 
 if args.mode == 'template':
-    template_generator = TemplateGenerator()
+    template_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                                 'code-generator-templates')
+    template_generator = TemplateGenerator(template_path)
     class_definition = dict(
-        filename=args.class_file_name,
+        filename=os.path.basename(args.class_file_name),
         class_name=class_name,
-        base_classes=(parent_class,),
+        base_classes=(parent_class,) if parent_class is not None else (),
+        has_property=args.property,
+        has_inline_getter=args.inline_getter,
+        has_inline_setter=args.inline_setter,
         members=members,
     )
     header = template_generator.render('class-header.jinja', class_definition)
