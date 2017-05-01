@@ -50,8 +50,8 @@ main(int argc, char *argv[])
 {
   // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "Alpine Toolkit "));
   QGuiApplication::setApplicationName("Alpine Toolkit");
-  QGuiApplication::setOrganizationName("FabriceSalvaire"); // overridden ???
-  // QGuiApplication::setOrganizationDomain("fabrice-salvaire.fr")
+  QGuiApplication::setOrganizationName("Alpine Toolkit"); // overridden ???
+  // QGuiApplication::setOrganizationDomain("alpine-toolkit.org")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   // QGuiApplication application(argc, argv);
