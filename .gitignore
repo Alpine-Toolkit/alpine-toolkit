@@ -1,4 +1,7 @@
-# -*- mode:con -*-
+# -*- mode: conf -*-
+#
+####################################################################################################
+#
 *.moc
 *.o
 *~
@@ -10,10 +13,9 @@ du.log
 #
 ####################################################################################################
 #
-ressources/translations/alpine-toolkit.fr_FR.qm
+# Build
 #
-####################################################################################################
-#
+alpine-toolkit-all.pro.user
 alpine-toolkit.pro.user
 sqlite/sqlite.pro.user
 build-*/
@@ -24,9 +26,19 @@ sqlite/Qt5.9-gcc_64
 #
 ####################################################################################################
 #
+# Critical data
+#
 unit-tests/camptocamp/login.h
 #
 ####################################################################################################
+#
+# Generated Files
+#
+ressources/translations/alpine-toolkit.fr_FR.qm
+#
+####################################################################################################
+#
+# Code Generator
 #
 code-generator/camptocamp/c2corg_api
 code-generator/camptocamp/c2corg_common
@@ -41,8 +53,54 @@ code-generator/camptocamp/tables.txt
 #
 ####################################################################################################
 #
-# third-parties/include/
-# third-parties/proj4
+# Notes
+#
+doc/
+notes/
+#
+####################################################################################################
+#
+# Ressources
+#
+ressources/fonts/Roboto-Medium.ttf
+ressources/fonts/Roboto-Regular.ttf
+ressources/icons/camptocamp/c2c-activities.zip
+ressources/icons/camptocamp/fonts-from-c2c/
+ressources/icons/copy-all-idea.sh
+ressources/icons/material-design-icons
+ressources/js/attributes.py
+ressources/js/filter.txt
+ressources/js/filters.html
+ressources/pages/Checklist-dev.qml
+ressources/pages/notes.txt
+#
+####################################################################################################
+#
+# Script
+#
+# script/read-rrd.py
+# script/run-androiddeployqt.sh
+script/open-doc.sh
+script/push-to-bleausard.sh
+script/push-to-vps.sh
+script/run-cmake-android-old.sh
+#
+####################################################################################################
+#
+# SQLite
+#
+sqlite/orig/
+sqlite/sqlite-amalgamation
+sqlite/sqlite3.c
+sqlite/sqlite3.h
+#
+####################################################################################################
+#
+# Third Parties
+#
+third-parties/include/
+third-parties/local/
+#
 third-parties/archives/
 third-parties/cmark/cmark.git/
 third-parties/geos/Android.mk
@@ -52,6 +110,10 @@ third-parties/libiconv/Android.mk
 third-parties/libiconv/dist.cmake
 third-parties/libiconv/libiconv-1.13.1/
 third-parties/libiconv/libiconv-sources
+third-parties/openssl
+third-parties/openssl-1.0.2h-old/
+third-parties/openssl-1.0.2h/
+third-parties/proj4
 third-parties/spatialite/libspatialite-4.4.0-RC1/
 third-parties/spatialite/spatialite-sources
 third-parties/sqlite/Android.mk
@@ -60,91 +122,27 @@ third-parties/sqlite/sqlite-amalgamation-3180000/
 #
 ####################################################################################################
 #
-script/open-doc.sh
-script/push-to-bleausard.sh
-script/push-to-vps.sh
-#
-####################################################################################################
-#
-# android/assets/data/
-# cmake/modules/
-# doc/
-# fonts/Roboto-Medium.ttf
-# fonts/Roboto-Regular.ttf
-# icons/camptocamp/c2c-activities.zip
-# icons/camptocamp/fonts-from-c2c/
-# icons/copy-all-idea.sh
-# icons/material-design-icons
-# js/attributes.py
-# js/filter.txt
-# js/filters.html
-# notes/
-# pages/Checklist-dev.qml
-# pages/Components/Widgets/
-# pages/notes.txt
-# qml-test/
-# read-rrd.py
-# script/
-#
-####################################################################################################
-#
-android/src/org/alpine_toolkit/AlpineToolkitActivity.java-basic
-class-def.txt
-ressources/js/trash/
-sonia.json
-spec-c2c.txt
-src/bleaudb/tmp/
-src/camptocamp/foo
-src/camptocamp/tmp.cpp
-src/camptocamp/trash/
-v6-screenshots/
-sqlite/qt-pro-files/
-#
-####################################################################################################
-#
-# doc/
-# notes/
-# ressources/fonts/Roboto-Medium.ttf
-# ressources/fonts/Roboto-Regular.ttf
-# ressources/icons/camptocamp/c2c-activities.zip
-# ressources/icons/camptocamp/fonts-from-c2c/
-# ressources/icons/copy-all-idea.sh
-# ressources/icons/material-design-icons
-# ressources/js/attributes.py
-# ressources/js/filter.txt
-# ressources/js/filters.html
-# ressources/pages/Checklist-dev.qml
-# ressources/pages/notes.txt
-# script/read-rrd.py
-# script/run-androiddeployqt.sh
-# script/run-cmake-android-old.sh
-# sqlite/orig/
-# sqlite/sqlite-amalgamation
-# sqlite/sqlite3.c
-# sqlite/sqlite3.h
-# third-parties/include/
-# third-parties/local/
-# third-parties/openssl
-# third-parties/openssl-1.0.2h-old/
-# third-parties/openssl-1.0.2h/
-# third-parties/proj4
 adb-log.txt
-alpine-toolkit-all.pro.user
 am.diff
 android/.build/
 android/.gradle/
 android/.idea/
 android/android.iml
-code-generator/foo.cpp
+android/assets/
+android/src/org/alpine_toolkit/AlpineToolkitActivity.java-basic
+class-def.txt
+code-generator/class-def.txt
+code-generator/code-generator-templates/includes/trash/
 code-generator/generate-cpp-class-old
-code-generator/templates/class-definition-macros-dev.jinja
-code-generator/templates/class-implementation-macros-dev.jinja
-code-generator/templates/trash/
-code-generator/test-template.py
 code-generator/test/
 code-generator/tmp/
+code-generator/trash/
 patch.diff
 qt-59-beta-crash.txt
+ressources/js/trash/
+src/bleaudb/tmp/
+src/camptocamp/foo
+src/camptocamp/tmp.cpp
+src/camptocamp/trash/
 src/database/qvariant-notes.txt
-src/database/trash.h
 trash/
