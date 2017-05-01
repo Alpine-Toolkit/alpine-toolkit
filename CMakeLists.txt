@@ -44,6 +44,11 @@ include(alpine_toolkit_functions)
 
 ####################################################################################################
 
+option(SANITIZE "Compile using sanitize options" OFF)
+option(INSTRUMENT_FUNTIONS "Compile using -finstrument-functions" OFF)
+
+####################################################################################################
+
 if(ANDROID)
   message(STATUS "Android build")
 endif()
@@ -112,14 +117,27 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   set(CMAKE_CXX_FLAGS_COMMON  "-Wall -DSystemLinux -fdiagnostics-color=auto")
   # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html#Instrumentation-Options
   # -O0
-  set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_COMMON} -g -Og  -DDEBUG -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+  set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_COMMON} -g -Og  -DDEBUG")
   # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
   # $ENV{GCC_OPTIMISATION}
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_COMMON} -O3 -march=native")
+  set(CMAKE_CXX_FLAGS_RELEASE   "${CMAKE_CXX_FLAGS_COMMON} -O3 -march=native")
 endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+
+if(CMAKE_BUILD_TYPE MATCHES "DEBUG")
+  if(SANITIZE MATCHES "ON")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+    message(STATUS "GCC Sanitize: ${CMAKE_CXX_FLAGS_DEBUG}")
+  endif(SANITIZE MATCHES "ON")
+
+  if(INSTRUMENT_FUNTIONS MATCHES "ON")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -finstrument-functions")
+    # Fixme: -Wl,-Map=alpine-tookit.map => same name for all targets
+    message(STATUS "GCC Profiling: -finstrument-funtions enabled")
+  endif(INSTRUMENT_FUNTIONS MATCHES "ON")
+endif(CMAKE_BUILD_TYPE MATCHES "DEBUG")
 
 ####################################################################################################
 #
