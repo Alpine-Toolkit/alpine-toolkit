@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,22 +27,43 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
-
-#include <QtDebug>
+#ifndef __DATABASE_SHEMA_H__
+#define __DATABASE_SHEMA_H__
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
+// #include <QObject>
 
-DocumentDatabase::~DocumentDatabase()
-{}
+#include "database/database.h"
+#include "database/database_table.h"
+#include "database/schema.h"
+
+/**************************************************************************************************/
+
+class QcDatabaseSchema // : QObject
+{
+public:
+  QcDatabaseSchema(QcDatabase & database); // register tables in subclass
+  // T(const QList<QcSchema> & schemas);
+  ~QcDatabaseSchema();
+
+  QcDatabaseTable & register_table(const QString & name);
+  QcDatabaseTable & register_table(const QcSchema & schema);
+
+  QcDatabaseTable & get_table(const QString & name) { return m_tables[name]; } // Fixme: wrong name ?
+  QcDatabaseTable & operator[](const QString & name) { return get_table(name); }
+
+  // QcDatabaseTable * table() { return m_table; }
+
+private:
+  QcDatabase & m_database;
+  QHash<QString, QcDatabaseTable> m_tables; // => QcDatabaseTable() => QcDatabase * Fixme: QcDatabaseTable * solve it
+  // QcDatabaseTable * m_table;
+};
+
+/**************************************************************************************************/
+
+#endif /* __DATABASE_SHEMA_H__ */
 
 /***************************************************************************************************
  *

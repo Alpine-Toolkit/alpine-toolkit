@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,22 +27,31 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
-
-#include <QtDebug>
+#ifndef __BLEAU_DATABASE_H__
+#define __BLEAU_DATABASE_H__
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
+#include "database/sqlite_database.h"
+#include "bleaudb/bleaudb-generated.h"
 
-DocumentDatabase::~DocumentDatabase()
-{}
+/**************************************************************************************************/
+
+class BleauDatabase : public QcSqliteDatabase
+{
+public:
+  BleauDatabase(const QString & sqlite_path);
+  ~BleauDatabase();
+
+  BleauSchema * schema() { return m_schema; }
+
+private:
+  BleauSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema
+};
+
+/**************************************************************************************************/
+
+#endif /* __BLEAU_DATABASE_H__ */
 
 /***************************************************************************************************
  *

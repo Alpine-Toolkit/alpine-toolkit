@@ -33,130 +33,14 @@
 
 /**************************************************************************************************/
 
-#include <QByteArray>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-#include <QSqlRecord>
 #include <QString>
 #include <QStringList>
-#include <QVariant>
-#include <QVariantHash>
-
-#include "database/schema.h"
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
-
-/**************************************************************************************************/
-
-class QcSqlRecordWrapper
-{
-public:
-  QcSqlRecordWrapper(const QSqlRecord & record)
-    : m_record(record)
-  {}
-
-  const QSqlRecord & record() const { return m_record; }
-
-  bool is_empty() const { return m_record.isEmpty(); }
-  bool is_not_empty() const { return not is_empty(); }
-
-  int to_int(int position = 0) const {
-    return m_record.value(position).toInt();
-  }
-
-  QByteArray to_byte_array(int position = 0) const {
-    return m_record.value(position).toByteArray();
-  }
-
-  QString to_string(int position = 0) const {
-    return m_record.value(position).toString();
-  }
-
-private:
-  const QSqlRecord & m_record;
-};
-
-// Fixme: same QSqlQuery ?
-
-/**************************************************************************************************/
-
-class QcDatabase;
-
-class QcDatabaseTable
-{
-public:
-  static QString format_prepare(int number_of_fields);
-  static QString format_prepare_update(const QStringList & fields);
-  static QString format_kwarg(const QVariantHash & kwargs, const QString & separator = QStringLiteral(","));
-  static QString format_simple_where(const QVariantHash & kwargs);
-
-public:
-  QcDatabaseTable();
-  QcDatabaseTable(QcDatabase * database, const QString & name);
-  QcDatabaseTable(QcDatabase * database, const QcSchema & schema);
-  QcDatabaseTable(const QcDatabaseTable & other);
-  ~QcDatabaseTable();
-
-  QcDatabaseTable & operator=(const QcDatabaseTable & other);
-
-  QcDatabase * database() { return m_database; }
-  const QcSchema & schema() { return m_schema; }
-  const QString & name() { return m_name; } // m_schema.name()
-
-  bool exists() const;
-  bool create();
-  bool drop();
-
-  QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
-  QSqlQuery select(const QStringList & fields, const QVariantHash & kwargs) const {
-    return select(fields, format_simple_where(kwargs));
-  }
-  QSqlQuery select(const QString & where = QString()) const {
-    return select(QStringList(QLatin1String("*")), where);
-  }
-  QSqlQuery select(const QVariantHash & kwargs) const {
-    return select(QStringList(QLatin1String("*")), format_simple_where(kwargs));
-  }
-
-  QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
-  QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
-    return select_one(fields, format_simple_where(kwargs));
-  }
-  QSqlRecord select_one(const QString & where = QString()) const {
-    return select_one(QStringList(QLatin1String("*")), where);
-  }
-  QSqlRecord select_one(const QVariantHash & kwargs) const  {
-    return select_one(QStringList(QLatin1String("*")), format_simple_where(kwargs));
-  }
-  // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
-
-  QSqlQuery prepare_complete_insert(int number_of_fields);
-  QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
-  QSqlQuery prepare_insert(const QStringList & fields);
-
-  QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
-
-  QSqlQuery prepare_update(const QStringList & fields, const QString & where);
-  QSqlQuery update(const QVariantHash & kwargs, const QString & where = QString());
-  QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
-    return update(kwargs, format_simple_where(where_kwargs));
-  }
-
-  QSqlQuery delete_row(const QString & where = QString());
-  QSqlQuery delete_row(const QVariantHash & kwargs) {
-    return delete_row(format_simple_where(kwargs));
-  }
-
-private:
-  void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
-
-private:
-  QcDatabase * m_database;
-  QcSchema m_schema;
-  QString m_name;
-};
 
 /**************************************************************************************************/
 
@@ -171,16 +55,9 @@ private:
 
 public:
   QcDatabase();
-  // QcDatabase(const QList<QcSchema> & schemas);
   virtual ~QcDatabase();
 
   QSqlDatabase & database () { return m_database; }
-
-  QcDatabaseTable & register_table(const QString & name);
-  QcDatabaseTable & register_table(const QcSchema & schema);
-
-  QcDatabaseTable & table(const QString & name) { return m_tables[name]; } // Fixme: wrong name ?
-  QcDatabaseTable & operator[](const QString & name) { return m_tables[name]; }
 
   bool transaction() { return m_database.transaction(); }
   bool commit() { return m_database.commit(); }
@@ -193,46 +70,8 @@ public:
   bool execute_query(const QString & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
 
-protected:
+protected: // for SQLite and Network subclasses
   QSqlDatabase m_database;
-  QHash<QString, QcDatabaseTable> m_tables; // => QcDatabaseTable() => QcDatabase *
-};
-
-/**************************************************************************************************/
-
-struct QcDatabaseConnectionData
-{
-  QString host;
-  int port;
-  QString database;
-  QString user;
-  QString password;
-};
-
-/**************************************************************************************************/
-
-class QcNetworkDatabase : public QcDatabase
-{
-public:
-  QcNetworkDatabase();
-  virtual ~QcNetworkDatabase();
-
-  void open(const QcDatabaseConnectionData & connection_data);
-
-  bool create_extension(const QString & extension);
-
-  virtual QString driver_name() const = 0;
-};
-
-/**************************************************************************************************/
-
-class QcSqliteDatabase : public QcDatabase
-{
-public:
-  QcSqliteDatabase(); // Fixme: const QString & path ???
-  virtual ~QcSqliteDatabase();
-
-  bool open(const QString & sqlite_path);
 };
 
 /**************************************************************************************************/

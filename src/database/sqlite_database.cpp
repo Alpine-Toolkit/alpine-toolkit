@@ -26,22 +26,33 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
+#include "sqlite_database.h"
 
+#include <QFile>
+#include <QSqlError>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
-
-DocumentDatabase::~DocumentDatabase()
+QcSqliteDatabase::QcSqliteDatabase()
 {}
+
+QcSqliteDatabase::~QcSqliteDatabase()
+{}
+
+bool
+QcSqliteDatabase::open(const QString & sqlite_path)
+{
+  bool created = not QFile(sqlite_path).exists();
+
+  // Set the connection name to sqlite_path
+  m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), sqlite_path);
+  m_database.setDatabaseName(sqlite_path);
+  if (not m_database.open())
+    qWarning() << m_database.lastError().text();
+
+  return created;
+}
 
 /***************************************************************************************************
  *

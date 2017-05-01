@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,22 +27,27 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
-
-#include <QtDebug>
+#ifndef __SQLITE_DATABASE_H__
+#define __SQLITE_DATABASE_H__
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
+#include "database/database.h"
 
-DocumentDatabase::~DocumentDatabase()
-{}
+/**************************************************************************************************/
+
+class QcSqliteDatabase : public QcDatabase
+{
+public:
+  QcSqliteDatabase(); // Fixme: const QString & path ???
+  virtual ~QcSqliteDatabase();
+
+  bool open(const QString & sqlite_path);
+};
+
+/**************************************************************************************************/
+
+#endif /* __SQLITE_DATABASE_H__ */
 
 /***************************************************************************************************
  *

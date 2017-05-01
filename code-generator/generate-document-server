@@ -63,6 +63,8 @@ from CodeGenerator.GeneratorSettings import generator_settings
 
 class Document(Schema):
 
+    __table_name__ = 'document'
+
     __order__ = (
         'id',
         'name',
@@ -85,7 +87,7 @@ class Document(Schema):
 
 ####################################################################################################
 
-schema_repository = SchemaRepository(Document)
+schema_repository = SchemaRepository('DocumentDatabaseSchema', Document)
 
 output_dir = os.path.join(source_path, 'src', 'document')
 path = os.path.join(output_dir, 'document')

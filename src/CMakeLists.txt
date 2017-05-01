@@ -15,6 +15,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 set(alpine_toolkit_library_files
   bleaudb/bleaudb-generated.cpp
   bleaudb/bleaudb.cpp
+  bleaudb/bleaudb_database.cpp
   bleaudb/bleaudb_json_helper.cpp
   bleaudb/bleaudb_json_loader.cpp
   camptocamp/camptocamp_api_cache.cpp
@@ -26,8 +27,13 @@ set(alpine_toolkit_library_files
   camptocamp/camptocamp_qml.cpp
   camptocamp/camptocamp_search_settings.cpp
   database/database.cpp
-  database/schema.cpp
+  database/database_connection.cpp
+  database/database_schema.cpp
+  database/database_table.cpp
   database/json_helper.cpp
+  database/network_database.cpp
+  database/schema.cpp
+  database/sqlite_database.cpp
   document/document.cpp
   document/document_database.cpp
   document/document_manager.cpp

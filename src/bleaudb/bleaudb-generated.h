@@ -46,6 +46,7 @@
 #include <QtDebug>
 
 #include "database/schema.h"
+#include "database/database_schema.h"
 
 /**************************************************************************************************/
 
@@ -630,6 +631,30 @@ QDataStream & operator>>(QDataStream & in, BBleauMassif & obj);
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const BBleauMassif & obj);
 #endif
+
+/**************************************************************************************************/
+
+
+class BleauSchema : public QcDatabaseSchema
+{
+public:
+  BleauSchema(QcDatabase & database);
+  BleauSchema(const BleauSchema & other) = delete;
+  ~BleauSchema();
+
+  BleauSchema & operator=(const BleauSchema & other) = delete;
+
+  QcDatabaseTable * place() { return m_place; }
+  QcDatabaseTable * boulder() { return m_boulder; }
+  QcDatabaseTable * circuit() { return m_circuit; }
+  QcDatabaseTable * massif() { return m_massif; }
+
+private:
+  QcDatabaseTable * m_place;
+  QcDatabaseTable * m_boulder;
+  QcDatabaseTable * m_circuit;
+  QcDatabaseTable * m_massif;
+};
 
 /**************************************************************************************************/
 

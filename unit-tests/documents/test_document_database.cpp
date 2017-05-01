@@ -54,7 +54,7 @@ void TestDocumentDatabase::constructor()
   if (file.exists())
     file.remove();
   DocumentDatabase document_database(sqlite_path);
-  QcDatabaseTable * table = document_database.table();
+  QcDatabaseTable * table = document_database.schema()->document();
 
   QVariantHash variant_hash;
   variant_hash["id"] = "1"; // Should be read-only !

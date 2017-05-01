@@ -1,4 +1,5 @@
 // -*- mode: c++ -*-
+
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -27,67 +28,71 @@
 
 /**************************************************************************************************/
 
-#ifndef __JSON_HELPER_H__
-#define __JSON_HELPER_H__
+#ifndef __DATABASE_CONNECTION_H__
+#define __DATABASE_CONNECTION_H__
 
 /**************************************************************************************************/
 
-#include <QDateTime>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QStringList>
-#include <QUrl>
-#include <QVariant>
+#include <QString>
 
 /**************************************************************************************************/
 
-namespace json_helper {
+// QC_BEGIN_NAMESPACE
 
-  QStringList load_string_list(const QJsonArray & json_array);
-  inline QStringList load_string_list(const QJsonValue & json_value) {
-    return load_string_list(json_value.toArray());
-  }
+/*
+struct QcDatabaseConnectionData
+{
+  QString host;
+  int port;
+  QString database;
+  QString user;
+  QString password;
+};
+*/
 
-  QJsonArray dump_string_list(const QStringList & string_list);
+class QcDatabaseConnectionData
+{
+public:
+  QcDatabaseConnectionData();
+  QcDatabaseConnectionData(const QcDatabaseConnectionData & other);
+  ~QcDatabaseConnectionData();
 
+  QcDatabaseConnectionData & operator=(const QcDatabaseConnectionData & other);
 
-  inline QDateTime load_datetime(const QJsonValue & json_value) {
-    // return json_value.toVariant().toDateTime();
-    return QDateTime::fromString(json_value.toString());
-  }
-  inline QString dump_datetime(const QDateTime & datetime) {
-    return datetime.toString(Qt::ISODate);
-  }
+  bool operator==(const QcDatabaseConnectionData & other);
 
+  // Getter/Setter
 
-  inline QDateTime load_sql_datetime(const QVariant & variant) {
-    // return json_value.toVariant().toDateTime();
-    return QDateTime::fromString(variant.toString());
-  }
-  inline QString dump_sql_datetime(const QDateTime & datetime) {
-    return datetime.toString(Qt::ISODate);
-  }
+  const QString & host() const { return m_host; }
+  void set_host(const QString & value) { m_host = value; }
 
+  int port() const { return m_port; }
+  void set_port(int value) { m_port = value; }
 
-  inline QDateTime load_sql_datetime_as_epoch(const QVariant & variant) {
-    QDateTime datetime;
-    datetime.setSecsSinceEpoch(variant.toInt());
-    return datetime;
-  }
-  inline qint64 dump_sql_datetime_as_epoch(const QDateTime & datetime) {
-    return datetime.toSecsSinceEpoch();
-  }
+  const QString & database() const { return m_database; }
+  void set_database(const QString & value) { m_database = value; }
 
+  const QString & user() const { return m_user; }
+  void set_user(const QString & value) { m_user = value; }
 
-  inline QString dump_url(const QUrl & url) {
-    return url.toString();
-  }
+  const QString & password() const { return m_password; }
+  void set_password(const QString & value) { m_password = value; }
 
-}
+private:
+  QString m_host;;
+  int m_port;;
+  QString m_database;;
+  QString m_user;;
+  QString m_password;;
+};
 
-/**************************************************************************************************/
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const QcDatabaseConnectionData & obj);
+#endif
 
-#endif /* __JSON_HELPER_H__ */
+// QC_END_NAMESPACE
+
+#endif /* __DATABASE_CONNECTION_H__ */
 
 /***************************************************************************************************
  *

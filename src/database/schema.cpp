@@ -116,18 +116,24 @@ QcSchemaField::to_sql_definition() const
 
 QcSchema::QcSchema()
   : m_name(),
+    m_table_name(),
     m_fields(),
     m_field_map()
 {}
 
-QcSchema::QcSchema(const QString & name)
+QcSchema::QcSchema(const QString & name, const QString & table_name)
   : m_name(name),
+    m_table_name(table_name),
     m_fields(),
     m_field_map()
-{}
+{
+  if (table_name.isEmpty())
+    m_table_name = m_name;
+}
 
 QcSchema::QcSchema(const QcSchema & other)
   : m_name(other.m_name),
+    m_table_name(other.m_table_name),
     m_fields(other.m_fields),
     m_field_map(other.m_field_map)
 {}
@@ -140,6 +146,7 @@ QcSchema::operator=(const QcSchema & other)
 {
   if (this != &other) {
     m_name = other.m_name;
+    m_table_name = other.m_table_name;
     m_fields = other.m_fields;
     m_field_map = other.m_field_map;
   }

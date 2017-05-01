@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,22 +27,52 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
-
-#include <QtDebug>
+#ifndef __SQL_RECORD_WRAPPER_H__
+#define __SQL_RECORD_WRAPPER_H__
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
+#include <QByteArray>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QString>
+#include <QVariant>
 
-DocumentDatabase::~DocumentDatabase()
-{}
+/**************************************************************************************************/
+
+class QcSqlRecordWrapper
+{
+public:
+  QcSqlRecordWrapper(const QSqlRecord & record)
+    : m_record(record)
+  {}
+
+  const QSqlRecord & record() const { return m_record; }
+
+  bool is_empty() const { return m_record.isEmpty(); }
+  bool is_not_empty() const { return not is_empty(); }
+
+  int to_int(int position = 0) const {
+    return m_record.value(position).toInt();
+  }
+
+  QByteArray to_byte_array(int position = 0) const {
+    return m_record.value(position).toByteArray();
+  }
+
+  QString to_string(int position = 0) const {
+    return m_record.value(position).toString();
+  }
+
+private:
+  const QSqlRecord & m_record;
+};
+
+// Fixme: same QSqlQuery ?
+
+/**************************************************************************************************/
+
+#endif /* __SQL_RECORD_WRAPPER_H__ */
 
 /***************************************************************************************************
  *

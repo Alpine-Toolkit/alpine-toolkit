@@ -50,7 +50,9 @@ static const QString VALUE = "value";
 static const QString VERSION = "version";
 
 C2cApiCache::C2cApiCache(const QString & sqlite_path)
-  : m_metadata_table(nullptr),
+  : QcSqliteDatabase(),
+    QcDatabaseSchema(*((QcSqliteDatabase *) this)), // Fixme: ???
+    m_metadata_table(nullptr),
     m_document_table(nullptr)
 {
   bool created = open(sqlite_path); // unused
@@ -62,7 +64,7 @@ C2cApiCache::C2cApiCache(const QString & sqlite_path)
   metadata_schema << QcSchemaField(VALUE, QLatin1String("QString"), QLatin1String("TEXT"));
   m_metadata_table = &register_table(metadata_schema);
 
-  QcSchema document_schema(METADATA);
+  QcSchema document_schema(DOCUMENT);
   // # https://www.sqlite.org/autoinc.html
   // # Fixme: how to handle auto-increment overflow ?
   metadata_schema << QcSchemaField(ID, QLatin1String("int"), QLatin1String("INTEGER"), QLatin1String("NOT NULL"));

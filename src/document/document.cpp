@@ -36,7 +36,7 @@
 // QC_BEGIN_NAMESPACE
 
 DocumentSchema::DocumentSchema()
-: QcSchema(QLatin1String("Document"))
+: QcSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   add_field(QcSchemaField(QLatin1String("id"),
                           QLatin1String("int"),
@@ -218,12 +218,9 @@ Document::operator=(const Document & other)
 
   return *this;
 }
-
 bool
 Document::operator==(const Document & other)
 {
-  if (m_bits != other.m_bits)
-    return false;
   if (m_id != other.m_id)
     return false;
   if (m_name != other.m_name)
@@ -601,6 +598,19 @@ operator<<(QDebug debug, const Document & obj)
   return debug;
 }
 #endif
+
+/**************************************************************************************************/
+
+
+DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
+  : QcDatabaseSchema(database),
+    m_document(nullptr)
+{
+  m_document = &register_table(DocumentSchema::instance());
+}
+
+DocumentDatabaseSchema::~DocumentDatabaseSchema()
+{}
 
 /**************************************************************************************************/
 

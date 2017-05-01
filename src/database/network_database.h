@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,22 +27,32 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
-
-#include <QtDebug>
+#ifndef __NETWORK_DATABASE_H__
+#define __NETWORK_DATABASE_H__
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
-{
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
-}
+#include "database/database.h"
+#include "database/database_connection.h"
 
-DocumentDatabase::~DocumentDatabase()
-{}
+/**************************************************************************************************/
+
+class QcNetworkDatabase : public QcDatabase
+{
+public:
+  QcNetworkDatabase();
+  virtual ~QcNetworkDatabase();
+
+  void open(const QcDatabaseConnectionData & connection_data);
+
+  bool create_extension(const QString & extension);
+
+  virtual QString driver_name() const = 0;
+};
+
+/**************************************************************************************************/
+
+#endif /* __NETWORK_DATABASE_H__ */
 
 /***************************************************************************************************
  *

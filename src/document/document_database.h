@@ -32,7 +32,7 @@
 
 /**************************************************************************************************/
 
-#include "database/database.h"
+#include "database/sqlite_database.h"
 #include "document/document.h"
 
 /**************************************************************************************************/
@@ -43,11 +43,10 @@ public:
   DocumentDatabase(const QString & sqlite_path);
   ~DocumentDatabase();
 
-  // Fixme: import table API ???
-  QcDatabaseTable * table() { return m_document_table; }
+  DocumentDatabaseSchema * schema() { return m_schema; }
 
 private:
-  QcDatabaseTable * m_document_table;
+  DocumentDatabaseSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema
 };
 
 /**************************************************************************************************/

@@ -26,22 +26,25 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
+#include "bleaudb_database.h"
 
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
+BleauDatabase::BleauDatabase(const QString & sqlite_path)
   : QcSqliteDatabase(),
     m_schema(nullptr)
 {
   open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
+  m_schema = new BleauSchema(*this);
 }
 
-DocumentDatabase::~DocumentDatabase()
-{}
+BleauDatabase::~BleauDatabase()
+{
+  if (m_schema)
+    delete m_schema;
+}
 
 /***************************************************************************************************
  *

@@ -1,8 +1,8 @@
 {# -*- mode: fundamental -*- -#}
 {{class_name}}Schema::{{class_name}}Schema()
-: QcSchema(QLatin1String("{{class_name}}"))
+: QcSchema(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
 {
-{%- for field in fields %}
+{%- for field in schema %}
   add_field(QcSchemaField(QLatin1String("{{field.name}}"),
                           QLatin1String("{{field.qt_type}}"),
                           QLatin1String("{{field.sql_type}}"),

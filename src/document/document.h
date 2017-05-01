@@ -46,6 +46,7 @@
 #include <QtDebug>
 
 #include "database/schema.h"
+#include "database/database_schema.h"
 
 /**************************************************************************************************/
 
@@ -194,6 +195,24 @@ QDataStream & operator>>(QDataStream & in, Document & obj);
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const Document & obj);
 #endif
+
+/**************************************************************************************************/
+
+
+class DocumentDatabaseSchema : public QcDatabaseSchema
+{
+public:
+  DocumentDatabaseSchema(QcDatabase & database);
+  DocumentDatabaseSchema(const DocumentDatabaseSchema & other) = delete;
+  ~DocumentDatabaseSchema();
+
+  DocumentDatabaseSchema & operator=(const DocumentDatabaseSchema & other) = delete;
+
+  QcDatabaseTable * document() { return m_document; }
+
+private:
+  QcDatabaseTable * m_document;
+};
 
 /**************************************************************************************************/
 

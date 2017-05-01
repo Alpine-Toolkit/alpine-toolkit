@@ -125,7 +125,7 @@ class QcSchema
 {
 public:
   QcSchema();
-  QcSchema(const QString & name);
+  QcSchema(const QString & name, const QString & table_name = QString());
   QcSchema(const QcSchema & other);
   ~QcSchema();
 
@@ -135,6 +135,7 @@ public:
   QcSchema & operator<<(const QcSchemaField & field);
 
   const QString & name() const { return m_name; }
+  const QString & table_name() const { return m_table_name; }
 
   int number_of_fields() { return m_fields.size(); }
   const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
@@ -150,6 +151,7 @@ public:
 
 private:
   QString m_name;
+  QString m_table_name;
   QList<QcSchemaField> m_fields;
   QHash<QString, QcSchemaField *> m_field_map;
 };

@@ -40,7 +40,7 @@
 /**************************************************************************************************/
 
 BBleauPlaceSchema::BBleauPlaceSchema()
-: QcSchema(QLatin1String("BBleauPlace"))
+: QcSchema(QLatin1String("BBleauPlace"), QLatin1String("place"))
 {
   add_field(QcSchemaField(QLatin1String("coordinate"),
                           QLatin1String("QGeoCoordinate"),
@@ -158,12 +158,9 @@ BBleauPlace::operator=(const BBleauPlace & other)
 
   return *this;
 }
-
 bool
 BBleauPlace::operator==(const BBleauPlace & other)
 {
-  if (m_bits != other.m_bits)
-    return false;
   if (m_coordinate != other.m_coordinate)
     return false;
   if (m_name != other.m_name)
@@ -407,7 +404,7 @@ operator<<(QDebug debug, const BBleauPlace & obj)
 /**************************************************************************************************/
 
 BBleauBoulderSchema::BBleauBoulderSchema()
-: QcSchema(QLatin1String("BBleauBoulder"))
+: QcSchema(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
 {
   add_field(QcSchemaField(QLatin1String("coordinate"),
                           QLatin1String("QGeoCoordinate"),
@@ -541,12 +538,9 @@ BBleauBoulder::operator=(const BBleauBoulder & other)
 
   return *this;
 }
-
 bool
 BBleauBoulder::operator==(const BBleauBoulder & other)
 {
-  if (m_bits != other.m_bits)
-    return false;
   if (m_coordinate != other.m_coordinate)
     return false;
   if (m_name != other.m_name)
@@ -824,7 +818,7 @@ operator<<(QDebug debug, const BBleauBoulder & obj)
 /**************************************************************************************************/
 
 BBleauCircuitSchema::BBleauCircuitSchema()
-: QcSchema(QLatin1String("BBleauCircuit"))
+: QcSchema(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
 {
   add_field(QcSchemaField(QLatin1String("coordinate"),
                           QLatin1String("QGeoCoordinate"),
@@ -1070,12 +1064,9 @@ BBleauCircuit::operator=(const BBleauCircuit & other)
 
   return *this;
 }
-
 bool
 BBleauCircuit::operator==(const BBleauCircuit & other)
 {
-  if (m_bits != other.m_bits)
-    return false;
   if (m_coordinate != other.m_coordinate)
     return false;
   if (m_colour != other.m_colour)
@@ -1593,7 +1584,7 @@ operator<<(QDebug debug, const BBleauCircuit & obj)
 /**************************************************************************************************/
 
 BBleauMassifSchema::BBleauMassifSchema()
-: QcSchema(QLatin1String("BBleauMassif"))
+: QcSchema(QLatin1String("BBleauMassif"), QLatin1String("massif"))
 {
   add_field(QcSchemaField(QLatin1String("coordinate"),
                           QLatin1String("QGeoCoordinate"),
@@ -1807,12 +1798,9 @@ BBleauMassif::operator=(const BBleauMassif & other)
 
   return *this;
 }
-
 bool
 BBleauMassif::operator==(const BBleauMassif & other)
 {
-  if (m_bits != other.m_bits)
-    return false;
   if (m_coordinate != other.m_coordinate)
     return false;
   if (m_name != other.m_name)
@@ -2256,6 +2244,25 @@ operator<<(QDebug debug, const BBleauMassif & obj)
   return debug;
 }
 #endif
+
+/**************************************************************************************************/
+
+
+BleauSchema::BleauSchema(QcDatabase & database)
+  : QcDatabaseSchema(database),
+    m_place(nullptr),
+    m_boulder(nullptr),
+    m_circuit(nullptr),
+    m_massif(nullptr)
+{
+  m_place = &register_table(BBleauPlaceSchema::instance());
+  m_boulder = &register_table(BBleauBoulderSchema::instance());
+  m_circuit = &register_table(BBleauCircuitSchema::instance());
+  m_massif = &register_table(BBleauMassifSchema::instance());
+}
+
+BleauSchema::~BleauSchema()
+{}
 
 /**************************************************************************************************/
 

@@ -28,6 +28,8 @@
 
 #include "settings_database.h"
 
+#include "database/sql_record_wrapper.h"
+
 #include <QSqlError>
 #include <QtDebug>
 
@@ -41,7 +43,7 @@ static const QString VALUE = "value";
 static const QString ROWID = "rowid";
 
 SettingsDatabase::SettingsDatabase(QcDatabase & database)
-  : m_database(database),
+  : QcDatabaseSchema(database),
     m_directory_table(nullptr),
     m_key_value_table(nullptr)
 {}
@@ -57,13 +59,13 @@ SettingsDatabase::register_tables()
   QcSchema directory_schema(DIRECTORY);
   directory_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
   directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
-  m_directory_table = &m_database.register_table(directory_schema);
+  m_directory_table = &register_table(directory_schema);
 
   QcSchema key_value_schema(KEY_VALUE);
   key_value_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
   key_value_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
   key_value_schema << QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
-  m_key_value_table = &m_database.register_table(key_value_schema);
+  m_key_value_table = &register_table(key_value_schema);
 }
 
 int

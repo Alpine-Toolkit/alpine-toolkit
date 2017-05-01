@@ -23,7 +23,7 @@ query.value({{i}}).{{field.variable.from_variant}}()
 {{class_name}}::{{class_name}}(const QJsonObject & json_object)
  : {{class_name}}()
 {
-{%- for field in fields %}
+{%- for field in schema %}
   {{ set_member(field.name,
                 from_json(field.name, field.variable.from_json),
                 field.variable.cast_from_json)
@@ -33,7 +33,7 @@ query.value({{i}}).{{field.variable.from_variant}}()
 {{class_name}}::{{class_name}}(const QVariantHash & variant_hash)
  : {{class_name}}()
 {
-{%- for field in fields %}
+{%- for field in schema %}
   {{ set_member(field.name, from_variant_hash(field), field.variable.cast_from_variant) }}{% endfor %}
 }
 
@@ -43,6 +43,6 @@ query.value({{i}}).{{field.variable.from_variant}}()
 {%- macro from_variant_list(i, field) -%}
 variants[{{i}}].{{field.variable.from_variant}}()
 {%- endmacro -%}
-{%- for field in fields %}
+{%- for field in schema %}
   {{ set_member(field.name, from_variant_list(loop.index0, field), field.variable.cast_from_variant) }}{% endfor %}
 }

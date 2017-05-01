@@ -26,22 +26,39 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
+#include "network_database.h"
 
+#include <QSqlError>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
+QcNetworkDatabase::QcNetworkDatabase()
+{}
+
+QcNetworkDatabase::~QcNetworkDatabase()
+{}
+
+void
+QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
 {
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
+  m_database = QSqlDatabase::addDatabase(driver_name());
+  m_database.setHostName(connection_data.host());
+  m_database.setPort(connection_data.port());
+  m_database.setDatabaseName(connection_data.database());
+  m_database.setUserName(connection_data.user());
+  m_database.setPassword(connection_data.password());
+  if (!m_database.open())
+    qWarning() << m_database.lastError().text();
 }
 
-DocumentDatabase::~DocumentDatabase()
-{}
+bool
+QcNetworkDatabase::create_extension(const QString & extension)
+{
+  // Fixme: PostresSQL
+  QString sql_query = "CREATE EXTENSION IF NOT EXISTS " + extension + " WITH SCHEMA public;";
+  return execute_query(sql_query);
+}
 
 /***************************************************************************************************
  *

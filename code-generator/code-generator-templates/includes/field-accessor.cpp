@@ -20,7 +20,7 @@ QVariant
 {{class_name}}::field(int position) const
 {
   switch(position) {
-{%- for field in fields %}
+{%- for field in schema %}
    case {{ field_enum(field) }}:
      return {{ cast_to_variant(field) }};{% endfor %}
    default:
@@ -32,7 +32,7 @@ void
 {{class_name}}::set_field(int position, const QVariant & value)
 {
   switch(position) {
-{%- for field in fields %}
+{%- for field in schema %}
    case {{ field_enum(field) }}: {
      {{ set_member(field.name, from_variant(field, value), field.variable.cast_from_variant) }};
      break;

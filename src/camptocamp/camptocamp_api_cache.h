@@ -33,7 +33,8 @@
 
 /**************************************************************************************************/
 
-#include "database/database.h"
+#include "database/sqlite_database.h"
+#include "database/database_schema.h"
 #include "camptocamp/camptocamp_login.h"
 #include "camptocamp/camptocamp_document.h"
 
@@ -41,7 +42,7 @@
 
 /**************************************************************************************************/
 
-class C2cApiCache : public QcSqliteDatabase
+class C2cApiCache : public QcSqliteDatabase, public QcDatabaseSchema
 {
 public:
   C2cApiCache(const QString & sqlite_path);

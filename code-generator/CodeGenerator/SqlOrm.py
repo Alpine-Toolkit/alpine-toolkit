@@ -204,6 +204,10 @@ class UnixDateTimeField(Field):
 
 class Schema:
 
+    # Fixme: name clash !
+
+    __order__ = None
+    __table_name__ = None
     __custom_header__ = None
     __custom_source__ = None
 
@@ -215,8 +219,8 @@ class Schema:
 
         self._fields = []
         d = self.__class__.__dict__
-        if '__order__' in d:
-            field_names = d['__order__']
+        if self.__order__ is not None:
+            field_names = self.__order__
         else:
             field_names = d.keys()
         for name in field_names:
@@ -233,8 +237,12 @@ class Schema:
     ##############################################
 
     @property
-    def name(self):
+    def cls_name(self): # to don't clash with "name" field
         return self._name
+
+    @property
+    def table_name(self):
+        return self.__table_name__
 
     ##############################################
 
@@ -246,7 +254,7 @@ class Schema:
 
     def to_sql(self):
 
-        sql = 'CREATE TABLE {} ('.format(self._name)
+        sql = 'CREATE TABLE {} ('.format(self.__table_name__)
         fields = [field.to_sql() for field in self]
         sql += ', '.join(fields)
         sql += ')'
@@ -275,7 +283,8 @@ class Schema:
 
     def generate_header(self, header):
 
-        header.render('json-class.h',
+        header.render('row-class.h',
+                      schema=self,
                       class_name=self._name,
                       members=self._members,
                       custom_header=self.__custom_header__
@@ -285,64 +294,14 @@ class Schema:
 
     def generate_source(self, source):
 
-        source.render('json-class.cpp',
+        source.render('row-class.cpp',
+                      schema=self,
                       class_name=self._name,
                       members=self._members,
                       all_members=self._all_members,
                       member_types=self._member_types,
-                      fields=self._fields,
                       custom_source=self.__custom_source__
         )
-
-    ##############################################
-
-        # class_definition = ClassDefinition(class_name, 'QObject',
-        #                                    members,
-        #                                    private_members=private_members,
-        #                                    generator_settings=generator_settings)
-        # class_definition.begin()
-        # for member in members:
-        #     class_definition.property(member)
-        # class_definition.public()
-        # class_definition.render('member-enum.h', members=members)
-        # class_definition.public()
-        # class_definition.ctor()
-        # class_definition.json_ctor()
-        # class_definition.dtor()
-        # class_definition.new_line()
-        # class_definition.copy_operator()
-        # for member in members:
-        #     class_definition.new_line()
-        #     class_definition.inline_getter(member)
-        #     # class_definition.inline_setter(member)
-        #     class_definition.setter(member)
-        # class_definition.new_line()
-        # class_definition.json_serializer()
-        # class_definition.signals()
-        # for member in members:
-        #     class_definition.property_changed_signal(member)
-        # class_definition.private()
-        # for member in class_definition.all_members:
-        #     class_definition.member(member)
-        # class_definition.close()
-        # header.append(class_definition)
-
-        # class_implementation = class_definition.to_implementation()
-        # class_implementation.ctor()
-        # class_implementation.new_line()
-        # class_implementation.copy_ctor()
-        # class_implementation.new_line()
-        # class_implementation.json_ctor()
-        # class_implementation.new_line()
-        # class_implementation.dtor()
-        # class_implementation.new_line()
-        # class_implementation.copy_operator_ctor()
-        # for member in members:
-        #     class_implementation.new_line()
-        #     class_implementation.setter(member)
-        # class_implementation.new_line()
-        # class_implementation.json_serializer()
-        # source.append(class_implementation)
 
 ####################################################################################################
 
@@ -350,29 +309,38 @@ class SchemaRepository:
 
     ##############################################
 
-    def __init__(self, *classes):
+    def __init__(self, name, *schemas):
 
-        self._tables = [class_() for class_ in classes]
+        self._name = name
+        self._schemas = [cls() for cls in schemas]
+
+    ##############################################
+
+    @property
+    def name(self):
+        return self._name
 
     ##############################################
 
     def __iter__(self):
 
-        return iter(self._tables)
+        return iter(self._schemas)
 
     ##############################################
 
     @property
     def includes(self):
 
-        include_classes = set()
+        headers = set()
         for schema in self:
-            include_classes |= set(schema.includes)
-        return sorted(include_classes)
+            headers |= set(schema.includes)
+        return sorted(headers)
 
     ##############################################
 
-    def generate_source(self, filename, generator_settings,
+    def generate_source(self,
+                        filename,
+                        generator_settings,
                         pre_header=None, post_header=None,
                         pre_source=None, post_source=None):
 
@@ -386,18 +354,30 @@ class SchemaRepository:
             header.include(include)
         header.new_line()
         header.include('database/schema.h', local=True)
+        header.include('database/database_schema.h', local=True)
         header.new_line()
         header.rule()
         header.new_line()
         if pre_header is not None:
             header.render(pre_header)
+            header.new_line()
+            header.rule()
+            header.new_line()
         for schema in self:
             schema.generate_header(header)
             header.new_line()
             header.rule()
             header.new_line()
+        header.render('schema.h',
+                      database_schema=self)
+        header.new_line()
+        header.rule()
+        header.new_line()
         if post_header is not None:
             header.render(post_header)
+            header.new_line()
+            header.rule()
+            header.new_line()
         header.footer()
 
         source = Source(filename, generator_settings)
@@ -420,8 +400,16 @@ class SchemaRepository:
             source.new_line()
             source.rule()
             source.new_line()
+        source.render('schema.cpp',
+                      database_schema=self)
+        source.new_line()
+        source.rule()
+        source.new_line()
         if post_source is not None:
             source.render(post_source)
+            source.new_line()
+            source.rule()
+            source.new_line()
         source.comment('QC_END_NAMESPACE')
         source.footer()
 

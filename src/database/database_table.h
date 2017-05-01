@@ -1,0 +1,130 @@
+// -*- mode: c++ -*-
+/***************************************************************************************************
+ *
+ * $QTCARTO_BEGIN_LICENSE:GPL3$
+ *
+ * Copyright (C) 2016 Fabrice Salvaire
+ * Contact: http://www.fabrice-salvaire.fr
+ *
+ * This file is part of the QtCarto library.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $QTCARTO_END_LICENSE$
+ *
+ **************************************************************************************************/
+
+/**************************************************************************************************/
+
+#ifndef __DATABASE_TABLE_H__
+#define __DATABASE_TABLE_H__
+
+/**************************************************************************************************/
+
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
+#include <QVariantHash>
+
+#include "database/schema.h"
+
+/**************************************************************************************************/
+
+class QcDatabase;
+
+class QcDatabaseTable
+{
+public:
+  static QString format_prepare(int number_of_fields);
+  static QString format_prepare_update(const QStringList & fields);
+  static QString format_kwarg(const QVariantHash & kwargs, const QString & separator = QStringLiteral(","));
+  static QString format_simple_where(const QVariantHash & kwargs);
+
+public:
+  QcDatabaseTable();
+  QcDatabaseTable(QcDatabase * database, const QString & name);
+  QcDatabaseTable(QcDatabase * database, const QcSchema & schema);
+  QcDatabaseTable(const QcDatabaseTable & other);
+  ~QcDatabaseTable();
+
+  QcDatabaseTable & operator=(const QcDatabaseTable & other);
+
+  QcDatabase * database() { return m_database; }
+  const QcSchema & schema() { return m_schema; }
+  const QString & name() { return m_name; } // m_schema.name()
+
+  bool exists() const;
+  bool create();
+  bool drop();
+
+  QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
+  QSqlQuery select(const QStringList & fields, const QVariantHash & kwargs) const {
+    return select(fields, format_simple_where(kwargs));
+  }
+  QSqlQuery select(const QString & where = QString()) const {
+    return select(QStringList(QLatin1String("*")), where);
+  }
+  QSqlQuery select(const QVariantHash & kwargs) const {
+    return select(QStringList(QLatin1String("*")), format_simple_where(kwargs));
+  }
+
+  QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
+  QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
+    return select_one(fields, format_simple_where(kwargs));
+  }
+  QSqlRecord select_one(const QString & where = QString()) const {
+    return select_one(QStringList(QLatin1String("*")), where);
+  }
+  QSqlRecord select_one(const QVariantHash & kwargs) const  {
+    return select_one(QStringList(QLatin1String("*")), format_simple_where(kwargs));
+  }
+  // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
+
+  QSqlQuery prepare_complete_insert(int number_of_fields);
+  QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
+  QSqlQuery prepare_insert(const QStringList & fields);
+
+  QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
+
+  QSqlQuery prepare_update(const QStringList & fields, const QString & where);
+  QSqlQuery update(const QVariantHash & kwargs, const QString & where = QString());
+  QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
+    return update(kwargs, format_simple_where(where_kwargs));
+  }
+
+  QSqlQuery delete_row(const QString & where = QString());
+  QSqlQuery delete_row(const QVariantHash & kwargs) {
+    return delete_row(format_simple_where(kwargs));
+  }
+
+private:
+  void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
+
+private:
+  QcDatabase * m_database = nullptr; // ptr for default ctor
+  QcSchema m_schema;
+  QString m_name;
+};
+
+/**************************************************************************************************/
+
+#endif /* __DATABASE_TABLE_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

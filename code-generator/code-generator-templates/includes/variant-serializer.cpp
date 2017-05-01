@@ -15,12 +15,12 @@ QVariantHash
   QVariantHash variant_hash;
 
   if (only_changed) {
-{%- for field in fields %}
+{%- for field in schema %}
     if (is_{{field.name}}_modified())
       {{ insert(field) }}
 {%- endfor %}
   } else {
-{%- for field in fields %}
+{%- for field in schema %}
     {{ insert(field) }}
 {%- endfor %}
   }
@@ -33,7 +33,7 @@ QVariantList
 {
   QVariantList variants;
 
-{%- for field in fields %}
+{%- for field in schema %}
   variants << {{ field_value(field) }};
 {%- endfor %}
 

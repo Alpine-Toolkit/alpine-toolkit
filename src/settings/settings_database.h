@@ -33,7 +33,9 @@
 
 /**************************************************************************************************/
 
-#include "database/database.h"
+#include "database/sqlite_database.h"
+#include "database/database_schema.h"
+#include "database/database_table.h"
 
 #include <QString>
 #include <QVariant>
@@ -41,7 +43,7 @@
 
 /**************************************************************************************************/
 
-class SettingsDatabase
+class SettingsDatabase : public QcDatabaseSchema
 {
 public:
   typedef QHash<QString, QVariant> KeyValueMap;
@@ -76,7 +78,6 @@ private:
   QString parent_to_path(int parent, PathCache & paths);
 
 private:
-  QcDatabase & m_database;
   QcDatabaseTable * m_directory_table;
   QcDatabaseTable * m_key_value_table;
 };

@@ -26,22 +26,49 @@
 
 /**************************************************************************************************/
 
-#include "document_database.h"
+#include "database_schema.h"
 
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-DocumentDatabase::DocumentDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
-    m_schema(nullptr)
+QcDatabaseSchema::QcDatabaseSchema(QcDatabase & database)
+  : m_database(database),
+    m_tables()
+{}
+
+QcDatabaseSchema::~QcDatabaseSchema()
+{}
+
+// Database must be opened before to create table !
+/*
+QcDatabase::QcDatabase(const QList<QcSchema> & schemas)
+  : QcDatabase()
 {
-  open(sqlite_path);
-  m_schema = new DocumentDatabaseSchema(*this);
+  for (const auto & schema : schemas)
+    register_table(schema);
+}
+*/
+
+QcDatabaseTable &
+QcDatabaseSchema::register_table(const QString & name)
+{
+  m_tables[name] = QcDatabaseTable(&m_database, name);
+  return m_tables[name];
 }
 
-DocumentDatabase::~DocumentDatabase()
-{}
+QcDatabaseTable &
+QcDatabaseSchema::register_table(const QcSchema & schema)
+{
+  const QString & name = schema.table_name(); // versus name()
+  m_tables[name] = QcDatabaseTable(&m_database, schema);
+  QcDatabaseTable & table = m_tables[name];
+  if (not table.exists()) {
+    table.create();
+    m_database.commit();
+  }
+  return table;
+}
 
 /***************************************************************************************************
  *
