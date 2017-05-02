@@ -1,6 +1,11 @@
 {# -*- mode: fundamental -*- -#}
 {% extends "includes/header-template.jinja" %}
-{%- from "includes/property.h" import property, property_signal -%}
+
+{%- from "includes/accessor.jinja" import getter_decl, setter_decl, inline_getter, inline_setter -%}
+{%- from "includes/cdtor.jinja" import ctor_decl, copy_ctor_decl, copy_operator_decl, dtor_decl -%}
+{%- from "includes/debug.jinja" import debug_streamer_decl -%}
+{%- from "includes/operator.jinja" import equal_operator_decl -%}
+{%- from "includes/property.jinja" import property, property_signal -%}
 
 {%- macro class_inheritance(base_classes) -%}
 {% if base_classes %} : {% for base_class in base_classes %}public {{base_class}}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
@@ -14,42 +19,6 @@
 {%- macro properties(members) -%}
 {%- for member in members %}
   {{ property(member.name, member.type) }}{% endfor %}
-{%- endmacro -%}
-
-{% macro ctor(class_name) -%}
-{{class_name}}();
-{%- endmacro -%}
-
-{%- macro copy_ctor(class_name) -%}
-{{class_name}}(const {{class_name}} & other);
-{%- endmacro -%}
-
-{%- macro dtor(class_name) -%}
-~{{class_name}}();
-{%- endmacro -%}
-
-{%- macro copy_operator(class_name) -%}
-{{class_name}} & operator=(const {{class_name}} & other);
-{%- endmacro -%}
-
-{%- macro equal_operator(class_name) -%}
-bool operator==(const {{class_name}} & other);
-{%- endmacro -%}
-
-{%- macro getter(member) -%}
-{{member.getter_type}} {{member.name}}() const;
-{%- endmacro -%}
-
-{%- macro inline_getter(member) -%}
-{{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
-{%- endmacro -%}
-
-{%- macro setter(member) -%}
-void set_{{member.name}}({{member.setter_type}} value);
-{%- endmacro -%}
-
-{%- macro inline_setter(member) -%}
-void set_{{member.name}}({{member.setter_type}} value) { m_{{member.name}} = value; }
 {%- endmacro -%}
 
 {%- macro signal_properties(members) -%}
@@ -75,19 +44,19 @@ class {{class_name}}{{ class_inheritance(base_classes) }}
 {{ q_object(base_classes) }}
 {%- if has_property %}{{ properties(members) }}{% endif -%}
 public:
-  {{class_name}}();
-  {{class_name}}(const {{class_name}} & other);
-  ~{{class_name}}();
+  {{ ctor_decl(class_name) }}
+  {{ copy_ctor_decl(class_name) }}
+  {{ dtor_decl(class_name) }}
 
-  {{class_name}} & operator=(const {{class_name}} & other);
+  {{ copy_operator_decl(class_name) }}
 
-  bool operator==(const {{class_name}} & other);
+  {{ equal_operator_decl(class_name) }}
 
   // Getter/Setter
 {# #}
 {%- for member in members %}
-  {% if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter(member) }}{% endif %}
-  {% if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter(member) }}{% endif %}
+  {% if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter_decl(member) }}{% endif %}
+  {% if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter_decl(member) }}{% endif %}
 {% endfor -%}
 {# #}
 {%- if has_property %}
@@ -98,5 +67,5 @@ private:
 {{- m_members(members) }}
 };
 
-{% include "includes/debug.h" %}
+{{ debug_streamer_decl(class_name) }}
 {%- endblock %}

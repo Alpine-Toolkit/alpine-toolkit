@@ -1,4 +1,11 @@
 {# -*- mode: fundamental -*- -#}
+
+{%- from "includes/accessor.jinja" import setter_impl -%}
+{%- from "includes/cdtor.jinja" import ctor_impl, copy_ctor_impl, copy_operator_impl, dtor_impl -%}
+{%- from "includes/data-stream-operator.jinja" import data_streamer_impl -%}
+{%- from "includes/debug.jinja" import debug_streamer_impl -%}
+{%- from "includes/operator.jinja" import equal_operator_impl -%}
+
 {{class_name}}Schema::{{class_name}}Schema()
 : QcSchema(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
 {
@@ -25,32 +32,28 @@
 {}
 
 /**************************************************************************************************/
-{% with members = all_members %}
-{% include "includes/ctor.cpp" %}
+{{ ctor_impl(class_name, all_members) }}
 
-{% include "includes/copy-ctor.cpp" %}
-{%- endwith %}
+{{ copy_ctor_impl(class_name, all_members) }}
 
-{% include "includes/json-ctor.cpp" %}
+{% include "includes/orm/json-ctor.cpp" %}
 
-{% include "includes/sql-ctor.cpp" %}
+{% include "includes/orm/sql-ctor.cpp" %}
 
-{% include "includes/dtor.cpp" %}
-{% with members = all_members %}
+{{ dtor_impl(class_name) }}
 // bit array ?
-{% include "includes/copy-operator.cpp" %}
-{%- endwith %}
+{{ copy_operator_impl(class_name, all_members) }}
 // bit array ?
-{% include "includes/equal-operator.cpp" %}
+{{ equal_operator_impl(class_name, members) }}
 {% for member in members %}
-{% include "includes/setter.cpp" %}
+{{ setter_impl(member) }}
 {% endfor %}
-{% include "includes/json-serializer.cpp" %}
+{% include "includes/orm/json-serializer.cpp" %}
 
-{% include "includes/variant-serializer.cpp" %}
+{% include "includes/orm/variant-serializer.cpp" %}
 
-{% include "includes/field-accessor.cpp" %}
+{% include "includes/orm/field-accessor.cpp" %}
 
-{% include "includes/data-stream-operator.cpp" %}
+{{ data_streamer_impl(class_name, members) }}
 
-{% include "includes/debug.cpp" %}
+{{ debug_streamer_impl(class_name) }}

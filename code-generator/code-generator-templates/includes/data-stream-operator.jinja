@@ -1,4 +1,12 @@
 {# -*- mode: fundamental -*- -#}
+
+{%- macro data_streamer_decl(class_name, members) -%}
+QDataStream & operator<<(QDataStream & out, const {{class_name}} & obj);
+QDataStream & operator>>(QDataStream & in, {{class_name}} & obj);
+// qRegisterMetaTypeStreamOperators<{{class_name}}>("{{class_name}}");
+{%- endmacro -%}
+
+{%- macro data_streamer_impl(class_name, members) -%}
 QDataStream &
 operator<<(QDataStream & out, const {{class_name}} & obj)
 {
@@ -19,3 +27,4 @@ operator>>(QDataStream & in, {{class_name}} & obj)
 
   return in;
 }
+{%- endmacro -%}

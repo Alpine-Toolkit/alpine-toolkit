@@ -1,6 +1,9 @@
 {# -*- mode: fundamental -*- -#}
-{%- from "includes/singleton.h" import singleton -%}
-{%- from "includes/property.h" import property -%}
+
+{%- from "includes/data-stream-operator.jinja" import data_streamer_decl %}
+{%- from "includes/debug.jinja" import debug_streamer_decl -%}
+{%- from "includes/property.jinja" import property -%}
+{%- from "includes/singleton.jinja" import singleton -%}
 
 class {{class_name}};
 {# #}
@@ -75,6 +78,6 @@ private:
   {{member.type}} m_{{member.name}};{% endfor %}
 };
 
-{% include "includes/data-stream-operator.h" %}
+{{ data_streamer_decl(class_name, members) }}
 
-{% include "includes/debug.h" %}
+{{ debug_streamer_decl(class_name) }}

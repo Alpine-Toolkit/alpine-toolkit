@@ -1,4 +1,12 @@
 {# -*- mode: fundamental -*- -#}
+
+{%- macro debug_streamer_decl(class_name) -%}
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const {{class_name}} & obj);
+#endif
+{%- endmacro -%}
+
+{%- macro debug_streamer_impl(class_name) -%}
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
 operator<<(QDebug debug, const {{class_name}} & obj)
@@ -16,3 +24,4 @@ operator<<(QDebug debug, const {{class_name}} & obj)
   return debug;
 }
 #endif
+{%- endmacro -%}

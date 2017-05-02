@@ -1,24 +1,30 @@
 {% extends "includes/source-template.jinja" %}
 
+{%- from "includes/accessor.jinja" import getter_impl, setter_impl -%}
+{%- from "includes/cdtor.jinja" import ctor_impl, copy_ctor_impl, copy_operator_impl, dtor_impl -%}
+{%- from "includes/debug.jinja" import debug_streamer_impl -%}
+{%- from "includes/operator.jinja" import equal_operator_impl -%}
+
 {% block include %}
 #include <QtDebug>
 {% endblock %}
 
 {% block content %}
-{% include "includes/ctor.cpp" %}
+{{ ctor_impl(class_name, all_members) }}
 
-{% include "includes/copy-ctor.cpp" %}
+{{ copy_ctor_impl(class_name, all_members) }}
 
-{% include "includes/dtor.cpp" %}
+{{ dtor_impl(class_name) }}
 
-{% include "includes/copy-operator.cpp" %}
+{{ copy_operator_impl(class_name, all_members) }}
 
-{% include "includes/equal-operator.cpp" %}
+{{ equal_operator_impl(class_name, members) }}
+
 {% for member in members %}
-{%- if not has_inline_getter %}{% include "includes/getter.cpp" %}{% endif %}
+{%- if not has_inline_getter %}{{ getter_impl(member) }}{% endif %}
 
-{% if not has_inline_setter %}{% include "includes/setter.cpp" %}{% endif %}
+{% if not has_inline_setter %}{{ setter_impl(member) }}{% endif %}
 {% endfor -%}
 {# #}
-{% include "includes/debug.cpp" %}
+{{ debug_streamer_impl(class_name) }}
 {% endblock %}

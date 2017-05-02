@@ -1,0 +1,37 @@
+{# -*- mode: fundamental -*- -#}
+
+{%- macro getter_decl(member) -%}
+{{member.getter_type}} {{member.name}}() const;
+{%- endmacro -%}
+
+{%- macro inline_getter(member) -%}
+{{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
+{%- endmacro -%}
+
+{%- macro setter_decl(member) -%}
+void set_{{member.name}}({{member.setter_type}} value);
+{%- endmacro -%}
+
+{%- macro inline_setter(member) -%}
+void set_{{member.name}}({{member.setter_type}} value) { m_{{member.name}} = value; }
+{%- endmacro -%}
+
+{%- macro setter_impl(member) -%}
+void
+{{class_name}}::set_{{member.name}}({{member.setter_type}} value)
+{
+  if (m_{{member.name}} != value) {
+    m_{{member.name}} = value;
+    set_bit(Schema::Fields::{{member.name|upper}});
+    emit {{member.name}}Changed();
+  }
+}
+{%- endmacro -%}
+
+{%- macro getter_impl(member) -%}
+{{member.getter_type}}
+{{class_name}}::{{member.name}}() const
+{
+  return m_{{member.name}};
+}
+{%- endmacro -%}
