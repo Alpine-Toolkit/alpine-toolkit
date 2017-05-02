@@ -140,6 +140,14 @@ private:
 
 class QcSchema
 {
+  // Followings are defined in subclasses:
+  //
+  // enum Fields { // by order
+  //   FIELD_NAME,
+  //   ...
+  // };
+  // static const int NUMBER_OF_FIELDS = ...;
+
 public:
   QcSchema();
   QcSchema(const QString & name,
@@ -158,7 +166,7 @@ public:
   const QString & table_name() const { return m_table_name; }
   const QString & sql_table_option() const { return m_sql_table_option; }
 
-  int number_of_fields() { return m_fields.size(); }
+  int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
   const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
   QStringList field_names() { return m_field_map.keys(); }
 

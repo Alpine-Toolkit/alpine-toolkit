@@ -68,7 +68,13 @@ public:
 
   virtual int rowid() const { return -1; } // ???
 
-protected: // Fixme: ???
+  bool is_modified() const { return not m_bits.isNull(); }
+
+protected:
+  bool bit_status(int i) const { return m_bits[i]; }
+  void set_bit(int i) { return m_bits.setBit(i); }
+
+private:
   QBitArray m_bits;
 };
 

@@ -59,9 +59,8 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
 {%- for member in members %}
-  bool is_{{member.name}}_modified() const { return m_bits[{{class_name}}Schema::Fields::{{member.name|upper}}]; }{% endfor %}
+  bool is_{{member.name}}_modified() const { return bit_status(Schema::Fields::{{member.name|upper}}); }{% endfor %}
 
   // Field accessor by position
   QVariant field(int position) const;

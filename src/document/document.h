@@ -151,15 +151,14 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_id_modified() const { return m_bits[DocumentSchema::Fields::ID]; }
-  bool is_name_modified() const { return m_bits[DocumentSchema::Fields::NAME]; }
-  bool is_author_modified() const { return m_bits[DocumentSchema::Fields::AUTHOR]; }
-  bool is_version_modified() const { return m_bits[DocumentSchema::Fields::VERSION]; }
-  bool is_date_modified() const { return m_bits[DocumentSchema::Fields::DATE]; }
-  bool is_description_modified() const { return m_bits[DocumentSchema::Fields::DESCRIPTION]; }
-  bool is_url_modified() const { return m_bits[DocumentSchema::Fields::URL]; }
-  bool is_size_modified() const { return m_bits[DocumentSchema::Fields::SIZE]; }
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
+  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
+  bool is_author_modified() const { return bit_status(Schema::Fields::AUTHOR); }
+  bool is_version_modified() const { return bit_status(Schema::Fields::VERSION); }
+  bool is_date_modified() const { return bit_status(Schema::Fields::DATE); }
+  bool is_description_modified() const { return bit_status(Schema::Fields::DESCRIPTION); }
+  bool is_url_modified() const { return bit_status(Schema::Fields::URL); }
+  bool is_size_modified() const { return bit_status(Schema::Fields::SIZE); }
 
   // Field accessor by position
   QVariant field(int position) const;

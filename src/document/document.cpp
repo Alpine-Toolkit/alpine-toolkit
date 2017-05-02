@@ -309,7 +309,7 @@ Document::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
-    m_bits.setBit(DocumentSchema::Fields::ID);
+    set_bit(Schema::Fields::ID);
     emit idChanged();
   }
 }
@@ -319,7 +319,7 @@ Document::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
-    m_bits.setBit(DocumentSchema::Fields::NAME);
+    set_bit(Schema::Fields::NAME);
     emit nameChanged();
   }
 }
@@ -329,7 +329,7 @@ Document::set_author(const QString & value)
 {
   if (m_author != value) {
     m_author = value;
-    m_bits.setBit(DocumentSchema::Fields::AUTHOR);
+    set_bit(Schema::Fields::AUTHOR);
     emit authorChanged();
   }
 }
@@ -339,7 +339,7 @@ Document::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
-    m_bits.setBit(DocumentSchema::Fields::VERSION);
+    set_bit(Schema::Fields::VERSION);
     emit versionChanged();
   }
 }
@@ -349,7 +349,7 @@ Document::set_date(const QDateTime & value)
 {
   if (m_date != value) {
     m_date = value;
-    m_bits.setBit(DocumentSchema::Fields::DATE);
+    set_bit(Schema::Fields::DATE);
     emit dateChanged();
   }
 }
@@ -359,7 +359,7 @@ Document::set_description(const QString & value)
 {
   if (m_description != value) {
     m_description = value;
-    m_bits.setBit(DocumentSchema::Fields::DESCRIPTION);
+    set_bit(Schema::Fields::DESCRIPTION);
     emit descriptionChanged();
   }
 }
@@ -369,7 +369,7 @@ Document::set_url(const QUrl & value)
 {
   if (m_url != value) {
     m_url = value;
-    m_bits.setBit(DocumentSchema::Fields::URL);
+    set_bit(Schema::Fields::URL);
     emit urlChanged();
   }
 }
@@ -379,7 +379,7 @@ Document::set_size(int value)
 {
   if (m_size != value) {
     m_size = value;
-    m_bits.setBit(DocumentSchema::Fields::SIZE);
+    set_bit(Schema::Fields::SIZE);
     emit sizeChanged();
   }
 }
@@ -531,21 +531,21 @@ QVariant
 Document::field(int position) const
 {
   switch(position) {
-   case DocumentSchema::Fields::ID:
+   case Schema::Fields::ID:
      return m_id;
-   case DocumentSchema::Fields::NAME:
+   case Schema::Fields::NAME:
      return m_name;
-   case DocumentSchema::Fields::AUTHOR:
+   case Schema::Fields::AUTHOR:
      return m_author;
-   case DocumentSchema::Fields::VERSION:
+   case Schema::Fields::VERSION:
      return m_version;
-   case DocumentSchema::Fields::DATE:
+   case Schema::Fields::DATE:
      return m_date;
-   case DocumentSchema::Fields::DESCRIPTION:
+   case Schema::Fields::DESCRIPTION:
      return m_description;
-   case DocumentSchema::Fields::URL:
+   case Schema::Fields::URL:
      return m_url;
-   case DocumentSchema::Fields::SIZE:
+   case Schema::Fields::SIZE:
      return m_size;
    default:
      return QVariant(); // error
@@ -556,35 +556,35 @@ void
 Document::set_field(int position, const QVariant & value)
 {
   switch(position) {
-   case DocumentSchema::Fields::ID: {
+   case Schema::Fields::ID: {
      m_id = value.toInt();
      break;
    }
-   case DocumentSchema::Fields::NAME: {
+   case Schema::Fields::NAME: {
      m_name = value.toString();
      break;
    }
-   case DocumentSchema::Fields::AUTHOR: {
+   case Schema::Fields::AUTHOR: {
      m_author = value.toString();
      break;
    }
-   case DocumentSchema::Fields::VERSION: {
+   case Schema::Fields::VERSION: {
      m_version = value.toInt();
      break;
    }
-   case DocumentSchema::Fields::DATE: {
+   case Schema::Fields::DATE: {
      m_date = value.toDateTime();
      break;
    }
-   case DocumentSchema::Fields::DESCRIPTION: {
+   case Schema::Fields::DESCRIPTION: {
      m_description = value.toString();
      break;
    }
-   case DocumentSchema::Fields::URL: {
+   case Schema::Fields::URL: {
      m_url = value.toUrl();
      break;
    }
-   case DocumentSchema::Fields::SIZE: {
+   case Schema::Fields::SIZE: {
      m_size = value.toInt();
      break;
    }

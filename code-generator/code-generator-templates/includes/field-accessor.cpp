@@ -1,7 +1,7 @@
 {# -*- mode: fundamental -*- -#}
 
 {%- macro field_enum(field) -%}
-{{class_name}}Schema::Fields::{{field.name|upper}}
+Schema::Fields::{{field.name|upper}}
 {%- endmacro -%}
 
 {%- macro cast_to_variant(field) -%}

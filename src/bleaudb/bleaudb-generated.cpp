@@ -209,7 +209,7 @@ BBleauPlace::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
-    m_bits.setBit(BBleauPlaceSchema::Fields::COORDINATE);
+    set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
   }
 }
@@ -219,7 +219,7 @@ BBleauPlace::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
-    m_bits.setBit(BBleauPlaceSchema::Fields::NAME);
+    set_bit(Schema::Fields::NAME);
     emit nameChanged();
   }
 }
@@ -229,7 +229,7 @@ BBleauPlace::set_category(const QString & value)
 {
   if (m_category != value) {
     m_category = value;
-    m_bits.setBit(BBleauPlaceSchema::Fields::CATEGORY);
+    set_bit(Schema::Fields::CATEGORY);
     emit categoryChanged();
   }
 }
@@ -239,7 +239,7 @@ BBleauPlace::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
-    m_bits.setBit(BBleauPlaceSchema::Fields::NOTE);
+    set_bit(Schema::Fields::NOTE);
     emit noteChanged();
   }
 }
@@ -347,13 +347,13 @@ QVariant
 BBleauPlace::field(int position) const
 {
   switch(position) {
-   case BBleauPlaceSchema::Fields::COORDINATE:
+   case Schema::Fields::COORDINATE:
      return QVariant::fromValue(m_coordinate);
-   case BBleauPlaceSchema::Fields::NAME:
+   case Schema::Fields::NAME:
      return m_name;
-   case BBleauPlaceSchema::Fields::CATEGORY:
+   case Schema::Fields::CATEGORY:
      return m_category;
-   case BBleauPlaceSchema::Fields::NOTE:
+   case Schema::Fields::NOTE:
      return m_note;
    default:
      return QVariant(); // error
@@ -364,19 +364,19 @@ void
 BBleauPlace::set_field(int position, const QVariant & value)
 {
   switch(position) {
-   case BBleauPlaceSchema::Fields::COORDINATE: {
+   case Schema::Fields::COORDINATE: {
      m_coordinate = value.value<QGeoCoordinate>();
      break;
    }
-   case BBleauPlaceSchema::Fields::NAME: {
+   case Schema::Fields::NAME: {
      m_name = value.toString();
      break;
    }
-   case BBleauPlaceSchema::Fields::CATEGORY: {
+   case Schema::Fields::CATEGORY: {
      m_category = value.toString();
      break;
    }
-   case BBleauPlaceSchema::Fields::NOTE: {
+   case Schema::Fields::NOTE: {
      m_note = value.toString();
      break;
    }
@@ -760,7 +760,7 @@ BBleauMassif::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::COORDINATE);
+    set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
   }
 }
@@ -770,7 +770,7 @@ BBleauMassif::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::NAME);
+    set_bit(Schema::Fields::NAME);
     emit nameChanged();
   }
 }
@@ -780,7 +780,7 @@ BBleauMassif::set_access(const QString & value)
 {
   if (m_access != value) {
     m_access = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::ACCESS);
+    set_bit(Schema::Fields::ACCESS);
     emit accessChanged();
   }
 }
@@ -790,7 +790,7 @@ BBleauMassif::set_alternative_name(const QString & value)
 {
   if (m_alternative_name != value) {
     m_alternative_name = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::ALTERNATIVE_NAME);
+    set_bit(Schema::Fields::ALTERNATIVE_NAME);
     emit alternative_nameChanged();
   }
 }
@@ -800,7 +800,7 @@ BBleauMassif::set_chaos_type(const QString & value)
 {
   if (m_chaos_type != value) {
     m_chaos_type = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::CHAOS_TYPE);
+    set_bit(Schema::Fields::CHAOS_TYPE);
     emit chaos_typeChanged();
   }
 }
@@ -810,7 +810,7 @@ BBleauMassif::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::NOTE);
+    set_bit(Schema::Fields::NOTE);
     emit noteChanged();
   }
 }
@@ -820,7 +820,7 @@ BBleauMassif::set_parcelles(const QString & value)
 {
   if (m_parcelles != value) {
     m_parcelles = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::PARCELLES);
+    set_bit(Schema::Fields::PARCELLES);
     emit parcellesChanged();
   }
 }
@@ -830,7 +830,7 @@ BBleauMassif::set_rdv(const QString & value)
 {
   if (m_rdv != value) {
     m_rdv = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::RDV);
+    set_bit(Schema::Fields::RDV);
     emit rdvChanged();
   }
 }
@@ -840,7 +840,7 @@ BBleauMassif::set_secteur(const QString & value)
 {
   if (m_secteur != value) {
     m_secteur = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::SECTEUR);
+    set_bit(Schema::Fields::SECTEUR);
     emit secteurChanged();
   }
 }
@@ -850,7 +850,7 @@ BBleauMassif::set_velo(const QString & value)
 {
   if (m_velo != value) {
     m_velo = value;
-    m_bits.setBit(BBleauMassifSchema::Fields::VELO);
+    set_bit(Schema::Fields::VELO);
     emit veloChanged();
   }
 }
@@ -1024,25 +1024,25 @@ QVariant
 BBleauMassif::field(int position) const
 {
   switch(position) {
-   case BBleauMassifSchema::Fields::COORDINATE:
+   case Schema::Fields::COORDINATE:
      return QVariant::fromValue(m_coordinate);
-   case BBleauMassifSchema::Fields::NAME:
+   case Schema::Fields::NAME:
      return m_name;
-   case BBleauMassifSchema::Fields::ACCESS:
+   case Schema::Fields::ACCESS:
      return m_access;
-   case BBleauMassifSchema::Fields::ALTERNATIVE_NAME:
+   case Schema::Fields::ALTERNATIVE_NAME:
      return m_alternative_name;
-   case BBleauMassifSchema::Fields::CHAOS_TYPE:
+   case Schema::Fields::CHAOS_TYPE:
      return m_chaos_type;
-   case BBleauMassifSchema::Fields::NOTE:
+   case Schema::Fields::NOTE:
      return m_note;
-   case BBleauMassifSchema::Fields::PARCELLES:
+   case Schema::Fields::PARCELLES:
      return m_parcelles;
-   case BBleauMassifSchema::Fields::RDV:
+   case Schema::Fields::RDV:
      return m_rdv;
-   case BBleauMassifSchema::Fields::SECTEUR:
+   case Schema::Fields::SECTEUR:
      return m_secteur;
-   case BBleauMassifSchema::Fields::VELO:
+   case Schema::Fields::VELO:
      return m_velo;
    default:
      return QVariant(); // error
@@ -1053,43 +1053,43 @@ void
 BBleauMassif::set_field(int position, const QVariant & value)
 {
   switch(position) {
-   case BBleauMassifSchema::Fields::COORDINATE: {
+   case Schema::Fields::COORDINATE: {
      m_coordinate = value.value<QGeoCoordinate>();
      break;
    }
-   case BBleauMassifSchema::Fields::NAME: {
+   case Schema::Fields::NAME: {
      m_name = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::ACCESS: {
+   case Schema::Fields::ACCESS: {
      m_access = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::ALTERNATIVE_NAME: {
+   case Schema::Fields::ALTERNATIVE_NAME: {
      m_alternative_name = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::CHAOS_TYPE: {
+   case Schema::Fields::CHAOS_TYPE: {
      m_chaos_type = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::NOTE: {
+   case Schema::Fields::NOTE: {
      m_note = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::PARCELLES: {
+   case Schema::Fields::PARCELLES: {
      m_parcelles = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::RDV: {
+   case Schema::Fields::RDV: {
      m_rdv = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::SECTEUR: {
+   case Schema::Fields::SECTEUR: {
      m_secteur = value.toString();
      break;
    }
-   case BBleauMassifSchema::Fields::VELO: {
+   case Schema::Fields::VELO: {
      m_velo = value.toString();
      break;
    }
@@ -1373,7 +1373,7 @@ BBleauBoulder::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::COORDINATE);
+    set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
   }
 }
@@ -1383,7 +1383,7 @@ BBleauBoulder::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::NAME);
+    set_bit(Schema::Fields::NAME);
     emit nameChanged();
   }
 }
@@ -1393,7 +1393,7 @@ BBleauBoulder::set_comment(const QString & value)
 {
   if (m_comment != value) {
     m_comment = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::COMMENT);
+    set_bit(Schema::Fields::COMMENT);
     emit commentChanged();
   }
 }
@@ -1403,7 +1403,7 @@ BBleauBoulder::set_grade(const QString & value)
 {
   if (m_grade != value) {
     m_grade = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::GRADE);
+    set_bit(Schema::Fields::GRADE);
     emit gradeChanged();
   }
 }
@@ -1413,7 +1413,7 @@ BBleauBoulder::set_number(const QString & value)
 {
   if (m_number != value) {
     m_number = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::NUMBER);
+    set_bit(Schema::Fields::NUMBER);
     emit numberChanged();
   }
 }
@@ -1532,15 +1532,15 @@ QVariant
 BBleauBoulder::field(int position) const
 {
   switch(position) {
-   case BBleauBoulderSchema::Fields::COORDINATE:
+   case Schema::Fields::COORDINATE:
      return QVariant::fromValue(m_coordinate);
-   case BBleauBoulderSchema::Fields::NAME:
+   case Schema::Fields::NAME:
      return m_name;
-   case BBleauBoulderSchema::Fields::COMMENT:
+   case Schema::Fields::COMMENT:
      return m_comment;
-   case BBleauBoulderSchema::Fields::GRADE:
+   case Schema::Fields::GRADE:
      return m_grade;
-   case BBleauBoulderSchema::Fields::NUMBER:
+   case Schema::Fields::NUMBER:
      return m_number;
    default:
      return QVariant(); // error
@@ -1551,23 +1551,23 @@ void
 BBleauBoulder::set_field(int position, const QVariant & value)
 {
   switch(position) {
-   case BBleauBoulderSchema::Fields::COORDINATE: {
+   case Schema::Fields::COORDINATE: {
      m_coordinate = value.value<QGeoCoordinate>();
      break;
    }
-   case BBleauBoulderSchema::Fields::NAME: {
+   case Schema::Fields::NAME: {
      m_name = value.toString();
      break;
    }
-   case BBleauBoulderSchema::Fields::COMMENT: {
+   case Schema::Fields::COMMENT: {
      m_comment = value.toString();
      break;
    }
-   case BBleauBoulderSchema::Fields::GRADE: {
+   case Schema::Fields::GRADE: {
      m_grade = value.toString();
      break;
    }
-   case BBleauBoulderSchema::Fields::NUMBER: {
+   case Schema::Fields::NUMBER: {
      m_number = value.toString();
      break;
    }
@@ -2034,7 +2034,7 @@ BBleauCircuit::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::COORDINATE);
+    set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
   }
 }
@@ -2044,7 +2044,7 @@ BBleauCircuit::set_colour(const QString & value)
 {
   if (m_colour != value) {
     m_colour = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::COLOUR);
+    set_bit(Schema::Fields::COLOUR);
     emit colourChanged();
   }
 }
@@ -2054,7 +2054,7 @@ BBleauCircuit::set_creation_date(int value)
 {
   if (m_creation_date != value) {
     m_creation_date = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::CREATION_DATE);
+    set_bit(Schema::Fields::CREATION_DATE);
     emit creation_dateChanged();
   }
 }
@@ -2064,7 +2064,7 @@ BBleauCircuit::set_gestion(const QString & value)
 {
   if (m_gestion != value) {
     m_gestion = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::GESTION);
+    set_bit(Schema::Fields::GESTION);
     emit gestionChanged();
   }
 }
@@ -2074,7 +2074,7 @@ BBleauCircuit::set_grade(const QString & value)
 {
   if (m_grade != value) {
     m_grade = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::GRADE);
+    set_bit(Schema::Fields::GRADE);
     emit gradeChanged();
   }
 }
@@ -2084,7 +2084,7 @@ BBleauCircuit::set_massif(int value)
 {
   if (m_massif != value) {
     m_massif = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::MASSIF);
+    set_bit(Schema::Fields::MASSIF);
     emit massifChanged();
   }
 }
@@ -2094,7 +2094,7 @@ BBleauCircuit::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::NOTE);
+    set_bit(Schema::Fields::NOTE);
     emit noteChanged();
   }
 }
@@ -2104,7 +2104,7 @@ BBleauCircuit::set_number(int value)
 {
   if (m_number != value) {
     m_number = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::NUMBER);
+    set_bit(Schema::Fields::NUMBER);
     emit numberChanged();
   }
 }
@@ -2114,7 +2114,7 @@ BBleauCircuit::set_opener(const QString & value)
 {
   if (m_opener != value) {
     m_opener = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::OPENER);
+    set_bit(Schema::Fields::OPENER);
     emit openerChanged();
   }
 }
@@ -2124,7 +2124,7 @@ BBleauCircuit::set_refection_date(int value)
 {
   if (m_refection_date != value) {
     m_refection_date = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_DATE);
+    set_bit(Schema::Fields::REFECTION_DATE);
     emit refection_dateChanged();
   }
 }
@@ -2134,7 +2134,7 @@ BBleauCircuit::set_refection_note(const QString & value)
 {
   if (m_refection_note != value) {
     m_refection_note = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_NOTE);
+    set_bit(Schema::Fields::REFECTION_NOTE);
     emit refection_noteChanged();
   }
 }
@@ -2144,7 +2144,7 @@ BBleauCircuit::set_status(const QString & value)
 {
   if (m_status != value) {
     m_status = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::STATUS);
+    set_bit(Schema::Fields::STATUS);
     emit statusChanged();
   }
 }
@@ -2154,7 +2154,7 @@ BBleauCircuit::set_topos(const QStringList & value)
 {
   if (m_topos != value) {
     m_topos = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::TOPOS);
+    set_bit(Schema::Fields::TOPOS);
     emit toposChanged();
   }
 }
@@ -2361,31 +2361,31 @@ QVariant
 BBleauCircuit::field(int position) const
 {
   switch(position) {
-   case BBleauCircuitSchema::Fields::COORDINATE:
+   case Schema::Fields::COORDINATE:
      return QVariant::fromValue(m_coordinate);
-   case BBleauCircuitSchema::Fields::COLOUR:
+   case Schema::Fields::COLOUR:
      return m_colour;
-   case BBleauCircuitSchema::Fields::CREATION_DATE:
+   case Schema::Fields::CREATION_DATE:
      return m_creation_date;
-   case BBleauCircuitSchema::Fields::GESTION:
+   case Schema::Fields::GESTION:
      return m_gestion;
-   case BBleauCircuitSchema::Fields::GRADE:
+   case Schema::Fields::GRADE:
      return m_grade;
-   case BBleauCircuitSchema::Fields::MASSIF:
+   case Schema::Fields::MASSIF:
      return m_massif;
-   case BBleauCircuitSchema::Fields::NOTE:
+   case Schema::Fields::NOTE:
      return m_note;
-   case BBleauCircuitSchema::Fields::NUMBER:
+   case Schema::Fields::NUMBER:
      return m_number;
-   case BBleauCircuitSchema::Fields::OPENER:
+   case Schema::Fields::OPENER:
      return m_opener;
-   case BBleauCircuitSchema::Fields::REFECTION_DATE:
+   case Schema::Fields::REFECTION_DATE:
      return m_refection_date;
-   case BBleauCircuitSchema::Fields::REFECTION_NOTE:
+   case Schema::Fields::REFECTION_NOTE:
      return m_refection_note;
-   case BBleauCircuitSchema::Fields::STATUS:
+   case Schema::Fields::STATUS:
      return m_status;
-   case BBleauCircuitSchema::Fields::TOPOS:
+   case Schema::Fields::TOPOS:
      return m_topos;
    default:
      return QVariant(); // error
@@ -2396,55 +2396,55 @@ void
 BBleauCircuit::set_field(int position, const QVariant & value)
 {
   switch(position) {
-   case BBleauCircuitSchema::Fields::COORDINATE: {
+   case Schema::Fields::COORDINATE: {
      m_coordinate = value.value<QGeoCoordinate>();
      break;
    }
-   case BBleauCircuitSchema::Fields::COLOUR: {
+   case Schema::Fields::COLOUR: {
      m_colour = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::CREATION_DATE: {
+   case Schema::Fields::CREATION_DATE: {
      m_creation_date = value.toInt();
      break;
    }
-   case BBleauCircuitSchema::Fields::GESTION: {
+   case Schema::Fields::GESTION: {
      m_gestion = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::GRADE: {
+   case Schema::Fields::GRADE: {
      m_grade = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::MASSIF: {
+   case Schema::Fields::MASSIF: {
      m_massif = value.toInt();
      break;
    }
-   case BBleauCircuitSchema::Fields::NOTE: {
+   case Schema::Fields::NOTE: {
      m_note = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::NUMBER: {
+   case Schema::Fields::NUMBER: {
      m_number = value.toInt();
      break;
    }
-   case BBleauCircuitSchema::Fields::OPENER: {
+   case Schema::Fields::OPENER: {
      m_opener = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::REFECTION_DATE: {
+   case Schema::Fields::REFECTION_DATE: {
      m_refection_date = value.toInt();
      break;
    }
-   case BBleauCircuitSchema::Fields::REFECTION_NOTE: {
+   case Schema::Fields::REFECTION_NOTE: {
      m_refection_note = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::STATUS: {
+   case Schema::Fields::STATUS: {
      m_status = value.toString();
      break;
    }
-   case BBleauCircuitSchema::Fields::TOPOS: {
+   case Schema::Fields::TOPOS: {
      m_topos = value.toStringList();
      break;
    }

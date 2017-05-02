@@ -131,11 +131,10 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauPlaceSchema::Fields::COORDINATE]; }
-  bool is_name_modified() const { return m_bits[BBleauPlaceSchema::Fields::NAME]; }
-  bool is_category_modified() const { return m_bits[BBleauPlaceSchema::Fields::CATEGORY]; }
-  bool is_note_modified() const { return m_bits[BBleauPlaceSchema::Fields::NOTE]; }
+  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
+  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
+  bool is_category_modified() const { return bit_status(Schema::Fields::CATEGORY); }
+  bool is_note_modified() const { return bit_status(Schema::Fields::NOTE); }
 
   // Field accessor by position
   QVariant field(int position) const;
@@ -275,17 +274,16 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauMassifSchema::Fields::COORDINATE]; }
-  bool is_name_modified() const { return m_bits[BBleauMassifSchema::Fields::NAME]; }
-  bool is_access_modified() const { return m_bits[BBleauMassifSchema::Fields::ACCESS]; }
-  bool is_alternative_name_modified() const { return m_bits[BBleauMassifSchema::Fields::ALTERNATIVE_NAME]; }
-  bool is_chaos_type_modified() const { return m_bits[BBleauMassifSchema::Fields::CHAOS_TYPE]; }
-  bool is_note_modified() const { return m_bits[BBleauMassifSchema::Fields::NOTE]; }
-  bool is_parcelles_modified() const { return m_bits[BBleauMassifSchema::Fields::PARCELLES]; }
-  bool is_rdv_modified() const { return m_bits[BBleauMassifSchema::Fields::RDV]; }
-  bool is_secteur_modified() const { return m_bits[BBleauMassifSchema::Fields::SECTEUR]; }
-  bool is_velo_modified() const { return m_bits[BBleauMassifSchema::Fields::VELO]; }
+  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
+  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
+  bool is_access_modified() const { return bit_status(Schema::Fields::ACCESS); }
+  bool is_alternative_name_modified() const { return bit_status(Schema::Fields::ALTERNATIVE_NAME); }
+  bool is_chaos_type_modified() const { return bit_status(Schema::Fields::CHAOS_TYPE); }
+  bool is_note_modified() const { return bit_status(Schema::Fields::NOTE); }
+  bool is_parcelles_modified() const { return bit_status(Schema::Fields::PARCELLES); }
+  bool is_rdv_modified() const { return bit_status(Schema::Fields::RDV); }
+  bool is_secteur_modified() const { return bit_status(Schema::Fields::SECTEUR); }
+  bool is_velo_modified() const { return bit_status(Schema::Fields::VELO); }
 
   // Field accessor by position
   QVariant field(int position) const;
@@ -412,12 +410,11 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauBoulderSchema::Fields::COORDINATE]; }
-  bool is_name_modified() const { return m_bits[BBleauBoulderSchema::Fields::NAME]; }
-  bool is_comment_modified() const { return m_bits[BBleauBoulderSchema::Fields::COMMENT]; }
-  bool is_grade_modified() const { return m_bits[BBleauBoulderSchema::Fields::GRADE]; }
-  bool is_number_modified() const { return m_bits[BBleauBoulderSchema::Fields::NUMBER]; }
+  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
+  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
+  bool is_comment_modified() const { return bit_status(Schema::Fields::COMMENT); }
+  bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
+  bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
 
   // Field accessor by position
   QVariant field(int position) const;
@@ -574,20 +571,19 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauCircuitSchema::Fields::COORDINATE]; }
-  bool is_colour_modified() const { return m_bits[BBleauCircuitSchema::Fields::COLOUR]; }
-  bool is_creation_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::CREATION_DATE]; }
-  bool is_gestion_modified() const { return m_bits[BBleauCircuitSchema::Fields::GESTION]; }
-  bool is_grade_modified() const { return m_bits[BBleauCircuitSchema::Fields::GRADE]; }
-  bool is_massif_modified() const { return m_bits[BBleauCircuitSchema::Fields::MASSIF]; }
-  bool is_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::NOTE]; }
-  bool is_number_modified() const { return m_bits[BBleauCircuitSchema::Fields::NUMBER]; }
-  bool is_opener_modified() const { return m_bits[BBleauCircuitSchema::Fields::OPENER]; }
-  bool is_refection_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_DATE]; }
-  bool is_refection_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_NOTE]; }
-  bool is_status_modified() const { return m_bits[BBleauCircuitSchema::Fields::STATUS]; }
-  bool is_topos_modified() const { return m_bits[BBleauCircuitSchema::Fields::TOPOS]; }
+  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
+  bool is_colour_modified() const { return bit_status(Schema::Fields::COLOUR); }
+  bool is_creation_date_modified() const { return bit_status(Schema::Fields::CREATION_DATE); }
+  bool is_gestion_modified() const { return bit_status(Schema::Fields::GESTION); }
+  bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
+  bool is_massif_modified() const { return bit_status(Schema::Fields::MASSIF); }
+  bool is_note_modified() const { return bit_status(Schema::Fields::NOTE); }
+  bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
+  bool is_opener_modified() const { return bit_status(Schema::Fields::OPENER); }
+  bool is_refection_date_modified() const { return bit_status(Schema::Fields::REFECTION_DATE); }
+  bool is_refection_note_modified() const { return bit_status(Schema::Fields::REFECTION_NOTE); }
+  bool is_status_modified() const { return bit_status(Schema::Fields::STATUS); }
+  bool is_topos_modified() const { return bit_status(Schema::Fields::TOPOS); }
 
   // Field accessor by position
   QVariant field(int position) const;
