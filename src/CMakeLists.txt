@@ -36,7 +36,7 @@ set(alpine_toolkit_library_files
   database/sqlite_database.cpp
   document/document.cpp
   document/document_database.cpp
-  document/document_manager.cpp
+  #document/document_manager.cpp
   ephemeride/ephemeride.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp
