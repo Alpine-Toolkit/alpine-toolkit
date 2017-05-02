@@ -16,7 +16,7 @@ void set_{{member.name}}({{member.setter_type}} value);
 void set_{{member.name}}({{member.setter_type}} value) { m_{{member.name}} = value; }
 {%- endmacro -%}
 
-{%- macro setter_impl(member) -%}
+{%- macro setter_impl(class_name, member) -%}
 void
 {{class_name}}::set_{{member.name}}({{member.setter_type}} value)
 {
@@ -28,7 +28,7 @@ void
 }
 {%- endmacro -%}
 
-{%- macro getter_impl(member) -%}
+{%- macro getter_impl(class_name, member) -%}
 {{member.getter_type}}
 {{class_name}}::{{member.name}}() const
 {

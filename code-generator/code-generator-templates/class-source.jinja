@@ -21,9 +21,9 @@
 {{ equal_operator_impl(class_name, members) }}
 
 {% for member in members %}
-{%- if not has_inline_getter %}{{ getter_impl(member) }}{% endif %}
+{%- if not has_inline_getter %}{{ getter_impl(class_name, member) }}{% endif %}
 
-{% if not has_inline_setter %}{{ setter_impl(member) }}{% endif %}
+{% if not has_inline_setter %}{{ setter_impl(class_name, member) }}{% endif %}
 {% endfor -%}
 {# #}
 {{ debug_streamer_impl(class_name) }}

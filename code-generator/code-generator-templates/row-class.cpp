@@ -54,6 +54,6 @@
 
 {% include "includes/orm/field-accessor.cpp" %}
 
-{{ data_streamer_impl(class_name, members) }}
+{{ data_streamer_impl(class_name, members, member_types) }}
 
 {{ debug_streamer_impl(class_name) }}
