@@ -28,27 +28,34 @@
   }{% endfor %}
 }
 
-{{class_name}}Schema::~{{class_name}}Schema()
-{}
+{{ dtor_impl(class_name + "Schema") }}
 
 /**************************************************************************************************/
-{{ ctor_impl(class_name, all_members) }}
 
-{{ copy_ctor_impl(class_name, all_members) }}
+{% set base_class = "QcRowWithId<" + class_name + "Schema>" -%}
+{%- set base_classes = (base_class,) -%}
+
+{{ ctor_impl(class_name, all_members, base_classes) }}
+
+{{ copy_ctor_impl(class_name, all_members, base_classes) }}
 
 {% include "includes/orm/json-ctor.cpp" %}
 
 {% include "includes/orm/sql-ctor.cpp" %}
 
 {{ dtor_impl(class_name) }}
+
 // bit array ?
-{{ copy_operator_impl(class_name, all_members) }}
+{{ copy_operator_impl(class_name, all_members, base_classes) }}
+
 // bit array ?
-{{ equal_operator_impl(class_name, members) }}
-{% for member in members %}
-{{ setter_impl(member) }}
+{{ equal_operator_impl(class_name, members, base_classes) }}
+{# #}
+{%- for member in members %}
+{{ setter_impl(class_name, member) }}
 {% endfor %}
-{% include "includes/orm/json-serializer.cpp" %}
+{# #}
+{%- include "includes/orm/json-serializer.cpp" %}
 
 {% include "includes/orm/variant-serializer.cpp" %}
 

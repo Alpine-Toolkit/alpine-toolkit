@@ -16,39 +16,41 @@
 {{class_name}} & operator=(const {{class_name}} & other);
 {%- endmacro -%}
 
+{#- We can set in macro, but how to build pairs ? -#}
+{%- macro ctor_initialisation(pairs) -%}
+{%- for id, value in pair %}
+{% if loop.first %}  : {% else %}    {% endif %}{{id}}({{value}}){% if not loop.last or members %},{% endif %}{%- endfor %}
+{%- endmacro -%}
 
-
-{%- macro ctor_impl(class_name, members) -%}
+{%- macro ctor_impl(class_name, members, base_classes) -%}
 {{class_name}}::{{class_name}}()
-{#-
 {%- for base_class in base_classes %}
 {% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}(){% if not loop.last or members %},{% endif %}
 {%- endfor %}
--#}
 {%- for member in members %}
-{% if loop.first %}  : {% else %}    {% endif %}{{member.m_name}}({% if member.value %}{{member.value}}{% endif %}){% if not loop.last %},{% endif %}
+{% if loop.first and not base_classes %}  : {% else %}    {% endif %}{{member.m_name}}({% if member.value %}{{member.value}}{% endif %}){% if not loop.last %},{% endif %}
 {%- endfor %}
 {}
 {%- endmacro -%}
 
-{%- macro copy_ctor_impl(class_name, members) -%}
+{%- macro copy_ctor_impl(class_name, members, base_classes) -%}
 {{class_name}}::{{class_name}}(const {{class_name}} & other)
-{#-
 {%- for base_class in base_classes %}
-{% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}(){% if not loop.last or members %},{% endif %}
+{% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}(other){% if not loop.last or members %},{% endif %}
 {%- endfor %}
--#}
 {%- for member in members %}
-{% if loop.first %}  : {% else %}    {% endif %}{{member.m_name}}(other.{{member.m_name}}){% if not loop.last %},{% endif %}
+{% if loop.first and not base_classes %}  : {% else %}    {% endif %}{{member.m_name}}(other.{{member.m_name}}){% if not loop.last %},{% endif %}
 {%- endfor %}
 {}
 {%- endmacro -%}
 
-{%- macro copy_operator_impl(class_name, members) -%}
+{%- macro copy_operator_impl(class_name, members, base_classes) -%}
 {{class_name}} &
 {{class_name}}::operator=(const {{class_name}} & other)
 {
   if (this != &other) {
+{%- for base_class in base_classes %}
+    {{base_class}}::operator=(other);{%- endfor %}
 {%- for member in members %}
     m_{{member.name}} = other.m_{{member.name}};{% endfor %}
   }

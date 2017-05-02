@@ -4,10 +4,13 @@
 bool operator==(const {{class_name}} & other);
 {%- endmacro -%}
 
-{%- macro equal_operator_impl(class_name, members) -%}
+{%- macro equal_operator_impl(class_name, members, base_classes) -%}
 bool
 {{class_name}}::operator==(const {{class_name}} & other)
 {
+{%- for base_class in base_classes %}
+  if (not {{base_class}}::operator==(other))
+    return false;{%- endfor %}
 {%- for member in members %}
   if (m_{{member.name}} != other.m_{{member.name}})
     return false;{% endfor %}
