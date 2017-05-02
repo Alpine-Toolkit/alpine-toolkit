@@ -59,8 +59,9 @@ QcDatabase::prepare_query(const QString & sql_query)
 void
 QcDatabase::log_query_error_message(const QSqlQuery & query)
 {
-  qCritical() << QLatin1String("SQL error on") << query.lastQuery()
-              << QLatin1String(": ") << query.lastError().text();
+  qCritical().noquote()
+    << QLatin1String("SQL error on") << query.lastQuery()
+    << QLatin1String(": ") << query.lastError().text();
 }
 
 bool
