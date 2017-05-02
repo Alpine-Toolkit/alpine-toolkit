@@ -43,7 +43,7 @@ public:
   DocumentDatabase(const QString & sqlite_path);
   ~DocumentDatabase();
 
-  DocumentDatabaseSchema * schema() { return m_schema; }
+  DocumentDatabaseSchema & schema() { return *m_schema; } // Fixme: nullptr?
 
 private:
   DocumentDatabaseSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema

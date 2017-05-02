@@ -117,7 +117,9 @@ QcDatabaseTable::QcDatabaseTable(const QcDatabaseTable & other)
 {}
 
 QcDatabaseTable::~QcDatabaseTable()
-{}
+{
+  qInfo() << "~QcDatabaseTable";
+}
 
 QcDatabaseTable &
 QcDatabaseTable::operator=(const QcDatabaseTable & other)
@@ -239,6 +241,15 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
     qWarning() << "Any row";
 
   return record; // test with isEmpty()
+}
+
+QSqlRecord
+QcDatabaseTable::select_one(const QString & where) const
+{
+  QStringList fields(QLatin1String("*"));
+  if (m_schema.has_rowid())
+    fields << QLatin1String("rowid");
+  return select_one(fields, where);
 }
 
 QSqlQuery

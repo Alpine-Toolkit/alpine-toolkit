@@ -60,11 +60,11 @@ void TestBleauDatabase::constructor()
   if (file.exists())
     file.remove();
   BleauDatabase bleau_database(sqlite_path);
-  BleauSchema * bleau_schema = bleau_database.schema();
-  QcDatabaseTable * place_table = bleau_schema->place();
-  QcDatabaseTable * boulder_table = bleau_schema->boulder();
-  QcDatabaseTable * circuit_table = bleau_schema->circuit();
-  QcDatabaseTable * massif_table = bleau_schema->massif();
+  BleauSchema & bleau_schema = bleau_database.schema();
+  QcDatabaseTable & place_table = bleau_schema.place();
+  QcDatabaseTable & boulder_table = bleau_schema.boulder();
+  QcDatabaseTable & circuit_table = bleau_schema.circuit();
+  QcDatabaseTable & massif_table = bleau_schema.massif();
 
   QVariantHash place_variant_hash;
   place_variant_hash["category"] = "point d'eau";
@@ -72,7 +72,11 @@ void TestBleauDatabase::constructor()
   place_variant_hash["coordinate"] = "Fontaine d'Avon";
 
   BBleauPlace place(place_variant_hash);
-  place_table->complete_insert(place.to_variant_list_sql());
+  // QSqlQuery query = place_table.complete_insert(place.to_variant_list_sql());
+  // int rowid = query.lastInsertId().toInt();
+  // place.set_rowid(rowid);
+
+  bleau_schema.add(place);
 
   QVariantHash massif_variant_hash;
   massif_variant_hash["acces"] = "...";
@@ -87,7 +91,7 @@ void TestBleauDatabase::constructor()
   massif_variant_hash["velo"] = "...";
 
   BBleauMassif massif(massif_variant_hash);
-  massif_table->complete_insert(massif.to_variant_list_sql());
+  massif_table.complete_insert(massif.to_variant_list_sql());
 
   QVariantHash boulder_variant_hash;
   boulder_variant_hash["comment"] = "mur";
@@ -97,7 +101,7 @@ void TestBleauDatabase::constructor()
   boulder_variant_hash["number"] = 1;
 
   BBleauBoulder boulder(boulder_variant_hash);
-  boulder_table->complete_insert(boulder.to_variant_list_sql());
+  boulder_table.complete_insert(boulder.to_variant_list_sql());
 
   QVariantHash circuit_variant_hash;
   circuit_variant_hash["colour"] ="rouge";
@@ -117,9 +121,13 @@ void TestBleauDatabase::constructor()
   circuit_variant_hash["topos"] = string_list;
 
   BBleauCircuit circuit(circuit_variant_hash);
-  circuit_table->complete_insert(circuit.to_variant_list_sql());
+  circuit_table.complete_insert(circuit.to_variant_list_sql());
 
   qInfo() << QJsonDocument(circuit.to_json());
+
+  BBleauPlace reloaded_place(place_table.select_by_id(place.rowid()));
+  qInfo() << reloaded_place.rowid() << reloaded_place;
+  QVERIFY(reloaded_place == place);
 }
 
 /***************************************************************************************************/

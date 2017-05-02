@@ -11,7 +11,7 @@ public:
   {{class_name}} & operator=(const {{class_name}} & other) = delete;
 {# #}
 {%- for schema in database_schema %}
-  QcDatabaseTable * {{schema.table_name}}() { return m_{{schema.table_name}}; }{% endfor %}
+  QcDatabaseTable & {{schema.table_name}}() { return *m_{{schema.table_name}}; }{% endfor %}
 
 private:
 {%- for schema in database_schema %}

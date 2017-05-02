@@ -85,11 +85,12 @@ public:
   QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
     return select_one(fields, format_simple_where(kwargs));
   }
-  QSqlRecord select_one(const QString & where = QString()) const {
-    return select_one(QStringList(QLatin1String("*")), where);
-  }
+  QSqlRecord select_one(const QString & where = QString()) const;
   QSqlRecord select_one(const QVariantHash & kwargs) const  {
-    return select_one(QStringList(QLatin1String("*")), format_simple_where(kwargs));
+    return select_one(format_simple_where(kwargs));
+  }
+  QSqlRecord select_by_id(int id) const  {
+    return select_one(kwarg_for_id(id));
   }
   // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
 
@@ -109,8 +110,12 @@ public:
   QSqlQuery delete_row(const QVariantHash & kwargs) {
     return delete_row(format_simple_where(kwargs));
   }
+  QSqlQuery delete_by_id(int id)  {
+    return delete_row(kwarg_for_id(id));
+  }
 
 private:
+  static QVariantHash kwarg_for_id(int id) { return {{QLatin1String("rowid"), id}}; }
   void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
 
 private:

@@ -127,20 +127,28 @@ QcSchemaField::to_sql_definition() const
 
 /**************************************************************************************************/
 
+std::atomic<int> QcSchema::m_last_schema_id(0);
+
 QcSchema::QcSchema()
-  : m_name(),
+  : m_schema_id(new_schema_id()),
+    m_name(),
     m_table_name(),
-    m_sql_table_option(),
+    // m_sql_table_option(),
     m_fields(),
     m_field_map()
 {}
 
 QcSchema::QcSchema(const QString & name,
                    const QString & table_name,
-                   const QString & sql_table_option)
-  : m_name(name),
+                   bool without_rowid
+                   //const QString & sql_table_option
+                   )
+  : m_schema_id(new_schema_id()),
+    m_name(name),
     m_table_name(table_name),
-    m_sql_table_option(sql_table_option),
+    // m_sql_table_option(sql_table_option),
+    m_without_rowid(without_rowid),
+    m_has_rowid(not without_rowid),
     m_fields(),
     m_field_map()
 {
@@ -149,9 +157,12 @@ QcSchema::QcSchema(const QString & name,
 }
 
 QcSchema::QcSchema(const QcSchema & other)
-  : m_name(other.m_name),
+  : m_schema_id(other.m_schema_id),
+    m_name(other.m_name),
     m_table_name(other.m_table_name),
-    m_sql_table_option(other.m_sql_table_option),
+    // m_sql_table_option(other.m_sql_table_option),
+    m_without_rowid(other.m_without_rowid),
+    m_has_rowid(other.m_has_rowid),
     m_fields(other.m_fields),
     m_field_map(other.m_field_map)
 {}
@@ -163,9 +174,12 @@ QcSchema &
 QcSchema::operator=(const QcSchema & other)
 {
   if (this != &other) {
+    m_schema_id = other.m_schema_id;
     m_name = other.m_name;
     m_table_name = other.m_table_name;
-    m_sql_table_option = other.m_sql_table_option;
+    // m_sql_table_option = other.m_sql_table_option;
+    m_without_rowid = other.m_without_rowid;
+    m_has_rowid = other.m_has_rowid;
     m_fields = other.m_fields;
     m_field_map = other.m_field_map;
   }
@@ -180,6 +194,8 @@ QcSchema::add_field(const QcSchemaField & field)
   QcSchemaField & owned_field = m_fields.last();
   owned_field.set_position(m_fields.size() -1);
   m_field_map.insert(owned_field.name(), &owned_field);
+  if (m_has_rowid and field.primary_key())
+    m_has_rowid = false;
 }
 
 QcSchema &
@@ -200,10 +216,12 @@ QcSchema::to_sql_definition() const
     sql_fields << field.to_sql_definition();
   sql_query += sql_fields.join(QLatin1String(", "));
   sql_query += ')';
-  if (not m_sql_table_option.isEmpty()) {
-    sql_query += ' ';
-    sql_query += m_sql_table_option;
-  }
+  if (m_without_rowid)
+    sql_query += QLatin1String(" WITHOUT ROWID");
+  // if (not m_sql_table_option.isEmpty()) {
+  //   sql_query += ' ';
+  //   sql_query += m_sql_table_option;
+  // }
   return sql_query;
 }
 

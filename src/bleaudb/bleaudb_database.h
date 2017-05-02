@@ -43,7 +43,7 @@ public:
   BleauDatabase(const QString & sqlite_path);
   ~BleauDatabase();
 
-  BleauSchema * schema() { return m_schema; }
+  BleauSchema & schema() { return *m_schema; }
 
 private:
   BleauSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema

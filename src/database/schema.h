@@ -41,6 +41,8 @@
 #include <QString>
 #include <QVariant>
 
+#include <atomic>
+
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
@@ -148,23 +150,34 @@ class QcSchema
   // };
   // static const int NUMBER_OF_FIELDS = ...;
 
+private:
+  static std::atomic<int> m_last_schema_id;
+
+  static int new_schema_id() { return m_last_schema_id++; }
+
 public:
   QcSchema();
   QcSchema(const QString & name,
            const QString & table_name = QString(),
-           const QString & sql_table_option = QString() // e.g. WITHOUT ROWID
+           bool without_rowid = false
+           // const QString & sql_table_option = QString()
            );
   QcSchema(const QcSchema & other);
   ~QcSchema();
 
   QcSchema & operator=(const QcSchema & other);
 
+  int schema_id() const { return m_schema_id; }
+  void request_schema_id() { m_schema_id = new_schema_id(); } // to update a cloned schema
+
   void add_field(const QcSchemaField & field);
   QcSchema & operator<<(const QcSchemaField & field);
 
   const QString & name() const { return m_name; }
   const QString & table_name() const { return m_table_name; }
-  const QString & sql_table_option() const { return m_sql_table_option; }
+  // const QString & sql_table_option() const { return m_sql_table_option; }
+  bool without_rowid() const { return m_without_rowid; }
+  bool has_rowid() const { return m_has_rowid; }
 
   int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
   const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
@@ -181,9 +194,12 @@ public:
   QList<QcSchemaField>::const_iterator cend() const { return m_fields.cend(); }
 
 private:
+  int m_schema_id;
   QString m_name;
   QString m_table_name;
-  QString m_sql_table_option;
+  bool m_without_rowid = false;
+  bool m_has_rowid = true;
+  // QString m_sql_table_option;
   QList<QcSchemaField> m_fields;
   QHash<QString, QcSchemaField *> m_field_map;
 };

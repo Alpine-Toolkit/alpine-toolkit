@@ -42,13 +42,42 @@
 
 /**************************************************************************************************/
 
+class QcRowTraits
+{
+public:
+  virtual int schema_id() const = 0;
+
+  virtual void set_rowid(int value) = 0;
+
+  // JSON Serializer
+  virtual QJsonObject to_json(bool only_changed = false) const = 0;
+
+  // Generic Variant Serializer
+  virtual QVariantHash to_variant_hash(bool only_changed = false) const = 0;
+  virtual QVariantList to_variant_list() const = 0;
+
+  // SQL Serializer
+  virtual QVariantHash to_variant_hash_sql(bool only_changed = false) const = 0;
+  virtual QVariantList to_variant_list_sql() const = 0;
+
+  // Query for update
+  // virtual bool is_modified() const = 0;
+
+  // Field accessor by position
+  virtual QVariant field(int position) const = 0;
+  virtual void set_field(int position, const QVariant & value) = 0;
+};
+
+/**************************************************************************************************/
+
 template<class S>
-class QcRow
+class QcRow : public QcRowTraits
 {
 public:
   typedef S Schema;
 
   static Schema & schema() { return Schema::instance(); }
+  int schema_id() const { return schema().schema_id(); }
   // static int number_of_fields() { return schema().number_of_fields(); }
   static int number_of_fields() { return Schema::NUMBER_OF_FIELDS; } // Fixme: faster ?
 
@@ -98,7 +127,7 @@ public:
   bool operator==(const QcRowWithId & other);
 
   int rowid() const { return m_rowid; }
-  // void set_rowid(int value) { m_rowid = value; }
+  void set_rowid(int value) { m_rowid = value; }
 
 private:
   int m_rowid = -1; // note: table can be created without rowid

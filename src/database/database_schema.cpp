@@ -34,7 +34,9 @@
 
 QcDatabaseSchema::QcDatabaseSchema(QcDatabase & database)
   : m_database(database),
-    m_tables()
+    m_tables(),
+    m_table_name_map(),
+    m_schema_map()
 {}
 
 QcDatabaseSchema::~QcDatabaseSchema()
@@ -51,23 +53,41 @@ QcDatabase::QcDatabase(const QList<QcSchema> & schemas)
 */
 
 QcDatabaseTable &
+QcDatabaseSchema::register_table(QcDatabaseTable * table_ptr)
+{
+  // m_tables << std::unique_ptr<QcDatabaseTable>(table_ptr);
+  m_tables << table_ptr;
+  m_table_name_map[table_ptr->name()] = table_ptr;
+  m_schema_map[table_ptr->schema().schema_id()] = table_ptr;
+  return *table_ptr;
+}
+
+QcDatabaseTable &
 QcDatabaseSchema::register_table(const QString & name)
 {
-  m_tables[name] = QcDatabaseTable(&m_database, name);
-  return m_tables[name];
+  return register_table(new QcDatabaseTable(&m_database, name));
 }
 
 QcDatabaseTable &
 QcDatabaseSchema::register_table(const QcSchema & schema)
 {
-  const QString & name = schema.table_name(); // versus name()
-  m_tables[name] = QcDatabaseTable(&m_database, schema);
-  QcDatabaseTable & table = m_tables[name];
+  QcDatabaseTable & table = register_table(new QcDatabaseTable(&m_database, schema));
   if (not table.exists()) {
     table.create();
     m_database.commit();
   }
   return table;
+}
+
+void
+QcDatabaseSchema::add(QcRowTraits & row)
+{
+  int schema_id = row.schema_id();
+  QcDatabaseTable & table = get_table_by_schema_id(schema_id);
+  QSqlQuery query = table.complete_insert(row.to_variant_list_sql());
+  int rowid = query.lastInsertId().toInt();
+  qInfo() << "add" << schema_id << table.name() << rowid;
+  row.set_rowid(rowid);
 }
 
 /***************************************************************************************************

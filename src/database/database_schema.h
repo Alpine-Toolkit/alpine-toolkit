@@ -32,11 +32,12 @@
 
 /**************************************************************************************************/
 
-// #include <QObject>
-
 #include "database/database.h"
+#include "database/database_row.h"
 #include "database/database_table.h"
 #include "database/schema.h"
+
+#include <memory>
 
 /**************************************************************************************************/
 
@@ -50,14 +51,26 @@ public:
   QcDatabaseTable & register_table(const QString & name);
   QcDatabaseTable & register_table(const QcSchema & schema);
 
-  QcDatabaseTable & get_table(const QString & name) { return m_tables[name]; } // Fixme: wrong name ?
-  QcDatabaseTable & operator[](const QString & name) { return get_table(name); }
+  QcDatabaseTable & get_table_by_name(const QString & name) { return *m_table_name_map[name]; }
+  QcDatabaseTable & get_table_by_schema_id(int schema_id) { return *m_schema_map[schema_id]; }
+  QcDatabaseTable & get_table_by_schema(const QcSchema & schema) { return get_table_by_schema_id(schema.schema_id()); }
 
+  QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
+
+  // Derivative can implement:
   // QcDatabaseTable * table() { return m_table; }
+
+  void add(QcRowTraits & row);
+
+private:
+  QcDatabaseTable & register_table(QcDatabaseTable * table_ptr);
 
 private:
   QcDatabase & m_database;
-  QHash<QString, QcDatabaseTable> m_tables; // => QcDatabaseTable() => QcDatabase * Fixme: QcDatabaseTable * solve it
+  // QList<std::unique_ptr<QcDatabaseTable>> m_tables;
+  QList<QcDatabaseTable *> m_tables;
+  QHash<QString, QcDatabaseTable *> m_table_name_map;
+  QHash<int, QcDatabaseTable *> m_schema_map;
   // QcDatabaseTable * m_table;
 };
 

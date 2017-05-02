@@ -54,7 +54,7 @@ void TestDocumentDatabase::constructor()
   if (file.exists())
     file.remove();
   DocumentDatabase document_database(sqlite_path);
-  QcDatabaseTable * table = document_database.schema()->document();
+  QcDatabaseTable & table = document_database.schema().document();
 
   QVariantHash variant_hash;
   variant_hash["id"] = "1"; // Should be read-only !
@@ -69,11 +69,11 @@ void TestDocumentDatabase::constructor()
   QcSchema document_schema = DocumentSchema::instance();
 
   Document document(variant_hash);
-  table->complete_insert(document.to_variant_list_sql());
+  table.complete_insert(document.to_variant_list_sql());
 
   QVariantHash where_kwargs;
   where_kwargs["id"] = document.id();
-  QSqlRecord record = table->select_one(where_kwargs);
+  QSqlRecord record = table.select_one(where_kwargs);
   Document document_from_sql(record);
   qInfo() << document_from_sql;
   qInfo() << document;
@@ -89,14 +89,14 @@ void TestDocumentDatabase::constructor()
   // }
 
   document.set_id(2);
-  table->insert(document.to_variant_hash_sql(), true);
+  table.insert(document.to_variant_hash_sql(), true);
 
   QString author = "John Doe";
   document.set_author(author);
   qInfo() << document_schema[DocumentSchema::Fields::ID].sql_name();
   where_kwargs.clear();
   where_kwargs["id"] = document.id();
-  table->update(document.to_variant_hash_sql(true), where_kwargs);
+  table.update(document.to_variant_hash_sql(true), where_kwargs);
 }
 
 /***************************************************************************************************/
