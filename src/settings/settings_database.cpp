@@ -56,13 +56,16 @@ SettingsDatabase::register_tables()
 {
   // rowid https://sqlite.org/autoinc.html
 
+  QcSchemaField name_field(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
+  name_field.set_nullable(false);
+
   QcSchema directory_schema(DIRECTORY);
-  directory_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
+  directory_schema << name_field;
   directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
   m_directory_table = &register_table(directory_schema);
 
   QcSchema key_value_schema(KEY_VALUE);
-  key_value_schema << QcSchemaField(NAME, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
+  key_value_schema << name_field;
   key_value_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
   key_value_schema << QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
   m_key_value_table = &register_table(key_value_schema);
@@ -116,7 +119,7 @@ SettingsDatabase::name_part(const QString & key) const
 {
   int index = key.lastIndexOf('/');
   if (index != -1)
-    return key.right(key.size() - index - 1);
+    return key.mid(index + 1);
   else
     return key;
 }
