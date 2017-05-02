@@ -63,4 +63,4 @@
 
 {{ data_streamer_impl(class_name, members, member_types) }}
 
-{{ debug_streamer_impl(class_name) }}
+{{ debug_streamer_impl(class_name, members) }}

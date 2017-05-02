@@ -26,5 +26,5 @@
 {% if not has_inline_setter %}{{ setter_impl(class_name, member) }}{% endif %}
 {% endfor -%}
 {# #}
-{{ debug_streamer_impl(class_name) }}
+{{ debug_streamer_impl(class_name, members) }}
 {% endblock %}

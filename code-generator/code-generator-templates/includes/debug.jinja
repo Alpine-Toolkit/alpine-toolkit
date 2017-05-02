@@ -6,7 +6,7 @@ QDebug operator<<(QDebug debug, const {{class_name}} & obj);
 #endif
 {%- endmacro -%}
 
-{%- macro debug_streamer_impl(class_name) -%}
+{%- macro debug_streamer_impl(class_name, members) -%}
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
 operator<<(QDebug debug, const {{class_name}} & obj)
