@@ -52,10 +52,9 @@
 
 class Document;
 
-class DocumentSchema : public QcRowSchema<Document>
+class DocumentSchema : public QcSchema
 {
 public:
-  // typedef Document Row;
   enum Fields {
     ID,
     NAME,
@@ -66,13 +65,7 @@ public:
     URL,
     SIZE
   };
-
-  // static Document make() { return Document; }
-  // static Document make(const QJsonObject & json_object) { return Document(json_object); }
-  // static Document make(const QVariantHash & variant_hash) { return Document(variant_hash); }
-  // static Document make(const QVariantList & variants) { return Document(variants); }
-  // static Document make(const QSqlRecord & record) { return Document(return); }
-  // static Document make(const QSqlQuery & query) { return Document(query); }
+  static const int NUMBER_OF_FIELDS = 8;
 
 public:
   static DocumentSchema & instance()
@@ -94,7 +87,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Document : public QObject, public QcRowWithId<8>
+class Document : public QObject, public QcRowWithId<DocumentSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -105,9 +98,6 @@ class Document : public QObject, public QcRowWithId<8>
   Q_PROPERTY(QString description READ description WRITE set_description NOTIFY descriptionChanged)
   Q_PROPERTY(QUrl url READ url WRITE set_url NOTIFY urlChanged)
   Q_PROPERTY(int size READ size WRITE set_size NOTIFY sizeChanged)
-
-public:
-  static DocumentSchema & schema() { return DocumentSchema::instance(); }
 
 public:
   Document();

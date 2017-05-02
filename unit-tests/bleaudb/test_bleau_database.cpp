@@ -54,9 +54,6 @@ void TestBleauDatabase::constructor()
   {
     QcSchema & place_schema = BBleauPlace::schema();
   }
-  {
-    BBleauPlace place = BBleauPlaceSchema::make();
-  }
 
   QString sqlite_path("bleau.sqlite"); // Fixme:
   QFile file(sqlite_path);

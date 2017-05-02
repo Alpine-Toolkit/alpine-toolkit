@@ -182,27 +182,6 @@ private:
 
 /**************************************************************************************************/
 
-template<class T>
-class QcRowSchema : public QcSchema
-{
-public:
-  typedef T Row;
-
-  // Factory
-  static Row make() { return Row(); }
-  static Row make(const QJsonObject & json_object) { return Row(json_object); }
-  static Row make(const QVariantHash & variant_hash) { return Row(variant_hash); }
-  static Row make(const QVariantList & variants) { return Row(variants); }
-  static Row make(const QSqlRecord & record) { return Row(record); }
-  static Row make(const QSqlQuery & query) { return Row(query); }
-
-public:
-  using QcSchema::QcSchema;
-  ~QcRowSchema() {}
-};
-
-/**************************************************************************************************/
-
 // QC_END_NAMESPACE
 
 /**************************************************************************************************/

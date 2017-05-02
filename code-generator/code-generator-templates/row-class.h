@@ -5,21 +5,14 @@
 class {{class_name}};
 {# #}
 {%- with class_name_schema = class_name + 'Schema' %}
-class {{class_name_schema}} : public QcRowSchema<{{class_name}}>
+class {{class_name_schema}} : public QcSchema
 {
 public:
-  // typedef {{class_name}} Row;
   enum Fields {
 {%- for member in members %}
     {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
   };
-
-  // static {{class_name}} make() { return {{class_name}}; }
-  // static {{class_name}} make(const QJsonObject & json_object) { return {{class_name}}(json_object); }
-  // static {{class_name}} make(const QVariantHash & variant_hash) { return {{class_name}}(variant_hash); }
-  // static {{class_name}} make(const QVariantList & variants) { return {{class_name}}(variants); }
-  // static {{class_name}} make(const QSqlRecord & record) { return {{class_name}}(return); }
-  // static {{class_name}} make(const QSqlQuery & query) { return {{class_name}}(query); }
+  static const int NUMBER_OF_FIELDS = {{ members|count }};
 
 {{ singleton(class_name_schema) }}
 };
@@ -27,14 +20,11 @@ public:
 
 /**************************************************************************************************/
 
-class {{class_name}} : public QObject, public QcRowWithId<{{ members|length }}>
+class {{class_name}} : public QObject, public QcRowWithId<{{class_name}}Schema>
 {
   Q_OBJECT
 {%- for member in members %}
   {{ property(member.name, member.type) }}{% endfor %}
-
-public:
-  static {{class_name}}Schema & schema() { return {{class_name}}Schema::instance(); }
 
 public:
   {{class_name}}();

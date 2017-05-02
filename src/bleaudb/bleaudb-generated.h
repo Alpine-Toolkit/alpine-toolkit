@@ -52,23 +52,16 @@
 
 class BBleauPlace;
 
-class BBleauPlaceSchema : public QcRowSchema<BBleauPlace>
+class BBleauPlaceSchema : public QcSchema
 {
 public:
-  // typedef BBleauPlace Row;
   enum Fields {
     COORDINATE,
     NAME,
     CATEGORY,
     NOTE
   };
-
-  // static BBleauPlace make() { return BBleauPlace; }
-  // static BBleauPlace make(const QJsonObject & json_object) { return BBleauPlace(json_object); }
-  // static BBleauPlace make(const QVariantHash & variant_hash) { return BBleauPlace(variant_hash); }
-  // static BBleauPlace make(const QVariantList & variants) { return BBleauPlace(variants); }
-  // static BBleauPlace make(const QSqlRecord & record) { return BBleauPlace(return); }
-  // static BBleauPlace make(const QSqlQuery & query) { return BBleauPlace(query); }
+  static const int NUMBER_OF_FIELDS = 4;
 
 public:
   static BBleauPlaceSchema & instance()
@@ -90,16 +83,13 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauPlace : public QObject, public QcRowWithId<4>
+class BBleauPlace : public QObject, public QcRowWithId<BBleauPlaceSchema>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QString category READ category WRITE set_category NOTIFY categoryChanged)
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
-
-public:
-  static BBleauPlaceSchema & schema() { return BBleauPlaceSchema::instance(); }
 
 public:
   BBleauPlace();
@@ -176,10 +166,9 @@ QDebug operator<<(QDebug debug, const BBleauPlace & obj);
 
 class BBleauMassif;
 
-class BBleauMassifSchema : public QcRowSchema<BBleauMassif>
+class BBleauMassifSchema : public QcSchema
 {
 public:
-  // typedef BBleauMassif Row;
   enum Fields {
     COORDINATE,
     NAME,
@@ -192,13 +181,7 @@ public:
     SECTEUR,
     VELO
   };
-
-  // static BBleauMassif make() { return BBleauMassif; }
-  // static BBleauMassif make(const QJsonObject & json_object) { return BBleauMassif(json_object); }
-  // static BBleauMassif make(const QVariantHash & variant_hash) { return BBleauMassif(variant_hash); }
-  // static BBleauMassif make(const QVariantList & variants) { return BBleauMassif(variants); }
-  // static BBleauMassif make(const QSqlRecord & record) { return BBleauMassif(return); }
-  // static BBleauMassif make(const QSqlQuery & query) { return BBleauMassif(query); }
+  static const int NUMBER_OF_FIELDS = 10;
 
 public:
   static BBleauMassifSchema & instance()
@@ -220,7 +203,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauMassif : public QObject, public QcRowWithId<10>
+class BBleauMassif : public QObject, public QcRowWithId<BBleauMassifSchema>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -233,9 +216,6 @@ class BBleauMassif : public QObject, public QcRowWithId<10>
   Q_PROPERTY(QString rdv READ rdv WRITE set_rdv NOTIFY rdvChanged)
   Q_PROPERTY(QString secteur READ secteur WRITE set_secteur NOTIFY secteurChanged)
   Q_PROPERTY(QString velo READ velo WRITE set_velo NOTIFY veloChanged)
-
-public:
-  static BBleauMassifSchema & schema() { return BBleauMassifSchema::instance(); }
 
 public:
   BBleauMassif();
@@ -348,10 +328,9 @@ QDebug operator<<(QDebug debug, const BBleauMassif & obj);
 
 class BBleauBoulder;
 
-class BBleauBoulderSchema : public QcRowSchema<BBleauBoulder>
+class BBleauBoulderSchema : public QcSchema
 {
 public:
-  // typedef BBleauBoulder Row;
   enum Fields {
     COORDINATE,
     NAME,
@@ -359,13 +338,7 @@ public:
     GRADE,
     NUMBER
   };
-
-  // static BBleauBoulder make() { return BBleauBoulder; }
-  // static BBleauBoulder make(const QJsonObject & json_object) { return BBleauBoulder(json_object); }
-  // static BBleauBoulder make(const QVariantHash & variant_hash) { return BBleauBoulder(variant_hash); }
-  // static BBleauBoulder make(const QVariantList & variants) { return BBleauBoulder(variants); }
-  // static BBleauBoulder make(const QSqlRecord & record) { return BBleauBoulder(return); }
-  // static BBleauBoulder make(const QSqlQuery & query) { return BBleauBoulder(query); }
+  static const int NUMBER_OF_FIELDS = 5;
 
 public:
   static BBleauBoulderSchema & instance()
@@ -387,7 +360,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauBoulder : public QObject, public QcRowWithId<5>
+class BBleauBoulder : public QObject, public QcRowWithId<BBleauBoulderSchema>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -395,9 +368,6 @@ class BBleauBoulder : public QObject, public QcRowWithId<5>
   Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
   Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
   Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
-
-public:
-  static BBleauBoulderSchema & schema() { return BBleauBoulderSchema::instance(); }
 
 public:
   BBleauBoulder();
@@ -480,10 +450,9 @@ QDebug operator<<(QDebug debug, const BBleauBoulder & obj);
 
 class BBleauCircuit;
 
-class BBleauCircuitSchema : public QcRowSchema<BBleauCircuit>
+class BBleauCircuitSchema : public QcSchema
 {
 public:
-  // typedef BBleauCircuit Row;
   enum Fields {
     COORDINATE,
     COLOUR,
@@ -499,13 +468,7 @@ public:
     STATUS,
     TOPOS
   };
-
-  // static BBleauCircuit make() { return BBleauCircuit; }
-  // static BBleauCircuit make(const QJsonObject & json_object) { return BBleauCircuit(json_object); }
-  // static BBleauCircuit make(const QVariantHash & variant_hash) { return BBleauCircuit(variant_hash); }
-  // static BBleauCircuit make(const QVariantList & variants) { return BBleauCircuit(variants); }
-  // static BBleauCircuit make(const QSqlRecord & record) { return BBleauCircuit(return); }
-  // static BBleauCircuit make(const QSqlQuery & query) { return BBleauCircuit(query); }
+  static const int NUMBER_OF_FIELDS = 13;
 
 public:
   static BBleauCircuitSchema & instance()
@@ -527,7 +490,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauCircuit : public QObject, public QcRowWithId<13>
+class BBleauCircuit : public QObject, public QcRowWithId<BBleauCircuitSchema>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -543,9 +506,6 @@ class BBleauCircuit : public QObject, public QcRowWithId<13>
   Q_PROPERTY(QString refection_note READ refection_note WRITE set_refection_note NOTIFY refection_noteChanged)
   Q_PROPERTY(QString status READ status WRITE set_status NOTIFY statusChanged)
   Q_PROPERTY(QStringList topos READ topos WRITE set_topos NOTIFY toposChanged)
-
-public:
-  static BBleauCircuitSchema & schema() { return BBleauCircuitSchema::instance(); }
 
 public:
   BBleauCircuit();

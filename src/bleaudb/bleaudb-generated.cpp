@@ -40,7 +40,7 @@
 /**************************************************************************************************/
 
 BBleauPlaceSchema::BBleauPlaceSchema()
-: QcRowSchema<BBleauPlace>(QLatin1String("BBleauPlace"), QLatin1String("place"))
+: QcSchema(QLatin1String("BBleauPlace"), QLatin1String("place"))
 {
   {
     QcSchemaField field(QLatin1String("coordinate"),
@@ -435,7 +435,7 @@ operator<<(QDebug debug, const BBleauPlace & obj)
 /**************************************************************************************************/
 
 BBleauMassifSchema::BBleauMassifSchema()
-: QcRowSchema<BBleauMassif>(QLatin1String("BBleauMassif"), QLatin1String("massif"))
+: QcSchema(QLatin1String("BBleauMassif"), QLatin1String("massif"))
 {
   {
     QcSchemaField field(QLatin1String("coordinate"),
@@ -1178,7 +1178,7 @@ operator<<(QDebug debug, const BBleauMassif & obj)
 /**************************************************************************************************/
 
 BBleauBoulderSchema::BBleauBoulderSchema()
-: QcRowSchema<BBleauBoulder>(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
+: QcSchema(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
 {
   {
     QcSchemaField field(QLatin1String("coordinate"),
@@ -1631,7 +1631,7 @@ operator<<(QDebug debug, const BBleauBoulder & obj)
 /**************************************************************************************************/
 
 BBleauCircuitSchema::BBleauCircuitSchema()
-: QcRowSchema<BBleauCircuit>(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
+: QcSchema(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
 {
   {
     QcSchemaField field(QLatin1String("coordinate"),

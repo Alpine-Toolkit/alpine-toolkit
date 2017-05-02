@@ -42,13 +42,15 @@
 
 /**************************************************************************************************/
 
-template<int NUMBER_OF_FIELDS>
-class QcRow // : public QObject
+template<class S>
+class QcRow
 {
-  // Q_OBJECT
-
 public:
-  // virtual constexpr int number_of_fields() { return 0; }
+  typedef S Schema;
+
+  static Schema & schema() { return Schema::instance(); }
+  // static int number_of_fields() { return schema().number_of_fields(); }
+  static int number_of_fields() { return Schema::NUMBER_OF_FIELDS; } // Fixme: faster ?
 
 public:
   QcRow();
@@ -72,11 +74,9 @@ protected: // Fixme: ???
 
 /**************************************************************************************************/
 
-template<int NUMBER_OF_FIELDS>
-class QcRowWithId : public QcRow<NUMBER_OF_FIELDS>
+template<class S>
+class QcRowWithId : public QcRow<S>
 {
-  // Q_OBJECT
-
 public:
   QcRowWithId();
   QcRowWithId(const QcRowWithId & other);
@@ -100,39 +100,37 @@ private:
 
 /**************************************************************************************************/
 
-template<int NUMBER_OF_FIELDS>
-QcRow<NUMBER_OF_FIELDS>::QcRow()
-  : // QObject(),
-    m_bits(NUMBER_OF_FIELDS)
+template<class S>
+QcRow<S>::QcRow()
+  :m_bits(number_of_fields())
 {}
 
-template<int NUMBER_OF_FIELDS>
-QcRow<NUMBER_OF_FIELDS>::QcRow(const QcRow & other)
+template<class S>
+QcRow<S>::QcRow(const QcRow & other)
   : QcRow()
-    // : QObject(),
-    //   m_bits(other.m_bits) // Fixme: ???
+    // m_bits(other.m_bits) // Fixme: ???
 {}
 
 /**************************************************************************************************/
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId()
-  : QcRow<NUMBER_OF_FIELDS>()
+template<class S>
+QcRowWithId<S>::QcRowWithId()
+  : QcRow<S>()
 {}
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QcRowWithId & other)
-  : QcRow<NUMBER_OF_FIELDS>(static_cast<const QcRow<NUMBER_OF_FIELDS> &>(other)),
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QcRowWithId & other)
+  : QcRow<S>(static_cast<const QcRow<S> &>(other)),
     m_rowid(other.m_rowid)
 {}
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QJsonObject & json_object)
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QJsonObject & json_object)
  : QcRowWithId()
 {}
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QVariantHash & variant_hash)
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QVariantHash & variant_hash)
  : QcRowWithId()
 {
   if (variant_hash.contains(QLatin1String("rowid")))
@@ -141,40 +139,41 @@ QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QVariantHash & variant_hash)
     m_rowid = -1;
 }
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QVariantList & variants) // , bool with_rowid
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QVariantList & variants) // , bool with_rowid
  : QcRowWithId()
 {
-  if (variants.size() == NUMBER_OF_FIELDS +1) // with_rowid, danger ?
+  int _number_of_fields = QcRow<S>::number_of_fields();
+  if (variants.size() == _number_of_fields +1) // with_rowid, danger ?
     // int number_of_fields = variants.size();
-    m_rowid = variants[NUMBER_OF_FIELDS].toInt();
+    m_rowid = variants[_number_of_fields].toInt();
   else
     m_rowid = -1;
 }
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QSqlRecord & record)
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QSqlRecord & record)
  : QcRowWithId()
 {
   // int number_of_fields = record.count();
-  m_rowid = record.value(NUMBER_OF_FIELDS).toInt();
+  m_rowid = record.value(QcRow<S>::number_of_fields()).toInt();
 }
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::QcRowWithId(const QSqlQuery & query)
+template<class S>
+QcRowWithId<S>::QcRowWithId(const QSqlQuery & query)
  : QcRowWithId()
 {
-  // int number_of_fields = query.record().count(); // Fixme: faster using static function ?
-  m_rowid = query.value(NUMBER_OF_FIELDS).toInt();
+  // int number_of_fields = query.record().count(); // Fixme: slower ?
+  m_rowid = query.value(QcRow<S>::number_of_fields()).toInt();
 }
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS>::~QcRowWithId()
+template<class S>
+QcRowWithId<S>::~QcRowWithId()
 {}
 
-template<int NUMBER_OF_FIELDS>
-QcRowWithId<NUMBER_OF_FIELDS> &
-QcRowWithId<NUMBER_OF_FIELDS>::operator=(const QcRowWithId & other)
+template<class S>
+QcRowWithId<S> &
+QcRowWithId<S>::operator=(const QcRowWithId & other)
 {
   if (this != &other) {
     m_rowid = other.m_rowid;
@@ -183,17 +182,17 @@ QcRowWithId<NUMBER_OF_FIELDS>::operator=(const QcRowWithId & other)
   return *this;
 }
 
-template<int NUMBER_OF_FIELDS>
+template<class S>
 bool
-QcRowWithId<NUMBER_OF_FIELDS>::operator==(const QcRowWithId & other)
+QcRowWithId<S>::operator==(const QcRowWithId & other)
 {
   return m_rowid == other.m_rowid;
 }
 
 /*
-template<int NUMBER_OF_FIELDS>
+template<class S>
 void
-QcRowWithId<NUMBER_OF_FIELDS>::set_rowid(int value)
+QcRowWithId<S>::set_rowid(int value)
 {
   if (m_rowid != value) {
     m_rowid = value;

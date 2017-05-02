@@ -1,6 +1,6 @@
 {# -*- mode: fundamental -*- -#}
 {{class_name}}Schema::{{class_name}}Schema()
-: QcRowSchema<{{class_name}}>(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
+: QcSchema(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
 {
 {%- for field in schema %}
   {

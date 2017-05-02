@@ -36,7 +36,7 @@
 // QC_BEGIN_NAMESPACE
 
 DocumentSchema::DocumentSchema()
-: QcRowSchema<Document>(QLatin1String("Document"), QLatin1String("document"))
+: QcSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   {
     QcSchemaField field(QLatin1String("id"),
