@@ -31,14 +31,14 @@ m_{{field.name}} = {{ get_field_value(field, value) }};
 
 
 {{class_name}}::{{class_name}}(const QSqlRecord & record)
- : {{class_name}}()
+ : {{base_class}}(record)
 {
 {%- for field in schema %}
   {{ set_member(field, variant_from_record(loop.index0)) }}{% endfor %}
 }
 
 {{class_name}}::{{class_name}}(const QSqlQuery & query)
- : {{class_name}}()
+ : {{base_class}}(query)
 {
 {%- for field in schema %}
   {{ set_member(field, variant_from_query(loop.index0)) }}{% endfor %}
