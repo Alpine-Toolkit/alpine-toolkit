@@ -50,13 +50,11 @@ static const QString VALUE = "value";
 static const QString VERSION = "version";
 
 C2cApiCache::C2cApiCache(const QString & sqlite_path)
-  : QcSqliteDatabase(),
+  : QcSqliteDatabase(sqlite_path),
     QcDatabaseSchema(*((QcSqliteDatabase *) this)), // Fixme: ???
     m_metadata_table(nullptr),
     m_document_table(nullptr)
 {
-  bool created = open(sqlite_path); // unused
-
   // Fixme: migrate table using VERSION
 
   QcSchema metadata_schema(METADATA);

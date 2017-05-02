@@ -34,24 +34,26 @@
 
 /**************************************************************************************************/
 
-QcSqliteDatabase::QcSqliteDatabase()
-{}
+QcSqliteDatabase::QcSqliteDatabase(const QString & sqlite_path)
+  : m_sqlite_path(sqlite_path),
+    m_created(false)
+{
+  open();
+}
 
 QcSqliteDatabase::~QcSqliteDatabase()
 {}
 
-bool
-QcSqliteDatabase::open(const QString & sqlite_path)
+void
+QcSqliteDatabase::open()
 {
-  bool created = not QFile(sqlite_path).exists();
+  m_created = not QFile(m_sqlite_path).exists();
 
   // Set the connection name to sqlite_path
-  m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), sqlite_path);
-  m_database.setDatabaseName(sqlite_path);
+  m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), m_sqlite_path);
+  m_database.setDatabaseName(m_sqlite_path);
   if (not m_database.open())
     qWarning() << m_database.lastError().text();
-
-  return created;
 }
 
 /***************************************************************************************************

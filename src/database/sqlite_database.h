@@ -39,10 +39,17 @@
 class QcSqliteDatabase : public QcDatabase
 {
 public:
-  QcSqliteDatabase(); // Fixme: const QString & path ???
+  QcSqliteDatabase(const QString & sqlite_path);
   virtual ~QcSqliteDatabase();
 
-  bool open(const QString & sqlite_path);
+  bool created() { return m_created; }
+
+private:
+  void open();
+
+private:
+  QString m_sqlite_path;
+  bool m_created = false;
 };
 
 /**************************************************************************************************/

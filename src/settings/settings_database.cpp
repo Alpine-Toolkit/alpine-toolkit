@@ -265,11 +265,10 @@ SettingsDatabase::to_map()
 /**************************************************************************************************/
 
 SqliteSettingsDatabase::SqliteSettingsDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(),
+  : QcSqliteDatabase(sqlite_path),
     m_settings_database(*this)
     // SettingsDatabase(*this)
 {
-  open(sqlite_path);
   m_settings_database.register_tables();
 }
 
