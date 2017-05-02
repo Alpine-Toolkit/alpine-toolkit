@@ -8,10 +8,10 @@ public:
   }
 
   // delete copy and move constructors and assign operators
-  {{class_name}}(const {{class_name}} &) = delete;              // Copy constructor
-  {{class_name}}({{class_name}} &&) = delete;                   // Move constructor
-  {{class_name}} & operator=(const {{class_name}} &) = delete;  // Copy assign
-  {{class_name}} & operator=({{class_name}} &&) = delete;       // Move assign
+  {{class_name}}(const {{class_name}} &) = delete;
+  {{class_name}}({{class_name}} &&) = delete;
+  {{class_name}} & operator=(const {{class_name}} &) = delete;
+  {{class_name}} & operator=({{class_name}} &&) = delete;
 
 protected:
   {{class_name}}();
