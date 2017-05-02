@@ -45,6 +45,9 @@ namespace bleaudb {
   }
 
   QJsonObject dump_json_coordinate(const QGeoCoordinate & coordinate);
+
+  QGeoCoordinate load_sql_coordinate(const QVariant & variant);
+  QString dump_sql_coordinate(const QGeoCoordinate & coordinate);
 }
 
 /**************************************************************************************************/

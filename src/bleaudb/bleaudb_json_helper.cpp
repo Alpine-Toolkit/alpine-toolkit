@@ -28,6 +28,8 @@
 
 #include "bleaudb/bleaudb_json_helper.h"
 
+#include <QVariant>
+
 /**************************************************************************************************/
 
 namespace bleaudb {
@@ -51,6 +53,21 @@ namespace bleaudb {
     return json_object;
   }
 
+  QGeoCoordinate
+  load_sql_coordinate(const QVariant & variant) {
+    QString encoded_coordinate = variant.toString();
+    int position = encoded_coordinate.indexOf('|');
+    if (position > 0) {
+      double longitude = encoded_coordinate.left(position -1).toDouble();
+      double latitude = encoded_coordinate.mid(position +1).toDouble();
+      return QGeoCoordinate(latitude, longitude);
+    } else
+      return QGeoCoordinate();
+  }
+  QString
+  dump_sql_coordinate(const QGeoCoordinate & coordinate) {
+    return QString("%1|%2").arg(coordinate.longitude()).arg(coordinate.latitude());
+  }
 }
 
 /***************************************************************************************************

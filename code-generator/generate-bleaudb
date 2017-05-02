@@ -119,7 +119,9 @@ from CodeGenerator.GeneratorSettings import generator_settings
 class BleauGeoCoordinateField(GeoCoordinateField):
     __context__ = TypeConversion(
         cast_from_json = 'bleaudb::load_json_coordinate',
-        cast_to_json = 'bleaudb::dump_json_coordinate'
+        cast_to_json = 'bleaudb::dump_json_coordinate',
+        cast_from_sql_variant = 'bleaudb::load_sql_coordinate',
+        cast_to_sql_variant = 'bleaudb::dump_sql_coordinate',
     )
 
 ####################################################################################################
