@@ -48,6 +48,16 @@ private slots:
 
 void TestBleauDatabase::constructor()
 {
+  {
+    QcSchema & place_schema = BBleauPlaceSchema::instance();
+  }
+  {
+    QcSchema & place_schema = BBleauPlace::schema();
+  }
+  {
+    BBleauPlace place = BBleauPlaceSchema::make();
+  }
+
   QString sqlite_path("bleau.sqlite"); // Fixme:
   QFile file(sqlite_path);
   if (file.exists())
@@ -58,8 +68,6 @@ void TestBleauDatabase::constructor()
   QcDatabaseTable * boulder_table = bleau_schema->boulder();
   QcDatabaseTable * circuit_table = bleau_schema->circuit();
   QcDatabaseTable * massif_table = bleau_schema->massif();
-
-  // QcSchema & place_schema = BBleauPlaceSchema::instance();
 
   QVariantHash place_variant_hash;
   place_variant_hash["category"] = "point d'eau";

@@ -45,6 +45,7 @@ import json
 from CodeGenerator.CppType import TypeConversion
 from CodeGenerator.SqlOrm import (SchemaRepository,
                                   Schema,
+                                  Relationship,
                                   IntegerField, UnsignedIntegerField,
                                   StringField, StringListField, UrlField,
                                   DateTimeField,
@@ -141,6 +142,36 @@ class BBleauPlace(Schema):
 
 ####################################################################################################
 
+class BBleauMassif(Schema):
+
+    __table_name__ = 'massif'
+
+    __order__ = (
+        'coordinate',
+        'name',
+        'access',
+        'alternative_name',
+        'chaos_type',
+        'note',
+        'parcelles',
+        'rdv',
+        'secteur',
+        'velo',
+    )
+
+    coordinate = BleauGeoCoordinateField()
+    name = StringField(unique=True)
+    access = StringField()
+    alternative_name = StringField()
+    chaos_type = StringField() # BleauChaosType
+    note = StringField()
+    parcelles = StringField()
+    rdv = StringField()
+    secteur = StringField()
+    velo = StringField()
+
+####################################################################################################
+
 class BBleauBoulder(Schema):
 
     __table_name__ = 'boulder'
@@ -172,6 +203,7 @@ class BBleauCircuit(Schema):
         'creation_date',
         'gestion',
         'grade',
+        'massif',
         'note',
         'number',
         'opener',
@@ -189,7 +221,9 @@ class BBleauCircuit(Schema):
     gestion = StringField()
     grade = StringField() # BleauAlpineGrade
     # OneToOne BBleauMassif / name in JSON
-    #! 'massif': {}, # BleauMassif *
+    massif = Relationship(BBleauMassif,
+                          back_populates="circuits",
+                          json_value="name")
     note = StringField()
     number = IntegerField() # UnsignedIntegerField()
     opener = StringField() # BleauOpeners
@@ -200,39 +234,9 @@ class BBleauCircuit(Schema):
 
 ####################################################################################################
 
-class BBleauMassif(Schema):
-
-    __table_name__ = 'massif'
-
-    __order__ = (
-        'coordinate',
-        'name',
-        'access',
-        'alternative_name',
-        'chaos_type',
-        'note',
-        'parcelles',
-        'rdv',
-        'secteur',
-        'velo',
-    )
-
-    coordinate = BleauGeoCoordinateField()
-    name = StringField()
-    access = StringField()
-    alternative_name = StringField()
-    chaos_type = StringField() # BleauChaosType
-    note = StringField()
-    parcelles = StringField()
-    rdv = StringField()
-    secteur = StringField()
-    velo = StringField()
-
-####################################################################################################
-
 schema_repository = SchemaRepository(
     'BleauSchema',
-    BBleauPlace, BBleauBoulder, BBleauCircuit, BBleauMassif
+    BBleauPlace, BBleauMassif, BBleauBoulder, BBleauCircuit,
 )
 
 output_dir = os.path.join(source_path, 'src', 'bleaudb')

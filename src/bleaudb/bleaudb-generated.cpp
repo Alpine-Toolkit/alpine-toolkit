@@ -40,40 +40,72 @@
 /**************************************************************************************************/
 
 BBleauPlaceSchema::BBleauPlaceSchema()
-: QcSchema(QLatin1String("BBleauPlace"), QLatin1String("place"))
+: QcRowSchema<BBleauPlace>(QLatin1String("BBleauPlace"), QLatin1String("place"))
 {
-  add_field(QcSchemaField(QLatin1String("coordinate"),
-                          QLatin1String("QGeoCoordinate"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("coordinate"),
-                          QLatin1String("coordinate"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("name"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("name"),
-                          QLatin1String("name"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("category"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("category"),
-                          QLatin1String("category"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("note"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("note"),
-                          QLatin1String("note"),
-                          QLatin1String(""),
-                          QLatin1String("")));
+  {
+    QcSchemaField field(QLatin1String("coordinate"),
+                        QLatin1String("QGeoCoordinate"),
+                        QLatin1String("text"),
+                        QLatin1String("coordinate"),
+                        QLatin1String("coordinate"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("name"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("name"),
+                        QLatin1String("name"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("category"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("category"),
+                        QLatin1String("category"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("note"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("note"),
+                        QLatin1String("note"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
 }
 
 BBleauPlaceSchema::~BBleauPlaceSchema()
@@ -82,16 +114,14 @@ BBleauPlaceSchema::~BBleauPlaceSchema()
 /**************************************************************************************************/
 
 BBleauPlace::BBleauPlace()
-  : m_bits(4),
-    m_coordinate(),
+  : m_coordinate(),
     m_name(),
     m_category(),
     m_note()
 {}
 
 BBleauPlace::BBleauPlace(const BBleauPlace & other)
-  : m_bits(other.m_bits),
-    m_coordinate(other.m_coordinate),
+  : m_coordinate(other.m_coordinate),
     m_name(other.m_name),
     m_category(other.m_category),
     m_note(other.m_note)
@@ -145,11 +175,11 @@ BBleauPlace::BBleauPlace(const QSqlQuery & query)
 BBleauPlace::~BBleauPlace()
 {}
 
+// bit array ?
 BBleauPlace &
 BBleauPlace::operator=(const BBleauPlace & other)
 {
   if (this != &other) {
-    m_bits = other.m_bits;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
     m_category = other.m_category;
@@ -158,6 +188,7 @@ BBleauPlace::operator=(const BBleauPlace & other)
 
   return *this;
 }
+// bit array ?
 bool
 BBleauPlace::operator==(const BBleauPlace & other)
 {
@@ -403,1269 +434,169 @@ operator<<(QDebug debug, const BBleauPlace & obj)
 
 /**************************************************************************************************/
 
-BBleauBoulderSchema::BBleauBoulderSchema()
-: QcSchema(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
-{
-  add_field(QcSchemaField(QLatin1String("coordinate"),
-                          QLatin1String("QGeoCoordinate"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("coordinate"),
-                          QLatin1String("coordinate"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("name"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("name"),
-                          QLatin1String("name"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("comment"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("comment"),
-                          QLatin1String("comment"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("grade"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("grade"),
-                          QLatin1String("grade"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("number"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("number"),
-                          QLatin1String("number"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-}
-
-BBleauBoulderSchema::~BBleauBoulderSchema()
-{}
-
-/**************************************************************************************************/
-
-BBleauBoulder::BBleauBoulder()
-  : m_bits(5),
-    m_coordinate(),
-    m_name(),
-    m_comment(),
-    m_grade(),
-    m_number()
-{}
-
-BBleauBoulder::BBleauBoulder(const BBleauBoulder & other)
-  : m_bits(other.m_bits),
-    m_coordinate(other.m_coordinate),
-    m_name(other.m_name),
-    m_comment(other.m_comment),
-    m_grade(other.m_grade),
-    m_number(other.m_number)
-{}
-
-BBleauBoulder::BBleauBoulder(const QJsonObject & json_object)
- : BBleauBoulder()
-{
-  m_coordinate = bleaudb::load_json_coordinate(json_object[QLatin1String("coordinate")]);
-  m_name = json_object[QLatin1String("name")].toString();
-  m_comment = json_object[QLatin1String("comment")].toString();
-  m_grade = json_object[QLatin1String("grade")].toString();
-  m_number = json_object[QLatin1String("number")].toString();
-}
-
-BBleauBoulder::BBleauBoulder(const QVariantHash & variant_hash)
- : BBleauBoulder()
-{
-  m_coordinate = variant_hash[QLatin1String("coordinate")].value<QGeoCoordinate>();
-  m_name = variant_hash[QLatin1String("name")].toString();
-  m_comment = variant_hash[QLatin1String("comment")].toString();
-  m_grade = variant_hash[QLatin1String("grade")].toString();
-  m_number = variant_hash[QLatin1String("number")].toString();
-}
-
-BBleauBoulder::BBleauBoulder(const QVariantList & variants)
- : BBleauBoulder()
-{
-  m_coordinate = variants[0].value<QGeoCoordinate>();
-  m_name = variants[1].toString();
-  m_comment = variants[2].toString();
-  m_grade = variants[3].toString();
-  m_number = variants[4].toString();
-}
-
-BBleauBoulder::BBleauBoulder(const QSqlRecord & record)
- : BBleauBoulder()
-{
-  m_coordinate = record.value(0).value<QGeoCoordinate>();
-  m_name = record.value(1).toString();
-  m_comment = record.value(2).toString();
-  m_grade = record.value(3).toString();
-  m_number = record.value(4).toString();
-}
-
-BBleauBoulder::BBleauBoulder(const QSqlQuery & query)
- : BBleauBoulder()
-{
-  m_coordinate = query.value(0).value<QGeoCoordinate>();
-  m_name = query.value(1).toString();
-  m_comment = query.value(2).toString();
-  m_grade = query.value(3).toString();
-  m_number = query.value(4).toString();
-}
-
-BBleauBoulder::~BBleauBoulder()
-{}
-
-BBleauBoulder &
-BBleauBoulder::operator=(const BBleauBoulder & other)
-{
-  if (this != &other) {
-    m_bits = other.m_bits;
-    m_coordinate = other.m_coordinate;
-    m_name = other.m_name;
-    m_comment = other.m_comment;
-    m_grade = other.m_grade;
-    m_number = other.m_number;
-  }
-
-  return *this;
-}
-bool
-BBleauBoulder::operator==(const BBleauBoulder & other)
-{
-  if (m_coordinate != other.m_coordinate)
-    return false;
-  if (m_name != other.m_name)
-    return false;
-  if (m_comment != other.m_comment)
-    return false;
-  if (m_grade != other.m_grade)
-    return false;
-  if (m_number != other.m_number)
-    return false;
-
-  return true;
-}
-
-void
-BBleauBoulder::set_coordinate(const QGeoCoordinate & value)
-{
-  if (m_coordinate != value) {
-    m_coordinate = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::COORDINATE);
-    emit coordinateChanged();
-  }
-}
-
-void
-BBleauBoulder::set_name(const QString & value)
-{
-  if (m_name != value) {
-    m_name = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::NAME);
-    emit nameChanged();
-  }
-}
-
-void
-BBleauBoulder::set_comment(const QString & value)
-{
-  if (m_comment != value) {
-    m_comment = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::COMMENT);
-    emit commentChanged();
-  }
-}
-
-void
-BBleauBoulder::set_grade(const QString & value)
-{
-  if (m_grade != value) {
-    m_grade = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::GRADE);
-    emit gradeChanged();
-  }
-}
-
-void
-BBleauBoulder::set_number(const QString & value)
-{
-  if (m_number != value) {
-    m_number = value;
-    m_bits.setBit(BBleauBoulderSchema::Fields::NUMBER);
-    emit numberChanged();
-  }
-}
-
-QJsonObject
-BBleauBoulder::to_json(bool only_changed) const
-{
-  QJsonObject json_object;
-
- if (only_changed) {
-    if (is_coordinate_modified())
-      json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
-    if (is_name_modified())
-      json_object.insert(QLatin1String("name"), QJsonValue(m_name));
-    if (is_comment_modified())
-      json_object.insert(QLatin1String("comment"), QJsonValue(m_comment));
-    if (is_grade_modified())
-      json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
-    if (is_number_modified())
-      json_object.insert(QLatin1String("number"), QJsonValue(m_number));
-  } else {
-    json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
-    json_object.insert(QLatin1String("name"), QJsonValue(m_name));
-    json_object.insert(QLatin1String("comment"), QJsonValue(m_comment));
-    json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
-    json_object.insert(QLatin1String("number"), QJsonValue(m_number));
-  }
-
-  return json_object;
-}
-
-
-QVariantHash
-BBleauBoulder::to_variant_hash(bool only_changed) const
-{
-  QVariantHash variant_hash;
-
-  if (only_changed) {
-    if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    if (is_name_modified())
-      variant_hash[QLatin1String("name")] = m_name;
-    if (is_comment_modified())
-      variant_hash[QLatin1String("comment")] = m_comment;
-    if (is_grade_modified())
-      variant_hash[QLatin1String("grade")] = m_grade;
-    if (is_number_modified())
-      variant_hash[QLatin1String("number")] = m_number;
-  } else {
-    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    variant_hash[QLatin1String("name")] = m_name;
-    variant_hash[QLatin1String("comment")] = m_comment;
-    variant_hash[QLatin1String("grade")] = m_grade;
-    variant_hash[QLatin1String("number")] = m_number;
-  }
-
-  return variant_hash;
-}
-
-QVariantList
-BBleauBoulder::to_variant_list() const
-{
-  QVariantList variants;
-  variants << QVariant::fromValue(m_coordinate);
-  variants << m_name;
-  variants << m_comment;
-  variants << m_grade;
-  variants << m_number;
-
-  return variants;
-}
-
-QVariantHash
-BBleauBoulder::to_variant_hash_sql(bool only_changed) const
-{
-  QVariantHash variant_hash;
-
-  if (only_changed) {
-    if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    if (is_name_modified())
-      variant_hash[QLatin1String("name")] = m_name;
-    if (is_comment_modified())
-      variant_hash[QLatin1String("comment")] = m_comment;
-    if (is_grade_modified())
-      variant_hash[QLatin1String("grade")] = m_grade;
-    if (is_number_modified())
-      variant_hash[QLatin1String("number")] = m_number;
-  } else {
-    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    variant_hash[QLatin1String("name")] = m_name;
-    variant_hash[QLatin1String("comment")] = m_comment;
-    variant_hash[QLatin1String("grade")] = m_grade;
-    variant_hash[QLatin1String("number")] = m_number;
-  }
-
-  return variant_hash;
-}
-
-QVariantList
-BBleauBoulder::to_variant_list_sql() const
-{
-  QVariantList variants;
-  variants << QVariant::fromValue(m_coordinate);
-  variants << m_name;
-  variants << m_comment;
-  variants << m_grade;
-  variants << m_number;
-
-  return variants;
-}
-
-
-
-QVariant
-BBleauBoulder::field(int position) const
-{
-  switch(position) {
-   case BBleauBoulderSchema::Fields::COORDINATE:
-     return QVariant::fromValue(m_coordinate);
-   case BBleauBoulderSchema::Fields::NAME:
-     return m_name;
-   case BBleauBoulderSchema::Fields::COMMENT:
-     return m_comment;
-   case BBleauBoulderSchema::Fields::GRADE:
-     return m_grade;
-   case BBleauBoulderSchema::Fields::NUMBER:
-     return m_number;
-   default:
-     return QVariant(); // error
-  }
-}
-
-void
-BBleauBoulder::set_field(int position, const QVariant & value)
-{
-  switch(position) {
-   case BBleauBoulderSchema::Fields::COORDINATE: {
-     m_coordinate = value.value<QGeoCoordinate>();
-     break;
-   }
-   case BBleauBoulderSchema::Fields::NAME: {
-     m_name = value.toString();
-     break;
-   }
-   case BBleauBoulderSchema::Fields::COMMENT: {
-     m_comment = value.toString();
-     break;
-   }
-   case BBleauBoulderSchema::Fields::GRADE: {
-     m_grade = value.toString();
-     break;
-   }
-   case BBleauBoulderSchema::Fields::NUMBER: {
-     m_number = value.toString();
-     break;
-   }
-  }
-}
-
-QDataStream &
-operator<<(QDataStream & out, const BBleauBoulder & obj)
-{
-  out << obj.coordinate();
-  out << obj.name();
-  out << obj.comment();
-  out << obj.grade();
-  out << obj.number();
-
-  return out;
-}
-
-QDataStream &
-operator>>(QDataStream & in, BBleauBoulder & obj)
-{
-  QGeoCoordinate _QGeoCoordinate;
-  QString _QString;
-
-  in >> _QGeoCoordinate;
-  obj.set_coordinate(_QGeoCoordinate);
-  in >> _QString;
-  obj.set_name(_QString);
-  in >> _QString;
-  obj.set_comment(_QString);
-  in >> _QString;
-  obj.set_grade(_QString);
-  in >> _QString;
-  obj.set_number(_QString);
-
-  return in;
-}
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug
-operator<<(QDebug debug, const BBleauBoulder & obj)
-{
-  QDebugStateSaver saver(debug); // Fixme: ???
-
-  debug.nospace() << QLatin1Literal("BBleauBoulder(");
-  debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
-  debug << obj.name();
-  debug << QLatin1Literal(", ");
-  debug << obj.comment();
-  debug << QLatin1Literal(", ");
-  debug << obj.grade();
-  debug << QLatin1Literal(", ");
-  debug << obj.number();
-  debug << ')';
-
-  return debug;
-}
-#endif
-
-/**************************************************************************************************/
-
-BBleauCircuitSchema::BBleauCircuitSchema()
-: QcSchema(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
-{
-  add_field(QcSchemaField(QLatin1String("coordinate"),
-                          QLatin1String("QGeoCoordinate"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("coordinate"),
-                          QLatin1String("coordinate"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("colour"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("colour"),
-                          QLatin1String("colour"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("creation_date"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("creation_date"),
-                          QLatin1String("creation_date"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("gestion"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("gestion"),
-                          QLatin1String("gestion"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("grade"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("grade"),
-                          QLatin1String("grade"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("note"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("note"),
-                          QLatin1String("note"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("number"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("number"),
-                          QLatin1String("number"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("opener"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("opener"),
-                          QLatin1String("opener"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("refection_date"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("refection_date"),
-                          QLatin1String("refection_date"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("refection_note"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("refection_note"),
-                          QLatin1String("refection_note"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("status"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("status"),
-                          QLatin1String("status"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("topos"),
-                          QLatin1String("QStringList"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("topos"),
-                          QLatin1String("topos"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-}
-
-BBleauCircuitSchema::~BBleauCircuitSchema()
-{}
-
-/**************************************************************************************************/
-
-BBleauCircuit::BBleauCircuit()
-  : m_bits(12),
-    m_coordinate(),
-    m_colour(),
-    m_creation_date(),
-    m_gestion(),
-    m_grade(),
-    m_note(),
-    m_number(),
-    m_opener(),
-    m_refection_date(),
-    m_refection_note(),
-    m_status(),
-    m_topos()
-{}
-
-BBleauCircuit::BBleauCircuit(const BBleauCircuit & other)
-  : m_bits(other.m_bits),
-    m_coordinate(other.m_coordinate),
-    m_colour(other.m_colour),
-    m_creation_date(other.m_creation_date),
-    m_gestion(other.m_gestion),
-    m_grade(other.m_grade),
-    m_note(other.m_note),
-    m_number(other.m_number),
-    m_opener(other.m_opener),
-    m_refection_date(other.m_refection_date),
-    m_refection_note(other.m_refection_note),
-    m_status(other.m_status),
-    m_topos(other.m_topos)
-{}
-
-BBleauCircuit::BBleauCircuit(const QJsonObject & json_object)
- : BBleauCircuit()
-{
-  m_coordinate = bleaudb::load_json_coordinate(json_object[QLatin1String("coordinate")]);
-  m_colour = json_object[QLatin1String("colour")].toString();
-  m_creation_date = json_object[QLatin1String("creation_date")].toInt();
-  m_gestion = json_object[QLatin1String("gestion")].toString();
-  m_grade = json_object[QLatin1String("grade")].toString();
-  m_note = json_object[QLatin1String("note")].toString();
-  m_number = json_object[QLatin1String("number")].toInt();
-  m_opener = json_object[QLatin1String("opener")].toString();
-  m_refection_date = json_object[QLatin1String("refection_date")].toInt();
-  m_refection_note = json_object[QLatin1String("refection_note")].toString();
-  m_status = json_object[QLatin1String("status")].toString();
-  m_topos = json_helper::load_string_list(json_object[QLatin1String("topos")]);
-}
-
-BBleauCircuit::BBleauCircuit(const QVariantHash & variant_hash)
- : BBleauCircuit()
-{
-  m_coordinate = variant_hash[QLatin1String("coordinate")].value<QGeoCoordinate>();
-  m_colour = variant_hash[QLatin1String("colour")].toString();
-  m_creation_date = variant_hash[QLatin1String("creation_date")].toInt();
-  m_gestion = variant_hash[QLatin1String("gestion")].toString();
-  m_grade = variant_hash[QLatin1String("grade")].toString();
-  m_note = variant_hash[QLatin1String("note")].toString();
-  m_number = variant_hash[QLatin1String("number")].toInt();
-  m_opener = variant_hash[QLatin1String("opener")].toString();
-  m_refection_date = variant_hash[QLatin1String("refection_date")].toInt();
-  m_refection_note = variant_hash[QLatin1String("refection_note")].toString();
-  m_status = variant_hash[QLatin1String("status")].toString();
-  m_topos = variant_hash[QLatin1String("topos")].toStringList();
-}
-
-BBleauCircuit::BBleauCircuit(const QVariantList & variants)
- : BBleauCircuit()
-{
-  m_coordinate = variants[0].value<QGeoCoordinate>();
-  m_colour = variants[1].toString();
-  m_creation_date = variants[2].toInt();
-  m_gestion = variants[3].toString();
-  m_grade = variants[4].toString();
-  m_note = variants[5].toString();
-  m_number = variants[6].toInt();
-  m_opener = variants[7].toString();
-  m_refection_date = variants[8].toInt();
-  m_refection_note = variants[9].toString();
-  m_status = variants[10].toString();
-  m_topos = variants[11].toStringList();
-}
-
-BBleauCircuit::BBleauCircuit(const QSqlRecord & record)
- : BBleauCircuit()
-{
-  m_coordinate = record.value(0).value<QGeoCoordinate>();
-  m_colour = record.value(1).toString();
-  m_creation_date = record.value(2).toInt();
-  m_gestion = record.value(3).toString();
-  m_grade = record.value(4).toString();
-  m_note = record.value(5).toString();
-  m_number = record.value(6).toInt();
-  m_opener = record.value(7).toString();
-  m_refection_date = record.value(8).toInt();
-  m_refection_note = record.value(9).toString();
-  m_status = record.value(10).toString();
-  m_topos = record.value(11).toStringList();
-}
-
-BBleauCircuit::BBleauCircuit(const QSqlQuery & query)
- : BBleauCircuit()
-{
-  m_coordinate = query.value(0).value<QGeoCoordinate>();
-  m_colour = query.value(1).toString();
-  m_creation_date = query.value(2).toInt();
-  m_gestion = query.value(3).toString();
-  m_grade = query.value(4).toString();
-  m_note = query.value(5).toString();
-  m_number = query.value(6).toInt();
-  m_opener = query.value(7).toString();
-  m_refection_date = query.value(8).toInt();
-  m_refection_note = query.value(9).toString();
-  m_status = query.value(10).toString();
-  m_topos = query.value(11).toStringList();
-}
-
-BBleauCircuit::~BBleauCircuit()
-{}
-
-BBleauCircuit &
-BBleauCircuit::operator=(const BBleauCircuit & other)
-{
-  if (this != &other) {
-    m_bits = other.m_bits;
-    m_coordinate = other.m_coordinate;
-    m_colour = other.m_colour;
-    m_creation_date = other.m_creation_date;
-    m_gestion = other.m_gestion;
-    m_grade = other.m_grade;
-    m_note = other.m_note;
-    m_number = other.m_number;
-    m_opener = other.m_opener;
-    m_refection_date = other.m_refection_date;
-    m_refection_note = other.m_refection_note;
-    m_status = other.m_status;
-    m_topos = other.m_topos;
-  }
-
-  return *this;
-}
-bool
-BBleauCircuit::operator==(const BBleauCircuit & other)
-{
-  if (m_coordinate != other.m_coordinate)
-    return false;
-  if (m_colour != other.m_colour)
-    return false;
-  if (m_creation_date != other.m_creation_date)
-    return false;
-  if (m_gestion != other.m_gestion)
-    return false;
-  if (m_grade != other.m_grade)
-    return false;
-  if (m_note != other.m_note)
-    return false;
-  if (m_number != other.m_number)
-    return false;
-  if (m_opener != other.m_opener)
-    return false;
-  if (m_refection_date != other.m_refection_date)
-    return false;
-  if (m_refection_note != other.m_refection_note)
-    return false;
-  if (m_status != other.m_status)
-    return false;
-  if (m_topos != other.m_topos)
-    return false;
-
-  return true;
-}
-
-void
-BBleauCircuit::set_coordinate(const QGeoCoordinate & value)
-{
-  if (m_coordinate != value) {
-    m_coordinate = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::COORDINATE);
-    emit coordinateChanged();
-  }
-}
-
-void
-BBleauCircuit::set_colour(const QString & value)
-{
-  if (m_colour != value) {
-    m_colour = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::COLOUR);
-    emit colourChanged();
-  }
-}
-
-void
-BBleauCircuit::set_creation_date(int value)
-{
-  if (m_creation_date != value) {
-    m_creation_date = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::CREATION_DATE);
-    emit creation_dateChanged();
-  }
-}
-
-void
-BBleauCircuit::set_gestion(const QString & value)
-{
-  if (m_gestion != value) {
-    m_gestion = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::GESTION);
-    emit gestionChanged();
-  }
-}
-
-void
-BBleauCircuit::set_grade(const QString & value)
-{
-  if (m_grade != value) {
-    m_grade = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::GRADE);
-    emit gradeChanged();
-  }
-}
-
-void
-BBleauCircuit::set_note(const QString & value)
-{
-  if (m_note != value) {
-    m_note = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::NOTE);
-    emit noteChanged();
-  }
-}
-
-void
-BBleauCircuit::set_number(int value)
-{
-  if (m_number != value) {
-    m_number = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::NUMBER);
-    emit numberChanged();
-  }
-}
-
-void
-BBleauCircuit::set_opener(const QString & value)
-{
-  if (m_opener != value) {
-    m_opener = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::OPENER);
-    emit openerChanged();
-  }
-}
-
-void
-BBleauCircuit::set_refection_date(int value)
-{
-  if (m_refection_date != value) {
-    m_refection_date = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_DATE);
-    emit refection_dateChanged();
-  }
-}
-
-void
-BBleauCircuit::set_refection_note(const QString & value)
-{
-  if (m_refection_note != value) {
-    m_refection_note = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_NOTE);
-    emit refection_noteChanged();
-  }
-}
-
-void
-BBleauCircuit::set_status(const QString & value)
-{
-  if (m_status != value) {
-    m_status = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::STATUS);
-    emit statusChanged();
-  }
-}
-
-void
-BBleauCircuit::set_topos(const QStringList & value)
-{
-  if (m_topos != value) {
-    m_topos = value;
-    m_bits.setBit(BBleauCircuitSchema::Fields::TOPOS);
-    emit toposChanged();
-  }
-}
-
-QJsonObject
-BBleauCircuit::to_json(bool only_changed) const
-{
-  QJsonObject json_object;
-
- if (only_changed) {
-    if (is_coordinate_modified())
-      json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
-    if (is_colour_modified())
-      json_object.insert(QLatin1String("colour"), QJsonValue(m_colour));
-    if (is_creation_date_modified())
-      json_object.insert(QLatin1String("creation_date"), QJsonValue(m_creation_date));
-    if (is_gestion_modified())
-      json_object.insert(QLatin1String("gestion"), QJsonValue(m_gestion));
-    if (is_grade_modified())
-      json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
-    if (is_note_modified())
-      json_object.insert(QLatin1String("note"), QJsonValue(m_note));
-    if (is_number_modified())
-      json_object.insert(QLatin1String("number"), QJsonValue(m_number));
-    if (is_opener_modified())
-      json_object.insert(QLatin1String("opener"), QJsonValue(m_opener));
-    if (is_refection_date_modified())
-      json_object.insert(QLatin1String("refection_date"), QJsonValue(m_refection_date));
-    if (is_refection_note_modified())
-      json_object.insert(QLatin1String("refection_note"), QJsonValue(m_refection_note));
-    if (is_status_modified())
-      json_object.insert(QLatin1String("status"), QJsonValue(m_status));
-    if (is_topos_modified())
-      json_object.insert(QLatin1String("topos"), json_helper::dump_string_list(m_topos));
-  } else {
-    json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
-    json_object.insert(QLatin1String("colour"), QJsonValue(m_colour));
-    json_object.insert(QLatin1String("creation_date"), QJsonValue(m_creation_date));
-    json_object.insert(QLatin1String("gestion"), QJsonValue(m_gestion));
-    json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
-    json_object.insert(QLatin1String("note"), QJsonValue(m_note));
-    json_object.insert(QLatin1String("number"), QJsonValue(m_number));
-    json_object.insert(QLatin1String("opener"), QJsonValue(m_opener));
-    json_object.insert(QLatin1String("refection_date"), QJsonValue(m_refection_date));
-    json_object.insert(QLatin1String("refection_note"), QJsonValue(m_refection_note));
-    json_object.insert(QLatin1String("status"), QJsonValue(m_status));
-    json_object.insert(QLatin1String("topos"), json_helper::dump_string_list(m_topos));
-  }
-
-  return json_object;
-}
-
-
-QVariantHash
-BBleauCircuit::to_variant_hash(bool only_changed) const
-{
-  QVariantHash variant_hash;
-
-  if (only_changed) {
-    if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    if (is_colour_modified())
-      variant_hash[QLatin1String("colour")] = m_colour;
-    if (is_creation_date_modified())
-      variant_hash[QLatin1String("creation_date")] = m_creation_date;
-    if (is_gestion_modified())
-      variant_hash[QLatin1String("gestion")] = m_gestion;
-    if (is_grade_modified())
-      variant_hash[QLatin1String("grade")] = m_grade;
-    if (is_note_modified())
-      variant_hash[QLatin1String("note")] = m_note;
-    if (is_number_modified())
-      variant_hash[QLatin1String("number")] = m_number;
-    if (is_opener_modified())
-      variant_hash[QLatin1String("opener")] = m_opener;
-    if (is_refection_date_modified())
-      variant_hash[QLatin1String("refection_date")] = m_refection_date;
-    if (is_refection_note_modified())
-      variant_hash[QLatin1String("refection_note")] = m_refection_note;
-    if (is_status_modified())
-      variant_hash[QLatin1String("status")] = m_status;
-    if (is_topos_modified())
-      variant_hash[QLatin1String("topos")] = m_topos;
-  } else {
-    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    variant_hash[QLatin1String("colour")] = m_colour;
-    variant_hash[QLatin1String("creation_date")] = m_creation_date;
-    variant_hash[QLatin1String("gestion")] = m_gestion;
-    variant_hash[QLatin1String("grade")] = m_grade;
-    variant_hash[QLatin1String("note")] = m_note;
-    variant_hash[QLatin1String("number")] = m_number;
-    variant_hash[QLatin1String("opener")] = m_opener;
-    variant_hash[QLatin1String("refection_date")] = m_refection_date;
-    variant_hash[QLatin1String("refection_note")] = m_refection_note;
-    variant_hash[QLatin1String("status")] = m_status;
-    variant_hash[QLatin1String("topos")] = m_topos;
-  }
-
-  return variant_hash;
-}
-
-QVariantList
-BBleauCircuit::to_variant_list() const
-{
-  QVariantList variants;
-  variants << QVariant::fromValue(m_coordinate);
-  variants << m_colour;
-  variants << m_creation_date;
-  variants << m_gestion;
-  variants << m_grade;
-  variants << m_note;
-  variants << m_number;
-  variants << m_opener;
-  variants << m_refection_date;
-  variants << m_refection_note;
-  variants << m_status;
-  variants << m_topos;
-
-  return variants;
-}
-
-QVariantHash
-BBleauCircuit::to_variant_hash_sql(bool only_changed) const
-{
-  QVariantHash variant_hash;
-
-  if (only_changed) {
-    if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    if (is_colour_modified())
-      variant_hash[QLatin1String("colour")] = m_colour;
-    if (is_creation_date_modified())
-      variant_hash[QLatin1String("creation_date")] = m_creation_date;
-    if (is_gestion_modified())
-      variant_hash[QLatin1String("gestion")] = m_gestion;
-    if (is_grade_modified())
-      variant_hash[QLatin1String("grade")] = m_grade;
-    if (is_note_modified())
-      variant_hash[QLatin1String("note")] = m_note;
-    if (is_number_modified())
-      variant_hash[QLatin1String("number")] = m_number;
-    if (is_opener_modified())
-      variant_hash[QLatin1String("opener")] = m_opener;
-    if (is_refection_date_modified())
-      variant_hash[QLatin1String("refection_date")] = m_refection_date;
-    if (is_refection_note_modified())
-      variant_hash[QLatin1String("refection_note")] = m_refection_note;
-    if (is_status_modified())
-      variant_hash[QLatin1String("status")] = m_status;
-    if (is_topos_modified())
-      variant_hash[QLatin1String("topos")] = m_topos;
-  } else {
-    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
-    variant_hash[QLatin1String("colour")] = m_colour;
-    variant_hash[QLatin1String("creation_date")] = m_creation_date;
-    variant_hash[QLatin1String("gestion")] = m_gestion;
-    variant_hash[QLatin1String("grade")] = m_grade;
-    variant_hash[QLatin1String("note")] = m_note;
-    variant_hash[QLatin1String("number")] = m_number;
-    variant_hash[QLatin1String("opener")] = m_opener;
-    variant_hash[QLatin1String("refection_date")] = m_refection_date;
-    variant_hash[QLatin1String("refection_note")] = m_refection_note;
-    variant_hash[QLatin1String("status")] = m_status;
-    variant_hash[QLatin1String("topos")] = m_topos;
-  }
-
-  return variant_hash;
-}
-
-QVariantList
-BBleauCircuit::to_variant_list_sql() const
-{
-  QVariantList variants;
-  variants << QVariant::fromValue(m_coordinate);
-  variants << m_colour;
-  variants << m_creation_date;
-  variants << m_gestion;
-  variants << m_grade;
-  variants << m_note;
-  variants << m_number;
-  variants << m_opener;
-  variants << m_refection_date;
-  variants << m_refection_note;
-  variants << m_status;
-  variants << m_topos;
-
-  return variants;
-}
-
-
-
-QVariant
-BBleauCircuit::field(int position) const
-{
-  switch(position) {
-   case BBleauCircuitSchema::Fields::COORDINATE:
-     return QVariant::fromValue(m_coordinate);
-   case BBleauCircuitSchema::Fields::COLOUR:
-     return m_colour;
-   case BBleauCircuitSchema::Fields::CREATION_DATE:
-     return m_creation_date;
-   case BBleauCircuitSchema::Fields::GESTION:
-     return m_gestion;
-   case BBleauCircuitSchema::Fields::GRADE:
-     return m_grade;
-   case BBleauCircuitSchema::Fields::NOTE:
-     return m_note;
-   case BBleauCircuitSchema::Fields::NUMBER:
-     return m_number;
-   case BBleauCircuitSchema::Fields::OPENER:
-     return m_opener;
-   case BBleauCircuitSchema::Fields::REFECTION_DATE:
-     return m_refection_date;
-   case BBleauCircuitSchema::Fields::REFECTION_NOTE:
-     return m_refection_note;
-   case BBleauCircuitSchema::Fields::STATUS:
-     return m_status;
-   case BBleauCircuitSchema::Fields::TOPOS:
-     return m_topos;
-   default:
-     return QVariant(); // error
-  }
-}
-
-void
-BBleauCircuit::set_field(int position, const QVariant & value)
-{
-  switch(position) {
-   case BBleauCircuitSchema::Fields::COORDINATE: {
-     m_coordinate = value.value<QGeoCoordinate>();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::COLOUR: {
-     m_colour = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::CREATION_DATE: {
-     m_creation_date = value.toInt();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::GESTION: {
-     m_gestion = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::GRADE: {
-     m_grade = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::NOTE: {
-     m_note = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::NUMBER: {
-     m_number = value.toInt();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::OPENER: {
-     m_opener = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::REFECTION_DATE: {
-     m_refection_date = value.toInt();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::REFECTION_NOTE: {
-     m_refection_note = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::STATUS: {
-     m_status = value.toString();
-     break;
-   }
-   case BBleauCircuitSchema::Fields::TOPOS: {
-     m_topos = value.toStringList();
-     break;
-   }
-  }
-}
-
-QDataStream &
-operator<<(QDataStream & out, const BBleauCircuit & obj)
-{
-  out << obj.coordinate();
-  out << obj.colour();
-  out << obj.creation_date();
-  out << obj.gestion();
-  out << obj.grade();
-  out << obj.note();
-  out << obj.number();
-  out << obj.opener();
-  out << obj.refection_date();
-  out << obj.refection_note();
-  out << obj.status();
-  out << obj.topos();
-
-  return out;
-}
-
-QDataStream &
-operator>>(QDataStream & in, BBleauCircuit & obj)
-{
-  QGeoCoordinate _QGeoCoordinate;
-  QString _QString;
-  QStringList _QStringList;
-  int _int;
-
-  in >> _QGeoCoordinate;
-  obj.set_coordinate(_QGeoCoordinate);
-  in >> _QString;
-  obj.set_colour(_QString);
-  in >> _int;
-  obj.set_creation_date(_int);
-  in >> _QString;
-  obj.set_gestion(_QString);
-  in >> _QString;
-  obj.set_grade(_QString);
-  in >> _QString;
-  obj.set_note(_QString);
-  in >> _int;
-  obj.set_number(_int);
-  in >> _QString;
-  obj.set_opener(_QString);
-  in >> _int;
-  obj.set_refection_date(_int);
-  in >> _QString;
-  obj.set_refection_note(_QString);
-  in >> _QString;
-  obj.set_status(_QString);
-  in >> _QStringList;
-  obj.set_topos(_QStringList);
-
-  return in;
-}
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug
-operator<<(QDebug debug, const BBleauCircuit & obj)
-{
-  QDebugStateSaver saver(debug); // Fixme: ???
-
-  debug.nospace() << QLatin1Literal("BBleauCircuit(");
-  debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
-  debug << obj.colour();
-  debug << QLatin1Literal(", ");
-  debug << obj.creation_date();
-  debug << QLatin1Literal(", ");
-  debug << obj.gestion();
-  debug << QLatin1Literal(", ");
-  debug << obj.grade();
-  debug << QLatin1Literal(", ");
-  debug << obj.note();
-  debug << QLatin1Literal(", ");
-  debug << obj.number();
-  debug << QLatin1Literal(", ");
-  debug << obj.opener();
-  debug << QLatin1Literal(", ");
-  debug << obj.refection_date();
-  debug << QLatin1Literal(", ");
-  debug << obj.refection_note();
-  debug << QLatin1Literal(", ");
-  debug << obj.status();
-  debug << QLatin1Literal(", ");
-  debug << obj.topos();
-  debug << ')';
-
-  return debug;
-}
-#endif
-
-/**************************************************************************************************/
-
 BBleauMassifSchema::BBleauMassifSchema()
-: QcSchema(QLatin1String("BBleauMassif"), QLatin1String("massif"))
+: QcRowSchema<BBleauMassif>(QLatin1String("BBleauMassif"), QLatin1String("massif"))
 {
-  add_field(QcSchemaField(QLatin1String("coordinate"),
-                          QLatin1String("QGeoCoordinate"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("coordinate"),
-                          QLatin1String("coordinate"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("name"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("name"),
-                          QLatin1String("name"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("access"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("access"),
-                          QLatin1String("access"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("alternative_name"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("alternative_name"),
-                          QLatin1String("alternative_name"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("chaos_type"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("chaos_type"),
-                          QLatin1String("chaos_type"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("note"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("note"),
-                          QLatin1String("note"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("parcelles"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("parcelles"),
-                          QLatin1String("parcelles"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("rdv"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("rdv"),
-                          QLatin1String("rdv"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("secteur"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("secteur"),
-                          QLatin1String("secteur"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("velo"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("velo"),
-                          QLatin1String("velo"),
-                          QLatin1String(""),
-                          QLatin1String("")));
+  {
+    QcSchemaField field(QLatin1String("coordinate"),
+                        QLatin1String("QGeoCoordinate"),
+                        QLatin1String("text"),
+                        QLatin1String("coordinate"),
+                        QLatin1String("coordinate"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("name"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("name"),
+                        QLatin1String("name"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    field.set_unique(true);
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("access"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("access"),
+                        QLatin1String("access"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("alternative_name"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("alternative_name"),
+                        QLatin1String("alternative_name"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("chaos_type"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("chaos_type"),
+                        QLatin1String("chaos_type"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("note"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("note"),
+                        QLatin1String("note"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("parcelles"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("parcelles"),
+                        QLatin1String("parcelles"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("rdv"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("rdv"),
+                        QLatin1String("rdv"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("secteur"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("secteur"),
+                        QLatin1String("secteur"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("velo"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("velo"),
+                        QLatin1String("velo"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
 }
 
 BBleauMassifSchema::~BBleauMassifSchema()
@@ -1674,8 +605,7 @@ BBleauMassifSchema::~BBleauMassifSchema()
 /**************************************************************************************************/
 
 BBleauMassif::BBleauMassif()
-  : m_bits(10),
-    m_coordinate(),
+  : m_coordinate(),
     m_name(),
     m_access(),
     m_alternative_name(),
@@ -1688,8 +618,7 @@ BBleauMassif::BBleauMassif()
 {}
 
 BBleauMassif::BBleauMassif(const BBleauMassif & other)
-  : m_bits(other.m_bits),
-    m_coordinate(other.m_coordinate),
+  : m_coordinate(other.m_coordinate),
     m_name(other.m_name),
     m_access(other.m_access),
     m_alternative_name(other.m_alternative_name),
@@ -1779,11 +708,11 @@ BBleauMassif::BBleauMassif(const QSqlQuery & query)
 BBleauMassif::~BBleauMassif()
 {}
 
+// bit array ?
 BBleauMassif &
 BBleauMassif::operator=(const BBleauMassif & other)
 {
   if (this != &other) {
-    m_bits = other.m_bits;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
     m_access = other.m_access;
@@ -1798,6 +727,7 @@ BBleauMassif::operator=(const BBleauMassif & other)
 
   return *this;
 }
+// bit array ?
 bool
 BBleauMassif::operator==(const BBleauMassif & other)
 {
@@ -2247,18 +1177,1390 @@ operator<<(QDebug debug, const BBleauMassif & obj)
 
 /**************************************************************************************************/
 
+BBleauBoulderSchema::BBleauBoulderSchema()
+: QcRowSchema<BBleauBoulder>(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
+{
+  {
+    QcSchemaField field(QLatin1String("coordinate"),
+                        QLatin1String("QGeoCoordinate"),
+                        QLatin1String("text"),
+                        QLatin1String("coordinate"),
+                        QLatin1String("coordinate"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("name"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("name"),
+                        QLatin1String("name"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("comment"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("comment"),
+                        QLatin1String("comment"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("grade"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("grade"),
+                        QLatin1String("grade"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("number"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("number"),
+                        QLatin1String("number"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+}
+
+BBleauBoulderSchema::~BBleauBoulderSchema()
+{}
+
+/**************************************************************************************************/
+
+BBleauBoulder::BBleauBoulder()
+  : m_coordinate(),
+    m_name(),
+    m_comment(),
+    m_grade(),
+    m_number()
+{}
+
+BBleauBoulder::BBleauBoulder(const BBleauBoulder & other)
+  : m_coordinate(other.m_coordinate),
+    m_name(other.m_name),
+    m_comment(other.m_comment),
+    m_grade(other.m_grade),
+    m_number(other.m_number)
+{}
+
+BBleauBoulder::BBleauBoulder(const QJsonObject & json_object)
+ : BBleauBoulder()
+{
+  m_coordinate = bleaudb::load_json_coordinate(json_object[QLatin1String("coordinate")]);
+  m_name = json_object[QLatin1String("name")].toString();
+  m_comment = json_object[QLatin1String("comment")].toString();
+  m_grade = json_object[QLatin1String("grade")].toString();
+  m_number = json_object[QLatin1String("number")].toString();
+}
+
+BBleauBoulder::BBleauBoulder(const QVariantHash & variant_hash)
+ : BBleauBoulder()
+{
+  m_coordinate = variant_hash[QLatin1String("coordinate")].value<QGeoCoordinate>();
+  m_name = variant_hash[QLatin1String("name")].toString();
+  m_comment = variant_hash[QLatin1String("comment")].toString();
+  m_grade = variant_hash[QLatin1String("grade")].toString();
+  m_number = variant_hash[QLatin1String("number")].toString();
+}
+
+BBleauBoulder::BBleauBoulder(const QVariantList & variants)
+ : BBleauBoulder()
+{
+  m_coordinate = variants[0].value<QGeoCoordinate>();
+  m_name = variants[1].toString();
+  m_comment = variants[2].toString();
+  m_grade = variants[3].toString();
+  m_number = variants[4].toString();
+}
+
+BBleauBoulder::BBleauBoulder(const QSqlRecord & record)
+ : BBleauBoulder()
+{
+  m_coordinate = record.value(0).value<QGeoCoordinate>();
+  m_name = record.value(1).toString();
+  m_comment = record.value(2).toString();
+  m_grade = record.value(3).toString();
+  m_number = record.value(4).toString();
+}
+
+BBleauBoulder::BBleauBoulder(const QSqlQuery & query)
+ : BBleauBoulder()
+{
+  m_coordinate = query.value(0).value<QGeoCoordinate>();
+  m_name = query.value(1).toString();
+  m_comment = query.value(2).toString();
+  m_grade = query.value(3).toString();
+  m_number = query.value(4).toString();
+}
+
+BBleauBoulder::~BBleauBoulder()
+{}
+
+// bit array ?
+BBleauBoulder &
+BBleauBoulder::operator=(const BBleauBoulder & other)
+{
+  if (this != &other) {
+    m_coordinate = other.m_coordinate;
+    m_name = other.m_name;
+    m_comment = other.m_comment;
+    m_grade = other.m_grade;
+    m_number = other.m_number;
+  }
+
+  return *this;
+}
+// bit array ?
+bool
+BBleauBoulder::operator==(const BBleauBoulder & other)
+{
+  if (m_coordinate != other.m_coordinate)
+    return false;
+  if (m_name != other.m_name)
+    return false;
+  if (m_comment != other.m_comment)
+    return false;
+  if (m_grade != other.m_grade)
+    return false;
+  if (m_number != other.m_number)
+    return false;
+
+  return true;
+}
+
+void
+BBleauBoulder::set_coordinate(const QGeoCoordinate & value)
+{
+  if (m_coordinate != value) {
+    m_coordinate = value;
+    m_bits.setBit(BBleauBoulderSchema::Fields::COORDINATE);
+    emit coordinateChanged();
+  }
+}
+
+void
+BBleauBoulder::set_name(const QString & value)
+{
+  if (m_name != value) {
+    m_name = value;
+    m_bits.setBit(BBleauBoulderSchema::Fields::NAME);
+    emit nameChanged();
+  }
+}
+
+void
+BBleauBoulder::set_comment(const QString & value)
+{
+  if (m_comment != value) {
+    m_comment = value;
+    m_bits.setBit(BBleauBoulderSchema::Fields::COMMENT);
+    emit commentChanged();
+  }
+}
+
+void
+BBleauBoulder::set_grade(const QString & value)
+{
+  if (m_grade != value) {
+    m_grade = value;
+    m_bits.setBit(BBleauBoulderSchema::Fields::GRADE);
+    emit gradeChanged();
+  }
+}
+
+void
+BBleauBoulder::set_number(const QString & value)
+{
+  if (m_number != value) {
+    m_number = value;
+    m_bits.setBit(BBleauBoulderSchema::Fields::NUMBER);
+    emit numberChanged();
+  }
+}
+
+QJsonObject
+BBleauBoulder::to_json(bool only_changed) const
+{
+  QJsonObject json_object;
+
+ if (only_changed) {
+    if (is_coordinate_modified())
+      json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
+    if (is_name_modified())
+      json_object.insert(QLatin1String("name"), QJsonValue(m_name));
+    if (is_comment_modified())
+      json_object.insert(QLatin1String("comment"), QJsonValue(m_comment));
+    if (is_grade_modified())
+      json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
+    if (is_number_modified())
+      json_object.insert(QLatin1String("number"), QJsonValue(m_number));
+  } else {
+    json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
+    json_object.insert(QLatin1String("name"), QJsonValue(m_name));
+    json_object.insert(QLatin1String("comment"), QJsonValue(m_comment));
+    json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
+    json_object.insert(QLatin1String("number"), QJsonValue(m_number));
+  }
+
+  return json_object;
+}
+
+
+QVariantHash
+BBleauBoulder::to_variant_hash(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_comment_modified())
+      variant_hash[QLatin1String("comment")] = m_comment;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("comment")] = m_comment;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("number")] = m_number;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauBoulder::to_variant_list() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_name;
+  variants << m_comment;
+  variants << m_grade;
+  variants << m_number;
+
+  return variants;
+}
+
+QVariantHash
+BBleauBoulder::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_name_modified())
+      variant_hash[QLatin1String("name")] = m_name;
+    if (is_comment_modified())
+      variant_hash[QLatin1String("comment")] = m_comment;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("name")] = m_name;
+    variant_hash[QLatin1String("comment")] = m_comment;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("number")] = m_number;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauBoulder::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_name;
+  variants << m_comment;
+  variants << m_grade;
+  variants << m_number;
+
+  return variants;
+}
+
+
+
+QVariant
+BBleauBoulder::field(int position) const
+{
+  switch(position) {
+   case BBleauBoulderSchema::Fields::COORDINATE:
+     return QVariant::fromValue(m_coordinate);
+   case BBleauBoulderSchema::Fields::NAME:
+     return m_name;
+   case BBleauBoulderSchema::Fields::COMMENT:
+     return m_comment;
+   case BBleauBoulderSchema::Fields::GRADE:
+     return m_grade;
+   case BBleauBoulderSchema::Fields::NUMBER:
+     return m_number;
+   default:
+     return QVariant(); // error
+  }
+}
+
+void
+BBleauBoulder::set_field(int position, const QVariant & value)
+{
+  switch(position) {
+   case BBleauBoulderSchema::Fields::COORDINATE: {
+     m_coordinate = value.value<QGeoCoordinate>();
+     break;
+   }
+   case BBleauBoulderSchema::Fields::NAME: {
+     m_name = value.toString();
+     break;
+   }
+   case BBleauBoulderSchema::Fields::COMMENT: {
+     m_comment = value.toString();
+     break;
+   }
+   case BBleauBoulderSchema::Fields::GRADE: {
+     m_grade = value.toString();
+     break;
+   }
+   case BBleauBoulderSchema::Fields::NUMBER: {
+     m_number = value.toString();
+     break;
+   }
+  }
+}
+
+QDataStream &
+operator<<(QDataStream & out, const BBleauBoulder & obj)
+{
+  out << obj.coordinate();
+  out << obj.name();
+  out << obj.comment();
+  out << obj.grade();
+  out << obj.number();
+
+  return out;
+}
+
+QDataStream &
+operator>>(QDataStream & in, BBleauBoulder & obj)
+{
+  QGeoCoordinate _QGeoCoordinate;
+  QString _QString;
+
+  in >> _QGeoCoordinate;
+  obj.set_coordinate(_QGeoCoordinate);
+  in >> _QString;
+  obj.set_name(_QString);
+  in >> _QString;
+  obj.set_comment(_QString);
+  in >> _QString;
+  obj.set_grade(_QString);
+  in >> _QString;
+  obj.set_number(_QString);
+
+  return in;
+}
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauBoulder & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.nospace() << QLatin1Literal("BBleauBoulder(");
+  debug << obj.coordinate();
+  debug << QLatin1Literal(", ");
+  debug << obj.name();
+  debug << QLatin1Literal(", ");
+  debug << obj.comment();
+  debug << QLatin1Literal(", ");
+  debug << obj.grade();
+  debug << QLatin1Literal(", ");
+  debug << obj.number();
+  debug << ')';
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BBleauCircuitSchema::BBleauCircuitSchema()
+: QcRowSchema<BBleauCircuit>(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
+{
+  {
+    QcSchemaField field(QLatin1String("coordinate"),
+                        QLatin1String("QGeoCoordinate"),
+                        QLatin1String("text"),
+                        QLatin1String("coordinate"),
+                        QLatin1String("coordinate"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("colour"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("colour"),
+                        QLatin1String("colour"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("creation_date"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("creation_date"),
+                        QLatin1String("creation_date"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("gestion"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("gestion"),
+                        QLatin1String("gestion"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("grade"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("grade"),
+                        QLatin1String("grade"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("massif"),
+                        QLatin1String("int"),
+                        QLatin1String("Integer"),
+                        QLatin1String("None"),
+                        QLatin1String("None"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("note"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("note"),
+                        QLatin1String("note"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("number"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("number"),
+                        QLatin1String("number"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("opener"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("opener"),
+                        QLatin1String("opener"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("refection_date"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("refection_date"),
+                        QLatin1String("refection_date"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("refection_note"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("refection_note"),
+                        QLatin1String("refection_note"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("status"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("status"),
+                        QLatin1String("status"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("topos"),
+                        QLatin1String("QStringList"),
+                        QLatin1String("text"),
+                        QLatin1String("topos"),
+                        QLatin1String("topos"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+}
+
+BBleauCircuitSchema::~BBleauCircuitSchema()
+{}
+
+/**************************************************************************************************/
+
+BBleauCircuit::BBleauCircuit()
+  : m_coordinate(),
+    m_colour(),
+    m_creation_date(),
+    m_gestion(),
+    m_grade(),
+    m_massif(),
+    m_note(),
+    m_number(),
+    m_opener(),
+    m_refection_date(),
+    m_refection_note(),
+    m_status(),
+    m_topos()
+{}
+
+BBleauCircuit::BBleauCircuit(const BBleauCircuit & other)
+  : m_coordinate(other.m_coordinate),
+    m_colour(other.m_colour),
+    m_creation_date(other.m_creation_date),
+    m_gestion(other.m_gestion),
+    m_grade(other.m_grade),
+    m_massif(other.m_massif),
+    m_note(other.m_note),
+    m_number(other.m_number),
+    m_opener(other.m_opener),
+    m_refection_date(other.m_refection_date),
+    m_refection_note(other.m_refection_note),
+    m_status(other.m_status),
+    m_topos(other.m_topos)
+{}
+
+BBleauCircuit::BBleauCircuit(const QJsonObject & json_object)
+ : BBleauCircuit()
+{
+  m_coordinate = bleaudb::load_json_coordinate(json_object[QLatin1String("coordinate")]);
+  m_colour = json_object[QLatin1String("colour")].toString();
+  m_creation_date = json_object[QLatin1String("creation_date")].toInt();
+  m_gestion = json_object[QLatin1String("gestion")].toString();
+  m_grade = json_object[QLatin1String("grade")].toString();
+  m_massif = json_object[QLatin1String("massif")].toInt();
+  m_note = json_object[QLatin1String("note")].toString();
+  m_number = json_object[QLatin1String("number")].toInt();
+  m_opener = json_object[QLatin1String("opener")].toString();
+  m_refection_date = json_object[QLatin1String("refection_date")].toInt();
+  m_refection_note = json_object[QLatin1String("refection_note")].toString();
+  m_status = json_object[QLatin1String("status")].toString();
+  m_topos = json_helper::load_string_list(json_object[QLatin1String("topos")]);
+}
+
+BBleauCircuit::BBleauCircuit(const QVariantHash & variant_hash)
+ : BBleauCircuit()
+{
+  m_coordinate = variant_hash[QLatin1String("coordinate")].value<QGeoCoordinate>();
+  m_colour = variant_hash[QLatin1String("colour")].toString();
+  m_creation_date = variant_hash[QLatin1String("creation_date")].toInt();
+  m_gestion = variant_hash[QLatin1String("gestion")].toString();
+  m_grade = variant_hash[QLatin1String("grade")].toString();
+  m_massif = variant_hash[QLatin1String("massif")].toInt();
+  m_note = variant_hash[QLatin1String("note")].toString();
+  m_number = variant_hash[QLatin1String("number")].toInt();
+  m_opener = variant_hash[QLatin1String("opener")].toString();
+  m_refection_date = variant_hash[QLatin1String("refection_date")].toInt();
+  m_refection_note = variant_hash[QLatin1String("refection_note")].toString();
+  m_status = variant_hash[QLatin1String("status")].toString();
+  m_topos = variant_hash[QLatin1String("topos")].toStringList();
+}
+
+BBleauCircuit::BBleauCircuit(const QVariantList & variants)
+ : BBleauCircuit()
+{
+  m_coordinate = variants[0].value<QGeoCoordinate>();
+  m_colour = variants[1].toString();
+  m_creation_date = variants[2].toInt();
+  m_gestion = variants[3].toString();
+  m_grade = variants[4].toString();
+  m_massif = variants[5].toInt();
+  m_note = variants[6].toString();
+  m_number = variants[7].toInt();
+  m_opener = variants[8].toString();
+  m_refection_date = variants[9].toInt();
+  m_refection_note = variants[10].toString();
+  m_status = variants[11].toString();
+  m_topos = variants[12].toStringList();
+}
+
+BBleauCircuit::BBleauCircuit(const QSqlRecord & record)
+ : BBleauCircuit()
+{
+  m_coordinate = record.value(0).value<QGeoCoordinate>();
+  m_colour = record.value(1).toString();
+  m_creation_date = record.value(2).toInt();
+  m_gestion = record.value(3).toString();
+  m_grade = record.value(4).toString();
+  m_massif = record.value(5).toInt();
+  m_note = record.value(6).toString();
+  m_number = record.value(7).toInt();
+  m_opener = record.value(8).toString();
+  m_refection_date = record.value(9).toInt();
+  m_refection_note = record.value(10).toString();
+  m_status = record.value(11).toString();
+  m_topos = record.value(12).toStringList();
+}
+
+BBleauCircuit::BBleauCircuit(const QSqlQuery & query)
+ : BBleauCircuit()
+{
+  m_coordinate = query.value(0).value<QGeoCoordinate>();
+  m_colour = query.value(1).toString();
+  m_creation_date = query.value(2).toInt();
+  m_gestion = query.value(3).toString();
+  m_grade = query.value(4).toString();
+  m_massif = query.value(5).toInt();
+  m_note = query.value(6).toString();
+  m_number = query.value(7).toInt();
+  m_opener = query.value(8).toString();
+  m_refection_date = query.value(9).toInt();
+  m_refection_note = query.value(10).toString();
+  m_status = query.value(11).toString();
+  m_topos = query.value(12).toStringList();
+}
+
+BBleauCircuit::~BBleauCircuit()
+{}
+
+// bit array ?
+BBleauCircuit &
+BBleauCircuit::operator=(const BBleauCircuit & other)
+{
+  if (this != &other) {
+    m_coordinate = other.m_coordinate;
+    m_colour = other.m_colour;
+    m_creation_date = other.m_creation_date;
+    m_gestion = other.m_gestion;
+    m_grade = other.m_grade;
+    m_massif = other.m_massif;
+    m_note = other.m_note;
+    m_number = other.m_number;
+    m_opener = other.m_opener;
+    m_refection_date = other.m_refection_date;
+    m_refection_note = other.m_refection_note;
+    m_status = other.m_status;
+    m_topos = other.m_topos;
+  }
+
+  return *this;
+}
+// bit array ?
+bool
+BBleauCircuit::operator==(const BBleauCircuit & other)
+{
+  if (m_coordinate != other.m_coordinate)
+    return false;
+  if (m_colour != other.m_colour)
+    return false;
+  if (m_creation_date != other.m_creation_date)
+    return false;
+  if (m_gestion != other.m_gestion)
+    return false;
+  if (m_grade != other.m_grade)
+    return false;
+  if (m_massif != other.m_massif)
+    return false;
+  if (m_note != other.m_note)
+    return false;
+  if (m_number != other.m_number)
+    return false;
+  if (m_opener != other.m_opener)
+    return false;
+  if (m_refection_date != other.m_refection_date)
+    return false;
+  if (m_refection_note != other.m_refection_note)
+    return false;
+  if (m_status != other.m_status)
+    return false;
+  if (m_topos != other.m_topos)
+    return false;
+
+  return true;
+}
+
+void
+BBleauCircuit::set_coordinate(const QGeoCoordinate & value)
+{
+  if (m_coordinate != value) {
+    m_coordinate = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::COORDINATE);
+    emit coordinateChanged();
+  }
+}
+
+void
+BBleauCircuit::set_colour(const QString & value)
+{
+  if (m_colour != value) {
+    m_colour = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::COLOUR);
+    emit colourChanged();
+  }
+}
+
+void
+BBleauCircuit::set_creation_date(int value)
+{
+  if (m_creation_date != value) {
+    m_creation_date = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::CREATION_DATE);
+    emit creation_dateChanged();
+  }
+}
+
+void
+BBleauCircuit::set_gestion(const QString & value)
+{
+  if (m_gestion != value) {
+    m_gestion = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::GESTION);
+    emit gestionChanged();
+  }
+}
+
+void
+BBleauCircuit::set_grade(const QString & value)
+{
+  if (m_grade != value) {
+    m_grade = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::GRADE);
+    emit gradeChanged();
+  }
+}
+
+void
+BBleauCircuit::set_massif(int value)
+{
+  if (m_massif != value) {
+    m_massif = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::MASSIF);
+    emit massifChanged();
+  }
+}
+
+void
+BBleauCircuit::set_note(const QString & value)
+{
+  if (m_note != value) {
+    m_note = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::NOTE);
+    emit noteChanged();
+  }
+}
+
+void
+BBleauCircuit::set_number(int value)
+{
+  if (m_number != value) {
+    m_number = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::NUMBER);
+    emit numberChanged();
+  }
+}
+
+void
+BBleauCircuit::set_opener(const QString & value)
+{
+  if (m_opener != value) {
+    m_opener = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::OPENER);
+    emit openerChanged();
+  }
+}
+
+void
+BBleauCircuit::set_refection_date(int value)
+{
+  if (m_refection_date != value) {
+    m_refection_date = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_DATE);
+    emit refection_dateChanged();
+  }
+}
+
+void
+BBleauCircuit::set_refection_note(const QString & value)
+{
+  if (m_refection_note != value) {
+    m_refection_note = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::REFECTION_NOTE);
+    emit refection_noteChanged();
+  }
+}
+
+void
+BBleauCircuit::set_status(const QString & value)
+{
+  if (m_status != value) {
+    m_status = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::STATUS);
+    emit statusChanged();
+  }
+}
+
+void
+BBleauCircuit::set_topos(const QStringList & value)
+{
+  if (m_topos != value) {
+    m_topos = value;
+    m_bits.setBit(BBleauCircuitSchema::Fields::TOPOS);
+    emit toposChanged();
+  }
+}
+
+QJsonObject
+BBleauCircuit::to_json(bool only_changed) const
+{
+  QJsonObject json_object;
+
+ if (only_changed) {
+    if (is_coordinate_modified())
+      json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
+    if (is_colour_modified())
+      json_object.insert(QLatin1String("colour"), QJsonValue(m_colour));
+    if (is_creation_date_modified())
+      json_object.insert(QLatin1String("creation_date"), QJsonValue(m_creation_date));
+    if (is_gestion_modified())
+      json_object.insert(QLatin1String("gestion"), QJsonValue(m_gestion));
+    if (is_grade_modified())
+      json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
+    if (is_massif_modified())
+      json_object.insert(QLatin1String("None"), QJsonValue(m_massif));
+    if (is_note_modified())
+      json_object.insert(QLatin1String("note"), QJsonValue(m_note));
+    if (is_number_modified())
+      json_object.insert(QLatin1String("number"), QJsonValue(m_number));
+    if (is_opener_modified())
+      json_object.insert(QLatin1String("opener"), QJsonValue(m_opener));
+    if (is_refection_date_modified())
+      json_object.insert(QLatin1String("refection_date"), QJsonValue(m_refection_date));
+    if (is_refection_note_modified())
+      json_object.insert(QLatin1String("refection_note"), QJsonValue(m_refection_note));
+    if (is_status_modified())
+      json_object.insert(QLatin1String("status"), QJsonValue(m_status));
+    if (is_topos_modified())
+      json_object.insert(QLatin1String("topos"), json_helper::dump_string_list(m_topos));
+  } else {
+    json_object.insert(QLatin1String("coordinate"), bleaudb::dump_json_coordinate(m_coordinate));
+    json_object.insert(QLatin1String("colour"), QJsonValue(m_colour));
+    json_object.insert(QLatin1String("creation_date"), QJsonValue(m_creation_date));
+    json_object.insert(QLatin1String("gestion"), QJsonValue(m_gestion));
+    json_object.insert(QLatin1String("grade"), QJsonValue(m_grade));
+    json_object.insert(QLatin1String("None"), QJsonValue(m_massif));
+    json_object.insert(QLatin1String("note"), QJsonValue(m_note));
+    json_object.insert(QLatin1String("number"), QJsonValue(m_number));
+    json_object.insert(QLatin1String("opener"), QJsonValue(m_opener));
+    json_object.insert(QLatin1String("refection_date"), QJsonValue(m_refection_date));
+    json_object.insert(QLatin1String("refection_note"), QJsonValue(m_refection_note));
+    json_object.insert(QLatin1String("status"), QJsonValue(m_status));
+    json_object.insert(QLatin1String("topos"), json_helper::dump_string_list(m_topos));
+  }
+
+  return json_object;
+}
+
+
+QVariantHash
+BBleauCircuit::to_variant_hash(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_colour_modified())
+      variant_hash[QLatin1String("colour")] = m_colour;
+    if (is_creation_date_modified())
+      variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    if (is_gestion_modified())
+      variant_hash[QLatin1String("gestion")] = m_gestion;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_massif_modified())
+      variant_hash[QLatin1String("massif")] = m_massif;
+    if (is_note_modified())
+      variant_hash[QLatin1String("note")] = m_note;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+    if (is_opener_modified())
+      variant_hash[QLatin1String("opener")] = m_opener;
+    if (is_refection_date_modified())
+      variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    if (is_refection_note_modified())
+      variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    if (is_status_modified())
+      variant_hash[QLatin1String("status")] = m_status;
+    if (is_topos_modified())
+      variant_hash[QLatin1String("topos")] = m_topos;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("colour")] = m_colour;
+    variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    variant_hash[QLatin1String("gestion")] = m_gestion;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("massif")] = m_massif;
+    variant_hash[QLatin1String("note")] = m_note;
+    variant_hash[QLatin1String("number")] = m_number;
+    variant_hash[QLatin1String("opener")] = m_opener;
+    variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    variant_hash[QLatin1String("status")] = m_status;
+    variant_hash[QLatin1String("topos")] = m_topos;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauCircuit::to_variant_list() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_colour;
+  variants << m_creation_date;
+  variants << m_gestion;
+  variants << m_grade;
+  variants << m_massif;
+  variants << m_note;
+  variants << m_number;
+  variants << m_opener;
+  variants << m_refection_date;
+  variants << m_refection_note;
+  variants << m_status;
+  variants << m_topos;
+
+  return variants;
+}
+
+QVariantHash
+BBleauCircuit::to_variant_hash_sql(bool only_changed) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+    if (is_coordinate_modified())
+      variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    if (is_colour_modified())
+      variant_hash[QLatin1String("colour")] = m_colour;
+    if (is_creation_date_modified())
+      variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    if (is_gestion_modified())
+      variant_hash[QLatin1String("gestion")] = m_gestion;
+    if (is_grade_modified())
+      variant_hash[QLatin1String("grade")] = m_grade;
+    if (is_massif_modified())
+      variant_hash[QLatin1String("massif")] = m_massif;
+    if (is_note_modified())
+      variant_hash[QLatin1String("note")] = m_note;
+    if (is_number_modified())
+      variant_hash[QLatin1String("number")] = m_number;
+    if (is_opener_modified())
+      variant_hash[QLatin1String("opener")] = m_opener;
+    if (is_refection_date_modified())
+      variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    if (is_refection_note_modified())
+      variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    if (is_status_modified())
+      variant_hash[QLatin1String("status")] = m_status;
+    if (is_topos_modified())
+      variant_hash[QLatin1String("topos")] = m_topos;
+  } else {
+    variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
+    variant_hash[QLatin1String("colour")] = m_colour;
+    variant_hash[QLatin1String("creation_date")] = m_creation_date;
+    variant_hash[QLatin1String("gestion")] = m_gestion;
+    variant_hash[QLatin1String("grade")] = m_grade;
+    variant_hash[QLatin1String("massif")] = m_massif;
+    variant_hash[QLatin1String("note")] = m_note;
+    variant_hash[QLatin1String("number")] = m_number;
+    variant_hash[QLatin1String("opener")] = m_opener;
+    variant_hash[QLatin1String("refection_date")] = m_refection_date;
+    variant_hash[QLatin1String("refection_note")] = m_refection_note;
+    variant_hash[QLatin1String("status")] = m_status;
+    variant_hash[QLatin1String("topos")] = m_topos;
+  }
+
+  return variant_hash;
+}
+
+QVariantList
+BBleauCircuit::to_variant_list_sql() const
+{
+  QVariantList variants;
+  variants << QVariant::fromValue(m_coordinate);
+  variants << m_colour;
+  variants << m_creation_date;
+  variants << m_gestion;
+  variants << m_grade;
+  variants << m_massif;
+  variants << m_note;
+  variants << m_number;
+  variants << m_opener;
+  variants << m_refection_date;
+  variants << m_refection_note;
+  variants << m_status;
+  variants << m_topos;
+
+  return variants;
+}
+
+
+
+QVariant
+BBleauCircuit::field(int position) const
+{
+  switch(position) {
+   case BBleauCircuitSchema::Fields::COORDINATE:
+     return QVariant::fromValue(m_coordinate);
+   case BBleauCircuitSchema::Fields::COLOUR:
+     return m_colour;
+   case BBleauCircuitSchema::Fields::CREATION_DATE:
+     return m_creation_date;
+   case BBleauCircuitSchema::Fields::GESTION:
+     return m_gestion;
+   case BBleauCircuitSchema::Fields::GRADE:
+     return m_grade;
+   case BBleauCircuitSchema::Fields::MASSIF:
+     return m_massif;
+   case BBleauCircuitSchema::Fields::NOTE:
+     return m_note;
+   case BBleauCircuitSchema::Fields::NUMBER:
+     return m_number;
+   case BBleauCircuitSchema::Fields::OPENER:
+     return m_opener;
+   case BBleauCircuitSchema::Fields::REFECTION_DATE:
+     return m_refection_date;
+   case BBleauCircuitSchema::Fields::REFECTION_NOTE:
+     return m_refection_note;
+   case BBleauCircuitSchema::Fields::STATUS:
+     return m_status;
+   case BBleauCircuitSchema::Fields::TOPOS:
+     return m_topos;
+   default:
+     return QVariant(); // error
+  }
+}
+
+void
+BBleauCircuit::set_field(int position, const QVariant & value)
+{
+  switch(position) {
+   case BBleauCircuitSchema::Fields::COORDINATE: {
+     m_coordinate = value.value<QGeoCoordinate>();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::COLOUR: {
+     m_colour = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::CREATION_DATE: {
+     m_creation_date = value.toInt();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::GESTION: {
+     m_gestion = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::GRADE: {
+     m_grade = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::MASSIF: {
+     m_massif = value.toInt();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::NOTE: {
+     m_note = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::NUMBER: {
+     m_number = value.toInt();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::OPENER: {
+     m_opener = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::REFECTION_DATE: {
+     m_refection_date = value.toInt();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::REFECTION_NOTE: {
+     m_refection_note = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::STATUS: {
+     m_status = value.toString();
+     break;
+   }
+   case BBleauCircuitSchema::Fields::TOPOS: {
+     m_topos = value.toStringList();
+     break;
+   }
+  }
+}
+
+QDataStream &
+operator<<(QDataStream & out, const BBleauCircuit & obj)
+{
+  out << obj.coordinate();
+  out << obj.colour();
+  out << obj.creation_date();
+  out << obj.gestion();
+  out << obj.grade();
+  out << obj.massif();
+  out << obj.note();
+  out << obj.number();
+  out << obj.opener();
+  out << obj.refection_date();
+  out << obj.refection_note();
+  out << obj.status();
+  out << obj.topos();
+
+  return out;
+}
+
+QDataStream &
+operator>>(QDataStream & in, BBleauCircuit & obj)
+{
+  QGeoCoordinate _QGeoCoordinate;
+  QString _QString;
+  QStringList _QStringList;
+  int _int;
+
+  in >> _QGeoCoordinate;
+  obj.set_coordinate(_QGeoCoordinate);
+  in >> _QString;
+  obj.set_colour(_QString);
+  in >> _int;
+  obj.set_creation_date(_int);
+  in >> _QString;
+  obj.set_gestion(_QString);
+  in >> _QString;
+  obj.set_grade(_QString);
+  in >> _int;
+  obj.set_massif(_int);
+  in >> _QString;
+  obj.set_note(_QString);
+  in >> _int;
+  obj.set_number(_int);
+  in >> _QString;
+  obj.set_opener(_QString);
+  in >> _int;
+  obj.set_refection_date(_int);
+  in >> _QString;
+  obj.set_refection_note(_QString);
+  in >> _QString;
+  obj.set_status(_QString);
+  in >> _QStringList;
+  obj.set_topos(_QStringList);
+
+  return in;
+}
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauCircuit & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.nospace() << QLatin1Literal("BBleauCircuit(");
+  debug << obj.coordinate();
+  debug << QLatin1Literal(", ");
+  debug << obj.colour();
+  debug << QLatin1Literal(", ");
+  debug << obj.creation_date();
+  debug << QLatin1Literal(", ");
+  debug << obj.gestion();
+  debug << QLatin1Literal(", ");
+  debug << obj.grade();
+  debug << QLatin1Literal(", ");
+  debug << obj.massif();
+  debug << QLatin1Literal(", ");
+  debug << obj.note();
+  debug << QLatin1Literal(", ");
+  debug << obj.number();
+  debug << QLatin1Literal(", ");
+  debug << obj.opener();
+  debug << QLatin1Literal(", ");
+  debug << obj.refection_date();
+  debug << QLatin1Literal(", ");
+  debug << obj.refection_note();
+  debug << QLatin1Literal(", ");
+  debug << obj.status();
+  debug << QLatin1Literal(", ");
+  debug << obj.topos();
+  debug << ')';
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
 
 BleauSchema::BleauSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_place(nullptr),
+    m_massif(nullptr),
     m_boulder(nullptr),
-    m_circuit(nullptr),
-    m_massif(nullptr)
+    m_circuit(nullptr)
 {
   m_place = &register_table(BBleauPlaceSchema::instance());
+  m_massif = &register_table(BBleauMassifSchema::instance());
   m_boulder = &register_table(BBleauBoulderSchema::instance());
   m_circuit = &register_table(BBleauCircuitSchema::instance());
-  m_massif = &register_table(BBleauMassifSchema::instance());
 }
 
 BleauSchema::~BleauSchema()

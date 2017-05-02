@@ -36,6 +36,8 @@
 #include <QHash>
 #include <QList>
 #include <QMetaType>
+#include <QSqlQuery>
+#include <QSqlRecord>
 #include <QString>
 #include <QVariant>
 
@@ -61,7 +63,6 @@ public:
   QcSchemaField(const QString & name,
                 const QString & qt_type, // ???
                 const QString & sql_type,
-                const QString & sql_qualifier = QString(),
                 const QString & sql_name = QString(),
                 const QString & json_name = QString(),
                 const QString & title = QString(),
@@ -75,20 +76,32 @@ public:
   const QString & name() const { return m_name; }
   void set_name(const QString & value) { m_name = value; }
 
-  const QString & sql_name() const { return m_sql_name; }
-  void set_sql_name(const QString & value) { m_sql_name = value; }
+  const QString & qt_type() const { return m_qt_type; }
+  void set_qt_type(const QString & value) { m_qt_type = value; }
 
   const QString & json_name() const { return m_json_name; }
   void set_json_name(const QString & value) { m_json_name = value; }
 
+  const QString & sql_name() const { return m_sql_name; }
+  void set_sql_name(const QString & value) { m_sql_name = value; }
+
   const QString & sql_type() const { return m_sql_type; }
   void set_sql_type(const QString & value) { m_sql_type = value; }
 
-  const QString & sql_qualifier() const { return m_sql_qualifier; }
-  void set_sql_qualifier(const QString & value) { m_sql_qualifier = value; }
+  bool primary_key() const { return m_primary_key; }
+  void set_primary_key(bool value) { m_primary_key = value; }
 
-  const QString & qt_type() const { return m_qt_type; }
-  void set_qt_type(const QString & value) { m_qt_type = value; }
+  bool autoincrement() const { return m_autoincrement; }
+  void set_autoincrement(bool value) { m_autoincrement = value; }
+
+  bool nullable() const { return m_nullable; }
+  void set_nullable(bool value) { m_nullable = value; }
+
+  bool unique() const { return m_unique; }
+  void set_unique(bool value) { m_unique = value; }
+
+  QVariant default_value() const { return m_default; }
+  void set_default_value(QVariant & value) { m_default = value; }
 
   const QString & title() const { return m_title; }
   void set_title(const QString & value) { m_title = value; }
@@ -113,10 +126,14 @@ private:
   QString m_json_name;
   QString m_qt_type;
   QString m_sql_type;
-  QString m_sql_qualifier;
   QString m_title;
   QString m_description;
-  int m_position;
+  bool m_primary_key = false;
+  bool m_autoincrement = false;
+  bool m_nullable = true;
+  bool m_unique = false;
+  QVariant m_default = QVariant();
+  int m_position = -1;
 };
 
 /**************************************************************************************************/
@@ -125,7 +142,10 @@ class QcSchema
 {
 public:
   QcSchema();
-  QcSchema(const QString & name, const QString & table_name = QString());
+  QcSchema(const QString & name,
+           const QString & table_name = QString(),
+           const QString & sql_table_option = QString() // e.g. WITHOUT ROWID
+           );
   QcSchema(const QcSchema & other);
   ~QcSchema();
 
@@ -136,10 +156,13 @@ public:
 
   const QString & name() const { return m_name; }
   const QString & table_name() const { return m_table_name; }
+  const QString & sql_table_option() const { return m_sql_table_option; }
 
   int number_of_fields() { return m_fields.size(); }
   const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
   QStringList field_names() { return m_field_map.keys(); }
+
+  QString to_sql_definition() const;
 
   const QcSchemaField & operator[](int position) const { return m_fields[position]; }
   const QcSchemaField & operator[](const QString & name) const { return *m_field_map[name]; }
@@ -152,8 +175,30 @@ public:
 private:
   QString m_name;
   QString m_table_name;
+  QString m_sql_table_option;
   QList<QcSchemaField> m_fields;
   QHash<QString, QcSchemaField *> m_field_map;
+};
+
+/**************************************************************************************************/
+
+template<class T>
+class QcRowSchema : public QcSchema
+{
+public:
+  typedef T Row;
+
+  // Factory
+  static Row make() { return Row(); }
+  static Row make(const QJsonObject & json_object) { return Row(json_object); }
+  static Row make(const QVariantHash & variant_hash) { return Row(variant_hash); }
+  static Row make(const QVariantList & variants) { return Row(variants); }
+  static Row make(const QSqlRecord & record) { return Row(record); }
+  static Row make(const QSqlQuery & query) { return Row(query); }
+
+public:
+  using QcSchema::QcSchema;
+  ~QcRowSchema() {}
 };
 
 /**************************************************************************************************/

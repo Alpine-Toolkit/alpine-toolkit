@@ -33,7 +33,6 @@
 
 /**************************************************************************************************/
 
-#include <QBitArray>
 #include <QDataStream>
 #include <QGeoCoordinate>
 #include <QJsonObject>
@@ -47,19 +46,29 @@
 
 #include "database/schema.h"
 #include "database/database_schema.h"
+#include "database/database_row.h"
 
 /**************************************************************************************************/
 
+class BBleauPlace;
 
-class BBleauPlaceSchema : public QcSchema
+class BBleauPlaceSchema : public QcRowSchema<BBleauPlace>
 {
 public:
+  // typedef BBleauPlace Row;
   enum Fields {
     COORDINATE,
     NAME,
     CATEGORY,
     NOTE
   };
+
+  // static BBleauPlace make() { return BBleauPlace; }
+  // static BBleauPlace make(const QJsonObject & json_object) { return BBleauPlace(json_object); }
+  // static BBleauPlace make(const QVariantHash & variant_hash) { return BBleauPlace(variant_hash); }
+  // static BBleauPlace make(const QVariantList & variants) { return BBleauPlace(variants); }
+  // static BBleauPlace make(const QSqlRecord & record) { return BBleauPlace(return); }
+  // static BBleauPlace make(const QSqlQuery & query) { return BBleauPlace(query); }
 
 public:
   static BBleauPlaceSchema & instance()
@@ -69,10 +78,10 @@ public:
   }
 
   // delete copy and move constructors and assign operators
-  BBleauPlaceSchema(const BBleauPlaceSchema &) = delete;              // Copy constructor
-  BBleauPlaceSchema(BBleauPlaceSchema &&) = delete;                   // Move constructor
-  BBleauPlaceSchema & operator=(const BBleauPlaceSchema &) = delete;  // Copy assign
-  BBleauPlaceSchema & operator=(BBleauPlaceSchema &&) = delete;       // Move assign
+  BBleauPlaceSchema(const BBleauPlaceSchema &) = delete;
+  BBleauPlaceSchema(BBleauPlaceSchema &&) = delete;
+  BBleauPlaceSchema & operator=(const BBleauPlaceSchema &) = delete;
+  BBleauPlaceSchema & operator=(BBleauPlaceSchema &&) = delete;
 
 protected:
   BBleauPlaceSchema();
@@ -81,7 +90,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauPlace : public QObject
+class BBleauPlace : public QObject, public QcRowWithId<4>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -107,7 +116,7 @@ public:
   bool operator==(const BBleauPlace & other);
 
   // Getter/Setter
-  
+
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -149,7 +158,6 @@ signals:
   void noteChanged();
 
 private:
-  QBitArray m_bits;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_category;
@@ -166,314 +174,12 @@ QDebug operator<<(QDebug debug, const BBleauPlace & obj);
 
 /**************************************************************************************************/
 
+class BBleauMassif;
 
-class BBleauBoulderSchema : public QcSchema
+class BBleauMassifSchema : public QcRowSchema<BBleauMassif>
 {
 public:
-  enum Fields {
-    COORDINATE,
-    NAME,
-    COMMENT,
-    GRADE,
-    NUMBER
-  };
-
-public:
-  static BBleauBoulderSchema & instance()
-  {
-    static BBleauBoulderSchema m_instance;
-    return m_instance;
-  }
-
-  // delete copy and move constructors and assign operators
-  BBleauBoulderSchema(const BBleauBoulderSchema &) = delete;              // Copy constructor
-  BBleauBoulderSchema(BBleauBoulderSchema &&) = delete;                   // Move constructor
-  BBleauBoulderSchema & operator=(const BBleauBoulderSchema &) = delete;  // Copy assign
-  BBleauBoulderSchema & operator=(BBleauBoulderSchema &&) = delete;       // Move assign
-
-protected:
-  BBleauBoulderSchema();
-  ~BBleauBoulderSchema();
-};
-
-/**************************************************************************************************/
-
-class BBleauBoulder : public QObject
-{
-  Q_OBJECT
-  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
-  Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
-  Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
-  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
-
-public:
-  static BBleauBoulderSchema & schema() { return BBleauBoulderSchema::instance(); }
-
-public:
-  BBleauBoulder();
-  BBleauBoulder(const BBleauBoulder & other);
-  BBleauBoulder(const QJsonObject & json_object); // JSON deserializer
-  BBleauBoulder(const QVariantHash & variant_hash);
-  BBleauBoulder(const QVariantList & variants);
-  BBleauBoulder(const QSqlRecord & record); // SQL deserializer
-  BBleauBoulder(const QSqlQuery & query); // SQL deserializer
-  ~BBleauBoulder();
-
-  BBleauBoulder & operator=(const BBleauBoulder & other);
-
-  bool operator==(const BBleauBoulder & other);
-
-  // Getter/Setter
-  
-  const QGeoCoordinate & coordinate() const { return m_coordinate; }
-  void set_coordinate(const QGeoCoordinate & value);
-
-  const QString & name() const { return m_name; }
-  void set_name(const QString & value);
-
-  const QString & comment() const { return m_comment; }
-  void set_comment(const QString & value);
-
-  const QString & grade() const { return m_grade; }
-  void set_grade(const QString & value);
-
-  const QString & number() const { return m_number; }
-  void set_number(const QString & value);
-
-  // JSON Serializer
-  QJsonObject to_json(bool only_changed = false) const;
-
-  // Generic Variant Serializer
-  QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantList to_variant_list() const;
-
-  // SQL Serializer
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantList to_variant_list_sql() const;
-
-  // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauBoulderSchema::Fields::COORDINATE]; }
-  bool is_name_modified() const { return m_bits[BBleauBoulderSchema::Fields::NAME]; }
-  bool is_comment_modified() const { return m_bits[BBleauBoulderSchema::Fields::COMMENT]; }
-  bool is_grade_modified() const { return m_bits[BBleauBoulderSchema::Fields::GRADE]; }
-  bool is_number_modified() const { return m_bits[BBleauBoulderSchema::Fields::NUMBER]; }
-
-  // Field accessor by position
-  QVariant field(int position) const;
-  void set_field(int position, const QVariant & value);
-
-signals:
-  void coordinateChanged();
-  void nameChanged();
-  void commentChanged();
-  void gradeChanged();
-  void numberChanged();
-
-private:
-  QBitArray m_bits;
-  QGeoCoordinate m_coordinate;
-  QString m_name;
-  QString m_comment;
-  QString m_grade;
-  QString m_number;
-};
-
-QDataStream & operator<<(QDataStream & out, const BBleauBoulder & obj);
-QDataStream & operator>>(QDataStream & in, BBleauBoulder & obj);
-// qRegisterMetaTypeStreamOperators<BBleauBoulder>("BBleauBoulder");
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauBoulder & obj);
-#endif
-
-/**************************************************************************************************/
-
-
-class BBleauCircuitSchema : public QcSchema
-{
-public:
-  enum Fields {
-    COORDINATE,
-    COLOUR,
-    CREATION_DATE,
-    GESTION,
-    GRADE,
-    NOTE,
-    NUMBER,
-    OPENER,
-    REFECTION_DATE,
-    REFECTION_NOTE,
-    STATUS,
-    TOPOS
-  };
-
-public:
-  static BBleauCircuitSchema & instance()
-  {
-    static BBleauCircuitSchema m_instance;
-    return m_instance;
-  }
-
-  // delete copy and move constructors and assign operators
-  BBleauCircuitSchema(const BBleauCircuitSchema &) = delete;              // Copy constructor
-  BBleauCircuitSchema(BBleauCircuitSchema &&) = delete;                   // Move constructor
-  BBleauCircuitSchema & operator=(const BBleauCircuitSchema &) = delete;  // Copy assign
-  BBleauCircuitSchema & operator=(BBleauCircuitSchema &&) = delete;       // Move assign
-
-protected:
-  BBleauCircuitSchema();
-  ~BBleauCircuitSchema();
-};
-
-/**************************************************************************************************/
-
-class BBleauCircuit : public QObject
-{
-  Q_OBJECT
-  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
-  Q_PROPERTY(QString colour READ colour WRITE set_colour NOTIFY colourChanged)
-  Q_PROPERTY(int creation_date READ creation_date WRITE set_creation_date NOTIFY creation_dateChanged)
-  Q_PROPERTY(QString gestion READ gestion WRITE set_gestion NOTIFY gestionChanged)
-  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
-  Q_PROPERTY(int number READ number WRITE set_number NOTIFY numberChanged)
-  Q_PROPERTY(QString opener READ opener WRITE set_opener NOTIFY openerChanged)
-  Q_PROPERTY(int refection_date READ refection_date WRITE set_refection_date NOTIFY refection_dateChanged)
-  Q_PROPERTY(QString refection_note READ refection_note WRITE set_refection_note NOTIFY refection_noteChanged)
-  Q_PROPERTY(QString status READ status WRITE set_status NOTIFY statusChanged)
-  Q_PROPERTY(QStringList topos READ topos WRITE set_topos NOTIFY toposChanged)
-
-public:
-  static BBleauCircuitSchema & schema() { return BBleauCircuitSchema::instance(); }
-
-public:
-  BBleauCircuit();
-  BBleauCircuit(const BBleauCircuit & other);
-  BBleauCircuit(const QJsonObject & json_object); // JSON deserializer
-  BBleauCircuit(const QVariantHash & variant_hash);
-  BBleauCircuit(const QVariantList & variants);
-  BBleauCircuit(const QSqlRecord & record); // SQL deserializer
-  BBleauCircuit(const QSqlQuery & query); // SQL deserializer
-  ~BBleauCircuit();
-
-  BBleauCircuit & operator=(const BBleauCircuit & other);
-
-  bool operator==(const BBleauCircuit & other);
-
-  // Getter/Setter
-  
-  const QGeoCoordinate & coordinate() const { return m_coordinate; }
-  void set_coordinate(const QGeoCoordinate & value);
-
-  const QString & colour() const { return m_colour; }
-  void set_colour(const QString & value);
-
-  int creation_date() const { return m_creation_date; }
-  void set_creation_date(int value);
-
-  const QString & gestion() const { return m_gestion; }
-  void set_gestion(const QString & value);
-
-  const QString & grade() const { return m_grade; }
-  void set_grade(const QString & value);
-
-  const QString & note() const { return m_note; }
-  void set_note(const QString & value);
-
-  int number() const { return m_number; }
-  void set_number(int value);
-
-  const QString & opener() const { return m_opener; }
-  void set_opener(const QString & value);
-
-  int refection_date() const { return m_refection_date; }
-  void set_refection_date(int value);
-
-  const QString & refection_note() const { return m_refection_note; }
-  void set_refection_note(const QString & value);
-
-  const QString & status() const { return m_status; }
-  void set_status(const QString & value);
-
-  const QStringList & topos() const { return m_topos; }
-  void set_topos(const QStringList & value);
-
-  // JSON Serializer
-  QJsonObject to_json(bool only_changed = false) const;
-
-  // Generic Variant Serializer
-  QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantList to_variant_list() const;
-
-  // SQL Serializer
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantList to_variant_list_sql() const;
-
-  // Query for update
-  bool is_modified() const { return not m_bits.isNull(); }
-  bool is_coordinate_modified() const { return m_bits[BBleauCircuitSchema::Fields::COORDINATE]; }
-  bool is_colour_modified() const { return m_bits[BBleauCircuitSchema::Fields::COLOUR]; }
-  bool is_creation_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::CREATION_DATE]; }
-  bool is_gestion_modified() const { return m_bits[BBleauCircuitSchema::Fields::GESTION]; }
-  bool is_grade_modified() const { return m_bits[BBleauCircuitSchema::Fields::GRADE]; }
-  bool is_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::NOTE]; }
-  bool is_number_modified() const { return m_bits[BBleauCircuitSchema::Fields::NUMBER]; }
-  bool is_opener_modified() const { return m_bits[BBleauCircuitSchema::Fields::OPENER]; }
-  bool is_refection_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_DATE]; }
-  bool is_refection_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_NOTE]; }
-  bool is_status_modified() const { return m_bits[BBleauCircuitSchema::Fields::STATUS]; }
-  bool is_topos_modified() const { return m_bits[BBleauCircuitSchema::Fields::TOPOS]; }
-
-  // Field accessor by position
-  QVariant field(int position) const;
-  void set_field(int position, const QVariant & value);
-
-signals:
-  void coordinateChanged();
-  void colourChanged();
-  void creation_dateChanged();
-  void gestionChanged();
-  void gradeChanged();
-  void noteChanged();
-  void numberChanged();
-  void openerChanged();
-  void refection_dateChanged();
-  void refection_noteChanged();
-  void statusChanged();
-  void toposChanged();
-
-private:
-  QBitArray m_bits;
-  QGeoCoordinate m_coordinate;
-  QString m_colour;
-  int m_creation_date;
-  QString m_gestion;
-  QString m_grade;
-  QString m_note;
-  int m_number;
-  QString m_opener;
-  int m_refection_date;
-  QString m_refection_note;
-  QString m_status;
-  QStringList m_topos;
-};
-
-QDataStream & operator<<(QDataStream & out, const BBleauCircuit & obj);
-QDataStream & operator>>(QDataStream & in, BBleauCircuit & obj);
-// qRegisterMetaTypeStreamOperators<BBleauCircuit>("BBleauCircuit");
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauCircuit & obj);
-#endif
-
-/**************************************************************************************************/
-
-
-class BBleauMassifSchema : public QcSchema
-{
-public:
+  // typedef BBleauMassif Row;
   enum Fields {
     COORDINATE,
     NAME,
@@ -487,6 +193,13 @@ public:
     VELO
   };
 
+  // static BBleauMassif make() { return BBleauMassif; }
+  // static BBleauMassif make(const QJsonObject & json_object) { return BBleauMassif(json_object); }
+  // static BBleauMassif make(const QVariantHash & variant_hash) { return BBleauMassif(variant_hash); }
+  // static BBleauMassif make(const QVariantList & variants) { return BBleauMassif(variants); }
+  // static BBleauMassif make(const QSqlRecord & record) { return BBleauMassif(return); }
+  // static BBleauMassif make(const QSqlQuery & query) { return BBleauMassif(query); }
+
 public:
   static BBleauMassifSchema & instance()
   {
@@ -495,10 +208,10 @@ public:
   }
 
   // delete copy and move constructors and assign operators
-  BBleauMassifSchema(const BBleauMassifSchema &) = delete;              // Copy constructor
-  BBleauMassifSchema(BBleauMassifSchema &&) = delete;                   // Move constructor
-  BBleauMassifSchema & operator=(const BBleauMassifSchema &) = delete;  // Copy assign
-  BBleauMassifSchema & operator=(BBleauMassifSchema &&) = delete;       // Move assign
+  BBleauMassifSchema(const BBleauMassifSchema &) = delete;
+  BBleauMassifSchema(BBleauMassifSchema &&) = delete;
+  BBleauMassifSchema & operator=(const BBleauMassifSchema &) = delete;
+  BBleauMassifSchema & operator=(BBleauMassifSchema &&) = delete;
 
 protected:
   BBleauMassifSchema();
@@ -507,7 +220,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauMassif : public QObject
+class BBleauMassif : public QObject, public QcRowWithId<10>
 {
   Q_OBJECT
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -539,7 +252,7 @@ public:
   bool operator==(const BBleauMassif & other);
 
   // Getter/Setter
-  
+
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -611,7 +324,6 @@ signals:
   void veloChanged();
 
 private:
-  QBitArray m_bits;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_access;
@@ -634,6 +346,334 @@ QDebug operator<<(QDebug debug, const BBleauMassif & obj);
 
 /**************************************************************************************************/
 
+class BBleauBoulder;
+
+class BBleauBoulderSchema : public QcRowSchema<BBleauBoulder>
+{
+public:
+  // typedef BBleauBoulder Row;
+  enum Fields {
+    COORDINATE,
+    NAME,
+    COMMENT,
+    GRADE,
+    NUMBER
+  };
+
+  // static BBleauBoulder make() { return BBleauBoulder; }
+  // static BBleauBoulder make(const QJsonObject & json_object) { return BBleauBoulder(json_object); }
+  // static BBleauBoulder make(const QVariantHash & variant_hash) { return BBleauBoulder(variant_hash); }
+  // static BBleauBoulder make(const QVariantList & variants) { return BBleauBoulder(variants); }
+  // static BBleauBoulder make(const QSqlRecord & record) { return BBleauBoulder(return); }
+  // static BBleauBoulder make(const QSqlQuery & query) { return BBleauBoulder(query); }
+
+public:
+  static BBleauBoulderSchema & instance()
+  {
+    static BBleauBoulderSchema m_instance;
+    return m_instance;
+  }
+
+  // delete copy and move constructors and assign operators
+  BBleauBoulderSchema(const BBleauBoulderSchema &) = delete;
+  BBleauBoulderSchema(BBleauBoulderSchema &&) = delete;
+  BBleauBoulderSchema & operator=(const BBleauBoulderSchema &) = delete;
+  BBleauBoulderSchema & operator=(BBleauBoulderSchema &&) = delete;
+
+protected:
+  BBleauBoulderSchema();
+  ~BBleauBoulderSchema();
+};
+
+/**************************************************************************************************/
+
+class BBleauBoulder : public QObject, public QcRowWithId<5>
+{
+  Q_OBJECT
+  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
+  Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
+  Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
+  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
+  Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
+
+public:
+  static BBleauBoulderSchema & schema() { return BBleauBoulderSchema::instance(); }
+
+public:
+  BBleauBoulder();
+  BBleauBoulder(const BBleauBoulder & other);
+  BBleauBoulder(const QJsonObject & json_object); // JSON deserializer
+  BBleauBoulder(const QVariantHash & variant_hash);
+  BBleauBoulder(const QVariantList & variants);
+  BBleauBoulder(const QSqlRecord & record); // SQL deserializer
+  BBleauBoulder(const QSqlQuery & query); // SQL deserializer
+  ~BBleauBoulder();
+
+  BBleauBoulder & operator=(const BBleauBoulder & other);
+
+  bool operator==(const BBleauBoulder & other);
+
+  // Getter/Setter
+
+  const QGeoCoordinate & coordinate() const { return m_coordinate; }
+  void set_coordinate(const QGeoCoordinate & value);
+
+  const QString & name() const { return m_name; }
+  void set_name(const QString & value);
+
+  const QString & comment() const { return m_comment; }
+  void set_comment(const QString & value);
+
+  const QString & grade() const { return m_grade; }
+  void set_grade(const QString & value);
+
+  const QString & number() const { return m_number; }
+  void set_number(const QString & value);
+
+  // JSON Serializer
+  QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
+  QVariantHash to_variant_hash(bool only_changed = false) const;
+  QVariantList to_variant_list() const;
+
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
+  bool is_coordinate_modified() const { return m_bits[BBleauBoulderSchema::Fields::COORDINATE]; }
+  bool is_name_modified() const { return m_bits[BBleauBoulderSchema::Fields::NAME]; }
+  bool is_comment_modified() const { return m_bits[BBleauBoulderSchema::Fields::COMMENT]; }
+  bool is_grade_modified() const { return m_bits[BBleauBoulderSchema::Fields::GRADE]; }
+  bool is_number_modified() const { return m_bits[BBleauBoulderSchema::Fields::NUMBER]; }
+
+  // Field accessor by position
+  QVariant field(int position) const;
+  void set_field(int position, const QVariant & value);
+
+signals:
+  void coordinateChanged();
+  void nameChanged();
+  void commentChanged();
+  void gradeChanged();
+  void numberChanged();
+
+private:
+  QGeoCoordinate m_coordinate;
+  QString m_name;
+  QString m_comment;
+  QString m_grade;
+  QString m_number;
+};
+
+QDataStream & operator<<(QDataStream & out, const BBleauBoulder & obj);
+QDataStream & operator>>(QDataStream & in, BBleauBoulder & obj);
+// qRegisterMetaTypeStreamOperators<BBleauBoulder>("BBleauBoulder");
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauBoulder & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BBleauCircuit;
+
+class BBleauCircuitSchema : public QcRowSchema<BBleauCircuit>
+{
+public:
+  // typedef BBleauCircuit Row;
+  enum Fields {
+    COORDINATE,
+    COLOUR,
+    CREATION_DATE,
+    GESTION,
+    GRADE,
+    MASSIF,
+    NOTE,
+    NUMBER,
+    OPENER,
+    REFECTION_DATE,
+    REFECTION_NOTE,
+    STATUS,
+    TOPOS
+  };
+
+  // static BBleauCircuit make() { return BBleauCircuit; }
+  // static BBleauCircuit make(const QJsonObject & json_object) { return BBleauCircuit(json_object); }
+  // static BBleauCircuit make(const QVariantHash & variant_hash) { return BBleauCircuit(variant_hash); }
+  // static BBleauCircuit make(const QVariantList & variants) { return BBleauCircuit(variants); }
+  // static BBleauCircuit make(const QSqlRecord & record) { return BBleauCircuit(return); }
+  // static BBleauCircuit make(const QSqlQuery & query) { return BBleauCircuit(query); }
+
+public:
+  static BBleauCircuitSchema & instance()
+  {
+    static BBleauCircuitSchema m_instance;
+    return m_instance;
+  }
+
+  // delete copy and move constructors and assign operators
+  BBleauCircuitSchema(const BBleauCircuitSchema &) = delete;
+  BBleauCircuitSchema(BBleauCircuitSchema &&) = delete;
+  BBleauCircuitSchema & operator=(const BBleauCircuitSchema &) = delete;
+  BBleauCircuitSchema & operator=(BBleauCircuitSchema &&) = delete;
+
+protected:
+  BBleauCircuitSchema();
+  ~BBleauCircuitSchema();
+};
+
+/**************************************************************************************************/
+
+class BBleauCircuit : public QObject, public QcRowWithId<13>
+{
+  Q_OBJECT
+  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
+  Q_PROPERTY(QString colour READ colour WRITE set_colour NOTIFY colourChanged)
+  Q_PROPERTY(int creation_date READ creation_date WRITE set_creation_date NOTIFY creation_dateChanged)
+  Q_PROPERTY(QString gestion READ gestion WRITE set_gestion NOTIFY gestionChanged)
+  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
+  Q_PROPERTY(int massif READ massif WRITE set_massif NOTIFY massifChanged)
+  Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
+  Q_PROPERTY(int number READ number WRITE set_number NOTIFY numberChanged)
+  Q_PROPERTY(QString opener READ opener WRITE set_opener NOTIFY openerChanged)
+  Q_PROPERTY(int refection_date READ refection_date WRITE set_refection_date NOTIFY refection_dateChanged)
+  Q_PROPERTY(QString refection_note READ refection_note WRITE set_refection_note NOTIFY refection_noteChanged)
+  Q_PROPERTY(QString status READ status WRITE set_status NOTIFY statusChanged)
+  Q_PROPERTY(QStringList topos READ topos WRITE set_topos NOTIFY toposChanged)
+
+public:
+  static BBleauCircuitSchema & schema() { return BBleauCircuitSchema::instance(); }
+
+public:
+  BBleauCircuit();
+  BBleauCircuit(const BBleauCircuit & other);
+  BBleauCircuit(const QJsonObject & json_object); // JSON deserializer
+  BBleauCircuit(const QVariantHash & variant_hash);
+  BBleauCircuit(const QVariantList & variants);
+  BBleauCircuit(const QSqlRecord & record); // SQL deserializer
+  BBleauCircuit(const QSqlQuery & query); // SQL deserializer
+  ~BBleauCircuit();
+
+  BBleauCircuit & operator=(const BBleauCircuit & other);
+
+  bool operator==(const BBleauCircuit & other);
+
+  // Getter/Setter
+
+  const QGeoCoordinate & coordinate() const { return m_coordinate; }
+  void set_coordinate(const QGeoCoordinate & value);
+
+  const QString & colour() const { return m_colour; }
+  void set_colour(const QString & value);
+
+  int creation_date() const { return m_creation_date; }
+  void set_creation_date(int value);
+
+  const QString & gestion() const { return m_gestion; }
+  void set_gestion(const QString & value);
+
+  const QString & grade() const { return m_grade; }
+  void set_grade(const QString & value);
+
+  int massif() const { return m_massif; }
+  void set_massif(int value);
+
+  const QString & note() const { return m_note; }
+  void set_note(const QString & value);
+
+  int number() const { return m_number; }
+  void set_number(int value);
+
+  const QString & opener() const { return m_opener; }
+  void set_opener(const QString & value);
+
+  int refection_date() const { return m_refection_date; }
+  void set_refection_date(int value);
+
+  const QString & refection_note() const { return m_refection_note; }
+  void set_refection_note(const QString & value);
+
+  const QString & status() const { return m_status; }
+  void set_status(const QString & value);
+
+  const QStringList & topos() const { return m_topos; }
+  void set_topos(const QStringList & value);
+
+  // JSON Serializer
+  QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
+  QVariantHash to_variant_hash(bool only_changed = false) const;
+  QVariantList to_variant_list() const;
+
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
+  QVariantList to_variant_list_sql() const;
+
+  // Query for update
+  bool is_modified() const { return not m_bits.isNull(); }
+  bool is_coordinate_modified() const { return m_bits[BBleauCircuitSchema::Fields::COORDINATE]; }
+  bool is_colour_modified() const { return m_bits[BBleauCircuitSchema::Fields::COLOUR]; }
+  bool is_creation_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::CREATION_DATE]; }
+  bool is_gestion_modified() const { return m_bits[BBleauCircuitSchema::Fields::GESTION]; }
+  bool is_grade_modified() const { return m_bits[BBleauCircuitSchema::Fields::GRADE]; }
+  bool is_massif_modified() const { return m_bits[BBleauCircuitSchema::Fields::MASSIF]; }
+  bool is_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::NOTE]; }
+  bool is_number_modified() const { return m_bits[BBleauCircuitSchema::Fields::NUMBER]; }
+  bool is_opener_modified() const { return m_bits[BBleauCircuitSchema::Fields::OPENER]; }
+  bool is_refection_date_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_DATE]; }
+  bool is_refection_note_modified() const { return m_bits[BBleauCircuitSchema::Fields::REFECTION_NOTE]; }
+  bool is_status_modified() const { return m_bits[BBleauCircuitSchema::Fields::STATUS]; }
+  bool is_topos_modified() const { return m_bits[BBleauCircuitSchema::Fields::TOPOS]; }
+
+  // Field accessor by position
+  QVariant field(int position) const;
+  void set_field(int position, const QVariant & value);
+
+signals:
+  void coordinateChanged();
+  void colourChanged();
+  void creation_dateChanged();
+  void gestionChanged();
+  void gradeChanged();
+  void massifChanged();
+  void noteChanged();
+  void numberChanged();
+  void openerChanged();
+  void refection_dateChanged();
+  void refection_noteChanged();
+  void statusChanged();
+  void toposChanged();
+
+private:
+  QGeoCoordinate m_coordinate;
+  QString m_colour;
+  int m_creation_date;
+  QString m_gestion;
+  QString m_grade;
+  int m_massif;
+  QString m_note;
+  int m_number;
+  QString m_opener;
+  int m_refection_date;
+  QString m_refection_note;
+  QString m_status;
+  QStringList m_topos;
+};
+
+QDataStream & operator<<(QDataStream & out, const BBleauCircuit & obj);
+QDataStream & operator>>(QDataStream & in, BBleauCircuit & obj);
+// qRegisterMetaTypeStreamOperators<BBleauCircuit>("BBleauCircuit");
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauCircuit & obj);
+#endif
+
+/**************************************************************************************************/
+
 
 class BleauSchema : public QcDatabaseSchema
 {
@@ -645,15 +685,15 @@ public:
   BleauSchema & operator=(const BleauSchema & other) = delete;
 
   QcDatabaseTable * place() { return m_place; }
+  QcDatabaseTable * massif() { return m_massif; }
   QcDatabaseTable * boulder() { return m_boulder; }
   QcDatabaseTable * circuit() { return m_circuit; }
-  QcDatabaseTable * massif() { return m_massif; }
 
 private:
   QcDatabaseTable * m_place;
+  QcDatabaseTable * m_massif;
   QcDatabaseTable * m_boulder;
   QcDatabaseTable * m_circuit;
-  QcDatabaseTable * m_massif;
 };
 
 /**************************************************************************************************/

@@ -37,38 +37,26 @@ from .CppType import TypeConversion
 
 ####################################################################################################
 
-class Field:
+class FieldBase:
 
     __context__ = None
 
     ##############################################
 
-    def __init__(self, name,
-                 sql_type,
-                 qt_type,
-                 sql_qualifier='',
-                 sql_name=None,
-                 json_name=None,
-                 title='',
-                 description='',
-    ):
+    def __init__(self):
 
-        self._sql_type = sql_type
-        self._qt_type = qt_type
-        self._sql_qualifier = sql_qualifier
+        self._name = None
 
-        if sql_name is None:
-            sql_name = name
-        self._sql_name = sql_name
+        self._sql_type = None
+        self._qt_type = None
 
-        if json_name is None:
-            json_name = name
-        self._json_name = json_name
+        self._sql_name = None
+        self._json_name = None
 
-        self._title = title
-        self._description = description
+        self._variable = None
 
-        self.name = name
+        self._primary_key = False
+        self._nullable = True
 
     ##############################################
 
@@ -94,12 +82,12 @@ class Field:
     ##############################################
 
     @property
-    def sql_type(self):
-        return self._sql_type
+    def is_foreign_key(self):
+        return False
 
     @property
-    def sql_qualifier(self):
-        return self._sql_qualifier
+    def sql_type(self):
+        return self._sql_type
 
     @property
     def qt_type(self):
@@ -114,29 +102,89 @@ class Field:
         return self._json_name
 
     @property
+    def variable(self):
+        return self._variable
+
+    @property
+    def primary_key(self):
+        return self._primary_key
+
+    @property
+    def nullable(self):
+        return self._nullable
+
+    @property
+    def context(self):
+        return self.__context__
+
+####################################################################################################
+
+class Field(FieldBase):
+
+    # Aka Column
+
+    ##############################################
+
+    def __init__(self, name,
+                 sql_type,
+                 qt_type,
+                 sql_qualifier='',
+                 sql_name=None,
+                 json_name=None,
+                 title='',
+                 description='',
+                 primary_key=False,
+                 autoincrement=False,
+                 nullable=True,
+                 unique=False,
+                 default=None,
+    ):
+
+        FieldBase.__init__(self)
+
+        self._sql_type = sql_type
+        self._qt_type = qt_type
+
+        self._primary_key = primary_key
+        self._autoincrement = autoincrement
+        self._nullable = nullable
+        self._unique = unique
+        self._default = default
+
+        if sql_name is None:
+            sql_name = name
+        self._sql_name = sql_name
+
+        if json_name is None:
+            json_name = name
+        self._json_name = json_name
+
+        self._title = title
+        self._description = description
+
+        self.name = name
+
+    ##############################################
+
+    @property
+    def autoincrement(self):
+        return self._autoincrement
+
+    @property
+    def unique(self):
+        return self._unique
+
+    @property
+    def default(self):
+        return self._default
+
+    @property
     def title(self):
         return self._title
 
     @property
     def description(self):
         return self._description
-
-    @property
-    def variable(self):
-        return self._variable
-
-    @property
-    def context(self):
-        return self.__context__
-
-    ##############################################
-
-    def to_sql(self):
-
-        sql = ' '.join((self._name, self._sql_type))
-        if self._sql_attributes:
-            sql += ' ' + self._sql_attributes
-        return sql
 
 ####################################################################################################
 
@@ -202,6 +250,64 @@ class UnixDateTimeField(Field):
 
 ####################################################################################################
 
+class Relationship(FieldBase):
+
+    ##############################################
+
+    def __init__(self, cls,
+                 back_populates=None,
+                 json_value=None):
+
+        FieldBase.__init__(self)
+
+        self._cls = cls
+        self._back_populates = back_populates
+
+    ##############################################
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    ##############################################
+
+    @property
+    def qt_type(self):
+        return self._qt_type
+
+    @qt_type.setter
+    def qt_type(self, value):
+        self._qt_type = value
+        self._variable = Variable(self._name, self._qt_type) # , context=self.__context__
+
+    @property
+    def sql_type(self):
+        return self._sql_type
+
+    @sql_type.setter
+    def sql_type(self, value):
+        self._sql_type = value
+
+    ##############################################
+
+    @property
+    def is_foreign_key(self):
+        return True
+
+    @property
+    def cls(self):
+        return self._cls
+
+    @property
+    def back_populates(self):
+        return self._back_populates
+
+####################################################################################################
+
 class Schema:
 
     # Fixme: name clash !
@@ -225,14 +331,24 @@ class Schema:
             field_names = d.keys()
         for name in field_names:
             field = d[name]
-            if isinstance(field, Field):
+            if isinstance(field, FieldBase):
                 field.name  = name
                 self._fields.append(field)
 
+    ##############################################
+
+    def _post_init(self):
+
         self._members = [field.variable for field in self._fields]
         self._member_types = sorted(set([member.type for member in self._members]))
-        self._private_members = [Variable('bits', 'QBitArray', value=len(self._members))]
+        self._private_members = []
         self._all_members = self._private_members + self._members
+
+    ##############################################
+
+    def __repr__(self):
+
+        return '{0.__class__.__name__} {0._name}'.format(self)
 
     ##############################################
 
@@ -252,13 +368,21 @@ class Schema:
 
     ##############################################
 
-    def to_sql(self):
+    @property
+    def primary_keys(self):
 
-        sql = 'CREATE TABLE {} ('.format(self.__table_name__)
-        fields = [field.to_sql() for field in self]
-        sql += ', '.join(fields)
-        sql += ')'
-        return sql
+        for field in self:
+            if field.primary_key:
+                return field
+
+    ##############################################
+
+    @property
+    def foreign_keys(self):
+
+        for field in self:
+            if field.is_foreign_key:
+                yield field
 
     ##############################################
 
@@ -268,7 +392,6 @@ class Schema:
         include_classes = set([member.type for member in self._members if member.type.startswith('Q')])
         include_classes |= set((
             # 'QObject',
-            'QBitArray',
             'QDataStream',
             'QJsonObject',
             'QSqlQuery',
@@ -313,6 +436,21 @@ class SchemaRepository:
 
         self._name = name
         self._schemas = [cls() for cls in schemas]
+        self._schema_map = {cls:self._schemas[i] for i, cls in enumerate(schemas)}
+
+        for schema in self:
+            # print(schema, schema.primary_keys, schema.foreign_keys)
+            for foreign_key in schema.foreign_keys:
+                referenced_schema = self._schema_map[foreign_key.cls]
+                if referenced_schema.primary_keys:
+                    pass
+                else: # use Integer rowid
+                    foreign_key.qt_type = 'int'
+                    foreign_key.sql_type = 'Integer'
+                print("Foreign key {0.name}.{1.name} {1.sql_type}".format(self, foreign_key))
+
+        for schema in self:
+            schema._post_init()
 
     ##############################################
 
@@ -355,6 +493,7 @@ class SchemaRepository:
         header.new_line()
         header.include('database/schema.h', local=True)
         header.include('database/database_schema.h', local=True)
+        header.include('database/database_row.h', local=True)
         header.new_line()
         header.rule()
         header.new_line()

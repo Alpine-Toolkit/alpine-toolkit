@@ -33,7 +33,6 @@
 
 /**************************************************************************************************/
 
-#include <QBitArray>
 #include <QDataStream>
 #include <QDateTime>
 #include <QJsonObject>
@@ -47,13 +46,16 @@
 
 #include "database/schema.h"
 #include "database/database_schema.h"
+#include "database/database_row.h"
 
 /**************************************************************************************************/
 
+class Document;
 
-class DocumentSchema : public QcSchema
+class DocumentSchema : public QcRowSchema<Document>
 {
 public:
+  // typedef Document Row;
   enum Fields {
     ID,
     NAME,
@@ -65,6 +67,13 @@ public:
     SIZE
   };
 
+  // static Document make() { return Document; }
+  // static Document make(const QJsonObject & json_object) { return Document(json_object); }
+  // static Document make(const QVariantHash & variant_hash) { return Document(variant_hash); }
+  // static Document make(const QVariantList & variants) { return Document(variants); }
+  // static Document make(const QSqlRecord & record) { return Document(return); }
+  // static Document make(const QSqlQuery & query) { return Document(query); }
+
 public:
   static DocumentSchema & instance()
   {
@@ -73,10 +82,10 @@ public:
   }
 
   // delete copy and move constructors and assign operators
-  DocumentSchema(const DocumentSchema &) = delete;              // Copy constructor
-  DocumentSchema(DocumentSchema &&) = delete;                   // Move constructor
-  DocumentSchema & operator=(const DocumentSchema &) = delete;  // Copy assign
-  DocumentSchema & operator=(DocumentSchema &&) = delete;       // Move assign
+  DocumentSchema(const DocumentSchema &) = delete;
+  DocumentSchema(DocumentSchema &&) = delete;
+  DocumentSchema & operator=(const DocumentSchema &) = delete;
+  DocumentSchema & operator=(DocumentSchema &&) = delete;
 
 protected:
   DocumentSchema();
@@ -85,7 +94,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Document : public QObject
+class Document : public QObject, public QcRowWithId<8>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -115,7 +124,7 @@ public:
   bool operator==(const Document & other);
 
   // Getter/Setter
-  
+
   int id() const { return m_id; }
   void set_id(int value);
 
@@ -177,7 +186,6 @@ signals:
   void sizeChanged();
 
 private:
-  QBitArray m_bits;
   int m_id;
   QString m_name;
   QString m_author;

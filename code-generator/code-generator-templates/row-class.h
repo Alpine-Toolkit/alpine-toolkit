@@ -2,22 +2,32 @@
 {%- from "includes/singleton.h" import singleton -%}
 {%- from "includes/property.h" import property -%}
 
-{%- with class_name = class_name + 'Schema' %}
-class {{class_name}} : public QcSchema
+class {{class_name}};
+{# #}
+{%- with class_name_schema = class_name + 'Schema' %}
+class {{class_name_schema}} : public QcRowSchema<{{class_name}}>
 {
 public:
+  // typedef {{class_name}} Row;
   enum Fields {
 {%- for member in members %}
     {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
   };
 
-{{ singleton(class_name) }}
+  // static {{class_name}} make() { return {{class_name}}; }
+  // static {{class_name}} make(const QJsonObject & json_object) { return {{class_name}}(json_object); }
+  // static {{class_name}} make(const QVariantHash & variant_hash) { return {{class_name}}(variant_hash); }
+  // static {{class_name}} make(const QVariantList & variants) { return {{class_name}}(variants); }
+  // static {{class_name}} make(const QSqlRecord & record) { return {{class_name}}(return); }
+  // static {{class_name}} make(const QSqlQuery & query) { return {{class_name}}(query); }
+
+{{ singleton(class_name_schema) }}
 };
 {%- endwith %}
 
 /**************************************************************************************************/
 
-class {{class_name}} : public QObject
+class {{class_name}} : public QObject, public QcRowWithId<{{ members|length }}>
 {
   Q_OBJECT
 {%- for member in members %}
@@ -41,12 +51,12 @@ public:
   bool operator==(const {{class_name}} & other);
 
   // Getter/Setter
-  {# #}
+{# #}
 {%- for member in members %}
   {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
   void set_{{member.name}}({{member.setter_type}} value);
 {% endfor -%}
-  {# #}
+{# #}
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
 
@@ -72,7 +82,6 @@ signals:
   void {{member.name}}Changed();{% endfor %}
 
 private:
-  QBitArray m_bits;
 {%- for member in members %}
   {{member.type}} m_{{member.name}};{% endfor %}
 };

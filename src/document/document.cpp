@@ -36,72 +36,136 @@
 // QC_BEGIN_NAMESPACE
 
 DocumentSchema::DocumentSchema()
-: QcSchema(QLatin1String("Document"), QLatin1String("document"))
+: QcRowSchema<Document>(QLatin1String("Document"), QLatin1String("document"))
 {
-  add_field(QcSchemaField(QLatin1String("id"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("id"),
-                          QLatin1String("id"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("name"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("name"),
-                          QLatin1String("name"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("author"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("author"),
-                          QLatin1String("author"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("version"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("version"),
-                          QLatin1String("version"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("date"),
-                          QLatin1String("QDateTime"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("date"),
-                          QLatin1String("date"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("description"),
-                          QLatin1String("QString"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("description"),
-                          QLatin1String("description"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("url"),
-                          QLatin1String("QUrl"),
-                          QLatin1String("text"),
-                          QLatin1String(""),
-                          QLatin1String("url"),
-                          QLatin1String("url"),
-                          QLatin1String(""),
-                          QLatin1String("")));
-  add_field(QcSchemaField(QLatin1String("size"),
-                          QLatin1String("int"),
-                          QLatin1String("integer"),
-                          QLatin1String(""),
-                          QLatin1String("size"),
-                          QLatin1String("size"),
-                          QLatin1String(""),
-                          QLatin1String("")));
+  {
+    QcSchemaField field(QLatin1String("id"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("id"),
+                        QLatin1String("id"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("name"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("name"),
+                        QLatin1String("name"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("author"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("author"),
+                        QLatin1String("author"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("version"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("version"),
+                        QLatin1String("version"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("date"),
+                        QLatin1String("QDateTime"),
+                        QLatin1String("integer"),
+                        QLatin1String("date"),
+                        QLatin1String("date"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("description"),
+                        QLatin1String("QString"),
+                        QLatin1String("text"),
+                        QLatin1String("description"),
+                        QLatin1String("description"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("url"),
+                        QLatin1String("QUrl"),
+                        QLatin1String("text"),
+                        QLatin1String("url"),
+                        QLatin1String("url"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
+  {
+    QcSchemaField field(QLatin1String("size"),
+                        QLatin1String("int"),
+                        QLatin1String("integer"),
+                        QLatin1String("size"),
+                        QLatin1String("size"),
+                        QLatin1String(""),
+                        QLatin1String(""));
+    // Optional parameters
+    
+    
+    
+    
+    
+    add_field(field);
+  }
 }
 
 DocumentSchema::~DocumentSchema()
@@ -110,8 +174,7 @@ DocumentSchema::~DocumentSchema()
 /**************************************************************************************************/
 
 Document::Document()
-  : m_bits(8),
-    m_id(),
+  : m_id(),
     m_name(),
     m_author(),
     m_version(),
@@ -122,8 +185,7 @@ Document::Document()
 {}
 
 Document::Document(const Document & other)
-  : m_bits(other.m_bits),
-    m_id(other.m_id),
+  : m_id(other.m_id),
     m_name(other.m_name),
     m_author(other.m_author),
     m_version(other.m_version),
@@ -201,11 +263,11 @@ Document::Document(const QSqlQuery & query)
 Document::~Document()
 {}
 
+// bit array ?
 Document &
 Document::operator=(const Document & other)
 {
   if (this != &other) {
-    m_bits = other.m_bits;
     m_id = other.m_id;
     m_name = other.m_name;
     m_author = other.m_author;
@@ -218,6 +280,7 @@ Document::operator=(const Document & other)
 
   return *this;
 }
+// bit array ?
 bool
 Document::operator==(const Document & other)
 {

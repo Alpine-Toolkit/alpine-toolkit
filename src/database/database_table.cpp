@@ -141,14 +141,7 @@ QcDatabaseTable::exists() const
 bool
 QcDatabaseTable::create()
 {
-  QString sql_query = QLatin1String("CREATE TABLE ");
-  sql_query += m_name;
-  sql_query += QLatin1String(" (");
-  QStringList sql_fields;
-  for (const auto & field : m_schema.fields())
-    sql_fields << field.to_sql_definition();
-  sql_query += sql_fields.join(QLatin1String(", "));
-  sql_query += ')';
+  QString sql_query = m_schema.to_sql_definition();
   return m_database->execute_query(sql_query);
 }
 
