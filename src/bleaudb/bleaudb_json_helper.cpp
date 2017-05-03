@@ -29,6 +29,7 @@
 #include "bleaudb/bleaudb_json_helper.h"
 
 #include <QVariant>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
@@ -56,9 +57,9 @@ namespace bleaudb {
   QGeoCoordinate
   load_sql_coordinate(const QVariant & variant) {
     QString encoded_coordinate = variant.toString();
-    int position = encoded_coordinate.indexOf('|');
+    int position = encoded_coordinate.indexOf(',');
     if (position > 0) {
-      double longitude = encoded_coordinate.left(position -1).toDouble();
+      double longitude = encoded_coordinate.left(position).toDouble();
       double latitude = encoded_coordinate.mid(position +1).toDouble();
       return QGeoCoordinate(latitude, longitude);
     } else
@@ -66,7 +67,9 @@ namespace bleaudb {
   }
   QString
   dump_sql_coordinate(const QGeoCoordinate & coordinate) {
-    return QString("%1|%2").arg(coordinate.longitude()).arg(coordinate.latitude());
+    // return QString("%1|%2").arg(coordinate.longitude()).arg(coordinate.latitude());
+    // Point(,)
+    return QString("%1,%2").arg(QString::number(coordinate.longitude())).arg(QString::number(coordinate.latitude()));
   }
 }
 
