@@ -40,7 +40,10 @@ QcDatabaseSchema::QcDatabaseSchema(QcDatabase & database)
 {}
 
 QcDatabaseSchema::~QcDatabaseSchema()
-{}
+{
+  for (auto * table_ptr : m_tables)
+    delete table_ptr;
+}
 
 // Database must be opened before to create table !
 /*
@@ -56,7 +59,7 @@ QcDatabaseTable &
 QcDatabaseSchema::register_table(QcDatabaseTable * table_ptr)
 {
   // m_tables << std::unique_ptr<QcDatabaseTable>(table_ptr);
-  m_tables << table_ptr;
+  m_tables << table_ptr; // Fixme:
   m_table_name_map[table_ptr->name()] = table_ptr;
   m_schema_map[table_ptr->schema().schema_id()] = table_ptr;
   return *table_ptr;
