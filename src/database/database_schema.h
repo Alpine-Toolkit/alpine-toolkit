@@ -39,6 +39,8 @@
 
 #include <memory>
 
+#include<QtDebug>
+
 /**************************************************************************************************/
 
 class QcDatabaseSchema // : QObject
@@ -57,10 +59,24 @@ public:
 
   QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
+  void add(QcRowTraits & row);
+
+  template<class T>
+  void add(T & row) {
+    QcDatabaseTable & table = get_table_by_schema(T::schema());
+    QSqlQuery query = table.complete_insert(row.to_variant_list_sql());
+    int rowid = query.lastInsertId().toInt();
+    row.set_rowid(rowid);
+  }
+
+  template<class T>
+  T query_by_id(int rowid) {
+    QcDatabaseTable & table = get_table_by_schema(T::schema());
+    return T(table.select_by_id(rowid));
+  }
+
   // Derivative can implement:
   // QcDatabaseTable * table() { return m_table; }
-
-  void add(QcRowTraits & row);
 
 private:
   QcDatabaseTable & register_table(QcDatabaseTable * table_ptr);

@@ -69,14 +69,17 @@ void TestBleauDatabase::constructor()
   QVariantHash place_variant_hash;
   place_variant_hash["category"] = "point d'eau";
   place_variant_hash["coordinate"] = QVariant::fromValue(QGeoCoordinate(2.72, 48.41));
-  place_variant_hash["coordinate"] = "Fontaine d'Avon";
+  place_variant_hash["name"] = "Fontaine d'Avon";
 
   BBleauPlace place(place_variant_hash);
   // QSqlQuery query = place_table.complete_insert(place.to_variant_list_sql());
   // int rowid = query.lastInsertId().toInt();
   // place.set_rowid(rowid);
 
-  bleau_schema.add(place);
+  bleau_schema.add(place); // generic
+  BBleauPlace place_bis = place;
+  place_bis.set_rowid(-1); // reset !
+  bleau_schema.add<BBleauPlace>(place_bis);
 
   QVariantHash massif_variant_hash;
   massif_variant_hash["acces"] = "...";
@@ -126,8 +129,12 @@ void TestBleauDatabase::constructor()
   qInfo() << QJsonDocument(circuit.to_json());
 
   BBleauPlace reloaded_place(place_table.select_by_id(place.rowid()));
-  qInfo() << reloaded_place.rowid() << reloaded_place;
+  qInfo() << reloaded_place.rowid() << reloaded_place << place;
   QVERIFY(reloaded_place == place);
+
+  BBleauPlace reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.rowid());
+  qInfo() << reloaded_place_bis.rowid() << reloaded_place;
+  QVERIFY(reloaded_place_bis == place);
 }
 
 /***************************************************************************************************/
