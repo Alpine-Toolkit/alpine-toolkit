@@ -137,7 +137,7 @@ class BBleauPlace(Schema):
         'note',
     )
 
-    coordinate = BleauGeoCoordinateField() #! Fixme: { 'latitude': , 'longitude': }
+    coordinate = BleauGeoCoordinateField()
     name = StringField()
     category = StringField() # BleauPlaceCategory = QString
     note = StringField()
@@ -162,7 +162,7 @@ class BBleauMassif(Schema):
     )
 
     coordinate = BleauGeoCoordinateField()
-    name = StringField(unique=True)
+    name = StringField() # unique=True
     access = StringField()
     alternative_name = StringField()
     chaos_type = StringField() # BleauChaosType

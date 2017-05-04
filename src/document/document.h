@@ -36,6 +36,7 @@
 #include <QDataStream>
 #include <QDateTime>
 #include <QJsonObject>
+#include <QSharedPointer>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
@@ -164,6 +165,8 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void load_foreign_keys();
+
 signals:
   void idChanged();
   void nameChanged();
@@ -205,7 +208,7 @@ public:
 
   DocumentDatabaseSchema & operator=(const DocumentDatabaseSchema & other) = delete;
 
-  QcDatabaseTable * document() { return m_document; }
+  QcDatabaseTable & document() { return *m_document; }
 
 private:
   QcDatabaseTable * m_document;

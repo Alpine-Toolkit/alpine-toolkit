@@ -60,14 +60,14 @@ SettingsDatabase::register_tables()
   name_field.set_nullable(false);
 
   QcSchema directory_schema(DIRECTORY);
-  directory_schema << name_field;
-  directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
+  directory_schema << new QcSchemaField(name_field);
+  directory_schema << new QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
   m_directory_table = &register_table(directory_schema);
 
   QcSchema key_value_schema(KEY_VALUE);
-  key_value_schema << name_field;
-  key_value_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
-  key_value_schema << QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
+  key_value_schema << new QcSchemaField(name_field);
+  key_value_schema << new QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
+  key_value_schema << new QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
   m_key_value_table = &register_table(key_value_schema);
 }
 

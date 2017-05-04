@@ -39,15 +39,15 @@ DocumentSchema::DocumentSchema()
 : QcSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   {
-    QcSchemaField field(QLatin1String("id"),
-                        QLatin1String("int"),
-                        QLatin1String("integer"),
-                        QLatin1String("id"),
-                        QLatin1String("id"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+      QLatin1String("id"),
+      QLatin1String("int"),
+      QLatin1String("integer"),
+      QLatin1String("id"),
+      QLatin1String("id"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -55,15 +55,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("name"),
-                        QLatin1String("QString"),
-                        QLatin1String("text"),
-                        QLatin1String("name"),
-                        QLatin1String("name"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("name"),
+      QLatin1String("QString"),
+      QLatin1String("text"),
+      QLatin1String("name"),
+      QLatin1String("name"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -71,15 +71,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("author"),
-                        QLatin1String("QString"),
-                        QLatin1String("text"),
-                        QLatin1String("author"),
-                        QLatin1String("author"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("author"),
+      QLatin1String("QString"),
+      QLatin1String("text"),
+      QLatin1String("author"),
+      QLatin1String("author"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -87,15 +87,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("version"),
-                        QLatin1String("int"),
-                        QLatin1String("integer"),
-                        QLatin1String("version"),
-                        QLatin1String("version"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("version"),
+      QLatin1String("int"),
+      QLatin1String("integer"),
+      QLatin1String("version"),
+      QLatin1String("version"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -103,15 +103,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("date"),
-                        QLatin1String("QDateTime"),
-                        QLatin1String("integer"),
-                        QLatin1String("date"),
-                        QLatin1String("date"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("date"),
+      QLatin1String("QDateTime"),
+      QLatin1String("integer"),
+      QLatin1String("date"),
+      QLatin1String("date"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -119,15 +119,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("description"),
-                        QLatin1String("QString"),
-                        QLatin1String("text"),
-                        QLatin1String("description"),
-                        QLatin1String("description"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("description"),
+      QLatin1String("QString"),
+      QLatin1String("text"),
+      QLatin1String("description"),
+      QLatin1String("description"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -135,15 +135,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("url"),
-                        QLatin1String("QUrl"),
-                        QLatin1String("text"),
-                        QLatin1String("url"),
-                        QLatin1String("url"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("url"),
+      QLatin1String("QUrl"),
+      QLatin1String("text"),
+      QLatin1String("url"),
+      QLatin1String("url"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -151,15 +151,15 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(QLatin1String("size"),
-                        QLatin1String("int"),
-                        QLatin1String("integer"),
-                        QLatin1String("size"),
-                        QLatin1String("size"),
-                        QLatin1String(""),
-                        QLatin1String(""));
+    QcSchemaField * field = new QcSchemaField(
+      QLatin1String("size"),
+      QLatin1String("int"),
+      QLatin1String("integer"),
+      QLatin1String("size"),
+      QLatin1String("size"),
+      QLatin1String(""),
+      QLatin1String(""));
     // Optional parameters
-    
     
     
     
@@ -174,7 +174,8 @@ DocumentSchema::~DocumentSchema()
 /**************************************************************************************************/
 
 Document::Document()
-  : m_id(),
+  : QcRowWithId<DocumentSchema>(),
+    m_id(),
     m_name(),
     m_author(),
     m_version(),
@@ -185,7 +186,8 @@ Document::Document()
 {}
 
 Document::Document(const Document & other)
-  : m_id(other.m_id),
+  : QcRowWithId<DocumentSchema>(other),
+    m_id(other.m_id),
     m_name(other.m_name),
     m_author(other.m_author),
     m_version(other.m_version),
@@ -235,7 +237,7 @@ Document::Document(const QVariantList & variants)
 }
 
 Document::Document(const QSqlRecord & record)
- : Document()
+ : QcRowWithId<DocumentSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -248,7 +250,7 @@ Document::Document(const QSqlRecord & record)
 }
 
 Document::Document(const QSqlQuery & query)
- : Document()
+ : QcRowWithId<DocumentSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_name = query.value(1).toString();
@@ -268,6 +270,7 @@ Document &
 Document::operator=(const Document & other)
 {
   if (this != &other) {
+    QcRowWithId<DocumentSchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_author = other.m_author;
@@ -280,10 +283,13 @@ Document::operator=(const Document & other)
 
   return *this;
 }
+
 // bit array ?
 bool
 Document::operator==(const Document & other)
 {
+  if (not QcRowWithId<DocumentSchema>::operator==(other))
+    return false;
   if (m_id != other.m_id)
     return false;
   if (m_name != other.m_name)
@@ -590,6 +596,12 @@ Document::set_field(int position, const QVariant & value)
    }
   }
 }
+
+void
+Document::load_foreign_keys()
+{
+}
+
 
 QDataStream &
 operator<<(QDataStream & out, const Document & obj)

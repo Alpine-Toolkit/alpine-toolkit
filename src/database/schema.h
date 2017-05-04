@@ -36,6 +36,7 @@
 #include <QHash>
 #include <QList>
 #include <QMetaType>
+#include <QSharedPointer>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
@@ -58,22 +59,42 @@
 /**************************************************************************************************/
 
 // Fixme: template ?
-class QcSchemaField
+class QcSchemaFieldTrait
 {
-public:
-  QcSchemaField();
-  QcSchemaField(const QString & name,
-                const QString & qt_type, // ???
-                const QString & sql_type,
-                const QString & sql_name = QString(),
-                const QString & json_name = QString(),
-                const QString & title = QString(),
-                const QString & description = QString()
-                );
-  QcSchemaField(const QcSchemaField & other);
-  ~QcSchemaField();
+protected:
+  enum FieldType {
+    Normal,
+    PrimaryKey,
+    ForeignKey
+  };
 
-  QcSchemaField & operator=(const QcSchemaField & other);
+public:
+  QcSchemaFieldTrait(FieldType field_type = FieldType::Normal);
+  QcSchemaFieldTrait(FieldType field_type,
+                     const QString & name,
+                     const QString & qt_type, // ???
+                     const QString & sql_type,
+                     const QString & sql_name,
+                     const QString & json_name,
+                     const QString & title,
+                     const QString & description
+                     );
+  QcSchemaFieldTrait(const QcSchemaFieldTrait & other);
+  virtual ~QcSchemaFieldTrait();
+
+  QcSchemaFieldTrait & operator=(const QcSchemaFieldTrait & other);
+
+  bool is_normal_type() const {
+    return m_field_type == FieldType::Normal;
+  }
+
+  bool is_primary_key() const {
+    return m_field_type == FieldType::PrimaryKey;
+  }
+
+  bool is_foreign_key() const {
+    return m_field_type == FieldType::ForeignKey;
+  }
 
   const QString & name() const { return m_name; }
   void set_name(const QString & value) { m_name = value; }
@@ -90,20 +111,8 @@ public:
   const QString & sql_type() const { return m_sql_type; }
   void set_sql_type(const QString & value) { m_sql_type = value; }
 
-  bool primary_key() const { return m_primary_key; }
-  void set_primary_key(bool value) { m_primary_key = value; }
-
-  bool autoincrement() const { return m_autoincrement; }
-  void set_autoincrement(bool value) { m_autoincrement = value; }
-
   bool nullable() const { return m_nullable; }
   void set_nullable(bool value) { m_nullable = value; }
-
-  bool unique() const { return m_unique; }
-  void set_unique(bool value) { m_unique = value; }
-
-  QVariant default_value() const { return m_default; }
-  void set_default_value(QVariant & value) { m_default = value; }
 
   const QString & title() const { return m_title; }
   void set_title(const QString & value) { m_title = value; }
@@ -114,7 +123,8 @@ public:
   int position() const { return m_position; }
   void set_position(int value) { m_position = value; }
 
-  QString to_sql_definition() const;
+  QString to_sql_definition(const QStringList & parts) const;
+  virtual QString to_sql_definition() const = 0;
 
   int qt_type_id() const { return QMetaType::type(m_qt_type.toLatin1()); } // Fixme: cache ?
   QVariant * variant() const { return new QVariant(qt_type_id()); };
@@ -122,7 +132,12 @@ public:
   // void * create() const { return QMetaType::create(qt_type_id()); }
   // T * create() const { ... }
 
+protected:
+  void set_field_type(FieldType field_type) { m_field_type = field_type; }
+
 private:
+  FieldType m_field_type = FieldType::Normal;
+  int m_position = -1;
   QString m_name;
   QString m_sql_name;
   QString m_json_name;
@@ -135,7 +150,88 @@ private:
   bool m_nullable = true;
   bool m_unique = false;
   QVariant m_default = QVariant();
-  int m_position = -1;
+};
+
+/**************************************************************************************************/
+
+class QcSchemaField : public QcSchemaFieldTrait
+{
+public:
+  QcSchemaField();
+  QcSchemaField(const QString & name,
+                const QString & qt_type, // ???
+                const QString & sql_type,
+                const QString & sql_name = QString(),
+                const QString & json_name = QString(),
+                const QString & title = QString(),
+                const QString & description = QString()
+                );
+  QcSchemaField(const QcSchemaField & other);
+  ~QcSchemaField();
+
+  QcSchemaField & operator=(const QcSchemaField & other);
+
+  QVariant default_value() const { return m_default; }
+  void set_default_value(QVariant & value) { m_default = value; }
+
+  QString to_sql_definition() const;
+
+private:
+  QVariant m_default = QVariant();
+};
+
+/**************************************************************************************************/
+
+class QcSchemaPrimaryKey : public QcSchemaFieldTrait
+{
+public:
+  QcSchemaPrimaryKey();
+  QcSchemaPrimaryKey(const QString & name,
+                     const QString & qt_type, // ???
+                     const QString & sql_type,
+                     const QString & sql_name = QString(),
+                     const QString & json_name = QString(),
+                     const QString & title = QString(),
+                     const QString & description = QString()
+                     );
+  QcSchemaPrimaryKey(const QcSchemaPrimaryKey & other);
+  ~QcSchemaPrimaryKey();
+
+  QcSchemaPrimaryKey & operator=(const QcSchemaPrimaryKey & other);
+
+  bool autoincrement() const { return m_autoincrement; }
+  void set_autoincrement(bool value) { m_autoincrement = value; }
+
+  bool unique() const { return m_unique; }
+  void set_unique(bool value) { m_unique = value; }
+
+  QString to_sql_definition() const;
+
+private:
+  bool m_autoincrement = false;
+  bool m_unique = false;
+};
+
+/**************************************************************************************************/
+
+class QcSchemaForeignKey : public QcSchemaField
+{
+public:
+  QcSchemaForeignKey();
+  QcSchemaForeignKey(const QString & name,
+                     const QString & qt_type, // ???
+                     const QString & sql_type,
+                     const QString & sql_name = QString(),
+                     const QString & json_name = QString(),
+                     const QString & title = QString(),
+                     const QString & description = QString()
+                     );
+  QcSchemaForeignKey(const QcSchemaForeignKey & other);
+  ~QcSchemaForeignKey();
+
+  QcSchemaForeignKey & operator=(const QcSchemaForeignKey & other);
+
+  //  QString to_sql_definition() const;
 };
 
 /**************************************************************************************************/
@@ -170,28 +266,30 @@ public:
   int schema_id() const { return m_schema_id; }
   void request_schema_id() { m_schema_id = new_schema_id(); } // to update a cloned schema
 
-  void add_field(const QcSchemaField & field);
-  QcSchema & operator<<(const QcSchemaField & field);
+  void add_field(QcSchemaFieldTrait * field);
+  QcSchema & operator<<(QcSchemaFieldTrait * field);
 
   const QString & name() const { return m_name; }
   const QString & table_name() const { return m_table_name; }
   // const QString & sql_table_option() const { return m_sql_table_option; }
+
   bool without_rowid() const { return m_without_rowid; }
   bool has_rowid() const { return m_has_rowid; }
+  bool has_foreign_keys() const {  return m_has_foreign_keys; }
 
   int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
-  const QList<QcSchemaField> & fields() const { return m_fields; } // Fixme: const QcSchemaField
+  const QList<QSharedPointer<QcSchemaFieldTrait>> & fields() const { return m_fields; } // Fixme: const QcSchemaField
   QStringList field_names() { return m_field_map.keys(); }
 
   QString to_sql_definition() const;
 
-  const QcSchemaField & operator[](int position) const { return m_fields[position]; }
-  const QcSchemaField & operator[](const QString & name) const { return *m_field_map[name]; }
+  const QSharedPointer<QcSchemaFieldTrait> operator[](int position) const { return m_fields[position]; }
+  const QSharedPointer<QcSchemaFieldTrait> operator[](const QString & name) const { return m_field_map[name]; }
 
-  QList<QcSchemaField>::iterator begin() { return m_fields.begin(); }
-  QList<QcSchemaField>::iterator end() { return m_fields.end(); }
-  QList<QcSchemaField>::const_iterator cbegin() const { return m_fields.cbegin(); }
-  QList<QcSchemaField>::const_iterator cend() const { return m_fields.cend(); }
+  QList<QSharedPointer<QcSchemaFieldTrait>>::iterator begin() { return m_fields.begin(); }
+  QList<QSharedPointer<QcSchemaFieldTrait>>::iterator end() { return m_fields.end(); }
+  QList<QSharedPointer<QcSchemaFieldTrait>>::const_iterator cbegin() const { return m_fields.cbegin(); }
+  QList<QSharedPointer<QcSchemaFieldTrait>>::const_iterator cend() const { return m_fields.cend(); }
 
 private:
   int m_schema_id;
@@ -200,8 +298,9 @@ private:
   bool m_without_rowid = false;
   bool m_has_rowid = true;
   // QString m_sql_table_option;
-  QList<QcSchemaField> m_fields;
-  QHash<QString, QcSchemaField *> m_field_map;
+  bool m_has_foreign_keys = false;
+  QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;
+  QHash<QString, QSharedPointer<QcSchemaFieldTrait>> m_field_map;
 };
 
 /**************************************************************************************************/

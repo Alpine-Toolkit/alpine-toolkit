@@ -72,6 +72,7 @@ class FieldBase:
 
     @name.setter
     def name(self, name):
+        # Name is set afterwards
         self._name = name
         self._variable = Variable(self._name, self._qt_type, context=self.__context__)
         if self._sql_name is None:
@@ -167,6 +168,10 @@ class Field(FieldBase):
     ##############################################
 
     @property
+    def ctor(self):
+        return 'QcSchemaPrimaryKey' if self._primary_key else 'QcSchemaField'
+
+    @property
     def autoincrement(self):
         return self._autoincrement
 
@@ -254,24 +259,51 @@ class Relationship(FieldBase):
 
     ##############################################
 
-    def __init__(self, cls,
+    def __init__(self, cls_schema,
                  back_populates=None,
                  json_value=None):
 
         FieldBase.__init__(self)
 
-        self._cls = cls
+        self._cls_schema = cls_schema
+        self._schema = None
         self._back_populates = back_populates
 
     ##############################################
 
     @property
     def name(self):
+        # field name
+        return self._name + '_sql'
+
+    @property
+    def relation_name(self):
         return self._name
 
     @name.setter
     def name(self, name):
+        # Name is set afterwards
         self._name = name
+        self._sql_name = name
+        self._json_name = name
+
+    ##############################################
+
+    @property
+    def cls_schema(self):
+        return self._cls_schema
+
+    @property
+    def schema(self):
+        return self._schema
+
+    @schema.setter
+    def schema(self, value):
+        self._schema = value
+
+    @property
+    def cls_name(self):
+        return self._schema.cls_name
 
     ##############################################
 
@@ -281,8 +313,9 @@ class Relationship(FieldBase):
 
     @qt_type.setter
     def qt_type(self, value):
+        # qt_type is set afterwards
         self._qt_type = value
-        self._variable = Variable(self._name, self._qt_type) # , context=self.__context__
+        self._variable = Variable(self.name, self._qt_type) # , context=self.__context__
 
     @property
     def sql_type(self):
@@ -290,17 +323,18 @@ class Relationship(FieldBase):
 
     @sql_type.setter
     def sql_type(self, value):
+        # sql_type is set afterwards
         self._sql_type = value
 
     ##############################################
 
     @property
-    def is_foreign_key(self):
-        return True
+    def ctor(self):
+        return 'QcSchemaForeignKey'
 
     @property
-    def cls(self):
-        return self._cls
+    def is_foreign_key(self):
+        return True
 
     @property
     def back_populates(self):
@@ -394,6 +428,7 @@ class Schema:
             # 'QObject',
             'QDataStream',
             'QJsonObject',
+            'QSharedPointer', # for foreign keys
             'QSqlQuery',
             'QSqlRecord',
             'QVariant',
@@ -419,6 +454,7 @@ class Schema:
 
         source.render('row-class.cpp',
                       schema=self,
+                      # shortcut
                       class_name=self._name,
                       members=self._members,
                       all_members=self._all_members,
@@ -438,19 +474,26 @@ class SchemaRepository:
         self._schemas = [cls() for cls in schemas]
         self._schema_map = {cls:self._schemas[i] for i, cls in enumerate(schemas)}
 
+        self._init_foreign_keys()
+
+        for schema in self:
+            schema._post_init()
+
+    ##############################################
+
+    def _init_foreign_keys(self):
+
         for schema in self:
             # print(schema, schema.primary_keys, schema.foreign_keys)
             for foreign_key in schema.foreign_keys:
-                referenced_schema = self._schema_map[foreign_key.cls]
+                referenced_schema = self._schema_map[foreign_key.cls_schema]
+                foreign_key.schema = referenced_schema
                 if referenced_schema.primary_keys:
                     pass
                 else: # use Integer rowid
                     foreign_key.qt_type = 'int'
                     foreign_key.sql_type = 'Integer'
                 print("Foreign key {0.name}.{1.name} {1.sql_type}".format(self, foreign_key))
-
-        for schema in self:
-            schema._post_init()
 
     ##############################################
 

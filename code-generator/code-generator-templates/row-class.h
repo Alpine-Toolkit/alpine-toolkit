@@ -68,7 +68,13 @@ public:
   // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
-
+{# #}
+{%- if schema.foreign_keys %}
+  void load_foreign_keys();
+{%- for member in schema.foreign_keys %}
+  QSharedPointer<{{member.cls_name}}> {{member.relation_name}}();{% endfor %}
+{% endif -%}
+{# #}
 signals:
 {%- for member in members %}
   void {{member.name}}Changed();{% endfor %}
@@ -76,6 +82,8 @@ signals:
 private:
 {%- for member in members %}
   {{member.type}} m_{{member.name}};{% endfor %}
+{%- for member in schema.foreign_keys %}
+  QSharedPointer<{{member.cls_name}}> m_{{member.relation_name}} = nullptr;{% endfor %}
 };
 
 {{ data_streamer_decl(class_name, members) }}

@@ -42,9 +42,18 @@
 
 /**************************************************************************************************/
 
+class QcDatabaseSchema;
+
+/**************************************************************************************************/
+
+// Trait class to be used as generic row (QcRowTraits *) since QcRow is a template class
+
 class QcRowTraits
 {
 public:
+  QcRowTraits() {};
+  // ~QcRowTraits();
+
   virtual int schema_id() const = 0;
 
   virtual void set_rowid(int value) = 0;
@@ -66,6 +75,15 @@ public:
   // Field accessor by position
   virtual QVariant field(int position) const = 0;
   virtual void set_field(int position, const QVariant & value) = 0;
+
+  // Fixme: implement has mixin ?
+  QcDatabaseSchema * database_schema() const { return m_database_schema; }
+  void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
+
+  virtual void load_foreign_keys() {}
+
+private:
+  QcDatabaseSchema * m_database_schema = nullptr; // use memory !
 };
 
 /**************************************************************************************************/
@@ -95,7 +113,7 @@ public:
 
   bool operator==(const QcRow & other) { return true; } // m_bits ?
 
-  virtual int rowid() const { return -1; } // ???
+  virtual int rowid() const { return -1; } // Fixme: ???
 
   bool is_modified() const { return not m_bits.isNull(); }
 
@@ -135,106 +153,9 @@ private:
 
 /**************************************************************************************************/
 
-template<class S>
-QcRow<S>::QcRow()
-  :m_bits(number_of_fields())
-{}
-
-template<class S>
-QcRow<S>::QcRow(const QcRow & other)
-  : QcRow()
-    // m_bits(other.m_bits) // Fixme: ???
-{}
-
-/**************************************************************************************************/
-
-template<class S>
-QcRowWithId<S>::QcRowWithId()
-  : QcRow<S>()
-{}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QcRowWithId & other)
-  : QcRow<S>(static_cast<const QcRow<S> &>(other)),
-    m_rowid(other.m_rowid)
-{}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QJsonObject & json_object)
- : QcRowWithId()
-{}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QVariantHash & variant_hash)
- : QcRowWithId()
-{
-  if (variant_hash.contains(QLatin1String("rowid")))
-    m_rowid = variant_hash[QLatin1String("rowid")].toInt();
-  else
-    m_rowid = -1;
-}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QVariantList & variants) // , bool with_rowid
- : QcRowWithId()
-{
-  int _number_of_fields = QcRow<S>::number_of_fields();
-  if (variants.size() == _number_of_fields +1) // with_rowid, danger ?
-    // int number_of_fields = variants.size();
-    m_rowid = variants[_number_of_fields].toInt();
-  else
-    m_rowid = -1;
-}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QSqlRecord & record)
- : QcRowWithId()
-{
-  // int number_of_fields = record.count();
-  m_rowid = record.value(QcRow<S>::number_of_fields()).toInt();
-}
-
-template<class S>
-QcRowWithId<S>::QcRowWithId(const QSqlQuery & query)
- : QcRowWithId()
-{
-  // int number_of_fields = query.record().count(); // Fixme: slower ?
-  m_rowid = query.value(QcRow<S>::number_of_fields()).toInt();
-}
-
-template<class S>
-QcRowWithId<S>::~QcRowWithId()
-{}
-
-template<class S>
-QcRowWithId<S> &
-QcRowWithId<S>::operator=(const QcRowWithId & other)
-{
-  if (this != &other) {
-    m_rowid = other.m_rowid;
-  }
-
-  return *this;
-}
-
-template<class S>
-bool
-QcRowWithId<S>::operator==(const QcRowWithId & other)
-{
-  return m_rowid == other.m_rowid;
-}
-
-/*
-template<class S>
-void
-QcRowWithId<S>::set_rowid(int value)
-{
-  if (m_rowid != value) {
-    m_rowid = value;
-    emit rowidChanged();
-  }
-}
-*/
+#ifndef QC_MANUAL_INSTANTIATION
+#include "database_row.hxx"
+#endif
 
 /**************************************************************************************************/
 

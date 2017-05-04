@@ -11,19 +11,19 @@
 {
 {%- for field in schema %}
   {
-    QcSchemaField field(QLatin1String("{{field.name}}"),
-                        QLatin1String("{{field.qt_type}}"),
-                        QLatin1String("{{field.sql_type}}"),
-                        QLatin1String("{{field.sql_name}}"),
-                        QLatin1String("{{field.json_name}}"),
-                        QLatin1String("{{field.title}}"),
-                        QLatin1String("{{field.description}}"));
+    {{field.ctor}} * field = new {{field.ctor}}(
+      QLatin1String("{{field.name}}"),
+      QLatin1String("{{field.qt_type}}"),
+      QLatin1String("{{field.sql_type}}"),
+      QLatin1String("{{field.sql_name}}"),
+      QLatin1String("{{field.json_name}}"),
+      QLatin1String("{{field.title}}"),
+      QLatin1String("{{field.description}}"));
     // Optional parameters
-    {% if field.primary_key %}field.set_primary_key(true);{% endif %}
-    {% if field.autoincrement %}field.set_autoincrement(true);{% endif %}
-    {% if not field.nullable %}field.set_nullable(false);{% endif %}
-    {% if field.unique %}field.set_unique(true);{% endif %}
-    {% if field.default %}field.set_default_value({{field.default}});{% endif %}
+    {% if field.autoincrement %}fiel->set_autoincrement(true);{% endif %}
+    {% if not field.nullable %}field->set_nullable(false);{% endif %}
+    {% if field.unique %}field->set_unique(true);{% endif %}
+    {% if field.default %}field->set_default_value({{field.default}});{% endif %}
     add_field(field);
   }{% endfor %}
 }
@@ -60,7 +60,26 @@
 {% include "includes/orm/variant-serializer.cpp" %}
 
 {% include "includes/orm/field-accessor.cpp" %}
-
+{# #}
+{%- if schema.foreign_keys %}
+void
+{{class_name}}::load_foreign_keys()
+{
+{%- for member in schema.foreign_keys %}
+  {{member.relation_name}}();{% endfor %}
+}
+{# #}
+{%- for member in schema.foreign_keys %}
+QSharedPointer<{{member.cls_name}}>
+{{class_name}}::{{member.relation_name}}()
+{
+  if (m_{{member.relation_name}}.isNull())
+    m_{{member.relation_name}} = database_schema()->query_by_id<{{member.cls_name}}>(m_{{member.name}});
+  return m_{{member.relation_name}};
+}
+{% endfor %}
+{% endif -%}
+{# #}
 {{ data_streamer_impl(class_name, members, member_types) }}
 
 {{ debug_streamer_impl(class_name, members) }}

@@ -76,7 +76,7 @@ class Document(Schema):
         'size',
     )
 
-    id = IntegerField()
+    id = IntegerField(primary_key=True)
     name= StringField()
     author= StringField()
     version = IntegerField()

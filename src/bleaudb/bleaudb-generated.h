@@ -36,6 +36,7 @@
 #include <QDataStream>
 #include <QGeoCoordinate>
 #include <QJsonObject>
+#include <QSharedPointer>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
@@ -139,6 +140,8 @@ public:
   // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
+
+  void load_foreign_keys();
 
 signals:
   void coordinateChanged();
@@ -289,6 +292,8 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void load_foreign_keys();
+
 signals:
   void coordinateChanged();
   void nameChanged();
@@ -420,6 +425,8 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void load_foreign_keys();
+
 signals:
   void coordinateChanged();
   void nameChanged();
@@ -456,7 +463,7 @@ public:
     CREATION_DATE,
     GESTION,
     GRADE,
-    MASSIF,
+    MASSIF_SQL,
     NOTE,
     NUMBER,
     OPENER,
@@ -495,7 +502,7 @@ class BBleauCircuit : public QObject, public QcRowWithId<BBleauCircuitSchema>
   Q_PROPERTY(int creation_date READ creation_date WRITE set_creation_date NOTIFY creation_dateChanged)
   Q_PROPERTY(QString gestion READ gestion WRITE set_gestion NOTIFY gestionChanged)
   Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(int massif READ massif WRITE set_massif NOTIFY massifChanged)
+  Q_PROPERTY(int massif_sql READ massif_sql WRITE set_massif_sql NOTIFY massif_sqlChanged)
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
   Q_PROPERTY(int number READ number WRITE set_number NOTIFY numberChanged)
   Q_PROPERTY(QString opener READ opener WRITE set_opener NOTIFY openerChanged)
@@ -535,8 +542,8 @@ public:
   const QString & grade() const { return m_grade; }
   void set_grade(const QString & value);
 
-  int massif() const { return m_massif; }
-  void set_massif(int value);
+  int massif_sql() const { return m_massif_sql; }
+  void set_massif_sql(int value);
 
   const QString & note() const { return m_note; }
   void set_note(const QString & value);
@@ -576,7 +583,7 @@ public:
   bool is_creation_date_modified() const { return bit_status(Schema::Fields::CREATION_DATE); }
   bool is_gestion_modified() const { return bit_status(Schema::Fields::GESTION); }
   bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
-  bool is_massif_modified() const { return bit_status(Schema::Fields::MASSIF); }
+  bool is_massif_sql_modified() const { return bit_status(Schema::Fields::MASSIF_SQL); }
   bool is_note_modified() const { return bit_status(Schema::Fields::NOTE); }
   bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
   bool is_opener_modified() const { return bit_status(Schema::Fields::OPENER); }
@@ -589,13 +596,16 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void load_foreign_keys();
+  QSharedPointer<BBleauMassif> massif();
+
 signals:
   void coordinateChanged();
   void colourChanged();
   void creation_dateChanged();
   void gestionChanged();
   void gradeChanged();
-  void massifChanged();
+  void massif_sqlChanged();
   void noteChanged();
   void numberChanged();
   void openerChanged();
@@ -610,7 +620,7 @@ private:
   int m_creation_date;
   QString m_gestion;
   QString m_grade;
-  int m_massif;
+  int m_massif_sql;
   QString m_note;
   int m_number;
   QString m_opener;
@@ -618,6 +628,7 @@ private:
   QString m_refection_note;
   QString m_status;
   QStringList m_topos;
+  QSharedPointer<BBleauMassif> m_massif = nullptr;
 };
 
 QDataStream & operator<<(QDataStream & out, const BBleauCircuit & obj);
@@ -640,10 +651,10 @@ public:
 
   BleauSchema & operator=(const BleauSchema & other) = delete;
 
-  QcDatabaseTable * place() { return m_place; }
-  QcDatabaseTable * massif() { return m_massif; }
-  QcDatabaseTable * boulder() { return m_boulder; }
-  QcDatabaseTable * circuit() { return m_circuit; }
+  QcDatabaseTable & place() { return *m_place; }
+  QcDatabaseTable & massif() { return *m_massif; }
+  QcDatabaseTable & boulder() { return *m_boulder; }
+  QcDatabaseTable & circuit() { return *m_circuit; }
 
 private:
   QcDatabaseTable * m_place;

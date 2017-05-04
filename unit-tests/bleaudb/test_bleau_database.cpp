@@ -86,7 +86,7 @@ void TestBleauDatabase::constructor()
   // massif_variant_hash["alternative_name"] = "";
   massif_variant_hash["chaos_type"] = "E/D";
   massif_variant_hash["coordinate"] = QVariant::fromValue(QGeoCoordinate(2.51, 48.37));
-  massif_variant_hash["name"] = "91_1";
+  massif_variant_hash["name"] = "91_1"; // Fixme: string !!!
   // massif_variant_hash["note"] = "";
   massif_variant_hash["parcelles"] = "135 141 TP";
   massif_variant_hash["rdv"] = "...";
@@ -94,7 +94,8 @@ void TestBleauDatabase::constructor()
   massif_variant_hash["velo"] = "...";
 
   BBleauMassif massif(massif_variant_hash);
-  massif_table.complete_insert(massif.to_variant_list_sql());
+  // massif_table.complete_insert(massif.to_variant_list_sql()); // rowid is not updated
+  bleau_schema.add(massif);
 
   QVariantHash boulder_variant_hash;
   boulder_variant_hash["comment"] = "mur";
@@ -124,7 +125,9 @@ void TestBleauDatabase::constructor()
   circuit_variant_hash["topos"] = string_list;
 
   BBleauCircuit circuit(circuit_variant_hash);
-  circuit_table.complete_insert(circuit.to_variant_list_sql());
+  circuit.set_massif_sql(massif.rowid());
+  // circuit_table.complete_insert(circuit.to_variant_list_sql()); // rowid is not updated
+  bleau_schema.add(circuit);
 
   qInfo() << QJsonDocument(circuit.to_json());
 
@@ -132,9 +135,14 @@ void TestBleauDatabase::constructor()
   qInfo() << reloaded_place.rowid() << reloaded_place << place;
   QVERIFY(reloaded_place == place);
 
-  BBleauPlace reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.rowid());
-  qInfo() << reloaded_place_bis.rowid() << reloaded_place;
-  QVERIFY(reloaded_place_bis == place);
+  QSharedPointer<BBleauPlace> reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.rowid());
+  qInfo() << reloaded_place_bis->rowid() << reloaded_place;
+  QVERIFY(*reloaded_place_bis == place);
+
+  QSharedPointer<BBleauCircuit> reloaded_circuit = bleau_schema.query_by_id<BBleauCircuit>(circuit.rowid());
+  qInfo() << *reloaded_circuit;
+  QSharedPointer<BBleauMassif> reloaded_massif = reloaded_circuit->massif();
+  qInfo() << *reloaded_massif;
 }
 
 /***************************************************************************************************/

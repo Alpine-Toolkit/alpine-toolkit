@@ -39,6 +39,7 @@
 
 #include <memory>
 
+#include<QSharedPointer>
 #include<QtDebug>
 
 /**************************************************************************************************/
@@ -70,9 +71,17 @@ public:
   }
 
   template<class T>
-  T query_by_id(int rowid) {
-    QcDatabaseTable & table = get_table_by_schema(T::schema());
-    return T(table.select_by_id(rowid));
+  QSharedPointer<T> query_by_id(int rowid, bool lazy_load = true) {
+    const QcSchema & schema = T::schema();
+    QcDatabaseTable & table = get_table_by_schema(schema);
+    T * row = new T(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
+    // Fixme: non specific code
+    row->set_database_schema(this); // Fixme: for all ???
+    if (schema.has_foreign_keys()) {
+      if (not lazy_load)
+        row->load_foreign_keys();
+    }
+    return QSharedPointer<T>(row);
   }
 
   // Derivative can implement:
