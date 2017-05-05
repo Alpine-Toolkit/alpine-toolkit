@@ -40,6 +40,7 @@
 #include <QVariantHash>
 
 #include "database/schema.h"
+#include "database/database_row.h"
 
 /**************************************************************************************************/
 
@@ -96,8 +97,9 @@ public:
 
   QSqlQuery prepare_complete_insert(int number_of_fields);
   QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
-  QSqlQuery prepare_insert(const QStringList & fields);
+  void add(QcRowTraits & row);
 
+  QSqlQuery prepare_insert(const QStringList & fields);
   QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
 
   QSqlQuery prepare_update(const QStringList & fields, const QString & where);

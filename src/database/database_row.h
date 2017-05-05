@@ -79,6 +79,7 @@ public:
   // Fixme: implement has mixin ?
   QcDatabaseSchema * database_schema() const { return m_database_schema; }
   void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
+  virtual bool exists_on_database() const = 0;
 
   virtual void load_foreign_keys() {}
 
@@ -109,9 +110,9 @@ public:
   QcRow(const QSqlQuery & query) : QcRow() {} // SQL deserializer
   ~QcRow() {}
 
-  QcRow & operator=(const QcRow & other) { return *this; } // m_bits ?
+  QcRow & operator=(const QcRow & other) { return *this; } // Fixme: m_bits ?
 
-  bool operator==(const QcRow & other) { return true; } // m_bits ?
+  bool operator==(const QcRow & other) { return true; } // Fixme: m_bits ?
 
   virtual int rowid() const { return -1; } // Fixme: ???
 
@@ -131,6 +132,9 @@ template<class S>
 class QcRowWithId : public QcRow<S>
 {
 public:
+  const int INVALID_ROWID = -1;
+
+public:
   QcRowWithId();
   QcRowWithId(const QcRowWithId & other);
   QcRowWithId(const QJsonObject & json_object); // JSON deserializer
@@ -146,9 +150,11 @@ public:
 
   int rowid() const { return m_rowid; }
   void set_rowid(int value) { m_rowid = value; }
+  bool exists_on_database() const { m_rowid != INVALID_ROWID; }
+  void detach();
 
 private:
-  int m_rowid = -1; // note: table can be created without rowid
+  int m_rowid = INVALID_ROWID; // note: table can be created without rowid
 };
 
 /**************************************************************************************************/

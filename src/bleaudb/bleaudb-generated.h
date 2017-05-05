@@ -598,6 +598,7 @@ public:
 
   void load_foreign_keys();
   QSharedPointer<BBleauMassif> massif();
+  void set_massif(QSharedPointer<BBleauMassif> & value);
 
 signals:
   void coordinateChanged();

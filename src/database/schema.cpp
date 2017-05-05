@@ -340,7 +340,7 @@ QcSchema::add_field(QcSchemaFieldTrait * field)
   m_fields << QSharedPointer<QcSchemaFieldTrait>(field);
   QSharedPointer<QcSchemaFieldTrait> owned_field = m_fields.last();
   owned_field->set_position(m_fields.size() -1);
-  m_field_map.insert(owned_field->name(), owned_field);
+  m_field_map.insert(owned_field->name(), owned_field.data());
   if (m_has_rowid and field->is_primary_key())
     m_has_rowid = false;
   if (field->is_foreign_key())

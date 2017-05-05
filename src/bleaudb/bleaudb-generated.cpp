@@ -2507,6 +2507,13 @@ BBleauCircuit::massif()
   return m_massif;
 }
 
+void
+BBleauCircuit::set_massif(QSharedPointer<BBleauMassif> & value)
+{
+  m_massif = value;
+  m_massif_sql = value->rowid();
+}
+
 
 QDataStream &
 operator<<(QDataStream & out, const BBleauCircuit & obj)

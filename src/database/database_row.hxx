@@ -81,8 +81,7 @@ QcRowWithId<S>::QcRowWithId(const QVariantList & variants) // , bool with_rowid
  : QcRowWithId()
 {
   int _number_of_fields = QcRow<S>::number_of_fields();
-  if (variants.size() == _number_of_fields +1) // with_rowid, danger ?
-    // int number_of_fields = variants.size();
+  if (variants.size() == _number_of_fields +1) // Fixme: with_rowid, danger ?
     m_rowid = variants[_number_of_fields].toInt();
   else
     m_rowid = -1;
@@ -124,6 +123,14 @@ bool
 QcRowWithId<S>::operator==(const QcRowWithId & other)
 {
   return m_rowid == other.m_rowid;
+}
+
+template<class S>
+void
+QcRowWithId<S>::detach()
+{
+  m_rowid = -1;
+  QcRowTraits::set_database_schema(nullptr);
 }
 
 /*

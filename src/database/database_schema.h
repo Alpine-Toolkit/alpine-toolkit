@@ -65,9 +65,7 @@ public:
   template<class T>
   void add(T & row) {
     QcDatabaseTable & table = get_table_by_schema(T::schema());
-    QSqlQuery query = table.complete_insert(row.to_variant_list_sql());
-    int rowid = query.lastInsertId().toInt();
-    row.set_rowid(rowid);
+    table.add(row);
   }
 
   template<class T>

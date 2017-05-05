@@ -182,6 +182,14 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
 }
 
 void
+QcDatabaseTable::add(QcRowTraits & row)
+{
+  QSqlQuery query = complete_insert(row.to_variant_list_sql());
+  int rowid = query.lastInsertId().toInt();
+  row.set_rowid(rowid);
+}
+
+void
 QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit)
 {
   // qInfo() << "Bind on" << query.lastQuery() << kwargs;

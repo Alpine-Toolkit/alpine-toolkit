@@ -133,6 +133,7 @@ public:
   // T * create() const { ... }
 
 protected:
+  // Fixme: need by ForeignKey
   void set_field_type(FieldType field_type) { m_field_type = field_type; }
 
 private:
@@ -266,7 +267,8 @@ public:
   int schema_id() const { return m_schema_id; }
   void request_schema_id() { m_schema_id = new_schema_id(); } // to update a cloned schema
 
-  void add_field(QcSchemaFieldTrait * field);
+  // Fixme: pass & and copy ?
+  void add_field(QcSchemaFieldTrait * field); // field pth is managed by QSharedPointer
   QcSchema & operator<<(QcSchemaFieldTrait * field);
 
   const QString & name() const { return m_name; }
@@ -283,8 +285,8 @@ public:
 
   QString to_sql_definition() const;
 
-  const QSharedPointer<QcSchemaFieldTrait> operator[](int position) const { return m_fields[position]; }
-  const QSharedPointer<QcSchemaFieldTrait> operator[](const QString & name) const { return m_field_map[name]; }
+  const QcSchemaFieldTrait & operator[](int position) const { return *m_fields[position]; }
+  const QcSchemaFieldTrait & operator[](const QString & name) const { return *m_field_map[name]; }
 
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator begin() { return m_fields.begin(); }
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator end() { return m_fields.end(); }
@@ -300,7 +302,7 @@ private:
   // QString m_sql_table_option;
   bool m_has_foreign_keys = false;
   QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;
-  QHash<QString, QSharedPointer<QcSchemaFieldTrait>> m_field_map;
+  QHash<QString, QcSchemaFieldTrait *> m_field_map;
 };
 
 /**************************************************************************************************/
