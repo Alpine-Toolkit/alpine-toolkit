@@ -77,6 +77,13 @@ QSharedPointer<{{member.cls_name}}>
     m_{{member.relation_name}} = database_schema()->query_by_id<{{member.cls_name}}>(m_{{member.name}});
   return m_{{member.relation_name}};
 }
+
+void
+{{class_name}}::set_{{member.relation_name}}(QSharedPointer<{{member.cls_name}}> & value)
+{
+  m_{{member.relation_name}} = value;
+  set_m_{{member.name}}(value->rowid());
+}
 {% endfor %}
 {% endif -%}
 {# #}

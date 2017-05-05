@@ -72,7 +72,8 @@ public:
 {%- if schema.foreign_keys %}
   void load_foreign_keys();
 {%- for member in schema.foreign_keys %}
-  QSharedPointer<{{member.cls_name}}> {{member.relation_name}}();{% endfor %}
+  QSharedPointer<{{member.cls_name}}> {{member.relation_name}}();
+  void set_{{member.relation_name}}(QSharedPointer<{{member.cls_name}}> & value);{% endfor %}
 {% endif -%}
 {# #}
 signals:
