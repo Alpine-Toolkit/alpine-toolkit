@@ -481,7 +481,7 @@ Document::to_variant_list() const
 }
 
 QVariantHash
-Document::to_variant_hash_sql(bool only_changed) const
+Document::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -503,7 +503,7 @@ Document::to_variant_hash_sql(bool only_changed) const
     if (is_size_modified())
       variant_hash[QLatin1String("size")] = m_size;
   } else {
-    variant_hash[QLatin1String("id")] = m_id;
+    if (duplicate) variant_hash[QLatin1String("id")] = m_id;
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("author")] = m_author;
     variant_hash[QLatin1String("version")] = m_version;
@@ -518,10 +518,10 @@ Document::to_variant_hash_sql(bool only_changed) const
 
 
 QVariantList
-Document::to_variant_list_sql() const
+Document::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
-  variants << m_id;
+  if (duplicate) variants << m_id;
   variants << m_name;
   variants << m_author;
   variants << m_version;

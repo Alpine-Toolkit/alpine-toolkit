@@ -66,8 +66,8 @@ public:
   virtual QVariantList to_variant_list() const = 0;
 
   // SQL Serializer
-  virtual QVariantHash to_variant_hash_sql(bool only_changed = false) const = 0;
-  virtual QVariantList to_variant_list_sql() const = 0;
+  virtual QVariantHash to_variant_hash_sql(bool only_changed = false, bool duplicate = false) const = 0;
+  virtual QVariantList to_variant_list_sql(bool duplicate = false) const = 0;
 
   // Query for update
   // virtual bool is_modified() const = 0;

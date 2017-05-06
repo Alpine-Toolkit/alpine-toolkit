@@ -37,6 +37,12 @@
 /**************************************************************************************************/
 
 QString
+comma_join(const QStringList & string_list)
+{
+  return string_list.join(',');
+}
+
+QString
 QcDatabaseTable::format_prepare(int number_of_fields)
 {
   QString string;
@@ -166,9 +172,26 @@ QcDatabaseTable::prepare_complete_insert(int number_of_fields)
 }
 
 QSqlQuery
+QcDatabaseTable::prepare_complete_insert(const QStringList & fields)
+{
+  QSqlQuery query = m_database->new_query();
+  QString sql_query =
+    QLatin1String("INSERT INTO ") + m_name +
+    QLatin1String(" (") + comma_join(fields) + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
+  query.prepare(sql_query);
+
+  return query;
+}
+
+QSqlQuery
 QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
 {
-  QSqlQuery query = prepare_complete_insert(variants.size());
+  QSqlQuery query;
+  if (m_schema.has_rowid_primary_key())
+    // excepted if we want to set the id manually
+    query = prepare_complete_insert(m_schema.field_names_witout_rowid());
+  else
+    query = prepare_complete_insert(variants.size());
   qInfo() << query.lastQuery() << variants;
 
   for (const auto & value : variants)
@@ -184,7 +207,10 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
 void
 QcDatabaseTable::add(QcRowTraits & row)
 {
-  QSqlQuery query = complete_insert(row.to_variant_list_sql());
+  // We could use QVariantHash to only set defined field (skip default),
+  //   but we have to track correctly defined field
+  //   Moreover QVariantHash is slower
+  QSqlQuery query = complete_insert(row.to_variant_list_sql()); // duplicate = false
   int rowid = query.lastInsertId().toInt();
   // To only set rowid for such table, we must know the type at run time
   //   e.g. dynamic_cast<QcRowWithId *>(row);
@@ -209,7 +235,7 @@ QcDatabaseTable::prepare_insert(const QStringList & fields)
   QSqlQuery query = m_database->new_query();
   QString sql_query =
     QLatin1String("INSERT INTO ") + m_name +
-    QLatin1String(" (") + fields.join(',') + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
+    QLatin1String(" (") + comma_join(fields) + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
   query.prepare(sql_query);
 
   return query;
@@ -229,7 +255,7 @@ QSqlQuery
 QcDatabaseTable::select(const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = m_database->new_query();
-  QString sql_query = QLatin1String("SELECT ") + fields.join(',') + QLatin1String(" FROM ") + m_name;
+  QString sql_query = QLatin1String("SELECT ") + comma_join(fields) + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;
   qInfo() << sql_query << fields;

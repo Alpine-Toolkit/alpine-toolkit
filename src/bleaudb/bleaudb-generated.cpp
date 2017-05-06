@@ -355,7 +355,7 @@ BBleauPlace::to_variant_list() const
 }
 
 QVariantHash
-BBleauPlace::to_variant_hash_sql(bool only_changed) const
+BBleauPlace::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -371,7 +371,7 @@ BBleauPlace::to_variant_hash_sql(bool only_changed) const
     if (is_note_modified())
       variant_hash[QLatin1String("note")] = m_note;
   } else {
-    variant_hash[QLatin1String("id")] = m_id;
+    if (duplicate) variant_hash[QLatin1String("id")] = m_id;
     variant_hash[QLatin1String("coordinate")] = bleaudb::dump_sql_coordinate(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("category")] = m_category;
@@ -383,10 +383,10 @@ BBleauPlace::to_variant_hash_sql(bool only_changed) const
 
 
 QVariantList
-BBleauPlace::to_variant_list_sql() const
+BBleauPlace::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
-  variants << m_id;
+  if (duplicate) variants << m_id;
   variants << bleaudb::dump_sql_coordinate(m_coordinate);
   variants << m_name;
   variants << m_category;
@@ -1071,7 +1071,7 @@ BBleauMassif::to_variant_list() const
 }
 
 QVariantHash
-BBleauMassif::to_variant_hash_sql(bool only_changed) const
+BBleauMassif::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -1099,7 +1099,7 @@ BBleauMassif::to_variant_hash_sql(bool only_changed) const
     if (is_velo_modified())
       variant_hash[QLatin1String("velo")] = m_velo;
   } else {
-    variant_hash[QLatin1String("id")] = m_id;
+    if (duplicate) variant_hash[QLatin1String("id")] = m_id;
     variant_hash[QLatin1String("coordinate")] = bleaudb::dump_sql_coordinate(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("access")] = m_access;
@@ -1117,10 +1117,10 @@ BBleauMassif::to_variant_hash_sql(bool only_changed) const
 
 
 QVariantList
-BBleauMassif::to_variant_list_sql() const
+BBleauMassif::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
-  variants << m_id;
+  if (duplicate) variants << m_id;
   variants << bleaudb::dump_sql_coordinate(m_coordinate);
   variants << m_name;
   variants << m_access;
@@ -1662,7 +1662,7 @@ BBleauBoulder::to_variant_list() const
 }
 
 QVariantHash
-BBleauBoulder::to_variant_hash_sql(bool only_changed) const
+BBleauBoulder::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -1680,7 +1680,7 @@ BBleauBoulder::to_variant_hash_sql(bool only_changed) const
     if (is_number_modified())
       variant_hash[QLatin1String("number")] = m_number;
   } else {
-    variant_hash[QLatin1String("id")] = m_id;
+    if (duplicate) variant_hash[QLatin1String("id")] = m_id;
     variant_hash[QLatin1String("coordinate")] = bleaudb::dump_sql_coordinate(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("comment")] = m_comment;
@@ -1693,10 +1693,10 @@ BBleauBoulder::to_variant_hash_sql(bool only_changed) const
 
 
 QVariantList
-BBleauBoulder::to_variant_list_sql() const
+BBleauBoulder::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
-  variants << m_id;
+  if (duplicate) variants << m_id;
   variants << bleaudb::dump_sql_coordinate(m_coordinate);
   variants << m_name;
   variants << m_comment;
@@ -2522,7 +2522,7 @@ BBleauCircuit::to_variant_list() const
 }
 
 QVariantHash
-BBleauCircuit::to_variant_hash_sql(bool only_changed) const
+BBleauCircuit::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -2556,7 +2556,7 @@ BBleauCircuit::to_variant_hash_sql(bool only_changed) const
     if (is_topos_modified())
       variant_hash[QLatin1String("topos")] = m_topos;
   } else {
-    variant_hash[QLatin1String("id")] = m_id;
+    if (duplicate) variant_hash[QLatin1String("id")] = m_id;
     variant_hash[QLatin1String("coordinate")] = bleaudb::dump_sql_coordinate(m_coordinate);
     variant_hash[QLatin1String("colour")] = m_colour;
     variant_hash[QLatin1String("creation_date")] = m_creation_date;
@@ -2577,10 +2577,10 @@ BBleauCircuit::to_variant_hash_sql(bool only_changed) const
 
 
 QVariantList
-BBleauCircuit::to_variant_list_sql() const
+BBleauCircuit::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
-  variants << m_id;
+  if (duplicate) variants << m_id;
   variants << bleaudb::dump_sql_coordinate(m_coordinate);
   variants << m_colour;
   variants << m_creation_date;

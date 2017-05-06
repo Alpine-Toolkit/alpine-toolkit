@@ -62,8 +62,8 @@ public:
   QVariantList to_variant_list() const;
 
   // SQL Serializer
-  QVariantHash to_variant_hash_sql(bool only_changed = false) const;
-  QVariantList to_variant_list_sql() const;
+  QVariantHash to_variant_hash_sql(bool only_changed = false, bool duplicate = false) const;
+  QVariantList to_variant_list_sql(bool duplicate = false) const;
 
   // Query for update
 {%- for member in members %}

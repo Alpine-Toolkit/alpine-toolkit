@@ -282,7 +282,8 @@ QcSchema::QcSchema()
     m_table_name(),
     // m_sql_table_option(),
     m_fields(),
-    m_field_map()
+    m_field_map(),
+    m_field_names_without_rowid()
 {}
 
 QcSchema::QcSchema(const QString & name,
@@ -296,7 +297,8 @@ QcSchema::QcSchema(const QString & name,
     // m_sql_table_option(sql_table_option),
     m_without_rowid(without_rowid),
     m_fields(),
-    m_field_map()
+    m_field_map(),
+    m_field_names_without_rowid()
 {
   if (table_name.isEmpty())
     m_table_name = m_name;
@@ -308,8 +310,10 @@ QcSchema::QcSchema(const QcSchema & other)
     m_table_name(other.m_table_name),
     // m_sql_table_option(other.m_sql_table_option),
     m_without_rowid(other.m_without_rowid),
+    m_has_rowid_primary_key(other.m_has_rowid_primary_key),
     m_fields(other.m_fields),
-    m_field_map(other.m_field_map)
+    m_field_map(other.m_field_map),
+    m_field_names_without_rowid(other.m_field_names_without_rowid)
 {}
 
 QcSchema::~QcSchema()
@@ -324,8 +328,10 @@ QcSchema::operator=(const QcSchema & other)
     m_table_name = other.m_table_name;
     // m_sql_table_option = other.m_sql_table_option;
     m_without_rowid = other.m_without_rowid;
+    m_has_rowid_primary_key = other.m_has_rowid_primary_key;
     m_fields = other.m_fields;
     m_field_map = other.m_field_map;
+    m_field_names_without_rowid = other.m_field_names_without_rowid;
   }
 
   return *this;
@@ -342,6 +348,8 @@ QcSchema::add_field(QcSchemaFieldTrait * field)
       and field->position() == 0
       and field->sql_type() == QLatin1String("integer"))
     m_has_rowid_primary_key = true;
+  else
+    m_field_names_without_rowid << field->sql_name();
 }
 
 QcSchema &

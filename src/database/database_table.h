@@ -97,6 +97,7 @@ public:
 
   QSqlQuery prepare_complete_insert(int number_of_fields);
   QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
+  QSqlQuery prepare_complete_insert(const QStringList & fields);
   void add(QcRowTraits & row);
 
   QSqlQuery prepare_insert(const QStringList & fields);

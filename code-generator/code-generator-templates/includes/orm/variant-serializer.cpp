@@ -43,6 +43,43 @@ QVariantList
 }
 {% endmacro -%}
 
+{%- macro to_variant_hash_sql(schema) %}
+QVariantHash
+{{class_name}}::to_variant_hash_sql(bool only_changed, bool duplicate) const
+{
+  QVariantHash variant_hash;
+
+  if (only_changed) {
+{%- for field in schema %}
+    if (is_{{field.name}}_modified())
+      {{ insert(field) }}
+{%- endfor %}
+  } else {
+{%- for field in schema %}
+    {% if schema.has_rowid_primary_key and field.is_rowid_primary_key -%}
+    if (duplicate) {% endif %}{{ insert(field) }}
+{%- endfor %}
+  }
+
+  return variant_hash;
+}
+{%- endmacro -%}
+
+{%- macro to_variant_list_sql(schema) %}
+QVariantList
+{{class_name}}::to_variant_list_sql(bool duplicate) const
+{
+  QVariantList variants;
+
+{%- for field in schema %}
+  {% if schema.has_rowid_primary_key and field.is_rowid_primary_key -%}
+  if (duplicate) {% endif %}variants << {{ field_value(field) }};
+{%- endfor %}
+
+  return variants;
+}
+{% endmacro -%}
+
 
 
 {#- Fixme: can use call -#}
@@ -58,6 +95,12 @@ QVariantList
 {% if field.type_conversion.cast_to_sql %}{{field.type_conversion.cast_to_sql}}(m_{{field.name}}){% else %}{{ cast_to_variant(field) }}{% endif %}
 {%- endmacro -%}
 
+{#-
 {{ to_variant_hash('_sql', schema) }}
 
 {{ to_variant_list('_sql', schema) }}
+-#}
+
+{{ to_variant_hash_sql(schema) }}
+
+{{ to_variant_list_sql(schema) }}
