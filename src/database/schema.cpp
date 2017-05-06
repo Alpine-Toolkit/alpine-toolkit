@@ -338,22 +338,22 @@ QcSchema::operator=(const QcSchema & other)
 }
 
 void
-QcSchema::add_field(QcSchemaFieldTrait * field)
+QcSchema::add_field(const QcSchemaFieldTrait & field)
 {
-  m_fields << QSharedPointer<QcSchemaFieldTrait>(field);
+  m_fields << QSharedPointer<QcSchemaFieldTrait>(field.clone());
   QSharedPointer<QcSchemaFieldTrait> owned_field = m_fields.last();
   owned_field->set_position(m_fields.size() -1);
   m_field_map.insert(owned_field->name(), owned_field.data());
-  if (field->is_primary_key()
-      and field->position() == 0
-      and field->sql_type() == QLatin1String("integer"))
+  if (owned_field->is_primary_key()
+      and owned_field->position() == 0
+      and owned_field->sql_type() == QLatin1String("integer"))
     m_has_rowid_primary_key = true;
   else
-    m_field_names_without_rowid << field->sql_name();
+    m_field_names_without_rowid << owned_field->sql_name();
 }
 
 QcSchema &
-QcSchema::operator<<(QcSchemaFieldTrait * field)
+QcSchema::operator<<(const QcSchemaFieldTrait & field)
 {
   add_field(field);
   return *this;

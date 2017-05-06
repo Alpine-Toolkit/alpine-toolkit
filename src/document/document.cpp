@@ -39,7 +39,7 @@ DocumentSchema::DocumentSchema()
 : QcSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   {
-    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+    QcSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -55,7 +55,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -71,7 +71,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("author"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -87,7 +87,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("version"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -103,7 +103,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("date"),
       QLatin1String("QDateTime"),
       QLatin1String("integer"),
@@ -119,7 +119,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -135,7 +135,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("url"),
       QLatin1String("QUrl"),
       QLatin1String("text"),
@@ -151,7 +151,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("size"),
       QLatin1String("int"),
       QLatin1String("integer"),

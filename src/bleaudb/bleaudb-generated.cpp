@@ -45,7 +45,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
 : QcSchema(QLatin1String("BBleauPlace"), QLatin1String("place"))
 {
   {
-    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+    QcSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -61,7 +61,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -77,7 +77,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -93,7 +93,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("category"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -109,7 +109,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -503,7 +503,7 @@ BBleauMassifSchema::BBleauMassifSchema()
 : QcSchema(QLatin1String("BBleauMassif"), QLatin1String("massif"))
 {
   {
-    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+    QcSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -519,7 +519,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -535,7 +535,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -551,7 +551,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("access"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -567,7 +567,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("alternative_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -583,7 +583,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("chaos_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -599,7 +599,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -615,7 +615,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("parcelles"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -631,7 +631,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("rdv"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -647,7 +647,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("secteur"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -663,7 +663,7 @@ BBleauMassifSchema::BBleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("velo"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1309,7 +1309,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
 : QcSchema(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
 {
   {
-    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+    QcSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1325,7 +1325,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -1341,7 +1341,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1357,7 +1357,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("comment"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1373,7 +1373,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("grade"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1389,7 +1389,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("number"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1825,7 +1825,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
 : QcSchema(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
 {
   {
-    QcSchemaPrimaryKey * field = new QcSchemaPrimaryKey(
+    QcSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1841,7 +1841,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -1857,7 +1857,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("colour"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1873,7 +1873,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("creation_date"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1889,7 +1889,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("gestion"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1905,7 +1905,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("grade"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1921,7 +1921,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("massif_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1937,7 +1937,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1953,7 +1953,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("number"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1969,7 +1969,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("opener"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1985,7 +1985,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("refection_date"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -2001,7 +2001,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("refection_note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2017,7 +2017,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("status"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2033,7 +2033,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField * field = new QcSchemaField(
+    QcSchemaField field(
       QLatin1String("topos"),
       QLatin1String("QStringList"),
       QLatin1String("text"),

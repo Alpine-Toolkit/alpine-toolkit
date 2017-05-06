@@ -11,7 +11,7 @@
 {
 {%- for field in schema %}
   {
-    {{field.shema_field_ctor}} * field = new {{field.shema_field_ctor}}(
+    {{field.shema_field_ctor}} field(
       QLatin1String("{{field.name}}"),
       QLatin1String("{{field.qt_type}}"),
       QLatin1String("{{field.sql_type}}"),

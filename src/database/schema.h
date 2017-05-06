@@ -82,6 +82,8 @@ public:
   QcSchemaFieldTrait(const QcSchemaFieldTrait & other);
   virtual ~QcSchemaFieldTrait();
 
+  virtual QcSchemaFieldTrait * clone() const = 0;
+
   QcSchemaFieldTrait & operator=(const QcSchemaFieldTrait & other);
 
   bool is_normal_type() const {
@@ -170,6 +172,8 @@ public:
   QcSchemaField(const QcSchemaField & other);
   ~QcSchemaField();
 
+  QcSchemaFieldTrait * clone() const { return new QcSchemaField(*this); };
+
   QcSchemaField & operator=(const QcSchemaField & other);
 
   QVariant default_value() const { return m_default; }
@@ -197,6 +201,8 @@ public:
                      );
   QcSchemaPrimaryKey(const QcSchemaPrimaryKey & other);
   ~QcSchemaPrimaryKey();
+
+  QcSchemaFieldTrait * clone() const { return new QcSchemaPrimaryKey(*this); };
 
   QcSchemaPrimaryKey & operator=(const QcSchemaPrimaryKey & other);
 
@@ -229,6 +235,8 @@ public:
                      );
   QcSchemaForeignKey(const QcSchemaForeignKey & other);
   ~QcSchemaForeignKey();
+
+  QcSchemaFieldTrait * clone() const { return new QcSchemaForeignKey(*this); };
 
   QcSchemaForeignKey & operator=(const QcSchemaForeignKey & other);
 
@@ -268,8 +276,8 @@ public:
   void request_schema_id() { m_schema_id = new_schema_id(); } // to update a cloned schema
 
   // Fixme: pass & and copy ?
-  void add_field(QcSchemaFieldTrait * field); // field pth is managed by QSharedPointer
-  QcSchema & operator<<(QcSchemaFieldTrait * field);
+  void add_field(const QcSchemaFieldTrait & field); // field pth is managed by QSharedPointer
+  QcSchema & operator<<(const QcSchemaFieldTrait & field);
 
   const QString & name() const { return m_name; }
   const QString & table_name() const { return m_table_name; }
