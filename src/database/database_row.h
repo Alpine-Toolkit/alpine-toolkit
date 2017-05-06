@@ -86,7 +86,7 @@ public:
   // To set id when the row was inserted
   virtual void set_insert_id(int id) {};
 
-  virtual void load_foreign_keys() {}
+  virtual void load_relations() {}
 
 private:
   QcDatabaseSchema * m_database_schema = nullptr; // use memory !
@@ -129,24 +129,6 @@ protected:
 
 private:
   QBitArray m_bits;
-};
-
-/**************************************************************************************************/
-
-// Variant for table with rowid primary key
-
-template<class S>
-class QcRowWithId : public QcRow<S>
-{
-public:
-  using QcRow<S>::QcRow;
-  ~QcRowWithId() {}
-
-  void set_insert_id(int id) { set_id(id); }
-
-  // Table must define an id field
-  virtual int id() const = 0;
-  virtual void set_id(int value) = 0;
 };
 
 /**************************************************************************************************/

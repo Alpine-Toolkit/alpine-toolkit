@@ -174,7 +174,7 @@ DocumentSchema::~DocumentSchema()
 /**************************************************************************************************/
 
 Document::Document()
-  : QcRowWithId<DocumentSchema>(),
+  : QcRow<DocumentSchema>(),
     m_id(),
     m_name(),
     m_author(),
@@ -186,7 +186,7 @@ Document::Document()
 {}
 
 Document::Document(const Document & other)
-  : QcRowWithId<DocumentSchema>(other),
+  : QcRow<DocumentSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_author(other.m_author),
@@ -237,7 +237,7 @@ Document::Document(const QVariantList & variants)
 }
 
 Document::Document(const QSqlRecord & record)
- : QcRowWithId<DocumentSchema>(record)
+ : QcRow<DocumentSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -250,7 +250,7 @@ Document::Document(const QSqlRecord & record)
 }
 
 Document::Document(const QSqlQuery & query)
- : QcRowWithId<DocumentSchema>(query)
+ : QcRow<DocumentSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_name = query.value(1).toString();
@@ -270,7 +270,7 @@ Document &
 Document::operator=(const Document & other)
 {
   if (this != &other) {
-    QcRowWithId<DocumentSchema>::operator=(other);
+    QcRow<DocumentSchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_author = other.m_author;
@@ -288,7 +288,7 @@ Document::operator=(const Document & other)
 bool
 Document::operator==(const Document & other)
 {
-  if (not QcRowWithId<DocumentSchema>::operator==(other))
+  if (not QcRow<DocumentSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;

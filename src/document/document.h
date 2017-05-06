@@ -88,7 +88,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Document : public QObject, public QcRowWithId<DocumentSchema>
+class Document : public QObject, public QcRow<DocumentSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -139,6 +139,8 @@ public:
 
   int size() const { return m_size; }
   void set_size(int value);
+
+  void set_insert_id(int id) { set_id(id); }
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;

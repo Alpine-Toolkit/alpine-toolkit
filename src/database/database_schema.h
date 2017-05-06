@@ -73,11 +73,11 @@ public:
     const QcSchema & schema = T::schema();
     QcDatabaseTable & table = get_table_by_schema(schema);
     T * row = new T(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
-    // Fixme: non specific code
+    // Fixme: non specific code, QcDatabaseTable has no link to database QcDatabaseSchema !
     row->set_database_schema(this); // Fixme: for all ???
     if (schema.has_foreign_keys()) {
       if (not lazy_load)
-        row->load_foreign_keys();
+        row->load_relations();
     }
     return QSharedPointer<T>(row);
   }

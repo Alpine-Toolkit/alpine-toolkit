@@ -395,11 +395,13 @@ class Schema:
             order = self.__order__
 
         self._has_rowid_primary_key = False
+        self._rowid_primary_key = None
         self._fields = [columns[name] for name in order]
         for i, field in enumerate(self._fields):
             field.position = i
             if field.is_rowid_primary_key:
                 self._has_rowid_primary_key = True
+                self._rowid_primary_key = field
 
     ##############################################
 
@@ -482,8 +484,13 @@ class Schema:
         return self._has_rowid_primary_key
 
     @property
+    def rowid_primary_key(self):
+        return self._rowid_primary_key
+
+    @property
     def base_class(self):
-        return 'QcRowWithId' if self._has_rowid_primary_key else 'QcRow'
+        return 'QcRow'
+        # return 'QcRowWithId' if self._has_rowid_primary_key else 'QcRow'
 
     ##############################################
 

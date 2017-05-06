@@ -132,7 +132,7 @@ BBleauPlaceSchema::~BBleauPlaceSchema()
 /**************************************************************************************************/
 
 BBleauPlace::BBleauPlace()
-  : QcRowWithId<BBleauPlaceSchema>(),
+  : QcRow<BBleauPlaceSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -141,7 +141,7 @@ BBleauPlace::BBleauPlace()
 {}
 
 BBleauPlace::BBleauPlace(const BBleauPlace & other)
-  : QcRowWithId<BBleauPlaceSchema>(other),
+  : QcRow<BBleauPlaceSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -180,7 +180,7 @@ BBleauPlace::BBleauPlace(const QVariantList & variants)
 }
 
 BBleauPlace::BBleauPlace(const QSqlRecord & record)
- : QcRowWithId<BBleauPlaceSchema>(record)
+ : QcRow<BBleauPlaceSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(record.value(1));
@@ -190,7 +190,7 @@ BBleauPlace::BBleauPlace(const QSqlRecord & record)
 }
 
 BBleauPlace::BBleauPlace(const QSqlQuery & query)
- : QcRowWithId<BBleauPlaceSchema>(query)
+ : QcRow<BBleauPlaceSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
@@ -207,7 +207,7 @@ BBleauPlace &
 BBleauPlace::operator=(const BBleauPlace & other)
 {
   if (this != &other) {
-    QcRowWithId<BBleauPlaceSchema>::operator=(other);
+    QcRow<BBleauPlaceSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -222,7 +222,7 @@ BBleauPlace::operator=(const BBleauPlace & other)
 bool
 BBleauPlace::operator==(const BBleauPlace & other)
 {
-  if (not QcRowWithId<BBleauPlaceSchema>::operator==(other))
+  if (not QcRow<BBleauPlaceSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -686,7 +686,7 @@ BBleauMassifSchema::~BBleauMassifSchema()
 /**************************************************************************************************/
 
 BBleauMassif::BBleauMassif()
-  : QcRowWithId<BBleauMassifSchema>(),
+  : QcRow<BBleauMassifSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -701,7 +701,7 @@ BBleauMassif::BBleauMassif()
 {}
 
 BBleauMassif::BBleauMassif(const BBleauMassif & other)
-  : QcRowWithId<BBleauMassifSchema>(other),
+  : QcRow<BBleauMassifSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -764,7 +764,7 @@ BBleauMassif::BBleauMassif(const QVariantList & variants)
 }
 
 BBleauMassif::BBleauMassif(const QSqlRecord & record)
- : QcRowWithId<BBleauMassifSchema>(record)
+ : QcRow<BBleauMassifSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(record.value(1));
@@ -780,7 +780,7 @@ BBleauMassif::BBleauMassif(const QSqlRecord & record)
 }
 
 BBleauMassif::BBleauMassif(const QSqlQuery & query)
- : QcRowWithId<BBleauMassifSchema>(query)
+ : QcRow<BBleauMassifSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
@@ -803,7 +803,7 @@ BBleauMassif &
 BBleauMassif::operator=(const BBleauMassif & other)
 {
   if (this != &other) {
-    QcRowWithId<BBleauMassifSchema>::operator=(other);
+    QcRow<BBleauMassifSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -824,7 +824,7 @@ BBleauMassif::operator=(const BBleauMassif & other)
 bool
 BBleauMassif::operator==(const BBleauMassif & other)
 {
-  if (not QcRowWithId<BBleauMassifSchema>::operator==(other))
+  if (not QcRow<BBleauMassifSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -1412,7 +1412,7 @@ BBleauBoulderSchema::~BBleauBoulderSchema()
 /**************************************************************************************************/
 
 BBleauBoulder::BBleauBoulder()
-  : QcRowWithId<BBleauBoulderSchema>(),
+  : QcRow<BBleauBoulderSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -1422,7 +1422,7 @@ BBleauBoulder::BBleauBoulder()
 {}
 
 BBleauBoulder::BBleauBoulder(const BBleauBoulder & other)
-  : QcRowWithId<BBleauBoulderSchema>(other),
+  : QcRow<BBleauBoulderSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -1465,7 +1465,7 @@ BBleauBoulder::BBleauBoulder(const QVariantList & variants)
 }
 
 BBleauBoulder::BBleauBoulder(const QSqlRecord & record)
- : QcRowWithId<BBleauBoulderSchema>(record)
+ : QcRow<BBleauBoulderSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(record.value(1));
@@ -1476,7 +1476,7 @@ BBleauBoulder::BBleauBoulder(const QSqlRecord & record)
 }
 
 BBleauBoulder::BBleauBoulder(const QSqlQuery & query)
- : QcRowWithId<BBleauBoulderSchema>(query)
+ : QcRow<BBleauBoulderSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
@@ -1494,7 +1494,7 @@ BBleauBoulder &
 BBleauBoulder::operator=(const BBleauBoulder & other)
 {
   if (this != &other) {
-    QcRowWithId<BBleauBoulderSchema>::operator=(other);
+    QcRow<BBleauBoulderSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -1510,7 +1510,7 @@ BBleauBoulder::operator=(const BBleauBoulder & other)
 bool
 BBleauBoulder::operator==(const BBleauBoulder & other)
 {
-  if (not QcRowWithId<BBleauBoulderSchema>::operator==(other))
+  if (not QcRow<BBleauBoulderSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -2056,7 +2056,7 @@ BBleauCircuitSchema::~BBleauCircuitSchema()
 /**************************************************************************************************/
 
 BBleauCircuit::BBleauCircuit()
-  : QcRowWithId<BBleauCircuitSchema>(),
+  : QcRow<BBleauCircuitSchema>(),
     m_id(),
     m_coordinate(),
     m_colour(),
@@ -2074,7 +2074,7 @@ BBleauCircuit::BBleauCircuit()
 {}
 
 BBleauCircuit::BBleauCircuit(const BBleauCircuit & other)
-  : QcRowWithId<BBleauCircuitSchema>(other),
+  : QcRow<BBleauCircuitSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_colour(other.m_colour),
@@ -2149,7 +2149,7 @@ BBleauCircuit::BBleauCircuit(const QVariantList & variants)
 }
 
 BBleauCircuit::BBleauCircuit(const QSqlRecord & record)
- : QcRowWithId<BBleauCircuitSchema>(record)
+ : QcRow<BBleauCircuitSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(record.value(1));
@@ -2168,7 +2168,7 @@ BBleauCircuit::BBleauCircuit(const QSqlRecord & record)
 }
 
 BBleauCircuit::BBleauCircuit(const QSqlQuery & query)
- : QcRowWithId<BBleauCircuitSchema>(query)
+ : QcRow<BBleauCircuitSchema>(query)
 {
   m_id = query.value(0).toInt();
   m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
@@ -2194,7 +2194,7 @@ BBleauCircuit &
 BBleauCircuit::operator=(const BBleauCircuit & other)
 {
   if (this != &other) {
-    QcRowWithId<BBleauCircuitSchema>::operator=(other);
+    QcRow<BBleauCircuitSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_colour = other.m_colour;
@@ -2218,7 +2218,7 @@ BBleauCircuit::operator=(const BBleauCircuit & other)
 bool
 BBleauCircuit::operator==(const BBleauCircuit & other)
 {
-  if (not QcRowWithId<BBleauCircuitSchema>::operator==(other))
+  if (not QcRow<BBleauCircuitSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;

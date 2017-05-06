@@ -85,7 +85,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauPlace : public QObject, public QcRowWithId<BBleauPlaceSchema>
+class BBleauPlace : public QObject, public QcRow<BBleauPlaceSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -124,6 +124,8 @@ public:
 
   const QString & note() const { return m_note; }
   void set_note(const QString & value);
+
+  void set_insert_id(int id) { set_id(id); }
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -212,7 +214,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauMassif : public QObject, public QcRowWithId<BBleauMassifSchema>
+class BBleauMassif : public QObject, public QcRow<BBleauMassifSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -275,6 +277,8 @@ public:
 
   const QString & velo() const { return m_velo; }
   void set_velo(const QString & value);
+
+  void set_insert_id(int id) { set_id(id); }
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -376,7 +380,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauBoulder : public QObject, public QcRowWithId<BBleauBoulderSchema>
+class BBleauBoulder : public QObject, public QcRow<BBleauBoulderSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -419,6 +423,8 @@ public:
 
   const QString & number() const { return m_number; }
   void set_number(const QString & value);
+
+  void set_insert_id(int id) { set_id(id); }
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -513,7 +519,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BBleauCircuit : public QObject, public QcRowWithId<BBleauCircuitSchema>
+class BBleauCircuit : public QObject, public QcRow<BBleauCircuitSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -588,6 +594,8 @@ public:
 
   const QStringList & topos() const { return m_topos; }
   void set_topos(const QStringList & value);
+
+  void set_insert_id(int id) { set_id(id); }
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;

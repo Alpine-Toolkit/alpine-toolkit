@@ -50,6 +50,10 @@ public:
   void set_{{member.name}}({{member.setter_type}} value);
 {% endfor -%}
 {# #}
+{%- if schema.has_rowid_primary_key %}
+  void set_insert_id(int id) { set_{{ schema.rowid_primary_key.name }}(id); }
+{%- endif %}
+
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
 
