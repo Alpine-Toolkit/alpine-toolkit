@@ -55,7 +55,7 @@ BBleauPlaceSchema::BBleauPlaceSchema()
       QLatin1String(""));
     // Optional parameters
     
-    
+    field.set_nullable(false);
     
     
     add_field(field);
@@ -513,7 +513,7 @@ BBleauMassifSchema::BBleauMassifSchema()
       QLatin1String(""));
     // Optional parameters
     
-    
+    field.set_nullable(false);
     
     
     add_field(field);
@@ -1319,7 +1319,7 @@ BBleauBoulderSchema::BBleauBoulderSchema()
       QLatin1String(""));
     // Optional parameters
     
-    
+    field.set_nullable(false);
     
     
     add_field(field);
@@ -1835,7 +1835,7 @@ BBleauCircuitSchema::BBleauCircuitSchema()
       QLatin1String(""));
     // Optional parameters
     
-    
+    field.set_nullable(false);
     
     
     add_field(field);

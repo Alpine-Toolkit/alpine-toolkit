@@ -220,7 +220,7 @@ QString
 QcSchemaPrimaryKey::to_sql_definition() const
 {
   QStringList parts;
-  parts << QLatin1String("PRIMARY KEY");
+  // parts << QLatin1String("PRIMARY KEY");
   if (m_autoincrement)
     parts << QLatin1String("AUTOINCREMENT");
   if (m_unique)
@@ -364,11 +364,18 @@ QcSchema::to_sql_definition() const
 {
   QString sql_query = QLatin1String("CREATE TABLE ");
   sql_query += m_table_name;
-  sql_query += QLatin1String(" (");
+  sql_query += QLatin1String(" (\n  ");
   QStringList sql_fields;
   for (const auto & field : m_fields)
     sql_fields << field->to_sql_definition();
-  sql_query += sql_fields.join(QLatin1String(", "));
+  sql_query += sql_fields.join(QLatin1String(",\n  "));
+  QStringList primary_keys;
+  for (const auto & field : m_fields)
+    if (field->is_primary_key())
+      primary_keys << field->name();
+  if (primary_keys.size()) {
+    sql_query += QLatin1String(",\n  PRIMARY KEY (") + primary_keys.join(QLatin1String(", ")) + QLatin1String(")\n");
+  }
   sql_query += ')';
   if (m_without_rowid)
     sql_query += QLatin1String(" WITHOUT ROWID");

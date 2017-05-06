@@ -49,7 +49,7 @@ DocumentSchema::DocumentSchema()
       QLatin1String(""));
     // Optional parameters
     
-    
+    field.set_nullable(false);
     
     
     add_field(field);

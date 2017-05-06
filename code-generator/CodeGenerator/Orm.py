@@ -78,8 +78,11 @@ class Field:
         self._sql_name = kwargs.get('sql_name', None)
         self._autoincrement = kwargs.get('autoincrement', False)
         self._default = kwargs.get('default', None)
-        self._nullable = kwargs.get('nullable', False)
         self._is_primary_key = kwargs.get('primary_key', False)
+        if self._is_primary_key:
+            self._nullable = False;
+        else:
+            self._nullable = kwargs.get('nullable', True)
         self._unique = kwargs.get('unique', False)
 
         self._json_name = kwargs.get('json_name', None)

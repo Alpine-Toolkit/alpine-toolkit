@@ -20,10 +20,10 @@
       QLatin1String("{{field.title}}"),
       QLatin1String("{{field.description}}"));
     // Optional parameters
-    {% if field.autoincrement %}fiel->set_autoincrement(true);{% endif %}
-    {% if field.nullable %}field->set_nullable(true);{% endif %}
-    {% if field.unique %}field->set_unique(true);{% endif %}
-    {% if field.default %}field->set_default_value({{field.default}});{% endif %}
+    {% if field.autoincrement %}field.set_autoincrement(true);{% endif %}
+    {% if not field.nullable %}field.set_nullable(false);{% endif %}
+    {% if field.unique %}field.set_unique(true);{% endif %}
+    {% if field.default %}field.set_default_value({{field.default}});{% endif %}
     add_field(field);
   }{% endfor %}
 }
