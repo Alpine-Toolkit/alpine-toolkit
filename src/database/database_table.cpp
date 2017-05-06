@@ -186,6 +186,8 @@ QcDatabaseTable::add(QcRowTraits & row)
 {
   QSqlQuery query = complete_insert(row.to_variant_list_sql());
   int rowid = query.lastInsertId().toInt();
+  // To only set rowid for such table, we must know the type at run time
+  //   e.g. dynamic_cast<QcRowWithId *>(row);
   row.set_insert_id(rowid);
 }
 

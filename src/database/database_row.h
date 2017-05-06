@@ -54,7 +54,7 @@ public:
   QcRowTraits() {};
   // ~QcRowTraits();
 
-  // Define row API
+  // Followings methods define the Row API
 
   virtual int schema_id() const = 0;
 
@@ -83,15 +83,18 @@ public:
     return m_database_schema != nullptr; // Fixme: right ??? commited !
   }
 
-  virtual void load_foreign_keys() {}
+  // To set id when the row was inserted
+  virtual void set_insert_id(int id) {};
 
-  virtual void set_insert_id(int id) {}; // To set id field when the row was inserted
+  virtual void load_foreign_keys() {}
 
 private:
   QcDatabaseSchema * m_database_schema = nullptr; // use memory !
 };
 
 /**************************************************************************************************/
+
+// Row template parametrised by its schema
 
 template<class S>
 class QcRow : public QcRowTraits
@@ -130,6 +133,8 @@ private:
 
 /**************************************************************************************************/
 
+// Variant for table with rowid primary key
+
 template<class S>
 class QcRowWithId : public QcRow<S>
 {
@@ -139,11 +144,15 @@ public:
 
   void set_insert_id(int id) { set_id(id); }
 
+  // Table must define an id field
   virtual int id() const = 0;
   virtual void set_id(int value) = 0;
 };
 
 /**************************************************************************************************/
+
+// This implementation embed the rowid, and it thus factorise code
+// But it makes code generation more complicated, since we have to omit the id field
 
 /*
 template<class S>
