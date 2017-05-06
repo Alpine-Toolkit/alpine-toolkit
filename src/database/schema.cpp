@@ -295,7 +295,6 @@ QcSchema::QcSchema(const QString & name,
     m_table_name(table_name),
     // m_sql_table_option(sql_table_option),
     m_without_rowid(without_rowid),
-    m_has_rowid(not without_rowid),
     m_fields(),
     m_field_map()
 {
@@ -309,7 +308,6 @@ QcSchema::QcSchema(const QcSchema & other)
     m_table_name(other.m_table_name),
     // m_sql_table_option(other.m_sql_table_option),
     m_without_rowid(other.m_without_rowid),
-    m_has_rowid(other.m_has_rowid),
     m_fields(other.m_fields),
     m_field_map(other.m_field_map)
 {}
@@ -326,7 +324,6 @@ QcSchema::operator=(const QcSchema & other)
     m_table_name = other.m_table_name;
     // m_sql_table_option = other.m_sql_table_option;
     m_without_rowid = other.m_without_rowid;
-    m_has_rowid = other.m_has_rowid;
     m_fields = other.m_fields;
     m_field_map = other.m_field_map;
   }
@@ -341,10 +338,10 @@ QcSchema::add_field(QcSchemaFieldTrait * field)
   QSharedPointer<QcSchemaFieldTrait> owned_field = m_fields.last();
   owned_field->set_position(m_fields.size() -1);
   m_field_map.insert(owned_field->name(), owned_field.data());
-  if (m_has_rowid and field->is_primary_key())
-    m_has_rowid = false;
-  if (field->is_foreign_key())
-    m_has_rowid = true;
+  if (field->is_primary_key()
+      and field->position() == 0
+      and field->sql_type() == QLatin1String("integer"))
+    m_has_rowid_primary_key = true;
 }
 
 QcSchema &

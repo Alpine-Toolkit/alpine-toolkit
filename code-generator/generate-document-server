@@ -40,12 +40,13 @@ sys.path.insert(0, code_generator_path)
 
 ####################################################################################################
 
-import json
-
-from CodeGenerator.SqlOrm import (SchemaRepository,
-                                  Schema,
-                                  IntegerField, StringField, UrlField,
-                                  DateTimeField, IsoDateTimeField, UnixDateTimeField)
+# from CodeGenerator.CppType import TypeConversion
+from CodeGenerator.Orm import (SchemaRepository, CustomTemplate,
+                               Schema, Field, ForeignKey,  RelationShip)
+from CodeGenerator.StandardType import (Integer, UnsignedInteger,
+                                        String, StringList, Url,
+                                        DateTime, UnixDateTime,
+                                        GeoCoordinate)
 
 from CodeGenerator.GeneratorSettings import generator_settings
 
@@ -76,14 +77,14 @@ class Document(Schema):
         'size',
     )
 
-    id = IntegerField(primary_key=True)
-    name= StringField()
-    author= StringField()
-    version = IntegerField()
-    date = UnixDateTimeField()
-    description= StringField()
-    url = UrlField()
-    size = IntegerField()
+    id = Field(Integer, primary_key=True)
+    name= Field(String)
+    author= Field(String)
+    version = Field(Integer)
+    date = Field(UnixDateTime)
+    description= Field(String)
+    url = Field(Url)
+    size = Field(Integer)
 
 ####################################################################################################
 

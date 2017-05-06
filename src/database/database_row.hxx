@@ -50,6 +50,7 @@ QcRow<S>::QcRow(const QcRow & other)
 
 /**************************************************************************************************/
 
+/*
 template<class S>
 QcRowWithId<S>::QcRowWithId()
   : QcRow<S>()
@@ -58,7 +59,7 @@ QcRowWithId<S>::QcRowWithId()
 template<class S>
 QcRowWithId<S>::QcRowWithId(const QcRowWithId & other)
   : QcRow<S>(static_cast<const QcRow<S> &>(other)),
-    m_rowid(other.m_rowid)
+    m_id(other.m_id)
 {}
 
 template<class S>
@@ -70,37 +71,28 @@ template<class S>
 QcRowWithId<S>::QcRowWithId(const QVariantHash & variant_hash)
  : QcRowWithId()
 {
-  if (variant_hash.contains(QLatin1String("rowid")))
-    m_rowid = variant_hash[QLatin1String("rowid")].toInt();
-  else
-    m_rowid = -1;
+  m_id = variant_hash[QLatin1String("id")].toInt();
 }
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QVariantList & variants) // , bool with_rowid
+QcRowWithId<S>::QcRowWithId(const QVariantList & variants)
  : QcRowWithId()
 {
-  int _number_of_fields = QcRow<S>::number_of_fields();
-  if (variants.size() == _number_of_fields +1) // Fixme: with_rowid, danger ?
-    m_rowid = variants[_number_of_fields].toInt();
-  else
-    m_rowid = -1;
+  m_id = variants[0].toInt();
 }
 
 template<class S>
 QcRowWithId<S>::QcRowWithId(const QSqlRecord & record)
  : QcRowWithId()
 {
-  // int number_of_fields = record.count();
-  m_rowid = record.value(QcRow<S>::number_of_fields()).toInt();
+  m_id = record.value(0).toInt();
 }
 
 template<class S>
 QcRowWithId<S>::QcRowWithId(const QSqlQuery & query)
  : QcRowWithId()
 {
-  // int number_of_fields = query.record().count(); // Fixme: slower ?
-  m_rowid = query.value(QcRow<S>::number_of_fields()).toInt();
+  m_id = query.value(0).toInt();
 }
 
 template<class S>
@@ -112,7 +104,7 @@ QcRowWithId<S> &
 QcRowWithId<S>::operator=(const QcRowWithId & other)
 {
   if (this != &other) {
-    m_rowid = other.m_rowid;
+    m_id = other.m_id;
   }
 
   return *this;
@@ -122,25 +114,26 @@ template<class S>
 bool
 QcRowWithId<S>::operator==(const QcRowWithId & other)
 {
-  return m_rowid == other.m_rowid;
+  return m_id == other.m_id;
 }
 
 template<class S>
 void
 QcRowWithId<S>::detach()
 {
-  m_rowid = -1;
+  m_id = INVALID_ID;
   QcRowTraits::set_database_schema(nullptr);
 }
+*/
 
 /*
 template<class S>
 void
-QcRowWithId<S>::set_rowid(int value)
+QcRowWithId<S>::set_id(int value)
 {
-  if (m_rowid != value) {
-    m_rowid = value;
-    emit rowidChanged();
+  if (m_id != value) {
+    m_id = value;
+    emit idChanged();
   }
 }
 */

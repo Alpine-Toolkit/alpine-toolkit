@@ -88,9 +88,10 @@ QcDatabaseSchema::add(QcRowTraits & row)
   int schema_id = row.schema_id();
   QcDatabaseTable & table = get_table_by_schema_id(schema_id);
   QSqlQuery query = table.complete_insert(row.to_variant_list_sql());
+  // QcRowWithId * row_ptr = dynamic_cast<QcRowWithId *>(row);
   int rowid = query.lastInsertId().toInt();
   qInfo() << "add" << schema_id << table.name() << rowid;
-  row.set_rowid(rowid);
+  row.set_insert_id(rowid);
 }
 
 /***************************************************************************************************

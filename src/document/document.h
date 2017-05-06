@@ -165,8 +165,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void load_foreign_keys();
-
 signals:
   void idChanged();
   void nameChanged();

@@ -57,12 +57,13 @@ class BBleauPlaceSchema : public QcSchema
 {
 public:
   enum Fields {
+    ID,
     COORDINATE,
     NAME,
     CATEGORY,
     NOTE
   };
-  static const int NUMBER_OF_FIELDS = 4;
+  static const int NUMBER_OF_FIELDS = 5;
 
 public:
   static BBleauPlaceSchema & instance()
@@ -87,6 +88,7 @@ protected:
 class BBleauPlace : public QObject, public QcRowWithId<BBleauPlaceSchema>
 {
   Q_OBJECT
+  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QString category READ category WRITE set_category NOTIFY categoryChanged)
@@ -107,6 +109,9 @@ public:
   bool operator==(const BBleauPlace & other);
 
   // Getter/Setter
+
+  int id() const { return m_id; }
+  void set_id(int value);
 
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
@@ -132,6 +137,7 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
   bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
   bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
   bool is_category_modified() const { return bit_status(Schema::Fields::CATEGORY); }
@@ -141,15 +147,15 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void load_foreign_keys();
-
 signals:
+  void idChanged();
   void coordinateChanged();
   void nameChanged();
   void categoryChanged();
   void noteChanged();
 
 private:
+  int m_id;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_category;
@@ -172,6 +178,7 @@ class BBleauMassifSchema : public QcSchema
 {
 public:
   enum Fields {
+    ID,
     COORDINATE,
     NAME,
     ACCESS,
@@ -183,7 +190,7 @@ public:
     SECTEUR,
     VELO
   };
-  static const int NUMBER_OF_FIELDS = 10;
+  static const int NUMBER_OF_FIELDS = 11;
 
 public:
   static BBleauMassifSchema & instance()
@@ -208,6 +215,7 @@ protected:
 class BBleauMassif : public QObject, public QcRowWithId<BBleauMassifSchema>
 {
   Q_OBJECT
+  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QString access READ access WRITE set_access NOTIFY accessChanged)
@@ -234,6 +242,9 @@ public:
   bool operator==(const BBleauMassif & other);
 
   // Getter/Setter
+
+  int id() const { return m_id; }
+  void set_id(int value);
 
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
@@ -277,6 +288,7 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
   bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
   bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
   bool is_access_modified() const { return bit_status(Schema::Fields::ACCESS); }
@@ -292,9 +304,8 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void load_foreign_keys();
-
 signals:
+  void idChanged();
   void coordinateChanged();
   void nameChanged();
   void accessChanged();
@@ -307,6 +318,7 @@ signals:
   void veloChanged();
 
 private:
+  int m_id;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_access;
@@ -335,13 +347,14 @@ class BBleauBoulderSchema : public QcSchema
 {
 public:
   enum Fields {
+    ID,
     COORDINATE,
     NAME,
     COMMENT,
     GRADE,
     NUMBER
   };
-  static const int NUMBER_OF_FIELDS = 5;
+  static const int NUMBER_OF_FIELDS = 6;
 
 public:
   static BBleauBoulderSchema & instance()
@@ -366,6 +379,7 @@ protected:
 class BBleauBoulder : public QObject, public QcRowWithId<BBleauBoulderSchema>
 {
   Q_OBJECT
+  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
@@ -387,6 +401,9 @@ public:
   bool operator==(const BBleauBoulder & other);
 
   // Getter/Setter
+
+  int id() const { return m_id; }
+  void set_id(int value);
 
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
@@ -415,6 +432,7 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
   bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
   bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
   bool is_comment_modified() const { return bit_status(Schema::Fields::COMMENT); }
@@ -425,9 +443,8 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void load_foreign_keys();
-
 signals:
+  void idChanged();
   void coordinateChanged();
   void nameChanged();
   void commentChanged();
@@ -435,6 +452,7 @@ signals:
   void numberChanged();
 
 private:
+  int m_id;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_comment;
@@ -458,12 +476,13 @@ class BBleauCircuitSchema : public QcSchema
 {
 public:
   enum Fields {
+    ID,
     COORDINATE,
     COLOUR,
     CREATION_DATE,
     GESTION,
     GRADE,
-    MASSIF_SQL,
+    MASSIF_ID,
     NOTE,
     NUMBER,
     OPENER,
@@ -472,7 +491,7 @@ public:
     STATUS,
     TOPOS
   };
-  static const int NUMBER_OF_FIELDS = 13;
+  static const int NUMBER_OF_FIELDS = 14;
 
 public:
   static BBleauCircuitSchema & instance()
@@ -497,12 +516,13 @@ protected:
 class BBleauCircuit : public QObject, public QcRowWithId<BBleauCircuitSchema>
 {
   Q_OBJECT
+  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
   Q_PROPERTY(QString colour READ colour WRITE set_colour NOTIFY colourChanged)
   Q_PROPERTY(int creation_date READ creation_date WRITE set_creation_date NOTIFY creation_dateChanged)
   Q_PROPERTY(QString gestion READ gestion WRITE set_gestion NOTIFY gestionChanged)
   Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(int massif_sql READ massif_sql WRITE set_massif_sql NOTIFY massif_sqlChanged)
+  Q_PROPERTY(int massif_id READ massif_id WRITE set_massif_id NOTIFY massif_idChanged)
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
   Q_PROPERTY(int number READ number WRITE set_number NOTIFY numberChanged)
   Q_PROPERTY(QString opener READ opener WRITE set_opener NOTIFY openerChanged)
@@ -527,6 +547,9 @@ public:
 
   // Getter/Setter
 
+  int id() const { return m_id; }
+  void set_id(int value);
+
   const QGeoCoordinate & coordinate() const { return m_coordinate; }
   void set_coordinate(const QGeoCoordinate & value);
 
@@ -542,8 +565,8 @@ public:
   const QString & grade() const { return m_grade; }
   void set_grade(const QString & value);
 
-  int massif_sql() const { return m_massif_sql; }
-  void set_massif_sql(int value);
+  int massif_id() const { return m_massif_id; }
+  void set_massif_id(int value);
 
   const QString & note() const { return m_note; }
   void set_note(const QString & value);
@@ -578,12 +601,13 @@ public:
   QVariantList to_variant_list_sql() const;
 
   // Query for update
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
   bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
   bool is_colour_modified() const { return bit_status(Schema::Fields::COLOUR); }
   bool is_creation_date_modified() const { return bit_status(Schema::Fields::CREATION_DATE); }
   bool is_gestion_modified() const { return bit_status(Schema::Fields::GESTION); }
   bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
-  bool is_massif_sql_modified() const { return bit_status(Schema::Fields::MASSIF_SQL); }
+  bool is_massif_id_modified() const { return bit_status(Schema::Fields::MASSIF_ID); }
   bool is_note_modified() const { return bit_status(Schema::Fields::NOTE); }
   bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
   bool is_opener_modified() const { return bit_status(Schema::Fields::OPENER); }
@@ -596,17 +620,18 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void load_foreign_keys();
+  void load_relations();
   QSharedPointer<BBleauMassif> massif();
   void set_massif(QSharedPointer<BBleauMassif> & value);
 
 signals:
+  void idChanged();
   void coordinateChanged();
   void colourChanged();
   void creation_dateChanged();
   void gestionChanged();
   void gradeChanged();
-  void massif_sqlChanged();
+  void massif_idChanged();
   void noteChanged();
   void numberChanged();
   void openerChanged();
@@ -616,12 +641,13 @@ signals:
   void toposChanged();
 
 private:
+  int m_id;
   QGeoCoordinate m_coordinate;
   QString m_colour;
   int m_creation_date;
   QString m_gestion;
   QString m_grade;
-  int m_massif_sql;
+  int m_massif_id;
   QString m_note;
   int m_number;
   QString m_opener;

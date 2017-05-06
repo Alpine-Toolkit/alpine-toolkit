@@ -54,9 +54,9 @@ public:
   QcRowTraits() {};
   // ~QcRowTraits();
 
-  virtual int schema_id() const = 0;
+  // Define row API
 
-  virtual void set_rowid(int value) = 0;
+  virtual int schema_id() const = 0;
 
   // JSON Serializer
   virtual QJsonObject to_json(bool only_changed = false) const = 0;
@@ -79,9 +79,13 @@ public:
   // Fixme: implement has mixin ?
   QcDatabaseSchema * database_schema() const { return m_database_schema; }
   void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
-  virtual bool exists_on_database() const = 0;
+  virtual bool exists_on_database() const {
+    return m_database_schema != nullptr; // Fixme: right ??? commited !
+  }
 
   virtual void load_foreign_keys() {}
+
+  virtual void set_insert_id(int id) {}; // To set id field when the row was inserted
 
 private:
   QcDatabaseSchema * m_database_schema = nullptr; // use memory !
@@ -114,8 +118,6 @@ public:
 
   bool operator==(const QcRow & other) { return true; } // Fixme: m_bits ?
 
-  virtual int rowid() const { return -1; } // Fixme: ???
-
   bool is_modified() const { return not m_bits.isNull(); }
 
 protected:
@@ -132,14 +134,30 @@ template<class S>
 class QcRowWithId : public QcRow<S>
 {
 public:
-  const int INVALID_ROWID = -1;
+  using QcRow<S>::QcRow;
+  ~QcRowWithId() {}
+
+  void set_insert_id(int id) { set_id(id); }
+
+  virtual int id() const = 0;
+  virtual void set_id(int value) = 0;
+};
+
+/**************************************************************************************************/
+
+/*
+template<class S>
+class QcRowWithId : public QcRow<S>
+{
+public:
+  const int INVALID_ID = -1;
 
 public:
   QcRowWithId();
   QcRowWithId(const QcRowWithId & other);
   QcRowWithId(const QJsonObject & json_object); // JSON deserializer
   QcRowWithId(const QVariantHash & variant_hash);
-  QcRowWithId(const QVariantList & variants); // , bool with_rowid = false
+  QcRowWithId(const QVariantList & variants); // , bool with_id = false
   QcRowWithId(const QSqlRecord & record); // SQL deserializer
   QcRowWithId(const QSqlQuery & query); // SQL deserializer
   ~QcRowWithId();
@@ -148,14 +166,15 @@ public:
 
   bool operator==(const QcRowWithId & other);
 
-  int rowid() const { return m_rowid; }
-  void set_rowid(int value) { m_rowid = value; }
-  bool exists_on_database() const { m_rowid != INVALID_ROWID; }
+  int id() const { return m_id; }
+  void set_id(int value) { m_id = value; }
+  bool exists_on_database() const { m_id != INVALID_ID; }
   void detach();
 
 private:
-  int m_rowid = INVALID_ROWID; // note: table can be created without rowid
+  int m_id = INVALID_ID;
 };
+*/
 
 /**************************************************************************************************/
 

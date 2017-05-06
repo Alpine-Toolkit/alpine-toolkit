@@ -11,7 +11,7 @@
 {
 {%- for field in schema %}
   {
-    {{field.ctor}} * field = new {{field.ctor}}(
+    {{field.shema_field_ctor}} * field = new {{field.shema_field_ctor}}(
       QLatin1String("{{field.name}}"),
       QLatin1String("{{field.qt_type}}"),
       QLatin1String("{{field.sql_type}}"),
@@ -21,7 +21,7 @@
       QLatin1String("{{field.description}}"));
     // Optional parameters
     {% if field.autoincrement %}fiel->set_autoincrement(true);{% endif %}
-    {% if not field.nullable %}field->set_nullable(false);{% endif %}
+    {% if field.nullable %}field->set_nullable(true);{% endif %}
     {% if field.unique %}field->set_unique(true);{% endif %}
     {% if field.default %}field->set_default_value({{field.default}});{% endif %}
     add_field(field);
@@ -32,7 +32,7 @@
 
 /**************************************************************************************************/
 
-{% set base_class = "QcRowWithId<" + class_name + "Schema>" -%}
+{% set base_class = schema.base_class + "<" + class_name + "Schema>" -%}
 {%- set base_classes = (base_class,) -%}
 
 {{ ctor_impl(class_name, all_members, base_classes) }}
@@ -61,28 +61,28 @@
 
 {% include "includes/orm/field-accessor.cpp" %}
 {# #}
-{%- if schema.foreign_keys %}
+{%- if schema.relations %}
 void
-{{class_name}}::load_foreign_keys()
+{{class_name}}::load_relations()
 {
-{%- for member in schema.foreign_keys %}
-  {{member.relation_name}}();{% endfor %}
+{%- for relation in schema.relations %}
+  {{relation.name}}();{% endfor %}
 }
 {# #}
-{%- for member in schema.foreign_keys %}
-QSharedPointer<{{member.cls_name}}>
-{{class_name}}::{{member.relation_name}}()
+{%- for relation in schema.relations %}
+QSharedPointer<{{relation.cls_name}}>
+{{class_name}}::{{relation.name}}()
 {
-  if (m_{{member.relation_name}}.isNull())
-    m_{{member.relation_name}} = database_schema()->query_by_id<{{member.cls_name}}>(m_{{member.name}});
-  return m_{{member.relation_name}};
+  if (m_{{relation.name}}.isNull())
+    m_{{relation.name}} = database_schema()->query_by_id<{{relation.cls_name}}>(m_{{relation.foreign_key_name}});
+  return m_{{relation.name}};
 }
 
 void
-{{class_name}}::set_{{member.relation_name}}(QSharedPointer<{{member.cls_name}}> & value)
+{{class_name}}::set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value)
 {
-  m_{{member.relation_name}} = value;
-  set_m_{{member.name}}(value->rowid());
+  m_{{relation.name}} = value;
+  set_{{relation.foreign_key_name}}(value->id());
 }
 {% endfor %}
 {% endif -%}

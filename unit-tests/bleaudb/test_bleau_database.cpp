@@ -75,7 +75,7 @@ void TestBleauDatabase::constructor()
   bleau_schema.add(place);
 
   BBleauPlace place_bis = place;
-  place_bis.detach();
+  //!!! place_bis.detach();
   bleau_schema.add<BBleauPlace>(place_bis);
 
   QVariantHash massif_variant_hash;
@@ -126,15 +126,15 @@ void TestBleauDatabase::constructor()
   qInfo() << QJsonDocument(circuit.to_json());
   bleau_schema.add(circuit);
 
-  BBleauPlace reloaded_place(place_table.select_by_id(place.rowid()));
-  qInfo() << reloaded_place.rowid() << reloaded_place << place;
+  BBleauPlace reloaded_place(place_table.select_by_id(place.id()));
+  qInfo() << reloaded_place.id() << reloaded_place << place;
   QVERIFY(reloaded_place == place);
 
-  QSharedPointer<BBleauPlace> reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.rowid());
-  qInfo() << reloaded_place_bis->rowid() << reloaded_place;
+  QSharedPointer<BBleauPlace> reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.id());
+  qInfo() << reloaded_place_bis->id() << reloaded_place;
   QVERIFY(*reloaded_place_bis == place);
 
-  QSharedPointer<BBleauCircuit> reloaded_circuit = bleau_schema.query_by_id<BBleauCircuit>(circuit.rowid());
+  QSharedPointer<BBleauCircuit> reloaded_circuit = bleau_schema.query_by_id<BBleauCircuit>(circuit.id());
   qInfo() << *reloaded_circuit;
   QSharedPointer<BBleauMassif> reloaded_massif = reloaded_circuit->massif();
   qInfo() << *reloaded_massif;

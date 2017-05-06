@@ -463,6 +463,7 @@ Document::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
+
 QVariantList
 Document::to_variant_list() const
 {
@@ -515,6 +516,7 @@ Document::to_variant_hash_sql(bool only_changed) const
   return variant_hash;
 }
 
+
 QVariantList
 Document::to_variant_list_sql() const
 {
@@ -530,7 +532,6 @@ Document::to_variant_list_sql() const
 
   return variants;
 }
-
 
 
 QVariant
@@ -596,12 +597,6 @@ Document::set_field(int position, const QVariant & value)
    }
   }
 }
-
-void
-Document::load_foreign_keys()
-{
-}
-
 
 QDataStream &
 operator<<(QDataStream & out, const Document & obj)

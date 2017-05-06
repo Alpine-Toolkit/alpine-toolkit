@@ -15,12 +15,12 @@ QJsonObject
   QJsonObject json_object;
 
  if (only_changed) {
-{%- for field in schema %}
+{%- for field in schema.json_fields %}
     if (is_{{field.name}}_modified())
       {{ insert(field) }}
 {%- endfor %}
   } else {
-{%- for field in schema %}
+{%- for field in schema.json_fields %}
     {{ insert(field) }}
 {%- endfor %}
   }

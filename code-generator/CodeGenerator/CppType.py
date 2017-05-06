@@ -79,14 +79,14 @@ class TypeConversion:
                  cast_to_json=None,
                  # cast_from_variant=None,
                  # cast_to_variant=None,
-                 cast_from_sql_variant=None,
-                 cast_to_sql_variant=None,
+                 cast_from_sql=None,
+                 cast_to_sql=None,
     ):
 
         self._cast_from_json = cast_from_json
         self._cast_to_json = cast_to_json
-        self._cast_from_sql_variant = cast_from_sql_variant
-        self._cast_to_sql_variant = cast_to_sql_variant
+        self._cast_from_sql = cast_from_sql
+        self._cast_to_sql = cast_to_sql
 
     ##############################################
 
@@ -99,12 +99,12 @@ class TypeConversion:
         return self._cast_to_json
 
     @property
-    def cast_from_sql_variant(self):
-        return self._cast_from_sql_variant
+    def cast_from_sql(self):
+        return self._cast_from_sql
 
     @property
-    def cast_to_sql_variant(self):
-        return self._cast_to_sql_variant
+    def cast_to_sql(self):
+        return self._cast_to_sql
 
 ####################################################################################################
 
@@ -135,7 +135,7 @@ class Type:
 
     ##############################################
 
-    def __init__(self, data_type, const=False, ref=False, ptr=False, context=None):
+    def __init__(self, data_type, const=False, ref=False, ptr=False, type_conversion=None):
 
         if ref and ptr:
             raise ValueError("Variable {} cannot be ref and ptr.format(name)")
@@ -144,13 +144,13 @@ class Type:
         self._const = const
         self._ref = ref
         self._ptr = ptr
-        self._context = context
+        self._type_conversion = type_conversion
 
     ##############################################
 
     def args_tuple(self):
 
-        return (self._type, self._const, self._ref, self._ptr, self._context)
+        return (self._type, self._const, self._ref, self._ptr, self._type_conversion)
 
     ##############################################
 
@@ -279,8 +279,8 @@ class Type:
 
         # Cast for JSON value
 
-        if self._context is not None:
-            return self._context.cast_from_json
+        if self._type_conversion is not None:
+            return self._type_conversion.cast_from_json
         elif self._type == 'QDateTime':
             return 'json_helper::load_datetime'
         elif self._type == 'QStringList':
@@ -297,8 +297,8 @@ class Type:
 
         # Cast to JSON value
 
-        if self._context is not None:
-            return self._context.cast_to_json
+        if self._type_conversion is not None:
+            return self._type_conversion.cast_to_json
         elif self._type == 'QDateTime':
             return 'json_helper::dump_datetime'
         elif self._type == 'QStringList':
@@ -326,13 +326,13 @@ class Type:
 
     def to_ref(self):
 
-        return Type(self._type, ref=True, context=self._context)
+        return Type(self._type, ref=True, type_conversion=self._type_conversion)
 
     ##############################################
 
     def to_const_ref(self):
 
-        return Type(self._type, const=True, ref=True, context=self._context)
+        return Type(self._type, const=True, ref=True, type_conversion=self._type_conversion)
 
     ##############################################
 
@@ -391,9 +391,9 @@ class Variable(Type):
 
     ##############################################
 
-    def __init__(self, name, data_type, const=False, ref=False, ptr=False, context=None, value=None):
+    def __init__(self, name, data_type, const=False, ref=False, ptr=False, type_conversion=None, value=None):
 
-        Type.__init__(self, data_type, const, ref, ptr, context)
+        Type.__init__(self, data_type, const, ref, ptr, type_conversion)
 
         self._name = name
         self._value = value
@@ -495,9 +495,9 @@ class Argument(Variable):
 
     ##############################################
 
-    def __init__(self, name, data_type, const=False, ref=False, ptr=False, context=None, default=None):
+    def __init__(self, name, data_type, const=False, ref=False, ptr=False, type_conversion=None, default=None):
 
-        Variable.__init__(self, name, data_type, const, ref, ptr, context)
+        Variable.__init__(self, name, data_type, const, ref, ptr, type_conversion)
 
         self._default = default
 

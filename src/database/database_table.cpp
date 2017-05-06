@@ -186,7 +186,7 @@ QcDatabaseTable::add(QcRowTraits & row)
 {
   QSqlQuery query = complete_insert(row.to_variant_list_sql());
   int rowid = query.lastInsertId().toInt();
-  row.set_rowid(rowid);
+  row.set_insert_id(rowid);
 }
 
 void
@@ -255,8 +255,8 @@ QSqlRecord
 QcDatabaseTable::select_one(const QString & where) const
 {
   QStringList fields(QLatin1String("*"));
-  if (m_schema.has_rowid())
-    fields << QLatin1String("rowid");
+  // if (m_schema.has_rowid_primary_key())
+  //   fields << QLatin1String("id"); // rowid
   return select_one(fields, where);
 }
 

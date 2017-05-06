@@ -40,16 +40,13 @@ sys.path.insert(0, code_generator_path)
 
 ####################################################################################################
 
-import json
-
 from CodeGenerator.CppType import TypeConversion
-from CodeGenerator.SqlOrm import (SchemaRepository,
-                                  Schema,
-                                  Relationship,
-                                  IntegerField, UnsignedIntegerField,
-                                  StringField, StringListField, UrlField,
-                                  DateTimeField,
-                                  GeoCoordinateField)
+from CodeGenerator.Orm import (SchemaRepository, CustomTemplate,
+                               Schema, Field, ForeignKey,  RelationShip)
+from CodeGenerator.StandardType import (Integer, UnsignedInteger,
+                                        String, StringList, Url,
+                                        DateTime,
+                                        GeoCoordinate)
 
 from CodeGenerator.GeneratorSettings import generator_settings
 
@@ -116,12 +113,12 @@ from CodeGenerator.GeneratorSettings import generator_settings
 
 ####################################################################################################
 
-class BleauGeoCoordinateField(GeoCoordinateField):
-    __context__ = TypeConversion(
+class BleauGeoCoordinate(GeoCoordinate):
+    __type_conversion__ = TypeConversion(
         cast_from_json = 'bleaudb::load_json_coordinate',
         cast_to_json = 'bleaudb::dump_json_coordinate',
-        cast_from_sql_variant = 'bleaudb::load_sql_coordinate',
-        cast_to_sql_variant = 'bleaudb::dump_sql_coordinate',
+        cast_from_sql = 'bleaudb::load_sql_coordinate',
+        cast_to_sql = 'bleaudb::dump_sql_coordinate',
     )
 
 ####################################################################################################
@@ -131,16 +128,18 @@ class BBleauPlace(Schema):
     __table_name__ = 'place'
 
     __order__ = (
+        'id',
         'coordinate',
         'name',
         'category',
         'note',
     )
 
-    coordinate = BleauGeoCoordinateField()
-    name = StringField()
-    category = StringField() # BleauPlaceCategory = QString
-    note = StringField()
+    id = Field(Integer, primary_key=True, on_json=False)
+    coordinate = Field(BleauGeoCoordinate)
+    name = Field(String)
+    category = Field(String) # BleauPlaceCategory = QString
+    note = Field(String)
 
 ####################################################################################################
 
@@ -149,6 +148,7 @@ class BBleauMassif(Schema):
     __table_name__ = 'massif'
 
     __order__ = (
+        'id',
         'coordinate',
         'name',
         'access',
@@ -161,16 +161,19 @@ class BBleauMassif(Schema):
         'velo',
     )
 
-    coordinate = BleauGeoCoordinateField()
-    name = StringField() # unique=True
-    access = StringField()
-    alternative_name = StringField()
-    chaos_type = StringField() # BleauChaosType
-    note = StringField()
-    parcelles = StringField()
-    rdv = StringField()
-    secteur = StringField()
-    velo = StringField()
+    id = Field(Integer, primary_key=True, on_json=False)
+    coordinate = Field(BleauGeoCoordinate)
+    name = Field(String) # unique=True
+    access = Field(String)
+    alternative_name = Field(String)
+    chaos_type = Field(String) # BleauChaosType
+    note = Field(String)
+    parcelles = Field(String)
+    rdv = Field(String)
+    secteur = Field(String)
+    velo = Field(String)
+
+    # circuits = RelationShip('BBleauCircuit', back_populates='massif')
 
 ####################################################################################################
 
@@ -179,6 +182,7 @@ class BBleauBoulder(Schema):
     __table_name__ = 'boulder'
 
     __order__ = (
+        'id',
         'coordinate',
         'name',
         'comment',
@@ -186,12 +190,13 @@ class BBleauBoulder(Schema):
         'number',
     )
 
-    # OneToOne BBleauCircuit / not in JSON
-    coordinate = BleauGeoCoordinateField()
-    name = StringField()
-    comment = StringField()
-    grade = StringField() # BleauGrade
-    number = StringField() # BleauWayNumber
+    # Fixme: OneToOne BBleauCircuit / not in JSON
+    id = Field(Integer, primary_key=True, on_json=False)
+    coordinate = Field(BleauGeoCoordinate)
+    name = Field(String)
+    comment = Field(String)
+    grade = Field(String) # BleauGrade
+    number = Field(String) # BleauWayNumber
 
 ####################################################################################################
 
@@ -200,12 +205,13 @@ class BBleauCircuit(Schema):
     __table_name__ = 'circuit'
 
     __order__ = (
+        'id',
         'coordinate',
         'colour',
         'creation_date',
         'gestion',
         'grade',
-        'massif',
+        'massif_id',
         'note',
         'number',
         'opener',
@@ -215,24 +221,24 @@ class BBleauCircuit(Schema):
         'topos',
         )
 
-    coordinate = BleauGeoCoordinateField()
+    id = Field(Integer, primary_key=True, on_json=False)
+    coordinate = Field(BleauGeoCoordinate)
     # BackReference OneToMany BBleauBoulder / Array in JSON
     # 'boulders': { }, # BleauBoulderList
-    colour = StringField()
-    creation_date = IntegerField() # UnsignedIntegerField()
-    gestion = StringField()
-    grade = StringField() # BleauAlpineGrade
-    # OneToOne BBleauMassif / name in JSON
-    massif = Relationship(BBleauMassif,
-                          back_populates="circuits",
-                          json_value="name")
-    note = StringField()
-    number = IntegerField() # UnsignedIntegerField()
-    opener = StringField() # BleauOpeners
-    refection_date = IntegerField() # UnsignedIntegerField()
-    refection_note = StringField() # BleauRefectionNote
-    status = StringField()
-    topos = StringListField()
+    colour = Field(String)
+    creation_date = Field(Integer) # UnsignedInteger
+    gestion = Field(String)
+    grade = Field(String) # BleauAlpineGrade
+    massif_id = Field(Integer, ForeignKey('massif.id')) # Fixme: JSON massif/string vs massif_id/int
+    note = Field(String)
+    number = Field(Integer) # UnsignedInteger
+    opener = Field(String) # BleauOpeners
+    refection_date = Field(Integer) # UnsignedInteger
+    refection_note = Field(String) # BleauRefectionNote
+    status = Field(String)
+    topos = Field(StringList)
+
+    massif = RelationShip(BBleauMassif, back_populates="circuits")
 
 ####################################################################################################
 
@@ -245,5 +251,5 @@ output_dir = os.path.join(source_path, 'src', 'bleaudb')
 path = os.path.join(output_dir, 'bleaudb-generated')
 schema_repository.write_source(path,
                                generator_settings,
-                               pre_source='bleaudb/pre_source.cpp',
+                               pre_source=CustomTemplate('bleaudb/pre_source.cpp'),
 )

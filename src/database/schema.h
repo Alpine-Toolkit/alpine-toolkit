@@ -276,7 +276,7 @@ public:
   // const QString & sql_table_option() const { return m_sql_table_option; }
 
   bool without_rowid() const { return m_without_rowid; }
-  bool has_rowid() const { return m_has_rowid; }
+  bool has_rowid_primary_key() const { return m_has_rowid_primary_key; }
   bool has_foreign_keys() const {  return m_has_foreign_keys; }
 
   int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
@@ -298,7 +298,7 @@ private:
   QString m_name;
   QString m_table_name;
   bool m_without_rowid = false;
-  bool m_has_rowid = true;
+  bool m_has_rowid_primary_key = false;
   // QString m_sql_table_option;
   bool m_has_foreign_keys = false;
   QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;

@@ -23,7 +23,7 @@ public:
 
 /**************************************************************************************************/
 
-class {{class_name}} : public QObject, public QcRowWithId<{{class_name}}Schema>
+class {{class_name}} : public QObject, public {{schema.base_class}}<{{class_name}}Schema>
 {
   Q_OBJECT
 {%- for member in members %}
@@ -69,11 +69,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 {# #}
-{%- if schema.foreign_keys %}
-  void load_foreign_keys();
-{%- for member in schema.foreign_keys %}
-  QSharedPointer<{{member.cls_name}}> {{member.relation_name}}();
-  void set_{{member.relation_name}}(QSharedPointer<{{member.cls_name}}> & value);{% endfor %}
+{%- if schema.relations %}
+  void load_relations();
+{%- for relation in schema.relations %}
+  QSharedPointer<{{relation.cls_name}}> {{relation.name}}();
+  void set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value);{% endfor %}
 {% endif -%}
 {# #}
 signals:
@@ -83,8 +83,8 @@ signals:
 private:
 {%- for member in members %}
   {{member.type}} m_{{member.name}};{% endfor %}
-{%- for member in schema.foreign_keys %}
-  QSharedPointer<{{member.cls_name}}> m_{{member.relation_name}} = nullptr;{% endfor %}
+{%- for relation in schema.relations %}
+  QSharedPointer<{{relation.cls_name}}> m_{{relation.name}} = nullptr;{% endfor %}
 };
 
 {{ data_streamer_decl(class_name, members) }}
