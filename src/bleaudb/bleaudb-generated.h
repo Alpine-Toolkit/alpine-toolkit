@@ -101,7 +101,7 @@ public:
   BBleauPlace(const QVariantHash & variant_hash);
   BBleauPlace(const QVariantList & variants);
   BBleauPlace(const QSqlRecord & record); // SQL deserializer
-  BBleauPlace(const QSqlQuery & query); // SQL deserializer
+  BBleauPlace(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~BBleauPlace();
 
   BBleauPlace & operator=(const BBleauPlace & other);
@@ -236,7 +236,7 @@ public:
   BBleauMassif(const QVariantHash & variant_hash);
   BBleauMassif(const QVariantList & variants);
   BBleauMassif(const QSqlRecord & record); // SQL deserializer
-  BBleauMassif(const QSqlQuery & query); // SQL deserializer
+  BBleauMassif(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~BBleauMassif();
 
   BBleauMassif & operator=(const BBleauMassif & other);
@@ -397,7 +397,7 @@ public:
   BBleauBoulder(const QVariantHash & variant_hash);
   BBleauBoulder(const QVariantList & variants);
   BBleauBoulder(const QSqlRecord & record); // SQL deserializer
-  BBleauBoulder(const QSqlQuery & query); // SQL deserializer
+  BBleauBoulder(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~BBleauBoulder();
 
   BBleauBoulder & operator=(const BBleauBoulder & other);
@@ -544,7 +544,7 @@ public:
   BBleauCircuit(const QVariantHash & variant_hash);
   BBleauCircuit(const QVariantList & variants);
   BBleauCircuit(const QSqlRecord & record); // SQL deserializer
-  BBleauCircuit(const QSqlQuery & query); // SQL deserializer
+  BBleauCircuit(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~BBleauCircuit();
 
   BBleauCircuit & operator=(const BBleauCircuit & other);

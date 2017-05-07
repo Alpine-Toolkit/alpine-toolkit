@@ -37,9 +37,10 @@ m_{{field.name}} = {{ get_field_value(field, value) }};
   {{ set_member(field, variant_from_record(loop.index0)) }}{% endfor %}
 }
 
-{{class_name}}::{{class_name}}(const QSqlQuery & query)
+{{class_name}}::{{class_name}}(const QSqlQuery & query, int offset)
  : {{base_class}}(query)
 {
 {%- for field in schema %}
-  {{ set_member(field, variant_from_query(loop.index0)) }}{% endfor %}
+  {% if loop.last %}{{ set_member(field, variant_from_query('offset')) }}{% else -%}
+  {{ set_member(field, variant_from_query('offset++')) }}{% endif %}{% endfor %}
 }

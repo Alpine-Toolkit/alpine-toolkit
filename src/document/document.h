@@ -107,7 +107,7 @@ public:
   Document(const QVariantHash & variant_hash);
   Document(const QVariantList & variants);
   Document(const QSqlRecord & record); // SQL deserializer
-  Document(const QSqlQuery & query); // SQL deserializer
+  Document(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~Document();
 
   Document & operator=(const Document & other);

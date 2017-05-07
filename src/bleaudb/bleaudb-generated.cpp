@@ -189,14 +189,14 @@ BBleauPlace::BBleauPlace(const QSqlRecord & record)
   m_note = record.value(4).toString();
 }
 
-BBleauPlace::BBleauPlace(const QSqlQuery & query)
+BBleauPlace::BBleauPlace(const QSqlQuery & query, int offset)
  : QcRow<BBleauPlaceSchema>(query)
 {
-  m_id = query.value(0).toInt();
-  m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
-  m_name = query.value(2).toString();
-  m_category = query.value(3).toString();
-  m_note = query.value(4).toString();
+  m_id = query.value(offset++).toInt();
+  m_coordinate = bleaudb::load_sql_coordinate(query.value(offset++));
+  m_name = query.value(offset++).toString();
+  m_category = query.value(offset++).toString();
+  m_note = query.value(offset).toString();
 }
 
 BBleauPlace::~BBleauPlace()
@@ -779,20 +779,20 @@ BBleauMassif::BBleauMassif(const QSqlRecord & record)
   m_velo = record.value(10).toString();
 }
 
-BBleauMassif::BBleauMassif(const QSqlQuery & query)
+BBleauMassif::BBleauMassif(const QSqlQuery & query, int offset)
  : QcRow<BBleauMassifSchema>(query)
 {
-  m_id = query.value(0).toInt();
-  m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
-  m_name = query.value(2).toString();
-  m_access = query.value(3).toString();
-  m_alternative_name = query.value(4).toString();
-  m_chaos_type = query.value(5).toString();
-  m_note = query.value(6).toString();
-  m_parcelles = query.value(7).toString();
-  m_rdv = query.value(8).toString();
-  m_secteur = query.value(9).toString();
-  m_velo = query.value(10).toString();
+  m_id = query.value(offset++).toInt();
+  m_coordinate = bleaudb::load_sql_coordinate(query.value(offset++));
+  m_name = query.value(offset++).toString();
+  m_access = query.value(offset++).toString();
+  m_alternative_name = query.value(offset++).toString();
+  m_chaos_type = query.value(offset++).toString();
+  m_note = query.value(offset++).toString();
+  m_parcelles = query.value(offset++).toString();
+  m_rdv = query.value(offset++).toString();
+  m_secteur = query.value(offset++).toString();
+  m_velo = query.value(offset).toString();
 }
 
 BBleauMassif::~BBleauMassif()
@@ -1475,15 +1475,15 @@ BBleauBoulder::BBleauBoulder(const QSqlRecord & record)
   m_number = record.value(5).toString();
 }
 
-BBleauBoulder::BBleauBoulder(const QSqlQuery & query)
+BBleauBoulder::BBleauBoulder(const QSqlQuery & query, int offset)
  : QcRow<BBleauBoulderSchema>(query)
 {
-  m_id = query.value(0).toInt();
-  m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
-  m_name = query.value(2).toString();
-  m_comment = query.value(3).toString();
-  m_grade = query.value(4).toString();
-  m_number = query.value(5).toString();
+  m_id = query.value(offset++).toInt();
+  m_coordinate = bleaudb::load_sql_coordinate(query.value(offset++));
+  m_name = query.value(offset++).toString();
+  m_comment = query.value(offset++).toString();
+  m_grade = query.value(offset++).toString();
+  m_number = query.value(offset).toString();
 }
 
 BBleauBoulder::~BBleauBoulder()
@@ -2167,23 +2167,23 @@ BBleauCircuit::BBleauCircuit(const QSqlRecord & record)
   m_topos = record.value(13).toStringList();
 }
 
-BBleauCircuit::BBleauCircuit(const QSqlQuery & query)
+BBleauCircuit::BBleauCircuit(const QSqlQuery & query, int offset)
  : QcRow<BBleauCircuitSchema>(query)
 {
-  m_id = query.value(0).toInt();
-  m_coordinate = bleaudb::load_sql_coordinate(query.value(1));
-  m_colour = query.value(2).toString();
-  m_creation_date = query.value(3).toInt();
-  m_gestion = query.value(4).toString();
-  m_grade = query.value(5).toString();
-  m_massif_id = query.value(6).toInt();
-  m_note = query.value(7).toString();
-  m_number = query.value(8).toInt();
-  m_opener = query.value(9).toString();
-  m_refection_date = query.value(10).toInt();
-  m_refection_note = query.value(11).toString();
-  m_status = query.value(12).toString();
-  m_topos = query.value(13).toStringList();
+  m_id = query.value(offset++).toInt();
+  m_coordinate = bleaudb::load_sql_coordinate(query.value(offset++));
+  m_colour = query.value(offset++).toString();
+  m_creation_date = query.value(offset++).toInt();
+  m_gestion = query.value(offset++).toString();
+  m_grade = query.value(offset++).toString();
+  m_massif_id = query.value(offset++).toInt();
+  m_note = query.value(offset++).toString();
+  m_number = query.value(offset++).toInt();
+  m_opener = query.value(offset++).toString();
+  m_refection_date = query.value(offset++).toInt();
+  m_refection_note = query.value(offset++).toString();
+  m_status = query.value(offset++).toString();
+  m_topos = query.value(offset).toStringList();
 }
 
 BBleauCircuit::~BBleauCircuit()

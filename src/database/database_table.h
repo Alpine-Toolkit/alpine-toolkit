@@ -54,6 +54,14 @@ public:
   static QString format_kwarg(const QVariantHash & kwargs, const QString & separator = QStringLiteral(","));
   static QString format_simple_where(const QVariantHash & kwargs);
 
+  enum class JoinType {
+    InnerJoin,
+    LeftJoin,
+    RightJoin,
+    FullJoin,
+    SelfJoin,
+  };
+
 public:
   QcDatabaseTable();
   QcDatabaseTable(QcDatabase * database, const QString & name);
@@ -95,15 +103,14 @@ public:
   }
   // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
 
-  QSqlQuery prepare_complete_insert(int number_of_fields);
-  QSqlQuery complete_insert(const QVariantList & variants, bool commit = false);
-  QSqlQuery prepare_complete_insert(const QStringList & fields);
-  void add(QcRowTraits & row);
+  QSqlQuery join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const;
 
-  QSqlQuery prepare_insert(const QStringList & fields);
-  QSqlQuery insert(const QVariantHash & kwargs, bool commit = false);
+  QSqlQuery complete_insert(const QVariantList & variants, bool commit = true);
+  void add(QcRowTraits & row, bool commit = true);
+  void add(const QList<QcRowTraits *> rows, bool commit = true);
 
-  QSqlQuery prepare_update(const QStringList & fields, const QString & where);
+  QSqlQuery insert(const QVariantHash & kwargs, bool commit = true);
+
   QSqlQuery update(const QVariantHash & kwargs, const QString & where = QString());
   QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
     return update(kwargs, format_simple_where(where_kwargs));
@@ -119,6 +126,11 @@ public:
 
 private:
   static QVariantHash kwarg_for_id(int id) { return {{QLatin1String("rowid"), id}}; }
+  void commit();
+  QSqlQuery prepare_complete_insert(int number_of_fields);
+  QSqlQuery prepare_complete_insert(const QStringList & fields);
+  QSqlQuery prepare_insert(const QStringList & fields);
+  QSqlQuery prepare_update(const QStringList & fields, const QString & where);
   void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
 
 private:

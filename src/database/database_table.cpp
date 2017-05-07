@@ -42,6 +42,14 @@ comma_join(const QStringList & string_list)
   return string_list.join(',');
 }
 
+int
+last_insert_id(const QSqlQuery & query)
+{
+  return query.lastInsertId().toInt();
+}
+
+/**************************************************************************************************/
+
 QString
 QcDatabaseTable::format_prepare(int number_of_fields)
 {
@@ -139,6 +147,12 @@ QcDatabaseTable::operator=(const QcDatabaseTable & other)
   return *this;
 }
 
+void
+QcDatabaseTable::commit()
+{
+   m_database->commit();
+}
+
 bool
 QcDatabaseTable::exists() const
 {
@@ -184,7 +198,7 @@ QcDatabaseTable::prepare_complete_insert(const QStringList & fields)
 }
 
 QSqlQuery
-QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
+QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
 {
   QSqlQuery query;
   if (m_schema.has_rowid_primary_key())
@@ -198,35 +212,58 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool commit)
     query.addBindValue(value);
 
   // Fixme: namesapce ???
-  if (QcDatabase::exec_and_check_prepared_query(query) and commit)
-    m_database->commit();
+  if (QcDatabase::exec_and_check_prepared_query(query) and _commit)
+    commit();
 
   return query;
 }
 
 void
-QcDatabaseTable::add(QcRowTraits & row)
+QcDatabaseTable::add(QcRowTraits & row, bool commit)
 {
   // We could use QVariantHash to only set defined field (skip default),
   //   but we have to track correctly defined field
   //   Moreover QVariantHash is slower
-  QSqlQuery query = complete_insert(row.to_variant_list_sql()); // duplicate = false
-  int rowid = query.lastInsertId().toInt();
+  QSqlQuery query = complete_insert(row.to_variant_list_sql(), commit); // duplicate = false
+  int rowid = last_insert_id(query);
   // To only set rowid for such table, we must know the type at run time
   //   e.g. dynamic_cast<QcRowWithId *>(row);
   row.set_insert_id(rowid);
 }
 
 void
-QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit)
+QcDatabaseTable::add(const QList<QcRowTraits *> rows, bool _commit)
+{
+  QSqlQuery query;
+  if (m_schema.has_rowid_primary_key())
+    // excepted if we want to set the id manually
+    query = prepare_complete_insert(m_schema.field_names_witout_rowid());
+  else
+    query = prepare_complete_insert(m_schema.number_of_fields());
+
+  for (auto * row : rows) {
+    int i = 0;
+    for (const auto & value : row->to_variant_list_sql())
+      query.bindValue(i++, value);
+    if (QcDatabase::exec_and_check_prepared_query(query)) {
+      row->set_insert_id(last_insert_id(query));
+    }
+  }
+
+  if (_commit)
+    commit();
+}
+
+void
+QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool m_commit)
 {
   // qInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
     query.addBindValue(value);
 
-  if (QcDatabase::exec_and_check_prepared_query(query) and commit)
-    m_database->commit();
+  if (QcDatabase::exec_and_check_prepared_query(query) and m_commit)
+    commit();
 }
 
 QSqlQuery
@@ -286,6 +323,36 @@ QcDatabaseTable::select_one(const QString & where) const
   // if (m_schema.has_rowid_primary_key())
   //   fields << QLatin1String("id"); // rowid
   return select_one(fields, where);
+}
+
+QSqlQuery
+QcDatabaseTable::join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const
+{
+  QSqlQuery query = m_database->new_query();
+
+  QString join_string;
+  switch (join_type) {
+  case JoinType::InnerJoin: join_string = QLatin1String("Inner"); break;
+  case JoinType::LeftJoin: join_string = QLatin1String("Left"); break;
+  case JoinType::RightJoin: join_string = QLatin1String("Right"); break;
+  case JoinType::FullJoin: join_string = QLatin1String("FULL OUTER"); break;
+  case JoinType::SelfJoin: return query;
+  }
+
+  const QString & name1 = m_name;
+  const QString & name2 = table2.m_name;
+  const QcSchema & schema1 = m_schema;
+  const QcSchema & schema2 = table2.m_schema;
+  QStringList fields1 = schema1.prefixed_field_names();
+  QStringList fields2 = schema2.prefixed_field_names();
+  QStringList fields = fields1 + fields2;
+
+  QString sql_query = QLatin1String("SELECT ") + comma_join(fields) +
+    QLatin1String(" FROM ") + name1 + join_string + QLatin1String(" JOIN ") + name2 +
+    QLatin1String(" WHERE ") + where;
+  QcDatabase::exec_and_check(query, sql_query);
+
+  return query;
 }
 
 QSqlQuery

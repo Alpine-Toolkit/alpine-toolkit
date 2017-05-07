@@ -289,8 +289,9 @@ public:
 
   int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
   const QList<QSharedPointer<QcSchemaFieldTrait>> & fields() const { return m_fields; } // Fixme: const QcSchemaField
-  QStringList field_names() { return m_field_map.keys(); }
-  QStringList & field_names_witout_rowid() { return m_field_names_without_rowid; }
+  const QStringList & field_names() const { return m_field_names; }
+  const QStringList & field_names_witout_rowid() const { return m_field_names_without_rowid; }
+  QStringList prefixed_field_names() const;
 
   QString to_sql_definition() const;
 
@@ -312,6 +313,7 @@ private:
   bool m_has_foreign_keys = false;
   QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;
   QHash<QString, QcSchemaFieldTrait *> m_field_map;
+  QStringList m_field_names;
   QStringList m_field_names_without_rowid;
 };
 

@@ -60,27 +60,11 @@ public:
 
   QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
-  void add(QcRowTraits & row);
+  template<class T> void add(T & row);
+  template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row);
+  template<class T> void add(const QList<T *> rows);
 
-  template<class T>
-  void add(T & row) {
-    QcDatabaseTable & table = get_table_by_schema(T::schema());
-    table.add(row);
-  }
-
-  template<class T>
-  QSharedPointer<T> query_by_id(int rowid, bool lazy_load = true) {
-    const QcSchema & schema = T::schema();
-    QcDatabaseTable & table = get_table_by_schema(schema);
-    T * row = new T(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
-    // Fixme: non specific code, QcDatabaseTable has no link to database QcDatabaseSchema !
-    row->set_database_schema(this); // Fixme: for all ???
-    if (schema.has_foreign_keys()) {
-      if (not lazy_load)
-        row->load_relations();
-    }
-    return QSharedPointer<T>(row);
-  }
+  template<class T> QSharedPointer<T> query_by_id(int rowid, bool lazy_load = true);
 
   // Derivative can implement:
   // QcDatabaseTable * table() { return m_table; }
@@ -96,6 +80,12 @@ private:
   QHash<int, QcDatabaseTable *> m_schema_map;
   // QcDatabaseTable * m_table;
 };
+
+/**************************************************************************************************/
+
+#ifndef QC_MANUAL_INSTANTIATION
+#include "database_schema.hxx"
+#endif
 
 /**************************************************************************************************/
 

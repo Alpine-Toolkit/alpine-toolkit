@@ -114,7 +114,7 @@ public:
   QcRow(const QVariantHash & variant_hash) : QcRow() {}
   QcRow(const QVariantList & variants) : QcRow() {}
   QcRow(const QSqlRecord & record) : QcRow() {} // SQL deserializer
-  QcRow(const QSqlQuery & query) : QcRow() {} // SQL deserializer
+  QcRow(const QSqlQuery & query, int offset = 0) : QcRow() {} // SQL deserializer
   ~QcRow() {}
 
   QcRow & operator=(const QcRow & other) { return *this; } // Fixme: m_bits ?

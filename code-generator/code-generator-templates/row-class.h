@@ -36,7 +36,7 @@ public:
   {{class_name}}(const QVariantHash & variant_hash);
   {{class_name}}(const QVariantList & variants);
   {{class_name}}(const QSqlRecord & record); // SQL deserializer
-  {{class_name}}(const QSqlQuery & query); // SQL deserializer
+  {{class_name}}(const QSqlQuery & query, int offset = 0); // SQL deserializer
   ~{{class_name}}();
 
   {{class_name}} & operator=(const {{class_name}} & other);

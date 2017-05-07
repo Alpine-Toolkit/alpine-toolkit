@@ -249,17 +249,17 @@ Document::Document(const QSqlRecord & record)
   m_size = record.value(7).toInt();
 }
 
-Document::Document(const QSqlQuery & query)
+Document::Document(const QSqlQuery & query, int offset)
  : QcRow<DocumentSchema>(query)
 {
-  m_id = query.value(0).toInt();
-  m_name = query.value(1).toString();
-  m_author = query.value(2).toString();
-  m_version = query.value(3).toInt();
-  m_date = json_helper::load_sql_datetime_as_epoch(query.value(4));
-  m_description = query.value(5).toString();
-  m_url = query.value(6).toUrl();
-  m_size = query.value(7).toInt();
+  m_id = query.value(offset++).toInt();
+  m_name = query.value(offset++).toString();
+  m_author = query.value(offset++).toString();
+  m_version = query.value(offset++).toInt();
+  m_date = json_helper::load_sql_datetime_as_epoch(query.value(offset++));
+  m_description = query.value(offset++).toString();
+  m_url = query.value(offset++).toUrl();
+  m_size = query.value(offset).toInt();
 }
 
 Document::~Document()
