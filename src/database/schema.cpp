@@ -231,12 +231,16 @@ QcSchemaPrimaryKey::to_sql_definition() const
 /**************************************************************************************************/
 
 QcSchemaForeignKey::QcSchemaForeignKey()
-  : QcSchemaField()
+  : QcSchemaField(),
+    m_referenced_table(),
+    m_referenced_field_name(),
+    m_referenced_schema()
 {
   set_field_type(FieldType::ForeignKey); // Fixme: overwrite Normal, ok ?
 }
 
 QcSchemaForeignKey::QcSchemaForeignKey(const QString & name,
+                                       const QString & reference,
                                        const QString & qt_type,
                                        const QString & sql_type,
                                        const QString & sql_name,
@@ -250,13 +254,25 @@ QcSchemaForeignKey::QcSchemaForeignKey(const QString & name,
                   sql_name,
                   json_name,
                   title,
-                  description)
+                  description),
+    m_referenced_table(),
+    m_referenced_field_name(),
+    m_referenced_schema()
 {
   set_field_type(FieldType::ForeignKey); // Fixme: overwrite Normal, ok ?
+
+  int point_location = reference.indexOf('.');
+  if (point_location > 0) {
+    m_referenced_table = reference.left(point_location);
+    m_referenced_field_name = reference.mid(point_location +1);
+  }
 }
 
 QcSchemaForeignKey::QcSchemaForeignKey(const QcSchemaForeignKey & other)
-  : QcSchemaField(other)
+  : QcSchemaField(other),
+    m_referenced_table(other.m_referenced_table),
+    m_referenced_field_name(other.m_referenced_field_name),
+    m_referenced_schema(other.m_referenced_schema)
 {}
 
 QcSchemaForeignKey::~QcSchemaForeignKey()
@@ -267,9 +283,21 @@ QcSchemaForeignKey::operator=(const QcSchemaForeignKey & other)
 {
   if (this != &other) {
     QcSchemaField::operator=(other);
+    m_referenced_table = other.m_referenced_table;
+    m_referenced_field_name = other.m_referenced_field_name;
+    m_referenced_schema = other.m_referenced_schema;
   }
 
   return *this;
+}
+
+QSharedPointer<const QcSchemaFieldTrait>
+QcSchemaForeignKey::referenced_field() const
+{
+  if (m_referenced_schema.isNull())
+    return nullptr;
+  else
+    return (*m_referenced_schema)[m_referenced_field_name];
 }
 
 /**************************************************************************************************/
@@ -347,7 +375,7 @@ QcSchema::add_field(const QcSchemaFieldTrait & field)
   m_fields << QSharedPointer<QcSchemaFieldTrait>(field.clone());
   QSharedPointer<QcSchemaFieldTrait> owned_field = m_fields.last();
   owned_field->set_position(m_fields.size() -1);
-  m_field_map.insert(owned_field->name(), owned_field.data());
+  m_field_map.insert(owned_field->name(), owned_field);
   const QString & name = owned_field->sql_name();
   m_field_names << name;
   if (owned_field->is_primary_key()
@@ -379,27 +407,37 @@ QcSchema::prefixed_field_names() const
 QString
 QcSchema::to_sql_definition() const
 {
+  // CREATE [TEMP|TEMPORARY] TABLE [IF NOT EXISTS]
   QString sql_query = QLatin1String("CREATE TABLE ");
   sql_query += m_table_name;
   sql_query += QLatin1String(" (\n  ");
+
   QStringList sql_fields;
-  for (const auto & field : m_fields)
-    sql_fields << field->to_sql_definition();
-  sql_query += sql_fields.join(QLatin1String(",\n  "));
   QStringList primary_keys;
-  for (const auto & field : m_fields)
+  QList<QcSchemaForeignKey *> foreign_keys;
+  for (const auto & field : m_fields) {
+    sql_fields << field->to_sql_definition();
     if (field->is_primary_key())
       primary_keys << field->name();
-  if (primary_keys.size()) {
-    sql_query += QLatin1String(",\n  PRIMARY KEY (") + primary_keys.join(QLatin1String(", ")) + QLatin1String(")\n");
+    else if (field->is_foreign_key())
+      foreign_keys << dynamic_cast<QcSchemaForeignKey *>(field.data());
   }
-  sql_query += ')';
+  sql_query += sql_fields.join(QLatin1String(",\n  "));
+
+  if (primary_keys.size())
+    sql_query += QLatin1String(",\n  PRIMARY KEY (") + primary_keys.join(QLatin1String(", ")) + QLatin1String(")");
+  for (const auto * foreign_key : foreign_keys)
+    sql_query += QLatin1String(",\n  FOREIGN KEY (") + foreign_key->name() +
+      QLatin1String(") REFERENCES ") + foreign_key->referenced_table() + '(' + foreign_key->referenced_field_name() + QLatin1String(")");
+  sql_query += QLatin1String("\n)");
+
   if (m_without_rowid)
     sql_query += QLatin1String(" WITHOUT ROWID");
   // if (not m_sql_table_option.isEmpty()) {
   //   sql_query += ' ';
   //   sql_query += m_sql_table_option;
   // }
+
   return sql_query;
 }
 

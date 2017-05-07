@@ -40,8 +40,7 @@ DocumentSchema::DocumentSchema()
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),
-      QLatin1String("int"),
+      QLatin1String("id"),QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -56,8 +55,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("name"),
-      QLatin1String("QString"),
+      QLatin1String("name"),QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("name"),
       QLatin1String("name"),
@@ -72,8 +70,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("author"),
-      QLatin1String("QString"),
+      QLatin1String("author"),QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("author"),
       QLatin1String("author"),
@@ -88,8 +85,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("version"),
-      QLatin1String("int"),
+      QLatin1String("version"),QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("version"),
       QLatin1String("version"),
@@ -104,8 +100,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("date"),
-      QLatin1String("QDateTime"),
+      QLatin1String("date"),QLatin1String("QDateTime"),
       QLatin1String("integer"),
       QLatin1String("date"),
       QLatin1String("date"),
@@ -120,8 +115,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("description"),
-      QLatin1String("QString"),
+      QLatin1String("description"),QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("description"),
       QLatin1String("description"),
@@ -136,8 +130,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("url"),
-      QLatin1String("QUrl"),
+      QLatin1String("url"),QLatin1String("QUrl"),
       QLatin1String("text"),
       QLatin1String("url"),
       QLatin1String("url"),
@@ -152,8 +145,7 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("size"),
-      QLatin1String("int"),
+      QLatin1String("size"),QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("size"),
       QLatin1String("size"),

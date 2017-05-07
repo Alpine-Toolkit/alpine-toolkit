@@ -55,6 +55,10 @@ class ForeignKey:
     def column(self):
         return self._column
 
+    @property
+    def dot_syntax(self):
+        return self._table + '.' + self._column
+
 ####################################################################################################
 
 class Field:
@@ -153,7 +157,13 @@ class Field:
 
     @property
     def shema_field_ctor(self):
-        return 'QcSchemaPrimaryKey' if self._is_primary_key else 'QcSchemaField'
+
+        if self.is_primary_key:
+            return 'QcSchemaPrimaryKey'
+        elif self.is_foreign_key:
+            return 'QcSchemaForeignKey'
+        else:
+            return 'QcSchemaField'
 
     ##############################################
 

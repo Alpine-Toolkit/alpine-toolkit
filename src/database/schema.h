@@ -58,6 +58,10 @@
 
 /**************************************************************************************************/
 
+class QcSchema;
+
+/**************************************************************************************************/
+
 // Fixme: template ?
 class QcSchemaFieldTrait
 {
@@ -226,6 +230,7 @@ class QcSchemaForeignKey : public QcSchemaField
 public:
   QcSchemaForeignKey();
   QcSchemaForeignKey(const QString & name,
+                     const QString & reference,
                      const QString & qt_type, // ???
                      const QString & sql_type,
                      const QString & sql_name = QString(),
@@ -240,7 +245,23 @@ public:
 
   QcSchemaForeignKey & operator=(const QcSchemaForeignKey & other);
 
-  //  QString to_sql_definition() const;
+  const QString & referenced_table() const { return m_referenced_table; }
+  void set_referenced_table(const QString & value) { m_referenced_table = value; }
+
+  const QString & referenced_field_name() const { return m_referenced_field_name; }
+  void set_referenced_field_name(const QString & value) { m_referenced_field_name = value; }
+
+  QSharedPointer<QcSchema> referenced_schema() const { return m_referenced_schema; }
+  void set_referenced_schema(QSharedPointer<QcSchema> schema) { m_referenced_schema = schema; }
+
+  QSharedPointer<const QcSchemaFieldTrait> referenced_field() const;
+
+  // QString to_sql_definition() const;
+
+private:
+  QString m_referenced_table;
+  QString m_referenced_field_name;
+  QSharedPointer<QcSchema> m_referenced_schema;
 };
 
 /**************************************************************************************************/
@@ -295,8 +316,8 @@ public:
 
   QString to_sql_definition() const;
 
-  const QcSchemaFieldTrait & operator[](int position) const { return *m_fields[position]; }
-  const QcSchemaFieldTrait & operator[](const QString & name) const { return *m_field_map[name]; }
+  QSharedPointer<const QcSchemaFieldTrait> operator[](int position) const { return m_fields[position]; }
+  QSharedPointer<const QcSchemaFieldTrait> operator[](const QString & name) const { return m_field_map[name]; }
 
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator begin() { return m_fields.begin(); }
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator end() { return m_fields.end(); }
@@ -312,7 +333,7 @@ private:
   // QString m_sql_table_option;
   bool m_has_foreign_keys = false;
   QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;
-  QHash<QString, QcSchemaFieldTrait *> m_field_map;
+  QHash<QString, QSharedPointer<QcSchemaFieldTrait>> m_field_map;
   QStringList m_field_names;
   QStringList m_field_names_without_rowid;
 };

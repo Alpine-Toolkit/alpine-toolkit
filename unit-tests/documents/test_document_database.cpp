@@ -93,7 +93,7 @@ void TestDocumentDatabase::constructor()
 
   QString author = "John Doe";
   document.set_author(author);
-  qInfo() << document_schema[DocumentSchema::Fields::ID].sql_name();
+  qInfo() << document_schema[DocumentSchema::Fields::ID]->sql_name();
   where_kwargs.clear();
   where_kwargs["id"] = document.id();
   table.update(document.to_variant_hash_sql(true), where_kwargs);

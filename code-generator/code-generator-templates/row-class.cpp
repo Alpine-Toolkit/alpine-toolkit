@@ -13,6 +13,7 @@
   {
     {{field.shema_field_ctor}} field(
       QLatin1String("{{field.name}}"),
+      {% if field.is_foreign_key %}QLatin1String("{{field.foreign_key.dot_syntax}}"),{% endif %}
       QLatin1String("{{field.qt_type}}"),
       QLatin1String("{{field.sql_type}}"),
       QLatin1String("{{field.sql_name}}"),
