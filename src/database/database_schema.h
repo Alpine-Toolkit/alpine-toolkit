@@ -61,8 +61,10 @@ public:
   QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
   template<class T> void add(T & row);
+  template<class T> void add(QSharedPointer<T> & row) { add(*row); }
   template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row);
   template<class T> void add(const QList<T *> rows);
+  template<class T> void add(const QList<T> rows);
 
   template<class T> QSharedPointer<T> query_by_id(int rowid, bool lazy_load = true);
 

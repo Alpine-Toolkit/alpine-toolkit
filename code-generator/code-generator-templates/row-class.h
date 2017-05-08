@@ -23,11 +23,23 @@ public:
 
 /**************************************************************************************************/
 
+{% set class_name_ptr = class_name + "Ptr" %}
+
+class {{class_name_ptr}};
+
+{% for relation in schema.relations %}
+{% if relation.is_many_to_one %}
+class {{relation.cls_name}};
+{% endif %}
+{% endfor %}
+
 class {{class_name}} : public QObject, public {{schema.base_class}}<{{class_name}}Schema>
 {
   Q_OBJECT
 {%- for member in members %}
   {{ property(member.name, member.type) }}{% endfor %}
+
+  friend class {{class_name_ptr}};
 
 public:
   {{class_name}}();
@@ -76,8 +88,14 @@ public:
 {%- if schema.relations %}
   void load_relations();
 {%- for relation in schema.relations %}
+  {%- if relation.is_one_to_many %}
   QSharedPointer<{{relation.cls_name}}> {{relation.name}}();
-  void set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value);{% endfor %}
+  void set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value);
+  {% endif -%}
+  {%- if relation.is_many_to_one %}
+  QcRowList<{{relation.cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
+  {% endif -%}
+  {% endfor %}
 {% endif -%}
 {# #}
 signals:
@@ -88,7 +106,43 @@ private:
 {%- for member in members %}
   {{member.type}} m_{{member.name}};{% endfor %}
 {%- for relation in schema.relations %}
-  QSharedPointer<{{relation.cls_name}}> m_{{relation.name}} = nullptr;{% endfor %}
+  {%- if relation.is_one_to_many %}
+  QSharedPointer<{{relation.cls_name}}> m_{{relation.name}} = nullptr;
+  {% endif -%}
+  {%- if relation.is_many_to_one %}
+  QcRowList<{{relation.cls_name}}> m_{{relation.name}};
+  {% endif -%}
+  {% endfor %}
+};
+
+class {{class_name}}Ptr
+{
+public:
+  typedef {{class_name}} Class;
+
+public:
+  {{class_name_ptr}}() : m_ptr() {}
+  {{class_name_ptr}}(const Class & other) : m_ptr(new Class(other)) {}
+  {{class_name_ptr}}(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  {{class_name_ptr}}(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  {{class_name_ptr}}(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  {{class_name_ptr}}(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  {{class_name_ptr}}(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  ~{{class_name_ptr}}() {}
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * operator->() const { return m_ptr.data(); }
+
+{%- for relation in schema.relations %}
+{%- if relation.is_one_to_many %}
+  void set_{{relation.name}}({{relation.cls_name}}Ptr & value);
+{% endif -%}
+{% endfor %}
+
+private:
+  QSharedPointer<Class> m_ptr;
 };
 
 {{ data_streamer_decl(class_name, members) }}

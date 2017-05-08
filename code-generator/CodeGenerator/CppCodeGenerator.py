@@ -26,6 +26,7 @@
 
 ####################################################################################################
 
+import logging
 import os
 
 from jinja2 import Template, Environment, PackageLoader, FileSystemLoader
@@ -35,7 +36,13 @@ from .CppType import Type, Variable, Argument
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 class GeneratorSettings:
+
+    _logger = _module_logger.getChild('GeneratorSettings')
 
     __LINE_WIDTH__ = 100
     __INDENT__ = 2
@@ -101,6 +108,8 @@ class GeneratorSettings:
 ####################################################################################################
 
 class CodeMixin:
+
+    _logger = _module_logger.getChild('CodeMixin')
 
     ##############################################
 
@@ -922,6 +931,8 @@ class ClassImplementation(CodeMixin):
 
 class Header(CodeMixin):
 
+    _logger = _module_logger.getChild('Header')
+
     ##############################################
 
     def __init__(self, name, generator_settings):
@@ -957,6 +968,8 @@ class Header(CodeMixin):
 ####################################################################################################
 
 class Source(CodeMixin):
+
+    _logger = _module_logger.getChild('Source')
 
     ##############################################
 

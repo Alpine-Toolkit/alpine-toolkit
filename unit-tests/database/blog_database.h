@@ -27,69 +27,34 @@
 
 /**************************************************************************************************/
 
-#include "database_schema.h" // for checker
+#ifndef __BLOG_DATABASE_H__
+#define __BLOG_DATABASE_H__
 
 /**************************************************************************************************/
 
-#ifndef __DATABASE_SCHEMA_H__
-#define __DATABASE_SCHEMA_H__
+#include "database/sqlite_database.h"
+#include "blog.h"
 
 /**************************************************************************************************/
 
-template<class T>
-void
-QcDatabaseSchema::add(T & row)
+class BlogDatabase : public QcSqliteDatabase
 {
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(row);
-}
+public:
+  typedef BlogApplicationSchema DatabaseSchema;
 
-template<class T>
-QcDatabaseSchema &
-QcDatabaseSchema::operator<<(QcRowTraits & row)
-{
-  add(row);
-  return *this;
-}
+public:
+  BlogDatabase(const QString & sqlite_path);
+  ~BlogDatabase();
 
-template<class T>
-void
-QcDatabaseSchema::add(const QList<T *> rows)
-{
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(rows);
-}
+  DatabaseSchema & schema() { return *m_schema; }
 
-template<class T>
-void
-QcDatabaseSchema::add(const QList<T> rows)
-{
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  QList<T * > row_ptrs;
-  for (auto & row : rows)
-    row_ptrs << &row;
-  table.add(row_ptrs);
-}
-
-template<class T>
-QSharedPointer<T>
-QcDatabaseSchema::query_by_id(int rowid, bool lazy_load)
-{
-  const QcSchema & schema = T::schema();
-  QcDatabaseTable & table = get_table_by_schema(schema);
-  T * row = new T(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
-  // Fixme: non specific code, QcDatabaseTable has no link to database QcDatabaseSchema !
-  row->set_database_schema(this); // Fixme: for all ???
-  if (schema.has_foreign_keys()) {
-    if (not lazy_load)
-      row->load_relations();
-  }
-  return QSharedPointer<T>(row);
-}
+private:
+  DatabaseSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema
+};
 
 /**************************************************************************************************/
 
-#endif /* __DATABASE_SCHEMA_H__ */
+#endif /* __BLOG_DATABASE_H__ */
 
 /***************************************************************************************************
  *

@@ -27,69 +27,82 @@
 
 /**************************************************************************************************/
 
-#include "database_schema.h" // for checker
+#ifndef __DATABASE_ROW_LIST_HXX__
+#define __DATABASE_ROW_LIST_HXX__
 
 /**************************************************************************************************/
 
-#ifndef __DATABASE_SCHEMA_H__
-#define __DATABASE_SCHEMA_H__
+#include "database_row_list.h" // for checker
+
+#include <QtDebug>
 
 /**************************************************************************************************/
 
 template<class T>
-void
-QcDatabaseSchema::add(T & row)
-{
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(row);
-}
+QcRowList<T>::QcRowList()
+  : m_items(),
+    m_removed_items()
+{}
 
 template<class T>
-QcDatabaseSchema &
-QcDatabaseSchema::operator<<(QcRowTraits & row)
+QcRowList<T>::QcRowList(const QcRowList & other)
+  : m_items(other.m_items),
+    m_removed_items(other.m_removed_items)
+{}
+
+template<class T>
+QcRowList<T>::~QcRowList()
+{}
+
+template<class T>
+QcRowList<T> &
+QcRowList<T>::operator=(const QcRowList & other)
 {
-  add(row);
+  if (this != &other) {
+    m_items = other.m_items;
+    m_removed_items = other.m_removed_items;
+  }
+
   return *this;
 }
 
 template<class T>
 void
-QcDatabaseSchema::add(const QList<T *> rows)
+QcRowList<T>::append(const RowPtr & value)
 {
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(rows);
+  if (not m_items.contains(value)) {
+    m_items << value;
+    qInfo() << "QcRowList::append" << value << *value;
+  }
+  if (m_removed_items.contains(value)) {
+    m_removed_items.removeAll(value);
+    qInfo() << "QcRowList::append was removed" << value << *value;
+  }
+}
+
+template<class T>
+QcRowList<T> &
+QcRowList<T>::operator<<(const RowPtr & value)
+{
+  append(value);
+  return *this;
 }
 
 template<class T>
 void
-QcDatabaseSchema::add(const QList<T> rows)
+QcRowList<T>::remove(const RowPtr & value)
 {
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  QList<T * > row_ptrs;
-  for (auto & row : rows)
-    row_ptrs << &row;
-  table.add(row_ptrs);
-}
-
-template<class T>
-QSharedPointer<T>
-QcDatabaseSchema::query_by_id(int rowid, bool lazy_load)
-{
-  const QcSchema & schema = T::schema();
-  QcDatabaseTable & table = get_table_by_schema(schema);
-  T * row = new T(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
-  // Fixme: non specific code, QcDatabaseTable has no link to database QcDatabaseSchema !
-  row->set_database_schema(this); // Fixme: for all ???
-  if (schema.has_foreign_keys()) {
-    if (not lazy_load)
-      row->load_relations();
+  if (m_items.contains(value)) {
+    m_items.removeAll(value);
+    // if (not m_removed_items.contains(value)) {
+    m_removed_items.append(value);
+    qInfo() << "QcRowList::remove" << value << *value;
   }
-  return QSharedPointer<T>(row);
 }
 
 /**************************************************************************************************/
 
-#endif /* __DATABASE_SCHEMA_H__ */
+#endif /* __DATABASE_ROW_LIST_HXX__ */
 
 /***************************************************************************************************
  *

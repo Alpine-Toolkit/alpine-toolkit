@@ -26,11 +26,19 @@
 
 ####################################################################################################
 
+import logging
+
 from .CppCodeGenerator import Header, ClassDefinition, Source, ClassImplementation
 
 ####################################################################################################
 
+_module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
 class CppClassGenerator:
+
+    _logger = _module_logger.getChild('CppClassGenerator')
 
     ##############################################
 

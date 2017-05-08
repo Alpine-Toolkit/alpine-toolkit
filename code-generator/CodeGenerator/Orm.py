@@ -26,12 +26,18 @@
 
 ####################################################################################################
 
+from enum import Enum
 import inspect
+import logging
 import os
 
 from .CppCodeGenerator import Variable, Header, Source
 from .FieldType import FieldType
 from .StandardType import Integer
+
+####################################################################################################
+
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
@@ -57,11 +63,14 @@ class ForeignKey:
 
     @property
     def dot_syntax(self):
+        # Fixme: name
         return self._table + '.' + self._column
 
 ####################################################################################################
 
 class Field:
+
+    _logger = _module_logger.getChild('Field')
 
     ##############################################
 
@@ -229,18 +238,38 @@ class Field:
 
 ####################################################################################################
 
+class RelationShipType(Enum):
+    OneToOne = 1
+    OneToMany = 2
+    ManyToOne = 3
+    ManyToMany = 4
+
+####################################################################################################
+
 class RelationShip:
+
+    _logger = _module_logger.getChild('RelationShip')
+
+    _relation_type_to_symbol = {
+        RelationShipType.OneToOne: '1',
+        RelationShipType.OneToMany: '1',
+        RelationShipType.ManyToOne: '*',
+        RelationShipType.ManyToMany: '*',
+    }
 
     ##############################################
 
-    def __init__(self, schema_class, back_populates=None):
+    def __init__(self, schema_class, **kwargs):
 
         self._schema_class = schema_class # name or cls
-        self._back_populates = back_populates
+        self._back_populates = kwargs.get('back_populates', None)
 
+        self._name = None
         self._parent_schema = None
         self._schema = None # instance
         self._foreign_key = None
+        self._peer_relation = None
+        self._relation_type = None
 
     ##############################################
 
@@ -249,9 +278,35 @@ class RelationShip:
         schema_repository = self._parent_schema.schema_repository
         self._schema = schema_repository.get_schema(self._schema_class)
 
+        # Lookup the corresponding foreign key: same table
         for field in self._parent_schema.foreign_keys:
             if field.foreign_key.table == self._schema.table_name:
                 self._foreign_key = field
+
+        if self._foreign_key is not None: # else should be a peer
+            related_table = self._foreign_key.foreign_key.table # Fixme: better ???
+            related_schema = schema_repository.get_schema_by_table_name(related_table)
+            # Lookup for other side
+            for related_relation in related_schema.relations:
+                if related_relation._back_populates == self._name:
+                    self._peer_relation = related_relation
+                    related_relation._peer_relation = self
+                    self._relation_type = RelationShipType.OneToMany
+                    related_relation._relation_type = RelationShipType.ManyToOne
+                    message = "Relation: found peer {0._format_name} {0._relation_type_symbol} <-> {1._relation_type_symbol} {1._format_name}"
+                    self._logger.info(message.format(self, related_relation))
+
+        # self._logger.warning("Relation: any foreign key found for {0.parent_schema.cls_name}.{0.name}".format(self))
+
+    ##############################################
+
+    @property
+    def _format_name(self):
+        return "{0.parent_schema.cls_name}.{0.name}".format(self)
+
+    @property
+    def _relation_type_symbol(self):
+        return self._relation_type_to_symbol[self._relation_type]
 
     ##############################################
 
@@ -304,6 +359,32 @@ class RelationShip:
     @property
     def foreign_key_name(self):
         return self._foreign_key.name
+
+    @property
+    def peer_relation(self):
+        return self._peer_relation
+
+    ##############################################
+
+    @property
+    def relation_type(self):
+        return self._relation_type
+
+    @property
+    def is_one_to_one(self):
+        return self._relation_type == RelationShipType.OneToOne
+
+    @property
+    def is_one_to_many(self):
+        return self._relation_type == RelationShipType.OneToMany
+
+    @property
+    def is_many_to_one(self):
+        return self._relation_type == RelationShipType.ManyToOne
+
+    @property
+    def is_many_to_many(self):
+        return self._relation_type == RelationShipType.ManyToMany
 
 ####################################################################################################
 
@@ -366,6 +447,8 @@ class CustomCode:
 ####################################################################################################
 
 class Schema:
+
+    _logger = _module_logger.getChild('Schema')
 
     # Fixme: name clash !
 
@@ -564,6 +647,8 @@ class Schema:
 
 class SchemaRepository:
 
+    _logger = _module_logger.getChild('SchemaRepository')
+
     ##############################################
 
     def __init__(self, name, *schemas):
@@ -573,7 +658,7 @@ class SchemaRepository:
         self._schemas = [cls() for cls in schemas]
         self._schema_class_map = {cls:self._schemas[i] for i, cls in enumerate(schemas)}
         self._schema_class_map.update({cls.__name__:self._schemas[i] for i, cls in enumerate(schemas)})
-        self._table_map = {schema.table_name for schema in self._schemas}
+        self._table_map = {schema.table_name:schema for schema in self._schemas}
 
         self._post_init_schemas()
 
@@ -638,9 +723,11 @@ class SchemaRepository:
         for include in self.includes:
             header.include(include)
         header.new_line()
+        # Fixme: use template ?
         header.include('database/schema.h', local=True)
         header.include('database/database_schema.h', local=True)
         header.include('database/database_row.h', local=True)
+        header.include('database/database_row_list.h', local=True)
         header.new_line()
         header.rule()
         header.new_line()
@@ -709,6 +796,11 @@ class SchemaRepository:
     def write_source(self, path, *args, **kwargs):
 
         filename = os.path.basename(path)
+
+        directory = os.path.dirname(path)
+        if not os.path.exists(directory):
+            raise NameError("Directory {} don't exists".format(directory))
+
         header, source = self.generate_source(filename, *args, **kwargs)
 
         with open(path + '.h', 'w') as f:

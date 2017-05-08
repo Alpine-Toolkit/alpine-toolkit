@@ -71,6 +71,7 @@ void
 }
 {# #}
 {%- for relation in schema.relations %}
+{%- if relation.is_one_to_many %}
 QSharedPointer<{{relation.cls_name}}>
 {{class_name}}::{{relation.name}}()
 {
@@ -82,9 +83,35 @@ QSharedPointer<{{relation.cls_name}}>
 void
 {{class_name}}::set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value)
 {
+{#
+{%- if relation.peer_relation %}
+  QSharedPointer<{{class_name}}> self(this);
+  if (not m_{{relation.name}}.isNull())
+    m_{{relation.name}}->{{relation.peer_relation.name}}().remove(self);
+{% endif %}
+#}
   m_{{relation.name}} = value;
   set_{{relation.foreign_key_name}}(value->id());
+{#
+{%- if relation.peer_relation %}
+  m_{{relation.name}}->{{relation.peer_relation.name}}().append(self);
+{% endif -%}
+#}
 }
+
+void
+{{class_name}}Ptr::set_{{relation.name}}({{relation.cls_name}}Ptr & value)
+{
+{%- if relation.peer_relation %}
+  if (not m_ptr->m_{{relation.name}}.isNull())
+    m_ptr->m_{{relation.name}}->{{relation.peer_relation.name}}().remove(ptr());
+{% endif %}
+  m_ptr->set_{{relation.name}}(value.ptr());
+{%- if relation.peer_relation %}
+  value->{{relation.peer_relation.name}}().append(ptr());
+{% endif -%}
+}
+{% endif -%}
 {% endfor %}
 {% endif -%}
 {# #}
