@@ -291,8 +291,8 @@ class RelationShip:
                 if related_relation._back_populates == self._name:
                     self._peer_relation = related_relation
                     related_relation._peer_relation = self
-                    self._relation_type = RelationShipType.OneToMany
-                    related_relation._relation_type = RelationShipType.ManyToOne
+                    self._relation_type = RelationShipType.ManyToOne
+                    related_relation._relation_type = RelationShipType.OneToMany
                     message = "Relation: found peer {0._format_name} {0._relation_type_symbol} <-> {1._relation_type_symbol} {1._format_name}"
                     self._logger.info(message.format(self, related_relation))
 
@@ -349,6 +349,10 @@ class RelationShip:
         return self._schema.cls_name
 
     @property
+    def ptr_cls_name(self):
+        return self._schema.ptr_cls_name
+
+    @property
     def back_populates(self):
         return self._back_populates
 
@@ -359,6 +363,10 @@ class RelationShip:
     @property
     def foreign_key_name(self):
         return self._foreign_key.name
+
+    @property
+    def foreign_key_related_column(self):
+        return self._foreign_key.foreign_key.column
 
     @property
     def peer_relation(self):
@@ -534,6 +542,18 @@ class Schema:
         return self._name
 
     @property
+    def schema_cls_name(self):
+        return self._name + 'Schema'
+
+    @property
+    def ptr_cls_name(self):
+        return self._name + 'Ptr'
+
+    @property
+    def cache_cls_name(self):
+        return self._name + 'Cache'
+
+    @property
     def table_name(self):
         return self.__table_name__
 
@@ -549,13 +569,17 @@ class Schema:
     def primary_keys(self):
         for field in self:
             if field.is_primary_key:
-                return field
+                yield field
 
     @property
     def foreign_keys(self):
         for field in self:
             if field.is_foreign_key:
                 yield field
+
+    @property
+    def has_foreign_keys(self):
+        return bool(list(self.foreign_keys))
 
     @property
     def fields_without_rowid(self):
@@ -723,11 +747,7 @@ class SchemaRepository:
         for include in self.includes:
             header.include(include)
         header.new_line()
-        # Fixme: use template ?
-        header.include('database/schema.h', local=True)
-        header.include('database/database_schema.h', local=True)
-        header.include('database/database_row.h', local=True)
-        header.include('database/database_row_list.h', local=True)
+        header.render('schema_includes.h')
         header.new_line()
         header.rule()
         header.new_line()

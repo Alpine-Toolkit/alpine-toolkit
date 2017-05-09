@@ -1,4 +1,5 @@
 #! /usr/bin/bash
 
+generate-blog-unit-test
 generate-document-server
 generate-bleaudb

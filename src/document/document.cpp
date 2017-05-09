@@ -35,12 +35,16 @@
 
 // QC_BEGIN_NAMESPACE
 
+
+
 DocumentSchema::DocumentSchema()
 : QcSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),QLatin1String("int"),
+      QLatin1String("id"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -55,7 +59,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("name"),QLatin1String("QString"),
+      QLatin1String("name"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("name"),
       QLatin1String("name"),
@@ -70,7 +76,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("author"),QLatin1String("QString"),
+      QLatin1String("author"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("author"),
       QLatin1String("author"),
@@ -85,7 +93,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("version"),QLatin1String("int"),
+      QLatin1String("version"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("version"),
       QLatin1String("version"),
@@ -100,7 +110,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("date"),QLatin1String("QDateTime"),
+      QLatin1String("date"),
+      
+      QLatin1String("QDateTime"),
       QLatin1String("integer"),
       QLatin1String("date"),
       QLatin1String("date"),
@@ -115,7 +127,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("description"),QLatin1String("QString"),
+      QLatin1String("description"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("description"),
       QLatin1String("description"),
@@ -130,7 +144,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("url"),QLatin1String("QUrl"),
+      QLatin1String("url"),
+      
+      QLatin1String("QUrl"),
       QLatin1String("text"),
       QLatin1String("url"),
       QLatin1String("url"),
@@ -145,7 +161,9 @@ DocumentSchema::DocumentSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("size"),QLatin1String("int"),
+      QLatin1String("size"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("size"),
       QLatin1String("size"),
@@ -254,8 +272,11 @@ Document::Document(const QSqlQuery & query, int offset)
   m_size = query.value(offset).toInt();
 }
 
+
 Document::~Document()
-{}
+{
+  qInfo() << "--- Delete" << "Document" << *this;
+}
 
 // bit array ?
 Document &
@@ -307,8 +328,12 @@ Document::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -317,8 +342,12 @@ Document::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -327,8 +356,12 @@ Document::set_author(const QString & value)
 {
   if (m_author != value) {
     m_author = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::AUTHOR);
     emit authorChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -337,8 +370,12 @@ Document::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::VERSION);
     emit versionChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -347,8 +384,12 @@ Document::set_date(const QDateTime & value)
 {
   if (m_date != value) {
     m_date = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
     emit dateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -357,8 +398,12 @@ Document::set_description(const QString & value)
 {
   if (m_description != value) {
     m_description = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::DESCRIPTION);
     emit descriptionChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -367,8 +412,12 @@ Document::set_url(const QUrl & value)
 {
   if (m_url != value) {
     m_url = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::URL);
     emit urlChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -377,8 +426,12 @@ Document::set_size(int value)
 {
   if (m_size != value) {
     m_size = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::SIZE);
     emit sizeChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -590,6 +643,31 @@ Document::set_field(int position, const QVariant & value)
   }
 }
 
+void
+Document::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+Document::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+Document::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const Document & obj)
 {
@@ -639,6 +717,7 @@ operator<<(QDebug debug, const Document & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("Document(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -663,16 +742,75 @@ operator<<(QDebug debug, const Document & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const DocumentPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("DocumentPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+DocumentCache::DocumentCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+DocumentCache::~DocumentCache()
+{}
+
+void
+DocumentCache::add(DocumentPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &Document::changed,
+                   this, &DocumentCache::on_changed);
+}
+
+void
+DocumentCache::remove(DocumentPtr & ptr)
+{}
+
+void
+DocumentCache::on_changed()
+{
+  Document * row = qobject_cast<Document *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  DocumentPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
 
 DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
-    m_document(nullptr)
+    m_document(nullptr),
+    m_document_cache()
 {
   m_document = &register_table(DocumentSchema::instance());
 }
 
 DocumentDatabaseSchema::~DocumentDatabaseSchema()
 {}
+template<>
+void
+DocumentDatabaseSchema::register_row<Document>(DocumentPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_document_cache.add(row);
+}
+
 
 /**************************************************************************************************/
 

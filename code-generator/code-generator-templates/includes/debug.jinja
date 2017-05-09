@@ -13,6 +13,7 @@ operator<<(QDebug debug, const {{class_name}} & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("{{class_name}}(");
 {%- for member in members %}
   debug << obj.{{member.name}}();

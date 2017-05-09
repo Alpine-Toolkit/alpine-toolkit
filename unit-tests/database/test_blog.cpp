@@ -55,39 +55,134 @@ void TestBlog::constructor()
   BlogDatabase blog_database(sqlite_path);
   BlogDatabase::DatabaseSchema & database_schema = blog_database.schema();
 
-  QVariantHash kwargs;
+  int fabrice_id;
 
-  kwargs.clear();
-  kwargs["name"] = "fabrice";
-  // QSharedPointer<Author> fabrice(new Author(kwargs)); // else delete fails (Fixme: stack vs QSharedPointer)
-  AuthorPtr fabrice(kwargs);
-  fabrice->set_birthdate(QDateTime::currentDateTime());
-  // Author fabrice(kwargs);
-  // fabrice.set_name("fabrice");
+  {
+    QVariantHash kwargs;
 
-  kwargs.clear();
-  kwargs["name"] = "john doe";
-  // QSharedPointer<Author> john(new Author(kwargs));
-  AuthorPtr john(kwargs);
-  // Author john(kwargs);
+    kwargs.clear();
+    kwargs["name"] = "fabrice";
+    // Feature: Build a row from kwargs
+    AuthorPtr fabrice(kwargs);
+    // Feature: Set a field
+    fabrice->set_birthdate(QDateTime::currentDateTime());
 
-  // kwargs.clear();
-  // kwargs["name"] = "computer";
-  // Category computer(kwargs);
+    kwargs.clear();
+    kwargs["name"] = "john doe";
+    AuthorPtr john(kwargs);
 
-  // kwargs.clear();
-  // kwargs["name"] = "science";
-  // Category science(kwargs);
+    // kwargs.clear();
+    // kwargs["name"] = "computer";
+    // Category computer(kwargs);
 
-  kwargs.clear();
-  kwargs["text"] = "bla bla";
-  BlogPtr blog1(kwargs);
-  // QSharedPointer<Blog> blog1(new Blog(kwargs));
-  // blog1->set_author(fabrice); // Fixme: pass ref ???
-  blog1.set_author(fabrice);
+    // kwargs.clear();
+    // kwargs["name"] = "science";
+    // Category science(kwargs);
 
-  database_schema.add(fabrice.ptr()); // Fixme: recursively add
-  database_schema.add(john.ptr());
+    kwargs.clear();
+    kwargs["text"] = "bla bla1";
+    BlogPtr blog1(kwargs);
+    // Feature: Set a relation Blog * <-> 1 Author
+    blog1.set_author(fabrice);
+    // Feature: access a relation
+    qInfo() << blog1 << "has author" << blog1->author();
+
+    // Feature: cannot save row with undefined foreign keys
+    database_schema.add_ptr(blog1);
+
+    kwargs.clear();
+    kwargs["text"] = "bla bla2";
+    BlogPtr blog2(kwargs);
+    blog2.set_author(fabrice);
+
+    // Feature: append object to one-to-many
+    // Fixme: author.blogs() << blog
+
+    qInfo() << "\n\nAuthor -> Blogs";
+    qInfo() << fabrice->exists_on_database() << fabrice;
+    // Feature: List relation one-to-many
+    for (const auto & blog : fabrice->blogs())
+      qInfo() << blog->exists_on_database() << blog;
+
+    // Feature: Save object and their relations recursively
+    //          Set ids and foreign keys
+    qInfo() << "\n\nInsert";
+    database_schema.add_ptr(fabrice);
+    database_schema.add_ptr(john, true);
+
+    // Now objects are saved and all ids and foreign keys are set
+    qInfo() << "\n\nSaved Author -> Blogs";
+    qInfo() << fabrice->exists_on_database() << fabrice;
+    for (const auto & blog : fabrice->blogs())
+      qInfo() << blog->exists_on_database() << blog;
+
+    fabrice_id = fabrice->id();
+
+    qInfo() << "\n\nDestroy local objects";
+  }
+
+  {
+    // Feature: Load object by id
+    qInfo() << "\n\nReload by id";
+    AuthorPtr reloaded_fabrice = database_schema.query_by_id<Author>(fabrice_id);
+    qInfo() << reloaded_fabrice;
+  }
+
+  {
+    // Feature: Load objects and their relations lazily
+    // Fixme: iterator ?
+    qInfo() << "\n\nLoad Authors";
+    Author::PtrList authors = database_schema.query<Author>();
+    for (const auto author : authors)
+      qInfo() << author;
+    // Fixme: load lazily author.blogs()
+  }
+
+  {
+    // Feature: Load objects and their relations
+    // Fixme: iterator ?
+    qInfo() << "\n\nLoad Authors";
+    Author::PtrList authors = database_schema.query<Author>(false);
+    for (const auto author : authors) {
+      qInfo() << author;
+      for (const auto blog : author->Author::blogs())
+        qInfo() << blog;
+    }
+  }
+
+  {
+    // Feature: Load object and their relations lazily
+    qInfo() << "\n\nLoad Blogs";
+    Blog::PtrList blogs = database_schema.query<Blog>();
+    for (const auto blog : blogs) {
+      AuthorPtr author = blog->author();
+      qInfo() << blog << "\n" << author;
+    }
+  }
+
+  {
+    // Feature: Load object and their relations
+    qInfo() << "\n\nLoad Blogs";
+    Blog::PtrList blogs = database_schema.query<Blog>(false);
+    for (const auto blog : blogs) {
+      AuthorPtr author = blog->author();
+      qInfo() << blog << "\n" << author;
+    }
+  }
+
+  {
+    // Feature: Update object and save
+    qInfo() << "\n\nReload by id";
+    AuthorPtr reloaded_fabrice = database_schema.query_by_id<Author>(fabrice_id);
+    qInfo() << reloaded_fabrice << reloaded_fabrice->is_modified();
+    reloaded_fabrice->set_birthdate(QDateTime::fromString("2017-01-01T12:00:00.000", Qt::ISODate));
+    qInfo() << reloaded_fabrice << reloaded_fabrice->is_modified();
+    qInfo() << reloaded_fabrice->to_variant_hash_sql(true);
+    database_schema.update_ptr(reloaded_fabrice);
+  }
+
+  qInfo() << "\n\nDestroy remaining objects";
+  // Feature: All objects are detroyed when reference counter is null
 }
 
 /***************************************************************************************************/

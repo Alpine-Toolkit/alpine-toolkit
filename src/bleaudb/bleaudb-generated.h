@@ -45,13 +45,25 @@
 #include <QVariantList>
 #include <QtDebug>
 
+#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
+
 #include "database/schema.h"
 #include "database/database_schema.h"
 #include "database/database_row.h"
+#include "database/database_row_list.h"
+
+// #include<QLinkedList>
+#include<QMap>
 
 /**************************************************************************************************/
 
+
+
 class BBleauPlace;
+class BBleauPlacePtr;
+
+
+/**************************************************************************************************/
 
 class BBleauPlaceSchema : public QcSchema
 {
@@ -95,6 +107,11 @@ class BBleauPlace : public QObject, public QcRow<BBleauPlaceSchema>
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
 
 public:
+  typedef BBleauPlacePtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class BBleauPlacePtr;
+
+public:
   BBleauPlace();
   BBleauPlace(const BBleauPlace & other);
   BBleauPlace(const QJsonObject & json_object); // JSON deserializer
@@ -125,7 +142,8 @@ public:
   const QString & note() const { return m_note; }
   void set_note(const QString & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -149,7 +167,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void coordinateChanged();
   void nameChanged();
@@ -174,7 +196,100 @@ QDebug operator<<(QDebug debug, const BBleauPlace & obj);
 
 /**************************************************************************************************/
 
+class BBleauPlacePtr
+{
+public:
+  typedef BBleauPlace Class;
+
+public:
+  BBleauPlacePtr() : m_ptr() {}
+  BBleauPlacePtr(const BBleauPlacePtr & other) : m_ptr(other.m_ptr) {}
+  ~BBleauPlacePtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete BBleauPlacePtr of" << *m_ptr;
+    qInfo() << "--- Delete BBleauPlacePtr";
+    // m_ptr.clear();
+  }
+
+  BBleauPlacePtr & operator=(const BBleauPlacePtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BBleauPlacePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BBleauPlacePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BBleauPlacePtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BBleauPlacePtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BBleauPlacePtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BBleauPlacePtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BBleauPlacePtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BBleauPlacePtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauPlacePtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BBleauPlaceCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BBleauPlaceCache();
+  ~BBleauPlaceCache();
+
+   void add(BBleauPlacePtr & ptr);
+   void remove(BBleauPlacePtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BBleauPlacePtr> m_loaded_instances;
+  // QLinkedList<BBleauPlacePtr> m_modified_instances;
+  QMap<BBleauPlace *, BBleauPlacePtr> m_loaded_instances;
+  QMap<BBleauPlace *, BBleauPlacePtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class BBleauMassif;
+class BBleauMassifPtr;
+
+
+/**************************************************************************************************/
 
 class BBleauMassifSchema : public QcSchema
 {
@@ -230,6 +345,11 @@ class BBleauMassif : public QObject, public QcRow<BBleauMassifSchema>
   Q_PROPERTY(QString velo READ velo WRITE set_velo NOTIFY veloChanged)
 
 public:
+  typedef BBleauMassifPtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class BBleauMassifPtr;
+
+public:
   BBleauMassif();
   BBleauMassif(const BBleauMassif & other);
   BBleauMassif(const QJsonObject & json_object); // JSON deserializer
@@ -278,7 +398,8 @@ public:
   const QString & velo() const { return m_velo; }
   void set_velo(const QString & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -308,7 +429,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void coordinateChanged();
   void nameChanged();
@@ -345,7 +470,100 @@ QDebug operator<<(QDebug debug, const BBleauMassif & obj);
 
 /**************************************************************************************************/
 
+class BBleauMassifPtr
+{
+public:
+  typedef BBleauMassif Class;
+
+public:
+  BBleauMassifPtr() : m_ptr() {}
+  BBleauMassifPtr(const BBleauMassifPtr & other) : m_ptr(other.m_ptr) {}
+  ~BBleauMassifPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete BBleauMassifPtr of" << *m_ptr;
+    qInfo() << "--- Delete BBleauMassifPtr";
+    // m_ptr.clear();
+  }
+
+  BBleauMassifPtr & operator=(const BBleauMassifPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BBleauMassifPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BBleauMassifPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BBleauMassifPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BBleauMassifPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BBleauMassifPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BBleauMassifPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BBleauMassifPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BBleauMassifPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauMassifPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BBleauMassifCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BBleauMassifCache();
+  ~BBleauMassifCache();
+
+   void add(BBleauMassifPtr & ptr);
+   void remove(BBleauMassifPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BBleauMassifPtr> m_loaded_instances;
+  // QLinkedList<BBleauMassifPtr> m_modified_instances;
+  QMap<BBleauMassif *, BBleauMassifPtr> m_loaded_instances;
+  QMap<BBleauMassif *, BBleauMassifPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class BBleauBoulder;
+class BBleauBoulderPtr;
+
+
+/**************************************************************************************************/
 
 class BBleauBoulderSchema : public QcSchema
 {
@@ -391,6 +609,11 @@ class BBleauBoulder : public QObject, public QcRow<BBleauBoulderSchema>
   Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
 
 public:
+  typedef BBleauBoulderPtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class BBleauBoulderPtr;
+
+public:
   BBleauBoulder();
   BBleauBoulder(const BBleauBoulder & other);
   BBleauBoulder(const QJsonObject & json_object); // JSON deserializer
@@ -424,7 +647,8 @@ public:
   const QString & number() const { return m_number; }
   void set_number(const QString & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -449,7 +673,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void coordinateChanged();
   void nameChanged();
@@ -476,7 +704,100 @@ QDebug operator<<(QDebug debug, const BBleauBoulder & obj);
 
 /**************************************************************************************************/
 
+class BBleauBoulderPtr
+{
+public:
+  typedef BBleauBoulder Class;
+
+public:
+  BBleauBoulderPtr() : m_ptr() {}
+  BBleauBoulderPtr(const BBleauBoulderPtr & other) : m_ptr(other.m_ptr) {}
+  ~BBleauBoulderPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete BBleauBoulderPtr of" << *m_ptr;
+    qInfo() << "--- Delete BBleauBoulderPtr";
+    // m_ptr.clear();
+  }
+
+  BBleauBoulderPtr & operator=(const BBleauBoulderPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BBleauBoulderPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BBleauBoulderPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BBleauBoulderPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BBleauBoulderPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BBleauBoulderPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BBleauBoulderPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BBleauBoulderPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BBleauBoulderPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauBoulderPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BBleauBoulderCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BBleauBoulderCache();
+  ~BBleauBoulderCache();
+
+   void add(BBleauBoulderPtr & ptr);
+   void remove(BBleauBoulderPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BBleauBoulderPtr> m_loaded_instances;
+  // QLinkedList<BBleauBoulderPtr> m_modified_instances;
+  QMap<BBleauBoulder *, BBleauBoulderPtr> m_loaded_instances;
+  QMap<BBleauBoulder *, BBleauBoulderPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class BBleauCircuit;
+class BBleauCircuitPtr;
+
+
+/**************************************************************************************************/
 
 class BBleauCircuitSchema : public QcSchema
 {
@@ -538,6 +859,11 @@ class BBleauCircuit : public QObject, public QcRow<BBleauCircuitSchema>
   Q_PROPERTY(QStringList topos READ topos WRITE set_topos NOTIFY toposChanged)
 
 public:
+  typedef BBleauCircuitPtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class BBleauCircuitPtr;
+
+public:
   BBleauCircuit();
   BBleauCircuit(const BBleauCircuit & other);
   BBleauCircuit(const QJsonObject & json_object); // JSON deserializer
@@ -595,7 +921,8 @@ public:
   const QStringList & topos() const { return m_topos; }
   void set_topos(const QStringList & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -628,11 +955,16 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_save() const;
+  void break_relations();
   void load_relations();
-  QSharedPointer<BBleauMassif> massif();
-  void set_massif(QSharedPointer<BBleauMassif> & value);
+  void save_relations();
+
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
 
 signals:
+  void changed();
   void idChanged();
   void coordinateChanged();
   void colourChanged();
@@ -663,7 +995,6 @@ private:
   QString m_refection_note;
   QString m_status;
   QStringList m_topos;
-  QSharedPointer<BBleauMassif> m_massif = nullptr;
 };
 
 QDataStream & operator<<(QDataStream & out, const BBleauCircuit & obj);
@@ -673,6 +1004,93 @@ QDataStream & operator>>(QDataStream & in, BBleauCircuit & obj);
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const BBleauCircuit & obj);
 #endif
+
+/**************************************************************************************************/
+
+class BBleauCircuitPtr
+{
+public:
+  typedef BBleauCircuit Class;
+
+public:
+  BBleauCircuitPtr() : m_ptr() {}
+  BBleauCircuitPtr(const BBleauCircuitPtr & other) : m_ptr(other.m_ptr) {}
+  ~BBleauCircuitPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete BBleauCircuitPtr of" << *m_ptr;
+    qInfo() << "--- Delete BBleauCircuitPtr";
+    // m_ptr.clear();
+  }
+
+  BBleauCircuitPtr & operator=(const BBleauCircuitPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BBleauCircuitPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BBleauCircuitPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BBleauCircuitPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BBleauCircuitPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BBleauCircuitPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BBleauCircuitPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BBleauCircuitPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BBleauCircuitPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BBleauCircuitPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BBleauCircuitCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BBleauCircuitCache();
+  ~BBleauCircuitCache();
+
+   void add(BBleauCircuitPtr & ptr);
+   void remove(BBleauCircuitPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BBleauCircuitPtr> m_loaded_instances;
+  // QLinkedList<BBleauCircuitPtr> m_modified_instances;
+  QMap<BBleauCircuit *, BBleauCircuitPtr> m_loaded_instances;
+  QMap<BBleauCircuit *, BBleauCircuitPtr> m_modified_instances;
+};
 
 /**************************************************************************************************/
 
@@ -691,11 +1109,20 @@ public:
   QcDatabaseTable & boulder() { return *m_boulder; }
   QcDatabaseTable & circuit() { return *m_circuit; }
 
+
+
+private:
+  template<class T> void register_row(typename T::Ptr & row);
+
 private:
   QcDatabaseTable * m_place;
   QcDatabaseTable * m_massif;
   QcDatabaseTable * m_boulder;
   QcDatabaseTable * m_circuit;
+  BBleauPlaceCache m_place_cache;
+  BBleauMassifCache m_massif_cache;
+  BBleauBoulderCache m_boulder_cache;
+  BBleauCircuitCache m_circuit_cache;
 };
 
 /**************************************************************************************************/

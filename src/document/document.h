@@ -45,13 +45,25 @@
 #include <QVariantList>
 #include <QtDebug>
 
+#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
+
 #include "database/schema.h"
 #include "database/database_schema.h"
 #include "database/database_row.h"
+#include "database/database_row_list.h"
+
+// #include<QLinkedList>
+#include<QMap>
 
 /**************************************************************************************************/
 
+
+
 class Document;
+class DocumentPtr;
+
+
+/**************************************************************************************************/
 
 class DocumentSchema : public QcSchema
 {
@@ -101,6 +113,11 @@ class Document : public QObject, public QcRow<DocumentSchema>
   Q_PROPERTY(int size READ size WRITE set_size NOTIFY sizeChanged)
 
 public:
+  typedef DocumentPtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class DocumentPtr;
+
+public:
   Document();
   Document(const Document & other);
   Document(const QJsonObject & json_object); // JSON deserializer
@@ -140,7 +157,8 @@ public:
   int size() const { return m_size; }
   void set_size(int value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -167,7 +185,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void nameChanged();
   void authorChanged();
@@ -198,6 +220,93 @@ QDebug operator<<(QDebug debug, const Document & obj);
 
 /**************************************************************************************************/
 
+class DocumentPtr
+{
+public:
+  typedef Document Class;
+
+public:
+  DocumentPtr() : m_ptr() {}
+  DocumentPtr(const DocumentPtr & other) : m_ptr(other.m_ptr) {}
+  ~DocumentPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete DocumentPtr of" << *m_ptr;
+    qInfo() << "--- Delete DocumentPtr";
+    // m_ptr.clear();
+  }
+
+  DocumentPtr & operator=(const DocumentPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  DocumentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  DocumentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  DocumentPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  DocumentPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  DocumentPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  DocumentPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const DocumentPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const DocumentPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const DocumentPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class DocumentCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  DocumentCache();
+  ~DocumentCache();
+
+   void add(DocumentPtr & ptr);
+   void remove(DocumentPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<DocumentPtr> m_loaded_instances;
+  // QLinkedList<DocumentPtr> m_modified_instances;
+  QMap<Document *, DocumentPtr> m_loaded_instances;
+  QMap<Document *, DocumentPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
 
 class DocumentDatabaseSchema : public QcDatabaseSchema
 {
@@ -210,8 +319,14 @@ public:
 
   QcDatabaseTable & document() { return *m_document; }
 
+
+
+private:
+  template<class T> void register_row(typename T::Ptr & row);
+
 private:
   QcDatabaseTable * m_document;
+  DocumentCache m_document_cache;
 };
 
 /**************************************************************************************************/

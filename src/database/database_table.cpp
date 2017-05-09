@@ -132,7 +132,7 @@ QcDatabaseTable::QcDatabaseTable(const QcDatabaseTable & other)
 
 QcDatabaseTable::~QcDatabaseTable()
 {
-  qInfo() << "~QcDatabaseTable";
+  qInfo() << "--- Delete QcDatabaseTable";
 }
 
 QcDatabaseTable &
@@ -221,6 +221,11 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
 void
 QcDatabaseTable::add(QcRowTraits & row, bool commit)
 {
+  // if (not row.can_save()) {
+  //   qWarning() << "Cannot save" << row; // Fixme: cannot log !
+  //   return;
+  // }
+
   // We could use QVariantHash to only set defined field (skip default),
   //   but we have to track correctly defined field
   //   Moreover QVariantHash is slower

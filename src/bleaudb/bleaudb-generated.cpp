@@ -41,12 +41,16 @@
 
 /**************************************************************************************************/
 
+
+
 BBleauPlaceSchema::BBleauPlaceSchema()
 : QcSchema(QLatin1String("BBleauPlace"), QLatin1String("place"))
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),QLatin1String("int"),
+      QLatin1String("id"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -61,7 +65,9 @@ BBleauPlaceSchema::BBleauPlaceSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("coordinate"),QLatin1String("QGeoCoordinate"),
+      QLatin1String("coordinate"),
+      
+      QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
       QLatin1String("coordinate"),
       QLatin1String("coordinate"),
@@ -76,7 +82,9 @@ BBleauPlaceSchema::BBleauPlaceSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("name"),QLatin1String("QString"),
+      QLatin1String("name"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("name"),
       QLatin1String("name"),
@@ -91,7 +99,9 @@ BBleauPlaceSchema::BBleauPlaceSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("category"),QLatin1String("QString"),
+      QLatin1String("category"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("category"),
       QLatin1String("category"),
@@ -106,7 +116,9 @@ BBleauPlaceSchema::BBleauPlaceSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("note"),QLatin1String("QString"),
+      QLatin1String("note"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("note"),
       QLatin1String("note"),
@@ -194,8 +206,11 @@ BBleauPlace::BBleauPlace(const QSqlQuery & query, int offset)
   m_note = query.value(offset).toString();
 }
 
+
 BBleauPlace::~BBleauPlace()
-{}
+{
+  qInfo() << "--- Delete" << "BBleauPlace" << *this;
+}
 
 // bit array ?
 BBleauPlace &
@@ -238,8 +253,12 @@ BBleauPlace::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -248,8 +267,12 @@ BBleauPlace::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -258,8 +281,12 @@ BBleauPlace::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -268,8 +295,12 @@ BBleauPlace::set_category(const QString & value)
 {
   if (m_category != value) {
     m_category = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::CATEGORY);
     emit categoryChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -278,8 +309,12 @@ BBleauPlace::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NOTE);
     emit noteChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -437,6 +472,31 @@ BBleauPlace::set_field(int position, const QVariant & value)
   }
 }
 
+void
+BBleauPlace::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+BBleauPlace::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+BBleauPlace::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const BBleauPlace & obj)
 {
@@ -476,6 +536,7 @@ operator<<(QDebug debug, const BBleauPlace & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("BBleauPlace(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -494,12 +555,66 @@ operator<<(QDebug debug, const BBleauPlace & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauPlacePtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("BBleauPlacePtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BBleauPlaceCache::BBleauPlaceCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+BBleauPlaceCache::~BBleauPlaceCache()
+{}
+
+void
+BBleauPlaceCache::add(BBleauPlacePtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &BBleauPlace::changed,
+                   this, &BBleauPlaceCache::on_changed);
+}
+
+void
+BBleauPlaceCache::remove(BBleauPlacePtr & ptr)
+{}
+
+void
+BBleauPlaceCache::on_changed()
+{
+  BBleauPlace * row = qobject_cast<BBleauPlace *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  BBleauPlacePtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
+
 BBleauMassifSchema::BBleauMassifSchema()
 : QcSchema(QLatin1String("BBleauMassif"), QLatin1String("massif"))
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),QLatin1String("int"),
+      QLatin1String("id"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -514,7 +629,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("coordinate"),QLatin1String("QGeoCoordinate"),
+      QLatin1String("coordinate"),
+      
+      QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
       QLatin1String("coordinate"),
       QLatin1String("coordinate"),
@@ -529,7 +646,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("name"),QLatin1String("QString"),
+      QLatin1String("name"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("name"),
       QLatin1String("name"),
@@ -544,7 +663,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("access"),QLatin1String("QString"),
+      QLatin1String("access"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("access"),
       QLatin1String("access"),
@@ -559,7 +680,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("alternative_name"),QLatin1String("QString"),
+      QLatin1String("alternative_name"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("alternative_name"),
       QLatin1String("alternative_name"),
@@ -574,7 +697,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("chaos_type"),QLatin1String("QString"),
+      QLatin1String("chaos_type"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("chaos_type"),
       QLatin1String("chaos_type"),
@@ -589,7 +714,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("note"),QLatin1String("QString"),
+      QLatin1String("note"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("note"),
       QLatin1String("note"),
@@ -604,7 +731,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("parcelles"),QLatin1String("QString"),
+      QLatin1String("parcelles"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("parcelles"),
       QLatin1String("parcelles"),
@@ -619,7 +748,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("rdv"),QLatin1String("QString"),
+      QLatin1String("rdv"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("rdv"),
       QLatin1String("rdv"),
@@ -634,7 +765,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("secteur"),QLatin1String("QString"),
+      QLatin1String("secteur"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("secteur"),
       QLatin1String("secteur"),
@@ -649,7 +782,9 @@ BBleauMassifSchema::BBleauMassifSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("velo"),QLatin1String("QString"),
+      QLatin1String("velo"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("velo"),
       QLatin1String("velo"),
@@ -779,8 +914,11 @@ BBleauMassif::BBleauMassif(const QSqlQuery & query, int offset)
   m_velo = query.value(offset).toString();
 }
 
+
 BBleauMassif::~BBleauMassif()
-{}
+{
+  qInfo() << "--- Delete" << "BBleauMassif" << *this;
+}
 
 // bit array ?
 BBleauMassif &
@@ -841,8 +979,12 @@ BBleauMassif::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -851,8 +993,12 @@ BBleauMassif::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -861,8 +1007,12 @@ BBleauMassif::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -871,8 +1021,12 @@ BBleauMassif::set_access(const QString & value)
 {
   if (m_access != value) {
     m_access = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ACCESS);
     emit accessChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -881,8 +1035,12 @@ BBleauMassif::set_alternative_name(const QString & value)
 {
   if (m_alternative_name != value) {
     m_alternative_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ALTERNATIVE_NAME);
     emit alternative_nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -891,8 +1049,12 @@ BBleauMassif::set_chaos_type(const QString & value)
 {
   if (m_chaos_type != value) {
     m_chaos_type = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::CHAOS_TYPE);
     emit chaos_typeChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -901,8 +1063,12 @@ BBleauMassif::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NOTE);
     emit noteChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -911,8 +1077,12 @@ BBleauMassif::set_parcelles(const QString & value)
 {
   if (m_parcelles != value) {
     m_parcelles = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::PARCELLES);
     emit parcellesChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -921,8 +1091,12 @@ BBleauMassif::set_rdv(const QString & value)
 {
   if (m_rdv != value) {
     m_rdv = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::RDV);
     emit rdvChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -931,8 +1105,12 @@ BBleauMassif::set_secteur(const QString & value)
 {
   if (m_secteur != value) {
     m_secteur = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::SECTEUR);
     emit secteurChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -941,8 +1119,12 @@ BBleauMassif::set_velo(const QString & value)
 {
   if (m_velo != value) {
     m_velo = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::VELO);
     emit veloChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1202,6 +1384,31 @@ BBleauMassif::set_field(int position, const QVariant & value)
   }
 }
 
+void
+BBleauMassif::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+BBleauMassif::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+BBleauMassif::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const BBleauMassif & obj)
 {
@@ -1259,6 +1466,7 @@ operator<<(QDebug debug, const BBleauMassif & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("BBleauMassif(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -1289,12 +1497,66 @@ operator<<(QDebug debug, const BBleauMassif & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauMassifPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("BBleauMassifPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BBleauMassifCache::BBleauMassifCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+BBleauMassifCache::~BBleauMassifCache()
+{}
+
+void
+BBleauMassifCache::add(BBleauMassifPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &BBleauMassif::changed,
+                   this, &BBleauMassifCache::on_changed);
+}
+
+void
+BBleauMassifCache::remove(BBleauMassifPtr & ptr)
+{}
+
+void
+BBleauMassifCache::on_changed()
+{
+  BBleauMassif * row = qobject_cast<BBleauMassif *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  BBleauMassifPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
+
 BBleauBoulderSchema::BBleauBoulderSchema()
 : QcSchema(QLatin1String("BBleauBoulder"), QLatin1String("boulder"))
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),QLatin1String("int"),
+      QLatin1String("id"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -1309,7 +1571,9 @@ BBleauBoulderSchema::BBleauBoulderSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("coordinate"),QLatin1String("QGeoCoordinate"),
+      QLatin1String("coordinate"),
+      
+      QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
       QLatin1String("coordinate"),
       QLatin1String("coordinate"),
@@ -1324,7 +1588,9 @@ BBleauBoulderSchema::BBleauBoulderSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("name"),QLatin1String("QString"),
+      QLatin1String("name"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("name"),
       QLatin1String("name"),
@@ -1339,7 +1605,9 @@ BBleauBoulderSchema::BBleauBoulderSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("comment"),QLatin1String("QString"),
+      QLatin1String("comment"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("comment"),
       QLatin1String("comment"),
@@ -1354,7 +1622,9 @@ BBleauBoulderSchema::BBleauBoulderSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("grade"),QLatin1String("QString"),
+      QLatin1String("grade"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("grade"),
       QLatin1String("grade"),
@@ -1369,7 +1639,9 @@ BBleauBoulderSchema::BBleauBoulderSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("number"),QLatin1String("QString"),
+      QLatin1String("number"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("number"),
       QLatin1String("number"),
@@ -1464,8 +1736,11 @@ BBleauBoulder::BBleauBoulder(const QSqlQuery & query, int offset)
   m_number = query.value(offset).toString();
 }
 
+
 BBleauBoulder::~BBleauBoulder()
-{}
+{
+  qInfo() << "--- Delete" << "BBleauBoulder" << *this;
+}
 
 // bit array ?
 BBleauBoulder &
@@ -1511,8 +1786,12 @@ BBleauBoulder::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1521,8 +1800,12 @@ BBleauBoulder::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1531,8 +1814,12 @@ BBleauBoulder::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1541,8 +1828,12 @@ BBleauBoulder::set_comment(const QString & value)
 {
   if (m_comment != value) {
     m_comment = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COMMENT);
     emit commentChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1551,8 +1842,12 @@ BBleauBoulder::set_grade(const QString & value)
 {
   if (m_grade != value) {
     m_grade = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::GRADE);
     emit gradeChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1561,8 +1856,12 @@ BBleauBoulder::set_number(const QString & value)
 {
   if (m_number != value) {
     m_number = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NUMBER);
     emit numberChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1737,6 +2036,31 @@ BBleauBoulder::set_field(int position, const QVariant & value)
   }
 }
 
+void
+BBleauBoulder::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+BBleauBoulder::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+BBleauBoulder::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const BBleauBoulder & obj)
 {
@@ -1779,6 +2103,7 @@ operator<<(QDebug debug, const BBleauBoulder & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("BBleauBoulder(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -1799,12 +2124,66 @@ operator<<(QDebug debug, const BBleauBoulder & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauBoulderPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("BBleauBoulderPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BBleauBoulderCache::BBleauBoulderCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+BBleauBoulderCache::~BBleauBoulderCache()
+{}
+
+void
+BBleauBoulderCache::add(BBleauBoulderPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &BBleauBoulder::changed,
+                   this, &BBleauBoulderCache::on_changed);
+}
+
+void
+BBleauBoulderCache::remove(BBleauBoulderPtr & ptr)
+{}
+
+void
+BBleauBoulderCache::on_changed()
+{
+  BBleauBoulder * row = qobject_cast<BBleauBoulder *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  BBleauBoulderPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
+
 BBleauCircuitSchema::BBleauCircuitSchema()
 : QcSchema(QLatin1String("BBleauCircuit"), QLatin1String("circuit"))
 {
   {
     QcSchemaPrimaryKey field(
-      QLatin1String("id"),QLatin1String("int"),
+      QLatin1String("id"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("id"),
       QLatin1String("id"),
@@ -1819,7 +2198,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("coordinate"),QLatin1String("QGeoCoordinate"),
+      QLatin1String("coordinate"),
+      
+      QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
       QLatin1String("coordinate"),
       QLatin1String("coordinate"),
@@ -1834,7 +2215,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("colour"),QLatin1String("QString"),
+      QLatin1String("colour"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("colour"),
       QLatin1String("colour"),
@@ -1849,7 +2232,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("creation_date"),QLatin1String("int"),
+      QLatin1String("creation_date"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("creation_date"),
       QLatin1String("creation_date"),
@@ -1864,7 +2249,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("gestion"),QLatin1String("QString"),
+      QLatin1String("gestion"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("gestion"),
       QLatin1String("gestion"),
@@ -1879,7 +2266,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("grade"),QLatin1String("QString"),
+      QLatin1String("grade"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("grade"),
       QLatin1String("grade"),
@@ -1911,7 +2300,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("note"),QLatin1String("QString"),
+      QLatin1String("note"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("note"),
       QLatin1String("note"),
@@ -1926,7 +2317,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("number"),QLatin1String("int"),
+      QLatin1String("number"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("number"),
       QLatin1String("number"),
@@ -1941,7 +2334,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("opener"),QLatin1String("QString"),
+      QLatin1String("opener"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("opener"),
       QLatin1String("opener"),
@@ -1956,7 +2351,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("refection_date"),QLatin1String("int"),
+      QLatin1String("refection_date"),
+      
+      QLatin1String("int"),
       QLatin1String("integer"),
       QLatin1String("refection_date"),
       QLatin1String("refection_date"),
@@ -1971,7 +2368,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("refection_note"),QLatin1String("QString"),
+      QLatin1String("refection_note"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("refection_note"),
       QLatin1String("refection_note"),
@@ -1986,7 +2385,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("status"),QLatin1String("QString"),
+      QLatin1String("status"),
+      
+      QLatin1String("QString"),
       QLatin1String("text"),
       QLatin1String("status"),
       QLatin1String("status"),
@@ -2001,7 +2402,9 @@ BBleauCircuitSchema::BBleauCircuitSchema()
   }
   {
     QcSchemaField field(
-      QLatin1String("topos"),QLatin1String("QStringList"),
+      QLatin1String("topos"),
+      
+      QLatin1String("QStringList"),
       QLatin1String("text"),
       QLatin1String("topos"),
       QLatin1String("topos"),
@@ -2152,8 +2555,11 @@ BBleauCircuit::BBleauCircuit(const QSqlQuery & query, int offset)
   m_topos = query.value(offset).toStringList();
 }
 
+
 BBleauCircuit::~BBleauCircuit()
-{}
+{
+  qInfo() << "--- Delete" << "BBleauCircuit" << *this;
+}
 
 // bit array ?
 BBleauCircuit &
@@ -2223,8 +2629,12 @@ BBleauCircuit::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2233,8 +2643,12 @@ BBleauCircuit::set_coordinate(const QGeoCoordinate & value)
 {
   if (m_coordinate != value) {
     m_coordinate = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COORDINATE);
     emit coordinateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2243,8 +2657,12 @@ BBleauCircuit::set_colour(const QString & value)
 {
   if (m_colour != value) {
     m_colour = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::COLOUR);
     emit colourChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2253,8 +2671,12 @@ BBleauCircuit::set_creation_date(int value)
 {
   if (m_creation_date != value) {
     m_creation_date = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::CREATION_DATE);
     emit creation_dateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2263,8 +2685,12 @@ BBleauCircuit::set_gestion(const QString & value)
 {
   if (m_gestion != value) {
     m_gestion = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::GESTION);
     emit gestionChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2273,8 +2699,12 @@ BBleauCircuit::set_grade(const QString & value)
 {
   if (m_grade != value) {
     m_grade = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::GRADE);
     emit gradeChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2283,8 +2713,12 @@ BBleauCircuit::set_massif_id(int value)
 {
   if (m_massif_id != value) {
     m_massif_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::MASSIF_ID);
     emit massif_idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2293,8 +2727,12 @@ BBleauCircuit::set_note(const QString & value)
 {
   if (m_note != value) {
     m_note = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NOTE);
     emit noteChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2303,8 +2741,12 @@ BBleauCircuit::set_number(int value)
 {
   if (m_number != value) {
     m_number = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NUMBER);
     emit numberChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2313,8 +2755,12 @@ BBleauCircuit::set_opener(const QString & value)
 {
   if (m_opener != value) {
     m_opener = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::OPENER);
     emit openerChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2323,8 +2769,12 @@ BBleauCircuit::set_refection_date(int value)
 {
   if (m_refection_date != value) {
     m_refection_date = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::REFECTION_DATE);
     emit refection_dateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2333,8 +2783,12 @@ BBleauCircuit::set_refection_note(const QString & value)
 {
   if (m_refection_note != value) {
     m_refection_note = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::REFECTION_NOTE);
     emit refection_noteChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2343,8 +2797,12 @@ BBleauCircuit::set_status(const QString & value)
 {
   if (m_status != value) {
     m_status = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::STATUS);
     emit statusChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2353,8 +2811,12 @@ BBleauCircuit::set_topos(const QStringList & value)
 {
   if (m_topos != value) {
     m_topos = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::TOPOS);
     emit toposChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -2666,26 +3128,58 @@ BBleauCircuit::set_field(int position, const QVariant & value)
 }
 
 void
-BBleauCircuit::load_relations()
+BBleauCircuit::set_insert_id(int id)
 {
-  massif();
+  set_id(id);
 }
 
-QSharedPointer<BBleauMassif>
-BBleauCircuit::massif()
+
+bool
+BBleauCircuit::can_save() const
 {
-  if (m_massif.isNull())
-    m_massif = database_schema()->query_by_id<BBleauMassif>(m_massif_id);
-  return m_massif;
+  if (m_massif_id == 0)
+    return false;
+
+  return true;
+}
+
+
+void
+BBleauCircuit::break_relations()
+{
+  qInfo() << "Break relations on" << *this;
 }
 
 void
-BBleauCircuit::set_massif(QSharedPointer<BBleauMassif> & value)
+BBleauCircuit::load_relations()
 {
-  m_massif = value;
-  set_massif_id(value->id());
+  qInfo() << "Load relations of" << *this;
 }
 
+void
+BBleauCircuit::save_relations()
+{
+  qInfo() << "Save relations of" << *this;
+}
+
+bool
+BBleauCircuit::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+BBleauCircuit::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
 
 QDataStream &
 operator<<(QDataStream & out, const BBleauCircuit & obj)
@@ -2754,6 +3248,7 @@ operator<<(QDebug debug, const BBleauCircuit & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("BBleauCircuit(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -2790,13 +3285,67 @@ operator<<(QDebug debug, const BBleauCircuit & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BBleauCircuitPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("BBleauCircuitPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BBleauCircuitCache::BBleauCircuitCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+BBleauCircuitCache::~BBleauCircuitCache()
+{}
+
+void
+BBleauCircuitCache::add(BBleauCircuitPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &BBleauCircuit::changed,
+                   this, &BBleauCircuitCache::on_changed);
+}
+
+void
+BBleauCircuitCache::remove(BBleauCircuitPtr & ptr)
+{}
+
+void
+BBleauCircuitCache::on_changed()
+{
+  BBleauCircuit * row = qobject_cast<BBleauCircuit *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  BBleauCircuitPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
 
 BleauSchema::BleauSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_place(nullptr),
     m_massif(nullptr),
     m_boulder(nullptr),
-    m_circuit(nullptr)
+    m_circuit(nullptr),
+    m_place_cache(),
+    m_massif_cache(),
+    m_boulder_cache(),
+    m_circuit_cache()
 {
   m_place = &register_table(BBleauPlaceSchema::instance());
   m_massif = &register_table(BBleauMassifSchema::instance());
@@ -2806,6 +3355,38 @@ BleauSchema::BleauSchema(QcDatabase & database)
 
 BleauSchema::~BleauSchema()
 {}
+template<>
+void
+BleauSchema::register_row<BBleauPlace>(BBleauPlacePtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_place_cache.add(row);
+}
+
+template<>
+void
+BleauSchema::register_row<BBleauMassif>(BBleauMassifPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_massif_cache.add(row);
+}
+
+template<>
+void
+BleauSchema::register_row<BBleauBoulder>(BBleauBoulderPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_boulder_cache.add(row);
+}
+
+template<>
+void
+BleauSchema::register_row<BBleauCircuit>(BBleauCircuitPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_circuit_cache.add(row);
+}
+
 
 /**************************************************************************************************/
 

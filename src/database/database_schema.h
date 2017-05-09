@@ -44,6 +44,29 @@
 
 /**************************************************************************************************/
 
+/*
+class QcDatabaseSchemaCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  QcDatabaseSchemaCache();
+  ~QcDatabaseSchemaCache();
+
+   void add(QcRowTraits * ptr);
+   void remove(QcRowTraits * ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  QMap<QcRowTraits *, QcRowTraits *> m_loaded_instances;
+  QMap<QcRowTraits *, QcRowTraits *> m_modified_instances;
+};
+*/
+
+/**************************************************************************************************/
+
 class QcDatabaseSchema // : QObject
 {
 public:
@@ -60,13 +83,23 @@ public:
 
   QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
-  template<class T> void add(T & row);
-  template<class T> void add(QSharedPointer<T> & row) { add(*row); }
+  template<class T> void add(T & row, bool save_relations = true);
+  template<class T> void add_ptr(T & row_ptr, bool save_relations = true) { add(*row_ptr); }
   template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row);
-  template<class T> void add(const QList<T *> rows);
-  template<class T> void add(const QList<T> rows);
+  template<class T> void add(const QList<T *> rows, bool save_relations = true);
+  template<class T> void add(const QList<T> rows, bool save_relations = true);
 
-  template<class T> QSharedPointer<T> query_by_id(int rowid, bool lazy_load = true);
+  template<class T> typename T::PtrList query(bool lazy_load = true);
+  template<class T> typename T::Ptr query_by_id(int rowid, bool lazy_load = true);
+
+  // template<class T> void register_row(typename T::Ptr & row) {}
+  // virtual void register_row(QcRowTraits * row) = 0;
+
+  template<class T>
+  typename T::PtrList query_by_foreign_key(const QString & foreign_key, const QVariant & value, bool lazy_load = true);
+
+  template<class T> void update(T & row, bool save_relations = true);
+  template<class T> void update_ptr(T & row_ptr, bool save_relations = true) { update(*row_ptr); }
 
   // Derivative can implement:
   // QcDatabaseTable * table() { return m_table; }

@@ -61,7 +61,5 @@
 
 {%- macro dtor_impl(class_name, members) -%}
 {{class_name}}::~{{class_name}}()
-{
-  qInfo() << "Delete {{class_name}}";
-}
+{}
 {%- endmacro -%}

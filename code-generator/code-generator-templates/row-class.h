@@ -5,9 +5,21 @@
 {%- from "includes/property.jinja" import property -%}
 {%- from "includes/singleton.jinja" import singleton -%}
 
+{%- set class_name_schema = schema.schema_cls_name %}
+{%- set class_name_ptr = schema.ptr_cls_name %}
+{%- set class_name_cache = schema.cache_cls_name %}
+
 class {{class_name}};
+class {{class_name_ptr}};
 {# #}
-{%- with class_name_schema = class_name + 'Schema' %}
+{%- for relation in schema.relations %}
+{%- if relation.is_one_to_many %}
+class {{relation.cls_name}};
+class {{relation.ptr_cls_name}};
+{% endif %}{% endfor %}
+
+/**************************************************************************************************/
+
 class {{class_name_schema}} : public QcSchema
 {
 public:
@@ -19,26 +31,18 @@ public:
 
 {{ singleton(class_name_schema) }}
 };
-{%- endwith %}
 
 /**************************************************************************************************/
 
-{% set class_name_ptr = class_name + "Ptr" %}
-
-class {{class_name_ptr}};
-
-{% for relation in schema.relations %}
-{% if relation.is_many_to_one %}
-class {{relation.cls_name}};
-{% endif %}
-{% endfor %}
-
-class {{class_name}} : public QObject, public {{schema.base_class}}<{{class_name}}Schema>
+class {{class_name}} : public QObject, public {{schema.base_class}}<{{class_name_schema}}>
 {
   Q_OBJECT
 {%- for member in members %}
   {{ property(member.name, member.type) }}{% endfor %}
 
+public:
+  typedef {{class_name_ptr}} Ptr;
+  typedef QList<Ptr> PtrList;
   friend class {{class_name_ptr}};
 
 public:
@@ -63,7 +67,8 @@ public:
 {% endfor -%}
 {# #}
 {%- if schema.has_rowid_primary_key %}
-  void set_insert_id(int id) { set_{{ schema.rowid_primary_key.name }}(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_{{schema.rowid_primary_key.name}} > 0; } // require NOT NULL
 {%- endif %}
 
   // JSON Serializer
@@ -86,19 +91,26 @@ public:
   void set_field(int position, const QVariant & value);
 {# #}
 {%- if schema.relations %}
+{%- if schema.has_foreign_keys %}
+  bool can_save() const;{% endif %}
+  void break_relations();
   void load_relations();
+  void save_relations();
 {%- for relation in schema.relations %}
-  {%- if relation.is_one_to_many %}
-  QSharedPointer<{{relation.cls_name}}> {{relation.name}}();
-  void set_{{relation.name}}(QSharedPointer<{{relation.cls_name}}> & value);
-  {% endif -%}
   {%- if relation.is_many_to_one %}
-  QcRowList<{{relation.cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
+  {{relation.ptr_cls_name}} {{relation.name}}();
+  {% endif -%}
+  {%- if relation.is_one_to_many %}
+  QcRowList<{{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
   {% endif -%}
   {% endfor %}
 {% endif -%}
 {# #}
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
 {%- for member in members %}
   void {{member.name}}Changed();{% endfor %}
 
@@ -106,45 +118,102 @@ private:
 {%- for member in members %}
   {{member.type}} m_{{member.name}};{% endfor %}
 {%- for relation in schema.relations %}
-  {%- if relation.is_one_to_many %}
-  QSharedPointer<{{relation.cls_name}}> m_{{relation.name}} = nullptr;
-  {% endif -%}
   {%- if relation.is_many_to_one %}
-  QcRowList<{{relation.cls_name}}> m_{{relation.name}};
+  {{relation.ptr_cls_name}} m_{{relation.name}};
   {% endif -%}
-  {% endfor %}
+  {%- if relation.is_one_to_many %}
+  QcRowList<{{relation.ptr_cls_name}}> m_{{relation.name}};
+  {% endif %}{% endfor %}
 };
 
-class {{class_name}}Ptr
+{{ data_streamer_decl(class_name, members) }}
+
+{{ debug_streamer_decl(class_name) }}
+
+/**************************************************************************************************/
+
+class {{class_name_ptr}}
 {
 public:
   typedef {{class_name}} Class;
 
 public:
   {{class_name_ptr}}() : m_ptr() {}
-  {{class_name_ptr}}(const Class & other) : m_ptr(new Class(other)) {}
+  {{class_name_ptr}}(const {{class_name_ptr}} & other) : m_ptr(other.m_ptr) {}
+  ~{{class_name_ptr}}() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete {{class_name_ptr}} of" << *m_ptr;
+    qInfo() << "--- Delete {{class_name_ptr}}";
+    // m_ptr.clear();
+  }
+
+  {{class_name_ptr}} & operator=(const {{class_name_ptr}} & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  {{class_name_ptr}}(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   {{class_name_ptr}}(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   {{class_name_ptr}}(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
   {{class_name_ptr}}(const QVariantList & variants) : m_ptr(new Class(variants)) {}
   {{class_name_ptr}}(const QSqlRecord & record) : m_ptr(new Class(record)) {}
   {{class_name_ptr}}(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-  ~{{class_name_ptr}}() {}
+
+  // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
 
   Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
   Class * operator->() const { return m_ptr.data(); }
 
-{%- for relation in schema.relations %}
-{%- if relation.is_one_to_many %}
-  void set_{{relation.name}}({{relation.cls_name}}Ptr & value);
-{% endif -%}
-{% endfor %}
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const {{class_name_ptr}} & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+{% for relation in schema.relations %}
+{%- if relation.is_many_to_one %}
+  void set_{{relation.name}}({{relation.ptr_cls_name}} & value);
+{% endif %}{% endfor %}
 
 private:
   QSharedPointer<Class> m_ptr;
 };
 
-{{ data_streamer_decl(class_name, members) }}
+// uint qHash(const {{class_name_ptr}} & obj) { return static_cast<uint>(obj.data()); }
 
-{{ debug_streamer_decl(class_name) }}
+{{ debug_streamer_decl(class_name_ptr) }}
+
+/**************************************************************************************************/
+
+class {{class_name_cache}} : public QObject
+{
+  Q_OBJECT
+
+public:
+  {{class_name_cache}}();
+  ~{{class_name_cache}}();
+
+   void add({{class_name_ptr}} & ptr);
+   void remove({{class_name_ptr}} & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<{{class_name_ptr}}> m_loaded_instances;
+  // QLinkedList<{{class_name_ptr}}> m_modified_instances;
+  QMap<{{class_name}} *, {{class_name_ptr}}> m_loaded_instances;
+  QMap<{{class_name}} *, {{class_name_ptr}}> m_modified_instances;
+};

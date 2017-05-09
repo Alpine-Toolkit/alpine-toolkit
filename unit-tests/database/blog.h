@@ -44,14 +44,28 @@
 #include <QVariantList>
 #include <QtDebug>
 
+#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
+
 #include "database/schema.h"
 #include "database/database_schema.h"
 #include "database/database_row.h"
 #include "database/database_row_list.h"
 
+// #include<QLinkedList>
+#include<QMap>
+
 /**************************************************************************************************/
 
+
+
 class Author;
+class AuthorPtr;
+
+class Blog;
+class BlogPtr;
+
+
+/**************************************************************************************************/
 
 class AuthorSchema : public QcSchema
 {
@@ -83,16 +97,6 @@ protected:
 
 /**************************************************************************************************/
 
-
-
-class AuthorPtr;
-
-
-
-class Blog;
-
-
-
 class Author : public QObject, public QcRow<AuthorSchema>
 {
   Q_OBJECT
@@ -100,6 +104,9 @@ class Author : public QObject, public QcRow<AuthorSchema>
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QDateTime birthdate READ birthdate WRITE set_birthdate NOTIFY birthdateChanged)
 
+public:
+  typedef AuthorPtr Ptr;
+  typedef QList<Ptr> PtrList;
   friend class AuthorPtr;
 
 public:
@@ -127,7 +134,8 @@ public:
   const QDateTime & birthdate() const { return m_birthdate; }
   void set_birthdate(const QDateTime & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -149,11 +157,17 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void break_relations();
   void load_relations();
-  QcRowList<Blog> & blogs() { return m_blogs; }
+  void save_relations();
+  QcRowList<BlogPtr> & blogs() { return m_blogs; }
   
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void nameChanged();
   void birthdateChanged();
@@ -162,32 +176,8 @@ private:
   int m_id;
   QString m_name;
   QDateTime m_birthdate;
-  QcRowList<Blog> m_blogs;
+  QcRowList<BlogPtr> m_blogs;
   
-};
-
-class AuthorPtr
-{
-public:
-  typedef Author Class;
-
-public:
-  AuthorPtr() : m_ptr() {}
-  AuthorPtr(const Class & other) : m_ptr(new Class(other)) {}
-  AuthorPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  AuthorPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  AuthorPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  AuthorPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  AuthorPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-  ~AuthorPtr() {}
-
-  QSharedPointer<Class> & ptr() { return m_ptr; }
-
-  Class & operator*() const { return *m_ptr; }
-  Class * operator->() const { return m_ptr.data(); }
-
-private:
-  QSharedPointer<Class> m_ptr;
 };
 
 QDataStream & operator<<(QDataStream & out, const Author & obj);
@@ -200,7 +190,100 @@ QDebug operator<<(QDebug debug, const Author & obj);
 
 /**************************************************************************************************/
 
+class AuthorPtr
+{
+public:
+  typedef Author Class;
+
+public:
+  AuthorPtr() : m_ptr() {}
+  AuthorPtr(const AuthorPtr & other) : m_ptr(other.m_ptr) {}
+  ~AuthorPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete AuthorPtr of" << *m_ptr;
+    qInfo() << "--- Delete AuthorPtr";
+    // m_ptr.clear();
+  }
+
+  AuthorPtr & operator=(const AuthorPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  AuthorPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  AuthorPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  AuthorPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  AuthorPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  AuthorPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  AuthorPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const AuthorPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const AuthorPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const AuthorPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class AuthorCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  AuthorCache();
+  ~AuthorCache();
+
+   void add(AuthorPtr & ptr);
+   void remove(AuthorPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<AuthorPtr> m_loaded_instances;
+  // QLinkedList<AuthorPtr> m_modified_instances;
+  QMap<Author *, AuthorPtr> m_loaded_instances;
+  QMap<Author *, AuthorPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class Category;
+class CategoryPtr;
+
+
+/**************************************************************************************************/
 
 class CategorySchema : public QcSchema
 {
@@ -232,12 +315,6 @@ protected:
 
 /**************************************************************************************************/
 
-
-
-class CategoryPtr;
-
-
-
 class Category : public QObject, public QcRow<CategorySchema>
 {
   Q_OBJECT
@@ -245,6 +322,9 @@ class Category : public QObject, public QcRow<CategorySchema>
   Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
   Q_PROPERTY(QString description READ description WRITE set_description NOTIFY descriptionChanged)
 
+public:
+  typedef CategoryPtr Ptr;
+  typedef QList<Ptr> PtrList;
   friend class CategoryPtr;
 
 public:
@@ -272,7 +352,8 @@ public:
   const QString & description() const { return m_description; }
   void set_description(const QString & value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -294,7 +375,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void nameChanged();
   void descriptionChanged();
@@ -303,30 +388,6 @@ private:
   int m_id;
   QString m_name;
   QString m_description;
-};
-
-class CategoryPtr
-{
-public:
-  typedef Category Class;
-
-public:
-  CategoryPtr() : m_ptr() {}
-  CategoryPtr(const Class & other) : m_ptr(new Class(other)) {}
-  CategoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  CategoryPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  CategoryPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  CategoryPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  CategoryPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-  ~CategoryPtr() {}
-
-  QSharedPointer<Class> & ptr() { return m_ptr; }
-
-  Class & operator*() const { return *m_ptr; }
-  Class * operator->() const { return m_ptr.data(); }
-
-private:
-  QSharedPointer<Class> m_ptr;
 };
 
 QDataStream & operator<<(QDataStream & out, const Category & obj);
@@ -339,7 +400,100 @@ QDebug operator<<(QDebug debug, const Category & obj);
 
 /**************************************************************************************************/
 
+class CategoryPtr
+{
+public:
+  typedef Category Class;
+
+public:
+  CategoryPtr() : m_ptr() {}
+  CategoryPtr(const CategoryPtr & other) : m_ptr(other.m_ptr) {}
+  ~CategoryPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete CategoryPtr of" << *m_ptr;
+    qInfo() << "--- Delete CategoryPtr";
+    // m_ptr.clear();
+  }
+
+  CategoryPtr & operator=(const CategoryPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  CategoryPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  CategoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  CategoryPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  CategoryPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  CategoryPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  CategoryPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const CategoryPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const CategoryPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const CategoryPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class CategoryCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  CategoryCache();
+  ~CategoryCache();
+
+   void add(CategoryPtr & ptr);
+   void remove(CategoryPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<CategoryPtr> m_loaded_instances;
+  // QLinkedList<CategoryPtr> m_modified_instances;
+  QMap<Category *, CategoryPtr> m_loaded_instances;
+  QMap<Category *, CategoryPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class Blog;
+class BlogPtr;
+
+
+/**************************************************************************************************/
 
 class BlogSchema : public QcSchema
 {
@@ -372,14 +526,6 @@ protected:
 
 /**************************************************************************************************/
 
-
-
-class BlogPtr;
-
-
-
-
-
 class Blog : public QObject, public QcRow<BlogSchema>
 {
   Q_OBJECT
@@ -388,6 +534,9 @@ class Blog : public QObject, public QcRow<BlogSchema>
   Q_PROPERTY(QDateTime date READ date WRITE set_date NOTIFY dateChanged)
   Q_PROPERTY(int author_id READ author_id WRITE set_author_id NOTIFY author_idChanged)
 
+public:
+  typedef BlogPtr Ptr;
+  typedef QList<Ptr> PtrList;
   friend class BlogPtr;
 
 public:
@@ -418,7 +567,8 @@ public:
   int author_id() const { return m_author_id; }
   void set_author_id(int value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -441,12 +591,18 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_save() const;
+  void break_relations();
   void load_relations();
-  QSharedPointer<Author> author();
-  void set_author(QSharedPointer<Author> & value);
+  void save_relations();
+  AuthorPtr author();
   
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void textChanged();
   void dateChanged();
@@ -457,34 +613,8 @@ private:
   QString m_text;
   QDateTime m_date;
   int m_author_id;
-  QSharedPointer<Author> m_author = nullptr;
+  AuthorPtr m_author;
   
-};
-
-class BlogPtr
-{
-public:
-  typedef Blog Class;
-
-public:
-  BlogPtr() : m_ptr() {}
-  BlogPtr(const Class & other) : m_ptr(new Class(other)) {}
-  BlogPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BlogPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BlogPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BlogPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BlogPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-  ~BlogPtr() {}
-
-  QSharedPointer<Class> & ptr() { return m_ptr; }
-
-  Class & operator*() const { return *m_ptr; }
-  Class * operator->() const { return m_ptr.data(); }
-  void set_author(AuthorPtr & value);
-
-
-private:
-  QSharedPointer<Class> m_ptr;
 };
 
 QDataStream & operator<<(QDataStream & out, const Blog & obj);
@@ -497,7 +627,102 @@ QDebug operator<<(QDebug debug, const Blog & obj);
 
 /**************************************************************************************************/
 
+class BlogPtr
+{
+public:
+  typedef Blog Class;
+
+public:
+  BlogPtr() : m_ptr() {}
+  BlogPtr(const BlogPtr & other) : m_ptr(other.m_ptr) {}
+  ~BlogPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete BlogPtr of" << *m_ptr;
+    qInfo() << "--- Delete BlogPtr";
+    // m_ptr.clear();
+  }
+
+  BlogPtr & operator=(const BlogPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BlogPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BlogPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BlogPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BlogPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BlogPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BlogPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BlogPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+  void set_author(AuthorPtr & value);
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BlogPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BlogPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BlogCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BlogCache();
+  ~BlogCache();
+
+   void add(BlogPtr & ptr);
+   void remove(BlogPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BlogPtr> m_loaded_instances;
+  // QLinkedList<BlogPtr> m_modified_instances;
+  QMap<Blog *, BlogPtr> m_loaded_instances;
+  QMap<Blog *, BlogPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
 class Comment;
+class CommentPtr;
+
+
+/**************************************************************************************************/
 
 class CommentSchema : public QcSchema
 {
@@ -530,12 +755,6 @@ protected:
 
 /**************************************************************************************************/
 
-
-
-class CommentPtr;
-
-
-
 class Comment : public QObject, public QcRow<CommentSchema>
 {
   Q_OBJECT
@@ -544,6 +763,9 @@ class Comment : public QObject, public QcRow<CommentSchema>
   Q_PROPERTY(QDateTime date READ date WRITE set_date NOTIFY dateChanged)
   Q_PROPERTY(int blog_id READ blog_id WRITE set_blog_id NOTIFY blog_idChanged)
 
+public:
+  typedef CommentPtr Ptr;
+  typedef QList<Ptr> PtrList;
   friend class CommentPtr;
 
 public:
@@ -574,7 +796,8 @@ public:
   int blog_id() const { return m_blog_id; }
   void set_blog_id(int value);
 
-  void set_insert_id(int id) { set_id(id); }
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -597,7 +820,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
 signals:
+  void changed();
   void idChanged();
   void textChanged();
   void dateChanged();
@@ -610,30 +837,6 @@ private:
   int m_blog_id;
 };
 
-class CommentPtr
-{
-public:
-  typedef Comment Class;
-
-public:
-  CommentPtr() : m_ptr() {}
-  CommentPtr(const Class & other) : m_ptr(new Class(other)) {}
-  CommentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  CommentPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  CommentPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  CommentPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  CommentPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-  ~CommentPtr() {}
-
-  QSharedPointer<Class> & ptr() { return m_ptr; }
-
-  Class & operator*() const { return *m_ptr; }
-  Class * operator->() const { return m_ptr.data(); }
-
-private:
-  QSharedPointer<Class> m_ptr;
-};
-
 QDataStream & operator<<(QDataStream & out, const Comment & obj);
 QDataStream & operator>>(QDataStream & in, Comment & obj);
 // qRegisterMetaTypeStreamOperators<Comment>("Comment");
@@ -641,6 +844,93 @@ QDataStream & operator>>(QDataStream & in, Comment & obj);
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const Comment & obj);
 #endif
+
+/**************************************************************************************************/
+
+class CommentPtr
+{
+public:
+  typedef Comment Class;
+
+public:
+  CommentPtr() : m_ptr() {}
+  CommentPtr(const CommentPtr & other) : m_ptr(other.m_ptr) {}
+  ~CommentPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    // qInfo() << "--- Delete CommentPtr of" << *m_ptr;
+    qInfo() << "--- Delete CommentPtr";
+    // m_ptr.clear();
+  }
+
+  CommentPtr & operator=(const CommentPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  CommentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  CommentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  CommentPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  CommentPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  CommentPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  CommentPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const CommentPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const CommentPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const CommentPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class CommentCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  CommentCache();
+  ~CommentCache();
+
+   void add(CommentPtr & ptr);
+   void remove(CommentPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<CommentPtr> m_loaded_instances;
+  // QLinkedList<CommentPtr> m_modified_instances;
+  QMap<Comment *, CommentPtr> m_loaded_instances;
+  QMap<Comment *, CommentPtr> m_modified_instances;
+};
 
 /**************************************************************************************************/
 
@@ -659,11 +949,20 @@ public:
   QcDatabaseTable & blogs() { return *m_blogs; }
   QcDatabaseTable & comments() { return *m_comments; }
 
+
+
+private:
+  template<class T> void register_row(typename T::Ptr & row);
+
 private:
   QcDatabaseTable * m_authors;
   QcDatabaseTable * m_categories;
   QcDatabaseTable * m_blogs;
   QcDatabaseTable * m_comments;
+  AuthorCache m_authors_cache;
+  CategoryCache m_categories_cache;
+  BlogCache m_blogs_cache;
+  CommentCache m_comments_cache;
 };
 
 /**************************************************************************************************/

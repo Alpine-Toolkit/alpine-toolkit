@@ -35,6 +35,8 @@
 
 // QC_BEGIN_NAMESPACE
 
+
+
 AuthorSchema::AuthorSchema()
 : QcSchema(QLatin1String("Author"), QLatin1String("authors"))
 {
@@ -92,9 +94,7 @@ AuthorSchema::AuthorSchema()
 }
 
 AuthorSchema::~AuthorSchema()
-{
-  qInfo() << "Delete AuthorSchema";
-}
+{}
 
 /**************************************************************************************************/
 
@@ -152,9 +152,10 @@ Author::Author(const QSqlQuery & query, int offset)
   m_birthdate = query.value(offset).toDateTime();
 }
 
+
 Author::~Author()
 {
-  qInfo() << "Delete Author";
+  qInfo() << "--- Delete" << "Author" << *this;
 }
 
 // bit array ?
@@ -192,8 +193,12 @@ Author::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -202,8 +207,12 @@ Author::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -212,8 +221,12 @@ Author::set_birthdate(const QDateTime & value)
 {
   if (m_birthdate != value) {
     m_birthdate = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::BIRTHDATE);
     emit birthdateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -341,11 +354,65 @@ Author::set_field(int position, const QVariant & value)
 }
 
 void
-Author::load_relations()
+Author::set_insert_id(int id)
 {
-  blogs();
+  set_id(id);
+  for (const auto & item : m_blogs)
+    item->set_author_id(id);
+
 }
 
+
+
+void
+Author::break_relations()
+{
+  qInfo() << "Break relations on" << *this;
+}
+
+void
+Author::load_relations()
+{
+  qInfo() << "Load relations of" << *this;
+  {
+    // Load one-to-many relation blogs
+    Blog::PtrList rows = database_schema()->query_by_foreign_key<Blog>(
+      QLatin1String("author_id"),
+      m_id); // true
+    m_blogs = rows;
+  }
+
+}
+
+void
+Author::save_relations()
+{
+  qInfo() << "Save relations of" << *this;
+  for (const auto & item : m_blogs) {
+    if (not item->exists_on_database())
+      database_schema()->add_ptr(item);
+  }
+
+}
+
+bool
+Author::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+Author::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
 
 QDataStream &
 operator<<(QDataStream & out, const Author & obj)
@@ -380,6 +447,7 @@ operator<<(QDebug debug, const Author & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("Author(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -393,6 +461,58 @@ operator<<(QDebug debug, const Author & obj)
 #endif
 
 /**************************************************************************************************/
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const AuthorPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("AuthorPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+AuthorCache::AuthorCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+AuthorCache::~AuthorCache()
+{}
+
+void
+AuthorCache::add(AuthorPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &Author::changed,
+                   this, &AuthorCache::on_changed);
+}
+
+void
+AuthorCache::remove(AuthorPtr & ptr)
+{}
+
+void
+AuthorCache::on_changed()
+{
+  Author * row = qobject_cast<Author *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  AuthorPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
 
 CategorySchema::CategorySchema()
 : QcSchema(QLatin1String("Category"), QLatin1String("categories"))
@@ -451,9 +571,7 @@ CategorySchema::CategorySchema()
 }
 
 CategorySchema::~CategorySchema()
-{
-  qInfo() << "Delete CategorySchema";
-}
+{}
 
 /**************************************************************************************************/
 
@@ -511,9 +629,10 @@ Category::Category(const QSqlQuery & query, int offset)
   m_description = query.value(offset).toString();
 }
 
+
 Category::~Category()
 {
-  qInfo() << "Delete Category";
+  qInfo() << "--- Delete" << "Category" << *this;
 }
 
 // bit array ?
@@ -551,8 +670,12 @@ Category::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -561,8 +684,12 @@ Category::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
     emit nameChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -571,8 +698,12 @@ Category::set_description(const QString & value)
 {
   if (m_description != value) {
     m_description = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::DESCRIPTION);
     emit descriptionChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -699,6 +830,31 @@ Category::set_field(int position, const QVariant & value)
   }
 }
 
+void
+Category::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+Category::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+Category::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const Category & obj)
 {
@@ -731,6 +887,7 @@ operator<<(QDebug debug, const Category & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("Category(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -744,6 +901,58 @@ operator<<(QDebug debug, const Category & obj)
 #endif
 
 /**************************************************************************************************/
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const CategoryPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("CategoryPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+CategoryCache::CategoryCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+CategoryCache::~CategoryCache()
+{}
+
+void
+CategoryCache::add(CategoryPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &Category::changed,
+                   this, &CategoryCache::on_changed);
+}
+
+void
+CategoryCache::remove(CategoryPtr & ptr)
+{}
+
+void
+CategoryCache::on_changed()
+{
+  Category * row = qobject_cast<Category *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  CategoryPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
 
 BlogSchema::BlogSchema()
 : QcSchema(QLatin1String("Blog"), QLatin1String("blogs"))
@@ -819,9 +1028,7 @@ BlogSchema::BlogSchema()
 }
 
 BlogSchema::~BlogSchema()
-{
-  qInfo() << "Delete BlogSchema";
-}
+{}
 
 /**************************************************************************************************/
 
@@ -886,9 +1093,10 @@ Blog::Blog(const QSqlQuery & query, int offset)
   m_author_id = query.value(offset).toInt();
 }
 
+
 Blog::~Blog()
 {
-  qInfo() << "Delete Blog";
+  qInfo() << "--- Delete" << "Blog" << *this;
 }
 
 // bit array ?
@@ -929,8 +1137,12 @@ Blog::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -939,8 +1151,12 @@ Blog::set_text(const QString & value)
 {
   if (m_text != value) {
     m_text = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::TEXT);
     emit textChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -949,8 +1165,12 @@ Blog::set_date(const QDateTime & value)
 {
   if (m_date != value) {
     m_date = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
     emit dateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -959,8 +1179,12 @@ Blog::set_author_id(int value)
 {
   if (m_author_id != value) {
     m_author_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::AUTHOR_ID);
     emit author_idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1105,38 +1329,71 @@ Blog::set_field(int position, const QVariant & value)
 }
 
 void
-Blog::load_relations()
+Blog::set_insert_id(int id)
 {
-  author();
+  set_id(id);
 }
 
-QSharedPointer<Author>
+
+bool
+Blog::can_save() const
+{
+  if (m_author_id == 0)
+    return false;
+
+  return true;
+}
+
+
+void
+Blog::break_relations()
+{
+  qInfo() << "Break relations on" << *this;
+  m_author.clear();
+
+}
+
+void
+Blog::load_relations()
+{
+  qInfo() << "Load relations of" << *this;
+  author();
+
+}
+
+void
+Blog::save_relations()
+{
+  qInfo() << "Save relations of" << *this;
+}
+
+AuthorPtr
 Blog::author()
 {
   if (m_author.isNull())
+    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
     m_author = database_schema()->query_by_id<Author>(m_author_id);
   return m_author;
 }
 
-void
-Blog::set_author(QSharedPointer<Author> & value)
+bool
+Blog::can_update() const
 {
-
-  m_author = value;
-  set_author_id(value->id());
-
+  return m_id > 0;
+  
+  
 }
 
-void
-BlogPtr::set_author(AuthorPtr & value)
+QVariantHash
+Blog::rowid_kwargs() const // To update row
 {
-  if (not m_ptr->m_author.isNull())
-    m_ptr->m_author->blogs().remove(ptr());
-
-  m_ptr->set_author(value.ptr());
-  value->blogs().append(ptr());
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
 }
-
 
 QDataStream &
 operator<<(QDataStream & out, const Blog & obj)
@@ -1174,6 +1431,7 @@ operator<<(QDebug debug, const Blog & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("Blog(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -1189,6 +1447,69 @@ operator<<(QDebug debug, const Blog & obj)
 #endif
 
 /**************************************************************************************************/
+void
+BlogPtr::set_author(AuthorPtr & value)
+{
+  if (m_ptr->m_author)
+    m_ptr->m_author->blogs().remove(*this);
+
+  m_ptr->m_author = value;
+  m_ptr->set_author_id(value->id());
+  value->blogs().append(*this);
+}
+
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const BlogPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("BlogPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+BlogCache::BlogCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+BlogCache::~BlogCache()
+{}
+
+void
+BlogCache::add(BlogPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &Blog::changed,
+                   this, &BlogCache::on_changed);
+}
+
+void
+BlogCache::remove(BlogPtr & ptr)
+{}
+
+void
+BlogCache::on_changed()
+{
+  Blog * row = qobject_cast<Blog *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  BlogPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
+
 
 CommentSchema::CommentSchema()
 : QcSchema(QLatin1String("Comment"), QLatin1String("comments"))
@@ -1264,9 +1585,7 @@ CommentSchema::CommentSchema()
 }
 
 CommentSchema::~CommentSchema()
-{
-  qInfo() << "Delete CommentSchema";
-}
+{}
 
 /**************************************************************************************************/
 
@@ -1331,9 +1650,10 @@ Comment::Comment(const QSqlQuery & query, int offset)
   m_blog_id = query.value(offset).toInt();
 }
 
+
 Comment::~Comment()
 {
-  qInfo() << "Delete Comment";
+  qInfo() << "--- Delete" << "Comment" << *this;
 }
 
 // bit array ?
@@ -1374,8 +1694,12 @@ Comment::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
     emit idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1384,8 +1708,12 @@ Comment::set_text(const QString & value)
 {
   if (m_text != value) {
     m_text = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::TEXT);
     emit textChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1394,8 +1722,12 @@ Comment::set_date(const QDateTime & value)
 {
   if (m_date != value) {
     m_date = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
     emit dateChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1404,8 +1736,12 @@ Comment::set_blog_id(int value)
 {
   if (m_blog_id != value) {
     m_blog_id = value;
+
+    bool is_changed = is_modified();
     set_bit(Schema::Fields::BLOG_ID);
     emit blog_idChanged();
+    if (not is_changed)
+      emit changed();
   }
 }
 
@@ -1549,6 +1885,31 @@ Comment::set_field(int position, const QVariant & value)
   }
 }
 
+void
+Comment::set_insert_id(int id)
+{
+  set_id(id);
+}
+
+bool
+Comment::can_update() const
+{
+  return m_id > 0;
+  
+  
+}
+
+QVariantHash
+Comment::rowid_kwargs() const // To update row
+{
+  QVariantHash where_kwargs;
+  
+  
+  where_kwargs[QLatin1String("id")] = m_id;
+  
+  return where_kwargs;
+}
+
 QDataStream &
 operator<<(QDataStream & out, const Comment & obj)
 {
@@ -1585,6 +1946,7 @@ operator<<(QDebug debug, const Comment & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
+  // Fixme: quote string !
   debug.nospace() << QLatin1Literal("Comment(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
@@ -1601,13 +1963,67 @@ operator<<(QDebug debug, const Comment & obj)
 
 /**************************************************************************************************/
 
+#ifndef QT_NO_DEBUG_STREAM
+QDebug
+operator<<(QDebug debug, const CommentPtr & obj)
+{
+  QDebugStateSaver saver(debug); // Fixme: ???
+
+  debug.noquote() << QLatin1Literal("CommentPtr ->");
+  if (obj)
+    debug << *obj;
+   else
+  debug  << QLatin1Literal("NULL");
+
+  return debug;
+}
+#endif
+
+/**************************************************************************************************/
+
+CommentCache::CommentCache()
+ : m_loaded_instances(),
+   m_modified_instances()
+{}
+
+CommentCache::~CommentCache()
+{}
+
+void
+CommentCache::add(CommentPtr & ptr)
+{
+  m_loaded_instances.insert(ptr.data(), ptr);
+  QObject::connect(ptr.data(), &Comment::changed,
+                   this, &CommentCache::on_changed);
+}
+
+void
+CommentCache::remove(CommentPtr & ptr)
+{}
+
+void
+CommentCache::on_changed()
+{
+  Comment * row = qobject_cast<Comment *>(QObject::sender());
+  qInfo() << "On changed" << row;
+  CommentPtr row_ptr = m_loaded_instances[row];
+  if (row_ptr)
+    m_modified_instances.insert(row, row_ptr);
+}
+
+/**************************************************************************************************/
+
 
 BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_authors(nullptr),
     m_categories(nullptr),
     m_blogs(nullptr),
-    m_comments(nullptr)
+    m_comments(nullptr),
+    m_authors_cache(),
+    m_categories_cache(),
+    m_blogs_cache(),
+    m_comments_cache()
 {
   m_authors = &register_table(AuthorSchema::instance());
   m_categories = &register_table(CategorySchema::instance());
@@ -1617,6 +2033,38 @@ BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
 
 BlogApplicationSchema::~BlogApplicationSchema()
 {}
+template<>
+void
+BlogApplicationSchema::register_row<Author>(AuthorPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_authors_cache.add(row);
+}
+
+template<>
+void
+BlogApplicationSchema::register_row<Category>(CategoryPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_categories_cache.add(row);
+}
+
+template<>
+void
+BlogApplicationSchema::register_row<Blog>(BlogPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_blogs_cache.add(row);
+}
+
+template<>
+void
+BlogApplicationSchema::register_row<Comment>(CommentPtr & row)
+{
+  qInfo() << "Register in cache" << row;
+  m_comments_cache.add(row);
+}
+
 
 /**************************************************************************************************/
 

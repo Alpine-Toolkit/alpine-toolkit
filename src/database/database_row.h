@@ -39,6 +39,7 @@
 #include <QSqlRecord>
 #include <QVariantHash>
 #include <QVariantList>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
@@ -79,14 +80,20 @@ public:
   // Fixme: implement has mixin ?
   QcDatabaseSchema * database_schema() const { return m_database_schema; }
   void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
+
+  // To set id when the row was inserted
+  virtual void set_insert_id(int id) {};
   virtual bool exists_on_database() const {
     return m_database_schema != nullptr; // Fixme: right ??? commited !
   }
 
-  // To set id when the row was inserted
-  virtual void set_insert_id(int id) {};
+  virtual bool can_save() const { return true; } // Return false if a foreign key is undefined
+  virtual void break_relations() {} // To break relations
+  virtual void load_relations() {} // To load relations
+  virtual void save_relations() {} // To save relations
 
-  virtual void load_relations() {}
+  virtual bool can_update() const = 0; // To update row
+  virtual QVariantHash rowid_kwargs() const = 0;
 
 private:
   QcDatabaseSchema * m_database_schema = nullptr; // use memory !
@@ -121,7 +128,9 @@ public:
 
   bool operator==(const QcRow & other) { return true; } // Fixme: m_bits ?
 
-  bool is_modified() const { return not m_bits.isNull(); }
+  bool is_modified() const {
+    return m_bits.count(true);
+  }
 
 protected:
   bool bit_status(int i) const { return m_bits[i]; }

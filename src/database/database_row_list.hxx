@@ -52,7 +52,14 @@ QcRowList<T>::QcRowList(const QcRowList & other)
 
 template<class T>
 QcRowList<T>::~QcRowList()
-{}
+{
+  qInfo() << "--- Delete QcRowList" << m_items.size() << m_removed_items.size();
+  // m_items.clear();
+  // for (auto & item : m_items) {
+  //   qInfo() << item;
+  //   // item->break_relations();
+  // }
+}
 
 template<class T>
 QcRowList<T> &
@@ -67,36 +74,46 @@ QcRowList<T>::operator=(const QcRowList & other)
 }
 
 template<class T>
-void
-QcRowList<T>::append(const RowPtr & value)
-{
-  if (not m_items.contains(value)) {
-    m_items << value;
-    qInfo() << "QcRowList::append" << value << *value;
-  }
-  if (m_removed_items.contains(value)) {
-    m_removed_items.removeAll(value);
-    qInfo() << "QcRowList::append was removed" << value << *value;
-  }
-}
-
-template<class T>
 QcRowList<T> &
-QcRowList<T>::operator<<(const RowPtr & value)
+QcRowList<T>::operator=(const RowPtrList & rows)
 {
-  append(value);
+  m_items = rows;
+  m_removed_items.clear();
+
   return *this;
 }
 
 template<class T>
 void
-QcRowList<T>::remove(const RowPtr & value)
+QcRowList<T>::append(const RowPtr & row)
 {
-  if (m_items.contains(value)) {
-    m_items.removeAll(value);
-    // if (not m_removed_items.contains(value)) {
-    m_removed_items.append(value);
-    qInfo() << "QcRowList::remove" << value << *value;
+  if (not m_items.contains(row)) {
+    m_items << row;
+    qInfo() << "QcRowList::append" << row;
+  }
+  if (m_removed_items.contains(row)) {
+    m_removed_items.removeAll(row);
+    qInfo() << "QcRowList::append was removed" << row;
+  }
+}
+
+template<class T>
+QcRowList<T> &
+QcRowList<T>::operator<<(const RowPtr & row)
+{
+  append(row);
+  return *this;
+}
+
+template<class T>
+void
+QcRowList<T>::remove(const RowPtr & row)
+{
+  if (m_items.contains(row)) {
+    m_items.removeAll(row);
+    // if (not m_removed_items.contains(row)) {
+    m_removed_items.append(row);
+    qInfo() << "QcRowList::remove" << row;
   }
 }
 

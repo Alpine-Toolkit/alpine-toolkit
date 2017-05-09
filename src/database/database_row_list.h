@@ -41,9 +41,8 @@ template<class T>
 class QcRowList
 {
  public:
-  typedef T Row;
-  typedef QSharedPointer<Row> RowPtr;
-  typedef QList<RowPtr> RowPtrList;
+  typedef T RowPtr;
+  typedef QList<RowPtr> RowPtrList; // Fixme QLinkedList ?
 
 public:
   QcRowList();
@@ -53,13 +52,15 @@ public:
   ~QcRowList();
 
   QcRowList & operator=(const QcRowList & other);
+  QcRowList & operator=(const RowPtrList & rows);
 
   bool operator==(const QcRowList & other);
 
-  void append(const RowPtr & value);
-  QcRowList & operator<<(const RowPtr & value);
+  void append(const RowPtr & row);
+  QcRowList & operator<<(const RowPtr & row);
+  // QcRowList & operator<<(const RowPtrList & rows);
 
-  void remove(const RowPtr & value);
+  void remove(const RowPtr & row);
 
   // void append(const QList<T> &value)
 
