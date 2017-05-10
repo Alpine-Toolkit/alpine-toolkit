@@ -93,7 +93,6 @@ public:
 {%- if schema.relations %}
 {%- if schema.has_foreign_keys %}
   bool can_save() const;{% endif %}
-  void break_relations();
   void load_relations();
   void save_relations();
 {%- for relation in schema.relations %}
@@ -101,7 +100,7 @@ public:
   {{relation.ptr_cls_name}} {{relation.name}}();
   {% endif -%}
   {%- if relation.is_one_to_many %}
-  QcRowList<{{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
+  QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
   {% endif -%}
   {% endfor %}
 {% endif -%}
@@ -122,7 +121,7 @@ private:
   {{relation.ptr_cls_name}} m_{{relation.name}};
   {% endif -%}
   {%- if relation.is_one_to_many %}
-  QcRowList<{{relation.ptr_cls_name}}> m_{{relation.name}};
+  QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> m_{{relation.name}};
   {% endif %}{% endfor %}
 };
 
@@ -165,6 +164,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }

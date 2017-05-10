@@ -357,18 +357,12 @@ void
 Author::set_insert_id(int id)
 {
   set_id(id);
-  for (const auto & item : m_blogs)
-    item->set_author_id(id);
+  for (const auto & item_weak_ref : m_blogs)
+    item_weak_ref.data()->set_author_id(id); // Fixme: check ref
 
 }
 
 
-
-void
-Author::break_relations()
-{
-  qInfo() << "Break relations on" << *this;
-}
 
 void
 Author::load_relations()
@@ -388,9 +382,10 @@ void
 Author::save_relations()
 {
   qInfo() << "Save relations of" << *this;
-  for (const auto & item : m_blogs) {
-    if (not item->exists_on_database())
-      database_schema()->add_ptr(item);
+  for (const auto & item_weak_ref : m_blogs) {
+    Blog * item_ptr = item_weak_ref.data();
+    if (not item_ptr->exists_on_database())
+      database_schema()->add(*item_ptr);
   }
 
 }
@@ -1344,14 +1339,6 @@ Blog::can_save() const
   return true;
 }
 
-
-void
-Blog::break_relations()
-{
-  qInfo() << "Break relations on" << *this;
-  m_author.clear();
-
-}
 
 void
 Blog::load_relations()

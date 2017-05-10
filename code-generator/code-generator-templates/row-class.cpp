@@ -77,8 +77,8 @@ void
 
 {%- for relation in schema.relations %}
 {%- if relation.is_one_to_many %}
-  for (const auto & item : m_{{relation.name}})
-    item->set_{{relation.peer_relation.foreign_key_name}}(id);
+  for (const auto & item_weak_ref : m_{{relation.name}})
+    item_weak_ref.data()->set_{{relation.peer_relation.foreign_key_name}}(id); // Fixme: check ref
 {% endif -%}
 {% endfor %}
 }
@@ -95,17 +95,6 @@ bool
   return true;
 }
 {% endif %}
-
-void
-{{class_name}}::break_relations()
-{
-  qInfo() << "Break relations on" << *this;
-{%- for relation in schema.relations %}
-{%- if relation.is_many_to_one %}
-  m_{{relation.name}}.clear();
-{% endif -%}
-{% endfor %}
-}
 
 void
 {{class_name}}::load_relations()
@@ -133,9 +122,10 @@ void
   qInfo() << "Save relations of" << *this;
 {%- for relation in schema.relations %}
 {%- if relation.is_one_to_many %}
-  for (const auto & item : m_{{relation.name}}) {
-    if (not item->exists_on_database())
-      database_schema()->add_ptr(item);
+  for (const auto & item_weak_ref : m_{{relation.name}}) {
+    {{relation.cls_name}} * item_ptr = item_weak_ref.data();
+    if (not item_ptr->exists_on_database())
+      database_schema()->add(*item_ptr);
   }
 {% endif -%}
 {% endfor %}

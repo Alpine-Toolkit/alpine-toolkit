@@ -38,20 +38,20 @@
 
 /**************************************************************************************************/
 
-template<class T>
-QcRowList<T>::QcRowList()
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr>::QcRowList()
   : m_items(),
     m_removed_items()
 {}
 
-template<class T>
-QcRowList<T>::QcRowList(const QcRowList & other)
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr>::QcRowList(const QcRowList & other)
   : m_items(other.m_items),
     m_removed_items(other.m_removed_items)
 {}
 
-template<class T>
-QcRowList<T>::~QcRowList()
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr>::~QcRowList()
 {
   qInfo() << "--- Delete QcRowList" << m_items.size() << m_removed_items.size();
   // m_items.clear();
@@ -61,9 +61,9 @@ QcRowList<T>::~QcRowList()
   // }
 }
 
-template<class T>
-QcRowList<T> &
-QcRowList<T>::operator=(const QcRowList & other)
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr> &
+QcRowList<Row, RowPtr>::operator=(const QcRowList & other)
 {
   if (this != &other) {
     m_items = other.m_items;
@@ -73,46 +73,51 @@ QcRowList<T>::operator=(const QcRowList & other)
   return *this;
 }
 
-template<class T>
-QcRowList<T> &
-QcRowList<T>::operator=(const RowPtrList & rows)
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr> &
+QcRowList<Row, RowPtr>::operator=(const RowPtrList & rows)
 {
-  m_items = rows;
+  //  m_items = rows;
+  for (const auto & row : rows)
+    m_items << row.toWeakRef();
   m_removed_items.clear();
 
   return *this;
 }
 
-template<class T>
+template<class Row, class RowPtr>
 void
-QcRowList<T>::append(const RowPtr & row)
+QcRowList<Row, RowPtr>::append(const RowPtr & row)
 {
-  if (not m_items.contains(row)) {
-    m_items << row;
+  RowWeakPtr weak_ptr = row.toWeakRef();
+  // Fixme: contains !
+  if (not m_items.contains(weak_ptr)) {
+    m_items << weak_ptr;
     qInfo() << "QcRowList::append" << row;
   }
-  if (m_removed_items.contains(row)) {
-    m_removed_items.removeAll(row);
+  if (m_removed_items.contains(weak_ptr)) {
+    m_removed_items.removeAll(weak_ptr);
     qInfo() << "QcRowList::append was removed" << row;
   }
 }
 
-template<class T>
-QcRowList<T> &
-QcRowList<T>::operator<<(const RowPtr & row)
+template<class Row, class RowPtr>
+QcRowList<Row, RowPtr> &
+QcRowList<Row, RowPtr>::operator<<(const RowPtr & row)
 {
   append(row);
   return *this;
 }
 
-template<class T>
+template<class Row, class RowPtr>
 void
-QcRowList<T>::remove(const RowPtr & row)
+QcRowList<Row, RowPtr>::remove(const RowPtr & row)
 {
-  if (m_items.contains(row)) {
-    m_items.removeAll(row);
+  RowWeakPtr weak_ptr = row.toWeakRef();
+  if (m_items.contains(weak_ptr)) {
+    m_items.removeAll(weak_ptr);
     // if (not m_removed_items.contains(row)) {
-    m_removed_items.append(row);
+    m_removed_items.append(weak_ptr);
     qInfo() << "QcRowList::remove" << row;
   }
 }

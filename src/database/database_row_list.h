@@ -34,15 +34,18 @@
 
 #include<QList>
 #include<QSharedPointer>
+#include<QWeakPointer>
 
 /**************************************************************************************************/
 
-template<class T>
+// Row::Ptr is not yet defined
+template<class Row, class RowPtr>
 class QcRowList
 {
  public:
-  typedef T RowPtr;
-  typedef QList<RowPtr> RowPtrList; // Fixme QLinkedList ?
+  typedef QWeakPointer<Row> RowWeakPtr;
+  typedef QList<RowPtr> RowPtrList;
+  typedef QList<RowWeakPtr> RowWeakPtrList; // Fixme QLinkedList ?
 
 public:
   QcRowList();
@@ -58,7 +61,7 @@ public:
 
   void append(const RowPtr & row);
   QcRowList & operator<<(const RowPtr & row);
-  // QcRowList & operator<<(const RowPtrList & rows);
+  // QcRowList & operator<<(const RowWeakPtrList & rows);
 
   void remove(const RowPtr & row);
 
@@ -66,94 +69,17 @@ public:
 
   int size() const { return m_items.size(); }
 
-  typename RowPtrList::iterator begin() { return m_items.begin(); }
-  typename RowPtrList::const_iterator cbegin() const { return m_items.cbegin(); }
-  typename RowPtrList::iterator end() { return m_items.end(); }
-  typename RowPtrList::const_iterator cend() const { return m_items.cend(); }
+  typename RowWeakPtrList::iterator begin() { return m_items.begin(); }
+  typename RowWeakPtrList::const_iterator cbegin() const { return m_items.cbegin(); }
+  typename RowWeakPtrList::iterator end() { return m_items.end(); }
+  typename RowWeakPtrList::const_iterator cend() const { return m_items.cend(); }
 
 private:
-  RowPtrList m_items;
-  RowPtrList m_removed_items;
+  RowWeakPtrList m_items;
+  RowWeakPtrList m_removed_items;
 };
 
 /**************************************************************************************************/
-
-// const T & at(int i) const
-// T & back()
-// const T & back() const
-// iterator begin()
-// const_iterator begin() const
-// const_iterator cbegin() const
-// const_iterator cend() const
-// void clear()
-// const_iterator constBegin() const
-// const_iterator constEnd() const
-// const T & constFirst() const
-// const T & constLast() const
-// bool contains(const T &value) const
-// int count(const T &value) const
-// int count() const
-// const_reverse_iterator crbegin() const
-// const_reverse_iterator crend() const
-// bool empty() const
-// iterator end()
-// const_iterator end() const
-// bool endsWith(const T &value) const
-// iterator erase(iterator pos)
-// iterator erase(iterator begin, iterator end)
-// T & first()
-// const T & first() const
-// T & front()
-// const T & front() const
-// int indexOf(const T &value, int from = 0) const
-// void insert(int i, const T &value)
-// iterator insert(iterator before, const T &value)
-// bool isEmpty() const
-// T & last()
-// const T & last() const
-// int lastIndexOf(const T &value, int from = -1) const
-// int length() const
-// QList<T> mid(int pos, int length = -1) const
-// void move(int from, int to)
-// void pop_back()
-// void pop_front()
-// void prepend(const T &value)
-// void push_back(const T &value)
-// void push_front(const T &value)
-// reverse_iterator rbegin()
-// const_reverse_iterator rbegin() const
-// int removeAll(const T &value)
-// void removeAt(int i)
-// void removeFirst()
-// void removeLast()
-// bool removeOne(const T &value)
-// reverse_iterator rend()
-// const_reverse_iterator rend() const
-// void replace(int i, const T &value)
-// void reserve(int alloc)
-// int size() const
-// bool startsWith(const T &value) const
-// void swap(QList<T> &other)
-// void swap(int i, int j)
-// T takeAt(int i)
-// T takeFirst()
-// T takeLast()
-// QSet<T> toSet() const
-// std::list<T> toStdList() const
-// QVector<T> toVector() const
-// T value(int i) const
-// T value(int i, const T &defaultValue) const
-// bool operator!=(const QList<T> &other) const
-// QList<T> operator+(const QList<T> &other) const
-// QList<T> & operator+=(const QList<T> &other)
-// QList<T> & operator+=(const T &value)
-// QList<T> & operator<<(const QList<T> &other)
-// QList<T> & operator<<(const T &value)
-// QList<T> & operator=(const QList<T> &other)
-// QList & operator=(QList<T> &&other)
-// bool operator==(const QList<T> &other) const
-// T & operator[](int i)
-// const T & operator[](int i) const
 
 /**************************************************************************************************/
 

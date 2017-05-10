@@ -253,6 +253,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }

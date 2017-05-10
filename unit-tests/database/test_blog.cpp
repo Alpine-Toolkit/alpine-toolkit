@@ -101,8 +101,10 @@ void TestBlog::constructor()
     qInfo() << "\n\nAuthor -> Blogs";
     qInfo() << fabrice->exists_on_database() << fabrice;
     // Feature: List relation one-to-many
-    for (const auto & blog : fabrice->blogs())
-      qInfo() << blog->exists_on_database() << blog;
+    for (const auto & blog_weak_ref : fabrice->blogs()) {
+      Blog * blog = blog_weak_ref.data();
+      qInfo() << blog->exists_on_database() << *blog;
+    }
 
     // Feature: Save object and their relations recursively
     //          Set ids and foreign keys
@@ -113,8 +115,10 @@ void TestBlog::constructor()
     // Now objects are saved and all ids and foreign keys are set
     qInfo() << "\n\nSaved Author -> Blogs";
     qInfo() << fabrice->exists_on_database() << fabrice;
-    for (const auto & blog : fabrice->blogs())
-      qInfo() << blog->exists_on_database() << blog;
+    for (const auto & blog_weak_ref : fabrice->blogs()) {
+      Blog * blog = blog_weak_ref.data();
+      qInfo() << blog->exists_on_database() << *blog;
+  }
 
     fabrice_id = fabrice->id();
 

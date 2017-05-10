@@ -3145,12 +3145,6 @@ BBleauCircuit::can_save() const
 
 
 void
-BBleauCircuit::break_relations()
-{
-  qInfo() << "Break relations on" << *this;
-}
-
-void
 BBleauCircuit::load_relations()
 {
   qInfo() << "Load relations of" << *this;

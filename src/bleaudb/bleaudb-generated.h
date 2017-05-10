@@ -229,6 +229,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -503,6 +504,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -737,6 +739,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -956,7 +959,6 @@ public:
   void set_field(int position, const QVariant & value);
 
   bool can_save() const;
-  void break_relations();
   void load_relations();
   void save_relations();
 
@@ -1040,6 +1042,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }

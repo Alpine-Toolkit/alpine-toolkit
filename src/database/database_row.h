@@ -71,7 +71,7 @@ public:
   virtual QVariantList to_variant_list_sql(bool duplicate = false) const = 0;
 
   // Query for update
-  // virtual bool is_modified() const = 0;
+  // virtual bool is_modified() const = 0; // implemented in QcRow
 
   // Field accessor by position
   virtual QVariant field(int position) const = 0;
@@ -88,7 +88,6 @@ public:
   }
 
   virtual bool can_save() const { return true; } // Return false if a foreign key is undefined
-  virtual void break_relations() {} // To break relations
   virtual void load_relations() {} // To load relations
   virtual void save_relations() {} // To save relations
 

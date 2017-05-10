@@ -157,10 +157,9 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-  void break_relations();
   void load_relations();
   void save_relations();
-  QcRowList<BlogPtr> & blogs() { return m_blogs; }
+  QcRowList<Blog, BlogPtr> & blogs() { return m_blogs; }
   
 
   bool can_update() const; // To update row
@@ -176,7 +175,7 @@ private:
   int m_id;
   QString m_name;
   QDateTime m_birthdate;
-  QcRowList<BlogPtr> m_blogs;
+  QcRowList<Blog, BlogPtr> m_blogs;
   
 };
 
@@ -223,6 +222,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -433,6 +433,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -592,7 +593,6 @@ public:
   void set_field(int position, const QVariant & value);
 
   bool can_save() const;
-  void break_relations();
   void load_relations();
   void save_relations();
   AuthorPtr author();
@@ -660,6 +660,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
@@ -880,6 +881,7 @@ public:
   // QSharedPointer API
 
   QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
 
   Class & operator*() const { return *m_ptr; }
   Class * data() { return m_ptr.data(); }
