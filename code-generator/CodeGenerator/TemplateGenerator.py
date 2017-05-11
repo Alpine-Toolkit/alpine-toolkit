@@ -42,8 +42,8 @@ class TemplateGenerator:
             # loader=PackageLoader('', 'templates'),
             loader=FileSystemLoader(self._template_path),
 
-            # trim_blocks=True,
-            # lstrip_blocks=True,
+            trim_blocks=True,
+            lstrip_blocks=True,
             # keep_trailing_newline
         )
 

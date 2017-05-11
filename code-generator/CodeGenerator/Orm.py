@@ -743,6 +743,7 @@ class SchemaRepository:
         header = Header(filename, generator_settings)
         header.cpp_mode()
         header.comment(generator_comment)
+        header.new_line()
         header.header()
         for include in self.includes:
             header.include(include)
@@ -775,6 +776,7 @@ class SchemaRepository:
 
         source = Source(filename, generator_settings)
         source.comment(generator_comment)
+        source.new_line()
         source.header()
         source.include(filename, local=True)
         # Fixme: auto ? / function in CppCodeGenerator ?

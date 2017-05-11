@@ -1,48 +1,46 @@
-{# -*- mode: fundamental -*- -#}
+{# -*- mode: fundamental -*- #}
 {% extends "includes/header-template.jinja" %}
 
-{%- from "includes/accessor.jinja" import getter_decl, setter_decl, inline_getter, inline_setter -%}
-{%- from "includes/cdtor.jinja" import ctor_decl, copy_ctor_decl, copy_operator_decl, dtor_decl -%}
-{%- from "includes/debug.jinja" import debug_streamer_decl -%}
-{%- from "includes/operator.jinja" import equal_operator_decl -%}
-{%- from "includes/property.jinja" import property, property_signal -%}
+{% from "includes/accessor.jinja" import getter_decl, setter_decl, inline_getter, inline_setter %}
+{% from "includes/cdtor.jinja" import ctor_decl, copy_ctor_decl, copy_operator_decl, dtor_decl %}
+{% from "includes/debug.jinja" import debug_streamer_decl %}
+{% from "includes/operator.jinja" import equal_operator_decl %}
+{% from "includes/property.jinja" import property, property_signal %}
 
-{%- macro class_inheritance(base_classes) -%}
+{% macro class_inheritance(base_classes) %}
 {% if base_classes %} : {% for base_class in base_classes %}public {{base_class}}{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro q_object(base_class) -%}
-{%- if 'QObject' in base_classes %}
+{% macro q_object(base_class) %}
+{% if 'QObject' in base_classes %}
   Q_OBJECT{% endif %}
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro properties(members) -%}
-{%- for member in members %}
+{% macro properties(members) %}
+{% for member in members %}
   {{ property(member.name, member.type) }}{% endfor %}
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro signal_properties(members) -%}
+{% macro signal_properties(members) %}
 signals:
-{%- for member in members %}
+{% for member in members %}
   {{ property_signal(member.name) }}{% endfor %}
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro m_member(name, type) -%}
+{% macro m_member(name, type) %}
 {{type}} m_{{name}};
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro m_members(members) -%}
-{%- for member in members %}
+{% macro m_members(members) %}
+{% for member in members %}
   {{ m_member(member.name, member.type) }};{% endfor %}
-{%- endmacro -%}
+{% endmacro %}
 
-
-
-{% block content -%}
+{% block content %}
 class {{class_name}}{{ class_inheritance(base_classes) }}
 {
 {{ q_object(base_classes) }}
-{%- if has_property %}{{ properties(members) }}{% endif -%}
+{% if has_property %}{{ properties(members) }}{% endif %}
 public:
   {{ ctor_decl(class_name) }}
   {{ copy_ctor_decl(class_name) }}
@@ -54,18 +52,18 @@ public:
 
   // Getter/Setter
 {# #}
-{%- for member in members %}
+{% for member in members %}
   {% if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter_decl(member) }}{% endif %}
   {% if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter_decl(member) }}{% endif %}
-{% endfor -%}
+{% endfor %}
 {# #}
-{%- if has_property %}
+{% if has_property %}
 {{ signal_properties(members) }}
-{% endif -%}
+{% endif %}
 {# #}
 private:
 {{- m_members(members) }}
 };
 
 {{ debug_streamer_decl(class_name) }}
-{%- endblock %}
+{% endblock %}

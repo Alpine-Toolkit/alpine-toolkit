@@ -1,18 +1,18 @@
-{%- from 'includes/settings.jinja' import copyright, generator_comment -%}
-{#- {% block generator_comment %}{{ generator_comment(date) }}{% endblock %} -#}
+{% from 'includes/settings.jinja' import copyright, generator_comment %}
+{# {% block generator_comment %}{{ generator_comment(date) }}{% endblock %} #}
 // -*- mode: c++ -*-
 
 {% block copyright %}{{ copyright() }}{% endblock %}
 
 /**************************************************************************************************/
 
-{% set HEADER_NAME = filename|replace('.h', '')|upper  -%}
+{% set HEADER_NAME = filename|replace('.h', '')|upper  %}
 #ifndef __{{ HEADER_NAME }}_H__
 #define __{{ HEADER_NAME }}_H__
 
 /**************************************************************************************************/
 
-{% block include -%}{%- endblock %}
+{% block include %}{% endblock %}
 
 /**************************************************************************************************/
 
@@ -29,4 +29,3 @@
  * End
  *
  **************************************************************************************************/
-{# #}

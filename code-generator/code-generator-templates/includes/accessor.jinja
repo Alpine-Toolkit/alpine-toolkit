@@ -1,22 +1,22 @@
-{# -*- mode: fundamental -*- -#}
+{# -*- mode: fundamental -*- #}
 
-{%- macro getter_decl(member) -%}
+{% macro getter_decl(member) %}
 {{member.getter_type}} {{member.name}}() const;
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro inline_getter(member) -%}
+{% macro inline_getter(member) %}
 {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro setter_decl(member) -%}
+{% macro setter_decl(member) %}
 void set_{{member.name}}({{member.setter_type}} value);
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro inline_setter(member) -%}
+{% macro inline_setter(member) %}
 void set_{{member.name}}({{member.setter_type}} value) { m_{{member.name}} = value; }
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro setter_impl(class_name, member) -%}
+{% macro setter_impl(class_name, member) %}
 void
 {{class_name}}::set_{{member.name}}({{member.setter_type}} value)
 {
@@ -25,12 +25,12 @@ void
     emit {{member.name}}Changed();
   }
 }
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro getter_impl(class_name, member) -%}
+{% macro getter_impl(class_name, member) %}
 {{member.getter_type}}
 {{class_name}}::{{member.name}}() const
 {
   return m_{{member.name}};
 }
-{%- endmacro -%}
+{% endmacro %}

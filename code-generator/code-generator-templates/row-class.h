@@ -1,22 +1,23 @@
 {# -*- mode: fundamental -*- -#}
 
-{%- from "includes/data-stream-operator.jinja" import data_streamer_decl %}
-{%- from "includes/debug.jinja" import debug_streamer_decl -%}
-{%- from "includes/property.jinja" import property -%}
-{%- from "includes/singleton.jinja" import singleton -%}
+{% from "includes/data-stream-operator.jinja" import data_streamer_decl %}
+{% from "includes/debug.jinja" import debug_streamer_decl %}
+{% from "includes/property.jinja" import property %}
+{% from "includes/singleton.jinja" import singleton -%}
 
-{%- set class_name_schema = schema.schema_cls_name %}
-{%- set class_name_ptr = schema.ptr_cls_name %}
-{%- set class_name_cache = schema.cache_cls_name %}
+{% set class_name_schema = schema.schema_cls_name %}
+{% set class_name_ptr = schema.ptr_cls_name %}
+{% set class_name_cache = schema.cache_cls_name -%}
 
 class {{class_name}};
 class {{class_name_ptr}};
-{# #}
-{%- for relation in schema.relations %}
-{%- if relation.is_one_to_many %}
+
+{% for relation in schema.relations %}
+{% if relation.is_one_to_many %}
 class {{relation.cls_name}};
 class {{relation.ptr_cls_name}};
-{% endif %}{% endfor %}
+{% endif %}
+{% endfor %}{# space #}
 
 /**************************************************************************************************/
 
@@ -24,8 +25,9 @@ class {{class_name_schema}} : public QcSchema
 {
 public:
   enum Fields {
-{%- for member in members %}
-    {{member.name|upper}}{% if not loop.last %},{% endif %}{% endfor %}
+{% for member in members %}
+    {{member.name|upper}}{% if not loop.last %},{% endif %} 
+{% endfor %}{# space #}
   };
   static const int NUMBER_OF_FIELDS = {{ members|count }};
 
@@ -37,8 +39,9 @@ public:
 class {{class_name}} : public QObject, public {{schema.base_class}}<{{class_name_schema}}>
 {
   Q_OBJECT
-{%- for member in members %}
-  {{ property(member.name, member.type) }}{% endfor %}
+{% for member in members %}
+  {{ property(member.name, member.type) }}
+{% endfor %}
 
 public:
   typedef {{class_name_ptr}} Ptr;
@@ -60,16 +63,17 @@ public:
   bool operator==(const {{class_name}} & other);
 
   // Getter/Setter
-{# #}
-{%- for member in members %}
+
+{% for member in members %}
   {{member.getter_type}} {{member.name}}() const { return m_{{member.name}}; }
   void set_{{member.name}}({{member.setter_type}} value);
+
 {% endfor -%}
-{# #}
-{%- if schema.has_rowid_primary_key %}
+
+{% if schema.has_rowid_primary_key %}
   void set_insert_id(int id);
   bool exists_on_database() const { return m_{{schema.rowid_primary_key.name}} > 0; } // require NOT NULL
-{%- endif %}
+{% endif %}
 
   // JSON Serializer
   QJsonObject to_json(bool only_changed = false) const;
@@ -83,46 +87,54 @@ public:
   QVariantList to_variant_list_sql(bool duplicate = false) const;
 
   // Query for update
-{%- for member in members %}
-  bool is_{{member.name}}_modified() const { return bit_status(Schema::Fields::{{member.name|upper}}); }{% endfor %}
+{% for member in members %}
+  bool is_{{member.name}}_modified() const { return bit_status(Schema::Fields::{{member.name|upper}}); }
+{% endfor %}
 
   // Field accessor by position
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
-{# #}
-{%- if schema.relations %}
-{%- if schema.has_foreign_keys %}
-  bool can_save() const;{% endif %}
+
+{% if schema.relations %}
+{% if schema.has_foreign_keys %}
+  bool can_save() const;
+{% endif %}{# space #}
+
   void load_relations();
   void save_relations();
-{%- for relation in schema.relations %}
-  {%- if relation.is_many_to_one %}
+
+{% for relation in schema.relations %}{# space #}
+{% if relation.is_many_to_one %}
   {{relation.ptr_cls_name}} {{relation.name}}();
-  {% endif -%}
-  {%- if relation.is_one_to_many %}
+{% endif %}
+{% if relation.is_one_to_many %}
   QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
-  {% endif -%}
-  {% endfor %}
-{% endif -%}
-{# #}
+{% endif %}
+{% endfor %}
+{% endif %}
+
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
 signals:
   void changed();
-{%- for member in members %}
-  void {{member.name}}Changed();{% endfor %}
+{% for member in members %}
+  void {{member.name}}Changed();
+{% endfor %}
 
 private:
-{%- for member in members %}
-  {{member.type}} m_{{member.name}};{% endfor %}
-{%- for relation in schema.relations %}
-  {%- if relation.is_many_to_one %}
+{% for member in members %}
+  {{member.type}} m_{{member.name}};
+{% endfor -%}
+
+{% for relation in schema.relations %}
+{% if relation.is_many_to_one %}
   {{relation.ptr_cls_name}} m_{{relation.name}};
-  {% endif -%}
-  {%- if relation.is_one_to_many %}
+{% endif %}
+{% if relation.is_one_to_many %}
   QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> m_{{relation.name}};
-  {% endif %}{% endfor %}
+{% endif %}
+{% endfor %}
 };
 
 {{ data_streamer_decl(class_name, members) }}
@@ -183,9 +195,10 @@ public:
 
   // Relations API
 {% for relation in schema.relations %}
-{%- if relation.is_many_to_one %}
+{% if relation.is_many_to_one %}
   void set_{{relation.name}}({{relation.ptr_cls_name}} & value);
-{% endif %}{% endfor %}
+{% endif %}
+{% endfor %}
 
 private:
   QSharedPointer<Class> m_ptr;

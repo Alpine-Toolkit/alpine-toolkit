@@ -1,20 +1,22 @@
-{# -*- mode: fundamental -*- -#}
+{# -*- mode: fundamental -*- #}
 
-{%- macro equal_operator_decl(class_name) -%}
+{% macro equal_operator_decl(class_name) %}
 bool operator==(const {{class_name}} & other);
-{%- endmacro -%}
+{% endmacro %}
 
-{%- macro equal_operator_impl(class_name, members, base_classes) -%}
+{% macro equal_operator_impl(class_name, members, base_classes) %}
 bool
 {{class_name}}::operator==(const {{class_name}} & other)
 {
-{%- for base_class in base_classes %}
+{% for base_class in base_classes %}
   if (not {{base_class}}::operator==(other))
-    return false;{%- endfor %}
-{%- for member in members %}
+    return false;
+{% endfor %}
+{% for member in members %}
   if (m_{{member.name}} != other.m_{{member.name}})
-    return false;{% endfor %}
+    return false;
+{% endfor %}
 
   return true;
 }
-{%- endmacro -%}
+{% endmacro %}

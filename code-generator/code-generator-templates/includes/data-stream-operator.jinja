@@ -1,17 +1,18 @@
-{# -*- mode: fundamental -*- -#}
+{# -*- mode: fundamental -*- #}
 
-{%- macro data_streamer_decl(class_name, members) -%}
+{% macro data_streamer_decl(class_name, members) %}
 QDataStream & operator<<(QDataStream & out, const {{class_name}} & obj);
 QDataStream & operator>>(QDataStream & in, {{class_name}} & obj);
 // qRegisterMetaTypeStreamOperators<{{class_name}}>("{{class_name}}");
-{%- endmacro -%}
+{%- endmacro %}
 
-{%- macro data_streamer_impl(class_name, members, member_types) -%}
+{% macro data_streamer_impl(class_name, members, member_types) %}
 QDataStream &
 operator<<(QDataStream & out, const {{class_name}} & obj)
 {
-{%- for member in members %}
-  out << obj.{{member.name}}();{% endfor %}
+{% for member in members %}
+  out << obj.{{member.name}}();
+{% endfor %}
 
   return out;
 }
@@ -19,12 +20,14 @@ operator<<(QDataStream & out, const {{class_name}} & obj)
 QDataStream &
 operator>>(QDataStream & in, {{class_name}} & obj)
 {
-{%- for type in member_types %}
-  {{type}} _{{type|replace(' ', '_')}};{% endfor %}
+{% for type in member_types %}
+  {{type}} _{{type|replace(' ', '_')}};
+{% endfor %}
 {% for member in members %}
   in >> _{{member.type}};
-  obj.set_{{member.name}}(_{{member.type}});{% endfor %}
+  obj.set_{{member.name}}(_{{member.type}});
+{% endfor %}
 
   return in;
 }
-{%- endmacro -%}
+{%- endmacro %}

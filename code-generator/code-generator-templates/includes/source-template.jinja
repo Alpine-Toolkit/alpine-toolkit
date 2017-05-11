@@ -1,12 +1,12 @@
-{% from 'includes/settings.jinja' import copyright -%}
-{#- {% block generator_comment %}{% endblock %} -#}
+{% from 'includes/settings.jinja' import copyright %}
+{# {% block generator_comment %}{% endblock %} #}
 {% block copyright %}{{ copyright() }}{% endblock %}
 
 /**************************************************************************************************/
 
 #include "{{ filename|replace('.h', '')|replace('.cpp', '') }}.h"
 
-{% block include %}{% endblock -%}
+{% block include %}{% endblock %}
 
 /**************************************************************************************************/
 
@@ -21,4 +21,3 @@
  * End
  *
  **************************************************************************************************/
-{# #}

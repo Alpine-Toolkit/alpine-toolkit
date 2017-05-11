@@ -1,12 +1,12 @@
-{# -*- mode: fundamental -*- -#}
+{# -*- mode: fundamental -*- #}
 
-{%- macro debug_streamer_decl(class_name) -%}
+{% macro debug_streamer_decl(class_name) %}
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const {{class_name}} & obj);
 #endif
-{%- endmacro -%}
+{%- endmacro %}
 
-{%- macro debug_streamer_impl(class_name, members) -%}
+{% macro debug_streamer_impl(class_name, members) %}
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
 operator<<(QDebug debug, const {{class_name}} & obj)
@@ -15,14 +15,15 @@ operator<<(QDebug debug, const {{class_name}} & obj)
 
   // Fixme: quote string !
   debug.nospace() << QLatin1Literal("{{class_name}}(");
-{%- for member in members %}
+{% for member in members %}
   debug << obj.{{member.name}}();
-{%- if not loop.last %}
+{% if not loop.last %}
   debug << QLatin1Literal(", ");
-{%- endif %}{% endfor %}
+{% endif %}
+{% endfor %}
   debug << ')';
 
   return debug;
 }
 #endif
-{%- endmacro -%}
+{%- endmacro %}
