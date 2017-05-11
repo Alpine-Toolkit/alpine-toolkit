@@ -27,8 +27,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __BLEAUDB_JSON_HELPER_H__
-#define __BLEAUDB_JSON_HELPER_H__
+#ifndef __BLEAU_JSON_HELPER_H__
+#define __BLEAU_JSON_HELPER_H__
 
 /**************************************************************************************************/
 
@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-namespace bleaudb {
+namespace bleau {
 
   QGeoCoordinate load_json_coordinate(const QJsonObject & json_object);
   inline QGeoCoordinate load_json_coordinate(const QJsonValue & json_value) {
@@ -52,7 +52,7 @@ namespace bleaudb {
 
 /**************************************************************************************************/
 
-#endif /* __BLEAUDB_JSON_HELPER_H__ */
+#endif /* __BLEAU_JSON_HELPER_H__ */
 
 /***************************************************************************************************
  *

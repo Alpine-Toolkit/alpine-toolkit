@@ -29,6 +29,11 @@
 
 ####################################################################################################
 
+import logging
+from CodeGenerator import BasicLogging
+
+####################################################################################################
+
 import os
 import sys
 
@@ -115,15 +120,15 @@ from CodeGenerator.GeneratorSettings import generator_settings
 
 class BleauGeoCoordinate(GeoCoordinate):
     __type_conversion__ = TypeConversion(
-        cast_from_json = 'bleaudb::load_json_coordinate',
-        cast_to_json = 'bleaudb::dump_json_coordinate',
-        cast_from_sql = 'bleaudb::load_sql_coordinate',
-        cast_to_sql = 'bleaudb::dump_sql_coordinate',
+        cast_from_json = 'bleau::load_json_coordinate',
+        cast_to_json = 'bleau::dump_json_coordinate',
+        cast_from_sql = 'bleau::load_sql_coordinate',
+        cast_to_sql = 'bleau::dump_sql_coordinate',
     )
 
 ####################################################################################################
 
-class BBleauPlace(Schema):
+class BleauPlace(Schema):
 
     __table_name__ = 'place'
 
@@ -143,7 +148,7 @@ class BBleauPlace(Schema):
 
 ####################################################################################################
 
-class BBleauMassif(Schema):
+class BleauMassif(Schema):
 
     __table_name__ = 'massif'
 
@@ -173,11 +178,11 @@ class BBleauMassif(Schema):
     secteur = Field(String)
     velo = Field(String)
 
-    # circuits = RelationShip('BBleauCircuit', back_populates='massif')
+    circuits = RelationShip('BleauCircuit', back_populates='massif')
 
 ####################################################################################################
 
-class BBleauBoulder(Schema):
+class BleauBoulder(Schema):
 
     __table_name__ = 'boulder'
 
@@ -188,9 +193,9 @@ class BBleauBoulder(Schema):
         'comment',
         'grade',
         'number',
+        'circuit_id',
     )
 
-    # Fixme: OneToOne BBleauCircuit / not in JSON
     id = Field(Integer, primary_key=True, on_json=False)
     coordinate = Field(BleauGeoCoordinate)
     name = Field(String)
@@ -198,9 +203,12 @@ class BBleauBoulder(Schema):
     grade = Field(String) # BleauGrade
     number = Field(String) # BleauWayNumber
 
+    circuit_id = Field(Integer, ForeignKey('circuit.id'), on_json=False)
+    circuit = RelationShip('BleauCircuit', back_populates='boulders')
+
 ####################################################################################################
 
-class BBleauCircuit(Schema):
+class BleauCircuit(Schema):
 
     __table_name__ = 'circuit'
 
@@ -223,13 +231,11 @@ class BBleauCircuit(Schema):
 
     id = Field(Integer, primary_key=True, on_json=False)
     coordinate = Field(BleauGeoCoordinate)
-    # BackReference OneToMany BBleauBoulder / Array in JSON
-    # 'boulders': { }, # BleauBoulderList
     colour = Field(String)
     creation_date = Field(Integer) # UnsignedInteger
     gestion = Field(String)
     grade = Field(String) # BleauAlpineGrade
-    massif_id = Field(Integer, ForeignKey('massif.id')) # Fixme: JSON massif/string vs massif_id/int
+    massif_id = Field(Integer, ForeignKey('massif.id'), on_json=False) # Fixme: JSON massif/string vs massif_id/int
     note = Field(String)
     number = Field(Integer) # UnsignedInteger
     opener = Field(String) # BleauOpeners
@@ -238,18 +244,22 @@ class BBleauCircuit(Schema):
     status = Field(String)
     topos = Field(StringList)
 
-    massif = RelationShip(BBleauMassif, back_populates="circuits")
+    massif = RelationShip(BleauMassif, back_populates='circuits')
+    boulders = RelationShip(BleauBoulder, back_populates='circuit')
 
 ####################################################################################################
 
 schema_repository = SchemaRepository(
     'BleauSchema',
-    BBleauPlace, BBleauMassif, BBleauBoulder, BBleauCircuit,
+    BleauPlace, BleauMassif, BleauCircuit, BleauBoulder,
 )
 
+# For includes
+pre_source = CustomTemplate('bleaudb/pre_source.cpp')
+
 output_dir = os.path.join(source_path, 'src', 'bleaudb')
-path = os.path.join(output_dir, 'bleaudb-generated')
+path = os.path.join(output_dir, 'bleau_schema')
 schema_repository.write_source(path,
                                generator_settings,
-                               pre_source=CustomTemplate('bleaudb/pre_source.cpp'),
+                               pre_source=pre_source,
 )

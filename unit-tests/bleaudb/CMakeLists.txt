@@ -13,7 +13,7 @@
 #
 
 foreach(name
-    bleaudb
+    bleau_schema
     bleau_database
     )
   add_executable(test_${name} test_${name}.cpp)

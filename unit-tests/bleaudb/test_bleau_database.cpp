@@ -30,15 +30,11 @@
 
 /**************************************************************************************************/
 
-#include "bleaudb/bleaudb_database.h"
-
-#include <QFile>
-#include <QJsonDocument>
-#include <QtDebug>
+#include "bleaudb/bleau_database.h"
 
 /***************************************************************************************************/
 
-class TestBleauDatabase: public QObject
+class TestQcBleauDatabase: public QObject
 {
   Q_OBJECT
 
@@ -46,103 +42,32 @@ private slots:
   void constructor();
 };
 
-void TestBleauDatabase::constructor()
+void TestQcBleauDatabase::constructor()
 {
-  {
-    QcSchema & place_schema = BBleauPlaceSchema::instance();
-  }
-  {
-    QcSchema & place_schema = BBleauPlace::schema();
-  }
+  QString json_path("../ressources/data/bleau.json");
+  BleauDatabase bleau_database(json_path);
 
-  QString sqlite_path("bleau.sqlite"); // Fixme:
-  QFile file(sqlite_path);
-  if (file.exists())
-    file.remove();
-  BleauDatabase bleau_database(sqlite_path);
-  BleauSchema & bleau_schema = bleau_database.schema();
-  QcDatabaseTable & place_table = bleau_schema.place();
-  QcDatabaseTable & boulder_table = bleau_schema.boulder();
-  QcDatabaseTable & circuit_table = bleau_schema.circuit();
-  QcDatabaseTable & massif_table = bleau_schema.massif();
+  bleau_database.to_json("bleau.json");
 
-  QVariantHash place_variant_hash;
-  place_variant_hash["category"] = "point d'eau";
-  place_variant_hash["coordinate"] = QVariant::fromValue(QGeoCoordinate(2.72, 48.41));
-  place_variant_hash["name"] = "Fontaine d'Avon";
+  QString sqlite_path("bleau.sqlite");
+  bleau_database.to_sql(sqlite_path);
 
-  BBleauPlace place(place_variant_hash);
-  bleau_schema.add(place);
+  // for (const auto & place : bleau_database.places())
+  //   qInfo() << place->name() << place->coordinate();
 
-  BBleauPlace place_bis = place;
-  //!!! place_bis.detach();
-  bleau_schema.add<BBleauPlace>(place_bis);
+  // for (const BleauMassif & massif : bleaudb.massifs())
+  //   qInfo() << massif.name();
 
-  QVariantHash massif_variant_hash;
-  massif_variant_hash["acces"] = "...";
-  // massif_variant_hash["alternative_name"] = "";
-  massif_variant_hash["chaos_type"] = "E/D";
-  massif_variant_hash["coordinate"] = QVariant::fromValue(QGeoCoordinate(2.51, 48.37));
-  massif_variant_hash["name"] = "91_1"; // Fixme: string !!!
-  // massif_variant_hash["note"] = "";
-  massif_variant_hash["parcelles"] = "135 141 TP";
-  massif_variant_hash["rdv"] = "...";
-  massif_variant_hash["secteur"] = "Trois Pignons";
-  massif_variant_hash["velo"] = "...";
-
-  // BBleauMassif massif(massif_variant_hash);
-  QSharedPointer<BBleauMassif> massif(new BBleauMassif(massif_variant_hash));
-  bleau_schema.add(*massif);
-
-  QVariantHash boulder_variant_hash;
-  boulder_variant_hash["comment"] = "mur";
-  // boulder_variant_hash["coordinate"] = ;
-  boulder_variant_hash["grade"] = "5-";
-  boulder_variant_hash["name"] = "";
-  boulder_variant_hash["number"] = 1;
-
-  BBleauBoulder boulder(boulder_variant_hash);
-  boulder_table.complete_insert(boulder.to_variant_list_sql());
-
-  QVariantHash circuit_variant_hash;
-  circuit_variant_hash["colour"] ="rouge";
-  circuit_variant_hash["coordinate"] = QVariant::fromValue(QGeoCoordinate(2.51, 48.37));
-  circuit_variant_hash["creation_date"] = QDateTime();
-  circuit_variant_hash["gestion"] =  "ONF77";
-  circuit_variant_hash["grade"] = "TD-";
-  circuit_variant_hash["massif"] = "91_1";
-  // circuit_variant_hash["note"] = "";
-  circuit_variant_hash["number"] = 1;
-  circuit_variant_hash["opener"] = "...";
-  circuit_variant_hash["refection_date"] = 2011;
-  // circuit_variant_hash["refection_note"] = "";
-  circuit_variant_hash["status"] = "liste SNE";
-  QStringList string_list ;
-  string_list << "http://foo" << "http://bar";
-  circuit_variant_hash["topos"] = string_list;
-
-  BBleauCircuit circuit(circuit_variant_hash);
-  circuit.set_massif(massif);
-  qInfo() << QJsonDocument(circuit.to_json());
-  bleau_schema.add(circuit);
-
-  BBleauPlace reloaded_place(place_table.select_by_id(place.id()));
-  qInfo() << reloaded_place.id() << reloaded_place << place;
-  QVERIFY(reloaded_place == place);
-
-  QSharedPointer<BBleauPlace> reloaded_place_bis = bleau_schema.query_by_id<BBleauPlace>(place.id());
-  qInfo() << reloaded_place_bis->id() << reloaded_place;
-  QVERIFY(*reloaded_place_bis == place);
-
-  QSharedPointer<BBleauCircuit> reloaded_circuit = bleau_schema.query_by_id<BBleauCircuit>(circuit.id());
-  qInfo() << *reloaded_circuit;
-  QSharedPointer<BBleauMassif> reloaded_massif = reloaded_circuit->massif();
-  qInfo() << *reloaded_massif;
+  // for (const BleauCircuit & circuit : bleaudb.circuits()) {
+  //   qInfo() << circuit.number();
+  //   for (const BleauBoulder & boulder : circuit.boulders())
+  //     qInfo() << boulder.name();
+  // }
 }
 
 /***************************************************************************************************/
 
-QTEST_MAIN(TestBleauDatabase)
+QTEST_MAIN(TestQcBleauDatabase)
 #include "test_bleau_database.moc"
 
 /***************************************************************************************************

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __BLEAUDB_GENERATED_H__
-#define __BLEAUDB_GENERATED_H__
+#ifndef __BLEAU_SCHEMA_H__
+#define __BLEAU_SCHEMA_H__
 
 /**************************************************************************************************/
 
@@ -59,13 +59,13 @@
 
 
 
-class BBleauPlace;
-class BBleauPlacePtr;
+class BleauPlace;
+class BleauPlacePtr;
 
 
 /**************************************************************************************************/
 
-class BBleauPlaceSchema : public QcSchema
+class BleauPlaceSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -78,26 +78,26 @@ public:
   static const int NUMBER_OF_FIELDS = 5;
 
 public:
-  static BBleauPlaceSchema & instance()
+  static BleauPlaceSchema & instance()
   {
-    static BBleauPlaceSchema m_instance;
+    static BleauPlaceSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  BBleauPlaceSchema(const BBleauPlaceSchema &) = delete;
-  BBleauPlaceSchema(BBleauPlaceSchema &&) = delete;
-  BBleauPlaceSchema & operator=(const BBleauPlaceSchema &) = delete;
-  BBleauPlaceSchema & operator=(BBleauPlaceSchema &&) = delete;
+  BleauPlaceSchema(const BleauPlaceSchema &) = delete;
+  BleauPlaceSchema(BleauPlaceSchema &&) = delete;
+  BleauPlaceSchema & operator=(const BleauPlaceSchema &) = delete;
+  BleauPlaceSchema & operator=(BleauPlaceSchema &&) = delete;
 
 protected:
-  BBleauPlaceSchema();
-  ~BBleauPlaceSchema();
+  BleauPlaceSchema();
+  ~BleauPlaceSchema();
 };
 
 /**************************************************************************************************/
 
-class BBleauPlace : public QObject, public QcRow<BBleauPlaceSchema>
+class BleauPlace : public QObject, public QcRow<BleauPlaceSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -107,23 +107,23 @@ class BBleauPlace : public QObject, public QcRow<BBleauPlaceSchema>
   Q_PROPERTY(QString note READ note WRITE set_note NOTIFY noteChanged)
 
 public:
-  typedef BBleauPlacePtr Ptr;
+  typedef BleauPlacePtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class BBleauPlacePtr;
+  friend class BleauPlacePtr;
 
 public:
-  BBleauPlace();
-  BBleauPlace(const BBleauPlace & other);
-  BBleauPlace(const QJsonObject & json_object); // JSON deserializer
-  BBleauPlace(const QVariantHash & variant_hash);
-  BBleauPlace(const QVariantList & variants);
-  BBleauPlace(const QSqlRecord & record); // SQL deserializer
-  BBleauPlace(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~BBleauPlace();
+  BleauPlace();
+  BleauPlace(const BleauPlace & other);
+  BleauPlace(const QJsonObject & json_object); // JSON deserializer
+  BleauPlace(const QVariantHash & variant_hash);
+  BleauPlace(const QVariantList & variants);
+  BleauPlace(const QSqlRecord & record); // SQL deserializer
+  BleauPlace(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~BleauPlace();
 
-  BBleauPlace & operator=(const BBleauPlace & other);
+  BleauPlace & operator=(const BleauPlace & other);
 
-  bool operator==(const BBleauPlace & other);
+  bool operator==(const BleauPlace & other);
 
   // Getter/Setter
 
@@ -186,45 +186,45 @@ private:
   QString m_note;
 };
 
-QDataStream & operator<<(QDataStream & out, const BBleauPlace & obj);
-QDataStream & operator>>(QDataStream & in, BBleauPlace & obj);
-// qRegisterMetaTypeStreamOperators<BBleauPlace>("BBleauPlace");
+QDataStream & operator<<(QDataStream & out, const BleauPlace & obj);
+QDataStream & operator>>(QDataStream & in, BleauPlace & obj);
+// qRegisterMetaTypeStreamOperators<BleauPlace>("BleauPlace");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauPlace & obj);
+QDebug operator<<(QDebug debug, const BleauPlace & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauPlacePtr
+class BleauPlacePtr
 {
 public:
-  typedef BBleauPlace Class;
+  typedef BleauPlace Class;
 
 public:
-  BBleauPlacePtr() : m_ptr() {}
-  BBleauPlacePtr(const BBleauPlacePtr & other) : m_ptr(other.m_ptr) {}
-  ~BBleauPlacePtr() {
+  BleauPlacePtr() : m_ptr() {}
+  BleauPlacePtr(const BleauPlacePtr & other) : m_ptr(other.m_ptr) {}
+  ~BleauPlacePtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    // qInfo() << "--- Delete BBleauPlacePtr of" << *m_ptr;
-    qInfo() << "--- Delete BBleauPlacePtr";
+    //// qInfo() << "--- Delete BleauPlacePtr of" << *m_ptr;
+    // qInfo() << "--- Delete BleauPlacePtr";
     // m_ptr.clear();
   }
 
-  BBleauPlacePtr & operator=(const BBleauPlacePtr & other) {
+  BleauPlacePtr & operator=(const BleauPlacePtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  BBleauPlacePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  BBleauPlacePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BBleauPlacePtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BBleauPlacePtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BBleauPlacePtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BBleauPlacePtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  BleauPlacePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BleauPlacePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BleauPlacePtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BleauPlacePtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BleauPlacePtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BleauPlacePtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -244,7 +244,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const BBleauPlacePtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const BleauPlacePtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -253,46 +253,49 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const BBleauPlacePtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const BleauPlacePtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauPlacePtr & obj);
+QDebug operator<<(QDebug debug, const BleauPlacePtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauPlaceCache : public QObject
+class BleauPlaceCache : public QObject
 {
   Q_OBJECT
 
 public:
-  BBleauPlaceCache();
-  ~BBleauPlaceCache();
+  BleauPlaceCache();
+  ~BleauPlaceCache();
 
-   void add(BBleauPlacePtr & ptr);
-   void remove(BBleauPlacePtr & ptr);
+   void add(BleauPlacePtr & ptr);
+   void remove(BleauPlacePtr & ptr);
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BBleauPlacePtr> m_loaded_instances;
-  // QLinkedList<BBleauPlacePtr> m_modified_instances;
-  QMap<BBleauPlace *, BBleauPlacePtr> m_loaded_instances;
-  QMap<BBleauPlace *, BBleauPlacePtr> m_modified_instances;
+  // QLinkedList<BleauPlacePtr> m_loaded_instances;
+  // QLinkedList<BleauPlacePtr> m_modified_instances;
+  QMap<BleauPlace *, BleauPlacePtr> m_loaded_instances;
+  QMap<BleauPlace *, BleauPlacePtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
 
 
 
-class BBleauMassif;
-class BBleauMassifPtr;
+class BleauMassif;
+class BleauMassifPtr;
+
+class BleauCircuit;
+class BleauCircuitPtr;
 
 
 /**************************************************************************************************/
 
-class BBleauMassifSchema : public QcSchema
+class BleauMassifSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -311,26 +314,26 @@ public:
   static const int NUMBER_OF_FIELDS = 11;
 
 public:
-  static BBleauMassifSchema & instance()
+  static BleauMassifSchema & instance()
   {
-    static BBleauMassifSchema m_instance;
+    static BleauMassifSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  BBleauMassifSchema(const BBleauMassifSchema &) = delete;
-  BBleauMassifSchema(BBleauMassifSchema &&) = delete;
-  BBleauMassifSchema & operator=(const BBleauMassifSchema &) = delete;
-  BBleauMassifSchema & operator=(BBleauMassifSchema &&) = delete;
+  BleauMassifSchema(const BleauMassifSchema &) = delete;
+  BleauMassifSchema(BleauMassifSchema &&) = delete;
+  BleauMassifSchema & operator=(const BleauMassifSchema &) = delete;
+  BleauMassifSchema & operator=(BleauMassifSchema &&) = delete;
 
 protected:
-  BBleauMassifSchema();
-  ~BBleauMassifSchema();
+  BleauMassifSchema();
+  ~BleauMassifSchema();
 };
 
 /**************************************************************************************************/
 
-class BBleauMassif : public QObject, public QcRow<BBleauMassifSchema>
+class BleauMassif : public QObject, public QcRow<BleauMassifSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -346,23 +349,23 @@ class BBleauMassif : public QObject, public QcRow<BBleauMassifSchema>
   Q_PROPERTY(QString velo READ velo WRITE set_velo NOTIFY veloChanged)
 
 public:
-  typedef BBleauMassifPtr Ptr;
+  typedef BleauMassifPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class BBleauMassifPtr;
+  friend class BleauMassifPtr;
 
 public:
-  BBleauMassif();
-  BBleauMassif(const BBleauMassif & other);
-  BBleauMassif(const QJsonObject & json_object); // JSON deserializer
-  BBleauMassif(const QVariantHash & variant_hash);
-  BBleauMassif(const QVariantList & variants);
-  BBleauMassif(const QSqlRecord & record); // SQL deserializer
-  BBleauMassif(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~BBleauMassif();
+  BleauMassif();
+  BleauMassif(const BleauMassif & other);
+  BleauMassif(const QJsonObject & json_object); // JSON deserializer
+  BleauMassif(const QVariantHash & variant_hash);
+  BleauMassif(const QVariantList & variants);
+  BleauMassif(const QSqlRecord & record); // SQL deserializer
+  BleauMassif(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~BleauMassif();
 
-  BBleauMassif & operator=(const BBleauMassif & other);
+  BleauMassif & operator=(const BleauMassif & other);
 
-  bool operator==(const BBleauMassif & other);
+  bool operator==(const BleauMassif & other);
 
   // Getter/Setter
 
@@ -430,6 +433,11 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
+  void load_relations();
+  void save_relations();
+  QcRowList<BleauCircuit, BleauCircuitPtr> & circuits() { return m_circuits; }
+  
+
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -459,47 +467,49 @@ private:
   QString m_rdv;
   QString m_secteur;
   QString m_velo;
+  QcRowList<BleauCircuit, BleauCircuitPtr> m_circuits;
+  
 };
 
-QDataStream & operator<<(QDataStream & out, const BBleauMassif & obj);
-QDataStream & operator>>(QDataStream & in, BBleauMassif & obj);
-// qRegisterMetaTypeStreamOperators<BBleauMassif>("BBleauMassif");
+QDataStream & operator<<(QDataStream & out, const BleauMassif & obj);
+QDataStream & operator>>(QDataStream & in, BleauMassif & obj);
+// qRegisterMetaTypeStreamOperators<BleauMassif>("BleauMassif");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauMassif & obj);
+QDebug operator<<(QDebug debug, const BleauMassif & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauMassifPtr
+class BleauMassifPtr
 {
 public:
-  typedef BBleauMassif Class;
+  typedef BleauMassif Class;
 
 public:
-  BBleauMassifPtr() : m_ptr() {}
-  BBleauMassifPtr(const BBleauMassifPtr & other) : m_ptr(other.m_ptr) {}
-  ~BBleauMassifPtr() {
+  BleauMassifPtr() : m_ptr() {}
+  BleauMassifPtr(const BleauMassifPtr & other) : m_ptr(other.m_ptr) {}
+  ~BleauMassifPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    // qInfo() << "--- Delete BBleauMassifPtr of" << *m_ptr;
-    qInfo() << "--- Delete BBleauMassifPtr";
+    //// qInfo() << "--- Delete BleauMassifPtr of" << *m_ptr;
+    // qInfo() << "--- Delete BleauMassifPtr";
     // m_ptr.clear();
   }
 
-  BBleauMassifPtr & operator=(const BBleauMassifPtr & other) {
+  BleauMassifPtr & operator=(const BleauMassifPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  BBleauMassifPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  BBleauMassifPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BBleauMassifPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BBleauMassifPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BBleauMassifPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BBleauMassifPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  BleauMassifPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BleauMassifPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BleauMassifPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BleauMassifPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BleauMassifPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BleauMassifPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -519,7 +529,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const BBleauMassifPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const BleauMassifPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -528,281 +538,49 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const BBleauMassifPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const BleauMassifPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauMassifPtr & obj);
+QDebug operator<<(QDebug debug, const BleauMassifPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauMassifCache : public QObject
+class BleauMassifCache : public QObject
 {
   Q_OBJECT
 
 public:
-  BBleauMassifCache();
-  ~BBleauMassifCache();
+  BleauMassifCache();
+  ~BleauMassifCache();
 
-   void add(BBleauMassifPtr & ptr);
-   void remove(BBleauMassifPtr & ptr);
+   void add(BleauMassifPtr & ptr);
+   void remove(BleauMassifPtr & ptr);
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BBleauMassifPtr> m_loaded_instances;
-  // QLinkedList<BBleauMassifPtr> m_modified_instances;
-  QMap<BBleauMassif *, BBleauMassifPtr> m_loaded_instances;
-  QMap<BBleauMassif *, BBleauMassifPtr> m_modified_instances;
+  // QLinkedList<BleauMassifPtr> m_loaded_instances;
+  // QLinkedList<BleauMassifPtr> m_modified_instances;
+  QMap<BleauMassif *, BleauMassifPtr> m_loaded_instances;
+  QMap<BleauMassif *, BleauMassifPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
 
 
 
-class BBleauBoulder;
-class BBleauBoulderPtr;
+class BleauCircuit;
+class BleauCircuitPtr;
+
+class BleauBoulder;
+class BleauBoulderPtr;
 
 
 /**************************************************************************************************/
 
-class BBleauBoulderSchema : public QcSchema
-{
-public:
-  enum Fields {
-    ID,
-    COORDINATE,
-    NAME,
-    COMMENT,
-    GRADE,
-    NUMBER
-  };
-  static const int NUMBER_OF_FIELDS = 6;
-
-public:
-  static BBleauBoulderSchema & instance()
-  {
-    static BBleauBoulderSchema m_instance;
-    return m_instance;
-  }
-
-  // delete copy and move constructors and assign operators
-  BBleauBoulderSchema(const BBleauBoulderSchema &) = delete;
-  BBleauBoulderSchema(BBleauBoulderSchema &&) = delete;
-  BBleauBoulderSchema & operator=(const BBleauBoulderSchema &) = delete;
-  BBleauBoulderSchema & operator=(BBleauBoulderSchema &&) = delete;
-
-protected:
-  BBleauBoulderSchema();
-  ~BBleauBoulderSchema();
-};
-
-/**************************************************************************************************/
-
-class BBleauBoulder : public QObject, public QcRow<BBleauBoulderSchema>
-{
-  Q_OBJECT
-  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
-  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
-  Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
-  Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
-  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
-  Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
-
-public:
-  typedef BBleauBoulderPtr Ptr;
-  typedef QList<Ptr> PtrList;
-  friend class BBleauBoulderPtr;
-
-public:
-  BBleauBoulder();
-  BBleauBoulder(const BBleauBoulder & other);
-  BBleauBoulder(const QJsonObject & json_object); // JSON deserializer
-  BBleauBoulder(const QVariantHash & variant_hash);
-  BBleauBoulder(const QVariantList & variants);
-  BBleauBoulder(const QSqlRecord & record); // SQL deserializer
-  BBleauBoulder(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~BBleauBoulder();
-
-  BBleauBoulder & operator=(const BBleauBoulder & other);
-
-  bool operator==(const BBleauBoulder & other);
-
-  // Getter/Setter
-
-  int id() const { return m_id; }
-  void set_id(int value);
-
-  const QGeoCoordinate & coordinate() const { return m_coordinate; }
-  void set_coordinate(const QGeoCoordinate & value);
-
-  const QString & name() const { return m_name; }
-  void set_name(const QString & value);
-
-  const QString & comment() const { return m_comment; }
-  void set_comment(const QString & value);
-
-  const QString & grade() const { return m_grade; }
-  void set_grade(const QString & value);
-
-  const QString & number() const { return m_number; }
-  void set_number(const QString & value);
-
-  void set_insert_id(int id);
-  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
-
-  // JSON Serializer
-  QJsonObject to_json(bool only_changed = false) const;
-
-  // Generic Variant Serializer
-  QVariantHash to_variant_hash(bool only_changed = false) const;
-  QVariantList to_variant_list() const;
-
-  // SQL Serializer
-  QVariantHash to_variant_hash_sql(bool only_changed = false, bool duplicate = false) const;
-  QVariantList to_variant_list_sql(bool duplicate = false) const;
-
-  // Query for update
-  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
-  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
-  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
-  bool is_comment_modified() const { return bit_status(Schema::Fields::COMMENT); }
-  bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
-  bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
-
-  // Field accessor by position
-  QVariant field(int position) const;
-  void set_field(int position, const QVariant & value);
-
-  bool can_update() const; // To update row
-  QVariantHash rowid_kwargs() const;
-
-signals:
-  void changed();
-  void idChanged();
-  void coordinateChanged();
-  void nameChanged();
-  void commentChanged();
-  void gradeChanged();
-  void numberChanged();
-
-private:
-  int m_id;
-  QGeoCoordinate m_coordinate;
-  QString m_name;
-  QString m_comment;
-  QString m_grade;
-  QString m_number;
-};
-
-QDataStream & operator<<(QDataStream & out, const BBleauBoulder & obj);
-QDataStream & operator>>(QDataStream & in, BBleauBoulder & obj);
-// qRegisterMetaTypeStreamOperators<BBleauBoulder>("BBleauBoulder");
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauBoulder & obj);
-#endif
-
-/**************************************************************************************************/
-
-class BBleauBoulderPtr
-{
-public:
-  typedef BBleauBoulder Class;
-
-public:
-  BBleauBoulderPtr() : m_ptr() {}
-  BBleauBoulderPtr(const BBleauBoulderPtr & other) : m_ptr(other.m_ptr) {}
-  ~BBleauBoulderPtr() {
-    // Fixme: *this return bool ???
-    // Fixme: signal ???
-    // qInfo() << "--- Delete BBleauBoulderPtr of" << *m_ptr;
-    qInfo() << "--- Delete BBleauBoulderPtr";
-    // m_ptr.clear();
-  }
-
-  BBleauBoulderPtr & operator=(const BBleauBoulderPtr & other) {
-    if (this != &other)
-      m_ptr = other.m_ptr;
-    return *this;
-   }
-
-  // QcRowTraits ctor
-  BBleauBoulderPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  BBleauBoulderPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BBleauBoulderPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BBleauBoulderPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BBleauBoulderPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BBleauBoulderPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
-
-  // QSharedPointer API
-
-  QSharedPointer<Class> & ptr() { return m_ptr; }
-  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
-
-  Class & operator*() const { return *m_ptr; }
-  Class * data() { return m_ptr.data(); }
-  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
-
-  // row_ptr->method()
-  Class * operator->() const { return m_ptr.data(); }
-
-  operator bool() const { return static_cast<bool>(m_ptr); }
-  bool isNull() const { return m_ptr.isNull(); }
-  bool operator!() const { return m_ptr.isNull(); }
-
-  void clear() { m_ptr.clear(); } // Fixme: danger ???
-
-  bool operator==(const BBleauBoulderPtr & other) const { return m_ptr == other.m_ptr; }
-
-  // Relations API
-
-
-private:
-  QSharedPointer<Class> m_ptr;
-};
-
-// uint qHash(const BBleauBoulderPtr & obj) { return static_cast<uint>(obj.data()); }
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauBoulderPtr & obj);
-#endif
-
-/**************************************************************************************************/
-
-class BBleauBoulderCache : public QObject
-{
-  Q_OBJECT
-
-public:
-  BBleauBoulderCache();
-  ~BBleauBoulderCache();
-
-   void add(BBleauBoulderPtr & ptr);
-   void remove(BBleauBoulderPtr & ptr);
-
-public slots:
-  void on_changed();
-
-private:
-  // QLinkedList<BBleauBoulderPtr> m_loaded_instances;
-  // QLinkedList<BBleauBoulderPtr> m_modified_instances;
-  QMap<BBleauBoulder *, BBleauBoulderPtr> m_loaded_instances;
-  QMap<BBleauBoulder *, BBleauBoulderPtr> m_modified_instances;
-};
-
-/**************************************************************************************************/
-
-
-
-class BBleauCircuit;
-class BBleauCircuitPtr;
-
-
-/**************************************************************************************************/
-
-class BBleauCircuitSchema : public QcSchema
+class BleauCircuitSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -824,26 +602,26 @@ public:
   static const int NUMBER_OF_FIELDS = 14;
 
 public:
-  static BBleauCircuitSchema & instance()
+  static BleauCircuitSchema & instance()
   {
-    static BBleauCircuitSchema m_instance;
+    static BleauCircuitSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  BBleauCircuitSchema(const BBleauCircuitSchema &) = delete;
-  BBleauCircuitSchema(BBleauCircuitSchema &&) = delete;
-  BBleauCircuitSchema & operator=(const BBleauCircuitSchema &) = delete;
-  BBleauCircuitSchema & operator=(BBleauCircuitSchema &&) = delete;
+  BleauCircuitSchema(const BleauCircuitSchema &) = delete;
+  BleauCircuitSchema(BleauCircuitSchema &&) = delete;
+  BleauCircuitSchema & operator=(const BleauCircuitSchema &) = delete;
+  BleauCircuitSchema & operator=(BleauCircuitSchema &&) = delete;
 
 protected:
-  BBleauCircuitSchema();
-  ~BBleauCircuitSchema();
+  BleauCircuitSchema();
+  ~BleauCircuitSchema();
 };
 
 /**************************************************************************************************/
 
-class BBleauCircuit : public QObject, public QcRow<BBleauCircuitSchema>
+class BleauCircuit : public QObject, public QcRow<BleauCircuitSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -862,23 +640,23 @@ class BBleauCircuit : public QObject, public QcRow<BBleauCircuitSchema>
   Q_PROPERTY(QStringList topos READ topos WRITE set_topos NOTIFY toposChanged)
 
 public:
-  typedef BBleauCircuitPtr Ptr;
+  typedef BleauCircuitPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class BBleauCircuitPtr;
+  friend class BleauCircuitPtr;
 
 public:
-  BBleauCircuit();
-  BBleauCircuit(const BBleauCircuit & other);
-  BBleauCircuit(const QJsonObject & json_object); // JSON deserializer
-  BBleauCircuit(const QVariantHash & variant_hash);
-  BBleauCircuit(const QVariantList & variants);
-  BBleauCircuit(const QSqlRecord & record); // SQL deserializer
-  BBleauCircuit(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~BBleauCircuit();
+  BleauCircuit();
+  BleauCircuit(const BleauCircuit & other);
+  BleauCircuit(const QJsonObject & json_object); // JSON deserializer
+  BleauCircuit(const QVariantHash & variant_hash);
+  BleauCircuit(const QVariantList & variants);
+  BleauCircuit(const QSqlRecord & record); // SQL deserializer
+  BleauCircuit(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~BleauCircuit();
 
-  BBleauCircuit & operator=(const BBleauCircuit & other);
+  BleauCircuit & operator=(const BleauCircuit & other);
 
-  bool operator==(const BBleauCircuit & other);
+  bool operator==(const BleauCircuit & other);
 
   // Getter/Setter
 
@@ -961,6 +739,10 @@ public:
   bool can_save() const;
   void load_relations();
   void save_relations();
+  BleauMassifPtr massif();
+  
+  QcRowList<BleauBoulder, BleauBoulderPtr> & boulders() { return m_boulders; }
+  
 
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
@@ -997,47 +779,51 @@ private:
   QString m_refection_note;
   QString m_status;
   QStringList m_topos;
+  BleauMassifPtr m_massif;
+  
+  QcRowList<BleauBoulder, BleauBoulderPtr> m_boulders;
+  
 };
 
-QDataStream & operator<<(QDataStream & out, const BBleauCircuit & obj);
-QDataStream & operator>>(QDataStream & in, BBleauCircuit & obj);
-// qRegisterMetaTypeStreamOperators<BBleauCircuit>("BBleauCircuit");
+QDataStream & operator<<(QDataStream & out, const BleauCircuit & obj);
+QDataStream & operator>>(QDataStream & in, BleauCircuit & obj);
+// qRegisterMetaTypeStreamOperators<BleauCircuit>("BleauCircuit");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauCircuit & obj);
+QDebug operator<<(QDebug debug, const BleauCircuit & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauCircuitPtr
+class BleauCircuitPtr
 {
 public:
-  typedef BBleauCircuit Class;
+  typedef BleauCircuit Class;
 
 public:
-  BBleauCircuitPtr() : m_ptr() {}
-  BBleauCircuitPtr(const BBleauCircuitPtr & other) : m_ptr(other.m_ptr) {}
-  ~BBleauCircuitPtr() {
+  BleauCircuitPtr() : m_ptr() {}
+  BleauCircuitPtr(const BleauCircuitPtr & other) : m_ptr(other.m_ptr) {}
+  ~BleauCircuitPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    // qInfo() << "--- Delete BBleauCircuitPtr of" << *m_ptr;
-    qInfo() << "--- Delete BBleauCircuitPtr";
+    //// qInfo() << "--- Delete BleauCircuitPtr of" << *m_ptr;
+    // qInfo() << "--- Delete BleauCircuitPtr";
     // m_ptr.clear();
   }
 
-  BBleauCircuitPtr & operator=(const BBleauCircuitPtr & other) {
+  BleauCircuitPtr & operator=(const BleauCircuitPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  BBleauCircuitPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  BBleauCircuitPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BBleauCircuitPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BBleauCircuitPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BBleauCircuitPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BBleauCircuitPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  BleauCircuitPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BleauCircuitPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BleauCircuitPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BleauCircuitPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BleauCircuitPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BleauCircuitPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -1057,42 +843,297 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const BBleauCircuitPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const BleauCircuitPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
+
+  void set_massif(BleauMassifPtr & value);
 
 
 private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const BBleauCircuitPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const BleauCircuitPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BBleauCircuitPtr & obj);
+QDebug operator<<(QDebug debug, const BleauCircuitPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BBleauCircuitCache : public QObject
+class BleauCircuitCache : public QObject
 {
   Q_OBJECT
 
 public:
-  BBleauCircuitCache();
-  ~BBleauCircuitCache();
+  BleauCircuitCache();
+  ~BleauCircuitCache();
 
-   void add(BBleauCircuitPtr & ptr);
-   void remove(BBleauCircuitPtr & ptr);
+   void add(BleauCircuitPtr & ptr);
+   void remove(BleauCircuitPtr & ptr);
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BBleauCircuitPtr> m_loaded_instances;
-  // QLinkedList<BBleauCircuitPtr> m_modified_instances;
-  QMap<BBleauCircuit *, BBleauCircuitPtr> m_loaded_instances;
-  QMap<BBleauCircuit *, BBleauCircuitPtr> m_modified_instances;
+  // QLinkedList<BleauCircuitPtr> m_loaded_instances;
+  // QLinkedList<BleauCircuitPtr> m_modified_instances;
+  QMap<BleauCircuit *, BleauCircuitPtr> m_loaded_instances;
+  QMap<BleauCircuit *, BleauCircuitPtr> m_modified_instances;
+};
+
+/**************************************************************************************************/
+
+
+
+class BleauBoulder;
+class BleauBoulderPtr;
+
+
+/**************************************************************************************************/
+
+class BleauBoulderSchema : public QcSchema
+{
+public:
+  enum Fields {
+    ID,
+    COORDINATE,
+    NAME,
+    COMMENT,
+    GRADE,
+    NUMBER,
+    CIRCUIT_ID
+  };
+  static const int NUMBER_OF_FIELDS = 7;
+
+public:
+  static BleauBoulderSchema & instance()
+  {
+    static BleauBoulderSchema m_instance;
+    return m_instance;
+  }
+
+  // delete copy and move constructors and assign operators
+  BleauBoulderSchema(const BleauBoulderSchema &) = delete;
+  BleauBoulderSchema(BleauBoulderSchema &&) = delete;
+  BleauBoulderSchema & operator=(const BleauBoulderSchema &) = delete;
+  BleauBoulderSchema & operator=(BleauBoulderSchema &&) = delete;
+
+protected:
+  BleauBoulderSchema();
+  ~BleauBoulderSchema();
+};
+
+/**************************************************************************************************/
+
+class BleauBoulder : public QObject, public QcRow<BleauBoulderSchema>
+{
+  Q_OBJECT
+  Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
+  Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
+  Q_PROPERTY(QString name READ name WRITE set_name NOTIFY nameChanged)
+  Q_PROPERTY(QString comment READ comment WRITE set_comment NOTIFY commentChanged)
+  Q_PROPERTY(QString grade READ grade WRITE set_grade NOTIFY gradeChanged)
+  Q_PROPERTY(QString number READ number WRITE set_number NOTIFY numberChanged)
+  Q_PROPERTY(int circuit_id READ circuit_id WRITE set_circuit_id NOTIFY circuit_idChanged)
+
+public:
+  typedef BleauBoulderPtr Ptr;
+  typedef QList<Ptr> PtrList;
+  friend class BleauBoulderPtr;
+
+public:
+  BleauBoulder();
+  BleauBoulder(const BleauBoulder & other);
+  BleauBoulder(const QJsonObject & json_object); // JSON deserializer
+  BleauBoulder(const QVariantHash & variant_hash);
+  BleauBoulder(const QVariantList & variants);
+  BleauBoulder(const QSqlRecord & record); // SQL deserializer
+  BleauBoulder(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~BleauBoulder();
+
+  BleauBoulder & operator=(const BleauBoulder & other);
+
+  bool operator==(const BleauBoulder & other);
+
+  // Getter/Setter
+
+  int id() const { return m_id; }
+  void set_id(int value);
+
+  const QGeoCoordinate & coordinate() const { return m_coordinate; }
+  void set_coordinate(const QGeoCoordinate & value);
+
+  const QString & name() const { return m_name; }
+  void set_name(const QString & value);
+
+  const QString & comment() const { return m_comment; }
+  void set_comment(const QString & value);
+
+  const QString & grade() const { return m_grade; }
+  void set_grade(const QString & value);
+
+  const QString & number() const { return m_number; }
+  void set_number(const QString & value);
+
+  int circuit_id() const { return m_circuit_id; }
+  void set_circuit_id(int value);
+
+  void set_insert_id(int id);
+  bool exists_on_database() const { return m_id > 0; } // require NOT NULL
+
+  // JSON Serializer
+  QJsonObject to_json(bool only_changed = false) const;
+
+  // Generic Variant Serializer
+  QVariantHash to_variant_hash(bool only_changed = false) const;
+  QVariantList to_variant_list() const;
+
+  // SQL Serializer
+  QVariantHash to_variant_hash_sql(bool only_changed = false, bool duplicate = false) const;
+  QVariantList to_variant_list_sql(bool duplicate = false) const;
+
+  // Query for update
+  bool is_id_modified() const { return bit_status(Schema::Fields::ID); }
+  bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
+  bool is_name_modified() const { return bit_status(Schema::Fields::NAME); }
+  bool is_comment_modified() const { return bit_status(Schema::Fields::COMMENT); }
+  bool is_grade_modified() const { return bit_status(Schema::Fields::GRADE); }
+  bool is_number_modified() const { return bit_status(Schema::Fields::NUMBER); }
+  bool is_circuit_id_modified() const { return bit_status(Schema::Fields::CIRCUIT_ID); }
+
+  // Field accessor by position
+  QVariant field(int position) const;
+  void set_field(int position, const QVariant & value);
+
+  bool can_save() const;
+  void load_relations();
+  void save_relations();
+  BleauCircuitPtr circuit();
+  
+
+  bool can_update() const; // To update row
+  QVariantHash rowid_kwargs() const;
+
+signals:
+  void changed();
+  void idChanged();
+  void coordinateChanged();
+  void nameChanged();
+  void commentChanged();
+  void gradeChanged();
+  void numberChanged();
+  void circuit_idChanged();
+
+private:
+  int m_id;
+  QGeoCoordinate m_coordinate;
+  QString m_name;
+  QString m_comment;
+  QString m_grade;
+  QString m_number;
+  int m_circuit_id;
+  BleauCircuitPtr m_circuit;
+  
+};
+
+QDataStream & operator<<(QDataStream & out, const BleauBoulder & obj);
+QDataStream & operator>>(QDataStream & in, BleauBoulder & obj);
+// qRegisterMetaTypeStreamOperators<BleauBoulder>("BleauBoulder");
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BleauBoulder & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BleauBoulderPtr
+{
+public:
+  typedef BleauBoulder Class;
+
+public:
+  BleauBoulderPtr() : m_ptr() {}
+  BleauBoulderPtr(const BleauBoulderPtr & other) : m_ptr(other.m_ptr) {}
+  ~BleauBoulderPtr() {
+    // Fixme: *this return bool ???
+    // Fixme: signal ???
+    //// qInfo() << "--- Delete BleauBoulderPtr of" << *m_ptr;
+    // qInfo() << "--- Delete BleauBoulderPtr";
+    // m_ptr.clear();
+  }
+
+  BleauBoulderPtr & operator=(const BleauBoulderPtr & other) {
+    if (this != &other)
+      m_ptr = other.m_ptr;
+    return *this;
+   }
+
+  // QcRowTraits ctor
+  BleauBoulderPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  BleauBoulderPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  BleauBoulderPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  BleauBoulderPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  BleauBoulderPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  BleauBoulderPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+
+  // QSharedPointer API
+
+  QSharedPointer<Class> & ptr() { return m_ptr; }
+  QWeakPointer<Class> toWeakRef() const { return m_ptr.toWeakRef(); }
+
+  Class & operator*() const { return *m_ptr; }
+  Class * data() { return m_ptr.data(); }
+  const Class * data() const { return m_ptr.data(); } // not in the QSharedPointer API
+
+  // row_ptr->method()
+  Class * operator->() const { return m_ptr.data(); }
+
+  operator bool() const { return static_cast<bool>(m_ptr); }
+  bool isNull() const { return m_ptr.isNull(); }
+  bool operator!() const { return m_ptr.isNull(); }
+
+  void clear() { m_ptr.clear(); } // Fixme: danger ???
+
+  bool operator==(const BleauBoulderPtr & other) const { return m_ptr == other.m_ptr; }
+
+  // Relations API
+
+  void set_circuit(BleauCircuitPtr & value);
+
+
+private:
+  QSharedPointer<Class> m_ptr;
+};
+
+// uint qHash(const BleauBoulderPtr & obj) { return static_cast<uint>(obj.data()); }
+
+#ifndef QT_NO_DEBUG_STREAM
+QDebug operator<<(QDebug debug, const BleauBoulderPtr & obj);
+#endif
+
+/**************************************************************************************************/
+
+class BleauBoulderCache : public QObject
+{
+  Q_OBJECT
+
+public:
+  BleauBoulderCache();
+  ~BleauBoulderCache();
+
+   void add(BleauBoulderPtr & ptr);
+   void remove(BleauBoulderPtr & ptr);
+
+public slots:
+  void on_changed();
+
+private:
+  // QLinkedList<BleauBoulderPtr> m_loaded_instances;
+  // QLinkedList<BleauBoulderPtr> m_modified_instances;
+  QMap<BleauBoulder *, BleauBoulderPtr> m_loaded_instances;
+  QMap<BleauBoulder *, BleauBoulderPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1109,8 +1150,8 @@ public:
 
   QcDatabaseTable & place() { return *m_place; }
   QcDatabaseTable & massif() { return *m_massif; }
-  QcDatabaseTable & boulder() { return *m_boulder; }
   QcDatabaseTable & circuit() { return *m_circuit; }
+  QcDatabaseTable & boulder() { return *m_boulder; }
 
 
 
@@ -1120,17 +1161,17 @@ private:
 private:
   QcDatabaseTable * m_place;
   QcDatabaseTable * m_massif;
-  QcDatabaseTable * m_boulder;
   QcDatabaseTable * m_circuit;
-  BBleauPlaceCache m_place_cache;
-  BBleauMassifCache m_massif_cache;
-  BBleauBoulderCache m_boulder_cache;
-  BBleauCircuitCache m_circuit_cache;
+  QcDatabaseTable * m_boulder;
+  BleauPlaceCache m_place_cache;
+  BleauMassifCache m_massif_cache;
+  BleauCircuitCache m_circuit_cache;
+  BleauBoulderCache m_boulder_cache;
 };
 
 /**************************************************************************************************/
 
-#endif /* __BLEAUDB-GENERATED_H__ */
+#endif /* __BLEAU_SCHEMA_H__ */
 
 /***************************************************************************************************
  *

@@ -33,8 +33,7 @@
 #include <QQmlEngine>
 #include <QtDebug>
 
-#include "bleaudb/bleaudb.h"
-#include "bleaudb/bleaudb_json_loader.h"
+#include "bleaudb/bleau_database.h"
 #include "camptocamp/camptocamp_qml.h"
 #include "ephemeride/ephemeride.h"
 #include "refuge/refuge.h"
@@ -75,17 +74,17 @@ set_context_properties(QQmlContext * context)
   context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
 
   // Create Bleau Model
-  BleauDB * bleaudb = new BleauDB();
-  QString bleau_json_path = ":/data/bleau.json";
-  load_json_bleaudb(bleau_json_path, *bleaudb);
-  QList<QObject *> massifs_; // QObject* is required
-  for (BleauMassif & massif : bleaudb->massifs())
-    massifs_.append(&massif);
-  std::sort(massifs_.begin(), massifs_.end(),
-            // qLess<T>()
-            [](QObject * a, QObject * b) { return qobject_cast<BleauMassif *>(a)->name() < qobject_cast<BleauMassif *>(b)->name(); }
-            );
-  context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
+  // BleauDB * bleaudb = new BleauDB();
+  // QString bleau_json_path = ":/data/bleau.json";
+  // load_json_bleaudb(bleau_json_path, *bleaudb);
+  // QList<QObject *> massifs_; // QObject* is required
+  // for (BleauMassif & massif : bleaudb->massifs())
+  //   massifs_.append(&massif);
+  // std::sort(massifs_.begin(), massifs_.end(),
+  //           // qLess<T>()
+  //           [](QObject * a, QObject * b) { return qobject_cast<BleauMassif *>(a)->name() < qobject_cast<BleauMassif *>(b)->name(); }
+  //           );
+  // context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
 
   // Create Camptocamp client
   QDir offline_storage_path = QDir(context->engine()->offlineStoragePath()); // same as application_user_directory

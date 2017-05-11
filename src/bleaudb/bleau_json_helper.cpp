@@ -26,21 +26,20 @@
 
 /**************************************************************************************************/
 
-#include "bleaudb/bleaudb_json_helper.h"
+#include "bleaudb/bleau_json_helper.h"
 
 #include <QVariant>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-namespace bleaudb {
+namespace bleau {
 
   QGeoCoordinate
   load_json_coordinate(const QJsonObject & json_object)
   {
-    QJsonObject json_coordinate = json_object[QLatin1Literal("coordinate")].toObject();
-    double longitude = json_coordinate[QLatin1Literal("longitude")].toDouble();
-    double latitude = json_coordinate[QLatin1Literal("latitude")].toDouble();
+    double longitude = json_object[QLatin1Literal("longitude")].toDouble();
+    double latitude = json_object[QLatin1Literal("latitude")].toDouble();
     return QGeoCoordinate(latitude, longitude);
   }
 

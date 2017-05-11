@@ -1,3 +1,4 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,24 +27,31 @@
 
 /**************************************************************************************************/
 
-#include "bleaudb_database.h"
-
-#include <QtDebug>
+#ifndef __BLEAU_SQLITE_DATABASE_H__
+#define __BLEAU_SQLITE_DATABASE_H__
 
 /**************************************************************************************************/
 
-BleauDatabase::BleauDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(sqlite_path),
-    m_schema(nullptr)
-{
-  m_schema = new BleauSchema(*this);
-}
+#include "database/sqlite_database.h"
+#include "bleaudb/bleau_schema.h"
 
-BleauDatabase::~BleauDatabase()
+/**************************************************************************************************/
+
+class BleauSqliteDatabase : public QcSqliteDatabase
 {
-  if (m_schema)
-    delete m_schema;
-}
+public:
+  BleauSqliteDatabase(const QString & sqlite_path);
+  ~BleauSqliteDatabase();
+
+  BleauSchema & schema() { return *m_schema; }
+
+private:
+  BleauSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema
+};
+
+/**************************************************************************************************/
+
+#endif /* __BLEAU_SQLITE_DATABASE_H__ */
 
 /***************************************************************************************************
  *
