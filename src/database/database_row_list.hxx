@@ -53,7 +53,7 @@ QcRowList<Row, RowPtr>::QcRowList(const QcRowList & other)
 template<class Row, class RowPtr>
 QcRowList<Row, RowPtr>::~QcRowList()
 {
-  qInfo() << "--- Delete QcRowList" << m_items.size() << m_removed_items.size();
+  // qInfo() << "--- Delete QcRowList" << m_items.size() << m_removed_items.size();
   // m_items.clear();
   // for (auto & item : m_items) {
   //   qInfo() << item;
@@ -93,7 +93,7 @@ QcRowList<Row, RowPtr>::append(const RowPtr & row)
   // Fixme: contains !
   if (not m_items.contains(weak_ptr)) {
     m_items << weak_ptr;
-    qInfo() << "QcRowList::append" << row;
+    // qInfo() << "QcRowList::append" << row;
   }
   if (m_removed_items.contains(weak_ptr)) {
     m_removed_items.removeAll(weak_ptr);

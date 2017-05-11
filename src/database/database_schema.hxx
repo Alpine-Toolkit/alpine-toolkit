@@ -48,7 +48,9 @@ QcDatabaseSchema::add(T & row, bool save_relations)
 
   QcDatabaseTable & table = get_table_by_schema(T::schema());
   table.add(row); // call set_insert_id
+
   row.set_database_schema(this);
+
   if (save_relations) {
     qInfo() << "Save relations of" << row;
     row.save_relations();
@@ -75,10 +77,11 @@ template<class T>
 void
 QcDatabaseSchema::add(const QList<T> rows, bool save_relations)
 {
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
   QList<T * > row_ptrs;
   for (auto & row : rows)
     row_ptrs << &row;
+
+  QcDatabaseTable & table = get_table_by_schema(T::schema());
   table.add(row_ptrs, save_relations);
 }
 
@@ -89,6 +92,7 @@ QcDatabaseSchema::query(bool lazy_load)
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
   QSqlQuery query = table.select();
+
   typename T::PtrList rows;
   while (query.next()) {
     typename T::Ptr row(query);
@@ -97,6 +101,7 @@ QcDatabaseSchema::query(bool lazy_load)
       row->load_relations();
     rows << row;
   }
+
   return rows;
 }
 
@@ -107,14 +112,17 @@ QcDatabaseSchema::query_by_id(int rowid, bool lazy_load)
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
   typename T::Ptr row(table.select_by_id(rowid)); // Fixme: (this, ..., lazy_load)
+
   // register_row<T>(row); // Fixme: a template cannot be virtual, can only pass QcRowTraits
   // register_row(* row);
   // Fixme: non specific code, QcDatabaseTable has no link to database QcDatabaseSchema !
   row->set_database_schema(this); // Fixme: for all ???
+
   if (schema.has_foreign_keys()) {
     if (not lazy_load)
       row->load_relations();
   }
+
   return row;
 }
 
@@ -124,9 +132,11 @@ QcDatabaseSchema::query_by_foreign_key(const QString & foreign_key, const QVaria
 {
   QVariantHash kwargs;
   kwargs[foreign_key] = value;
+
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
   QSqlQuery query = table.select(kwargs);
+
   typename T::PtrList rows;
   while (query.next()) {
     typename T::Ptr row(query);
@@ -135,6 +145,7 @@ QcDatabaseSchema::query_by_foreign_key(const QString & foreign_key, const QVaria
       row->load_relations();
     rows << row;
   }
+
   return rows;
 }
 
@@ -148,14 +159,24 @@ QcDatabaseSchema::update(T & row, bool save_relations)
     return;
   }
 
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
   QVariantHash kwargs = row.to_variant_hash_sql(true);
   QVariantHash where_kwargs = row.rowid_kwargs();
+
+  QcDatabaseTable & table = get_table_by_schema(T::schema());
   table.update(kwargs, where_kwargs);
+
   // if (save_relations) {
   //   qInfo() << "Save relations of" << row;
   //   row.save_relations();
   // }
+}
+
+template<class T>
+void
+QcDatabaseSchema::delete_by_id(int rowid)
+{
+  QcDatabaseTable & table = get_table_by_schema(T::schema());
+  table.delete_by_id(rowid);
 }
 
 /**************************************************************************************************/

@@ -101,6 +101,8 @@ public:
   template<class T> void update(T & row, bool save_relations = true);
   template<class T> void update_ptr(T & row_ptr, bool save_relations = true) { update(*row_ptr); }
 
+  template<class T> void delete_by_id(int rowid);
+
   // Derivative can implement:
   // QcDatabaseTable * table() { return m_table; }
 
