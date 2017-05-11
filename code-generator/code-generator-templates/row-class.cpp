@@ -6,8 +6,8 @@
 {%- from "includes/debug.jinja" import debug_streamer_impl -%}
 {%- from "includes/operator.jinja" import equal_operator_impl -%}
 
-{%- set class_name_schema = schema.schema_cls_name %}
-{%- set class_name_ptr = schema.ptr_cls_name %}
+{%- set class_name_schema = schema.schema_cls_name -%}
+{%- set class_name_ptr = schema.ptr_cls_name -%}
 {%- set class_name_cache = schema.cache_cls_name %}
 
 {{class_name_schema}}::{{class_name_schema}}()
@@ -17,7 +17,8 @@
   {
     {{field.shema_field_ctor}} field(
       QLatin1String("{{field.name}}"),
-      {% if field.is_foreign_key %}QLatin1String("{{field.foreign_key.dot_syntax}}"),{% endif %}
+{%- if field.is_foreign_key %}
+      QLatin1String("{{field.foreign_key.dot_syntax}}"),{% endif %}
       QLatin1String("{{field.qt_type}}"),
       QLatin1String("{{field.sql_type}}"),
       QLatin1String("{{field.sql_name}}"),
@@ -25,10 +26,14 @@
       QLatin1String("{{field.title}}"),
       QLatin1String("{{field.description}}"));
     // Optional parameters
-    {% if field.autoincrement %}field.set_autoincrement(true);{% endif %}
-    {% if not field.nullable %}field.set_nullable(false);{% endif %}
-    {% if field.unique %}field.set_unique(true);{% endif %}
-    {% if field.default %}field.set_default_value({{field.default}});{% endif %}
+{%- if field.autoincrement %}
+    field.set_autoincrement(true);{% endif %}
+{%- if not field.nullable %}
+    field.set_nullable(false);{% endif %}
+{%- if field.unique %}
+    field.set_unique(true);{% endif %}
+{%- if field.default %}
+    field.set_default_value({{field.default}});{% endif %}
     add_field(field);
   }{% endfor %}
 }
@@ -48,10 +53,10 @@
 
 {% include "includes/orm/sql-ctor.cpp" %}
 
-{# {{ dtor_impl(class_name) }} #}
+{# {{ dtor_impl(class_name) }} -#}
 {{class_name}}::~{{class_name}}()
 {
-  qInfo() << "--- Delete" << "{{class_name}}" << *this;
+// qInfo() << "--- Delete" << "{{class_name}}" << *this;
 }
 
 // bit array ?
