@@ -68,9 +68,9 @@ class AuthorSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    NAME, 
-    BIRTHDATE 
+    ID,
+    NAME,
+    BIRTHDATE
   };
   static const int NUMBER_OF_FIELDS = 3;
 
@@ -89,7 +89,7 @@ public:
 
 protected:
   AuthorSchema();
-  ~AuthorSchema(); 
+  ~AuthorSchema();
 };
 
 /**************************************************************************************************/
@@ -154,7 +154,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   void load_relations();
   void save_relations();
 
@@ -169,13 +168,12 @@ signals:
   void nameChanged();
   void birthdateChanged();
 
-
 private:
   int m_id;
   QString m_name;
   QDateTime m_birthdate;
   QcRowList<Blog, BlogPtr> m_blogs;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Author & obj);
@@ -241,7 +239,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const AuthorPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -270,7 +268,7 @@ private:
   // QLinkedList<AuthorPtr> m_loaded_instances;
   // QLinkedList<AuthorPtr> m_modified_instances;
   QMap<Author *, AuthorPtr> m_loaded_instances;
-  QMap<Author *, AuthorPtr> m_modified_instances; 
+  QMap<Author *, AuthorPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -290,9 +288,9 @@ public:
 
   // Fixme: use AuthorSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    NAME, 
-    BIRTHDATE 
+    ID = Qt::UserRole + 1,
+    NAME,
+    BIRTHDATE
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -302,7 +300,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -310,16 +308,15 @@ private:
 class Category;
 class CategoryPtr;
 
-
 /**************************************************************************************************/
 
 class CategorySchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    NAME, 
-    DESCRIPTION 
+    ID,
+    NAME,
+    DESCRIPTION
   };
   static const int NUMBER_OF_FIELDS = 3;
 
@@ -338,7 +335,7 @@ public:
 
 protected:
   CategorySchema();
-  ~CategorySchema(); 
+  ~CategorySchema();
 };
 
 /**************************************************************************************************/
@@ -403,7 +400,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -413,12 +409,11 @@ signals:
   void nameChanged();
   void descriptionChanged();
 
-
 private:
   int m_id;
   QString m_name;
   QString m_description;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Category & obj);
@@ -484,7 +479,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const CategoryPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -513,7 +508,7 @@ private:
   // QLinkedList<CategoryPtr> m_loaded_instances;
   // QLinkedList<CategoryPtr> m_modified_instances;
   QMap<Category *, CategoryPtr> m_loaded_instances;
-  QMap<Category *, CategoryPtr> m_modified_instances; 
+  QMap<Category *, CategoryPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -533,9 +528,9 @@ public:
 
   // Fixme: use CategorySchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    NAME, 
-    DESCRIPTION 
+    ID = Qt::UserRole + 1,
+    NAME,
+    DESCRIPTION
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -545,7 +540,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -553,17 +548,16 @@ private:
 class Blog;
 class BlogPtr;
 
-
 /**************************************************************************************************/
 
 class BlogSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    TEXT, 
-    DATE, 
-    AUTHOR_ID 
+    ID,
+    TEXT,
+    DATE,
+    AUTHOR_ID
   };
   static const int NUMBER_OF_FIELDS = 4;
 
@@ -582,7 +576,7 @@ public:
 
 protected:
   BlogSchema();
-  ~BlogSchema(); 
+  ~BlogSchema();
 };
 
 /**************************************************************************************************/
@@ -669,14 +663,13 @@ signals:
   void dateChanged();
   void author_idChanged();
 
-
 private:
   int m_id;
   QString m_text;
   QDateTime m_date;
   int m_author_id;
   AuthorPtr m_author;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Blog & obj);
@@ -743,7 +736,7 @@ public:
   void set_author(AuthorPtr & value);
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const BlogPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -772,7 +765,7 @@ private:
   // QLinkedList<BlogPtr> m_loaded_instances;
   // QLinkedList<BlogPtr> m_modified_instances;
   QMap<Blog *, BlogPtr> m_loaded_instances;
-  QMap<Blog *, BlogPtr> m_modified_instances; 
+  QMap<Blog *, BlogPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -792,10 +785,10 @@ public:
 
   // Fixme: use BlogSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    TEXT, 
-    DATE, 
-    AUTHOR_ID 
+    ID = Qt::UserRole + 1,
+    TEXT,
+    DATE,
+    AUTHOR_ID
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -805,7 +798,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -813,17 +806,16 @@ private:
 class Comment;
 class CommentPtr;
 
-
 /**************************************************************************************************/
 
 class CommentSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    TEXT, 
-    DATE, 
-    BLOG_ID 
+    ID,
+    TEXT,
+    DATE,
+    BLOG_ID
   };
   static const int NUMBER_OF_FIELDS = 4;
 
@@ -842,7 +834,7 @@ public:
 
 protected:
   CommentSchema();
-  ~CommentSchema(); 
+  ~CommentSchema();
 };
 
 /**************************************************************************************************/
@@ -912,7 +904,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -923,13 +914,12 @@ signals:
   void dateChanged();
   void blog_idChanged();
 
-
 private:
   int m_id;
   QString m_text;
   QDateTime m_date;
   int m_blog_id;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Comment & obj);
@@ -995,7 +985,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const CommentPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -1024,7 +1014,7 @@ private:
   // QLinkedList<CommentPtr> m_loaded_instances;
   // QLinkedList<CommentPtr> m_modified_instances;
   QMap<Comment *, CommentPtr> m_loaded_instances;
-  QMap<Comment *, CommentPtr> m_modified_instances; 
+  QMap<Comment *, CommentPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1044,10 +1034,10 @@ public:
 
   // Fixme: use CommentSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    TEXT, 
-    DATE, 
-    BLOG_ID 
+    ID = Qt::UserRole + 1,
+    TEXT,
+    DATE,
+    BLOG_ID
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -1057,7 +1047,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/

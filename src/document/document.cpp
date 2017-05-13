@@ -146,30 +146,29 @@ DocumentSchema::~DocumentSchema()
 
 /**************************************************************************************************/
 
-
 Document::Document()
-  : QcRow<DocumentSchema>(), 
-    m_id(), 
-    m_name(), 
-    m_author(), 
-    m_version(), 
-    m_date(), 
-    m_description(), 
-    m_url(), 
-    m_size() 
+  : QcRow<DocumentSchema>(),
+    m_id(),
+    m_name(),
+    m_author(),
+    m_version(),
+    m_date(),
+    m_description(),
+    m_url(),
+    m_size()
 {
 }
 
 Document::Document(const Document & other)
-  : QcRow<DocumentSchema>(other), 
-    m_id(other.m_id), 
-    m_name(other.m_name), 
-    m_author(other.m_author), 
-    m_version(other.m_version), 
-    m_date(other.m_date), 
-    m_description(other.m_description), 
-    m_url(other.m_url), 
-    m_size(other.m_size) 
+  : QcRow<DocumentSchema>(other),
+    m_id(other.m_id),
+    m_name(other.m_name),
+    m_author(other.m_author),
+    m_version(other.m_version),
+    m_date(other.m_date),
+    m_description(other.m_description),
+    m_url(other.m_url),
+    m_size(other.m_size)
 {
 }
 
@@ -287,7 +286,6 @@ Document::operator==(const Document & other)
 
   return true;
 }
-
 
 void
 Document::set_id(int value)
@@ -409,7 +407,6 @@ Document::set_size(int value)
   }
 }
 
-
 QJsonObject
 Document::to_json(bool only_changed) const
 {
@@ -482,7 +479,6 @@ Document::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Document::to_variant_list() const
 {
@@ -499,7 +495,6 @@ Document::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Document::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -537,7 +532,6 @@ Document::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Document::to_variant_list_sql(bool duplicate) const
@@ -628,7 +622,6 @@ Document::set_insert_id(int id)
 
 }
 
-
 bool
 Document::can_update() const
 {
@@ -715,7 +708,6 @@ operator<<(QDebug debug, const Document & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -844,7 +836,7 @@ DocumentModel::roleNames() const
 DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_document(nullptr),
-    m_document_cache() 
+    m_document_cache()
 {
   m_document = &register_table(DocumentSchema::instance());
 }

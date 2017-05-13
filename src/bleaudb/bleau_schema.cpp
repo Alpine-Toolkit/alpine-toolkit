@@ -110,24 +110,23 @@ BleauPlaceSchema::~BleauPlaceSchema()
 
 /**************************************************************************************************/
 
-
 BleauPlace::BleauPlace()
-  : QcRow<BleauPlaceSchema>(), 
-    m_id(), 
-    m_coordinate(), 
-    m_name(), 
-    m_category(), 
-    m_note() 
+  : QcRow<BleauPlaceSchema>(),
+    m_id(),
+    m_coordinate(),
+    m_name(),
+    m_category(),
+    m_note()
 {
 }
 
 BleauPlace::BleauPlace(const BleauPlace & other)
-  : QcRow<BleauPlaceSchema>(other), 
-    m_id(other.m_id), 
-    m_coordinate(other.m_coordinate), 
-    m_name(other.m_name), 
-    m_category(other.m_category), 
-    m_note(other.m_note) 
+  : QcRow<BleauPlaceSchema>(other),
+    m_id(other.m_id),
+    m_coordinate(other.m_coordinate),
+    m_name(other.m_name),
+    m_category(other.m_category),
+    m_note(other.m_note)
 {
 }
 
@@ -222,7 +221,6 @@ BleauPlace::operator==(const BleauPlace & other)
   return true;
 }
 
-
 void
 BleauPlace::set_id(int value)
 {
@@ -298,7 +296,6 @@ BleauPlace::set_note(const QString & value)
   }
 }
 
-
 QJsonObject
 BleauPlace::to_json(bool only_changed) const
 {
@@ -350,7 +347,6 @@ BleauPlace::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BleauPlace::to_variant_list() const
 {
@@ -364,7 +360,6 @@ BleauPlace::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 BleauPlace::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -393,7 +388,6 @@ BleauPlace::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 BleauPlace::to_variant_list_sql(bool duplicate) const
@@ -462,7 +456,6 @@ BleauPlace::set_insert_id(int id)
   set_id(id);
 
 }
-
 
 bool
 BleauPlace::can_update() const
@@ -534,7 +527,6 @@ operator<<(QDebug debug, const BleauPlace & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -795,36 +787,35 @@ BleauMassifSchema::~BleauMassifSchema()
 
 /**************************************************************************************************/
 
-
 BleauMassif::BleauMassif()
-  : QcRow<BleauMassifSchema>(), 
-    m_id(), 
-    m_coordinate(), 
-    m_name(), 
-    m_access(), 
-    m_alternative_name(), 
-    m_chaos_type(), 
-    m_note(), 
-    m_parcelles(), 
-    m_rdv(), 
-    m_secteur(), 
-    m_velo() 
+  : QcRow<BleauMassifSchema>(),
+    m_id(),
+    m_coordinate(),
+    m_name(),
+    m_access(),
+    m_alternative_name(),
+    m_chaos_type(),
+    m_note(),
+    m_parcelles(),
+    m_rdv(),
+    m_secteur(),
+    m_velo()
 {
 }
 
 BleauMassif::BleauMassif(const BleauMassif & other)
-  : QcRow<BleauMassifSchema>(other), 
-    m_id(other.m_id), 
-    m_coordinate(other.m_coordinate), 
-    m_name(other.m_name), 
-    m_access(other.m_access), 
-    m_alternative_name(other.m_alternative_name), 
-    m_chaos_type(other.m_chaos_type), 
-    m_note(other.m_note), 
-    m_parcelles(other.m_parcelles), 
-    m_rdv(other.m_rdv), 
-    m_secteur(other.m_secteur), 
-    m_velo(other.m_velo) 
+  : QcRow<BleauMassifSchema>(other),
+    m_id(other.m_id),
+    m_coordinate(other.m_coordinate),
+    m_name(other.m_name),
+    m_access(other.m_access),
+    m_alternative_name(other.m_alternative_name),
+    m_chaos_type(other.m_chaos_type),
+    m_note(other.m_note),
+    m_parcelles(other.m_parcelles),
+    m_rdv(other.m_rdv),
+    m_secteur(other.m_secteur),
+    m_velo(other.m_velo)
 {
 }
 
@@ -966,7 +957,6 @@ BleauMassif::operator==(const BleauMassif & other)
 
   return true;
 }
-
 
 void
 BleauMassif::set_id(int value)
@@ -1133,7 +1123,6 @@ BleauMassif::set_velo(const QString & value)
   }
 }
 
-
 QJsonObject
 BleauMassif::to_json(bool only_changed) const
 {
@@ -1221,7 +1210,6 @@ BleauMassif::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BleauMassif::to_variant_list() const
 {
@@ -1241,7 +1229,6 @@ BleauMassif::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 BleauMassif::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -1288,7 +1275,6 @@ BleauMassif::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 BleauMassif::to_variant_list_sql(bool duplicate) const
@@ -1402,7 +1388,6 @@ BleauMassif::set_insert_id(int id)
     item_weak_ref.data()->set_massif_id(id); // Fixme: check ref
 }
 
-
 void
 BleauMassif::load_relations()
 {
@@ -1426,7 +1411,6 @@ BleauMassif::save_relations()
       database_schema()->add(*item_ptr);
   }
 }
-
 
 bool
 BleauMassif::can_update() const
@@ -1528,7 +1512,6 @@ operator<<(QDebug debug, const BleauMassif & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -1844,42 +1827,41 @@ BleauCircuitSchema::~BleauCircuitSchema()
 
 /**************************************************************************************************/
 
-
 BleauCircuit::BleauCircuit()
-  : QcRow<BleauCircuitSchema>(), 
-    m_id(), 
-    m_coordinate(), 
-    m_colour(), 
-    m_creation_date(), 
-    m_gestion(), 
-    m_grade(), 
-    m_massif_id(), 
-    m_note(), 
-    m_number(), 
-    m_opener(), 
-    m_refection_date(), 
-    m_refection_note(), 
-    m_status(), 
-    m_topos() 
+  : QcRow<BleauCircuitSchema>(),
+    m_id(),
+    m_coordinate(),
+    m_colour(),
+    m_creation_date(),
+    m_gestion(),
+    m_grade(),
+    m_massif_id(),
+    m_note(),
+    m_number(),
+    m_opener(),
+    m_refection_date(),
+    m_refection_note(),
+    m_status(),
+    m_topos()
 {
 }
 
 BleauCircuit::BleauCircuit(const BleauCircuit & other)
-  : QcRow<BleauCircuitSchema>(other), 
-    m_id(other.m_id), 
-    m_coordinate(other.m_coordinate), 
-    m_colour(other.m_colour), 
-    m_creation_date(other.m_creation_date), 
-    m_gestion(other.m_gestion), 
-    m_grade(other.m_grade), 
-    m_massif_id(other.m_massif_id), 
-    m_note(other.m_note), 
-    m_number(other.m_number), 
-    m_opener(other.m_opener), 
-    m_refection_date(other.m_refection_date), 
-    m_refection_note(other.m_refection_note), 
-    m_status(other.m_status), 
-    m_topos(other.m_topos) 
+  : QcRow<BleauCircuitSchema>(other),
+    m_id(other.m_id),
+    m_coordinate(other.m_coordinate),
+    m_colour(other.m_colour),
+    m_creation_date(other.m_creation_date),
+    m_gestion(other.m_gestion),
+    m_grade(other.m_grade),
+    m_massif_id(other.m_massif_id),
+    m_note(other.m_note),
+    m_number(other.m_number),
+    m_opener(other.m_opener),
+    m_refection_date(other.m_refection_date),
+    m_refection_note(other.m_refection_note),
+    m_status(other.m_status),
+    m_topos(other.m_topos)
 {
 }
 
@@ -2045,7 +2027,6 @@ BleauCircuit::operator==(const BleauCircuit & other)
 
   return true;
 }
-
 
 void
 BleauCircuit::set_id(int value)
@@ -2257,7 +2238,6 @@ BleauCircuit::set_topos(const QStringList & value)
   }
 }
 
-
 QJsonObject
 BleauCircuit::to_json(bool only_changed) const
 {
@@ -2360,7 +2340,6 @@ BleauCircuit::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BleauCircuit::to_variant_list() const
 {
@@ -2383,7 +2362,6 @@ BleauCircuit::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 BleauCircuit::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -2439,7 +2417,6 @@ BleauCircuit::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 BleauCircuit::to_variant_list_sql(bool duplicate) const
@@ -2983,28 +2960,27 @@ BleauBoulderSchema::~BleauBoulderSchema()
 
 /**************************************************************************************************/
 
-
 BleauBoulder::BleauBoulder()
-  : QcRow<BleauBoulderSchema>(), 
-    m_id(), 
-    m_coordinate(), 
-    m_name(), 
-    m_comment(), 
-    m_grade(), 
-    m_number(), 
-    m_circuit_id() 
+  : QcRow<BleauBoulderSchema>(),
+    m_id(),
+    m_coordinate(),
+    m_name(),
+    m_comment(),
+    m_grade(),
+    m_number(),
+    m_circuit_id()
 {
 }
 
 BleauBoulder::BleauBoulder(const BleauBoulder & other)
-  : QcRow<BleauBoulderSchema>(other), 
-    m_id(other.m_id), 
-    m_coordinate(other.m_coordinate), 
-    m_name(other.m_name), 
-    m_comment(other.m_comment), 
-    m_grade(other.m_grade), 
-    m_number(other.m_number), 
-    m_circuit_id(other.m_circuit_id) 
+  : QcRow<BleauBoulderSchema>(other),
+    m_id(other.m_id),
+    m_coordinate(other.m_coordinate),
+    m_name(other.m_name),
+    m_comment(other.m_comment),
+    m_grade(other.m_grade),
+    m_number(other.m_number),
+    m_circuit_id(other.m_circuit_id)
 {
 }
 
@@ -3115,7 +3091,6 @@ BleauBoulder::operator==(const BleauBoulder & other)
   return true;
 }
 
-
 void
 BleauBoulder::set_id(int value)
 {
@@ -3221,7 +3196,6 @@ BleauBoulder::set_circuit_id(int value)
   }
 }
 
-
 QJsonObject
 BleauBoulder::to_json(bool only_changed) const
 {
@@ -3282,7 +3256,6 @@ BleauBoulder::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 BleauBoulder::to_variant_list() const
 {
@@ -3298,7 +3271,6 @@ BleauBoulder::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 BleauBoulder::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -3333,7 +3305,6 @@ BleauBoulder::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 BleauBoulder::to_variant_list_sql(bool duplicate) const
@@ -3666,10 +3637,10 @@ BleauSchema::BleauSchema(QcDatabase & database)
     m_massif(nullptr),
     m_circuit(nullptr),
     m_boulder(nullptr),
-    m_place_cache(), 
-    m_massif_cache(), 
-    m_circuit_cache(), 
-    m_boulder_cache() 
+    m_place_cache(),
+    m_massif_cache(),
+    m_circuit_cache(),
+    m_boulder_cache()
 {
   m_place = &register_table(BleauPlaceSchema::instance());
   m_massif = &register_table(BleauMassifSchema::instance());

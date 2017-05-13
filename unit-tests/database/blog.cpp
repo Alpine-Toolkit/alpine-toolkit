@@ -86,20 +86,19 @@ AuthorSchema::~AuthorSchema()
 
 /**************************************************************************************************/
 
-
 Author::Author()
-  : QcRow<AuthorSchema>(), 
-    m_id(), 
-    m_name(), 
-    m_birthdate() 
+  : QcRow<AuthorSchema>(),
+    m_id(),
+    m_name(),
+    m_birthdate()
 {
 }
 
 Author::Author(const Author & other)
-  : QcRow<AuthorSchema>(other), 
-    m_id(other.m_id), 
-    m_name(other.m_name), 
-    m_birthdate(other.m_birthdate) 
+  : QcRow<AuthorSchema>(other),
+    m_id(other.m_id),
+    m_name(other.m_name),
+    m_birthdate(other.m_birthdate)
 {
 }
 
@@ -178,7 +177,6 @@ Author::operator==(const Author & other)
   return true;
 }
 
-
 void
 Author::set_id(int value)
 {
@@ -224,7 +222,6 @@ Author::set_birthdate(const QDateTime & value)
   }
 }
 
-
 QJsonObject
 Author::to_json(bool only_changed) const
 {
@@ -267,7 +264,6 @@ Author::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Author::to_variant_list() const
 {
@@ -279,7 +275,6 @@ Author::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Author::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -302,7 +297,6 @@ Author::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Author::to_variant_list_sql(bool duplicate) const
@@ -360,7 +354,6 @@ Author::set_insert_id(int id)
     item_weak_ref.data()->set_author_id(id); // Fixme: check ref
 }
 
-
 void
 Author::load_relations()
 {
@@ -384,7 +377,6 @@ Author::save_relations()
       database_schema()->add(*item_ptr);
   }
 }
-
 
 bool
 Author::can_update() const
@@ -446,7 +438,6 @@ operator<<(QDebug debug, const Author & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -605,20 +596,19 @@ CategorySchema::~CategorySchema()
 
 /**************************************************************************************************/
 
-
 Category::Category()
-  : QcRow<CategorySchema>(), 
-    m_id(), 
-    m_name(), 
-    m_description() 
+  : QcRow<CategorySchema>(),
+    m_id(),
+    m_name(),
+    m_description()
 {
 }
 
 Category::Category(const Category & other)
-  : QcRow<CategorySchema>(other), 
-    m_id(other.m_id), 
-    m_name(other.m_name), 
-    m_description(other.m_description) 
+  : QcRow<CategorySchema>(other),
+    m_id(other.m_id),
+    m_name(other.m_name),
+    m_description(other.m_description)
 {
 }
 
@@ -697,7 +687,6 @@ Category::operator==(const Category & other)
   return true;
 }
 
-
 void
 Category::set_id(int value)
 {
@@ -743,7 +732,6 @@ Category::set_description(const QString & value)
   }
 }
 
-
 QJsonObject
 Category::to_json(bool only_changed) const
 {
@@ -786,7 +774,6 @@ Category::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Category::to_variant_list() const
 {
@@ -798,7 +785,6 @@ Category::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Category::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -821,7 +807,6 @@ Category::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Category::to_variant_list_sql(bool duplicate) const
@@ -876,7 +861,6 @@ Category::set_insert_id(int id)
   set_id(id);
 
 }
-
 
 bool
 Category::can_update() const
@@ -937,7 +921,6 @@ operator<<(QDebug debug, const Category & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -1109,22 +1092,21 @@ BlogSchema::~BlogSchema()
 
 /**************************************************************************************************/
 
-
 Blog::Blog()
-  : QcRow<BlogSchema>(), 
-    m_id(), 
-    m_text(), 
-    m_date(), 
-    m_author_id() 
+  : QcRow<BlogSchema>(),
+    m_id(),
+    m_text(),
+    m_date(),
+    m_author_id()
 {
 }
 
 Blog::Blog(const Blog & other)
-  : QcRow<BlogSchema>(other), 
-    m_id(other.m_id), 
-    m_text(other.m_text), 
-    m_date(other.m_date), 
-    m_author_id(other.m_author_id) 
+  : QcRow<BlogSchema>(other),
+    m_id(other.m_id),
+    m_text(other.m_text),
+    m_date(other.m_date),
+    m_author_id(other.m_author_id)
 {
 }
 
@@ -1211,7 +1193,6 @@ Blog::operator==(const Blog & other)
   return true;
 }
 
-
 void
 Blog::set_id(int value)
 {
@@ -1272,7 +1253,6 @@ Blog::set_author_id(int value)
   }
 }
 
-
 QJsonObject
 Blog::to_json(bool only_changed) const
 {
@@ -1321,7 +1301,6 @@ Blog::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Blog::to_variant_list() const
 {
@@ -1334,7 +1313,6 @@ Blog::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Blog::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -1360,7 +1338,6 @@ Blog::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Blog::to_variant_list_sql(bool duplicate) const
@@ -1703,22 +1680,21 @@ CommentSchema::~CommentSchema()
 
 /**************************************************************************************************/
 
-
 Comment::Comment()
-  : QcRow<CommentSchema>(), 
-    m_id(), 
-    m_text(), 
-    m_date(), 
-    m_blog_id() 
+  : QcRow<CommentSchema>(),
+    m_id(),
+    m_text(),
+    m_date(),
+    m_blog_id()
 {
 }
 
 Comment::Comment(const Comment & other)
-  : QcRow<CommentSchema>(other), 
-    m_id(other.m_id), 
-    m_text(other.m_text), 
-    m_date(other.m_date), 
-    m_blog_id(other.m_blog_id) 
+  : QcRow<CommentSchema>(other),
+    m_id(other.m_id),
+    m_text(other.m_text),
+    m_date(other.m_date),
+    m_blog_id(other.m_blog_id)
 {
 }
 
@@ -1805,7 +1781,6 @@ Comment::operator==(const Comment & other)
   return true;
 }
 
-
 void
 Comment::set_id(int value)
 {
@@ -1866,7 +1841,6 @@ Comment::set_blog_id(int value)
   }
 }
 
-
 QJsonObject
 Comment::to_json(bool only_changed) const
 {
@@ -1915,7 +1889,6 @@ Comment::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Comment::to_variant_list() const
 {
@@ -1928,7 +1901,6 @@ Comment::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Comment::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -1954,7 +1926,6 @@ Comment::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Comment::to_variant_list_sql(bool duplicate) const
@@ -2016,7 +1987,6 @@ Comment::set_insert_id(int id)
   set_id(id);
 
 }
-
 
 bool
 Comment::can_update() const
@@ -2083,7 +2053,6 @@ operator<<(QDebug debug, const Comment & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -2203,10 +2172,10 @@ BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
     m_categories(nullptr),
     m_blogs(nullptr),
     m_comments(nullptr),
-    m_authors_cache(), 
-    m_categories_cache(), 
-    m_blogs_cache(), 
-    m_comments_cache() 
+    m_authors_cache(),
+    m_categories_cache(),
+    m_blogs_cache(),
+    m_comments_cache()
 {
   m_authors = &register_table(AuthorSchema::instance());
   m_categories = &register_table(CategorySchema::instance());

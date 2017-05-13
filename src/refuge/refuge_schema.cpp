@@ -194,39 +194,38 @@ RefugeSchema::~RefugeSchema()
 
 /**************************************************************************************************/
 
-
 Refuge::Refuge()
-  : QcRow<RefugeSchema>(), 
-    m_id(), 
-    m_name(), 
-    m_short_name(), 
-    m_altitude(), 
-    m_description(), 
-    m_guardian(), 
-    m_picture_path(), 
-    m_coordinate(), 
-    m_number_of_places(), 
-    m_region(), 
-    m_url(), 
-    m_phone() 
+  : QcRow<RefugeSchema>(),
+    m_id(),
+    m_name(),
+    m_short_name(),
+    m_altitude(),
+    m_description(),
+    m_guardian(),
+    m_picture_path(),
+    m_coordinate(),
+    m_number_of_places(),
+    m_region(),
+    m_url(),
+    m_phone()
 {
   post_init();
 }
 
 Refuge::Refuge(const Refuge & other)
-  : QcRow<RefugeSchema>(other), 
-    m_id(other.m_id), 
-    m_name(other.m_name), 
-    m_short_name(other.m_short_name), 
-    m_altitude(other.m_altitude), 
-    m_description(other.m_description), 
-    m_guardian(other.m_guardian), 
-    m_picture_path(other.m_picture_path), 
-    m_coordinate(other.m_coordinate), 
-    m_number_of_places(other.m_number_of_places), 
-    m_region(other.m_region), 
-    m_url(other.m_url), 
-    m_phone(other.m_phone) 
+  : QcRow<RefugeSchema>(other),
+    m_id(other.m_id),
+    m_name(other.m_name),
+    m_short_name(other.m_short_name),
+    m_altitude(other.m_altitude),
+    m_description(other.m_description),
+    m_guardian(other.m_guardian),
+    m_picture_path(other.m_picture_path),
+    m_coordinate(other.m_coordinate),
+    m_number_of_places(other.m_number_of_places),
+    m_region(other.m_region),
+    m_url(other.m_url),
+    m_phone(other.m_phone)
 {
   post_init();
 }
@@ -389,7 +388,6 @@ Refuge::operator==(const Refuge & other)
 
   return true;
 }
-
 
 void
 Refuge::set_id(int value)
@@ -571,7 +569,6 @@ Refuge::set_phone(const QString & value)
   }
 }
 
-
 QJsonObject
 Refuge::to_json(bool only_changed) const
 {
@@ -668,7 +665,6 @@ Refuge::to_variant_hash(bool only_changed) const
   return variant_hash;
 }
 
-
 QVariantList
 Refuge::to_variant_list() const
 {
@@ -689,7 +685,6 @@ Refuge::to_variant_list() const
 
   return variants;
 }
-
 
 QVariantHash
 Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
@@ -739,7 +734,6 @@ Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
 
   return variant_hash;
 }
-
 
 QVariantList
 Refuge::to_variant_list_sql(bool duplicate) const
@@ -858,7 +852,6 @@ Refuge::set_insert_id(int id)
 
 }
 
-
 bool
 Refuge::can_update() const
 {
@@ -964,7 +957,6 @@ operator<<(QDebug debug, const Refuge & obj)
 #endif
 
 /**************************************************************************************************/
-
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
@@ -1105,7 +1097,7 @@ RefugeModel::roleNames() const
 RefugeDatabaseSchema::RefugeDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_refuge(nullptr),
-    m_refuge_cache() 
+    m_refuge_cache()
 {
   m_refuge = &register_table(RefugeSchema::instance());
 }

@@ -60,18 +60,17 @@
 class BleauPlace;
 class BleauPlacePtr;
 
-
 /**************************************************************************************************/
 
 class BleauPlaceSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    COORDINATE, 
-    NAME, 
-    CATEGORY, 
-    NOTE 
+    ID,
+    COORDINATE,
+    NAME,
+    CATEGORY,
+    NOTE
   };
   static const int NUMBER_OF_FIELDS = 5;
 
@@ -90,7 +89,7 @@ public:
 
 protected:
   BleauPlaceSchema();
-  ~BleauPlaceSchema(); 
+  ~BleauPlaceSchema();
 };
 
 /**************************************************************************************************/
@@ -165,7 +164,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -177,14 +175,13 @@ signals:
   void categoryChanged();
   void noteChanged();
 
-
 private:
   int m_id;
   QGeoCoordinate m_coordinate;
   QString m_name;
   QString m_category;
   QString m_note;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const BleauPlace & obj);
@@ -250,7 +247,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const BleauPlacePtr & obj) { return static_cast<uint>(obj.data()); }
@@ -279,7 +276,7 @@ private:
   // QLinkedList<BleauPlacePtr> m_loaded_instances;
   // QLinkedList<BleauPlacePtr> m_modified_instances;
   QMap<BleauPlace *, BleauPlacePtr> m_loaded_instances;
-  QMap<BleauPlace *, BleauPlacePtr> m_modified_instances; 
+  QMap<BleauPlace *, BleauPlacePtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -299,11 +296,11 @@ public:
 
   // Fixme: use BleauPlaceSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    COORDINATE, 
-    NAME, 
-    CATEGORY, 
-    NOTE 
+    ID = Qt::UserRole + 1,
+    COORDINATE,
+    NAME,
+    CATEGORY,
+    NOTE
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -313,7 +310,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -330,17 +327,17 @@ class BleauMassifSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    COORDINATE, 
-    NAME, 
-    ACCESS, 
-    ALTERNATIVE_NAME, 
-    CHAOS_TYPE, 
-    NOTE, 
-    PARCELLES, 
-    RDV, 
-    SECTEUR, 
-    VELO 
+    ID,
+    COORDINATE,
+    NAME,
+    ACCESS,
+    ALTERNATIVE_NAME,
+    CHAOS_TYPE,
+    NOTE,
+    PARCELLES,
+    RDV,
+    SECTEUR,
+    VELO
   };
   static const int NUMBER_OF_FIELDS = 11;
 
@@ -359,7 +356,7 @@ public:
 
 protected:
   BleauMassifSchema();
-  ~BleauMassifSchema(); 
+  ~BleauMassifSchema();
 };
 
 /**************************************************************************************************/
@@ -464,7 +461,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   void load_relations();
   void save_relations();
 
@@ -487,7 +483,6 @@ signals:
   void secteurChanged();
   void veloChanged();
 
-
 private:
   int m_id;
   QGeoCoordinate m_coordinate;
@@ -501,7 +496,7 @@ private:
   QString m_secteur;
   QString m_velo;
   QcRowList<BleauCircuit, BleauCircuitPtr> m_circuits;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const BleauMassif & obj);
@@ -567,7 +562,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const BleauMassifPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -596,7 +591,7 @@ private:
   // QLinkedList<BleauMassifPtr> m_loaded_instances;
   // QLinkedList<BleauMassifPtr> m_modified_instances;
   QMap<BleauMassif *, BleauMassifPtr> m_loaded_instances;
-  QMap<BleauMassif *, BleauMassifPtr> m_modified_instances; 
+  QMap<BleauMassif *, BleauMassifPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -616,17 +611,17 @@ public:
 
   // Fixme: use BleauMassifSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    COORDINATE, 
-    NAME, 
-    ACCESS, 
-    ALTERNATIVE_NAME, 
-    CHAOS_TYPE, 
-    NOTE, 
-    PARCELLES, 
-    RDV, 
-    SECTEUR, 
-    VELO 
+    ID = Qt::UserRole + 1,
+    COORDINATE,
+    NAME,
+    ACCESS,
+    ALTERNATIVE_NAME,
+    CHAOS_TYPE,
+    NOTE,
+    PARCELLES,
+    RDV,
+    SECTEUR,
+    VELO
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -636,7 +631,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -653,20 +648,20 @@ class BleauCircuitSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    COORDINATE, 
-    COLOUR, 
-    CREATION_DATE, 
-    GESTION, 
-    GRADE, 
-    MASSIF_ID, 
-    NOTE, 
-    NUMBER, 
-    OPENER, 
-    REFECTION_DATE, 
-    REFECTION_NOTE, 
-    STATUS, 
-    TOPOS 
+    ID,
+    COORDINATE,
+    COLOUR,
+    CREATION_DATE,
+    GESTION,
+    GRADE,
+    MASSIF_ID,
+    NOTE,
+    NUMBER,
+    OPENER,
+    REFECTION_DATE,
+    REFECTION_NOTE,
+    STATUS,
+    TOPOS
   };
   static const int NUMBER_OF_FIELDS = 14;
 
@@ -685,7 +680,7 @@ public:
 
 protected:
   BleauCircuitSchema();
-  ~BleauCircuitSchema(); 
+  ~BleauCircuitSchema();
 };
 
 /**************************************************************************************************/
@@ -833,7 +828,6 @@ signals:
   void statusChanged();
   void toposChanged();
 
-
 private:
   int m_id;
   QGeoCoordinate m_coordinate;
@@ -851,7 +845,7 @@ private:
   QStringList m_topos;
   QcRowList<BleauBoulder, BleauBoulderPtr> m_boulders;
   BleauMassifPtr m_massif;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const BleauCircuit & obj);
@@ -918,7 +912,7 @@ public:
   void set_massif(BleauMassifPtr & value);
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const BleauCircuitPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -947,7 +941,7 @@ private:
   // QLinkedList<BleauCircuitPtr> m_loaded_instances;
   // QLinkedList<BleauCircuitPtr> m_modified_instances;
   QMap<BleauCircuit *, BleauCircuitPtr> m_loaded_instances;
-  QMap<BleauCircuit *, BleauCircuitPtr> m_modified_instances; 
+  QMap<BleauCircuit *, BleauCircuitPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -967,20 +961,20 @@ public:
 
   // Fixme: use BleauCircuitSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    COORDINATE, 
-    COLOUR, 
-    CREATION_DATE, 
-    GESTION, 
-    GRADE, 
-    MASSIF_ID, 
-    NOTE, 
-    NUMBER, 
-    OPENER, 
-    REFECTION_DATE, 
-    REFECTION_NOTE, 
-    STATUS, 
-    TOPOS 
+    ID = Qt::UserRole + 1,
+    COORDINATE,
+    COLOUR,
+    CREATION_DATE,
+    GESTION,
+    GRADE,
+    MASSIF_ID,
+    NOTE,
+    NUMBER,
+    OPENER,
+    REFECTION_DATE,
+    REFECTION_NOTE,
+    STATUS,
+    TOPOS
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -990,7 +984,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/
@@ -998,20 +992,19 @@ private:
 class BleauBoulder;
 class BleauBoulderPtr;
 
-
 /**************************************************************************************************/
 
 class BleauBoulderSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    COORDINATE, 
-    NAME, 
-    COMMENT, 
-    GRADE, 
-    NUMBER, 
-    CIRCUIT_ID 
+    ID,
+    COORDINATE,
+    NAME,
+    COMMENT,
+    GRADE,
+    NUMBER,
+    CIRCUIT_ID
   };
   static const int NUMBER_OF_FIELDS = 7;
 
@@ -1030,7 +1023,7 @@ public:
 
 protected:
   BleauBoulderSchema();
-  ~BleauBoulderSchema(); 
+  ~BleauBoulderSchema();
 };
 
 /**************************************************************************************************/
@@ -1135,7 +1128,6 @@ signals:
   void numberChanged();
   void circuit_idChanged();
 
-
 private:
   int m_id;
   QGeoCoordinate m_coordinate;
@@ -1145,7 +1137,7 @@ private:
   QString m_number;
   int m_circuit_id;
   BleauCircuitPtr m_circuit;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const BleauBoulder & obj);
@@ -1212,7 +1204,7 @@ public:
   void set_circuit(BleauCircuitPtr & value);
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const BleauBoulderPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -1241,7 +1233,7 @@ private:
   // QLinkedList<BleauBoulderPtr> m_loaded_instances;
   // QLinkedList<BleauBoulderPtr> m_modified_instances;
   QMap<BleauBoulder *, BleauBoulderPtr> m_loaded_instances;
-  QMap<BleauBoulder *, BleauBoulderPtr> m_modified_instances; 
+  QMap<BleauBoulder *, BleauBoulderPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1261,13 +1253,13 @@ public:
 
   // Fixme: use BleauBoulderSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    COORDINATE, 
-    NAME, 
-    COMMENT, 
-    GRADE, 
-    NUMBER, 
-    CIRCUIT_ID 
+    ID = Qt::UserRole + 1,
+    COORDINATE,
+    NAME,
+    COMMENT,
+    GRADE,
+    NUMBER,
+    CIRCUIT_ID
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -1277,7 +1269,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/

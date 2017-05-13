@@ -59,25 +59,24 @@
 class Refuge;
 class RefugePtr;
 
-
 /**************************************************************************************************/
 
 class RefugeSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    NAME, 
-    SHORT_NAME, 
-    ALTITUDE, 
-    DESCRIPTION, 
-    GUARDIAN, 
-    PICTURE_PATH, 
-    COORDINATE, 
-    NUMBER_OF_PLACES, 
-    REGION, 
-    URL, 
-    PHONE 
+    ID,
+    NAME,
+    SHORT_NAME,
+    ALTITUDE,
+    DESCRIPTION,
+    GUARDIAN,
+    PICTURE_PATH,
+    COORDINATE,
+    NUMBER_OF_PLACES,
+    REGION,
+    URL,
+    PHONE
   };
   static const int NUMBER_OF_FIELDS = 12;
 
@@ -96,7 +95,7 @@ public:
 
 protected:
   RefugeSchema();
-  ~RefugeSchema(); 
+  ~RefugeSchema();
 };
 
 /**************************************************************************************************/
@@ -207,7 +206,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -256,7 +254,7 @@ private slots:
 
 private:
   QChar m_first_letter;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Refuge & obj);
@@ -322,7 +320,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const RefugePtr & obj) { return static_cast<uint>(obj.data()); }
@@ -351,7 +349,7 @@ private:
   // QLinkedList<RefugePtr> m_loaded_instances;
   // QLinkedList<RefugePtr> m_modified_instances;
   QMap<Refuge *, RefugePtr> m_loaded_instances;
-  QMap<Refuge *, RefugePtr> m_modified_instances; 
+  QMap<Refuge *, RefugePtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -371,18 +369,18 @@ public:
 
   // Fixme: use RefugeSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    NAME, 
-    SHORT_NAME, 
-    ALTITUDE, 
-    DESCRIPTION, 
-    GUARDIAN, 
-    PICTURE_PATH, 
-    COORDINATE, 
-    NUMBER_OF_PLACES, 
-    REGION, 
-    URL, 
-    PHONE 
+    ID = Qt::UserRole + 1,
+    NAME,
+    SHORT_NAME,
+    ALTITUDE,
+    DESCRIPTION,
+    GUARDIAN,
+    PICTURE_PATH,
+    COORDINATE,
+    NUMBER_OF_PLACES,
+    REGION,
+    URL,
+    PHONE
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -392,7 +390,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/

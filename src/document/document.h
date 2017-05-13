@@ -60,21 +60,20 @@
 class Document;
 class DocumentPtr;
 
-
 /**************************************************************************************************/
 
 class DocumentSchema : public QcSchema
 {
 public:
   enum Fields {
-    ID, 
-    NAME, 
-    AUTHOR, 
-    VERSION, 
-    DATE, 
-    DESCRIPTION, 
-    URL, 
-    SIZE 
+    ID,
+    NAME,
+    AUTHOR,
+    VERSION,
+    DATE,
+    DESCRIPTION,
+    URL,
+    SIZE
   };
   static const int NUMBER_OF_FIELDS = 8;
 
@@ -93,7 +92,7 @@ public:
 
 protected:
   DocumentSchema();
-  ~DocumentSchema(); 
+  ~DocumentSchema();
 };
 
 /**************************************************************************************************/
@@ -183,7 +182,6 @@ public:
   QVariant field(int position) const;
   void set_field(int position, const QVariant & value);
 
-
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
 
@@ -198,7 +196,6 @@ signals:
   void urlChanged();
   void sizeChanged();
 
-
 private:
   int m_id;
   QString m_name;
@@ -208,7 +205,7 @@ private:
   QString m_description;
   QUrl m_url;
   int m_size;
- 
+
 };
 
 QDataStream & operator<<(QDataStream & out, const Document & obj);
@@ -274,7 +271,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr; 
+  QSharedPointer<Class> m_ptr;
 };
 
 // uint qHash(const DocumentPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -303,7 +300,7 @@ private:
   // QLinkedList<DocumentPtr> m_loaded_instances;
   // QLinkedList<DocumentPtr> m_modified_instances;
   QMap<Document *, DocumentPtr> m_loaded_instances;
-  QMap<Document *, DocumentPtr> m_modified_instances; 
+  QMap<Document *, DocumentPtr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -323,14 +320,14 @@ public:
 
   // Fixme: use DocumentSchema::Fields ???
   enum Roles {
-    ID = Qt::UserRole + 1, 
-    NAME, 
-    AUTHOR, 
-    VERSION, 
-    DATE, 
-    DESCRIPTION, 
-    URL, 
-    SIZE 
+    ID = Qt::UserRole + 1,
+    NAME,
+    AUTHOR,
+    VERSION,
+    DATE,
+    DESCRIPTION,
+    URL,
+    SIZE
   };
   Q_ENUMS(Roles) // Fixme: ???
 
@@ -340,7 +337,7 @@ public:
   QHash<int, QByteArray> roleNames() const;
 
 private:
-  ItemList m_items; 
+  ItemList m_items;
 };
 
 /**************************************************************************************************/

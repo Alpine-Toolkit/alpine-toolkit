@@ -114,13 +114,25 @@ class TemplateAggregator:
 
     ##############################################
 
+    @staticmethod
+    def _fix_output(output):
+
+        output = output.replace(' \n', '\n')
+        output = output.replace('\n\n\n', '\n\n')
+
+        return output
+
+    ##############################################
+
     def render(self, template, **kwargs):
 
-        return self._environment.render(template, **kwargs)
+        output = self._environment.render(template, **kwargs)
+        output = self._fix_output(output)
+
+        return output
 
     ##############################################
 
     def append(self, template, **kwargs):
 
         self._output += self.render(template, **kwargs)
-
