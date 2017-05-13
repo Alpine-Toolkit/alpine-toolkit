@@ -2587,7 +2587,6 @@ void
 BleauCircuit::load_relations()
 {
   qInfo() << "Load relations of" << *this;
-  massif();
   {
     // Load one-to-many relation boulders
     BleauBoulder::PtrList rows = database_schema()->query_by_foreign_key<BleauBoulder>(
@@ -2595,6 +2594,7 @@ BleauCircuit::load_relations()
       m_id); // true
     m_boulders = rows;
   }
+  massif();
 }
 
 void

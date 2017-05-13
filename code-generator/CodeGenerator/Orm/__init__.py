@@ -507,7 +507,9 @@ class Schema:
         columns = {}
         self._relations = []
         self._computed_fields = []
-        for name, attribute in self.__class__.__dict__.items():
+        d = self.__class__.__dict__
+        for name in sorted(d.keys()):
+            attribute = d[name]
             if isinstance(attribute, (Field, RelationShip, ComputedField)):
                 attribute.name = name
                 attribute.parent_schema = self

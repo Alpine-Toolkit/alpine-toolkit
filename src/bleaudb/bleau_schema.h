@@ -810,8 +810,8 @@ public:
   void load_relations();
   void save_relations();
 
-  BleauMassifPtr massif();
   QcRowList<BleauBoulder, BleauBoulderPtr> & boulders() { return m_boulders; }
+  BleauMassifPtr massif();
 
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
@@ -849,8 +849,8 @@ private:
   QString m_refection_note;
   QString m_status;
   QStringList m_topos;
-  BleauMassifPtr m_massif;
   QcRowList<BleauBoulder, BleauBoulderPtr> m_boulders;
+  BleauMassifPtr m_massif;
  
 };
 
