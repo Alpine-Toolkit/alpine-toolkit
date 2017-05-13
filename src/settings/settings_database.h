@@ -33,9 +33,9 @@
 
 /**************************************************************************************************/
 
-#include "database/sqlite_database.h"
-#include "database/database_schema.h"
-#include "database/database_table.h"
+#include "orm/sqlite_database.h"
+#include "orm/database_schema.h"
+#include "orm/database_table.h"
 
 #include <QString>
 #include <QVariant>

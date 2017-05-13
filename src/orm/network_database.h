@@ -32,8 +32,8 @@
 
 /**************************************************************************************************/
 
-#include "database/database.h"
-#include "database/database_connection.h"
+#include "orm/database.h"
+#include "orm/database_connection.h"
 
 /**************************************************************************************************/
 

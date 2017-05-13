@@ -33,8 +33,8 @@
 
 /**************************************************************************************************/
 
-#include "database/sqlite_database.h"
-#include "database/database_schema.h"
+#include "orm/sqlite_database.h"
+#include "orm/database_schema.h"
 #include "camptocamp/camptocamp_login.h"
 #include "camptocamp/camptocamp_document.h"
 

@@ -36,10 +36,10 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
-#include "database/database_row.h"
-#include "database/database_row_list.h"
-#include "database/database_schema.h"
-#include "database/schema.h"
+#include "orm/database_row.h"
+#include "orm/database_row_list.h"
+#include "orm/database_schema.h"
+#include "orm/schema.h"
 
 #include <QAbstractListModel>
 #include <QDataStream>

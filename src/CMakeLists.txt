@@ -13,6 +13,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 #
 
 set(alpine_toolkit_library_files
+  #document/document_manager.cpp
   bleaudb/bleau_database.cpp
   bleaudb/bleau_schema.cpp
   bleaudb/bleau_sqlite_database.cpp
@@ -24,28 +25,27 @@ set(alpine_toolkit_library_files
   camptocamp/camptocamp_media_cache.cpp
   camptocamp/camptocamp_qml.cpp
   camptocamp/camptocamp_search_settings.cpp
-  database/database.cpp
-  database/database_connection.cpp
-  database/database_schema.cpp
-  database/database_table.cpp
-  database/type_conversion.cpp
-  database/network_database.cpp
-  database/schema.cpp
-  database/sqlite_database.cpp
   document/document.cpp
   document/document_database.cpp
-  #document/document_manager.cpp
   ephemeride/ephemeride.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp
   network/network_fetcher.cpp
   network/network_reply.cpp
   network/network_ressource_request.cpp
-  refuge/refuge_schema.cpp
+  orm/database.cpp
+  orm/database_connection.cpp
+  orm/database_schema.cpp
+  orm/SqlQueryModel.cpp
+  orm/database_table.cpp
+  orm/network_database.cpp
+  orm/schema.cpp
+  orm/sqlite_database.cpp
+  orm/type_conversion.cpp
   refuge/refuge.cpp
+  refuge/refuge_schema.cpp
   rrd/rrd.cpp
   settings/settings_database.cpp
-  sql_model/SqlQueryModel.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml cmark)

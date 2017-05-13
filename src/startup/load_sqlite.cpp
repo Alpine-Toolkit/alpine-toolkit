@@ -31,7 +31,7 @@
 #include <QtDebug>
 
 #include "startup.h"
-#include "sql_model/SqlQueryModel.h"
+#include "orm/SqlQueryModel.h"
 
 /**************************************************************************************************/
 

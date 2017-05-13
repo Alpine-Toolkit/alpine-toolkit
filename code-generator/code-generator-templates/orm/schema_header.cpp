@@ -8,7 +8,7 @@
 
 #include "{{filename}}.h"
 
-#include "database/type_conversion.h"
+#include "orm/type_conversion.h"
 
 #include <QtDebug>
 

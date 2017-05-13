@@ -28,7 +28,7 @@
 
 #include "settings_database.h"
 
-#include "database/sql_record_wrapper.h"
+#include "orm/sql_record_wrapper.h"
 
 #include <QSqlError>
 #include <QtDebug>

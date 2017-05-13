@@ -32,10 +32,10 @@
 
 /**************************************************************************************************/
 
-#include "database/database.h"
-#include "database/database_row.h"
-#include "database/database_table.h"
-#include "database/schema.h"
+#include "orm/database.h"
+#include "orm/database_row.h"
+#include "orm/database_table.h"
+#include "orm/schema.h"
 
 #include <memory>
 

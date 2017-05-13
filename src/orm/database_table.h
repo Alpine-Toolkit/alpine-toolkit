@@ -39,8 +39,8 @@
 #include <QVariant>
 #include <QVariantHash>
 
-#include "database/schema.h"
-#include "database/database_row.h"
+#include "orm/schema.h"
+#include "orm/database_row.h"
 
 /**************************************************************************************************/
 
