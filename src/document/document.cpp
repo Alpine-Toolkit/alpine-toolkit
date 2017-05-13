@@ -30,11 +30,14 @@
 
 #include "document.h"
 
-#include "database/json_helper.h"
+#include "database/type_conversion.h"
+
+#include <QtDebug>
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
+
 
 DocumentSchema::DocumentSchema()
 : QcSchema(QLatin1String("Document"), QLatin1String("document"))
@@ -154,7 +157,8 @@ Document::Document()
     m_description(), 
     m_url(), 
     m_size() 
-{}
+{
+}
 
 Document::Document(const Document & other)
   : QcRow<DocumentSchema>(other), 
@@ -166,8 +170,8 @@ Document::Document(const Document & other)
     m_description(other.m_description), 
     m_url(other.m_url), 
     m_size(other.m_size) 
-{}
-
+{
+}
 
 Document::Document(const QJsonObject & json_object)
  : Document()
@@ -176,7 +180,7 @@ Document::Document(const QJsonObject & json_object)
   m_name = json_object[QLatin1String("name")].toString();
   m_author = json_object[QLatin1String("author")].toString();
   m_version = json_object[QLatin1String("version")].toInt();
-  m_date = json_helper::load_datetime(json_object[QLatin1String("date")]);
+  m_date = orm_type_conversion::load_datetime(json_object[QLatin1String("date")]);
   m_description = json_object[QLatin1String("description")].toString();
   m_url = json_object[QLatin1String("url")].toString();
   m_size = json_object[QLatin1String("size")].toInt();
@@ -215,7 +219,7 @@ Document::Document(const QSqlRecord & record)
   m_name = record.value(1).toString();
   m_author = record.value(2).toString();
   m_version = record.value(3).toInt();
-  m_date = json_helper::load_sql_datetime_as_epoch(record.value(4));
+  m_date = orm_type_conversion::load_sql_datetime_as_epoch(record.value(4));
   m_description = record.value(5).toString();
   m_url = record.value(6).toUrl();
   m_size = record.value(7).toInt();
@@ -228,11 +232,12 @@ Document::Document(const QSqlQuery & query, int offset)
   m_name = query.value(offset++).toString();
   m_author = query.value(offset++).toString();
   m_version = query.value(offset++).toInt();
-  m_date = json_helper::load_sql_datetime_as_epoch(query.value(offset++));
+  m_date = orm_type_conversion::load_sql_datetime_as_epoch(query.value(offset++));
   m_description = query.value(offset++).toString();
   m_url = query.value(offset++).toUrl();
   m_size = query.value(offset).toInt();
 }
+
 Document::~Document()
 {
 // qInfo() << "--- Delete" << "Document" << *this;
@@ -283,6 +288,7 @@ Document::operator==(const Document & other)
   return true;
 }
 
+
 void
 Document::set_id(int value)
 {
@@ -291,6 +297,7 @@ Document::set_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
+
     emit idChanged();
     if (not is_changed)
       emit changed();
@@ -305,6 +312,7 @@ Document::set_name(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
+
     emit nameChanged();
     if (not is_changed)
       emit changed();
@@ -319,6 +327,7 @@ Document::set_author(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::AUTHOR);
+
     emit authorChanged();
     if (not is_changed)
       emit changed();
@@ -333,6 +342,7 @@ Document::set_version(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::VERSION);
+
     emit versionChanged();
     if (not is_changed)
       emit changed();
@@ -347,6 +357,7 @@ Document::set_date(const QDateTime & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
+
     emit dateChanged();
     if (not is_changed)
       emit changed();
@@ -361,6 +372,7 @@ Document::set_description(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::DESCRIPTION);
+
     emit descriptionChanged();
     if (not is_changed)
       emit changed();
@@ -375,6 +387,7 @@ Document::set_url(const QUrl & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::URL);
+
     emit urlChanged();
     if (not is_changed)
       emit changed();
@@ -389,12 +402,12 @@ Document::set_size(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::SIZE);
+
     emit sizeChanged();
     if (not is_changed)
       emit changed();
   }
 }
-
 
 
 QJsonObject
@@ -412,11 +425,11 @@ Document::to_json(bool only_changed) const
     if (is_version_modified())
       json_object.insert(QLatin1String("version"), QJsonValue(m_version));
     if (is_date_modified())
-      json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+      json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     if (is_description_modified())
       json_object.insert(QLatin1String("description"), QJsonValue(m_description));
     if (is_url_modified())
-      json_object.insert(QLatin1String("url"), json_helper::dump_url(m_url));
+      json_object.insert(QLatin1String("url"), orm_type_conversion::dump_url(m_url));
     if (is_size_modified())
       json_object.insert(QLatin1String("size"), QJsonValue(m_size));
   } else {
@@ -424,14 +437,15 @@ Document::to_json(bool only_changed) const
     json_object.insert(QLatin1String("name"), QJsonValue(m_name));
     json_object.insert(QLatin1String("author"), QJsonValue(m_author));
     json_object.insert(QLatin1String("version"), QJsonValue(m_version));
-    json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+    json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     json_object.insert(QLatin1String("description"), QJsonValue(m_description));
-    json_object.insert(QLatin1String("url"), json_helper::dump_url(m_url));
+    json_object.insert(QLatin1String("url"), orm_type_conversion::dump_url(m_url));
     json_object.insert(QLatin1String("size"), QJsonValue(m_size));
   }
 
   return json_object;
 }
+
 QVariantHash
 Document::to_variant_hash(bool only_changed) const
 {
@@ -502,7 +516,7 @@ Document::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_version_modified())
       variant_hash[QLatin1String("version")] = m_version;
     if (is_date_modified())
-      variant_hash[QLatin1String("date")] = json_helper::dump_sql_datetime_as_epoch(m_date);
+      variant_hash[QLatin1String("date")] = orm_type_conversion::dump_sql_datetime_as_epoch(m_date);
     if (is_description_modified())
       variant_hash[QLatin1String("description")] = m_description;
     if (is_url_modified())
@@ -515,7 +529,7 @@ Document::to_variant_hash_sql(bool only_changed, bool duplicate) const
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("author")] = m_author;
     variant_hash[QLatin1String("version")] = m_version;
-    variant_hash[QLatin1String("date")] = json_helper::dump_sql_datetime_as_epoch(m_date);
+    variant_hash[QLatin1String("date")] = orm_type_conversion::dump_sql_datetime_as_epoch(m_date);
     variant_hash[QLatin1String("description")] = m_description;
     variant_hash[QLatin1String("url")] = m_url;
     variant_hash[QLatin1String("size")] = m_size;
@@ -535,14 +549,13 @@ Document::to_variant_list_sql(bool duplicate) const
   variants << m_name;
   variants << m_author;
   variants << m_version;
-  variants << json_helper::dump_sql_datetime_as_epoch(m_date);
+  variants << orm_type_conversion::dump_sql_datetime_as_epoch(m_date);
   variants << m_description;
   variants << m_url;
   variants << m_size;
 
   return variants;
 }
-
 
 QVariant
 Document::field(int position) const
@@ -607,6 +620,7 @@ Document::set_field(int position, const QVariant & value)
    }
   }
 }
+
 void
 Document::set_insert_id(int id)
 {
@@ -753,6 +767,79 @@ DocumentCache::on_changed()
 
 /**************************************************************************************************/
 
+DocumentModel::DocumentModel()
+  : QAbstractListModel(),
+    m_items()
+{}
+
+DocumentModel::DocumentModel(const ItemList & items)
+  : QAbstractListModel(),
+    m_items(items)
+{}
+
+DocumentModel::~DocumentModel()
+{}
+
+int
+DocumentModel::rowCount(const QModelIndex & parent) const
+{
+  Q_UNUSED(parent);
+  return m_items.size();
+}
+
+QVariant
+DocumentModel::data(const QModelIndex & index, int role) const
+{
+  if (!index.isValid() || index.row() < 0)
+    return QVariant();
+
+  if (index.row() >= m_items.count()) {
+    qWarning() << "DocumentModel: Index out of bound";
+    return QVariant();
+  }
+
+  const Item & item = m_items[index.row()];
+  switch (role) {
+  case ID:
+    return item->id();
+  case NAME:
+    return item->name();
+  case AUTHOR:
+    return item->author();
+  case VERSION:
+    return item->version();
+  case DATE:
+    return item->date();
+  case DESCRIPTION:
+    return item->description();
+  case URL:
+    return item->url();
+  case SIZE:
+    return item->size();
+  default:
+    break;
+  }
+
+  return QVariant();
+}
+
+QHash<int, QByteArray>
+DocumentModel::roleNames() const
+{
+  // Fixme: cache ???
+  QHash<int, QByteArray> role_names;
+  role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[NAME] = QLatin1Literal("name").latin1();
+  role_names[AUTHOR] = QLatin1Literal("author").latin1();
+  role_names[VERSION] = QLatin1Literal("version").latin1();
+  role_names[DATE] = QLatin1Literal("date").latin1();
+  role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
+  role_names[URL] = QLatin1Literal("url").latin1();
+  role_names[SIZE] = QLatin1Literal("size").latin1();
+
+  return role_names;
+}
+
 
 DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
@@ -773,9 +860,7 @@ DocumentDatabaseSchema::register_row<Document>(DocumentPtr & row)
   m_document_cache.add(row);
 }
 
-
 /**************************************************************************************************/
-
 // QC_END_NAMESPACE
 
 /***************************************************************************************************

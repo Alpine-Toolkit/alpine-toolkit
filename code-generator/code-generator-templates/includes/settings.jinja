@@ -1,8 +1,8 @@
-{% macro generator_comment(date) %}
+{% macro generator_comment(date) -%}
 // This document was automatically generated on {{date}}
-{% endmacro %}
+{%- endmacro %}
 
-{% macro copyright() %}
+{% macro copyright() -%}
 /***************************************************************************************************
  *
  * $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -28,4 +28,4 @@
  * $QTCARTO_END_LICENSE$
  *
  **************************************************************************************************/
-{% endmacro %}
+{%- endmacro %}

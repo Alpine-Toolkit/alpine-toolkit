@@ -30,11 +30,14 @@
 
 #include "blog.h"
 
-#include "database/json_helper.h"
+#include "database/type_conversion.h"
+
+#include <QtDebug>
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
+
 
 AuthorSchema::AuthorSchema()
 : QcSchema(QLatin1String("Author"), QLatin1String("authors"))
@@ -89,22 +92,23 @@ Author::Author()
     m_id(), 
     m_name(), 
     m_birthdate() 
-{}
+{
+}
 
 Author::Author(const Author & other)
   : QcRow<AuthorSchema>(other), 
     m_id(other.m_id), 
     m_name(other.m_name), 
     m_birthdate(other.m_birthdate) 
-{}
-
+{
+}
 
 Author::Author(const QJsonObject & json_object)
  : Author()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_name = json_object[QLatin1String("name")].toString();
-  m_birthdate = json_helper::load_datetime(json_object[QLatin1String("birthdate")]);
+  m_birthdate = orm_type_conversion::load_datetime(json_object[QLatin1String("birthdate")]);
 }
 
 Author::Author(const QVariantHash & variant_hash)
@@ -138,6 +142,7 @@ Author::Author(const QSqlQuery & query, int offset)
   m_name = query.value(offset++).toString();
   m_birthdate = query.value(offset).toDateTime();
 }
+
 Author::~Author()
 {
 // qInfo() << "--- Delete" << "Author" << *this;
@@ -173,6 +178,7 @@ Author::operator==(const Author & other)
   return true;
 }
 
+
 void
 Author::set_id(int value)
 {
@@ -181,6 +187,7 @@ Author::set_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
+
     emit idChanged();
     if (not is_changed)
       emit changed();
@@ -195,6 +202,7 @@ Author::set_name(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
+
     emit nameChanged();
     if (not is_changed)
       emit changed();
@@ -209,12 +217,12 @@ Author::set_birthdate(const QDateTime & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::BIRTHDATE);
+
     emit birthdateChanged();
     if (not is_changed)
       emit changed();
   }
 }
-
 
 
 QJsonObject
@@ -228,15 +236,16 @@ Author::to_json(bool only_changed) const
     if (is_name_modified())
       json_object.insert(QLatin1String("name"), QJsonValue(m_name));
     if (is_birthdate_modified())
-      json_object.insert(QLatin1String("birthdate"), json_helper::dump_datetime(m_birthdate));
+      json_object.insert(QLatin1String("birthdate"), orm_type_conversion::dump_datetime(m_birthdate));
   } else {
     json_object.insert(QLatin1String("id"), QJsonValue(m_id));
     json_object.insert(QLatin1String("name"), QJsonValue(m_name));
-    json_object.insert(QLatin1String("birthdate"), json_helper::dump_datetime(m_birthdate));
+    json_object.insert(QLatin1String("birthdate"), orm_type_conversion::dump_datetime(m_birthdate));
   }
 
   return json_object;
 }
+
 QVariantHash
 Author::to_variant_hash(bool only_changed) const
 {
@@ -308,7 +317,6 @@ Author::to_variant_list_sql(bool duplicate) const
   return variants;
 }
 
-
 QVariant
 Author::field(int position) const
 {
@@ -342,6 +350,7 @@ Author::set_field(int position, const QVariant & value)
    }
   }
 }
+
 void
 Author::set_insert_id(int id)
 {
@@ -489,6 +498,66 @@ AuthorCache::on_changed()
 
 /**************************************************************************************************/
 
+AuthorModel::AuthorModel()
+  : QAbstractListModel(),
+    m_items()
+{}
+
+AuthorModel::AuthorModel(const ItemList & items)
+  : QAbstractListModel(),
+    m_items(items)
+{}
+
+AuthorModel::~AuthorModel()
+{}
+
+int
+AuthorModel::rowCount(const QModelIndex & parent) const
+{
+  Q_UNUSED(parent);
+  return m_items.size();
+}
+
+QVariant
+AuthorModel::data(const QModelIndex & index, int role) const
+{
+  if (!index.isValid() || index.row() < 0)
+    return QVariant();
+
+  if (index.row() >= m_items.count()) {
+    qWarning() << "AuthorModel: Index out of bound";
+    return QVariant();
+  }
+
+  const Item & item = m_items[index.row()];
+  switch (role) {
+  case ID:
+    return item->id();
+  case NAME:
+    return item->name();
+  case BIRTHDATE:
+    return item->birthdate();
+  default:
+    break;
+  }
+
+  return QVariant();
+}
+
+QHash<int, QByteArray>
+AuthorModel::roleNames() const
+{
+  // Fixme: cache ???
+  QHash<int, QByteArray> role_names;
+  role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[NAME] = QLatin1Literal("name").latin1();
+  role_names[BIRTHDATE] = QLatin1Literal("birthdate").latin1();
+
+  return role_names;
+}
+
+
+
 CategorySchema::CategorySchema()
 : QcSchema(QLatin1String("Category"), QLatin1String("categories"))
 {
@@ -542,15 +611,16 @@ Category::Category()
     m_id(), 
     m_name(), 
     m_description() 
-{}
+{
+}
 
 Category::Category(const Category & other)
   : QcRow<CategorySchema>(other), 
     m_id(other.m_id), 
     m_name(other.m_name), 
     m_description(other.m_description) 
-{}
-
+{
+}
 
 Category::Category(const QJsonObject & json_object)
  : Category()
@@ -591,6 +661,7 @@ Category::Category(const QSqlQuery & query, int offset)
   m_name = query.value(offset++).toString();
   m_description = query.value(offset).toString();
 }
+
 Category::~Category()
 {
 // qInfo() << "--- Delete" << "Category" << *this;
@@ -626,6 +697,7 @@ Category::operator==(const Category & other)
   return true;
 }
 
+
 void
 Category::set_id(int value)
 {
@@ -634,6 +706,7 @@ Category::set_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
+
     emit idChanged();
     if (not is_changed)
       emit changed();
@@ -648,6 +721,7 @@ Category::set_name(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::NAME);
+
     emit nameChanged();
     if (not is_changed)
       emit changed();
@@ -662,12 +736,12 @@ Category::set_description(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::DESCRIPTION);
+
     emit descriptionChanged();
     if (not is_changed)
       emit changed();
   }
 }
-
 
 
 QJsonObject
@@ -690,6 +764,7 @@ Category::to_json(bool only_changed) const
 
   return json_object;
 }
+
 QVariantHash
 Category::to_variant_hash(bool only_changed) const
 {
@@ -761,7 +836,6 @@ Category::to_variant_list_sql(bool duplicate) const
   return variants;
 }
 
-
 QVariant
 Category::field(int position) const
 {
@@ -795,6 +869,7 @@ Category::set_field(int position, const QVariant & value)
    }
   }
 }
+
 void
 Category::set_insert_id(int id)
 {
@@ -914,6 +989,66 @@ CategoryCache::on_changed()
 
 /**************************************************************************************************/
 
+CategoryModel::CategoryModel()
+  : QAbstractListModel(),
+    m_items()
+{}
+
+CategoryModel::CategoryModel(const ItemList & items)
+  : QAbstractListModel(),
+    m_items(items)
+{}
+
+CategoryModel::~CategoryModel()
+{}
+
+int
+CategoryModel::rowCount(const QModelIndex & parent) const
+{
+  Q_UNUSED(parent);
+  return m_items.size();
+}
+
+QVariant
+CategoryModel::data(const QModelIndex & index, int role) const
+{
+  if (!index.isValid() || index.row() < 0)
+    return QVariant();
+
+  if (index.row() >= m_items.count()) {
+    qWarning() << "CategoryModel: Index out of bound";
+    return QVariant();
+  }
+
+  const Item & item = m_items[index.row()];
+  switch (role) {
+  case ID:
+    return item->id();
+  case NAME:
+    return item->name();
+  case DESCRIPTION:
+    return item->description();
+  default:
+    break;
+  }
+
+  return QVariant();
+}
+
+QHash<int, QByteArray>
+CategoryModel::roleNames() const
+{
+  // Fixme: cache ???
+  QHash<int, QByteArray> role_names;
+  role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[NAME] = QLatin1Literal("name").latin1();
+  role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
+
+  return role_names;
+}
+
+
+
 BlogSchema::BlogSchema()
 : QcSchema(QLatin1String("Blog"), QLatin1String("blogs"))
 {
@@ -981,7 +1116,8 @@ Blog::Blog()
     m_text(), 
     m_date(), 
     m_author_id() 
-{}
+{
+}
 
 Blog::Blog(const Blog & other)
   : QcRow<BlogSchema>(other), 
@@ -989,15 +1125,15 @@ Blog::Blog(const Blog & other)
     m_text(other.m_text), 
     m_date(other.m_date), 
     m_author_id(other.m_author_id) 
-{}
-
+{
+}
 
 Blog::Blog(const QJsonObject & json_object)
  : Blog()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_text = json_object[QLatin1String("text")].toString();
-  m_date = json_helper::load_datetime(json_object[QLatin1String("date")]);
+  m_date = orm_type_conversion::load_datetime(json_object[QLatin1String("date")]);
   m_author_id = json_object[QLatin1String("author_id")].toInt();
 }
 
@@ -1036,6 +1172,7 @@ Blog::Blog(const QSqlQuery & query, int offset)
   m_date = query.value(offset++).toDateTime();
   m_author_id = query.value(offset).toInt();
 }
+
 Blog::~Blog()
 {
 // qInfo() << "--- Delete" << "Blog" << *this;
@@ -1074,6 +1211,7 @@ Blog::operator==(const Blog & other)
   return true;
 }
 
+
 void
 Blog::set_id(int value)
 {
@@ -1082,6 +1220,7 @@ Blog::set_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
+
     emit idChanged();
     if (not is_changed)
       emit changed();
@@ -1096,6 +1235,7 @@ Blog::set_text(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::TEXT);
+
     emit textChanged();
     if (not is_changed)
       emit changed();
@@ -1110,6 +1250,7 @@ Blog::set_date(const QDateTime & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
+
     emit dateChanged();
     if (not is_changed)
       emit changed();
@@ -1124,12 +1265,12 @@ Blog::set_author_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::AUTHOR_ID);
+
     emit author_idChanged();
     if (not is_changed)
       emit changed();
   }
 }
-
 
 
 QJsonObject
@@ -1143,18 +1284,19 @@ Blog::to_json(bool only_changed) const
     if (is_text_modified())
       json_object.insert(QLatin1String("text"), QJsonValue(m_text));
     if (is_date_modified())
-      json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+      json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     if (is_author_id_modified())
       json_object.insert(QLatin1String("author_id"), QJsonValue(m_author_id));
   } else {
     json_object.insert(QLatin1String("id"), QJsonValue(m_id));
     json_object.insert(QLatin1String("text"), QJsonValue(m_text));
-    json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+    json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     json_object.insert(QLatin1String("author_id"), QJsonValue(m_author_id));
   }
 
   return json_object;
 }
+
 QVariantHash
 Blog::to_variant_hash(bool only_changed) const
 {
@@ -1234,7 +1376,6 @@ Blog::to_variant_list_sql(bool duplicate) const
   return variants;
 }
 
-
 QVariant
 Blog::field(int position) const
 {
@@ -1274,6 +1415,7 @@ Blog::set_field(int position, const QVariant & value)
    }
   }
 }
+
 void
 Blog::set_insert_id(int id)
 {
@@ -1438,6 +1580,69 @@ BlogCache::on_changed()
 
 /**************************************************************************************************/
 
+BlogModel::BlogModel()
+  : QAbstractListModel(),
+    m_items()
+{}
+
+BlogModel::BlogModel(const ItemList & items)
+  : QAbstractListModel(),
+    m_items(items)
+{}
+
+BlogModel::~BlogModel()
+{}
+
+int
+BlogModel::rowCount(const QModelIndex & parent) const
+{
+  Q_UNUSED(parent);
+  return m_items.size();
+}
+
+QVariant
+BlogModel::data(const QModelIndex & index, int role) const
+{
+  if (!index.isValid() || index.row() < 0)
+    return QVariant();
+
+  if (index.row() >= m_items.count()) {
+    qWarning() << "BlogModel: Index out of bound";
+    return QVariant();
+  }
+
+  const Item & item = m_items[index.row()];
+  switch (role) {
+  case ID:
+    return item->id();
+  case TEXT:
+    return item->text();
+  case DATE:
+    return item->date();
+  case AUTHOR_ID:
+    return item->author_id();
+  default:
+    break;
+  }
+
+  return QVariant();
+}
+
+QHash<int, QByteArray>
+BlogModel::roleNames() const
+{
+  // Fixme: cache ???
+  QHash<int, QByteArray> role_names;
+  role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[TEXT] = QLatin1Literal("text").latin1();
+  role_names[DATE] = QLatin1Literal("date").latin1();
+  role_names[AUTHOR_ID] = QLatin1Literal("author_id").latin1();
+
+  return role_names;
+}
+
+
+
 CommentSchema::CommentSchema()
 : QcSchema(QLatin1String("Comment"), QLatin1String("comments"))
 {
@@ -1505,7 +1710,8 @@ Comment::Comment()
     m_text(), 
     m_date(), 
     m_blog_id() 
-{}
+{
+}
 
 Comment::Comment(const Comment & other)
   : QcRow<CommentSchema>(other), 
@@ -1513,15 +1719,15 @@ Comment::Comment(const Comment & other)
     m_text(other.m_text), 
     m_date(other.m_date), 
     m_blog_id(other.m_blog_id) 
-{}
-
+{
+}
 
 Comment::Comment(const QJsonObject & json_object)
  : Comment()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_text = json_object[QLatin1String("text")].toString();
-  m_date = json_helper::load_datetime(json_object[QLatin1String("date")]);
+  m_date = orm_type_conversion::load_datetime(json_object[QLatin1String("date")]);
   m_blog_id = json_object[QLatin1String("blog_id")].toInt();
 }
 
@@ -1560,6 +1766,7 @@ Comment::Comment(const QSqlQuery & query, int offset)
   m_date = query.value(offset++).toDateTime();
   m_blog_id = query.value(offset).toInt();
 }
+
 Comment::~Comment()
 {
 // qInfo() << "--- Delete" << "Comment" << *this;
@@ -1598,6 +1805,7 @@ Comment::operator==(const Comment & other)
   return true;
 }
 
+
 void
 Comment::set_id(int value)
 {
@@ -1606,6 +1814,7 @@ Comment::set_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::ID);
+
     emit idChanged();
     if (not is_changed)
       emit changed();
@@ -1620,6 +1829,7 @@ Comment::set_text(const QString & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::TEXT);
+
     emit textChanged();
     if (not is_changed)
       emit changed();
@@ -1634,6 +1844,7 @@ Comment::set_date(const QDateTime & value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::DATE);
+
     emit dateChanged();
     if (not is_changed)
       emit changed();
@@ -1648,12 +1859,12 @@ Comment::set_blog_id(int value)
 
     bool is_changed = is_modified();
     set_bit(Schema::Fields::BLOG_ID);
+
     emit blog_idChanged();
     if (not is_changed)
       emit changed();
   }
 }
-
 
 
 QJsonObject
@@ -1667,18 +1878,19 @@ Comment::to_json(bool only_changed) const
     if (is_text_modified())
       json_object.insert(QLatin1String("text"), QJsonValue(m_text));
     if (is_date_modified())
-      json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+      json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     if (is_blog_id_modified())
       json_object.insert(QLatin1String("blog_id"), QJsonValue(m_blog_id));
   } else {
     json_object.insert(QLatin1String("id"), QJsonValue(m_id));
     json_object.insert(QLatin1String("text"), QJsonValue(m_text));
-    json_object.insert(QLatin1String("date"), json_helper::dump_datetime(m_date));
+    json_object.insert(QLatin1String("date"), orm_type_conversion::dump_datetime(m_date));
     json_object.insert(QLatin1String("blog_id"), QJsonValue(m_blog_id));
   }
 
   return json_object;
 }
+
 QVariantHash
 Comment::to_variant_hash(bool only_changed) const
 {
@@ -1758,7 +1970,6 @@ Comment::to_variant_list_sql(bool duplicate) const
   return variants;
 }
 
-
 QVariant
 Comment::field(int position) const
 {
@@ -1798,6 +2009,7 @@ Comment::set_field(int position, const QVariant & value)
    }
   }
 }
+
 void
 Comment::set_insert_id(int id)
 {
@@ -1923,6 +2135,67 @@ CommentCache::on_changed()
 
 /**************************************************************************************************/
 
+CommentModel::CommentModel()
+  : QAbstractListModel(),
+    m_items()
+{}
+
+CommentModel::CommentModel(const ItemList & items)
+  : QAbstractListModel(),
+    m_items(items)
+{}
+
+CommentModel::~CommentModel()
+{}
+
+int
+CommentModel::rowCount(const QModelIndex & parent) const
+{
+  Q_UNUSED(parent);
+  return m_items.size();
+}
+
+QVariant
+CommentModel::data(const QModelIndex & index, int role) const
+{
+  if (!index.isValid() || index.row() < 0)
+    return QVariant();
+
+  if (index.row() >= m_items.count()) {
+    qWarning() << "CommentModel: Index out of bound";
+    return QVariant();
+  }
+
+  const Item & item = m_items[index.row()];
+  switch (role) {
+  case ID:
+    return item->id();
+  case TEXT:
+    return item->text();
+  case DATE:
+    return item->date();
+  case BLOG_ID:
+    return item->blog_id();
+  default:
+    break;
+  }
+
+  return QVariant();
+}
+
+QHash<int, QByteArray>
+CommentModel::roleNames() const
+{
+  // Fixme: cache ???
+  QHash<int, QByteArray> role_names;
+  role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[TEXT] = QLatin1Literal("text").latin1();
+  role_names[DATE] = QLatin1Literal("date").latin1();
+  role_names[BLOG_ID] = QLatin1Literal("blog_id").latin1();
+
+  return role_names;
+}
+
 
 BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
@@ -1973,9 +2246,7 @@ BlogApplicationSchema::register_row<Comment>(CommentPtr & row)
   m_comments_cache.add(row);
 }
 
-
 /**************************************************************************************************/
-
 // QC_END_NAMESPACE
 
 /***************************************************************************************************

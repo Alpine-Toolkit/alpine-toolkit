@@ -34,7 +34,7 @@
 #include "ephemeride/ephemeride.h"
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
-#include "refuge/refuge.h"
+// #include "refuge/refuge.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 

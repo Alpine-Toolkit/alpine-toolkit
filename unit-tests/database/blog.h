@@ -34,26 +34,25 @@
 
 /**************************************************************************************************/
 
+#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
+
+#include "database/database_row.h"
+#include "database/database_row_list.h"
+#include "database/database_schema.h"
+#include "database/schema.h"
+
+#include <QAbstractListModel>
 #include <QDataStream>
 #include <QDateTime>
 #include <QJsonObject>
+#include <QMap>
 #include <QSharedPointer>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
+#include <QtDebug>
 #include <QVariant>
 #include <QVariantList>
-#include <QtDebug>
-
-#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
-
-#include "database/schema.h"
-#include "database/database_schema.h"
-#include "database/database_row.h"
-#include "database/database_row_list.h"
-
-// #include<QLinkedList>
-#include<QMap>
 
 /**************************************************************************************************/
 
@@ -90,7 +89,7 @@ public:
 
 protected:
   AuthorSchema();
-  ~AuthorSchema();
+  ~AuthorSchema(); 
 };
 
 /**************************************************************************************************/
@@ -170,11 +169,13 @@ signals:
   void nameChanged();
   void birthdateChanged();
 
+
 private:
   int m_id;
   QString m_name;
   QDateTime m_birthdate;
   QcRowList<Blog, BlogPtr> m_blogs;
+ 
 };
 
 QDataStream & operator<<(QDataStream & out, const Author & obj);
@@ -240,7 +241,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr;
+  QSharedPointer<Class> m_ptr; 
 };
 
 // uint qHash(const AuthorPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -269,7 +270,39 @@ private:
   // QLinkedList<AuthorPtr> m_loaded_instances;
   // QLinkedList<AuthorPtr> m_modified_instances;
   QMap<Author *, AuthorPtr> m_loaded_instances;
-  QMap<Author *, AuthorPtr> m_modified_instances;
+  QMap<Author *, AuthorPtr> m_modified_instances; 
+};
+
+/**************************************************************************************************/
+
+class AuthorModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  typedef AuthorPtr Item;
+  typedef QList<Item> ItemList;
+
+public:
+  AuthorModel();
+  AuthorModel(const ItemList & items);
+  ~AuthorModel();
+
+  // Fixme: use AuthorSchema::Fields ???
+  enum Roles {
+    ID = Qt::UserRole + 1, 
+    NAME, 
+    BIRTHDATE 
+  };
+  Q_ENUMS(Roles) // Fixme: ???
+
+  // QAbstractListModel API
+  int rowCount(const QModelIndex & parent) const;
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const;
+
+private:
+  ItemList m_items; 
 };
 
 /**************************************************************************************************/
@@ -305,7 +338,7 @@ public:
 
 protected:
   CategorySchema();
-  ~CategorySchema();
+  ~CategorySchema(); 
 };
 
 /**************************************************************************************************/
@@ -380,10 +413,12 @@ signals:
   void nameChanged();
   void descriptionChanged();
 
+
 private:
   int m_id;
   QString m_name;
   QString m_description;
+ 
 };
 
 QDataStream & operator<<(QDataStream & out, const Category & obj);
@@ -449,7 +484,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr;
+  QSharedPointer<Class> m_ptr; 
 };
 
 // uint qHash(const CategoryPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -478,7 +513,39 @@ private:
   // QLinkedList<CategoryPtr> m_loaded_instances;
   // QLinkedList<CategoryPtr> m_modified_instances;
   QMap<Category *, CategoryPtr> m_loaded_instances;
-  QMap<Category *, CategoryPtr> m_modified_instances;
+  QMap<Category *, CategoryPtr> m_modified_instances; 
+};
+
+/**************************************************************************************************/
+
+class CategoryModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  typedef CategoryPtr Item;
+  typedef QList<Item> ItemList;
+
+public:
+  CategoryModel();
+  CategoryModel(const ItemList & items);
+  ~CategoryModel();
+
+  // Fixme: use CategorySchema::Fields ???
+  enum Roles {
+    ID = Qt::UserRole + 1, 
+    NAME, 
+    DESCRIPTION 
+  };
+  Q_ENUMS(Roles) // Fixme: ???
+
+  // QAbstractListModel API
+  int rowCount(const QModelIndex & parent) const;
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const;
+
+private:
+  ItemList m_items; 
 };
 
 /**************************************************************************************************/
@@ -515,7 +582,7 @@ public:
 
 protected:
   BlogSchema();
-  ~BlogSchema();
+  ~BlogSchema(); 
 };
 
 /**************************************************************************************************/
@@ -602,12 +669,14 @@ signals:
   void dateChanged();
   void author_idChanged();
 
+
 private:
   int m_id;
   QString m_text;
   QDateTime m_date;
   int m_author_id;
   AuthorPtr m_author;
+ 
 };
 
 QDataStream & operator<<(QDataStream & out, const Blog & obj);
@@ -674,7 +743,7 @@ public:
   void set_author(AuthorPtr & value);
 
 private:
-  QSharedPointer<Class> m_ptr;
+  QSharedPointer<Class> m_ptr; 
 };
 
 // uint qHash(const BlogPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -703,7 +772,40 @@ private:
   // QLinkedList<BlogPtr> m_loaded_instances;
   // QLinkedList<BlogPtr> m_modified_instances;
   QMap<Blog *, BlogPtr> m_loaded_instances;
-  QMap<Blog *, BlogPtr> m_modified_instances;
+  QMap<Blog *, BlogPtr> m_modified_instances; 
+};
+
+/**************************************************************************************************/
+
+class BlogModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  typedef BlogPtr Item;
+  typedef QList<Item> ItemList;
+
+public:
+  BlogModel();
+  BlogModel(const ItemList & items);
+  ~BlogModel();
+
+  // Fixme: use BlogSchema::Fields ???
+  enum Roles {
+    ID = Qt::UserRole + 1, 
+    TEXT, 
+    DATE, 
+    AUTHOR_ID 
+  };
+  Q_ENUMS(Roles) // Fixme: ???
+
+  // QAbstractListModel API
+  int rowCount(const QModelIndex & parent) const;
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const;
+
+private:
+  ItemList m_items; 
 };
 
 /**************************************************************************************************/
@@ -740,7 +842,7 @@ public:
 
 protected:
   CommentSchema();
-  ~CommentSchema();
+  ~CommentSchema(); 
 };
 
 /**************************************************************************************************/
@@ -821,11 +923,13 @@ signals:
   void dateChanged();
   void blog_idChanged();
 
+
 private:
   int m_id;
   QString m_text;
   QDateTime m_date;
   int m_blog_id;
+ 
 };
 
 QDataStream & operator<<(QDataStream & out, const Comment & obj);
@@ -891,7 +995,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr;
+  QSharedPointer<Class> m_ptr; 
 };
 
 // uint qHash(const CommentPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -920,11 +1024,43 @@ private:
   // QLinkedList<CommentPtr> m_loaded_instances;
   // QLinkedList<CommentPtr> m_modified_instances;
   QMap<Comment *, CommentPtr> m_loaded_instances;
-  QMap<Comment *, CommentPtr> m_modified_instances;
+  QMap<Comment *, CommentPtr> m_modified_instances; 
 };
 
 /**************************************************************************************************/
 
+class CommentModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  typedef CommentPtr Item;
+  typedef QList<Item> ItemList;
+
+public:
+  CommentModel();
+  CommentModel(const ItemList & items);
+  ~CommentModel();
+
+  // Fixme: use CommentSchema::Fields ???
+  enum Roles {
+    ID = Qt::UserRole + 1, 
+    TEXT, 
+    DATE, 
+    BLOG_ID 
+  };
+  Q_ENUMS(Roles) // Fixme: ???
+
+  // QAbstractListModel API
+  int rowCount(const QModelIndex & parent) const;
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const;
+
+private:
+  ItemList m_items; 
+};
+
+/**************************************************************************************************/
 class BlogApplicationSchema : public QcDatabaseSchema
 {
 public:
@@ -954,7 +1090,6 @@ private:
 };
 
 /**************************************************************************************************/
-
 #endif /* __BLOG_H__ */
 
 /***************************************************************************************************

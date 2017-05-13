@@ -34,27 +34,26 @@
 
 /**************************************************************************************************/
 
+#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
+
+#include "database/database_row.h"
+#include "database/database_row_list.h"
+#include "database/database_schema.h"
+#include "database/schema.h"
+
+#include <QAbstractListModel>
 #include <QDataStream>
 #include <QDateTime>
 #include <QJsonObject>
+#include <QMap>
 #include <QSharedPointer>
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
+#include <QtDebug>
 #include <QUrl>
 #include <QVariant>
 #include <QVariantList>
-#include <QtDebug>
-
-#define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
-
-#include "database/schema.h"
-#include "database/database_schema.h"
-#include "database/database_row.h"
-#include "database/database_row_list.h"
-
-// #include<QLinkedList>
-#include<QMap>
 
 /**************************************************************************************************/
 
@@ -94,7 +93,7 @@ public:
 
 protected:
   DocumentSchema();
-  ~DocumentSchema();
+  ~DocumentSchema(); 
 };
 
 /**************************************************************************************************/
@@ -199,6 +198,7 @@ signals:
   void urlChanged();
   void sizeChanged();
 
+
 private:
   int m_id;
   QString m_name;
@@ -208,6 +208,7 @@ private:
   QString m_description;
   QUrl m_url;
   int m_size;
+ 
 };
 
 QDataStream & operator<<(QDataStream & out, const Document & obj);
@@ -273,7 +274,7 @@ public:
   // Relations API
 
 private:
-  QSharedPointer<Class> m_ptr;
+  QSharedPointer<Class> m_ptr; 
 };
 
 // uint qHash(const DocumentPtr & obj) { return static_cast<uint>(obj.data()); }
@@ -302,11 +303,47 @@ private:
   // QLinkedList<DocumentPtr> m_loaded_instances;
   // QLinkedList<DocumentPtr> m_modified_instances;
   QMap<Document *, DocumentPtr> m_loaded_instances;
-  QMap<Document *, DocumentPtr> m_modified_instances;
+  QMap<Document *, DocumentPtr> m_modified_instances; 
 };
 
 /**************************************************************************************************/
 
+class DocumentModel : public QAbstractListModel
+{
+  Q_OBJECT
+
+public:
+  typedef DocumentPtr Item;
+  typedef QList<Item> ItemList;
+
+public:
+  DocumentModel();
+  DocumentModel(const ItemList & items);
+  ~DocumentModel();
+
+  // Fixme: use DocumentSchema::Fields ???
+  enum Roles {
+    ID = Qt::UserRole + 1, 
+    NAME, 
+    AUTHOR, 
+    VERSION, 
+    DATE, 
+    DESCRIPTION, 
+    URL, 
+    SIZE 
+  };
+  Q_ENUMS(Roles) // Fixme: ???
+
+  // QAbstractListModel API
+  int rowCount(const QModelIndex & parent) const;
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const;
+
+private:
+  ItemList m_items; 
+};
+
+/**************************************************************************************************/
 class DocumentDatabaseSchema : public QcDatabaseSchema
 {
 public:
@@ -327,7 +364,6 @@ private:
 };
 
 /**************************************************************************************************/
-
 #endif /* __DOCUMENT_H__ */
 
 /***************************************************************************************************

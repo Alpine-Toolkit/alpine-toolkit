@@ -1,0 +1,3 @@
+{% macro header_name(filename) -%}
+{{ filename|replace('.h', '')|upper }}
+{%- endmacro %}

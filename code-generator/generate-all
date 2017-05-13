@@ -1,5 +1,7 @@
 #! /usr/bin/bash
 
-generate-blog-unit-test
-generate-document-server
-generate-bleau
+generate Schemas.Blog
+
+generate Schemas.Bleau
+generate Schemas.Document
+generate Schemas.Refuge
