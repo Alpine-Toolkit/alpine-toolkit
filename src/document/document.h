@@ -341,6 +341,7 @@ private:
 };
 
 /**************************************************************************************************/
+
 class DocumentDatabaseSchema : public QcDatabaseSchema
 {
 public:

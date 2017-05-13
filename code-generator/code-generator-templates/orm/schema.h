@@ -1,6 +1,6 @@
 {# -*- mode: fundamental -*- -#}
 
-{% with class_name = database_schema.name -%}
+{% with class_name = database_schema.name %}
 
 class {{class_name}} : public QcDatabaseSchema
 {

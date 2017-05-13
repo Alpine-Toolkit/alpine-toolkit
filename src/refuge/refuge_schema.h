@@ -394,6 +394,7 @@ private:
 };
 
 /**************************************************************************************************/
+
 class RefugeDatabaseSchema : public QcDatabaseSchema
 {
 public:

@@ -1051,6 +1051,7 @@ private:
 };
 
 /**************************************************************************************************/
+
 class BlogApplicationSchema : public QcDatabaseSchema
 {
 public:
