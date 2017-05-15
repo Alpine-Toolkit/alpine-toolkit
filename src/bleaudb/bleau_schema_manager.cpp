@@ -26,7 +26,7 @@
 
 /**************************************************************************************************/
 
-#include "bleau_database.h"
+#include "bleau_schema_manager.h"
 
 #include "bleau_sqlite_database.h"
 
@@ -39,27 +39,27 @@
 
 /**************************************************************************************************/
 
-BleauDatabase::BleauDatabase()
-  : QObject(),
+BleauSchemaManager::BleauSchemaManager()
+  : SchemaManager(),
     m_circuits(),
     m_massifs(),
     m_places()
 {}
 
-BleauDatabase::BleauDatabase(const QString & json_path)
-  : BleauDatabase()
+BleauSchemaManager::BleauSchemaManager(const QString & json_path)
+  : BleauSchemaManager()
 {
   load_json(json_path);
 }
 
-BleauDatabase::BleauDatabase(const QJsonDocument & json_document)
- : BleauDatabase()
+BleauSchemaManager::BleauSchemaManager(const QJsonDocument & json_document)
+ : BleauSchemaManager()
 {
-  load_json(json_document);
+  load_json_document(json_document);
 }
 
 /*
-BleauDatabase::BleauDatabase(const BleauDatabase & other)
+BleauSchemaManager::BleauSchemaManager(const BleauSchemaManager & other)
   : QObject(),
     m_places(other.m_places),
     m_massifs(other.m_massifs),
@@ -67,11 +67,11 @@ BleauDatabase::BleauDatabase(const BleauDatabase & other)
 {}
 */
 
-BleauDatabase::~BleauDatabase()
+BleauSchemaManager::~BleauSchemaManager()
 {}
 
-// BleauDatabase &
-// BleauDatabase::operator=(const BleauDatabase & other)
+// BleauSchemaManager &
+// BleauSchemaManager::operator=(const BleauSchemaManager & other)
 // {
 //   if (this != &other) {
 //     m_places = other.m_places;
@@ -83,21 +83,21 @@ BleauDatabase::~BleauDatabase()
 // }
 
 void
-BleauDatabase::add_place(const BleauPlacePtr & place)
+BleauSchemaManager::add_place(const BleauPlacePtr & place)
 {
   m_places.insert(place->name(), place);
   // emit placesChanged();
 }
 
 void
-BleauDatabase::add_massif(const BleauMassifPtr & massif)
+BleauSchemaManager::add_massif(const BleauMassifPtr & massif)
 {
   m_massifs.insert(massif->name(), massif);
   // emit massifsChanged();
 }
 
 void
-BleauDatabase::add_circuit(const BleauCircuitPtr & circuit)
+BleauSchemaManager::add_circuit(const BleauCircuitPtr & circuit)
 {
   m_circuits.append(circuit);
   // m_circuits.insert(circuit->name(), circuit);
@@ -105,21 +105,7 @@ BleauDatabase::add_circuit(const BleauCircuitPtr & circuit)
 }
 
 void
-BleauDatabase::load_json(const QString & json_path)
-{
-  QFile json_file(json_path);
-
-  if (!json_file.open(QIODevice::ReadOnly))
-    throw std::invalid_argument("Couldn't open file.");
-
-  qInfo() << "BleauDatabase: Load" << json_path;
-  QByteArray json_data = json_file.readAll();
-  QJsonDocument json_document = QJsonDocument::fromJson(json_data);
-  load_json(json_document);
-}
-
-void
-BleauDatabase::load_json(const QJsonDocument & json_document)
+BleauSchemaManager::load_json_document(const QJsonDocument & json_document)
 {
   QJsonObject root = json_document.object();
 
@@ -159,21 +145,8 @@ BleauDatabase::load_json(const QJsonDocument & json_document)
   }
 }
 
-void
-BleauDatabase::to_json(const QString & json_path) const
-{
-  QFile json_file(json_path);
-
-  if (!json_file.open(QIODevice::WriteOnly))
-    throw std::invalid_argument("Couldn't open file.");
-
-  qInfo() << "BleauDatabase: Write" << json_path;
-  QJsonDocument json_document = to_json();
-  json_file.write(json_document.toJson());
-}
-
 QJsonDocument
-BleauDatabase::to_json() const
+BleauSchemaManager::to_json_document() const
 {
   QJsonObject root;
 
@@ -208,7 +181,7 @@ BleauDatabase::to_json() const
 }
 
 void
-BleauDatabase::to_sql(const QString & sqlite_path)
+BleauSchemaManager::to_sql(const QString & sqlite_path)
 {
   // Fixme: if file exists ???
 

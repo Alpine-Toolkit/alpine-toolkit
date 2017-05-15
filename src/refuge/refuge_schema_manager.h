@@ -28,13 +28,15 @@
 
 /**************************************************************************************************/
 
-#ifndef __BLEAU_DATABASE_H__
-#define __BLEAU_DATABASE_H__
+#ifndef __REFUGE_SCHEMA_MANAGER_H__
+#define __REFUGE_SCHEMA_MANAGER_H__
 
 /**************************************************************************************************/
 
-#include "bleaudb/bleau_schema.h"
+#include "refuge/refuge_schema.h"
+#include "orm/schema_manager.h"
 
+#include <QQmlListProperty>
 #include<QHash>
 #include<QJsonDocument>
 #include<QObject>
@@ -42,63 +44,62 @@
 
 /**************************************************************************************************/
 
-class BleauDatabase : public QObject
+// Q_DECLARE_METATYPE(Refuge)
+// Q_DECLARE_METATYPE(Refuge*)
+
+/**************************************************************************************************/
+
+class RefugeSchemaManager : public SchemaManager
 {
   Q_OBJECT
-  // Q_PROPERTY(BleauPlaceList places READ places WRITE set_places NOTIFY placesChanged)
-  // Q_PROPERTY(BleauPlaceList places READ places)
-  // Q_PROPERTY(QList<BleauPlace> places READ places WRITE set_places NOTIFY placesChanged)
-  // Q_PROPERTY(QList<BleauMassif> massifs READ massifs WRITE set_massifs NOTIFY massifsChanged)
-  // Q_PROPERTY(QList<BleauCircuit> circuits READ circuits WRITE set_circuits NOTIFY circuitsChanged)
+  Q_PROPERTY(QQmlListProperty<Refuge> refuges READ refuge_list_property NOTIFY refugeListChanged)
 
 public:
-  typedef QHash<QString, BleauPlacePtr> PlaceHash;
-  typedef QHash<QString, BleauMassifPtr> MassifHash;
-  // typedef QHash<QString, BleauCircuitPtr> CircuitHash;
-  typedef QList<BleauCircuitPtr> CircuitList;
+  RefugeSchemaManager();
+  RefugeSchemaManager(const QString & json_path);
+  RefugeSchemaManager(const QJsonDocument & json_document);
+  // RefugeSchemaManager(const class RefugeSchemaManager & other);
+  ~RefugeSchemaManager();
 
-public:
-  BleauDatabase(); // QObject * parent = nullptr
-  BleauDatabase(const QString & json_path);
-  BleauDatabase(const QJsonDocument & json_document);
-  // BleauDatabase(const class BleauDatabase & other);
-  ~BleauDatabase();
+  // RefugeSchemaManager & operator=(const RefugeSchemaManager & other);
 
-  // BleauDatabase & operator=(const BleauDatabase & other);
-
-  void load_json(const QString & json_path);
-  void load_json(const QJsonDocument & json_document);
-  void to_json(const QString & json_path) const;
-  QJsonDocument to_json() const;
+  void load_json_document(const QJsonDocument & json_document);
+  QJsonDocument to_json_document() const;
 
   void to_sql(const QString & sqlite_path);
 
-  CircuitList & circuits() { return m_circuits; }
-  void add_circuit(const BleauCircuitPtr & circuit);
+  const Refuge::PtrList refuges() const { return m_refuge_cache.items(); }
 
-  MassifHash & massifs() { return m_massifs; }
-  void add_massif(const BleauMassifPtr & massif);
+  const Refuge::PtrList & refuges_list() const { return m_refuges; }
+  Q_INVOKABLE QList<QObject *> refuges_as_object_list(); // const
 
-  PlaceHash & places() { return m_places; }
-  void add_place(const BleauPlacePtr & place);
+  Q_INVOKABLE void filter_refuge_list(const QString & query);
 
-// signals:
-//   void placesChanged();
-//   void massifsChanged();
-//   void circuitsChanged();
+  RefugeModel & model() { return m_refuge_model; }
+
+signals:
+  void refugeListChanged();
 
 private:
-  CircuitList m_circuits;
-  MassifHash m_massifs;
-  PlaceHash m_places;
-  QList<BleauBoulderPtr> m_boulders; // Fixme: weak ref
+  // QQmlListProperty can only be used for lists of QObject-derived object pointers.
+  // Refuges must be registered
+  QQmlListProperty<Refuge> refuge_list_property();
+  static int refuge_list_property_count(QQmlListProperty<Refuge> * list);
+  static Refuge * refuge_list_property_at(QQmlListProperty<Refuge> * list, int index);
+
+private:
+  RefugeCache m_refuge_cache;
+  Refuge::PtrList m_refuges;
+  Refuge::PtrList m_filtered_refuges;
+  QHash<QString, RefugePtr> m_soundex_map;
+  RefugeModel m_refuge_model;
 };
 
 /**************************************************************************************************/
 
 // QC_END_NAMESPACE
 
-#endif /* __BLEAU_DATABASE_H__ */
+#endif /* __REFUGE_SCHEMA_MANAGER_H__ */
 
 /***************************************************************************************************
  *

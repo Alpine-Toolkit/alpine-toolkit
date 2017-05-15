@@ -30,11 +30,11 @@
 
 /**************************************************************************************************/
 
-#include "bleaudb/bleau_database.h"
+#include "bleaudb/bleau_schema_manager.h"
 
 /***************************************************************************************************/
 
-class TestQcBleauDatabase: public QObject
+class TestQcBleauSchemaManager: public QObject
 {
   Q_OBJECT
 
@@ -42,15 +42,15 @@ private slots:
   void constructor();
 };
 
-void TestQcBleauDatabase::constructor()
+void TestQcBleauSchemaManager::constructor()
 {
   QString json_path("../ressources/data/bleau.json");
-  BleauDatabase bleau_database(json_path);
+  BleauSchemaManager bleau_schema_manager(json_path);
 
-  bleau_database.to_json("bleau.json");
+  bleau_schema_manager.to_json("bleau.json");
 
   QString sqlite_path("bleau.sqlite");
-  bleau_database.to_sql(sqlite_path);
+  bleau_schema_manager.to_sql(sqlite_path);
 
   // for (const auto & place : bleau_database.places())
   //   qInfo() << place->name() << place->coordinate();
@@ -67,8 +67,8 @@ void TestQcBleauDatabase::constructor()
 
 /***************************************************************************************************/
 
-QTEST_MAIN(TestQcBleauDatabase)
-#include "test_bleau_database.moc"
+QTEST_MAIN(TestQcBleauSchemaManager)
+#include "test_bleau_schema_manager.moc"
 
 /***************************************************************************************************
  *

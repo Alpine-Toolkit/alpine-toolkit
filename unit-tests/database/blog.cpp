@@ -547,7 +547,21 @@ AuthorModel::roleNames() const
   return role_names;
 }
 
+void
+AuthorModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+AuthorModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 CategorySchema::CategorySchema()
 : QcSchema(QLatin1String("Category"), QLatin1String("categories"))
@@ -1030,7 +1044,21 @@ CategoryModel::roleNames() const
   return role_names;
 }
 
+void
+CategoryModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+CategoryModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 BlogSchema::BlogSchema()
 : QcSchema(QLatin1String("Blog"), QLatin1String("blogs"))
@@ -1618,7 +1646,21 @@ BlogModel::roleNames() const
   return role_names;
 }
 
+void
+BlogModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+BlogModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 CommentSchema::CommentSchema()
 : QcSchema(QLatin1String("Comment"), QLatin1String("comments"))
@@ -2165,7 +2207,21 @@ CommentModel::roleNames() const
   return role_names;
 }
 
+void
+CommentModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+CommentModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_authors(nullptr),

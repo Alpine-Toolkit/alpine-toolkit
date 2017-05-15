@@ -287,20 +287,29 @@ class DocumentCache : public QObject
   Q_OBJECT
 
 public:
+  typedef Document * Key;
+  typedef DocumentPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   DocumentCache();
   ~DocumentCache();
 
-   void add(DocumentPtr & ptr);
-   void remove(DocumentPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<DocumentPtr> m_loaded_instances;
-  // QLinkedList<DocumentPtr> m_modified_instances;
-  QMap<Document *, DocumentPtr> m_loaded_instances;
-  QMap<Document *, DocumentPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -335,6 +344,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;

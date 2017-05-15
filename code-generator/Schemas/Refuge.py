@@ -79,6 +79,7 @@ class Refuge(Schema):
     __has_post_init__ = True
 
     __custom_code__ = {
+        # Fixme: Mixin ???
         'cls_decl': CustomCode("""
 public:
   bool operator<(const {{schema.cls_name}} & other) const;

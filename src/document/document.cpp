@@ -832,7 +832,21 @@ DocumentModel::roleNames() const
   return role_names;
 }
 
+void
+DocumentModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+DocumentModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_document(nullptr),

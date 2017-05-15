@@ -31,42 +31,34 @@
 
 /**************************************************************************************************/
 
-#include "refuge/refuge.h"
+#include "refuge/refuge_schema_manager.h"
 
-/***************************************************************************************************/
+/**************************************************************************************************/
 
-class TestRefuge: public QObject
+class TestRefugeSchemaManager: public QObject
 {
   Q_OBJECT
 
 private slots:
-  void test_refuge_ctor();
-  void test_load_refuge_json();
+  void test();
 };
 
-
 void
-TestRefuge::test_refuge_ctor()
+TestRefugeSchemaManager::test()
 {
-  Refuge refuge;
-  refuge.set_name("Écrin");
-  refuge.set_coordinate(QGeoCoordinate(48.87, 2.67));
-  qInfo() << refuge.name() << refuge.coordinate();
-}
+  QString json_path("../ressources/data/ffcam-refuges.json");
+  RefugeSchemaManager refuge_schema_manager(json_path);
 
-void
-TestRefuge::test_load_refuge_json()
-{
-  QList<Refuge> refuges;
-  load_refuge_json("ffcam-refuges.json", refuges);
-  for (const Refuge & refuge : refuges) {
-    qInfo() << refuge.name();
+  refuge_schema_manager.to_json("ffcam-refuges.json");
+
+  for (const auto & refuge : refuge_schema_manager.refuges()) {
+    qInfo() << refuge << refuge->first_letter();
   }
 }
 
 /***************************************************************************************************/
 
-QTEST_MAIN(TestRefuge)
+QTEST_MAIN(TestRefugeSchemaManager)
 #include "test_refuge.moc"
 
 /***************************************************************************************************

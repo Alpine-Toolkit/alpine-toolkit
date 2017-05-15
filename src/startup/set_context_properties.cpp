@@ -33,10 +33,10 @@
 #include <QQmlEngine>
 #include <QtDebug>
 
-#include "bleaudb/bleau_database.h"
+// #include "bleaudb/bleau_database.h"
 #include "camptocamp/camptocamp_qml.h"
 #include "ephemeride/ephemeride.h"
-// #include "refuge/refuge.h"
+#include "refuge/refuge_schema_manager.h"
 #include "startup.h"
 
 #include "service/client.h"
@@ -65,13 +65,10 @@ set_context_properties(QQmlContext * context)
   context->setContextProperty(QLatin1Literal("ephemeride"), ephemeride);
 
   // Create FFCAM Refuge Model
-  // QList<Refuge> * refuges = new QList<Refuge>();
-  // QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
-  // load_refuge_json(ffcam_refuge_json, *refuges);
-  // QList<QObject *> refuges_; // QObject* is required
-  // for (Refuge & refuge : *refuges)
-  //   refuges_.append(&refuge);
-  // context->setContextProperty("refuge_model", QVariant::fromValue(refuges_));
+  QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
+  RefugeSchemaManager * refuge_schema_manager = new RefugeSchemaManager(ffcam_refuge_json);
+  QList<QObject *> refuges = refuge_schema_manager->refuges_as_object_list();
+  context->setContextProperty("refuge_model", QVariant::fromValue(refuges));
 
   // Create Bleau Model
   // BleauDB * bleaudb = new BleauDB();

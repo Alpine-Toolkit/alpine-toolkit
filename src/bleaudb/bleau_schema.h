@@ -263,20 +263,29 @@ class BleauPlaceCache : public QObject
   Q_OBJECT
 
 public:
+  typedef BleauPlace * Key;
+  typedef BleauPlacePtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   BleauPlaceCache();
   ~BleauPlaceCache();
 
-   void add(BleauPlacePtr & ptr);
-   void remove(BleauPlacePtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BleauPlacePtr> m_loaded_instances;
-  // QLinkedList<BleauPlacePtr> m_modified_instances;
-  QMap<BleauPlace *, BleauPlacePtr> m_loaded_instances;
-  QMap<BleauPlace *, BleauPlacePtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -308,6 +317,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -578,20 +590,29 @@ class BleauMassifCache : public QObject
   Q_OBJECT
 
 public:
+  typedef BleauMassif * Key;
+  typedef BleauMassifPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   BleauMassifCache();
   ~BleauMassifCache();
 
-   void add(BleauMassifPtr & ptr);
-   void remove(BleauMassifPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BleauMassifPtr> m_loaded_instances;
-  // QLinkedList<BleauMassifPtr> m_modified_instances;
-  QMap<BleauMassif *, BleauMassifPtr> m_loaded_instances;
-  QMap<BleauMassif *, BleauMassifPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -629,6 +650,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -928,20 +952,29 @@ class BleauCircuitCache : public QObject
   Q_OBJECT
 
 public:
+  typedef BleauCircuit * Key;
+  typedef BleauCircuitPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   BleauCircuitCache();
   ~BleauCircuitCache();
 
-   void add(BleauCircuitPtr & ptr);
-   void remove(BleauCircuitPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BleauCircuitPtr> m_loaded_instances;
-  // QLinkedList<BleauCircuitPtr> m_modified_instances;
-  QMap<BleauCircuit *, BleauCircuitPtr> m_loaded_instances;
-  QMap<BleauCircuit *, BleauCircuitPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -982,6 +1015,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -1220,20 +1256,29 @@ class BleauBoulderCache : public QObject
   Q_OBJECT
 
 public:
+  typedef BleauBoulder * Key;
+  typedef BleauBoulderPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   BleauBoulderCache();
   ~BleauBoulderCache();
 
-   void add(BleauBoulderPtr & ptr);
-   void remove(BleauBoulderPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BleauBoulderPtr> m_loaded_instances;
-  // QLinkedList<BleauBoulderPtr> m_modified_instances;
-  QMap<BleauBoulder *, BleauBoulderPtr> m_loaded_instances;
-  QMap<BleauBoulder *, BleauBoulderPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1267,6 +1312,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;

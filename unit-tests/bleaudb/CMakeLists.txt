@@ -14,7 +14,7 @@
 
 foreach(name
     bleau_schema
-    bleau_database
+    bleau_schema_manager
     )
   add_executable(test_${name} test_${name}.cpp)
   target_link_libraries(test_${name} Qt5::Test alpine_toolkit)

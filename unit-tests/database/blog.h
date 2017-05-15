@@ -255,20 +255,29 @@ class AuthorCache : public QObject
   Q_OBJECT
 
 public:
+  typedef Author * Key;
+  typedef AuthorPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   AuthorCache();
   ~AuthorCache();
 
-   void add(AuthorPtr & ptr);
-   void remove(AuthorPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<AuthorPtr> m_loaded_instances;
-  // QLinkedList<AuthorPtr> m_modified_instances;
-  QMap<Author *, AuthorPtr> m_loaded_instances;
-  QMap<Author *, AuthorPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -298,6 +307,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -495,20 +507,29 @@ class CategoryCache : public QObject
   Q_OBJECT
 
 public:
+  typedef Category * Key;
+  typedef CategoryPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   CategoryCache();
   ~CategoryCache();
 
-   void add(CategoryPtr & ptr);
-   void remove(CategoryPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<CategoryPtr> m_loaded_instances;
-  // QLinkedList<CategoryPtr> m_modified_instances;
-  QMap<Category *, CategoryPtr> m_loaded_instances;
-  QMap<Category *, CategoryPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -538,6 +559,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -752,20 +776,29 @@ class BlogCache : public QObject
   Q_OBJECT
 
 public:
+  typedef Blog * Key;
+  typedef BlogPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   BlogCache();
   ~BlogCache();
 
-   void add(BlogPtr & ptr);
-   void remove(BlogPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<BlogPtr> m_loaded_instances;
-  // QLinkedList<BlogPtr> m_modified_instances;
-  QMap<Blog *, BlogPtr> m_loaded_instances;
-  QMap<Blog *, BlogPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -796,6 +829,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
@@ -1001,20 +1037,29 @@ class CommentCache : public QObject
   Q_OBJECT
 
 public:
+  typedef Comment * Key;
+  typedef CommentPtr Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   CommentCache();
   ~CommentCache();
 
-   void add(CommentPtr & ptr);
-   void remove(CommentPtr & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<CommentPtr> m_loaded_instances;
-  // QLinkedList<CommentPtr> m_modified_instances;
-  QMap<Comment *, CommentPtr> m_loaded_instances;
-  QMap<Comment *, CommentPtr> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1045,6 +1090,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;

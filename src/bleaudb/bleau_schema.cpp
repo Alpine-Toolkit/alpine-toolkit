@@ -642,7 +642,21 @@ BleauPlaceModel::roleNames() const
   return role_names;
 }
 
+void
+BleauPlaceModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+BleauPlaceModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 BleauMassifSchema::BleauMassifSchema()
 : QcSchema(QLatin1String("BleauMassif"), QLatin1String("massif"))
@@ -1645,7 +1659,21 @@ BleauMassifModel::roleNames() const
   return role_names;
 }
 
+void
+BleauMassifModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+BleauMassifModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 BleauCircuitSchema::BleauCircuitSchema()
 : QcSchema(QLatin1String("BleauCircuit"), QLatin1String("circuit"))
@@ -2862,7 +2890,21 @@ BleauCircuitModel::roleNames() const
   return role_names;
 }
 
+void
+BleauCircuitModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+BleauCircuitModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 
 BleauBoulderSchema::BleauBoulderSchema()
 : QcSchema(QLatin1String("BleauBoulder"), QLatin1String("boulder"))
@@ -3630,7 +3672,21 @@ BleauBoulderModel::roleNames() const
   return role_names;
 }
 
+void
+BleauBoulderModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+BleauBoulderModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 BleauSchema::BleauSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_place(nullptr),

@@ -1093,7 +1093,21 @@ RefugeModel::roleNames() const
   return role_names;
 }
 
+void
+RefugeModel::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+RefugeModel::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}
 RefugeDatabaseSchema::RefugeDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_refuge(nullptr),

@@ -341,4 +341,18 @@ QHash<int, QByteArray>
   return role_names;
 }
 
+void
+{{class_name_model}}::clear_items()
+{
+  beginResetModel();
+  m_items.clear();
+  endResetModel();
+}
 
+void
+{{class_name_model}}::set_items(const ItemList & items)
+{
+  beginResetModel();
+  m_items = items;
+  endResetModel();
+}

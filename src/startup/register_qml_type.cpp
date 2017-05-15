@@ -34,7 +34,7 @@
 #include "ephemeride/ephemeride.h"
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
-// #include "refuge/refuge.h"
+#include "refuge/refuge_schema_manager.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 
@@ -59,8 +59,8 @@ register_qml_types()
 
   qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
 
-  // qmlRegisterType<Refuge>(package, major, minor, "Refuge");
-  // qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
+  qmlRegisterType<Refuge>(package, major, minor, "Refuge");
+  qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
 
   // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
 

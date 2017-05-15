@@ -14,8 +14,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 
 set(alpine_toolkit_library_files
   #document/document_manager.cpp
-  bleaudb/bleau_database.cpp
   bleaudb/bleau_schema.cpp
+  bleaudb/bleau_schema_manager.cpp
   bleaudb/bleau_sqlite_database.cpp
   camptocamp/camptocamp_api_cache.cpp
   camptocamp/camptocamp_client.cpp
@@ -33,17 +33,20 @@ set(alpine_toolkit_library_files
   network/network_fetcher.cpp
   network/network_reply.cpp
   network/network_ressource_request.cpp
+  orm/SqlQueryModel.cpp
   orm/database.cpp
   orm/database_connection.cpp
   orm/database_schema.cpp
-  orm/SqlQueryModel.cpp
   orm/database_table.cpp
   orm/network_database.cpp
   orm/schema.cpp
+  orm/schema_manager.cpp
   orm/sqlite_database.cpp
   orm/type_conversion.cpp
-  refuge/refuge.cpp
+  phonetic_algorithm/soundex.cpp
   refuge/refuge_schema.cpp
+  refuge/refuge_schema_custom_code.cpp
+  refuge/refuge_schema_manager.cpp
   rrd/rrd.cpp
   settings/settings_database.cpp
   )

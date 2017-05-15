@@ -248,20 +248,29 @@ class {{class_name_cache}} : public QObject
   Q_OBJECT
 
 public:
+  typedef {{class_name}} * Key;
+  typedef {{class_name_ptr}} Ptr;
+  typedef QList<Ptr> PtrList;
+
+public:
   {{class_name_cache}}();
   ~{{class_name_cache}}();
 
-   void add({{class_name_ptr}} & ptr);
-   void remove({{class_name_ptr}} & ptr);
+   void add(Ptr & ptr);
+   void remove(Ptr & ptr);
+
+    // Fixme: efficiency, QMap has key iterator but not value iterator
+   PtrList items() { return m_loaded_instances.values(); }
+   const PtrList items() const { return m_loaded_instances.values(); }
 
 public slots:
   void on_changed();
 
 private:
-  // QLinkedList<{{class_name_ptr}}> m_loaded_instances;
-  // QLinkedList<{{class_name_ptr}}> m_modified_instances;
-  QMap<{{class_name}} *, {{class_name_ptr}}> m_loaded_instances;
-  QMap<{{class_name}} *, {{class_name_ptr}}> m_modified_instances;
+  // QLinkedList<Ptr> m_loaded_instances;
+  // QLinkedList<Ptr> m_modified_instances;
+  QMap<Key, Ptr> m_loaded_instances;
+  QMap<Key, Ptr> m_modified_instances;
 
 {%- if custom_class_cache %}
 // Custom Declarations
@@ -296,6 +305,9 @@ public:
   int rowCount(const QModelIndex & parent) const;
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const;
+
+  void clear_items();
+  void set_items(const ItemList & items);
 
 private:
   ItemList m_items;
