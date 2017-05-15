@@ -34,7 +34,7 @@ Pane {
             console.info('Received document ' + document_id);
             // console.info('document ' + c2c_client.get_document(document_id))
             var properties = { 'route': c2c_client.get_document(document_id) };
-            push_page('qrc:/pages/CamptocampRoute.qml', properties);
+            push_page('qrc:/Pages/CamptocampRoute.qml', properties);
         }
         onReceivedSearch: {
             busy_indicator.running = false;
@@ -78,7 +78,7 @@ Pane {
 			verticalAlignment: Image.AlignVCenter
 			source: c2c_client.logged ? 'qrc:/icons/person-black.png' : 'qrc:/icons/person-outline-black.png'
                     }
-                    onClicked: push_page('qrc:/pages/CamptocampLogin.qml')
+                    onClicked: push_page('qrc:/Pages/CamptocampLogin.qml')
 		}
 
                 BusyIndicator {
@@ -125,7 +125,7 @@ Pane {
                     onClicked: {
 			var properties = { 'search_filters_state': search_filters_state }
 			console.info('clicked ' + JSON.stringify(properties))
-			var item = push_page('qrc:/pages/CamptocampSearchFilter.qml', properties)
+			var item = push_page('qrc:/Pages/CamptocampSearchFilter.qml', properties)
 			console.info('pushed ' + item)
 		    }
 		}

@@ -1,15 +1,42 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
+    <qresource prefix="/Pages">
+        <file alias="Altimeter.qml">qml/Pages/Altimeter.qml</file>
+        <file alias="Bleau.qml">qml/Pages/Bleau.qml</file>
+        <file alias="Camera.qml">qml/Pages/Camera.qml</file>
+        <file alias="Camptocamp.qml">qml/Pages/Camptocamp.qml</file>
+        <file alias="CamptocampLogin.qml">qml/Pages/CamptocampLogin.qml</file>
+        <file alias="CamptocampRoute.qml">qml/Pages/CamptocampRoute.qml</file>
+        <file alias="CamptocampSearchFilter.qml">qml/Pages/CamptocampSearchFilter.qml</file>
+        <file alias="Chart.qml">qml/Pages/Chart.qml</file>
+        <file alias="Checklist.qml">qml/Pages/Checklist.qml</file>
+        <file alias="DataLogger.qml">qml/Pages/DataLogger.qml</file>
+        <file alias="Emergency.qml">qml/Pages/Emergency.qml</file>
+        <file alias="Ephemeride.qml">qml/Pages/Ephemeride.qml</file>
+        <file alias="Gps.qml">qml/Pages/Gps.qml</file>
+        <file alias="HeartRate.qml">qml/Pages/HeartRate.qml</file>
+        <file alias="Illuminance.qml">qml/Pages/Illuminance.qml</file>
+        <file alias="Inclination.qml">qml/Pages/Inclination.qml</file>
+        <file alias="LampSignal.qml">qml/Pages/LampSignal.qml</file>
+        <file alias="Refuge.qml">qml/Pages/Refuge.qml</file>
+        <file alias="RefugeDirectory.qml">qml/Pages/RefugeDirectory.qml</file>
+        <file alias="Torch.qml">qml/Pages/Torch.qml</file>
+        <file alias="UiTest.qml">qml/Pages/UiTest.qml</file>
+        <file alias="PageModel.qml">qml/PageModel.qml</file>
+    </qresource>
     <qresource prefix="/Widgets">
-	<file alias="CompassRose.qml">pages/Components/Widgets/CompassRose.qml</file>
+	<file alias="CompassRose.qml">qml/Widgets/CompassRose.qml</file>
+        <file alias="About.qml">qml/Widgets/About.qml</file>
+        <file alias="OptionsMenu.qml">qml/Widgets/OptionsMenu.qml</file>
+        <file alias="SplashScreen.qml">qml/Widgets/SplashScreen.qml</file>
     </qresource>
     <qresource prefix="/C2cFilter">
-	<file alias="Filter.qml">pages/Components/C2cFilter/Filter.qml</file>
-	<file alias="ActivityFilter.qml">pages/Components/C2cFilter/ActivityFilter.qml</file>
-	<file alias="CheckBoxFilter.qml">pages/Components/C2cFilter/CheckBoxFilter.qml</file>
-	<file alias="CompassRoseFilter.qml">pages/Components/C2cFilter/CompassRoseFilter.qml</file>
-	<file alias="GradeRangeSliderFilter.qml">pages/Components/C2cFilter/GradeRangeSliderFilter.qml</file>
-	<file alias="RangeSliderFilter.qml">pages/Components/C2cFilter/RangeSliderFilter.qml</file>
+	<file alias="Filter.qml">qml/C2cFilter/Filter.qml</file>
+	<file alias="ActivityFilter.qml">qml/C2cFilter/ActivityFilter.qml</file>
+	<file alias="CheckBoxFilter.qml">qml/C2cFilter/CheckBoxFilter.qml</file>
+	<file alias="CompassRoseFilter.qml">qml/C2cFilter/CompassRoseFilter.qml</file>
+	<file alias="GradeRangeSliderFilter.qml">qml/C2cFilter/GradeRangeSliderFilter.qml</file>
+	<file alias="RangeSliderFilter.qml">qml/C2cFilter/RangeSliderFilter.qml</file>
     </qresource>
     <qresource prefix="/">
     <file>application-icons/icon-512.png</file>
@@ -60,29 +87,7 @@
     <file>js/camptocamp_search_filter.js</file>
     <file>js/compass_rose.js</file>
 
-    <file>pages/main.qml</file>
-
-    <file>pages/Altimeter.qml</file>
-    <file>pages/Bleau.qml</file>
-    <file>pages/Camera.qml</file>
-    <file>pages/Camptocamp.qml</file>
-    <file>pages/CamptocampLogin.qml</file>
-    <file>pages/CamptocampRoute.qml</file>
-    <file>pages/CamptocampSearchFilter.qml</file>
-    <file>pages/Chart.qml</file>
-    <file>pages/Checklist.qml</file>
-    <file>pages/DataLogger.qml</file>
-    <file>pages/Emergency.qml</file>
-    <file>pages/Ephemeride.qml</file>
-    <file>pages/Gps.qml</file>
-    <file>pages/HeartRate.qml</file>
-    <file>pages/Illuminance.qml</file>
-    <file>pages/Inclination.qml</file>
-    <file>pages/LampSignal.qml</file>
-    <file>pages/Refuge.qml</file>
-    <file>pages/RefugeDirectory.qml</file>
-    <file>pages/Torch.qml</file>
-    <file>pages/UiTest.qml</file>
+    <file>qml/main.qml</file>
 
     <file>qtquickcontrols2.conf</file>
 

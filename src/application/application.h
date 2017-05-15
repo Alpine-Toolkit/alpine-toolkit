@@ -86,6 +86,7 @@ private:
   QSettings m_settings;
   QDir m_application_user_directory;
   QQmlApplicationEngine m_engine;
+  bool m_can_start = false;
 };
 
 /**************************************************************************************************/

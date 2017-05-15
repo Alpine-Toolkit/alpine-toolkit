@@ -12,7 +12,7 @@ Pane {
     // Component.onCompleted: {
     // }
 
-    // QQmlExpression: Expression qrc:/pages/DataLogger.qml:16:18 depends on non-NOTIFYable properties:
+    // QQmlExpression: Expression qrc:/Pages/DataLogger.qml:16:18 depends on non-NOTIFYable properties:
     //   ServiceClient::replica
     // Connections {
     //     target : service.replica

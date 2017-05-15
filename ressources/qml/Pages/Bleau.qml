@@ -36,11 +36,11 @@ Pane {
             font.pixelSize: 12
             text: model.name
             onClicked: {
-                app_bar.state = "BACK"
+                application_toolbar.state = "BACK"
                 nav_icon.visible = false
                 back_icon.visible = true
                 var properties = {'model': refuge_model[model.index]}
-                // stack_view.push("qrc:/pages/BleauMassif.qml", properties, StackView.Transition)
+                // stack_view.push("qrc:/Pages/BleauMassif.qml", properties, StackView.Transition)
             }
         }
 

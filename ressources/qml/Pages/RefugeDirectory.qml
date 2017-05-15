@@ -7,6 +7,7 @@ import QtQuick.Controls 2.0
 
 import QtSensors 5.1
 
+
 Pane {
     id: refuge_directory_pane
 
@@ -39,7 +40,7 @@ Pane {
             text: model.name
             onClicked: {
                 // model = QQmlDMObjectData(0x3f24860)
-                app_bar.state = "BACK"
+                application_toolbar.state = "BACK"
                 nav_icon.visible = false
                 back_icon.visible = true
                 var properties = {'model': refuge_model[model.index]}
@@ -54,7 +55,7 @@ Pane {
                 //     'phone': model.phone,
                 //     'region': model.region
                 // }};
-                stack_view.push("qrc:/pages/Refuge.qml", properties, StackView.Transition)
+                stack_view.push("qrc:/Pages/Refuge.qml", properties, StackView.Transition)
             }
         }
 

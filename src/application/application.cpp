@@ -266,16 +266,32 @@ Application::set_offline_storage_path()
 void
 Application::load_qml_main()
 {
-  m_engine.load(QUrl("qrc:/pages/main.qml"));
+  m_engine.load(QUrl("qrc:/qml/main.qml"));
+
+  QList<QObject *> root_objects = m_engine.rootObjects();
+  if (root_objects.size() == 1) {
+    QObject * application_window = root_objects[0];
+    m_can_start = true;
+
+#ifndef ANDROID
+    // Set application window size on desktop
+    //  use 1900x1200 aspect ratio
+    int device_pixel_scale = 3;
+    int width = 1200;
+    int height = 1900;
+    application_window->setProperty("width", width / device_pixel_scale);
+    application_window->setProperty("height", height / device_pixel_scale);
+#endif
+  }
 }
 
 int
 Application::exec()
 {
-  if (m_engine.rootObjects().isEmpty())
-    return EXIT_FAILURE;
-  else
+  if (m_can_start)
     return m_application.exec();
+  else
+    return EXIT_FAILURE;
 }
 
 /***************************************************************************************************
