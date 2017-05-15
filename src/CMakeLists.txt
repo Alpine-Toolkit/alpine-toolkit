@@ -62,16 +62,12 @@ target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Ne
 
 set(alpine_toolkit_executable_files
   main.cpp
+  application/application.cpp
+  application/test.cpp
   satellite_model/satellite_model.cpp
   sensors/qml_barimeter_altimeter_sensor.cpp
   sensors/qmlsensor.cpp
   sensors/qmlsensorrange.cpp
-  startup/load_sqlite.cpp
-  startup/load_translation.cpp
-  startup/register_qml_type.cpp
-  startup/set_context_properties.cpp
-  startup/test.cpp
-  startup/user_directory.cpp
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
