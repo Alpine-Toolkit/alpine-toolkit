@@ -56,6 +56,10 @@
     <file>icons/arrow-back-white@3x.png</file>
     <file>icons/call-black.png</file>
     <file>icons/call-black@3x.png</file>
+    <file>icons/clear-black.png</file>
+    <file>icons/clear-black@3x.png</file>
+    <!-- <file>icons/close-black.png</file> -->
+    <!-- <file>icons/close-black@3x.png</file> -->
     <file>icons/cloud-done-black.png</file>
     <file>icons/cloud-done-black@3x.png</file>
     <file>icons/cloud-download-black.png</file>
@@ -64,6 +68,12 @@
     <file>icons/explore-black@3x.png</file>
     <file>icons/filter-black.png</file>
     <file>icons/filter-black@3x.png</file>
+    <file>icons/gps-fixed-black.png</file>
+    <file>icons/gps-fixed-black@3x.png</file>
+    <file>icons/gps-not-fixed-black.png</file>
+    <file>icons/gps-not-fixed-black@3x.png</file>
+    <file>icons/gps-off-black.png</file>
+    <file>icons/gps-off-black@3x.png</file>
     <file>icons/menu-white.png</file>
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>

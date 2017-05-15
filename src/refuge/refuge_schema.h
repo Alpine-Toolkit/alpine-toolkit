@@ -389,7 +389,8 @@ public:
     NUMBER_OF_PLACES,
     REGION,
     URL,
-    PHONE
+    PHONE,
+    FIRST_LETTER
   };
   Q_ENUMS(Roles) // Fixme: ???
 

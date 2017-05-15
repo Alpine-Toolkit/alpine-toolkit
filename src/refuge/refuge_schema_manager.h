@@ -72,10 +72,11 @@ public:
 
   const Refuge::PtrList & refuges_list() const { return m_refuges; }
   Q_INVOKABLE QList<QObject *> refuges_as_object_list(); // const
+  Q_INVOKABLE QVariant refuges_as_object_list_variant() { return QVariant::fromValue(refuges_as_object_list()); } // const
 
   Q_INVOKABLE void filter_refuge_list(const QString & query);
 
-  RefugeModel & model() { return m_refuge_model; }
+  Q_INVOKABLE RefugeModel * model() { return &m_refuge_model; }
 
 signals:
   void refugeListChanged();

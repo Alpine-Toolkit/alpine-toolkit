@@ -122,6 +122,8 @@ remove_consecutive_char(const QString & input)
 QString
 zero_padding(const QString & string, const int encoded_length = 4)
 {
+  qInfo() << "zero_padding" << string;
+
   QString output(string);
   int length = output.size();
 
@@ -172,6 +174,8 @@ soundex(const QString & string, const TranslationMap & translation_map)
     return QLatin1String("0000");
 
   encoded = encoded.toLower();
+
+  qInfo() << "soundex" << string;
 
   // Must consist entirely of letters
   if (not is_alpha_string(encoded))
@@ -264,22 +268,28 @@ soundex_fr(const QString & string)
 
   // Convert French diacritic
   encoded = encoded.toLower();
-  encoded.replace(QLatin1String("é"), QLatin1String("e"));
-  encoded.replace(QLatin1String("è"), QLatin1String("e"));
-  encoded.replace(QLatin1String("ë"), QLatin1String("e"));
-  encoded.replace(QLatin1String("ê"), QLatin1String("e"));
-  encoded.replace(QLatin1String("à"), QLatin1String("a"));
-  encoded.replace(QLatin1String("ä"), QLatin1String("a"));
-  encoded.replace(QLatin1String("ç"), QLatin1String("c"));
-  encoded.replace(QLatin1String("î"), QLatin1String("i"));
-  encoded.replace(QLatin1String("ï"), QLatin1String("i"));
-  encoded.replace(QLatin1String("ô"), QLatin1String("o"));
-  encoded.replace(QLatin1String("ö"), QLatin1String("o"));
-  encoded.replace(QLatin1String("ù"), QLatin1String("u"));
-  encoded.replace(QLatin1String("ü"), QLatin1String("u"));
-  encoded.replace(QLatin1String("û"), QLatin1String("u"));
+  // encoded = encoded.replace(QLatin1String("é"), QLatin1String("e"));
+  // encoded = encoded.replace(QLatin1String("è"), QLatin1String("e"));
+  // encoded = encoded.replace(QLatin1String("ë"), QLatin1String("e"));
+  // encoded = encoded.replace(QLatin1String("ê"), QLatin1String("e"));
+  // encoded = encoded.replace(QLatin1String("à"), QLatin1String("a"));
+  // encoded = encoded.replace(QLatin1String("ä"), QLatin1String("a"));
+  // encoded = encoded.replace(QLatin1String("ç"), QLatin1String("c"));
+  // encoded = encoded.replace(QLatin1String("î"), QLatin1String("i"));
+  // encoded = encoded.replace(QLatin1String("ï"), QLatin1String("i"));
+  // encoded = encoded.replace(QLatin1String("ô"), QLatin1String("o"));
+  // encoded = encoded.replace(QLatin1String("ö"), QLatin1String("o"));
+  // encoded = encoded.replace(QLatin1String("ù"), QLatin1String("u"));
+  // encoded = encoded.replace(QLatin1String("ü"), QLatin1String("u"));
+  // encoded = encoded.replace(QLatin1String("û"), QLatin1String("u"));
 
-  return soundex(encoded, soundex_fr_translation_map);
+  QString normalized_name = encoded.normalized(QString::NormalizationForm_D);
+  QString alpha_name;
+  for (const auto & c : normalized_name)
+    if (c.isLetterOrNumber() or c.isSpace())
+      alpha_name += c;
+
+  return soundex(alpha_name, soundex_fr_translation_map); // encoded
 }
 
 /***************************************************************************************************

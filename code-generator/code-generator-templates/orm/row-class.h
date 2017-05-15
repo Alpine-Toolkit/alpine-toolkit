@@ -295,7 +295,7 @@ public:
 
   // Fixme: use {{class_name_schema}}::Fields ???
   enum Roles {
-{% for member in members %}
+{% for member in members + schema.computed_members %}
     {{member.name|upper}}{% if loop.first %} = Qt::UserRole + 1{% endif %}{% if not loop.last %},{% endif %} 
 {% endfor %}{# space #}
   };

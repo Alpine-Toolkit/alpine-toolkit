@@ -167,6 +167,12 @@ Application::copy_file_from_asset(const QDir & destination, const QString & file
   }
 }
 
+#define QmlRegisterType(Type) \
+  qmlRegisterType<Type>(package, major, minor, #Type)
+
+#define QmlRegisterUncreatableType(Type) \
+  qmlRegisterUncreatableType<Type>(package, major, minor, #Type, QLatin1String("Cannot create" #Type))
+
 void
 Application::register_qml_types()
 {
@@ -181,24 +187,26 @@ Application::register_qml_types()
   // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
   // qmlRegisterUncreatableType<QmlSensor                   >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
   // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
-  qmlRegisterType<QmlBarometerAltimeterSensor>(package, major, minor, "BarimeterAltimeterSensor");
-  qmlRegisterUncreatableType<QmlBarometerAltimeterReading>(package, major, minor, "BarimeterAltimeterReading", QLatin1String("Cannot create PressureReading"));
 
-  qmlRegisterType<SatelliteModel>(package, major, minor, "SatelliteModel");
+  QmlRegisterType(QmlBarometerAltimeterSensor);
+  QmlRegisterUncreatableType(QmlBarometerAltimeterReading);
 
-  qmlRegisterType<Refuge>(package, major, minor, "Refuge");
-  qmlRegisterType<RefugeModel>(package, major, minor, "RefugeModel");
+  QmlRegisterType(SatelliteModel);
 
-  // qmlRegisterType<Ephemeride>(package, major, minor, "Ephemeride");
+  QmlRegisterType(Refuge);
+  QmlRegisterUncreatableType(RefugeModel);
+  QmlRegisterUncreatableType(RefugeSchemaManager);
 
-  qmlRegisterType<C2cSearchSettings>(package, major, minor, "C2cSearchSettings");
-  // qRegisterMetaType<C2cSearchSettings>("C2cSearchSettings");
+  // QmlRegisterType(Ephemeride);
 
-  qmlRegisterUncreatableType<C2cDocument>(package, major, minor, "C2cDocument", QLatin1String("Cannot create C2cDocument"));
-  qmlRegisterUncreatableType<C2cImage>(package, major, minor, "C2cImage", QLatin1String("Cannot create C2cImage"));
-  qmlRegisterUncreatableType<C2cRoute>(package, major, minor, "C2cRoute", QLatin1String("Cannot create C2cRoute"));
-  qmlRegisterUncreatableType<C2cShortRoute>(package, major, minor, "C2cShortRoute", QLatin1String("Cannot create C2cShortRoute"));
-  qmlRegisterUncreatableType<C2cSearchResult>(package, major, minor, "C2cSearchResult", QLatin1String("Cannot create C2cSearchResult"));
+  QmlRegisterType(C2cSearchSettings);
+  // qRegisterMetaType(C2cSearchSettings);
+
+  QmlRegisterUncreatableType(C2cDocument);
+  QmlRegisterUncreatableType(C2cImage);
+  QmlRegisterUncreatableType(C2cRoute);
+  QmlRegisterUncreatableType(C2cShortRoute);
+  QmlRegisterUncreatableType(C2cSearchResult);
 }
 
 void
@@ -225,6 +233,8 @@ Application::set_context_properties()
   RefugeSchemaManager * refuge_schema_manager = new RefugeSchemaManager(ffcam_refuge_json);
   QList<QObject *> refuges = refuge_schema_manager->refuges_as_object_list();
   context->setContextProperty("refuge_model", QVariant::fromValue(refuges));
+  context->setContextProperty(QLatin1Literal("refuge_schema_manager"), refuge_schema_manager);
+  context->setContextProperty(QLatin1Literal("refuge_schema_manager_model"), refuge_schema_manager->model());
 
   // Create Bleau Model
   // BleauDB * bleaudb = new BleauDB();

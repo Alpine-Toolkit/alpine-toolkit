@@ -39,6 +39,8 @@
 #include <QTranslator>
 // #include <QGuiApplication>
 
+#include "refuge/refuge_schema_manager.h"
+
 /**************************************************************************************************/
 
 class Application
@@ -80,13 +82,14 @@ protected:
   ~Application();
 
 private:
+  bool m_can_start = false;
   // QGuiApplication m_application;
   QApplication m_application; // for charts
   QTranslator m_translator;
   QSettings m_settings;
   QDir m_application_user_directory;
   QQmlApplicationEngine m_engine;
-  bool m_can_start = false;
+  RefugeSchemaManager m_refuge_schema_manager;
 };
 
 /**************************************************************************************************/

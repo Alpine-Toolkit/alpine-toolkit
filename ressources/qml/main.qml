@@ -44,10 +44,6 @@ ApplicationWindow {
     header: ToolBar {
         id: application_toolbar
 
-        states: [
-            State { name: 'BACK' }
-        ]
-
         RowLayout {
             spacing: 20
             anchors.fill: parent
@@ -58,27 +54,15 @@ ApplicationWindow {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: 'qrc:/icons/menu-white.png'
-                }
-                onClicked: drawer.open()
-            }
-
-            ToolButton {
-                id: back_icon
-                visible: false
-                contentItem: Image {
-                    fillMode: Image.Pad
-                    horizontalAlignment: Image.AlignHCenter
-                    verticalAlignment: Image.AlignVCenter
-                    source: 'qrc:/icons/arrow-back-white.png'
+                    source: stack_view.depth > 1 ?
+                        'qrc:/icons/arrow-back-white.png' :
+                        'qrc:/icons/menu-white.png'
                 }
                 onClicked: {
-                    if (application_toolbar.state == 'BACK') {
-                        application_toolbar.state == ''
-                        back_icon.visible = false
-                        nav_icon.visible = true
-                    }
-                    stack_view.pop(StackView.Transition)
+                    if (stack_view.depth > 1)
+                        stack_view.pop(StackView.Transition)
+                    else
+                        drawer.open()
                 }
             }
 
@@ -148,9 +132,6 @@ ApplicationWindow {
 
     function push_page(url, properties) {
 	properties = properties !== undefined ? properties : {}
-        application_toolbar.state = 'BACK'
-        nav_icon.visible = false
-        back_icon.visible = true
 	// console.info('push_page ' + url + ' ' + JSON.stringify(properties))
         return stack_view.push(url, properties, StackView.Transition)
     }

@@ -3,7 +3,7 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.1
 
 import QtSensors 5.1
 
@@ -17,6 +17,7 @@ Pane {
 
   Component {
         id: section_heading
+
         Rectangle {
             width: refuge_directory_pane.width
             height: childrenRect.height
@@ -29,40 +30,91 @@ Pane {
         }
     }
 
-    ListView {
-        id: list_view
+    ColumnLayout {
         anchors.fill: parent
-        model: refuge_model
-        // model: sql_model
-        delegate: ItemDelegate {
-            width: parent.width
-            font.pixelSize: 12
-            text: model.name
-            onClicked: {
-                // model = QQmlDMObjectData(0x3f24860)
-                application_toolbar.state = "BACK"
-                nav_icon.visible = false
-                back_icon.visible = true
-                var properties = {'model': refuge_model[model.index]}
-                // console.info(refuge_model, model.index, refuge_model.at(model.index));
-                // var properties = {'model': refuge_model.at(model.index)}
-                // var properties = {'model': {
-                //     'altitude': model.altitude,
-                //     'description': model.description,
-                //     'guardian': model.guardian,
-                //     'coordinate': {'latitude': model.latitude, 'longitude': model.longitude},
-                //     'name': model.name,
-                //     'phone': model.phone,
-                //     'region': model.region
-                // }};
-                stack_view.push("qrc:/Pages/Refuge.qml", properties, StackView.Transition)
-            }
+
+        RowLayout {
+            Layout.fillWidth: true
+
+	    TextField {
+                id: search_textfield
+                Layout.fillWidth: true
+                placeholderText: qsTr('Search')
+                onPressed: search()
+                onTextChanged: search()
+	    }
+
+	    ToolButton {
+                id: search_icon
+                contentItem: Image {
+		    fillMode: Image.Pad
+		    horizontalAlignment: Image.AlignHCenter
+		    verticalAlignment: Image.AlignVCenter
+		    source: 'qrc:/icons/search-black.png'
+                }
+                onClicked: search()
+	    }
+
+	    ToolButton {
+                id: clear_icon
+                visible: search_textfield.text
+                contentItem: Image {
+		    fillMode: Image.Pad
+		    horizontalAlignment: Image.AlignHCenter
+		    verticalAlignment: Image.AlignVCenter
+		    source: 'qrc:/icons/clear-black.png'
+                }
+                onClicked: search_textfield.clear()
+	    }
+
+	    ToolButton {
+                id: gps_icon
+                checkable: true
+                contentItem: Image {
+		    fillMode: Image.Pad
+		    horizontalAlignment: Image.AlignHCenter
+		    verticalAlignment: Image.AlignVCenter
+		    source: gps_icon.checked ?
+                        'qrc:/icons/gps-fixed-black.png' :
+                        'qrc:/icons/gps-not-fixed-black.png'
+                }
+                onClicked: {
+                }
+	    }
         }
 
-        // section.property: "short_name"
-        // section.criteria: ViewSection.FirstCharacter
-        section.property: "first_letter"
-        section.criteria: ViewSection.FullString
-        section.delegate: section_heading
+        ListView {
+            id: list_view
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            // model: refuge_model // ok
+            // model: refuge_schema_manager.refuges_as_object_list() // model.name -> Unable to assign [undefined] to QString
+            // model: refuge_schema_manager.refuges_as_object_list_variant() // idem
+            // model: refuge_schema_manager.model() // ok
+            // model: refuge_schema_manager_model // ok
+            model: refuge_schema_manager.refuges // ok
+
+            delegate: ItemDelegate {
+                width: parent.width
+                font.pixelSize: 12
+                text: model.name
+                onClicked: {
+                    var properties = {'model': refuge_model[model.index]}
+                    console.info("refuge " + properties)
+                    application_window.push_page("qrc:/Pages/Refuge.qml", properties)
+                }
+            }
+
+            section.property: "first_letter"
+            // FirstLetter considers diacritic as different letters
+            section.criteria: ViewSection.FullString
+            section.delegate: section_heading
+        }
+    }
+
+    function search() {
+        console.info("Search " + search_textfield.text)
+        refuge_schema_manager.filter_refuge_list(search_textfield.text)
     }
 }

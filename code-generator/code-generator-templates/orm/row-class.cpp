@@ -309,7 +309,7 @@ QVariant
 item->{{member.name}}()
 {%- endmacro %}
   switch (role) {
-{% for member in members %}
+{% for member in members + schema.computed_members %}
   case {{member.name|upper}}:
     return {% if member.cast_variant -%}
 QVariant::fromValue({{ _value(member) }})
@@ -329,12 +329,12 @@ QHash<int, QByteArray>
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;{# = {
-{% for member in members %}
+{% for member in members + schema.computed_members %}
   {{member.name|upper}}, QLatin1Literal("{{member.name}}").latin1(){% if not loop.last %},{% endif %} 
 {% endfor %}
   };#}
 
-{% for member in members %}
+{% for member in members + schema.computed_members %}
   role_names[{{member.name|upper}}] = QLatin1Literal("{{member.name}}").latin1();
 {% endfor %}
 

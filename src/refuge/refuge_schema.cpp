@@ -1065,6 +1065,8 @@ RefugeModel::data(const QModelIndex & index, int role) const
     return item->url();
   case PHONE:
     return item->phone();
+  case FIRST_LETTER:
+    return item->first_letter();
   default:
     break;
   }
@@ -1089,6 +1091,7 @@ RefugeModel::roleNames() const
   role_names[REGION] = QLatin1Literal("region").latin1();
   role_names[URL] = QLatin1Literal("url").latin1();
   role_names[PHONE] = QLatin1Literal("phone").latin1();
+  role_names[FIRST_LETTER] = QLatin1Literal("first_letter").latin1();
 
   return role_names;
 }
