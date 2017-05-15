@@ -58,15 +58,19 @@ C2cApiCache::C2cApiCache(const QString & sqlite_path)
   // Fixme: migrate table using VERSION
 
   QcSchema metadata_schema(METADATA);
-  metadata_schema << QcSchemaField(KEY, QLatin1String("QString"), QLatin1String("TEXT"), QLatin1String("NOT NULL"));
+  QcSchemaField key_field(KEY, QLatin1String("QString"), QLatin1String("TEXT"));
+  key_field.set_nullable(false);
+  metadata_schema << key_field;
   metadata_schema << QcSchemaField(VALUE, QLatin1String("QString"), QLatin1String("TEXT"));
   m_metadata_table = &register_table(metadata_schema);
 
   QcSchema document_schema(DOCUMENT);
   // # https://www.sqlite.org/autoinc.html
   // # Fixme: how to handle auto-increment overflow ?
-  metadata_schema << QcSchemaField(ID, QLatin1String("int"), QLatin1String("INTEGER"), QLatin1String("NOT NULL"));
-  metadata_schema << QcSchemaField(DATA, QLatin1String("QByteArray"), QLatin1String("BLOB")); // JSON HIDDEN
+  QcSchemaField id_field(ID, QLatin1String("int"), QLatin1String("INTEGER"));
+  id_field.set_nullable(false);
+  document_schema << id_field;
+  document_schema << QcSchemaField(DATA, QLatin1String("QByteArray"), QLatin1String("BLOB")); // JSON HIDDEN
   m_document_table = &register_table(document_schema);
 }
 
