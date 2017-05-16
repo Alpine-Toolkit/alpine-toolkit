@@ -38,7 +38,7 @@ Pane {
 
     // Fixme: If not available ???
     // PressureSensor
-    BarimeterAltimeterSensor {
+    BarometerAltimeterSensor {
         id: pressure_sensor
         active: true // ???
 

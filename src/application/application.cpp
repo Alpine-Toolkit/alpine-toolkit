@@ -172,18 +172,24 @@ Application::write_debug_data() const
   qInfo() << debug_data.to_json();
 }
 
-#define QmlRegisterType(Type) \
-  qmlRegisterType<Type>(package, major, minor, #Type)
-
-#define QmlRegisterUncreatableType(Type) \
-  qmlRegisterUncreatableType<Type>(package, major, minor, #Type, QLatin1String("Cannot create" #Type))
-
 void
 Application::register_qml_types()
 {
   const char * package = "Local";
   int major = 1;
   int minor = 0;
+
+#define QmlRegisterType(Type) \
+  qmlRegisterType<Type>(package, major, minor, #Type)
+
+#define QmlRegisterType2(Type, Name) \
+  qmlRegisterType<Type>(package, major, minor, #Name)
+
+#define QmlRegisterUncreatableType(Type) \
+  qmlRegisterUncreatableType<Type>(package, major, minor, #Type, QLatin1String("Cannot create" #Type))
+
+#define QmlRegisterUncreatableType2(Type, Name) \
+  qmlRegisterUncreatableType<Type>(package, major, minor, #Name, QLatin1String("Cannot create" #Type))
 
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
@@ -195,8 +201,8 @@ Application::register_qml_types()
 
   QmlRegisterUncreatableType(QmlApplication);
 
-  QmlRegisterType(QmlBarometerAltimeterSensor);
-  QmlRegisterUncreatableType(QmlBarometerAltimeterReading);
+  QmlRegisterType2(QmlBarometerAltimeterSensor, BarometerAltimeterSensor);
+  QmlRegisterUncreatableType2(QmlBarometerAltimeterReading, BarometerAltimeterReading);
 
   QmlRegisterType(SatelliteModel);
 
