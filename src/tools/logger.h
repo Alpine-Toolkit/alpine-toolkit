@@ -1,3 +1,5 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,21 +28,23 @@
 
 /**************************************************************************************************/
 
-#include "application/application.h"
-#include "tools/logger.h"
+#ifndef __LOGGER_H__
+#define __LOGGER_H__
 
 /**************************************************************************************************/
 
-int
-main(int argc, char *argv[])
-{
-#ifndef ANDROID
-  qInstallMessageHandler(message_handler);
-#endif
+#include <QString>
+#include <QMessageLogContext>
 
-  Application & application = Application::create(argc, argv);
-  return application.exec();
-}
+/**************************************************************************************************/
+
+// QC_BEGIN_NAMESPACE
+
+void message_handler(QtMsgType type, const QMessageLogContext & context, const QString & message);
+
+// QC_END_NAMESPACE
+
+#endif /* __LOGGER_H__ */
 
 /***************************************************************************************************
  *

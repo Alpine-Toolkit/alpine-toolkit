@@ -64,10 +64,14 @@ set(alpine_toolkit_executable_files
   main.cpp
   application/application.cpp
   application/test.cpp
+  configuration/configuration.cpp
   satellite_model/satellite_model.cpp
   sensors/qml_barimeter_altimeter_sensor.cpp
   sensors/qmlsensor.cpp
   sensors/qmlsensorrange.cpp
+  tools/debug_data.cpp
+  tools/logger.cpp
+  tools/platform.cpp
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)

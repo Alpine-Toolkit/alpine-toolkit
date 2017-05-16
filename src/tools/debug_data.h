@@ -1,3 +1,5 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,21 +28,39 @@
 
 /**************************************************************************************************/
 
-#include "application/application.h"
-#include "tools/logger.h"
+#ifndef __DEBUG_DATA_H__
+#define __DEBUG_DATA_H__
 
 /**************************************************************************************************/
 
-int
-main(int argc, char *argv[])
-{
-#ifndef ANDROID
-  qInstallMessageHandler(message_handler);
-#endif
+#include <QByteArray>
+#include <QString>
 
-  Application & application = Application::create(argc, argv);
-  return application.exec();
-}
+/**************************************************************************************************/
+
+// QC_BEGIN_NAMESPACE
+
+/**************************************************************************************************/
+
+class QcDebugData
+{
+public:
+  QcDebugData();
+  ~QcDebugData();
+
+  QByteArray to_json() const;
+  bool write_json(const QString & json_path) const;
+
+private:
+};
+
+/**************************************************************************************************/
+
+// QC_END_NAMESPACE
+
+/**************************************************************************************************/
+
+#endif /* __DEBUG_DATA_H__ */
 
 /***************************************************************************************************
  *

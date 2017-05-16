@@ -46,15 +46,9 @@
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
 #include "camptocamp/camptocamp_qml.h"
-#include "ephemeride/ephemeride.h"
-#include "refuge/refuge_schema_manager.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
-#include "service/client.h"
-
-#ifdef ANDROID
-#include "android_activity/android_activity.h"
-#endif
+#include "tools/debug_data.h"
 
 /**************************************************************************************************/
 
@@ -74,11 +68,13 @@ Application::Application(int & argc, char ** argv)
   : m_application(argc, argv),
     m_translator(),
     m_settings(),
+    m_config(QcConfig::instance()),
     m_engine()
 {
   setup_gui_application();
   load_translation();
-  create_user_application_directory();
+  m_config.init(); // Fixme: ???
+  write_debug_data();
   register_qml_types();
   set_context_properties();
   load_qml_main();
@@ -122,28 +118,6 @@ Application::load_settings()
   // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 }
 
-void
-Application::create_user_application_directory()
-{
-  // on Android
-  //   DataLocation = /data/data/org.alpine_toolkit
-  //   GenericDataLocation = <USER> = /storage/emulated/0 = user land root
-  // on Linux
-  //   GenericDataLocation = /home/fabrice/.local/share
-
-  QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  qInfo() << "GenericDataLocation:" << generic_data_location_path;
-  // /storage/emulated/0/Android/data/org.xxx/files Alarms Download Notifications cache
-
-  QString application_user_directory_path = QDir(generic_data_location_path).filePath("alpine-toolkit");
-  m_application_user_directory = application_user_directory_path;
-  if (! m_application_user_directory.exists()) {
-    if (!m_application_user_directory.mkpath(m_application_user_directory.absolutePath())) {
-      qWarning() << "Cannot create application user directory";
-    }
-  }
-}
-
 QString
 Application::copy_file_from_asset(const QDir & destination, const QString & filename)
 {
@@ -165,6 +139,14 @@ Application::copy_file_from_asset(const QDir & destination, const QString & file
     qCritical() << "Failed to copy" << source_path << "to" << destination_path;
     return QString();
   }
+}
+
+void
+Application::write_debug_data() const
+{
+  QcDebugData debug_data;
+  debug_data.write_json(m_config.join_application_user_directory(QLatin1Literal("debug_data.json")));
+  qInfo() << debug_data.to_json();
 }
 
 #define QmlRegisterType(Type) \
@@ -214,27 +196,20 @@ Application::set_context_properties()
 {
   QQmlContext * context = m_engine.rootContext();
 
-  // Create Android helper instances
 #ifdef ANDROID
   int on_android = 1;
-  AndroidActivity * android_activity = new AndroidActivity(); // parent ?
-  context->setContextProperty(QLatin1String("android_activity"), android_activity); // QLatin1String() ???
+  context->setContextProperty(QLatin1String("android_activity"), &m_android_activity);
 #else
   int on_android = 0;
 #endif
   context->setContextProperty(QLatin1String("on_android"), on_android);
 
-  // Create Ephemeride instance
-  Ephemeride * ephemeride = new Ephemeride(); // parent ?
-  context->setContextProperty(QLatin1Literal("ephemeride"), ephemeride);
+  context->setContextProperty(QLatin1String("service"), &m_service_client);
+  context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);
 
-  // Create FFCAM Refuge Model
   QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
-  RefugeSchemaManager * refuge_schema_manager = new RefugeSchemaManager(ffcam_refuge_json);
-  QList<QObject *> refuges = refuge_schema_manager->refuges_as_object_list();
-  context->setContextProperty("refuge_model", QVariant::fromValue(refuges));
-  context->setContextProperty(QLatin1Literal("refuge_schema_manager"), refuge_schema_manager);
-  context->setContextProperty(QLatin1Literal("refuge_schema_manager_model"), refuge_schema_manager->model());
+  m_refuge_schema_manager.load_json(ffcam_refuge_json);
+  context->setContextProperty(QLatin1Literal("refuge_schema_manager"), &m_refuge_schema_manager);
 
   // Create Bleau Model
   // BleauDB * bleaudb = new BleauDB();
@@ -256,13 +231,6 @@ Application::set_context_properties()
   qInfo() << "Camptocamp Cache" << c2c_api_cache_path << c2c_media_cache_path;
   C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
   context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
-
-  // RefugeModel * refuge_model = new RefugeModel(*refuges);
-  // context->setContextProperty("refuge_model", refuge_model);
-
-  // Create Service Client
-  ServiceClient * service_client = new ServiceClient();
-  context->setContextProperty(QLatin1String("service"), service_client);
 }
 
 void
@@ -270,7 +238,7 @@ Application::set_offline_storage_path()
 {
   qInfo() << "offlineStoragePath" << m_engine.offlineStoragePath();
   // /home/fabrice/.local/share/FabriceSalvaire/Alpine Toolkit/QML/OfflineStorage
-  m_engine.setOfflineStoragePath(m_application_user_directory.path());
+  m_engine.setOfflineStoragePath(m_config.application_user_directory());
 }
 
 void

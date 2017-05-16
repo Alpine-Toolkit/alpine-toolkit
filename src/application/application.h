@@ -39,7 +39,14 @@
 #include <QTranslator>
 // #include <QGuiApplication>
 
+#include "configuration/configuration.h"
+#include "ephemeride/ephemeride.h"
 #include "refuge/refuge_schema_manager.h"
+#include "service/client.h"
+
+#ifdef ANDROID
+#include "android_activity/android_activity.h"
+#endif
 
 /**************************************************************************************************/
 
@@ -62,12 +69,13 @@ public:
 
   int exec();
 
-  QDir & application_user_directory() { return m_application_user_directory; }
+  const QString & application_user_directory() const { return m_config.application_user_directory(); } // Fixme: ???
+  QcConfig & config() { return m_config; }
+
   QSettings & settings() { return m_settings; }
 
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);
-  void create_user_application_directory();
   void load_qml_main();
   void load_settings();
   void load_translation();
@@ -76,6 +84,7 @@ private:
   void set_context_properties();
   void set_offline_storage_path();
   void setup_gui_application();
+  void write_debug_data() const;
 
 protected:
   Application(int & argc, char ** argv);
@@ -87,9 +96,15 @@ private:
   QApplication m_application; // for charts
   QTranslator m_translator;
   QSettings m_settings;
-  QDir m_application_user_directory;
+  QcConfig & m_config;
   QQmlApplicationEngine m_engine;
+
+#ifdef ANDROID
+  AndroidActivity m_android_activity;
+#endif
+  Ephemeride m_ephemeride;
   RefugeSchemaManager m_refuge_schema_manager;
+  ServiceClient m_service_client;
 };
 
 /**************************************************************************************************/

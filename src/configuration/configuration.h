@@ -1,3 +1,5 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -26,21 +28,54 @@
 
 /**************************************************************************************************/
 
-#include "application/application.h"
-#include "tools/logger.h"
+#ifndef __CONFIGURATION_H__
+#define __CONFIGURATION_H__
 
 /**************************************************************************************************/
 
-int
-main(int argc, char *argv[])
-{
-#ifndef ANDROID
-  qInstallMessageHandler(message_handler);
-#endif
+#include <QString>
 
-  Application & application = Application::create(argc, argv);
-  return application.exec();
-}
+/**************************************************************************************************/
+
+// QC_BEGIN_NAMESPACE
+
+/**************************************************************************************************/
+
+class QcConfig
+{
+public:
+  static QcConfig & instance() {
+    // Thread-safe in C++11
+    static QcConfig m_instance;
+    return m_instance;
+  }
+
+  // Delete copy and move constructors and assign operators
+  QcConfig(QcConfig const &) = delete;             // Copy construct
+  QcConfig & operator=(QcConfig const &) = delete; // Copy assign
+  QcConfig(QcConfig &&) = delete;                  // Move construct
+  QcConfig & operator=(QcConfig &&) = delete;      // Move assign
+
+  const QString & application_user_directory() const { return m_application_user_directory; }
+  const QString join_application_user_directory(const QString & path);
+
+  void init();
+
+private:
+  QcConfig();
+  ~QcConfig();
+  void create_user_application_directory() const;
+
+private:
+  bool m_initialised;
+  QString m_application_user_directory;
+};
+
+/**************************************************************************************************/
+
+// QC_END_NAMESPACE
+
+#endif /* __CONFIGURATION_H__ */
 
 /***************************************************************************************************
  *

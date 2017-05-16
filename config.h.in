@@ -1,3 +1,5 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -24,23 +26,22 @@
 **
 ***************************************************************************************************/
 
-/**************************************************************************************************/
-
-#include "application/application.h"
-#include "tools/logger.h"
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
 
 /**************************************************************************************************/
 
-int
-main(int argc, char *argv[])
-{
-#ifndef ANDROID
-  qInstallMessageHandler(message_handler);
-#endif
+constexpr int ALPINE_TOOLKIT_VERSION_MAJOR = @ALPINE_TOOLKIT_VERSION_MAJOR@;
+constexpr int ALPINE_TOOLKIT_VERSION_MINOR = @ALPINE_TOOLKIT_VERSION_MINOR@;
+constexpr int ALPINE_TOOLKIT_VERSION_PATCH = @ALPINE_TOOLKIT_VERSION_PATCH@;
+const char * ALPINE_TOOLKIT_VERSION = "@ALPINE_TOOLKIT_VERSION@";
 
-  Application & application = Application::create(argc, argv);
-  return application.exec();
-}
+// #cmakedefine FOO_ENABLE
+// #cmakedefine FOO_STRING "@FOO_STRING@"
+
+/**************************************************************************************************/
+
+#endif // __CONFIG_H__
 
 /***************************************************************************************************
  *

@@ -182,6 +182,11 @@ if(NOT ANDROID)
 endif(NOT ANDROID)
 
 ####################################################################################################
+
+configure_file(config.h.in config.h @ONLY)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+####################################################################################################
 #
 # Sub directories
 #
