@@ -25,10 +25,15 @@
         <file alias="PageModel.qml">qml/PageModel.qml</file>
     </qresource>
     <qresource prefix="/Widgets">
+        <!-- file alias="qmldir">qml/Widgets/qmldir</file> -->
 	<file alias="CompassRose.qml">qml/Widgets/CompassRose.qml</file>
         <file alias="About.qml">qml/Widgets/About.qml</file>
+        <file alias="MenuItemIcon.qml">qml/Widgets/MenuItemIcon.qml</file>
         <file alias="OptionsMenu.qml">qml/Widgets/OptionsMenu.qml</file>
+        <file alias="Page.qml">qml/Widgets/Page.qml</file>
+        <file alias="Popup.qml">qml/Widgets/Popup.qml</file>
         <file alias="SplashScreen.qml">qml/Widgets/SplashScreen.qml</file>
+
     </qresource>
     <qresource prefix="/C2cFilter">
 	<file alias="Filter.qml">qml/C2cFilter/Filter.qml</file>
@@ -48,18 +53,20 @@
 
     <file>data/bleau.json</file>
     <file>data/ffcam-refuges.json</file>
-    <!-- <file>data/ffcam-refuges.sqlite</file> -->
+    <!-- file>data/ffcam-refuges.sqlite</file> -->
 
     <file>icons/add-black.png</file>
     <file>icons/add-black@3x.png</file>
     <file>icons/arrow-back-white.png</file>
     <file>icons/arrow-back-white@3x.png</file>
+    <file>icons/build-black.png</file>
+    <file>icons/build-black@3x.png</file>
     <file>icons/call-black.png</file>
     <file>icons/call-black@3x.png</file>
     <file>icons/clear-black.png</file>
     <file>icons/clear-black@3x.png</file>
-    <!-- <file>icons/close-black.png</file> -->
-    <!-- <file>icons/close-black@3x.png</file> -->
+    <!-- file>icons/close-black.png</file> -->
+    <!-- file>icons/close-black@3x.png</file> -->
     <file>icons/cloud-done-black.png</file>
     <file>icons/cloud-done-black@3x.png</file>
     <file>icons/cloud-download-black.png</file>
@@ -68,6 +75,8 @@
     <file>icons/explore-black@3x.png</file>
     <file>icons/filter-black.png</file>
     <file>icons/filter-black@3x.png</file>
+    <file>icons/help-black.png</file>
+    <file>icons/help-black@3x.png</file>
     <file>icons/gps-fixed-black.png</file>
     <file>icons/gps-fixed-black@3x.png</file>
     <file>icons/gps-not-fixed-black.png</file>

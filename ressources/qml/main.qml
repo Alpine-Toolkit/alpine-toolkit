@@ -4,6 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
 
+// import Widgets 1.0 // Fixme: don't work
 import "qrc:Widgets" as Widgets
 import "qrc:Pages" as Pages
 
@@ -12,6 +13,9 @@ ApplicationWindow {
     objectName: "application_window"
     title: 'Alpine Toolkit'
     visible: true
+
+    property var stack_view_stack: []
+    property var stack_view_history: []
 
     // Done by Material theme
     // FontLoader { id: roboto_regular; source: 'qrc:/fonts/Roboto-Regular.ttf' }
@@ -39,6 +43,12 @@ ApplicationWindow {
     Widgets.OptionsMenu {
         id: options_menu
         about_dialog: about_dialog
+
+        function open_settings_dialog() {
+            var current_item = stack_view.currentItem
+            if (typeof current_item.open_settings_dialog !== 'undefined')
+                current_item.open_settings_dialog()
+        }
     }
 
     header: ToolBar {
@@ -60,7 +70,7 @@ ApplicationWindow {
                 }
                 onClicked: {
                     if (stack_view.depth > 1)
-                        stack_view.pop(StackView.Transition)
+                        pop_page()
                     else
                         drawer.open()
                 }
@@ -108,11 +118,7 @@ ApplicationWindow {
                 onClicked: {
                     if (list_view.currentIndex != index) {
                         list_view.currentIndex = index
-                        title_label.text = model.title
-                        if (on_android) {
-                            android_activity.orientation_lock = model.lock_orientation;
-                        }
-                        stack_view.replace(model.source)
+                        replace_page(model)
                     }
                     drawer.close()
                 }
@@ -130,9 +136,44 @@ ApplicationWindow {
         initialItem: Widgets.SplashScreen {}
     }
 
+    function replace_page(model) {
+        title_label.text = model.title
+        if (on_android)
+            android_activity.orientation_lock = model.lock_orientation
+        stack_view_stack = []
+        var data = {page: model.source}
+        stack_view_stack.push(data) // {model:model}
+        stack_view_history.push({action: 'replace', data: data})
+        var item = stack_view.replace(model.source)
+        update_options_menu(item)
+        return item
+    }
+
     function push_page(url, properties) {
 	properties = properties !== undefined ? properties : {}
-	// console.info('push_page ' + url + ' ' + JSON.stringify(properties))
-        return stack_view.push(url, properties, StackView.Transition)
+        var data = {url:url} // , properties:properties
+        stack_view_stack.push(data) // Fixme: contains model data ... ???
+        stack_view_history.push({action: 'push', data: data})
+        var item = stack_view.push(url, properties, StackView.Transition)
+        update_options_menu(item)
+        return item
+    }
+
+    function pop_page() {
+        stack_view_stack.pop()
+        stack_view_history.push({action: 'pop'})
+        var item = stack_view.pop(StackView.Transition)
+        update_options_menu(item)
+        return item
+    }
+
+    function update_options_menu(item) {
+        var has_settings = typeof item.open_settings_dialog !== 'undefined'
+        options_menu.enable_settings(has_settings)
+    }
+
+    onClosing: {
+        // Fixme: get item status ?
+        console.info("Close windows\n" + JSON.stringify(stack_view_stack) + "\n " + JSON.stringify(stack_view_history))
     }
 }

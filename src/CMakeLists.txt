@@ -75,7 +75,10 @@ set(alpine_toolkit_executable_files
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
-add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ../ressources/alpine-toolkit.qrc)
+qt5_add_resources(ressources ../ressources/alpine-toolkit.qrc)
+# Not available
+# qtquick_compiler_add_resources(ressources ../ressources/alpine-toolkit.qrc)
+add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${ressources})
 target_link_libraries(alpine-toolkit alpine_toolkit Qt5::Qml Qt5::Widgets Qt5::Sensors Qt5::RemoteObjects)
 
 ####################################################################################################

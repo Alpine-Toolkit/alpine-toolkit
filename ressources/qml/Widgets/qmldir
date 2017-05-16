@@ -1,0 +1,5 @@
+module Widgets
+CompassRose 1.0 CompassRose.qml
+MenuItemIcon 1.0 MenuItemIcon.qml
+OptionsMenu 1.0 OptionsMenu.qml
+SplashScreen 1.0 SplashScreen.qml

@@ -7,13 +7,10 @@ import QtQuick.Controls 2.1
 
 import QtSensors 5.1
 
+import "qrc:Widgets" as Widgets
 
-Pane {
+Widgets.Page {
     id: refuge_directory_pane
-
-    // Component.onCompleted: {
-    //     console.info('Refuge Model:', refuge_model);
-    // }
 
   Component {
         id: section_heading
@@ -40,19 +37,8 @@ Pane {
                 id: search_textfield
                 Layout.fillWidth: true
                 placeholderText: qsTr('Search')
-                onPressed: search()
                 onTextChanged: search()
-	    }
-
-	    ToolButton {
-                id: search_icon
-                contentItem: Image {
-		    fillMode: Image.Pad
-		    horizontalAlignment: Image.AlignHCenter
-		    verticalAlignment: Image.AlignVCenter
-		    source: 'qrc:/icons/search-black.png'
-                }
-                onClicked: search()
+                onPressed: search()
 	    }
 
 	    ToolButton {
@@ -78,8 +64,7 @@ Pane {
                         'qrc:/icons/gps-fixed-black.png' :
                         'qrc:/icons/gps-not-fixed-black.png'
                 }
-                onClicked: {
-                }
+                // onClicked: {}
 	    }
         }
 
@@ -88,33 +73,34 @@ Pane {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            // model: refuge_model // ok
-            // model: refuge_schema_manager.refuges_as_object_list() // model.name -> Unable to assign [undefined] to QString
-            // model: refuge_schema_manager.refuges_as_object_list_variant() // idem
-            // model: refuge_schema_manager.model() // ok
-            // model: refuge_schema_manager_model // ok
-            model: refuge_schema_manager.refuges // ok
+            model: refuge_schema_manager.refuges
 
             delegate: ItemDelegate {
                 width: parent.width
                 font.pixelSize: 12
                 text: model.name
                 onClicked: {
-                    var properties = {'model': refuge_model[model.index]}
-                    console.info("refuge " + properties)
-                    application_window.push_page("qrc:/Pages/Refuge.qml", properties)
+                    var properties = {'model': list_view.model[model.index]}
+                    application_window.push_page('qrc:/Pages/Refuge.qml', properties)
                 }
             }
 
-            section.property: "first_letter"
+            section.property: 'first_letter'
             // FirstLetter considers diacritic as different letters
             section.criteria: ViewSection.FullString
             section.delegate: section_heading
         }
     }
 
+    Widgets.Popup {
+        id: settings_dialog
+
+        Text {
+            text: "foo bar"
+        }
+    }
+
     function search() {
-        console.info("Search " + search_textfield.text)
         refuge_schema_manager.filter_refuge_list(search_textfield.text)
     }
 }

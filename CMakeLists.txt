@@ -164,6 +164,9 @@ if(NOT ANDROID)
     find_package(Qt5Test REQUIRED)
     find_package(Qt5RemoteObjects REQUIRED)
 
+    # Not available
+    # find_package(Qt5QuickCompiler)
+
     # only available for Android build
     # find_package(Qt5AndroidExtras REQUIRED)
 

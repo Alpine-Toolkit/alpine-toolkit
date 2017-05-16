@@ -3,19 +3,9 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.1
 
-Popup {
-    id: about_dialog
+import "qrc:Widgets" as Widgets
 
-    modal: true
-    focus: true
-
-    // Fixme: better ???
-    property real factor: .9
-    width: parent.width * factor
-    height: parent.height * factor
-    x: (parent.width - width) / 2
-    y: (parent.height - height) / 2
-    // closePolicy: Popup.OnEscape | Popup.OnPressOutside
+Widgets.Popup {
 
     Flickable {
         id: flickable
