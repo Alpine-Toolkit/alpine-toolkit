@@ -194,7 +194,9 @@ ApplicationWindow {
     }
 
     function update_options_menu(item) {
-        var has_settings = typeof item.open_settings_dialog !== 'undefined'
+        // Fixme: don't work ???
+        // var has_settings = typeof item.settings_dialog !== 'undefined'
+        var has_settings = item.has_settings_dialog()
         options_menu.enable_settings(has_settings)
     }
 

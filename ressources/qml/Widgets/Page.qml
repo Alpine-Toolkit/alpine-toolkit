@@ -30,7 +30,11 @@ import QtQuick 2.6
 import QtQuick.Controls 2.1
 
 Pane {
-    // To enable a settings dialog define a Popup item with a settings_dialog id
+    // To enable a settings dialog define a Popup item with a "settings_dialog" id
+
+    function has_settings_dialog() {
+        return typeof settings_dialog !== "undefined"
+    }
 
     function open_settings_dialog() {
         if (typeof settings_dialog !== "undefined")
