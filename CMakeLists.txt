@@ -74,12 +74,6 @@ option(SANITIZE "Compile using sanitize options" OFF)
 option(INSTRUMENT_FUNTIONS "Compile using -finstrument-functions" OFF)
 
 ####################################################################################################
-
-if(ANDROID)
-  message(STATUS "Android build")
-endif()
-
-####################################################################################################
 #
 # Test
 #
@@ -106,6 +100,7 @@ set(ALPINE_TOOLKIT_VERSION ${ALPINE_TOOLKIT_VERSION_MAJOR}.${ALPINE_TOOLKIT_VERS
 
 if(ANDROID)
  ADD_DEFINITIONS(-DON_ANDROID)
+ # ADD_DEFINITIONS(-DON_ANDROID -DANDROID)
 endif(ANDROID)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -228,6 +223,7 @@ if(NOT ANDROID)
   include_directories(src)
   include_directories(third-parties/include)
 
+  # add_subdirectory(cpp-test)
   add_subdirectory(service)
   add_subdirectory(src)
   add_subdirectory(unit-tests)
