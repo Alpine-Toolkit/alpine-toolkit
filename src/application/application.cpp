@@ -102,6 +102,9 @@ Application::Application(int & argc, char ** argv)
   set_context_properties();
   load_qml_main();
 
+  // Fixme: don't work
+  // m_engine.addImportPath(QLatin1String("qrc:///Widgets"));
+
   run_before_event_loop();
 }
 
