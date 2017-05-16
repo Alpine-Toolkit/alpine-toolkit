@@ -50,6 +50,23 @@
 
 /**************************************************************************************************/
 
+// Created after Qt Application
+class QmlApplication : public QObject
+{
+  Q_OBJECT
+  Q_PROPERTY(QString version READ version CONSTANT)
+  Q_PROPERTY(QUrl home_page READ home_page CONSTANT)
+
+public:
+  QmlApplication();
+  ~QmlApplication();
+
+  const QString & version() const;
+  QUrl home_page() const;
+};
+
+/**************************************************************************************************/
+
 class Application
 {
 private:
@@ -68,6 +85,8 @@ public:
   Application & operator=(Application &&) = delete;
 
   int exec();
+
+  QmlApplication * qml_application() { return &m_qml_application; }
 
   const QString & application_user_directory() const { return m_config.application_user_directory(); } // Fixme: ???
   QcConfig & config() { return m_config; }
@@ -96,12 +115,13 @@ private:
   QApplication m_application; // for charts
   QTranslator m_translator;
   QSettings m_settings;
-  QcConfig & m_config;
+  QcConfig & m_config; // Fixme: singleton ???
   QQmlApplicationEngine m_engine;
 
 #ifdef ANDROID
   AndroidActivity m_android_activity;
 #endif
+  QmlApplication m_qml_application;
   Ephemeride m_ephemeride;
   RefugeSchemaManager m_refuge_schema_manager;
   ServiceClient m_service_client;

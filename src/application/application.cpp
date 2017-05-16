@@ -35,6 +35,7 @@
 #include <QLocale>
 #include <QQmlContext>
 #include <QStandardPaths>
+#include <QUrl>
 #include <QtDebug>
 #include <QtQml>
 // #include <QByteArray>
@@ -43,12 +44,33 @@
 // #include <QSqlQuery>
 
 // #include "bleaudb/bleau_database.h"
+#include "config.h"
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
 #include "camptocamp/camptocamp_qml.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 #include "tools/debug_data.h"
+
+/**************************************************************************************************/
+
+QmlApplication::QmlApplication()
+{}
+
+QmlApplication::~QmlApplication()
+{}
+
+const QString &
+QmlApplication::version() const
+{
+  return ALPINE_TOOLKIT_VERSION;
+}
+
+QUrl
+QmlApplication::home_page() const
+{
+  return QUrl(QLatin1String("http://alpine-toolkit.fabrice-salvaire.fr"));
+}
 
 /**************************************************************************************************/
 
@@ -69,7 +91,8 @@ Application::Application(int & argc, char ** argv)
     m_translator(),
     m_settings(),
     m_config(QcConfig::instance()),
-    m_engine()
+    m_engine(),
+    m_qml_application()
 {
   setup_gui_application();
   load_translation();
@@ -170,6 +193,8 @@ Application::register_qml_types()
   // qmlRegisterUncreatableType<QmlSensor                   >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
   // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
 
+  QmlRegisterUncreatableType(QmlApplication);
+
   QmlRegisterType(QmlBarometerAltimeterSensor);
   QmlRegisterUncreatableType(QmlBarometerAltimeterReading);
 
@@ -195,6 +220,8 @@ void
 Application::set_context_properties()
 {
   QQmlContext * context = m_engine.rootContext();
+
+  context->setContextProperty(QLatin1String("application"), &m_qml_application);
 
 #ifdef ANDROID
   int on_android = 1;
