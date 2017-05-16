@@ -1,8 +1,8 @@
 /***************************************************************************************************
  **
- ** $QTCARTO_BEGIN_LICENSE:GPL3$
+ ** $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  **
- ** Copyright (C) 2016 Fabrice Salvaire
+ ** Copyright (C) 2017 Fabrice Salvaire
  ** Contact: http://www.fabrice-salvaire.fr
  **
  ** This file is part of the QtCarto library.
@@ -20,7 +20,7 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **
- ** $QTCARTO_END_LICENSE$
+ ** $ALPINE_TOOLKIT_END_LICENSE$
  **
  ***************************************************************************************************/
 
