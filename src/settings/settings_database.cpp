@@ -28,19 +28,26 @@
 
 #include "settings_database.h"
 
-#include "orm/sql_record_wrapper.h"
-
 #include <QSqlError>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
-static const QString DIRECTORY = "directory";
-static const QString KEY_VALUE = "key_value";
 static const QString NAME = "name";
 static const QString PARENT = "parent";
 static const QString VALUE = "value";
-static const QString ROWID = "rowid";
+
+enum class DirectoryField {
+  Id,
+  Name,
+  Parent
+};
+
+enum class KeyField {
+  Name,
+  Parent,
+  Value
+};
 
 SettingsDatabase::SettingsDatabase(QcDatabase & database)
   : QcDatabaseSchema(database),
@@ -54,185 +61,201 @@ SettingsDatabase::~SettingsDatabase()
 void
 SettingsDatabase::register_tables()
 {
-  // rowid https://sqlite.org/autoinc.html
+  QcSchemaPrimaryKey rowid(QLatin1String("id"), QLatin1String("int"), QLatin1String("INTEGER"));
+  rowid.set_nullable(false);
 
   QcSchemaField name_field(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
   name_field.set_nullable(false);
 
-  QcSchema directory_schema(DIRECTORY);
+  // Fixme: copy ???
+  QcSchemaPrimaryKey name_field_pk(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
+  name_field_pk.set_nullable(false);
+
+  QcSchema directory_schema(QLatin1String("directory"));
+  directory_schema << rowid;
   directory_schema << name_field;
-  directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
+  directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // Foreign key to self.rowid
   m_directory_table = &register_table(directory_schema);
 
-  QcSchema key_value_schema(KEY_VALUE);
-  key_value_schema << name_field;
-  key_value_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER"));
-  key_value_schema << QcSchemaField(VALUE, QLatin1String("QByteArray"), QLatin1String("BLOB"));
+  // Fixme: primary key (name, parent) but parent is foreign key or null
+  //   define root ?
+  QcSchema key_value_schema(QLatin1String("key"));
+  key_value_schema << name_field_pk;
+  // key_value_schema << QcSchemaForeignKey(PARENT, QLatin1String("directory.id"), QLatin1String("int"), QLatin1String("INTEGER"));
+  key_value_schema << QcSchemaPrimaryKey(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // can be null !
+  key_value_schema << QcSchemaField(VALUE, QLatin1String("QVariant"), QLatin1String("BLOB"));
   m_key_value_table = &register_table(key_value_schema);
-}
-
-int
-SettingsDatabase::add_directory(const QString & directory, int parent)
-{
-  QVariantHash kwargs;
-  kwargs[NAME] = directory;
-  kwargs[PARENT] = parent;
-  QSqlQuery query = m_directory_table->insert(kwargs);
-  int row_id = query.lastInsertId().toInt();
-  qInfo() << "added directory" << directory << parent << row_id;
-  return row_id;
-}
-
-int
-SettingsDatabase::get_directory_id(const QString & directory)
-{
-  QStringList directories = directory.split('/');
-
-  int parent = 0; // start at root
-  for (const auto & directory : directories) {
-    QVariantHash kwargs;
-    kwargs[NAME] = directory;
-    kwargs[PARENT] = parent;
-    QSqlRecord record_ = m_directory_table->select_one(QStringList(ROWID), kwargs);
-    QcSqlRecordWrapper record(record_); // Fixme: must keep object alive!
-    if (record.is_empty())
-      parent = add_directory(directory, parent); // not const
-    else
-      parent = record.to_int(); // Fixme: how to simplify ?
-  }
-
-  return parent;
 }
 
 QString
 SettingsDatabase::directory_part(const QString & key) const
 {
   int index = key.lastIndexOf('/');
-  if (index != -1)
-    return key.left(index);
-  else
-    return QString();
+  return index != -1 ? key.left(index) : QString();
 }
 
 QString
 SettingsDatabase::name_part(const QString & key) const
 {
   int index = key.lastIndexOf('/');
-  if (index != -1)
-    return key.mid(index + 1);
-  else
-    return key;
+  return index != -1 ? key.mid(index + 1) : key;
 }
 
 int
-SettingsDatabase::parent_of(const QString & key)
+SettingsDatabase::number_of_directories() const
+{
+  return m_directory_table->count();
+}
+
+int
+SettingsDatabase::number_of_keys() const
+{
+  return m_key_value_table->count();
+}
+
+QVariantHash
+SettingsDatabase::directory_kwargs(const QString & directory, int parent)
+{
+  QVariantHash kwargs;
+  kwargs[NAME] = directory;
+  kwargs[PARENT] = parent;
+  return kwargs;
+}
+
+int
+SettingsDatabase::add_directory(const QString & directory, int parent)
+{
+  QSqlQuery query = m_directory_table->insert(directory_kwargs(directory, parent));
+  int rowid = query.lastInsertId().toInt();
+  // qInfo() << "added directory" << directory << parent << rowid;
+  return rowid;
+}
+
+int
+SettingsDatabase::directory_rowid(const QString & directory, int parent)
+{
+  return m_directory_table->rowid(directory_kwargs(directory, parent));
+}
+
+int
+SettingsDatabase::lookup_path(const QString & path, bool create)
+{
+  QString _path = path;
+  // Remove first /
+  if (_path.startsWith('/'))
+    _path = _path.mid(1);
+
+  // Remove trailing /
+  if (_path.endsWith('/'))
+    _path = _path.left(_path.size() - 1);
+
+  if (_path.isEmpty())
+    return 0;
+
+  QStringList directories = _path.split('/');
+
+  int parent = 0; // start at root
+  for (const auto & directory : directories) {
+    int rowid = directory_rowid(directory, parent);
+    if (rowid > 0) // Fixme: > 0 ???
+      parent = rowid;
+    else {
+      if (create)
+        parent = add_directory(directory, parent); // not const
+      else
+        return -1;
+    }
+  }
+
+  return parent;
+}
+
+int
+SettingsDatabase::parent_of(const QString & key, bool create)
 {
   QString directory = directory_part(key);
-  qInfo() << "parent_of" << key << directory;
-  return directory.isEmpty() ? 0 : get_directory_id(directory);
+  // qInfo() << "parent_of" << key << directory;
+  return lookup_path(directory, create);
+}
+
+QVariantHash
+SettingsDatabase::key_kwargs(const QString & key)
+{
+  QVariantHash kwargs;
+  kwargs[NAME] = name_part(key);
+  kwargs[PARENT] = parent_of(key);
+  return kwargs;
 }
 
 bool
 SettingsDatabase::contains(const QString & key)
 {
-  QVariantHash kwargs;
-  kwargs[NAME] = name_part(key);
-  kwargs[PARENT] = parent_of(key);
-  QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
-  QcSqlRecordWrapper record(record_);
-  return record.is_not_empty();
-}
-
-int
-SettingsDatabase::rowid_of(const QString & key)
-{
-  QVariantHash kwargs;
-  kwargs[NAME] = name_part(key);
-  kwargs[PARENT] = parent_of(key);
-  QSqlRecord record_ = m_key_value_table->select_one(QStringList(ROWID), kwargs);
-  QcSqlRecordWrapper record(record_);
-  if (record.is_empty())
-    return -1;
-  else
-    return record.to_int(0);
+  return m_key_value_table->count(key_kwargs(key)) > 0;
 }
 
 QVariant
 SettingsDatabase::value(const QString & key)
 {
-  QVariantHash kwargs;
-  kwargs[NAME] = name_part(key);
-  kwargs[PARENT] = parent_of(key);
-  QSqlRecord record = m_key_value_table->select_one(QStringList(VALUE), kwargs);
-  return record.value(0);
+  QSqlRecord record = m_key_value_table->select_one(VALUE, key_kwargs(key));
+  if (record.isEmpty())
+    return QVariant();
+  else
+    return record.value(0);
 }
 
 void
 SettingsDatabase::set_value(const QString & key, const QVariant & value)
 {
-  int rowid = rowid_of(key);
-  if (rowid == -1) {
-    QVariantHash kwargs;
-    kwargs[NAME] = name_part(key);
-    kwargs[PARENT] = parent_of(key);
+  QVariantHash kwargs = key_kwargs(key);
+  // Fixme: can use contains
+  if (m_key_value_table->count(kwargs)) {
+    QVariantHash kwargs_update;
+    // qInfo() << "value is of type" << value.typeName();
+    kwargs_update[VALUE] = value;
+    m_key_value_table->update(kwargs_update, kwargs);
+    // qInfo() << "updated key" << rowid << key << value;
+  } else {
     kwargs[VALUE] = value;
     QSqlQuery query = m_key_value_table->insert(kwargs);
-    qInfo() << "added key" << key << value;
-  } else {
-    QVariantHash kwargs_where;
-    kwargs_where[ROWID] = rowid;
-    QVariantHash kwargs_update;
-    qInfo() << "value is of type" << value.typeName();
-    kwargs_update[VALUE] = value;
-    m_key_value_table->update(kwargs_update, kwargs_where);
-    qInfo() << "updated key" << rowid << key << value;
+    // qInfo() << "added key" << key << value;
   }
 }
 
 void
 SettingsDatabase::remove(const QString & key)
 {
-  QVariantHash kwargs;
-  kwargs[NAME] = name_part(key);
-  kwargs[PARENT] = parent_of(key);
-  m_key_value_table->delete_row(kwargs);
+  m_key_value_table->delete_row(key_kwargs(key));
 }
 
 QStringList
 SettingsDatabase::keys(const QString & path)
 {
-  QVariantHash kwargs;
-  kwargs[PARENT] = parent_of(path + '/'); // Fixme:
-  QSqlQuery query = m_key_value_table->select(QStringList(NAME), kwargs);
-  QStringList keys;
-  while (query.next())
-    keys << query.value(0).toString();
-  return keys;
+  int parent =(path.isEmpty() or path == QLatin1String("/")) ?
+    0 : parent_of(path + '/', false); // Fixme: / is required to get directory_part
+  if (parent >= 0) {
+    QVariantHash kwargs;
+    kwargs[PARENT] = parent;
+    QSqlQuery query = m_key_value_table->select(NAME, kwargs);
+    QStringList keys;
+    while (query.next())
+      keys << query.value(0).toString();
+    return keys;
+  } else // path son't exists
+    return QStringList();
 }
 
 QString
-SettingsDatabase::parent_to_path(int parent, PathCache & paths)
+SettingsDatabase::parent_to_path(int path_parent, PathCache & paths)
 {
-  if (parent) {
-    QStringList directories;
-
-    QStringList fields;
-    fields << NAME << PARENT;
-    while (parent) {
-      QVariantHash kwargs;
-      kwargs[ROWID] = parent;
-      QSqlRecord record_ = m_directory_table->select_one(fields, kwargs);
-      QcSqlRecordWrapper record(record_);
-      // if (record.isEmpty() == false)
-      directories.prepend(record.to_string(0));
-      parent = record.to_int(1);
-      if (paths.contains(parent)) {
-        directories.prepend(paths[parent]);
-        break;
-      }
-    }
-    QString path = directories.join('/');
-    paths.insert(parent, path);
+  // qInfo() << "parent_to_path" << path_parent;
+  if (path_parent > 0) {
+    QSqlRecord record = m_directory_table->select_by_id(path_parent);
+    int parent = record.value(static_cast<int>(DirectoryField::Parent)).toInt();
+    QString path;
+    if (parent > 0)
+      path = parent_to_path(parent, paths) + '/';
+    path += record.value(static_cast<int>(DirectoryField::Name)).toString();
+    paths.insert(path_parent, path);
     return path;
   } else
     return QString();
@@ -244,9 +267,7 @@ SettingsDatabase::to_map()
   QHash<QString, QVariant> key_values;
   QHash<int, QString> paths;
 
-  QStringList fields;
-  fields << NAME << PARENT << VALUE;
-  QSqlQuery query = m_key_value_table->select(fields);
+  QSqlQuery query = m_key_value_table->select_where();
   while (query.next()) {
     QString name = query.value(0).toString();
     int parent = query.value(1).toInt();

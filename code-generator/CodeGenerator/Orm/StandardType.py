@@ -67,6 +67,14 @@ class GeoCoordinate(FieldType):
     def __init__(self):
         FieldType.__init__(self, sql_type='text', qt_type='QGeoCoordinate')
 
+class ByteArray(FieldType):
+    def __init__(self):
+        FieldType.__init__(self, sql_type='blob', qt_type='QByteArray')
+
+class Variant(FieldType):
+    def __init__(self):
+        FieldType.__init__(self, sql_type='blob', qt_type='QVariant')
+
 ####################################################################################################
 
 class IsoDateTime(DateTime):

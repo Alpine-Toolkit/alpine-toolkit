@@ -35,15 +35,15 @@ json_object[QLatin1String("{{json_name}}")]{% if from_json %}.{{from_json}}(){% 
 {%- endmacro %}
 
 {% macro from_variant_hash(field) -%}
-variant_hash[QLatin1String("{{field.name}}")].{{field.variable.from_variant}}()
+variant_hash[QLatin1String("{{field.name}}")]{% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 
 {% macro from_record(i, field) -%}
-record.value({{i}}).{{field.variable.from_variant}}()
+record.value({{i}}){% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 
 {% macro from_query(i, field) -%}
-query.value({{i}}).{{field.variable.from_variant}}()
+query.value({{i}}){% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 
 {# ############################################################################################## #}
@@ -84,7 +84,7 @@ query.value({{i}}).{{field.variable.from_variant}}()
  : {{class_name}}()
 {
 {% macro from_variant_list(i, field) -%}
-variants[{{i}}].{{field.variable.from_variant}}()
+variants[{{i}}]{% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 {% for field in fields %}
   {{ set_member(field.name, from_variant_list(loop.index0, field), field.variable.cast_from_variant) }}

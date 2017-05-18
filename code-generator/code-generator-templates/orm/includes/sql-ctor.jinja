@@ -35,7 +35,7 @@ query.value({{i}})
 {%- endmacro %}
 
 {% macro from_variant(field, variant) -%}
-{{variant}}.{{field.variable.from_variant}}()
+{{variant}}{% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 
 {% macro cast_from_variant(value, cast) -%}

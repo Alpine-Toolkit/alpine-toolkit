@@ -274,7 +274,7 @@ class {{class_name_cache}} : public QObject
   Q_OBJECT
 
 public:
-  typedef {{class_name}} * Key;
+  typedef {{class_name}} * t_Key;
   typedef {{class_name_ptr}} Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -295,8 +295,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 
 {%- if custom_class_cache %}
 // Custom Declarations

@@ -35,7 +35,7 @@ Schema::Fields::{{field.name|upper}}
 {% endmacro %}
 
 {%  macro from_variant(field, value) -%}
-value.{{field.variable.from_variant}}()
+value{% if field.variable.from_variant %}.{{field.variable.from_variant}}(){% endif %}
 {%- endmacro %}
 
 {%  macro set_member(name, value, cast) -%}

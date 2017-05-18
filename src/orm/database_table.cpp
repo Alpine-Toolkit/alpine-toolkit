@@ -314,7 +314,7 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
   if (query.next()) {
     record = query.record();
     if (query.next())
-      qWarning() << "More than one rows returned";
+      qWarning() << QLatin1String("More than one rows returned");
   } else
     qWarning() << "Any row";
 
@@ -322,12 +322,38 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
 }
 
 QSqlRecord
-QcDatabaseTable::select_one(const QString & where) const
+QcDatabaseTable::select_one_where(const QString & where) const
 {
   QStringList fields(QLatin1String("*"));
   // if (m_schema.has_rowid_primary_key())
   //   fields << QLatin1String("id"); // rowid
   return select_one(fields, where);
+}
+
+int
+QcDatabaseTable::count(const QString & where) const
+{
+  QSqlQuery query = select(QLatin1String("COUNT()"), where);
+  if (query.next()) // only one row is returned
+    return query.value(0).toInt();
+  else
+    return -1;
+}
+
+int
+QcDatabaseTable::rowid(const QString & where) const
+{
+  QSqlQuery query = select(QLatin1String("rowid"), where);
+  int rowid = -1;
+  if (query.next()) {
+    int _rowid = query.value(0).toInt();
+    if (query.next())
+      qWarning() << QLatin1String("More than one rows returned");
+    else
+      rowid = _rowid;
+  }
+
+  return rowid;
 }
 
 QSqlQuery

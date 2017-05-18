@@ -66,15 +66,22 @@ public:
 
   KeyValueMap to_map();
 
+  int number_of_directories() const;
+  int number_of_keys() const;
+
   // void vacuum(); // Fixme: implement vacuum directory table
 
 private:
-  int add_directory(const QString & directory, int parent);
-  int get_directory_id(const QString & directory);
   QString directory_part(const QString & key) const;
   QString name_part(const QString & key) const;
-  int parent_of(const QString & key);
-  int rowid_of(const QString & key);
+
+  QVariantHash directory_kwargs(const QString & directory, int parent);
+  int add_directory(const QString & directory, int parent);
+  int lookup_path(const QString & directory, bool create = true);
+  int directory_rowid(const QString & directory, int parent);
+
+  int parent_of(const QString & key, bool create = true);
+  QVariantHash key_kwargs(const QString & key);
   QString parent_to_path(int parent, PathCache & paths);
 
 private:
@@ -99,6 +106,9 @@ public:
   QStringList keys(const QString & path)  { return m_settings_database.keys(path); }
 
   SettingsDatabase::KeyValueMap to_map() { return m_settings_database.to_map(); }
+
+  int number_of_directories() const { return m_settings_database.number_of_directories(); }
+  int number_of_keys() const { return m_settings_database.number_of_keys(); }
 
 private:
   SettingsDatabase m_settings_database;

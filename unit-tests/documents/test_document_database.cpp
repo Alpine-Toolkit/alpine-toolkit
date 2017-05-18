@@ -73,7 +73,7 @@ void TestDocumentDatabase::constructor()
 
   QVariantHash where_kwargs;
   where_kwargs["id"] = document.id();
-  QSqlRecord record = table.select_one(where_kwargs);
+  QSqlRecord record = table.select_one_where(where_kwargs);
   Document document_from_sql(record);
   qInfo() << document_from_sql;
   qInfo() << document;

@@ -27,7 +27,9 @@
  ###############################################################################################  #}
 
 {% macro field_to_json(field) -%}
-{% if field.variable.cast_to_json -%}
+{% if field.variable.to_json -%}
+m_{{field.name}}.{{field.variable.to_json}}()
+{% elif field.variable.cast_to_json -%}
 {{field.variable.cast_to_json}}(m_{{field.name}})
 {%- else -%}
 QJsonValue(m_{{field.name}})

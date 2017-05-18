@@ -29,6 +29,7 @@
 #include <QtTest/QtTest>
 
 #include <QFile>
+#include <QSet>
 #include <QtDebug>
 
 /**************************************************************************************************/
@@ -43,6 +44,7 @@ class TestSettingsDatabase: public QObject
 
 private slots:
   void constructor();
+  void verify_string_list(const QStringList & list1, const QStringList & list2);
 };
 
 void TestSettingsDatabase::constructor()
@@ -53,13 +55,20 @@ void TestSettingsDatabase::constructor()
     file.remove();
   SqliteSettingsDatabase settings_database(sqlite_path);
 
+  // Check non existing key
   QVERIFY(settings_database.contains("foo") == false);
+  QVERIFY(settings_database.value("foo").isValid() == false);
+
+  // Insert keys and check
   QStringList keys;
-  QString key1 = "key1";
-  QString key2 = "d1/key2";
-  QString key3 = "d1/key3";
-  QString key4 = "d1/d2/key4";
-  keys << key1 << key2 << key3 << key4;
+  QString key1 = "key1"; // p = 0
+  QString key2 = "d1/key2"; // p = 1
+  QString key3 = "d1/key3"; // p = 1
+  QString key4 = "d1/d2/key4"; // p = 2
+  QString key5 = "d1/d2/key5"; // p = 2
+  QString key6 = "d1/d2/d3/key6"; // p = 3
+  QString key1bis = "d1/key1"; // p = 1
+  keys << key1 << key2 << key3 << key4 << key5 << key6 << key1bis;
   int i = 0;
   for (const auto & key : keys)
     settings_database.set_value(key, ++i * 10);
@@ -68,13 +77,45 @@ void TestSettingsDatabase::constructor()
     QVERIFY(settings_database.contains(key) == true);
     QVERIFY(settings_database.value(key) == ++i * 10);
   }
+
+  // Update a key
   settings_database.set_value(key4, 100);
   QVERIFY(settings_database.value(key4) == 100);
 
-  qInfo() << settings_database.keys("d1");
+  // Keys in directory
+  QStringList directory_keys;
+  directory_keys << "key1";
+  verify_string_list(settings_database.keys("/"), directory_keys);
+  directory_keys.clear();
+  directory_keys << "key2" << "key3" << "key1";
+  verify_string_list(settings_database.keys("/d1"), directory_keys);
+  directory_keys.clear();
+  directory_keys << "key4" << "key5";
+  verify_string_list(settings_database.keys("/d1/d2"), directory_keys);
+  directory_keys.clear();
+  directory_keys << "key6";
+  verify_string_list(settings_database.keys("/d1/d2/d3"), directory_keys);
+
+  QVERIFY(settings_database.keys("/foo").isEmpty());
+
   SettingsDatabase::KeyValueMap key_values = settings_database.to_map();
   for (const auto & key : key_values.keys())
     qInfo() << key << key_values[key];
+
+  settings_database.remove(key1bis);
+  QVERIFY(settings_database.contains(key1bis) == false);
+
+  // Check counts
+  QVERIFY(settings_database.number_of_directories() == 3);
+  QVERIFY(settings_database.number_of_keys() == keys.size() - 1);
+}
+
+void
+TestSettingsDatabase::verify_string_list(const QStringList & list1, const QStringList & list2)
+{
+  QSet<QString> set1 = QSet<QString>::fromList(list1);
+  QSet<QString> set2 = QSet<QString>::fromList(list2);
+  QVERIFY(set1 == set2);
 }
 
 /***************************************************************************************************/

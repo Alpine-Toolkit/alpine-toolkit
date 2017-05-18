@@ -91,7 +91,7 @@ QcDatabaseSchema::query(bool lazy_load)
 {
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
-  QSqlQuery query = table.select();
+  QSqlQuery query = table.select_where();
 
   typename T::PtrList rows;
   while (query.next()) {
@@ -135,7 +135,7 @@ QcDatabaseSchema::query_by_foreign_key(const QString & foreign_key, const QVaria
 
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
-  QSqlQuery query = table.select(kwargs);
+  QSqlQuery query = table.select_where(kwargs);
 
   typename T::PtrList rows;
   while (query.next()) {

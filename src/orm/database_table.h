@@ -80,28 +80,49 @@ public:
   bool drop();
 
   QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
+  QSqlQuery select(const QString & field, const QString & where = QString()) const {
+    return select(QStringList(field), where);
+  }
   QSqlQuery select(const QStringList & fields, const QVariantHash & kwargs) const {
     return select(fields, format_simple_where(kwargs));
   }
-  QSqlQuery select(const QString & where = QString()) const {
+  QSqlQuery select(const QString & field, const QVariantHash & kwargs) const {
+    return select(QStringList(field), format_simple_where(kwargs));
+  }
+  QSqlQuery select_where(const QString & where = QString()) const {
     return select(QStringList(QLatin1String("*")), where);
   }
-  QSqlQuery select(const QVariantHash & kwargs) const {
+  QSqlQuery select_where(const QVariantHash & kwargs) const {
     return select(QStringList(QLatin1String("*")), format_simple_where(kwargs));
   }
 
   QSqlRecord select_one(const QStringList & fields, const QString & where = QString()) const;
+  QSqlRecord select_one(const QString & field, const QString & where = QString()) const {
+    return select_one(QStringList(field), where);
+  }
   QSqlRecord select_one(const QStringList & fields, const QVariantHash & kwargs) const {
     return select_one(fields, format_simple_where(kwargs));
   }
-  QSqlRecord select_one(const QString & where = QString()) const;
-  QSqlRecord select_one(const QVariantHash & kwargs) const  {
-    return select_one(format_simple_where(kwargs));
+  QSqlRecord select_one(const QString & field, const QVariantHash & kwargs) const {
+    return select_one(QStringList(field), format_simple_where(kwargs));
   }
-  QSqlRecord select_by_id(int id) const  {
-    return select_one(kwarg_for_id(id));
+  QSqlRecord select_one_where(const QString & where = QString()) const;
+  QSqlRecord select_one_where(const QVariantHash & kwargs) const  {
+    return select_one_where(format_simple_where(kwargs));
+  }
+  QSqlRecord select_by_id(int rowid) const  {
+    return select_one_where(kwarg_for_id(rowid));
   }
   // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
+
+  int count(const QString & where = QString()) const;
+  int count(const QVariantHash & kwargs) const {
+    return count(format_simple_where(kwargs));
+  }
+  int rowid(const QString & where = QString()) const;
+  int rowid(const QVariantHash & kwargs) const {
+    return rowid(format_simple_where(kwargs));
+  }
 
   QSqlQuery join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const;
 
@@ -115,17 +136,20 @@ public:
   QSqlQuery update(const QVariantHash & kwargs, const QVariantHash & where_kwargs) {
     return update(kwargs, format_simple_where(where_kwargs));
   }
+  QSqlQuery update_by_id(int rowid, const QVariantHash & kwargs) {
+    return update(kwargs, kwarg_for_id(rowid));
+  }
 
   QSqlQuery delete_row(const QString & where = QString());
   QSqlQuery delete_row(const QVariantHash & kwargs) {
     return delete_row(format_simple_where(kwargs));
   }
-  QSqlQuery delete_by_id(int id)  {
-    return delete_row(kwarg_for_id(id));
+  QSqlQuery delete_by_id(int rowid)  {
+    return delete_row(kwarg_for_id(rowid));
   }
 
 private:
-  static QVariantHash kwarg_for_id(int id) { return {{QLatin1String("rowid"), id}}; }
+  static QVariantHash kwarg_for_id(int rowid) { return {{QLatin1String("rowid"), rowid}}; }
   void commit();
   QSqlQuery prepare_complete_insert(int number_of_fields);
   QSqlQuery prepare_complete_insert(const QStringList & fields);

@@ -1,4 +1,4 @@
-####################################################################################################
+###################################################################################################
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
 #
@@ -125,6 +125,8 @@ class Type:
         'double': 'toDouble',
         }
 
+    _logger = _module_logger.getChild("Type")
+
     ##############################################
 
     @staticmethod
@@ -236,9 +238,11 @@ class Type:
     @property
     def from_variant(self):
 
-        # QVariant().toXxx()
+        # Return a method of QVariant to cast the value
 
-        if self.cast_variant:
+        if self._type == 'QVariant':
+            return None
+        elif self.cast_variant:
             return 'value<{0.type}>'.format(self)
         elif self.is_q_type:
             data_type = self._type[1:]
@@ -254,7 +258,7 @@ class Type:
     @property
     def cast_variant(self):
 
-        if self._type in QT_BUILTIN_VARIANTS:
+        if self._type == 'QVariant' or self._type in QT_BUILTIN_VARIANTS:
             return False
         else:
             return True
@@ -264,8 +268,11 @@ class Type:
     @property
     def from_json(self):
 
-        # QJsonValue).toXxx()
+        # Return a method of QJsonValue to cast the value (it can be a chain of methods)
+        #   QJsonValue:: " method()[.method()]*(.method)? " ()
 
+        if self._type == 'QVariant':
+            return 'toVariant'
         if self._type in ('int', 'unsigned int'):
             return 'toInt'
         elif self._type in ('float', 'double', 'qreal'):
@@ -278,14 +285,18 @@ class Type:
             return None
         # toArray / toObject
         else:
-            raise ValueError("Don't know how to convert {} from JSON".format(self._type))
+            if self.cast_from_json is None:
+                # raise ValueError()
+                self._logger.warn("Don't know how to convert {} from JSON".format(self._type))
+            return None
 
     ##############################################
 
     @property
     def cast_from_json(self):
 
-        # Cast for JSON value
+        # Return a function to cast from a JSON value
+        #   " function " ( json_value )
 
         if self._type_conversion is not None:
             return self._type_conversion.cast_from_json
@@ -293,6 +304,8 @@ class Type:
             return 'orm_type_conversion::load_datetime'
         elif self._type == 'QStringList':
             return 'orm_type_conversion::load_string_list'
+        elif self._type == 'QByteArray':
+            return 'QByteArray::fromBase64'
         # elif self._type == 'QUrl':
         #     return 'orm_type_conversion::load_url'
         else:
@@ -301,9 +314,25 @@ class Type:
     ##############################################
 
     @property
+    def to_json(self):
+
+        # Return a method of Type to cast the value (it can be a chain of methods)
+        #   Type:: " method()[.method()]*(.method)? " ()
+
+        if self._type == 'QVariant':
+            return 'toJsonValue'
+        elif self._type == 'QByteArray':
+            return 'toBase64'
+        else:
+            return None
+
+    ##############################################
+
+    @property
     def cast_to_json(self):
 
-        # Cast to JSON value
+        # Return a function to cast to JSON
+        #   " function " ( value )
 
         if self._type_conversion is not None:
             return self._type_conversion.cast_to_json
