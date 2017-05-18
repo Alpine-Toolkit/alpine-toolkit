@@ -98,7 +98,8 @@ void TestSettingsDatabase::constructor()
 
   QVERIFY(settings_database.keys("/foo").isEmpty());
 
-  SettingsDatabase::KeyValueMap key_values = settings_database.to_map();
+  settings_database.load();
+  SettingsDatabase::KeyValueMap key_values = settings_database.cache();
   for (const auto & key : key_values.keys())
     qInfo() << key << key_values[key];
 

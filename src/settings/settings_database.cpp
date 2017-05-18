@@ -138,21 +138,24 @@ SettingsDatabase::directory_rowid(const QString & directory, int parent)
 }
 
 int
-SettingsDatabase::lookup_path(const QString & path, bool create)
+SettingsDatabase::lookup_path(const QString & _path, bool create)
 {
-  QString _path = path;
+  QString path = _path;
+
   // Remove first /
-  if (_path.startsWith('/'))
-    _path = _path.mid(1);
+  if (path.startsWith('/'))
+    path = path.mid(1);
 
   // Remove trailing /
-  if (_path.endsWith('/'))
-    _path = _path.left(_path.size() - 1);
+  if (path.endsWith('/'))
+    path = path.left(path.size() - 1);
 
-  if (_path.isEmpty())
+  if (path.isEmpty())
     return 0;
+  else if (m_path_cache.contains(path))
+    return m_path_cache[path];
 
-  QStringList directories = _path.split('/');
+  QStringList directories = path.split('/');
 
   int parent = 0; // start at root
   for (const auto & directory : directories) {
@@ -166,6 +169,9 @@ SettingsDatabase::lookup_path(const QString & path, bool create)
         return -1;
     }
   }
+  // Note: rowid = parent
+
+  m_path_cache[path] = parent;
 
   return parent;
 }
@@ -190,17 +196,27 @@ SettingsDatabase::key_kwargs(const QString & key)
 bool
 SettingsDatabase::contains(const QString & key)
 {
-  return m_key_value_table->count(key_kwargs(key)) > 0;
+  if (m_key_cache.contains(key))
+    return true;
+  else
+    return m_key_value_table->count(key_kwargs(key)) > 0;
 }
 
 QVariant
 SettingsDatabase::value(const QString & key)
 {
-  QSqlRecord record = m_key_value_table->select_one(VALUE, key_kwargs(key));
-  if (record.isEmpty())
-    return QVariant();
-  else
-    return record.value(0);
+  if (m_key_cache.contains(key))
+    return m_key_cache[key];
+  else {
+    QSqlRecord record = m_key_value_table->select_one(VALUE, key_kwargs(key));
+    if (record.isEmpty())
+      return QVariant();
+    else {
+      QVariant value = record.value(0);
+      m_key_cache[key] = value;
+      return value;
+    }
+  }
 }
 
 void
@@ -219,17 +235,23 @@ SettingsDatabase::set_value(const QString & key, const QVariant & value)
     QSqlQuery query = m_key_value_table->insert(kwargs);
     // qInfo() << "added key" << key << value;
   }
+
+  m_key_cache[key] = value;
 }
 
 void
 SettingsDatabase::remove(const QString & key)
 {
   m_key_value_table->delete_row(key_kwargs(key));
+  if (m_key_cache.contains(key))
+    m_key_cache.remove(key);
 }
 
 QStringList
 SettingsDatabase::keys(const QString & path)
 {
+  // Don't use cache
+
   int parent =(path.isEmpty() or path == QLatin1String("/")) ?
     0 : parent_of(path + '/', false); // Fixme: / is required to get directory_part
   if (parent >= 0) {
@@ -245,45 +267,42 @@ SettingsDatabase::keys(const QString & path)
 }
 
 QString
-SettingsDatabase::parent_to_path(int path_parent, PathCache & paths)
+SettingsDatabase::parent_to_path(int path_parent)
 {
-  // qInfo() << "parent_to_path" << path_parent;
   if (path_parent > 0) {
     QSqlRecord record = m_directory_table->select_by_id(path_parent);
     int parent = record.value(static_cast<int>(DirectoryField::Parent)).toInt();
     QString path;
     if (parent > 0)
-      path = parent_to_path(parent, paths) + '/';
+      path = parent_to_path(parent) + '/';
     path += record.value(static_cast<int>(DirectoryField::Name)).toString();
-    paths.insert(path_parent, path);
+    m_rowid_path_cache[path_parent] =  path;
     return path;
   } else
     return QString();
 }
 
-SettingsDatabase::KeyValueMap
-SettingsDatabase::to_map()
+void
+SettingsDatabase::load()
 {
-  QHash<QString, QVariant> key_values;
-  QHash<int, QString> paths;
-
   QSqlQuery query = m_key_value_table->select_where();
   while (query.next()) {
     QString name = query.value(0).toString();
     int parent = query.value(1).toInt();
     QVariant value = query.value(2);
-    QString path;
-    if (paths.contains(parent))
-      path = paths[parent];
-    else {
-      path = parent_to_path(parent, paths);
-      // paths.insert(parent, path);
-    }
+    QString path = m_rowid_path_cache.contains(parent) ?
+      m_rowid_path_cache[parent] : parent_to_path(parent);
     QString key = path.isEmpty() ? name : path + '/' + name;
-    key_values.insert(key, value);
+    m_key_cache[key] = value;
   }
+}
 
-  return key_values;
+void
+SettingsDatabase::clear_cache()
+{
+  m_rowid_path_cache.clear();
+  m_path_cache.clear();
+  m_key_cache.clear();
 }
 
 /**************************************************************************************************/

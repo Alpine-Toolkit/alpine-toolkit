@@ -62,12 +62,14 @@ public:
   void set_value(const QString & key, const QVariant & value);
   void remove(const QString & key);
 
-  QStringList keys(const QString & path);
-
-  KeyValueMap to_map();
-
   int number_of_directories() const;
   int number_of_keys() const;
+
+  QStringList keys(const QString & path);
+
+  void load();
+  void clear_cache();
+  const KeyValueMap & cache() const { return m_key_cache; }
 
   // void vacuum(); // Fixme: implement vacuum directory table
 
@@ -82,11 +84,16 @@ private:
 
   int parent_of(const QString & key, bool create = true);
   QVariantHash key_kwargs(const QString & key);
-  QString parent_to_path(int parent, PathCache & paths);
+  QString parent_to_path(int parent);
 
 private:
   QcDatabaseTable * m_directory_table;
   QcDatabaseTable * m_key_value_table;
+
+  // Fixme: implement as a tree ?
+  QHash<int, QString> m_rowid_path_cache;
+  QHash<QString, int> m_path_cache;
+  KeyValueMap m_key_cache;
 };
 
 /**************************************************************************************************/
@@ -105,7 +112,9 @@ public:
 
   QStringList keys(const QString & path)  { return m_settings_database.keys(path); }
 
-  SettingsDatabase::KeyValueMap to_map() { return m_settings_database.to_map(); }
+  void load() { return m_settings_database.load(); }
+  void clear_cache() { return m_settings_database.clear_cache(); }
+  SettingsDatabase::KeyValueMap cache() const { return m_settings_database.cache(); }
 
   int number_of_directories() const { return m_settings_database.number_of_directories(); }
   int number_of_keys() const { return m_settings_database.number_of_keys(); }
