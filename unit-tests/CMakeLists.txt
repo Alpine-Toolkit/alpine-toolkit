@@ -33,11 +33,11 @@
 
 add_subdirectory(bleaudb)
 add_subdirectory(camptocamp)
-add_subdirectory(database)
 add_subdirectory(documents)
 add_subdirectory(ephemeride)
 add_subdirectory(international_morse_code_engine)
 add_subdirectory(network)
+add_subdirectory(orm)
 add_subdirectory(phonetic_algorithm)
 add_subdirectory(refuge)
 add_subdirectory(rrd)

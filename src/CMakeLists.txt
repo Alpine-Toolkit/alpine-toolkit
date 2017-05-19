@@ -64,6 +64,7 @@ set(alpine_toolkit_library_files
   orm/database_connection.cpp
   orm/database_schema.cpp
   orm/database_table.cpp
+  orm/database_query.cpp
   orm/network_database.cpp
   orm/schema.cpp
   orm/schema_manager.cpp
