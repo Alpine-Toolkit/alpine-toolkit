@@ -37,72 +37,11 @@
 #include "orm/database_table.h"
 #include "orm/json_adaptator.h"
 #include "orm/sqlite_database.h"
+#include "settings/settings_tree.h"
 
-#include <QJsonObject>
 #include <QString>
 #include <QVariant>
 #include <QHash>
-
-/**************************************************************************************************/
-
-// Fixme: use namespace ?
-
-class SettingsDatabaseKey
-{
-public:
-  SettingsDatabaseKey();
-  SettingsDatabaseKey(const QString & name, const QVariant & value);
-  SettingsDatabaseKey(const SettingsDatabaseKey & other);
-  ~SettingsDatabaseKey();
-
-  SettingsDatabaseKey & operator=(const SettingsDatabaseKey & other);
-
-  bool operator==(const SettingsDatabaseKey & other);
-
-  const QString & name() const { return m_name; }
-  void set_name(const QString & name) { m_name = name; }
-
-  const QVariant & value() const { return m_value; }
-  void set_value(const QVariant & value) { m_value = value; }
-
-private:
-  QString m_name;
-  QVariant m_value;
-};
-
-/**************************************************************************************************/
-
-class SettingsDatabaseDirectory
-{
-  typedef QList<SettingsDatabaseDirectory> DirectoryList;
-  typedef QList<SettingsDatabaseKey> KeyList;
-
-public:
-  SettingsDatabaseDirectory();
-  SettingsDatabaseDirectory(const QString & name);
-  SettingsDatabaseDirectory(const SettingsDatabaseDirectory & other);
-
-  SettingsDatabaseDirectory & operator=(const SettingsDatabaseDirectory & other);
-
-  bool operator==(const SettingsDatabaseDirectory & other);
-
-  const QString & name() const { return m_name; }
-  void set_name(const QString & name) { m_name = name; }
-
-  SettingsDatabaseDirectory & add_directory(const QString & name);
-  SettingsDatabaseKey & add_key(const QString & name, const QVariant value);
-
-  const DirectoryList & directories() const { return m_directories; }
-  const KeyList & keys() const { return m_keys; }
-
-  QJsonObject to_json() const;
-
-private:
-  QString m_name;
-  DirectoryList m_directories;
-  KeyList m_keys;
-  // int m_rowid;
-};
 
 /**************************************************************************************************/
 
@@ -124,6 +63,8 @@ public:
   QVariant value(const QString & key);
   void set_value(const QString & key, const QVariant & value);
   void remove(const QString & key);
+
+  void delete_all();
 
   int number_of_directories() const;
   int number_of_keys() const;
@@ -152,6 +93,9 @@ private:
   QVariantHash key_kwargs(const QString & key);
   QString parent_to_path(int parent);
 
+  void load_directory();
+  void save_directory(const SettingsDatabaseDirectory & directory);
+
 private:
   QcDatabaseTable * m_directory_table;
   QcDatabaseTable * m_key_value_table;
@@ -172,11 +116,15 @@ public:
   SqliteSettingsDatabase(const QString & sqlite_path);
   ~SqliteSettingsDatabase();
 
+  // SettingsDatabase API
   // Fixme: better ?
+
   bool contains(const QString & key) { return m_settings_database.contains(key); }
   QVariant value(const QString & key)  { return m_settings_database.value(key); }
   void set_value(const QString & key, const QVariant & value)  { return m_settings_database.set_value(key, value); }
   void remove(const QString & key)  { return m_settings_database.remove(key); }
+
+  void delete_all() { m_settings_database.delete_all(); }
 
   QStringList keys(const QString & path)  { return m_settings_database.keys(path); }
 
@@ -189,6 +137,9 @@ public:
 
   void load_json_document(const QJsonDocument & json_document) { m_settings_database.load_json_document(json_document); }
   QJsonDocument to_json_document() { return m_settings_database.to_json_document(); } // const
+
+  void from_json(const QString & json_path) { m_settings_database.load_json(json_path); }
+  void to_json(const QString & json_path) { m_settings_database.to_json(json_path); }
 
 private:
   SettingsDatabase m_settings_database;

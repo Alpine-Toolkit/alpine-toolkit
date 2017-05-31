@@ -37,118 +37,6 @@
 
 /**************************************************************************************************/
 
-SettingsDatabaseKey::SettingsDatabaseKey()
-{}
-
-SettingsDatabaseKey::SettingsDatabaseKey(const QString & name, const QVariant & value)
-  : m_name(name),
-    m_value(value)
-{}
-
-SettingsDatabaseKey::SettingsDatabaseKey(const SettingsDatabaseKey & other)
-  : m_name(other.m_name),
-    m_value(other.m_value)
-{
-}
-
-SettingsDatabaseKey::~SettingsDatabaseKey()
-{}
-
-SettingsDatabaseKey &
-SettingsDatabaseKey::operator=(const SettingsDatabaseKey & other)
-{
-  if (this != &other) {
-    m_name = other.m_name;
-    m_value = other.m_value;
-  }
-
-  return *this;
-}
-
-bool
-SettingsDatabaseKey::operator==(const SettingsDatabaseKey & other)
-{
-  return m_name == other.m_name and m_value == other.m_value;
-}
-
-/**************************************************************************************************/
-
-SettingsDatabaseDirectory::SettingsDatabaseDirectory()
-  : m_name(),
-    m_directories(),
-    m_keys()
-{}
-
-SettingsDatabaseDirectory::SettingsDatabaseDirectory(const QString & name)
-  : m_name(name),
-    m_directories(),
-    m_keys()
-{}
-
-SettingsDatabaseDirectory::SettingsDatabaseDirectory(const SettingsDatabaseDirectory & other)
-  : m_name(other.m_name),
-    m_directories(other.m_directories),
-    m_keys(other.m_keys)
-{}
-
-SettingsDatabaseDirectory &
-SettingsDatabaseDirectory::operator=(const SettingsDatabaseDirectory & other)
-{
-  if (this != &other) {
-    m_name = other.m_name;
-    m_directories = other.m_directories;
-    m_keys = other.m_keys;
-  }
-
-  return *this;
-}
-
-bool
-SettingsDatabaseDirectory::operator==(const SettingsDatabaseDirectory & other)
-{
-  return
-    m_name == other.m_name and
-    m_directories == other.m_directories and
-    m_keys == other.m_keys;
-}
-
-
-SettingsDatabaseDirectory &
-SettingsDatabaseDirectory::add_directory(const QString & name)
-{
-  m_directories << SettingsDatabaseDirectory(name);
-  return m_directories.last();
-}
-
-
-SettingsDatabaseKey &
-SettingsDatabaseDirectory::add_key(const QString & name, const QVariant value)
-{
-  m_keys << SettingsDatabaseKey(name, value);
-  return m_keys.last();
-}
-
-QJsonObject
-SettingsDatabaseDirectory::to_json() const
-{
-  QJsonObject root;
-
-  for (const auto & key : m_keys) {
-    const QVariant & value = key.value();
-    // QVariant value( QString("value") + vvalue.toLongLong());
-    // QVariant value((int) 1000);
-    // qInfo() << key.name() << value << value.type() << value.toJsonValue();
-    // root[key.name()] = key.value().toJsonValue();
-    root[key.name()] = QJsonValue::fromVariant(value); // key.value().toJsonValue();
-  }
-  for (const auto & directory : m_directories)
-    root[directory.name()] = directory.to_json();
-
-  return root;
-}
-
-/**************************************************************************************************/
-
 static const QString NAME = "name";
 static const QString PARENT = "parent";
 static const QString VALUE = "value";
@@ -381,6 +269,17 @@ SettingsDatabase::remove(const QString & key)
     m_key_cache.remove(key);
 }
 
+void
+SettingsDatabase::delete_all()
+{
+  m_key_value_table->delete_row();
+  m_directory_table->delete_row();
+
+  m_rowid_path_cache.clear();
+  m_path_cache.clear();
+  m_key_cache.clear();
+}
+
 QStringList
 SettingsDatabase::keys(const QString & path)
 {
@@ -440,32 +339,21 @@ SettingsDatabase::clear_cache()
 }
 
 void
-SettingsDatabase::load_json_document(const QJsonDocument & json_document)
+SettingsDatabase::load_directory()
 {
-}
-
-QJsonDocument
-SettingsDatabase::to_json_document() // const
-{
-  QJsonDocument document;
-
   // id -> directory map
   QHash<int, SettingsDatabaseDirectory*> directory_map;
   directory_map[0] = &m_root;
 
   {
-    // QcSqlQueryWrapper query = m_directory_table->select_where();
-
     // Fixme: table -> schema -> int cast
     QcSqlField parent_field = m_directory_table->schema().sql_field(Int(DirectoryField::Parent));
     QcSqlQuery sql_query = m_directory_table->sql_query().order_by(parent_field).all();
-    // qInfo() << sql_query;
     QcSqlQueryWrapper query = sql_query.exec();
     while (query.next()) {
       int id = query.toInt(Int(DirectoryField::Id));
       QString name = query.toString(Int(DirectoryField::Name));
       int parent = query.toInt(Int(DirectoryField::Parent));
-      qInfo() << id << name << parent;
       SettingsDatabaseDirectory * parent_directory = directory_map[parent];
       SettingsDatabaseDirectory & directory = parent_directory->add_directory(name);
       directory_map[id] = &directory;
@@ -478,12 +366,36 @@ SettingsDatabase::to_json_document() // const
       QString name = query.toString(Int(KeyField::Name));
       int parent = query.toInt(Int(KeyField::Parent));
       QVariant value = query.value(Int(KeyField::Value));
-      qInfo() << name << parent << value;
       SettingsDatabaseDirectory * directory = directory_map[parent];
       directory->add_key(name, value);
     }
   }
+}
 
+void
+SettingsDatabase::save_directory(const SettingsDatabaseDirectory & directory)
+{
+  for (const auto & key : directory.keys())
+    set_value(key.path(), key.value());
+  for (const auto & subdirectory : directory.directories())
+    save_directory(subdirectory);
+}
+
+void
+SettingsDatabase::load_json_document(const QJsonDocument & json_document)
+{
+  m_root.from_json(json_document.object());
+  save_directory(m_root);
+}
+
+QJsonDocument
+SettingsDatabase::to_json_document() // const
+{
+  // Fixme:: const: use local tree ?
+  //   if already loaded ???
+  load_directory();
+
+  QJsonDocument document;
   document.setObject(m_root.to_json());
 
   return document;

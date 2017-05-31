@@ -106,10 +106,17 @@ void TestSettingsDatabase::constructor()
   settings_database.remove(key1bis);
   QVERIFY(settings_database.contains(key1bis) == false);
 
-  qInfo() << "To JSON";
-  qInfo() << settings_database.to_json_document();
-
   // Check counts
+  QVERIFY(settings_database.number_of_directories() == 3);
+  QVERIFY(settings_database.number_of_keys() == keys.size() - 1);
+
+  settings_database.to_json("settings.json");
+
+  settings_database.delete_all();
+  QVERIFY(settings_database.number_of_directories() == 0);
+  QVERIFY(settings_database.number_of_keys() == 0);
+
+  settings_database.from_json("settings.json");
   QVERIFY(settings_database.number_of_directories() == 3);
   QVERIFY(settings_database.number_of_keys() == keys.size() - 1);
 }

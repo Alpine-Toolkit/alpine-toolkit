@@ -77,6 +77,7 @@ set(alpine_toolkit_library_files
   refuge/refuge_schema_manager.cpp
   rrd/rrd.cpp
   settings/settings_database.cpp
+  settings/settings_tree.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml cmark)
