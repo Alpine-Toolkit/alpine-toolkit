@@ -33,6 +33,9 @@
 
 /**************************************************************************************************/
 
+// #include "orm/database_query.h"
+#include "orm/sql_flavour.h"
+
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QString>
@@ -44,11 +47,17 @@
 
 /**************************************************************************************************/
 
+class QcSqlQuery;
+
+/**************************************************************************************************/
+
 class QcDatabase
 {
 public:
+  // Fixme: why pass QSqlQuery ???
   static bool exec_and_check_prepared_query(QSqlQuery & query);
   static bool exec_and_check(QSqlQuery & query, const QString & sql_query);
+  static bool exec_and_check(QSqlQuery & query, const QcSqlQuery & sql_query);
 
 private:
   static void log_query_error_message(const QSqlQuery & query);
@@ -59,6 +68,8 @@ public:
 
   QSqlDatabase & database () { return m_database; }
 
+  SqlFlavour sql_flavour() const { return m_sql_flavour; }
+
   bool transaction() { return m_database.transaction(); }
   bool commit() { return m_database.commit(); }
 
@@ -66,12 +77,18 @@ public:
   // QSqlQuery new_query(const QString & sql_query) const; { return QSqlQuery(sql_query, m_database); } // exec query
 
   QSqlQuery prepare_query(const QString & sql_query);
+  QSqlQuery prepare_query(const QcSqlQuery & sql_query);
 
   bool execute_query(const QString & sql_query);
+  bool execute_query(const QcSqlQuery & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
+
+protected:
+  void set_sql_flavour();
 
 protected: // for SQLite and Network subclasses
   QSqlDatabase m_database;
+  SqlFlavour m_sql_flavour = SqlFlavour::ANSI;
 };
 
 /**************************************************************************************************/

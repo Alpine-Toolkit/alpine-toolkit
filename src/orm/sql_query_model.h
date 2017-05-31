@@ -1,8 +1,10 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire
+ * Copyright (C) 2017 Fabrice Salvaire.
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -26,18 +28,33 @@
 
 /**************************************************************************************************/
 
-#include "schema_manager.h"
-
-#include <QtDebug>
+#ifndef __SQL_QUERY_MODEL_H__
+#define __SQL_QUERY_MODEL_H__
 
 /**************************************************************************************************/
 
-SchemaManager::SchemaManager()
-  : QObject()
-{}
+#include <QSqlQueryModel>
 
-SchemaManager::~SchemaManager()
-{}
+/**************************************************************************************************/
+
+class SqlQueryModel : public QSqlQueryModel
+{
+  Q_OBJECT
+
+public:
+  explicit SqlQueryModel(QObject *parent = 0);
+
+  void set_query(const QString & query, const QSqlDatabase & db = QSqlDatabase());
+  void set_query(const QSqlQuery & query);
+  QVariant data(const QModelIndex & index, int role) const;
+  QHash<int, QByteArray> roleNames() const { return m_role_names; }
+
+private:
+  void generate_role_names();
+  QHash<int, QByteArray> m_role_names;
+};
+
+#endif /* __SQL_QUERY_MODEL_H__ */
 
 /***************************************************************************************************
  *

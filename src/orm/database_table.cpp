@@ -29,6 +29,7 @@
 #include "database_table.h"
 
 #include "database.h"
+#include "database_query.h"
 
 #include <QSqlError>
 #include <QSqlQuery>
@@ -147,6 +148,12 @@ QcDatabaseTable::operator=(const QcDatabaseTable & other)
   return *this;
 }
 
+SqlFlavour
+QcDatabaseTable::sql_flavour() const
+{
+  return m_database->sql_flavour();
+}
+
 void
 QcDatabaseTable::commit()
 {
@@ -165,6 +172,22 @@ QcDatabaseTable::create()
 {
   QString sql_query = m_schema.to_sql_definition();
   return m_database->execute_query(sql_query);
+}
+
+QcSqlQuery
+QcDatabaseTable::sql_query()
+{
+  return QcSqlQuery(this);
+}
+
+QSqlQuery
+QcDatabaseTable::exec(const QcSqlQuery & sql_query)
+{
+  // Fixme: why pass QSqlQuery, could return it ???
+  QSqlQuery query = m_database->new_query();
+  QcDatabase::exec_and_check(query, sql_query);
+
+  return query;
 }
 
 bool
@@ -297,6 +320,9 @@ QSqlQuery
 QcDatabaseTable::select(const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = m_database->new_query();
+  // Fixme: use query api ?
+  //   but only strings : basic
+  //   modify ORM to use QcSqlField instead 
   QString sql_query = QLatin1String("SELECT ") + comma_join(fields) + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;

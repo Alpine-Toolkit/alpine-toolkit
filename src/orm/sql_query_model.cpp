@@ -1,8 +1,10 @@
+// -*- mode: c++ -*-
+
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire
+ * Copyright (C) 2017 Fabrice Salvaire.
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -26,18 +28,59 @@
 
 /**************************************************************************************************/
 
-#include "schema_manager.h"
+#include "sql_query_model.h"
 
 #include <QtDebug>
+#include <QSqlRecord>
+#include <QSqlField>
 
 /**************************************************************************************************/
 
-SchemaManager::SchemaManager()
-  : QObject()
-{}
+SqlQueryModel::SqlQueryModel(QObject *parent)
+  : QSqlQueryModel(parent)
+{
+}
 
-SchemaManager::~SchemaManager()
-{}
+void
+SqlQueryModel::set_query(const QString & query, const QSqlDatabase & db)
+{
+  QSqlQueryModel::setQuery(query, db);
+  generate_role_names();
+}
+
+void
+SqlQueryModel::set_query(const QSqlQuery & query)
+{
+  QSqlQueryModel::setQuery(query);
+  generate_role_names();
+}
+
+void
+SqlQueryModel::generate_role_names()
+{
+  m_role_names.clear();
+  for (int i = 0; i < record().count(); i++) {
+    m_role_names.insert(Qt::UserRole + i + 1, record().fieldName(i).toUtf8());
+  }
+}
+
+QVariant
+SqlQueryModel::data(const QModelIndex & index, int role) const
+{
+  QVariant value;
+
+  if(role < Qt::UserRole) {
+    value = QSqlQueryModel::data(index, role);
+  }
+  else {
+    int column = role - Qt::UserRole - 1;
+    QModelIndex model_index = this->index(index.row(), column);
+    value = QSqlQueryModel::data(model_index, Qt::DisplayRole);
+  }
+  qInfo() << index << role << value;
+
+  return value;
+}
 
 /***************************************************************************************************
  *

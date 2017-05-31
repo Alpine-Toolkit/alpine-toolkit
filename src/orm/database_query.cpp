@@ -28,6 +28,8 @@
 
 #include "database_query.h"
 
+#include "database_table.h"
+
 /**************************************************************************************************/
 
 constexpr const char EQUAL[] = "=";
@@ -366,7 +368,7 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
 /**************************************************************************************************/
 
 QcSqlQuery::QcSqlQuery()
-  : m_table_name(),
+  : m_table(nullptr),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
     m_where(nullptr),
@@ -374,8 +376,8 @@ QcSqlQuery::QcSqlQuery()
     m_order_by()
 {}
 
-QcSqlQuery::QcSqlQuery(const QString & table_name)
-  : m_table_name(table_name),
+QcSqlQuery::QcSqlQuery(QcDatabaseTable * table)
+  : m_table(table),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
     m_where(nullptr),
@@ -390,7 +392,7 @@ QcSqlQuery::QcSqlQuery(const QcSqlTable & table)
 */
 
 QcSqlQuery::QcSqlQuery(const QcSqlQuery & other)
-  : m_table_name(other.m_table_name),
+  : m_table(other.m_table),
     m_query_type(other.m_query_type),
     m_select_type(other.m_select_type),
     m_flags(other.m_flags),
@@ -410,7 +412,7 @@ QcSqlQuery &
 QcSqlQuery::operator=(const QcSqlQuery & other)
 {
   if (this != &other) {
-    m_table_name = other.m_table_name;
+    m_table = other.m_table;
     m_query_type = other.m_query_type;
     m_select_type = other.m_select_type;
     m_flags = other.m_flags;
@@ -424,6 +426,18 @@ QcSqlQuery::operator=(const QcSqlQuery & other)
   }
 
   return *this;
+}
+
+const QString &
+QcSqlQuery::table_name() const
+{
+  return m_table->name();
+}
+
+SqlFlavour
+QcSqlQuery::sql_flavour() const
+{
+  return m_table->sql_flavour();
 }
 
 QcSqlQuery &
@@ -587,7 +601,7 @@ QcSqlQuery::comma_interrogation_list(int count)
 QString
 QcSqlQuery::table_name_as(const QString & name) const
 {
-  return quote_sql_identifier(m_table_name) + QLatin1String(" AS ") + name;
+  return quote_sql_identifier(table_name()) + QLatin1String(" AS ") + name;
 }
 
 QString
@@ -617,6 +631,7 @@ QcSqlQuery::to_sql() const
   case QueryType::Insert: query = QLatin1String("INSERT"); break;
   case QueryType::Update: query = QLatin1String("UPDATE"); break;
   case QueryType::Delete: query = QLatin1String("DELETE"); break;
+  case QueryType::None: break;
   }
 
   if (get_flags(Flags::SelectCount))
@@ -662,7 +677,7 @@ QcSqlQuery::to_sql() const
   if (m_query_type == QueryType::Insert)
     query += QLatin1String(" INTO");
 
-  query += ' '  + quote_sql_identifier(m_table_name);
+  query += ' '  + quote_sql_identifier(table_name());
 
   if (m_query_type == QueryType::Update) {
     query += QLatin1String(" Set ");
@@ -707,6 +722,12 @@ QcSqlQuery::to_sql() const
   query += ';';
 
   return query;
+}
+
+QSqlQuery
+QcSqlQuery::exec()
+{
+  return m_table->exec(*this);
 }
 
 /**************************************************************************************************/

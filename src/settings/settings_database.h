@@ -33,17 +33,80 @@
 
 /**************************************************************************************************/
 
-#include "orm/sqlite_database.h"
 #include "orm/database_schema.h"
 #include "orm/database_table.h"
+#include "orm/json_adaptator.h"
+#include "orm/sqlite_database.h"
 
+#include <QJsonObject>
 #include <QString>
 #include <QVariant>
 #include <QHash>
 
 /**************************************************************************************************/
 
-class SettingsDatabase : public QcDatabaseSchema
+// Fixme: use namespace ?
+
+class SettingsDatabaseKey
+{
+public:
+  SettingsDatabaseKey();
+  SettingsDatabaseKey(const QString & name, const QVariant & value);
+  SettingsDatabaseKey(const SettingsDatabaseKey & other);
+  ~SettingsDatabaseKey();
+
+  SettingsDatabaseKey & operator=(const SettingsDatabaseKey & other);
+
+  bool operator==(const SettingsDatabaseKey & other);
+
+  const QString & name() const { return m_name; }
+  void set_name(const QString & name) { m_name = name; }
+
+  const QVariant & value() const { return m_value; }
+  void set_value(const QVariant & value) { m_value = value; }
+
+private:
+  QString m_name;
+  QVariant m_value;
+};
+
+/**************************************************************************************************/
+
+class SettingsDatabaseDirectory
+{
+  typedef QList<SettingsDatabaseDirectory> DirectoryList;
+  typedef QList<SettingsDatabaseKey> KeyList;
+
+public:
+  SettingsDatabaseDirectory();
+  SettingsDatabaseDirectory(const QString & name);
+  SettingsDatabaseDirectory(const SettingsDatabaseDirectory & other);
+
+  SettingsDatabaseDirectory & operator=(const SettingsDatabaseDirectory & other);
+
+  bool operator==(const SettingsDatabaseDirectory & other);
+
+  const QString & name() const { return m_name; }
+  void set_name(const QString & name) { m_name = name; }
+
+  SettingsDatabaseDirectory & add_directory(const QString & name);
+  SettingsDatabaseKey & add_key(const QString & name, const QVariant value);
+
+  const DirectoryList & directories() const { return m_directories; }
+  const KeyList & keys() const { return m_keys; }
+
+  QJsonObject to_json() const;
+
+private:
+  QString m_name;
+  DirectoryList m_directories;
+  KeyList m_keys;
+  // int m_rowid;
+};
+
+/**************************************************************************************************/
+
+class SettingsDatabase : public QcDatabaseSchema, public QcJsonSchemaTraits
 {
 public:
   typedef QHash<QString, QVariant> KeyValueMap;
@@ -71,6 +134,9 @@ public:
   void clear_cache();
   const KeyValueMap & cache() const { return m_key_cache; }
 
+  void load_json_document(const QJsonDocument & json_document);
+  QJsonDocument to_json_document(); // const
+
   // void vacuum(); // Fixme: implement vacuum directory table
 
 private:
@@ -94,6 +160,8 @@ private:
   QHash<int, QString> m_rowid_path_cache;
   QHash<QString, int> m_path_cache;
   KeyValueMap m_key_cache;
+
+  SettingsDatabaseDirectory m_root;
 };
 
 /**************************************************************************************************/
@@ -118,6 +186,9 @@ public:
 
   int number_of_directories() const { return m_settings_database.number_of_directories(); }
   int number_of_keys() const { return m_settings_database.number_of_keys(); }
+
+  void load_json_document(const QJsonDocument & json_document) { m_settings_database.load_json_document(json_document); }
+  QJsonDocument to_json_document() { return m_settings_database.to_json_document(); } // const
 
 private:
   SettingsDatabase m_settings_database;

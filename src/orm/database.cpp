@@ -28,6 +28,9 @@
 
 #include "database.h"
 
+#include "database_query.h"
+
+#include <QSqlDriver>
 #include <QSqlError>
 #include <QtDebug>
 
@@ -47,6 +50,31 @@ QcDatabase::~QcDatabase()
     m_database.close();
 }
 
+void
+QcDatabase::set_sql_flavour()
+{
+  QSqlDriver * driver = m_database.driver();
+
+  switch(driver->dbmsType()) {
+  case QSqlDriver::SQLite:
+    m_sql_flavour = SqlFlavour::ANSI;
+  case QSqlDriver::PostgreSQL:
+    m_sql_flavour = SqlFlavour::PostgreSQL;
+  case QSqlDriver::MySqlServer:
+    m_sql_flavour = SqlFlavour::MySQL;
+  case QSqlDriver::MSSqlServer:
+    m_sql_flavour = SqlFlavour::SQL_Server;
+  case QSqlDriver::Oracle:
+    m_sql_flavour = SqlFlavour::Oracle;
+  case QSqlDriver::DB2:
+    m_sql_flavour = SqlFlavour::DB2;
+  case QSqlDriver::UnknownDbms:
+  case QSqlDriver::Interbase:
+  case QSqlDriver::Sybase:
+    m_sql_flavour = SqlFlavour::ANSI;
+  }
+}
+
 QSqlQuery
 QcDatabase::prepare_query(const QString & sql_query)
 {
@@ -54,6 +82,12 @@ QcDatabase::prepare_query(const QString & sql_query)
   QSqlQuery query = new_query();
   query.prepare(sql_query);
   return query;
+}
+
+QSqlQuery
+QcDatabase::prepare_query(const QcSqlQuery & sql_query)
+{
+  return prepare_query(sql_query.to_sql()); // Fixme: QString cast ?
 }
 
 void
@@ -87,6 +121,12 @@ QcDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
 }
 
 bool
+QcDatabase::exec_and_check(QSqlQuery & query, const QcSqlQuery & sql_query)
+{
+  return exec_and_check(query, sql_query.to_sql());
+}
+
+bool
 QcDatabase::execute_query(const QString & sql_query)
 {
   // QSqlQuery query = QSqlQuery(sql_query, m_database);
@@ -98,6 +138,12 @@ QcDatabase::execute_query(const QString & sql_query)
   // }
   QSqlQuery query = new_query();
   return exec_and_check(query, sql_query);
+}
+
+bool
+QcDatabase::execute_query(const QcSqlQuery & sql_query)
+{
+  return execute_query(sql_query.to_sql());
 }
 
 bool

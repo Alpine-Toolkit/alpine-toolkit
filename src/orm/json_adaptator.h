@@ -1,10 +1,9 @@
 // -*- mode: c++ -*-
-
 /***************************************************************************************************
  *
- * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
+ * $QTCARTO_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2016 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -22,65 +21,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $ALPINE_TOOLKIT_END_LICENSE$
+ * $QTCARTO_END_LICENSE$
  *
  **************************************************************************************************/
 
 /**************************************************************************************************/
 
-#include <QtDebug>
-#include <QSqlRecord>
-#include <QSqlField>
-
-#include "SqlQueryModel.h"
+#ifndef __JSON_ADAPTATOR_H__
+#define __JSON_ADAPTATOR_H__
 
 /**************************************************************************************************/
 
-SqlQueryModel::SqlQueryModel(QObject *parent)
-  : QSqlQueryModel(parent)
+#include <QJsonDocument>
+#include <QString>
+
+/**************************************************************************************************/
+
+// Fixme: to_json cannot be const if e.g. it modifies internal cache ...
+
+class QcJsonSchemaTraits
 {
-}
+public:
+  void load_json(const QString & json_path); // Fixme: throw ???
+  void to_json(const QString & json_path); // Fixme: throw ??? // const
 
-void
-SqlQueryModel::set_query(const QString & query, const QSqlDatabase & db)
-{
-  QSqlQueryModel::setQuery(query, db);
-  generate_role_names();
-}
+  virtual void load_json_document(const QJsonDocument & json_document) = 0;
+  virtual QJsonDocument to_json_document() = 0; // const
+};
 
-void
-SqlQueryModel::set_query(const QSqlQuery & query)
-{
-  QSqlQueryModel::setQuery(query);
-  generate_role_names();
-}
+/**************************************************************************************************/
 
-void
-SqlQueryModel::generate_role_names()
-{
-  m_role_names.clear();
-  for (int i = 0; i < record().count(); i++) {
-    m_role_names.insert(Qt::UserRole + i + 1, record().fieldName(i).toUtf8());
-  }
-}
-
-QVariant
-SqlQueryModel::data(const QModelIndex & index, int role) const
-{
-  QVariant value;
-
-  if(role < Qt::UserRole) {
-    value = QSqlQueryModel::data(index, role);
-  }
-  else {
-    int column = role - Qt::UserRole - 1;
-    QModelIndex model_index = this->index(index.row(), column);
-    value = QSqlQueryModel::data(model_index, Qt::DisplayRole);
-  }
-  qInfo() << index << role << value;
-
-  return value;
-}
+#endif /* __JSON_ADAPTATOR_H__ */
 
 /***************************************************************************************************
  *

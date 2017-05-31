@@ -106,6 +106,9 @@ void TestSettingsDatabase::constructor()
   settings_database.remove(key1bis);
   QVERIFY(settings_database.contains(key1bis) == false);
 
+  qInfo() << "To JSON";
+  qInfo() << settings_database.to_json_document();
+
   // Check counts
   QVERIFY(settings_database.number_of_directories() == 3);
   QVERIFY(settings_database.number_of_keys() == keys.size() - 1);

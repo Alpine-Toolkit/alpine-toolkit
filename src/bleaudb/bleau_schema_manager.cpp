@@ -146,7 +146,7 @@ BleauSchemaManager::load_json_document(const QJsonDocument & json_document)
 }
 
 QJsonDocument
-BleauSchemaManager::to_json_document() const
+BleauSchemaManager::to_json_document() // const
 {
   QJsonObject root;
 

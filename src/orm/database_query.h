@@ -68,39 +68,19 @@
 
 /**************************************************************************************************/
 
+// #include "orm/database_table.h"
+#include "orm/sql_flavour.h"
+
 #include <QBitArray>
 #include <QList>
 #include <QSharedPointer>
+#include <QSqlQuery>
 #include <QString>
 #include <QVariant>
 
 /**************************************************************************************************/
 
 class QcDatabaseTable;
-
-/**************************************************************************************************/
-
-/* Qt Supported Databases http://doc.qt.io/qt-5/sql-driver.html#supported-databases
- * QDB2	IBM DB2 (version 7.1 and above)
- * QIBASE	Borland InterBase
- * QMYSQL	MySQL
- * QOCI	Oracle Call Interface Driver
- * QODBC	Open Database Connectivity (ODBC) - Microsoft SQL Server and other ODBC-compliant databases
- * QPSQL	PostgreSQL (versions 7.3 and above)
- * QSQLITE2	SQLite version 2
- * QSQLITE    SQLite version 3
- */
-
-enum class SqlFlavour {
-  ANSI,
-  SQLite,
-  MySQL,
-  MariaDB,
-  PostgreSQL,
-  SQL_Server,
-  Oracle,
-  DB2
-};
 
 /**************************************************************************************************/
 
@@ -334,6 +314,11 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
 
 /**************************************************************************************************/
 
+// Fixme: QcSqlQuery vs QSqlQuery ???
+// If we split table / string version
+// then we must return this and not *this and we have to deal with -> instead of .
+// else we have to use QcDatabaseTable(nullptr, name) and build a fake schema !
+
 class QcSqlQuery
 {
 public:
@@ -363,17 +348,14 @@ private:
 
 public:
   QcSqlQuery();
-  QcSqlQuery(const QString & table_name);
-  // QcSqlQuery(const QcSqlTable & table);
+  QcSqlQuery(QcDatabaseTable * table);
   QcSqlQuery(const QcSqlQuery & other);
   ~QcSqlQuery();
 
   QcSqlQuery & operator=(const QcSqlQuery & other);
 
-  virtual SqlFlavour sql_flavour() const { return SqlFlavour::ANSI; }
-
-  const QString & table_name() const { return m_table_name; }
-  void set_table_name(const QString & table_name) { m_table_name = table_name; }
+  const QString & table_name() const;
+  SqlFlavour sql_flavour() const;
 
   QueryType query_type() const { return m_query_type; }
   SelectType select_type() const { return m_select_type; }
@@ -428,6 +410,9 @@ public:
   // QcSqlQuery & update(const QcSqlField & field, const QVariant & value);
 
   QString to_sql() const;
+  operator QString() const { return to_sql(); }
+
+  QSqlQuery exec();
 
 private:
   static QString comma_interrogation_list(int count);
@@ -443,7 +428,7 @@ private:
   // virtual QString quote_sql_identifier(const QString & name) const;
 
 public:
-  QString m_table_name;
+  QcDatabaseTable * m_table;
   QueryType m_query_type = QueryType::None;
   SelectType m_select_type = SelectType::None;
   QBitArray m_flags;
@@ -454,42 +439,6 @@ public:
   QcSqlExpressionList m_order_by;
   int m_limit = -1;
   int m_offset = -1;
-};
-
-/**************************************************************************************************/
-
-class QcSqliteQuery : public QcSqlQuery
-{
-public:
-  using QcSqlQuery::QcSqlQuery;
-
-  SqlFlavour sql_flavour() const { return SqlFlavour::SQLite; }
-};
-
-/**************************************************************************************************/
-
-class QcMySqlQuery : public QcSqlQuery
-{
-public:
-  using QcSqlQuery::QcSqlQuery;
-
-  SqlFlavour sql_flavour() const { return SqlFlavour::MySQL; }
-
-private:
-  // virtual QString quote_sql_identifier(const QString & name) const;
-};
-
-/**************************************************************************************************/
-
-class QcSqlServerQuery : public QcSqlQuery
-{
-public:
-  using QcSqlQuery::QcSqlQuery;
-
-  SqlFlavour sql_flavour() const { return SqlFlavour::SQL_Server; }
-
-private:
-  // virtual QString quote_sql_identifier(const QString & name) const;
 };
 
 /**************************************************************************************************/

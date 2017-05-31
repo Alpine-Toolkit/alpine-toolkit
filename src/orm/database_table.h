@@ -32,6 +32,11 @@
 
 /**************************************************************************************************/
 
+// #include "orm/database_query.h"
+#include "orm/database_row.h"
+#include "orm/schema.h"
+#include "orm/sql_flavour.h"
+
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QString>
@@ -39,12 +44,12 @@
 #include <QVariant>
 #include <QVariantHash>
 
-#include "orm/schema.h"
-#include "orm/database_row.h"
-
 /**************************************************************************************************/
 
 class QcDatabase;
+class QcSqlQuery;
+
+/**************************************************************************************************/
 
 class QcDatabaseTable
 {
@@ -72,12 +77,16 @@ public:
   QcDatabaseTable & operator=(const QcDatabaseTable & other);
 
   QcDatabase * database() { return m_database; }
+  SqlFlavour sql_flavour() const; // QcDatabase is incomplete
   const QcSchema & schema() { return m_schema; }
   const QString & name() { return m_name; } // m_schema.name()
 
   bool exists() const;
   bool create();
   bool drop();
+
+  QcSqlQuery sql_query();
+  QSqlQuery exec(const QcSqlQuery & query); // Fixme: execute_query
 
   QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
   QSqlQuery select(const QString & field, const QString & where = QString()) const {

@@ -32,25 +32,19 @@
 
 /**************************************************************************************************/
 
-#include <QJsonDocument>
-#include <QString>
+#include "orm/json_adaptator.h"
+
 #include <QObject>
 
 /**************************************************************************************************/
 
-class SchemaManager : public QObject
+class SchemaManager : public QObject, public QcJsonSchemaTraits
 {
   Q_OBJECT
 
 public:
   SchemaManager();
   ~SchemaManager();
-
-  void load_json(const QString & json_path); // Fixme: throw ???
-  void to_json(const QString & json_path) const; // Fixme: throw ???
-
-  virtual void load_json_document(const QJsonDocument & json_document) = 0;
-  virtual QJsonDocument to_json_document() const = 0;
 };
 
 /**************************************************************************************************/

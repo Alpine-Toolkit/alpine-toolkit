@@ -50,6 +50,8 @@ QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
   m_database.setPassword(connection_data.password());
   if (!m_database.open())
     qWarning() << m_database.lastError().text();
+
+  set_sql_flavour();
 }
 
 bool

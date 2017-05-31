@@ -33,6 +33,8 @@
 
 /**************************************************************************************************/
 
+#include "orm/database_query.h"
+
 #include <QHash>
 #include <QList>
 #include <QMetaType>
@@ -318,6 +320,12 @@ public:
 
   QSharedPointer<const QcSchemaFieldTrait> operator[](int position) const { return m_fields[position]; }
   QSharedPointer<const QcSchemaFieldTrait> operator[](const QString & name) const { return m_field_map[name]; }
+
+  // Note: Subclasses can define field shortcuts
+  // Fixme: QcSchemaFieldTrait is not aware of its schema. Implement a link ???
+  //        Merge QcSqlField with QcSchemaFieldTrait ???
+  QcSqlField sql_field(int position) const { return QcSqlField(m_fields[position]->name(), m_name); }
+  QcSqlField sql_field(const QString & name) const { return QcSqlField(name, m_name); } // Fixme: check name ?
 
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator begin() { return m_fields.begin(); }
   QList<QSharedPointer<QcSchemaFieldTrait>>::iterator end() { return m_fields.end(); }

@@ -50,6 +50,7 @@ QcSqliteDatabase::open()
   m_created = not QFile(m_sqlite_path).exists();
 
   // Set the connection name to sqlite_path
+  m_sql_flavour = SqlFlavour::SQLite;
   m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), m_sqlite_path);
   m_database.setDatabaseName(m_sqlite_path);
   if (not m_database.open())

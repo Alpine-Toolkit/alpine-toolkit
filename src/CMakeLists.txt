@@ -59,15 +59,16 @@ set(alpine_toolkit_library_files
   network/network_fetcher.cpp
   network/network_reply.cpp
   network/network_ressource_request.cpp
-  orm/SqlQueryModel.cpp
   orm/database.cpp
   orm/database_connection.cpp
+  orm/database_query.cpp
   orm/database_schema.cpp
   orm/database_table.cpp
-  orm/database_query.cpp
+  orm/json_adaptator.cpp
   orm/network_database.cpp
   orm/schema.cpp
   orm/schema_manager.cpp
+  orm/sql_query_model.cpp
   orm/sqlite_database.cpp
   orm/type_conversion.cpp
   phonetic_algorithm/soundex.cpp

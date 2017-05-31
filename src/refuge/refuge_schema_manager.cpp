@@ -88,7 +88,7 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
 }
 
 QJsonDocument
-RefugeSchemaManager::to_json_document() const
+RefugeSchemaManager::to_json_document() // const
 {
   QJsonArray array;
 

@@ -38,6 +38,7 @@
 
 // QC_BEGIN_NAMESPACE
 
+/**************************************************************************************************/
 
 DirectorySchema::DirectorySchema()
 : QcSchema(QLatin1String("Directory"), QLatin1String("directory"))

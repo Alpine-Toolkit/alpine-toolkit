@@ -64,7 +64,7 @@ public:
   // RefugeSchemaManager & operator=(const RefugeSchemaManager & other);
 
   void load_json_document(const QJsonDocument & json_document);
-  QJsonDocument to_json_document() const;
+  QJsonDocument to_json_document(); // const
 
   void to_sql(const QString & sqlite_path);
 

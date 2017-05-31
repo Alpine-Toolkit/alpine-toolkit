@@ -1,10 +1,9 @@
 // -*- mode: c++ -*-
-
 /***************************************************************************************************
  *
- * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
+ * $QTCARTO_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2016 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -22,39 +21,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $ALPINE_TOOLKIT_END_LICENSE$
+ * $QTCARTO_END_LICENSE$
  *
  **************************************************************************************************/
 
 /**************************************************************************************************/
 
-#ifndef __SQUERY_MODEL_H__
-#define __SQUERY_MODEL_H__
+#ifndef __SQL_FLAVOUR_H__
+#define __SQL_FLAVOUR_H__
 
 /**************************************************************************************************/
 
-#include <QSqlQueryModel>
+/* Qt Supported Databases http://doc.qt.io/qt-5/sql-driver.html#supported-databases
+ * QDB2	IBM DB2 (version 7.1 and above)
+ * QIBASE	Borland InterBase
+ * QMYSQL	MySQL
+ * QOCI	Oracle Call Interface Driver
+ * QODBC	Open Database Connectivity (ODBC) - Microsoft SQL Server and other ODBC-compliant databases
+ * QPSQL	PostgreSQL (versions 7.3 and above)
+ * QSQLITE2	SQLite version 2
+ * QSQLITE    SQLite version 3
+ */
 
-/**************************************************************************************************/
-
-class SqlQueryModel : public QSqlQueryModel
-{
-  Q_OBJECT
-
-public:
-  explicit SqlQueryModel(QObject *parent = 0);
-
-  void set_query(const QString & query, const QSqlDatabase & db = QSqlDatabase());
-  void set_query(const QSqlQuery & query);
-  QVariant data(const QModelIndex & index, int role) const;
-  QHash<int, QByteArray> roleNames() const { return m_role_names; }
-
-private:
-  void generate_role_names();
-  QHash<int, QByteArray> m_role_names;
+enum class SqlFlavour {
+  ANSI,
+  SQLite,
+  MySQL,
+  MariaDB,
+  PostgreSQL,
+  SQL_Server,
+  Oracle,
+  DB2
 };
 
-#endif /* __SQUERY_MODEL_H__ */
+/**************************************************************************************************/
+
+#endif /* __SQL_FLAVOUR_H__ */
 
 /***************************************************************************************************
  *
