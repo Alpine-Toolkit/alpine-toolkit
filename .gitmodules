@@ -4,3 +4,6 @@
 [submodule "cmark"]
 	path = third-parties/cmark/cmark.git
 	url = https://github.com/github/cmark
+[submodule "snowball"]
+	path = third-parties/snowball/snowball.git
+	url = https://github.com/snowballstem/snowball
