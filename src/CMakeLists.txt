@@ -54,6 +54,9 @@ set(alpine_toolkit_library_files
   document/document.cpp
   document/document_database.cpp
   ephemeride/ephemeride.cpp
+  full_text_search/document.cpp
+  full_text_search/stemmer.cpp
+  full_text_search/tokenizer.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp
   network/network_fetcher.cpp
@@ -80,7 +83,10 @@ set(alpine_toolkit_library_files
   settings/settings_tree.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
-target_link_libraries(alpine_toolkit Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml cmark)
+target_link_libraries(alpine_toolkit
+  Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml
+  cmark snowball
+  )
 
 ####################################################################################################
 #

@@ -27,17 +27,43 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Comment unwanted modules in libstemmer/modules.txt
+# Run make in snowball.git
+#
+####################################################################################################
 
-add_subdirectory(cmark)
-add_subdirectory(snowball)
+####################################################################################################
 
-if(ANDROID)
-add_subdirectory(sqlite)
-add_subdirectory(proj4) # x86: android log
-add_subdirectory(geos) # x86: compile errors ???
-add_subdirectory(libiconv)
-add_subdirectory(spatialite) # x86: dependencies
-endif(ANDROID)
+set(SNOWBALL_SOURCE_PATH "snowball.git")
+
+####################################################################################################
+
+include_directories(${SNOWBALL_SOURCE_PATH}/src_c)
+include_directories(${SNOWBALL_SOURCE_PATH}/libstemmer)
+include_directories(${SNOWBALL_SOURCE_PATH}/runtime)
+
+set(runtime_sources
+  api.c
+  utilities.c
+  )
+prepend(runtime_sources ${SNOWBALL_SOURCE_PATH}/runtime ${runtime_sources})
+
+set (module_sources
+  stem_UTF_8_english.c
+  stem_UTF_8_french.c
+  stem_UTF_8_german2.c
+  stem_UTF_8_german.c
+  stem_UTF_8_italian.c
+  stem_UTF_8_portuguese.c
+  stem_UTF_8_spanish.c
+  )
+prepend(module_sources ${SNOWBALL_SOURCE_PATH}/src_c ${module_sources})
+
+add_library(snowball SHARED
+  ${SNOWBALL_SOURCE_PATH}/libstemmer/libstemmer.c
+  ${runtime_sources}
+  ${module_sources})
 
 ####################################################################################################
 #

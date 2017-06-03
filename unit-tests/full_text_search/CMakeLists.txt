@@ -27,17 +27,25 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Include directories
+#
 
-add_subdirectory(cmark)
-add_subdirectory(snowball)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(ANDROID)
-add_subdirectory(sqlite)
-add_subdirectory(proj4) # x86: android log
-add_subdirectory(geos) # x86: compile errors ???
-add_subdirectory(libiconv)
-add_subdirectory(spatialite) # x86: dependencies
-endif(ANDROID)
+####################################################################################################
+#
+# Executable
+#
+
+foreach(name
+    stemmer
+    tokenizer
+    )
+  add_executable(test_${name} test_${name}.cpp)
+  target_link_libraries(test_${name} Qt5::Test alpine_toolkit)
+  add_test(NAME ${name} COMMAND test_${name})
+endforeach(name)
 
 ####################################################################################################
 #
