@@ -1,3 +1,6 @@
 [submodule "qtcarto"]
 	path = qtcarto
 	url = git@github.com:FabriceSalvaire/qtcarto.git
+[submodule "cmark"]
+	path = third-parties/cmark/cmark.git
+	url = https://github.com/github/cmark

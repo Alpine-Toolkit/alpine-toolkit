@@ -102,7 +102,6 @@ third-parties/include/
 third-parties/local/
 #
 third-parties/archives/
-third-parties/cmark/cmark.git/
 third-parties/geos/Android.mk
 third-parties/geos/geos-3.6.1/
 third-parties/geos/geos-sources
