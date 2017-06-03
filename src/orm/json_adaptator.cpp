@@ -46,8 +46,12 @@ QcJsonSchemaTraits::load_json(const QString & json_path)
 
   qInfo() << "Load" << json_path;
   QByteArray json_data = json_file.readAll();
-  QJsonDocument json_document = QJsonDocument::fromJson(json_data);
-  load_json_document(json_document);
+  QJsonParseError parse_error;
+  QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
+  if (parse_error.error == QJsonParseError::NoError)
+    load_json_document(json_document);
+  else
+    qCritical() << parse_error.errorString();
 }
 
 void
