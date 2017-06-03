@@ -22,12 +22,12 @@
  #
  # $ALPINE_TOOLKIT_END_LICENSE$
  #
- ###############################################################################################  #}
+ ###############################################################################################  -#}
 
 {% extends "includes/source-template.jinja" %}
 
 {% from "includes/accessor.jinja" import getter_impl, setter_impl %}
-{% from "includes/cdtor.jinja" import ctor_impl, copy_ctor_impl, copy_operator_impl, dtor_impl %}
+{% from "includes/cdtor.jinja" import ctor_impl, ctor_impl_with_args, copy_ctor_impl, copy_operator_impl, dtor_impl %}
 {% from "includes/debug.jinja" import debug_streamer_impl %}
 {% from "includes/operator.jinja" import equal_operator_impl %}
 
@@ -36,13 +36,14 @@
 {% endblock %}
 
 {% block content %}
-{{ ctor_impl(class_name, all_members) }}
+{{ ctor_impl(class_name, members) }}
+{{ ctor_impl_with_args(class_name, ctor_members) }}
 
-{{ copy_ctor_impl(class_name, all_members) }}
+{{ copy_ctor_impl(class_name, members) }}
 
 {{ dtor_impl(class_name) }}
 
-{{ copy_operator_impl(class_name, all_members) }}
+{{ copy_operator_impl(class_name, members) }}
 
 {{ equal_operator_impl(class_name, members) }}
 
@@ -51,6 +52,6 @@
 
 {% if not has_inline_setter %}{{ setter_impl(class_name, member) }}{% endif %}
 {% endfor %}
-{# #}
+
 {{ debug_streamer_impl(class_name, members) }}
 {% endblock %}

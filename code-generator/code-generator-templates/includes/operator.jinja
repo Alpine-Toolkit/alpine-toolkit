@@ -27,12 +27,12 @@
  ###############################################################################################  #}
 
 {% macro equal_operator_decl(class_name) %}
-bool operator==(const {{class_name}} & other);
+bool operator==(const {{class_name}} & other) const;
 {% endmacro %}
 
 {% macro equal_operator_impl(class_name, members, base_classes) %}
 bool
-{{class_name}}::operator==(const {{class_name}} & other)
+{{class_name}}::operator==(const {{class_name}} & other) const
 {
 {% for base_class in base_classes %}
   if (not {{base_class}}::operator==(other))

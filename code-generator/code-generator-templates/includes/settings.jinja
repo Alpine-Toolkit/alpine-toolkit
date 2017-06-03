@@ -24,11 +24,11 @@
  #
  ###############################################################################################  #}
 
-{% macro generator_comment(date) -%}
+{% macro generator_comment(date) %}
 // This document was automatically generated on {{date}}
-{%- endmacro %}
+{% endmacro %}
 
-{% macro copyright() -%}
+{% macro copyright() %}
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
@@ -54,4 +54,4 @@
  * $ALPINE_TOOLKIT_END_LICENSE$
  *
  **************************************************************************************************/
-{%- endmacro %}
+{% endmacro %}

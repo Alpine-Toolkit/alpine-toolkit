@@ -26,8 +26,14 @@
  #
  ###############################################################################################  #}
 
-{% macro ctor_decl(class_name) -%}
-{{class_name}}();
+{% macro ctor_arguments(members) %}
+{% for member in members %}
+{{ member.setter_type }} {{ member.name }}{% if not loop.last %}, {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro ctor_decl(class_name, ctor_members) -%}
+{{class_name}}({{ ctor_arguments(ctor_members) }});
 {%- endmacro %}
 
 {% macro copy_ctor_decl(class_name) -%}
@@ -62,6 +68,21 @@
 {% endfor %}{# space #}
 {% for member in members %}
 {% if loop.first and not base_classes %}  : {% else %}    {% endif %}{{member.m_name}}({% if member.value %}{{member.value}}{% endif %}){% if not loop.last %},{% endif %} 
+{% endfor %}{# space #}
+{
+{% if post_init %}
+  {{post_init}}();
+{% endif %}
+}
+{%- endmacro %}
+
+{% macro ctor_impl_with_args(class_name, members, base_classes, post_init) -%}
+{{class_name}}::{{class_name}}({{ ctor_arguments(members) }})
+{% for base_class in base_classes %}
+{% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}(){% if not loop.last or members %},{% endif %} 
+{% endfor %}{# space #}
+{% for member in members %}
+{% if loop.first and not base_classes %}  : {% else %}    {% endif %}{{member.m_name}}({{member.name}}){% if not loop.last %},{% endif %} 
 {% endfor %}{# space #}
 {
 {% if post_init %}

@@ -42,12 +42,9 @@ sys.path.insert(0, code_generator_path)
 
 import argparse
 
-from CodeGenerator.CppCodeGenerator import Variable
+from CodeGenerator.CppType import Variable
 
-from CodeGenerator.CppClassGenerator import CppClassGenerator
-from CodeGenerator.TemplateGenerator import TemplateGenerator
-
-from CodeGenerator.GeneratorSettings import generator_settings
+from CodeGenerator.Template import TemplateEnvironment, TemplateAggregator
 
 ####################################################################################################
 #
@@ -57,7 +54,6 @@ from CodeGenerator.GeneratorSettings import generator_settings
 argument_parser = argparse.ArgumentParser(description='Generate CPP Class',
                                           formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-argument_parser.add_argument('--mode', default='template', help='template or generator')
 argument_parser.add_argument('--property', action='store_true')
 argument_parser.add_argument('--inline-setter', action='store_true')
 argument_parser.add_argument('--inline-getter', action='store_true')
@@ -86,8 +82,15 @@ else:
     parent_class = None
 
 members = []
+ctor_members = []
 for line in class_definition[1:]:
     line = line.strip()
+    pragma_position = line.find('//')
+    if pragma_position != -1:
+        directive = line[pragma_position +2:]
+        line = line[:pragma_position].strip()
+    else:
+        directive = None
     if line.endswith(';'):
         line = line[:-1]
     l = line.rfind(' ')
@@ -97,32 +100,27 @@ for line in class_definition[1:]:
         name = name[2:]
     member = Variable(name, type_)
     members.append(member)
+    if directive == 'c':
+        ctor_members.append(member)
 
 ####################################################################################################
 
-if args.mode == 'template':
-    template_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                 'code-generator-templates')
-    template_generator = TemplateGenerator(template_path)
-    class_definition = dict(
-        filename=os.path.basename(args.class_file_name),
-        class_name=class_name,
-        base_classes=(parent_class,) if parent_class is not None else (),
-        has_property=args.property,
-        has_inline_getter=args.inline_getter,
-        has_inline_setter=args.inline_setter,
-        members=members,
-    )
-    header = template_generator.render('class-header.jinja', class_definition)
-    source = template_generator.render('class-source.jinja', class_definition)
+template_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'code-generator-templates')
+template_environment = TemplateEnvironment(template_path)
 
-elif args.mode == 'generator':
-    generator = CppClassGenerator(class_name, parent_class, members, generator_settings)
-    header = generator.generate_header(args.property, args.inline_getter, args.inline_setter)
-    source = generator.generate_source(args.class_file_name)
+class_definition = dict(
+    filename=os.path.basename(args.class_file_name),
+    class_name=class_name,
+    base_classes=(parent_class,) if parent_class is not None else (),
+    has_property=args.property,
+    has_inline_getter=args.inline_getter,
+    has_inline_setter=args.inline_setter,
+    members=members,
+    ctor_members=ctor_members,
+)
 
-# print(str(header))
-# print(str(source))
+header = TemplateAggregator(template_environment).render('class-header.jinja', **class_definition)
+source = TemplateAggregator(template_environment).render('class-source.jinja', **class_definition)
 
 with open(args.class_file_name + '.h' + args.suffix, 'w') as f:
     f.write(str(header))

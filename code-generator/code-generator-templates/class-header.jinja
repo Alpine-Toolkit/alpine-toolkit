@@ -1,4 +1,4 @@
-{# -*- mode: fundamental -*- #}
+{# -*- mode: fundamental -*- -#}
 
 {#  ################################################################################################
  #
@@ -24,7 +24,7 @@
  #
  # $ALPINE_TOOLKIT_END_LICENSE$
  #
- ###############################################################################################  #}
+ ###############################################################################################  -#}
 
 {% extends "includes/header-template.jinja" %}
 
@@ -40,27 +40,31 @@
 
 {% macro q_object(base_class) %}
 {% if 'QObject' in base_classes %}
-  Q_OBJECT{% endif %}
+  Q_OBJECT
+{% endif %}
 {% endmacro %}
 
 {% macro properties(members) %}
 {% for member in members %}
-  {{ property(member.name, member.type) }}{% endfor %}
+  {{ property(member.name, member.type) }}
+{% endfor %}
 {% endmacro %}
 
 {% macro signal_properties(members) %}
 signals:
 {% for member in members %}
-  {{ property_signal(member.name) }}{% endfor %}
+  {{ property_signal(member.name) }}
+{% endfor %}
 {% endmacro %}
 
-{% macro m_member(name, type) %}
-{{type}} m_{{name}};
-{% endmacro %}
+{% macro m_member(name, type) -%}
+{{type}} m_{{name}}
+{%- endmacro %}
 
 {% macro m_members(members) %}
 {% for member in members %}
-  {{ m_member(member.name, member.type) }};{% endfor %}
+  {{ m_member(member.name, member.type) }};
+{% endfor %}
 {% endmacro %}
 
 {% block content %}
@@ -70,6 +74,7 @@ class {{class_name}}{{ class_inheritance(base_classes) }}
 {% if has_property %}{{ properties(members) }}{% endif %}
 public:
   {{ ctor_decl(class_name) }}
+  {{ ctor_decl(class_name, ctor_members) }}
   {{ copy_ctor_decl(class_name) }}
   {{ dtor_decl(class_name) }}
 
@@ -78,18 +83,17 @@ public:
   {{ equal_operator_decl(class_name) }}
 
   // Getter/Setter
-{# #}
 {% for member in members %}
-  {% if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter_decl(member) }}{% endif %}
-  {% if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter_decl(member) }}{% endif %}
+  {%+ if has_inline_getter %}{{ inline_getter(member) }}{% else %}{{ getter_decl(member) }}{% endif %}
+  {%+ if has_inline_setter %}{{ inline_setter(member) }}{% else %}{{ setter_decl(member) }}{% endif %}
 {% endfor %}
-{# #}
+
 {% if has_property %}
 {{ signal_properties(members) }}
 {% endif %}
-{# #}
+
 private:
-{{- m_members(members) }}
+{{ m_members(members) }}
 };
 
 {{ debug_streamer_decl(class_name) }}
