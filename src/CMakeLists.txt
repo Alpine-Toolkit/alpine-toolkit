@@ -54,8 +54,10 @@ set(alpine_toolkit_library_files
   document/document.cpp
   document/document_database.cpp
   ephemeride/ephemeride.cpp
-  full_text_search/document.cpp
+  full_text_search/text_document.cpp
+  full_text_search/phonetic_encoder.cpp
   full_text_search/stemmer.cpp
+  full_text_search/token.cpp
   full_text_search/tokenizer.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp
@@ -74,7 +76,6 @@ set(alpine_toolkit_library_files
   orm/sql_query_model.cpp
   orm/sqlite_database.cpp
   orm/type_conversion.cpp
-  phonetic_algorithm/soundex.cpp
   refuge/refuge_schema.cpp
   refuge/refuge_schema_custom_code.cpp
   refuge/refuge_schema_manager.cpp

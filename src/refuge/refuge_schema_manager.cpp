@@ -28,7 +28,7 @@
 
 #include "refuge_schema_manager.h"
 
-#include "phonetic_algorithm/phonetic_algorithm.h"
+#include "full_text_search/phonetic_encoder.h"
 
 // #include "refuge_sqlite_database.h"
 
@@ -39,10 +39,6 @@
 #include <QtDebug>
 
 // QC_BEGIN_NAMESPACE
-
-/**************************************************************************************************/
-
-
 
 /**************************************************************************************************/
 
@@ -71,12 +67,13 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
 {
   QJsonArray array = json_document.array();
 
+  PhoneticEncoder phonetic_encoder;
   for (const auto & json_value : array) {
     RefugePtr refuge(json_value.toObject());
     m_refuge_cache.add(refuge);
     m_refuges << refuge;
-    QString soundex = soundex_fr(refuge->short_name());
-    qInfo() << refuge->short_name() << soundex;
+    QString soundex = phonetic_encoder.soundex_fr(refuge->short_name());
+    // qInfo() << refuge->short_name() << soundex;
     m_soundex_map.insert(soundex, refuge);
   }
 
@@ -111,7 +108,7 @@ RefugeSchemaManager::to_sql(const QString & sqlite_path)
 QList<QObject *>
 RefugeSchemaManager::refuges_as_object_list() // const
 {
-  qInfo() << "RefugeSchemaManager::refuges_as_object_list";
+  // qInfo() << "RefugeSchemaManager::refuges_as_object_list";
 
   QList<QObject *> list;
 
@@ -124,7 +121,7 @@ RefugeSchemaManager::refuges_as_object_list() // const
 QQmlListProperty<Refuge>
 RefugeSchemaManager::refuge_list_property()
 {
-  qInfo() << "RefugeSchemaManager::refuge_list_property";
+  // qInfo() << "RefugeSchemaManager::refuge_list_property";
   return QQmlListProperty<Refuge>(this,
                                   nullptr, // data
                                   &RefugeSchemaManager::refuge_list_property_count,
@@ -134,7 +131,7 @@ RefugeSchemaManager::refuge_list_property()
 int
 RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 {
-  qInfo() << "RefugeSchemaManager::refuge_list_property_count";
+  // qInfo() << "RefugeSchemaManager::refuge_list_property_count";
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   return refuge_schema_manager->m_filtered_refuges.size();
 }
@@ -142,7 +139,7 @@ RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 Refuge *
 RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, int index)
 {
-  qInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;
+  // qInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   RefugePtr & refuge = refuge_schema_manager->m_filtered_refuges[index];
   return refuge.data();
@@ -158,7 +155,8 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
   } else {
     m_filtered_refuges.clear();
     QSet<RefugePtr> matches;
-    QString soundex = soundex_fr(query);
+    PhoneticEncoder phonetic_encoder;
+    QString soundex = phonetic_encoder.soundex_fr(query);
     qInfo() << "soundex" << query << soundex;
     if (m_soundex_map.contains(soundex)) {
       auto & refuge = m_soundex_map[soundex];
@@ -180,191 +178,6 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
 
   emit refugeListChanged();
 }
-
-// rowCount
-// roleNames
-// rowCount
-// data QModelIndex(0,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(0,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(1,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(0,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(1,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(0,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(1,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(1,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(2,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(2,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(2,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(3,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(3,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(3,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(4,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(4,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(4,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(5,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(5,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(5,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(6,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(6,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(6,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(7,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(7,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(7,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(8,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(8,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(8,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(9,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(9,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(9,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(10,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(10,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(10,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(11,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(11,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(11,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(12,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(12,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(12,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(13,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(13,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(13,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(14,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(14,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(14,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(15,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(15,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(15,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(16,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(16,0,0x0,RefugeModel(0x1f19c28)) 258
-// rowCount
-// data QModelIndex(16,0,0x0,RefugeModel(0x1f19c28)) 269
-// rowCount
-// data QModelIndex(17,0,0x0,RefugeModel(0x1f19c28)) 269
-
-// RefugeSchemaManager::refuge_list_property
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 0
-// RefugeSchemaManager::refuge_list_property_at 0
-// RefugeSchemaManager::refuge_list_property_at 1
-// RefugeSchemaManager::refuge_list_property_at 0
-// RefugeSchemaManager::refuge_list_property_at 1
-// RefugeSchemaManager::refuge_list_property_at 0
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 1
-// RefugeSchemaManager::refuge_list_property_at 1
-// RefugeSchemaManager::refuge_list_property_at 2
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 2
-// RefugeSchemaManager::refuge_list_property_at 2
-// RefugeSchemaManager::refuge_list_property_at 3
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 3
-// RefugeSchemaManager::refuge_list_property_at 3
-// RefugeSchemaManager::refuge_list_property_at 4
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 4
-// RefugeSchemaManager::refuge_list_property_at 4
-// RefugeSchemaManager::refuge_list_property_at 5
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 5
-// RefugeSchemaManager::refuge_list_property_at 5
-// RefugeSchemaManager::refuge_list_property_at 6
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 6
-// RefugeSchemaManager::refuge_list_property_at 6
-// RefugeSchemaManager::refuge_list_property_at 7
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 7
-// RefugeSchemaManager::refuge_list_property_at 7
-// RefugeSchemaManager::refuge_list_property_at 8
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 8
-// RefugeSchemaManager::refuge_list_property_at 8
-// RefugeSchemaManager::refuge_list_property_at 9
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 9
-// RefugeSchemaManager::refuge_list_property_at 9
-// RefugeSchemaManager::refuge_list_property_at 10
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 10
-// RefugeSchemaManager::refuge_list_property_at 10
-// RefugeSchemaManager::refuge_list_property_at 11
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 11
-// RefugeSchemaManager::refuge_list_property_at 11
-// RefugeSchemaManager::refuge_list_property_at 12
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 12
-// RefugeSchemaManager::refuge_list_property_at 12
-// RefugeSchemaManager::refuge_list_property_at 13
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 13
-// RefugeSchemaManager::refuge_list_property_at 13
-// RefugeSchemaManager::refuge_list_property_at 14
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 14
-// RefugeSchemaManager::refuge_list_property_at 14
-// RefugeSchemaManager::refuge_list_property_at 15
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 15
-// RefugeSchemaManager::refuge_list_property_at 15
-// RefugeSchemaManager::refuge_list_property_at 16
-// RefugeSchemaManager::refuge_list_property_count
-// RefugeSchemaManager::refuge_list_property_at 16
-// RefugeSchemaManager::refuge_list_property_at 16
-// RefugeSchemaManager::refuge_list_property_at 17
 
 /**************************************************************************************************/
 

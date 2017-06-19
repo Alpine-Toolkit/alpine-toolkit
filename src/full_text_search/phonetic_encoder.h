@@ -32,12 +32,29 @@
 
 /**************************************************************************************************/
 
+#include "full_text_search/token.h"
+
 #include <QString>
 
 /**************************************************************************************************/
 
-QString soundex(const QString & source);
-QString soundex_fr(const QString & string);
+class PhoneticEncoder
+{
+public:
+  PhoneticEncoder();
+  ~PhoneticEncoder();
+
+  Token soundex(const Token & token) const;
+  Token soundex_fr(const Token & token) const;
+
+private:
+  static QString zero_padding(const QString & string, const int encoded_length = 4);
+  static Token soundex(const Token & token, const CharTranslator & translation_map);
+
+private:
+  CharTranslator m_soundex_translation_map;
+  CharTranslator m_soundex_translation_map_fr;
+};
 
 /**************************************************************************************************/
 

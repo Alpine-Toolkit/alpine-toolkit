@@ -32,9 +32,10 @@
 
 /**************************************************************************************************/
 
+#include "full_text_search/text_document.h"
 #include "full_text_search/language.h"
-#include "full_text_search/document.h"
 #include "full_text_search/stemmer.h"
+#include "full_text_search/token.h"
 
 #include <QJsonArray>
 #include <QHash>
@@ -42,70 +43,6 @@
 #include <QSet>
 #include <QSharedPointer>
 #include <QString>
-#include <QStringRef>
-
-/**************************************************************************************************/
-
-class Token
-{
-  enum Category {
-    Letter = 1,
-    Number = 2,
-    Hyphen = 4,
-    Other  = 8,
-  };
-
-public:
-  Token();
-  Token(const Token & token);
-  Token(const QString & string);
-  Token(const QStringRef & string);
-  ~Token();
-
-  Token & operator=(const Token & other);
-  Token & operator=(const QString & string);
-  Token & operator=(const QStringRef & string);
-
-  Token & operator<<(const QChar & c);
-  void operator+=(const QChar & c);
-
-  bool operator==(const Token & other) const;
-
-  const QString & value() const { return m_token; }
-  operator QString() const { return m_token; }
-
-  bool is_empty() const { return m_token.isEmpty(); }
-  bool is_not_empty() const { return not is_empty(); }
-  operator bool() const { return is_not_empty(); }
-
-  int size() const { return m_token.size(); }
-
-  bool has_letter() const { return m_flags & Letter; }
-  bool has_number() const { return m_flags & Number; }
-  bool has_hyphen() const { return m_flags & Hyphen; }
-  bool has_other() const  { return m_flags & Other; }
-  bool is_number() const  { return m_flags == Number; }
-
-  void clear();
-
-  Token to_lower_case() const;
-  Token to_upper_case() const;
-  Token ascii_folding() const;
-
-private:
-  void set(const QString & string);
-  void set(const QStringRef & string);
-
-public:
-  int m_flags = 0;
-  QString m_token;
-};
-
-typedef QList<Token> TokenList;
-
-#ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Token & token);
-#endif
 
 /**************************************************************************************************/
 

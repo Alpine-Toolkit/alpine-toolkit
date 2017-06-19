@@ -30,7 +30,7 @@
 
 /**************************************************************************************************/
 
-#include "phonetic_algorithm/phonetic_algorithm.h"
+#include "full_text_search/phonetic_encoder.h"
 
 /***************************************************************************************************/
 
@@ -44,7 +44,8 @@ private slots:
 
 void TestPhoneticAlgorithm::test()
 {
-  qInfo() << soundex("Robert");
+  PhoneticEncoder phonetic_encoder;
+  qInfo() << phonetic_encoder.soundex(Token("Robert"));
 }
 
 /***************************************************************************************************/
