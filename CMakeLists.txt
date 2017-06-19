@@ -207,8 +207,11 @@ endif(NOT ANDROID)
 
 ####################################################################################################
 
+# Fixme: clash with third parties
+if(NOT ANDROID)
 configure_file(config.h.in config.h @ONLY)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+endif(NOT ANDROID)
 
 ####################################################################################################
 #
