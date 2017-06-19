@@ -107,6 +107,12 @@ ListModel {
         source: 'qrc:/Pages/Torch.qml'
         lock_orientation: false
     }
+    ListElement {
+        title: qsTr('Person Counter')
+        icon: ''
+        source: 'qrc:/Pages/PersonCounter.qml'
+        lock_orientation: false
+    }
     /*
       ListElement {
       title: qsTr('Camera')

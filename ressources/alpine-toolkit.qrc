@@ -18,6 +18,7 @@
         <file alias="Illuminance.qml">qml/Pages/Illuminance.qml</file>
         <file alias="Inclination.qml">qml/Pages/Inclination.qml</file>
         <file alias="LampSignal.qml">qml/Pages/LampSignal.qml</file>
+        <file alias="PersonCounter.qml">qml/Pages/PersonCounter.qml</file>
         <file alias="Refuge.qml">qml/Pages/Refuge.qml</file>
         <file alias="RefugeDirectory.qml">qml/Pages/RefugeDirectory.qml</file>
         <file alias="Torch.qml">qml/Pages/Torch.qml</file>
@@ -97,6 +98,8 @@
     <file>icons/search-black@3x.png</file>
     <file>icons/wb-sunny-black.png</file>
     <file>icons/wb-sunny-black@3x.png</file>
+    <file>icons/undo-black.png</file>
+    <file>icons/undo-black@3x.png</file>
 
     <file>js/math.js</file>
     <file>js/gps.js</file>
