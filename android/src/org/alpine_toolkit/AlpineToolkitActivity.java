@@ -208,6 +208,7 @@ public class AlpineToolkitActivity extends QtActivity
 
   // used
   public void release_full_wake_lock()
+  {
     m_device_ui_helper.release_full_wake_lock();
   }
 
