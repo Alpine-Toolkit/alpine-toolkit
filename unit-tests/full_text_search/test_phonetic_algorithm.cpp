@@ -45,7 +45,19 @@ private slots:
 void TestPhoneticAlgorithm::test()
 {
   PhoneticEncoder phonetic_encoder;
-  qInfo() << phonetic_encoder.soundex(Token("Robert"));
+
+  QStringList word_pairs = {
+    "Robert", "r163",
+  };
+
+  for (int i = 0; i < word_pairs.size() / 2; ++i) {
+    int j = 2*i;
+    QString input = word_pairs[j];
+    QString output_truth = word_pairs[j + 1];
+    QString output = phonetic_encoder.soundex(Token(input));
+    qInfo() << input << "->" << output << "/" << output_truth;
+    QVERIFY(output == output_truth);
+  }
 }
 
 /***************************************************************************************************/

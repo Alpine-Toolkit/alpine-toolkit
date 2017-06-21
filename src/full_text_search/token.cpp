@@ -165,6 +165,12 @@ Token::operator==(const Token & other) const
   return m_string == other.m_string;
 }
 
+bool
+Token::operator<(const Token & other) const
+{
+  return m_string < other.m_string;
+}
+
 void
 Token::update_flags(const QChar & c)
 {

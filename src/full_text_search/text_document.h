@@ -70,6 +70,7 @@ public:
   TextDocument & operator=(const TextDocument & other);
 
   bool operator==(const TextDocument & other) const;
+  bool operator<(const TextDocument & other) const; // QMap total order
 
   const QString & document() const { return m_document; }
   void set_document(const QString & value) { m_document = value; }

@@ -94,6 +94,7 @@ public:
   void operator+=(const QChar & c);
 
   bool operator==(const Token & other) const;
+  bool operator<(const Token & other) const; // QMap total order
 
   const QString & value() const { return m_string; }
   operator QString() const { return m_string; }
