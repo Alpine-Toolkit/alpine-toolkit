@@ -192,7 +192,7 @@ DocumentIndexer<T>::~DocumentIndexer()
 
 template<typename T>
 void
-DocumentIndexer<T>::index(const Token & token, const DocumentTypePtr & document)
+DocumentIndexer<T>::insert(const Token & token, const DocumentTypePtr & document)
 {
   if (not m_document_map.contains(document, token)) {
     m_document_map.insert(document, token);
@@ -202,19 +202,19 @@ DocumentIndexer<T>::index(const Token & token, const DocumentTypePtr & document)
 
 template<typename T>
 void
-DocumentIndexer<T>::index(const TokenizedTextDocument & tokenized_document,
-                          const DocumentTypePtr & document)
+DocumentIndexer<T>::insert(const TokenizedTextDocument & tokenized_document,
+                           const DocumentTypePtr & document)
 {
   for (const auto & token : tokenized_document)
-    index(token, document);
+    insert(token, document);
 }
 
 template<typename T>
 void
-DocumentIndexer<T>::index(const TextDocument & text_document, const DocumentTypePtr & document)
+DocumentIndexer<T>::insert(const TextDocument & text_document, const DocumentTypePtr & document)
 {
   TokenizedTextDocument tokenized_document = m_tokenizer->process(text_document);
-  index(tokenized_document, document);
+  insert(tokenized_document, document);
 }
 
 template<typename T>
@@ -250,7 +250,7 @@ DocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) cons
 
   for (const auto & token : tokenized_document) {
     for (const auto & document : query(token)) {
-      qInfo() << "Query token" << token << document;
+      // qInfo() << "Query token" << token << document;
       DocumentMatchType match(document, token);
       matches.insert(match);
     }

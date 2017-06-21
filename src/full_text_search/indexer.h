@@ -96,15 +96,10 @@ public:
 
   bool operator==(const DocumentMatches & other) const;
 
-  // bool contains(const DocumentTypePtr & document) const;
-
   void insert(const DocumentMatchType match);
 
   typename DocumentMatchList::const_reverse_iterator begin(); // call sort
   typename DocumentMatchList::const_reverse_iterator end() const;
-
-  // typename DocumentMatchList::const_iterator cbegin() const;
-  // typename DocumentMatchList::const_iterator cend() const;
 
 private:
   void sort();
@@ -139,10 +134,10 @@ public:
   Tokenizer & tokenizer() { return *m_tokenizer; }
   void tokenizer(const Tokenizer * tokenizer) { m_tokenizer = tokenizer; }
 
-  // void index(const QString & text, const DocumentTypePtr & document);
-  void index(const TextDocument & text_document, const DocumentTypePtr & document);
-  void index(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document);
-  void index(const Token & token, const DocumentTypePtr & document);
+  // void insert(const QString & text, const DocumentTypePtr & document);
+  void insert(const TextDocument & text_document, const DocumentTypePtr & document);
+  void insert(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document);
+  void insert(const Token & token, const DocumentTypePtr & document);
 
   // DocumentTypePtrList query(const QString & text) const;
   DocumentMatchesType query(const TextDocument & text_document) const;

@@ -34,6 +34,7 @@
 
 #include "full_text_search/text_document.h"
 #include "full_text_search/language.h"
+#include "full_text_search/phonetic_encoder.h"
 #include "full_text_search/stemmer.h"
 #include "full_text_search/token.h"
 
@@ -289,6 +290,31 @@ class LocalizedStemmerFilter : public LanguageFilter
 {
 public:
   LocalizedStemmerFilter();
+};
+
+/**************************************************************************************************/
+
+class PhoneticFilter : public WordFilterTraits
+{
+public:
+  PhoneticFilter(const PhoneticEncoder * phonetic_encoder, const LanguageCode & language);
+
+  Token process(const Token & token) const;
+
+private:
+  const PhoneticEncoder * m_phonetic_encoder;
+  LanguageCode m_language;
+};
+
+/**************************************************************************************************/
+
+class LocalizedPhoneticFilter : public LanguageFilter
+{
+public:
+  LocalizedPhoneticFilter();
+
+private:
+  PhoneticEncoder m_phonetic_encoder;
 };
 
 /**************************************************************************************************/

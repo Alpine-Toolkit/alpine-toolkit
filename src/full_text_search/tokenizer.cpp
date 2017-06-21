@@ -32,6 +32,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QLocale>
 #include <QRegularExpression>
 #include <QTextBoundaryFinder>
 #include <QtDebug>
@@ -383,6 +384,33 @@ LocalizedStemmerFilter::LocalizedStemmerFilter()
     // qInfo() << "Add stemmer filter for" << language;
     add_language_filter(language, new StemmerFilter(language));
   }
+}
+
+/**************************************************************************************************/
+
+PhoneticFilter::PhoneticFilter(const PhoneticEncoder * phonetic_encoder,
+                               const LanguageCode & language)
+  : m_phonetic_encoder(phonetic_encoder),
+    m_language(language)
+{}
+
+Token
+PhoneticFilter::process(const Token & token) const
+{
+  QString output = m_phonetic_encoder->soundex(m_language, token);
+  // qInfo() << token << "->" << output;
+  return Token(output);
+}
+
+/**************************************************************************************************/
+
+LocalizedPhoneticFilter::LocalizedPhoneticFilter()
+  : LanguageFilter(),
+    m_phonetic_encoder()
+{
+  // Fixme:: better ?
+  add_language_filter(QLocale::English, new PhoneticFilter(&m_phonetic_encoder, QLocale::English));
+  add_language_filter(QLocale::French, new PhoneticFilter(&m_phonetic_encoder, QLocale::French));
 }
 
 /***************************************************************************************************

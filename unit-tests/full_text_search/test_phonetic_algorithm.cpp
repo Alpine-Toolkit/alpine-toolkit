@@ -54,7 +54,7 @@ void TestPhoneticAlgorithm::test()
     int j = 2*i;
     QString input = word_pairs[j];
     QString output_truth = word_pairs[j + 1];
-    QString output = phonetic_encoder.soundex(Token(input));
+    QString output = phonetic_encoder.soundex_us(Token(input));
     qInfo() << input << "->" << output << "/" << output_truth;
     QVERIFY(output == output_truth);
   }

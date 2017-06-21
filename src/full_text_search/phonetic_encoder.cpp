@@ -54,14 +54,14 @@ PhoneticEncoder::zero_padding(const QString & string, const int encoded_length)
 /**************************************************************************************************/
 
 PhoneticEncoder::PhoneticEncoder()
-  : m_soundex_translation_map({"bfpv", "cgjkqsxz", "dt", "l", "mn", "r"}),
-    m_soundex_translation_map_fr({"bp", "ckq", "dt", "l", "mn", "r", "gj", "xzs", "fv"})
-{}
+  : m_language_map()
+{
+  m_language_map[QLocale::English] = CharTranslator({"bfpv", "cgjkqsxz", "dt", "l", "mn", "r"});
+  m_language_map[QLocale::French] = CharTranslator({"bp", "ckq", "dt", "l", "mn", "r", "gj", "xzs", "fv"});
+}
 
 PhoneticEncoder::~PhoneticEncoder()
 {}
-
-/**************************************************************************************************/
 
 Token
 PhoneticEncoder::soundex(const Token & input_token, const CharTranslator & translation_map)
@@ -130,17 +130,24 @@ PhoneticEncoder::soundex(const Token & input_token, const CharTranslator & trans
 /**************************************************************************************************/
 
 Token
-PhoneticEncoder::soundex(const Token & token) const
+PhoneticEncoder::soundex(const LanguageCode & language, const Token & token) const
 {
-  return soundex(token, m_soundex_translation_map);
+  if (m_language_map.contains(language))
+    return soundex(token, m_language_map[language]);
+  else
+    return Token();
 }
 
-/**************************************************************************************************/
+Token
+PhoneticEncoder::soundex_us(const Token & token) const
+{
+  return soundex(token, m_language_map[QLocale::English]);
+}
 
 Token
 PhoneticEncoder::soundex_fr(const Token & token) const
 {
-  return soundex(token, m_soundex_translation_map_fr);
+  return soundex(token, m_language_map[QLocale::French]);
 }
 
 /***************************************************************************************************

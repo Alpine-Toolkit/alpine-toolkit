@@ -35,6 +35,7 @@
 #include "full_text_search/token.h"
 
 #include <QString>
+#include <QHash>
 
 /**************************************************************************************************/
 
@@ -44,16 +45,16 @@ public:
   PhoneticEncoder();
   ~PhoneticEncoder();
 
-  Token soundex(const Token & token) const;
+  Token soundex_us(const Token & token) const;
   Token soundex_fr(const Token & token) const;
+  Token soundex(const LanguageCode & language, const Token & token) const;
 
 private:
   static QString zero_padding(const QString & string, const int encoded_length = 4);
   static Token soundex(const Token & token, const CharTranslator & translation_map);
 
 private:
-  CharTranslator m_soundex_translation_map;
-  CharTranslator m_soundex_translation_map_fr;
+  QHash<LanguageCode, CharTranslator> m_language_map; // Fixme: static ?
 };
 
 /**************************************************************************************************/

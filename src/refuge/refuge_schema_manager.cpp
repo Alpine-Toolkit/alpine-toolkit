@@ -44,8 +44,19 @@
 
 RefugeSchemaManager::RefugeSchemaManager()
   : SchemaManager(),
-    m_refuge_cache()
-{}
+    m_refuge_cache(),
+    m_refuges(),
+    m_filtered_refuges(),
+    m_refuge_index(),
+    m_refuge_model()
+{
+  Tokenizer & tokenizer = m_refuge_index.tokenizer();
+  tokenizer << new PreLanguageFilter();
+  tokenizer << new CaseFoldingFilter();
+  tokenizer << new AccentFoldingFilter(); // Must run language filter before !
+  tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
+  tokenizer << new LocalizedPhoneticFilter();
+}
 
 RefugeSchemaManager::RefugeSchemaManager(const QString & json_path)
   : RefugeSchemaManager()
@@ -72,9 +83,9 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
     RefugePtr refuge(json_value.toObject());
     m_refuge_cache.add(refuge);
     m_refuges << refuge;
-    QString soundex = phonetic_encoder.soundex_fr(refuge->short_name());
     // qInfo() << refuge->short_name() << soundex;
-    m_soundex_map.insert(soundex, refuge);
+    TextDocument short_name(QLocale::French, refuge->short_name());
+    m_refuge_index.insert(short_name, refuge.ptr());
   }
 
   m_filtered_refuges = m_refuges;
@@ -155,13 +166,9 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
   } else {
     m_filtered_refuges.clear();
     QSet<RefugePtr> matches;
-    PhoneticEncoder phonetic_encoder;
-    QString soundex = phonetic_encoder.soundex_fr(query);
-    qInfo() << "soundex" << query << soundex;
-    if (m_soundex_map.contains(soundex)) {
-      auto & refuge = m_soundex_map[soundex];
-      matches << refuge;
-    }
+    auto index_matches = m_refuge_index.query(TextDocument(QLocale::French, query));
+    for (const auto & match : index_matches)
+      qInfo() << query << "Matched" << match.pertinence() << match.document()->short_name();
     for (const auto & refuge : m_refuges) {
       QString name = refuge->name();
       QString normalized_name = name.normalized(QString::NormalizationForm_D);
@@ -169,7 +176,7 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
       for (const auto & c : normalized_name)
         if (c.isLetterOrNumber() or c.isSpace())
           alpha_name += c;
-      qInfo() << name << alpha_name;
+      // qInfo() << name << alpha_name;
       if (alpha_name.contains(query, Qt::CaseInsensitive))
         matches << refuge;
     }

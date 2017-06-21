@@ -33,8 +33,9 @@
 
 /**************************************************************************************************/
 
-#include "refuge/refuge_schema.h"
+#include "full_text_search/indexer.h"
 #include "orm/schema_manager.h"
+#include "refuge/refuge_schema.h"
 
 #include <QQmlListProperty>
 #include<QHash>
@@ -92,7 +93,7 @@ private:
   RefugeCache m_refuge_cache;
   Refuge::PtrList m_refuges;
   Refuge::PtrList m_filtered_refuges;
-  QHash<QString, RefugePtr> m_soundex_map;
+  DocumentIndexer<Refuge> m_refuge_index;
   RefugeModel m_refuge_model;
 };
 
