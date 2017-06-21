@@ -70,7 +70,7 @@ TestIndexer::test()
   for (const auto & token : indexer.document_tokens(document2))
     qInfo() << token;
 
-  QString text3 = "Wikipédia est un projet multilingue.";
+  QString text3 = "Wikipédia est une encyclopédie.";
   auto document3 = QSharedPointer<TextDocument>(new TextDocument(QLocale::French, text3));
   indexer.index(*document3, document3);
   qInfo() << text3;
@@ -78,9 +78,9 @@ TestIndexer::test()
     qInfo() << token;
 
   QString query_text = "Wikipédia projet";
-  auto matched_documents = indexer.query(TextDocument(QLocale::French, query_text));
-  for (const auto & document : matched_documents)
-    qInfo() << query_text << "Matched" << document->document();
+  auto matches = indexer.query(TextDocument(QLocale::French, query_text));
+  for (const auto & match : matches)
+    qInfo() << query_text << "Matched" << match.pertinence() << match.document()->document() ;
 }
 
 /***************************************************************************************************/

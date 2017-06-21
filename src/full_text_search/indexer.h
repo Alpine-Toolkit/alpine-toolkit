@@ -44,9 +44,83 @@
 /**************************************************************************************************/
 
 template<typename T>
+class DocumentMatch
+{
+public:
+  typedef T DocumentType;
+  typedef QSharedPointer<DocumentType> DocumentTypePtr;
+  typedef QList<Token> TokenList;
+
+public:
+  DocumentMatch();
+  DocumentMatch(const DocumentTypePtr & document);
+  DocumentMatch(const DocumentTypePtr & document, const Token & token);
+  DocumentMatch(const DocumentMatch & other);
+
+  DocumentMatch & operator=(const DocumentMatch & other);
+
+  bool operator==(const DocumentMatch & other) const;
+
+  const DocumentTypePtr & document() const { return  m_document; }
+  const TokenList & tokens() const { return m_tokens; }
+
+  DocumentMatch & operator<<(const Token & token);
+  DocumentMatch & operator<<(const DocumentMatch & other);
+
+  int pertinence() const { return m_tokens.size(); }
+
+  bool operator<(const DocumentMatch & other) { return pertinence() < other.pertinence(); }
+
+private:
+  DocumentTypePtr m_document;
+  TokenList m_tokens; // Fixme: Set ?
+};
+
+/**************************************************************************************************/
+
+template<typename T>
+class DocumentMatches
+{
+public:
+  typedef T DocumentType;
+  typedef QSharedPointer<DocumentType> DocumentTypePtr;
+  typedef DocumentMatch<DocumentType> DocumentMatchType;
+  typedef QMap<DocumentTypePtr, DocumentMatchType> DocumentMap;
+  typedef QList<DocumentMatchType> DocumentMatchList;
+
+public:
+  DocumentMatches();
+  DocumentMatches(const DocumentMatches & other);
+
+  DocumentMatches & operator=(const DocumentMatches & other);
+
+  bool operator==(const DocumentMatches & other) const;
+
+  // bool contains(const DocumentTypePtr & document) const;
+
+  void insert(const DocumentMatchType match);
+
+  typename DocumentMatchList::const_reverse_iterator begin(); // call sort
+  typename DocumentMatchList::const_reverse_iterator end() const;
+
+  // typename DocumentMatchList::const_iterator cbegin() const;
+  // typename DocumentMatchList::const_iterator cend() const;
+
+private:
+  void sort();
+
+private:
+  DocumentMap m_document_map;
+  DocumentMatchList m_matches;
+  bool m_dirty = true;
+};
+
+/**************************************************************************************************/
+
+template<typename T>
 class DocumentIndexer
 {
-private:
+public:
   typedef T DocumentType;
   typedef QSharedPointer<DocumentType> DocumentTypePtr;
   typedef QList<DocumentTypePtr> DocumentTypePtrList;
@@ -54,10 +128,12 @@ private:
   typedef QList<Token> TokenList;
   typedef QMultiMap<Token, DocumentTypePtr> TokenMap;
   typedef QMultiMap<DocumentTypePtr, Token> DocumentMap; // TokenList
+  typedef DocumentMatch<T> DocumentMatchType;
+  typedef DocumentMatches<T> DocumentMatchesType;
 
 public:
   DocumentIndexer();
-  DocumentIndexer(Tokenizer * tokenizer);
+  // DocumentIndexer(Tokenizer * tokenizer);
   ~DocumentIndexer();
 
   Tokenizer & tokenizer() { return *m_tokenizer; }
@@ -69,8 +145,8 @@ public:
   void index(const Token & token, const DocumentTypePtr & document);
 
   // DocumentTypePtrList query(const QString & text) const;
-  DocumentTypePtrList query(const TextDocument & text_document) const;
-  DocumentTypePtrList query(const TokenizedTextDocument & tokenized_document) const;
+  DocumentMatchesType query(const TextDocument & text_document) const;
+  DocumentMatchesType query(const TokenizedTextDocument & tokenized_document) const;
   DocumentTypePtrList query(const Token & token) const;
 
   void remove(const DocumentType & document);

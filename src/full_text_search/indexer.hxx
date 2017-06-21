@@ -29,6 +29,8 @@
 
 #include "indexer.h" // for checker
 
+#include <algorithm>
+
 /**************************************************************************************************/
 
 #ifndef __INDEXER_HXX__
@@ -37,15 +39,149 @@
 /**************************************************************************************************/
 
 template<typename T>
-DocumentIndexer<T>::DocumentIndexer()
-  : m_tokenizer(new Tokenizer()), // Fixme: check for leak
-    m_token_map(),
-    m_document_map()
+DocumentMatch<T>::DocumentMatch()
+  : m_document(),
+    m_tokens()
 {}
 
 template<typename T>
-DocumentIndexer<T>::DocumentIndexer(Tokenizer * tokenizer)
-  : m_tokenizer(tokenizer),
+DocumentMatch<T>::DocumentMatch(const DocumentTypePtr & document)
+  : m_document(document),
+    m_tokens()
+{}
+
+template<typename T>
+DocumentMatch<T>::DocumentMatch(const DocumentTypePtr & document, const Token & token)
+  : DocumentMatch(document)
+{
+  m_tokens << token;
+}
+
+template<typename T>
+DocumentMatch<T>::DocumentMatch(const DocumentMatch & other)
+  : m_document(other.m_document),
+    m_tokens(other.m_tokens)
+{}
+
+template<typename T>
+DocumentMatch<T> &
+DocumentMatch<T>::operator=(const DocumentMatch & other)
+{
+  if (this != &other) {
+    m_document = other.m_document;
+    m_tokens = other.m_tokens;
+  }
+
+  return *this;
+}
+
+template<typename T>
+bool
+DocumentMatch<T>::operator==(const DocumentMatch & other) const
+{
+  return m_document == other.m_document && m_tokens == other.m_tokens;
+}
+
+template<typename T>
+DocumentMatch<T> &
+DocumentMatch<T>::operator<<(const Token & token)
+{
+  m_tokens << token;
+
+  return *this;
+}
+
+template<typename T>
+DocumentMatch<T> &
+DocumentMatch<T>::operator<<(const DocumentMatch & other)
+{
+  if (m_document == other.m_document)
+    m_tokens.append(other.m_tokens);
+
+  return *this;
+}
+
+/**************************************************************************************************/
+
+template<typename T>
+DocumentMatches<T>::DocumentMatches()
+  : m_document_map(),
+    m_matches(),
+    m_dirty(true)
+{}
+
+template<typename T>
+DocumentMatches<T>::DocumentMatches(const DocumentMatches & other)
+  : m_document_map(other.m_document_map),
+    m_matches(other.m_matches),
+    m_dirty(other.m_dirty)
+
+{}
+
+template<typename T>
+DocumentMatches<T> &
+DocumentMatches<T>::operator=(const DocumentMatches & other)
+{
+  if (this != &other) {
+    m_document_map = other.m_document_map;
+    m_matches = other.m_matches;
+    m_dirty = other.m_dirty;
+  }
+
+  return *this;
+}
+
+template<typename T>
+bool
+DocumentMatches<T>::operator==(const DocumentMatches & other) const
+{
+  return m_document_map == other.m_document_map;
+}
+
+template<typename T>
+void
+DocumentMatches<T>::insert(const DocumentMatchType match)
+{
+  const auto & document = match.document();
+  if (m_document_map.contains(document)) {
+    m_document_map[document] << match;
+  } else {
+    m_document_map.insert(document, match);
+  }
+  m_dirty = true;
+}
+
+template<typename T>
+void
+DocumentMatches<T>::sort()
+{
+  if (m_dirty) {
+    m_matches = m_document_map.values();
+    std::sort(m_matches.begin(), m_matches.end());
+    m_dirty = false;
+  }
+}
+
+template<typename T>
+typename DocumentMatches<T>::DocumentMatchList::const_reverse_iterator
+DocumentMatches<T>::begin()
+{
+  sort();
+  return m_matches.crbegin();
+}
+
+template<typename T>
+typename DocumentMatches<T>::DocumentMatchList::const_reverse_iterator
+DocumentMatches<T>::end() const
+{
+  return m_matches.crend();
+}
+
+/**************************************************************************************************/
+
+template<typename T>
+DocumentIndexer<T>::DocumentIndexer()
+  : m_tokenizer(new Tokenizer()), // Fixme: check for leak
     m_token_map(),
     m_document_map()
 {}
@@ -77,23 +213,9 @@ template<typename T>
 void
 DocumentIndexer<T>::index(const TextDocument & text_document, const DocumentTypePtr & document)
 {
-  if (m_tokenizer) {
-    TokenizedTextDocument tokenized_document = m_tokenizer->process(text_document);
-    index(tokenized_document, document);
-  }
+  TokenizedTextDocument tokenized_document = m_tokenizer->process(text_document);
+  index(tokenized_document, document);
 }
-
-/*
-template<typename T>
-void
-DocumentIndexer<T>::index(const QString & text, const DocumentTypePtr & document)
-{
-  if (m_tokenizer) {
-    TokenizedTextDocument tokenized_document = m_tokenizer->process(text);
-    index(tokenized_document, document);
-  }
-}
-*/
 
 template<typename T>
 void
@@ -113,93 +235,43 @@ DocumentIndexer<T>::contains(const Token & token) const
   return m_token_map.contains(token);
 }
 
-/*
-template<typename T>
-bool
-DocumentIndexer<T>::contains(const QString & text) const
-{
-}
-*/
-
 template<typename T>
 typename DocumentIndexer<T>::DocumentTypePtrList
 DocumentIndexer<T>::query(const Token & token) const
 {
-  // DocumentTypePtrList documents;
-
-  // typename TokenMap::const_iterator i = m_token_map.find(token);
-  // while (i != m_token_map.end() && i.key() == token) {
-  //   documents << i.value();
-  //   ++i;
-  // }
-
-  // typename TokenMap::const_iterator map_iterator = m_token_map.find(token);
-  // for (const auto & document : map_iterator)
-  //   documents << document;
-
   return m_token_map.values(token);
-
-  // return documents;
 }
 
 template<typename T>
-typename DocumentIndexer<T>::DocumentTypePtrList
+typename DocumentIndexer<T>::DocumentMatchesType
 DocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) const
 {
-  DocumentTypePtrSet documents;
+  DocumentMatchesType matches;
 
   for (const auto & token : tokenized_document) {
-    qInfo() << "Query token" << token;
     for (const auto & document : query(token)) {
-      documents += document;
       qInfo() << "Query token" << token << document;
+      DocumentMatchType match(document, token);
+      matches.insert(match);
     }
   }
 
-  return documents.toList();
+  return matches;
 }
 
 template<typename T>
-typename DocumentIndexer<T>::DocumentTypePtrList
+typename DocumentIndexer<T>::DocumentMatchesType
 DocumentIndexer<T>::query(const TextDocument & document) const
 {
-  if (m_tokenizer) {
-    TokenizedTextDocument tokenized_document = m_tokenizer->process(document);
-    return query(tokenized_document);
-  } else
-    return DocumentTypePtrList();
+  auto tokenized_document = m_tokenizer->process(document);
+  return query(tokenized_document);
 }
-
-/*
-template<typename T>
-typename DocumentIndexer<T>::DocumentTypePtrList
-DocumentIndexer<T>::query(const QString & text) const
-{
-  if (m_tokenizer) {
-    TokenizedTextDocument tokenized_document = m_tokenizer->process(TextDocument(text));
-    return query(tokenized_document);
-  } else
-    return DocumentTypePtrList();
-}
-*/
 
 template<typename T>
 typename DocumentIndexer<T>::TokenList
 DocumentIndexer<T>::document_tokens(const DocumentTypePtr & document)
 {
-  TokenList tokens;
-
-  if (m_document_map.contains(document)) {
-    // m_document_map[document]
-    // for (const auto & token : map_iterator)
-    //   tokens << token;
-    // typename DocumentMap::const_iterator it = m_document_map.find(document);
-    // while (it != m_document_map.end() && it.key() == document) {
-    //   tokens<< it.value();
-    tokens = m_document_map.values(document);
-  }
-
-  return tokens;
+  return m_document_map.values(document);
 }
 
 /**************************************************************************************************/
