@@ -263,7 +263,7 @@ Document::operator=(const Document & other)
 
 // bit array ?
 bool
-Document::operator==(const Document & other)
+Document::operator==(const Document & other) const
 {
   if (not QcRow<DocumentSchema>::operator==(other))
     return false;

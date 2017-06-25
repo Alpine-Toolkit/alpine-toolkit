@@ -125,7 +125,7 @@ public:
 
   QcRow & operator=(const QcRow & other) { return *this; } // Fixme: m_bits ?
 
-  bool operator==(const QcRow & other) { return true; } // Fixme: m_bits ?
+  bool operator==(const QcRow & other) const { return true; } // Fixme: m_bits ?
 
   bool is_modified() const {
     return m_bits.count(true);

@@ -357,7 +357,7 @@ Refuge::operator=(const Refuge & other)
 
 // bit array ?
 bool
-Refuge::operator==(const Refuge & other)
+Refuge::operator==(const Refuge & other) const
 {
   if (not QcRow<RefugeSchema>::operator==(other))
     return false;

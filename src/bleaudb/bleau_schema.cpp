@@ -203,7 +203,7 @@ BleauPlace::operator=(const BleauPlace & other)
 
 // bit array ?
 bool
-BleauPlace::operator==(const BleauPlace & other)
+BleauPlace::operator==(const BleauPlace & other) const
 {
   if (not QcRow<BleauPlaceSchema>::operator==(other))
     return false;
@@ -942,7 +942,7 @@ BleauMassif::operator=(const BleauMassif & other)
 
 // bit array ?
 bool
-BleauMassif::operator==(const BleauMassif & other)
+BleauMassif::operator==(const BleauMassif & other) const
 {
   if (not QcRow<BleauMassifSchema>::operator==(other))
     return false;
@@ -2020,7 +2020,7 @@ BleauCircuit::operator=(const BleauCircuit & other)
 
 // bit array ?
 bool
-BleauCircuit::operator==(const BleauCircuit & other)
+BleauCircuit::operator==(const BleauCircuit & other) const
 {
   if (not QcRow<BleauCircuitSchema>::operator==(other))
     return false;
@@ -3111,7 +3111,7 @@ BleauBoulder::operator=(const BleauBoulder & other)
 
 // bit array ?
 bool
-BleauBoulder::operator==(const BleauBoulder & other)
+BleauBoulder::operator==(const BleauBoulder & other) const
 {
   if (not QcRow<BleauBoulderSchema>::operator==(other))
     return false;

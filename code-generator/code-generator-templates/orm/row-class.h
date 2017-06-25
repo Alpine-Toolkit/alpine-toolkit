@@ -100,7 +100,7 @@ public:
 
   {{class_name}} & operator=(const {{class_name}} & other);
 
-  bool operator==(const {{class_name}} & other);
+  bool operator==(const {{class_name}} & other) const;
 
   // Getter/Setter
 
@@ -220,6 +220,7 @@ public:
    }
 
   // QcRowTraits ctor
+  {{class_name_ptr}}(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   {{class_name_ptr}}(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   {{class_name_ptr}}(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   {{class_name_ptr}}(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}

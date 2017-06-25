@@ -117,7 +117,7 @@ public:
 
   Directory & operator=(const Directory & other);
 
-  bool operator==(const Directory & other);
+  bool operator==(const Directory & other) const;
 
   // Getter/Setter
 
@@ -210,6 +210,7 @@ public:
    }
 
   // QcRowTraits ctor
+  DirectoryPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   DirectoryPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   DirectoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   DirectoryPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -379,7 +380,7 @@ public:
 
   Key & operator=(const Key & other);
 
-  bool operator==(const Key & other);
+  bool operator==(const Key & other) const;
 
   // Getter/Setter
 
@@ -478,6 +479,7 @@ public:
    }
 
   // QcRowTraits ctor
+  KeyPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   KeyPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   KeyPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   KeyPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}

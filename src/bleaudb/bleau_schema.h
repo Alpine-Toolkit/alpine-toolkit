@@ -120,7 +120,7 @@ public:
 
   BleauPlace & operator=(const BleauPlace & other);
 
-  bool operator==(const BleauPlace & other);
+  bool operator==(const BleauPlace & other) const;
 
   // Getter/Setter
 
@@ -217,6 +217,7 @@ public:
    }
 
   // QcRowTraits ctor
+  BleauPlacePtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauPlacePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauPlacePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   BleauPlacePtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -263,7 +264,7 @@ class BleauPlaceCache : public QObject
   Q_OBJECT
 
 public:
-  typedef BleauPlace * Key;
+  typedef BleauPlace * t_Key;
   typedef BleauPlacePtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -284,8 +285,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -405,7 +406,7 @@ public:
 
   BleauMassif & operator=(const BleauMassif & other);
 
-  bool operator==(const BleauMassif & other);
+  bool operator==(const BleauMassif & other) const;
 
   // Getter/Setter
 
@@ -544,6 +545,7 @@ public:
    }
 
   // QcRowTraits ctor
+  BleauMassifPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauMassifPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauMassifPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   BleauMassifPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -590,7 +592,7 @@ class BleauMassifCache : public QObject
   Q_OBJECT
 
 public:
-  typedef BleauMassif * Key;
+  typedef BleauMassif * t_Key;
   typedef BleauMassifPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -611,8 +613,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -744,7 +746,7 @@ public:
 
   BleauCircuit & operator=(const BleauCircuit & other);
 
-  bool operator==(const BleauCircuit & other);
+  bool operator==(const BleauCircuit & other) const;
 
   // Getter/Setter
 
@@ -905,6 +907,7 @@ public:
    }
 
   // QcRowTraits ctor
+  BleauCircuitPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauCircuitPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauCircuitPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   BleauCircuitPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -952,7 +955,7 @@ class BleauCircuitCache : public QObject
   Q_OBJECT
 
 public:
-  typedef BleauCircuit * Key;
+  typedef BleauCircuit * t_Key;
   typedef BleauCircuitPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -973,8 +976,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -1092,7 +1095,7 @@ public:
 
   BleauBoulder & operator=(const BleauBoulder & other);
 
-  bool operator==(const BleauBoulder & other);
+  bool operator==(const BleauBoulder & other) const;
 
   // Getter/Setter
 
@@ -1209,6 +1212,7 @@ public:
    }
 
   // QcRowTraits ctor
+  BleauBoulderPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauBoulderPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauBoulderPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   BleauBoulderPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -1256,7 +1260,7 @@ class BleauBoulderCache : public QObject
   Q_OBJECT
 
 public:
-  typedef BleauBoulder * Key;
+  typedef BleauBoulder * t_Key;
   typedef BleauBoulderPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -1277,8 +1281,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/

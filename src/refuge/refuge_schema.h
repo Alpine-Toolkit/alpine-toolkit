@@ -134,7 +134,7 @@ public:
 
   Refuge & operator=(const Refuge & other);
 
-  bool operator==(const Refuge & other);
+  bool operator==(const Refuge & other) const;
 
   // Getter/Setter
 
@@ -290,6 +290,7 @@ public:
    }
 
   // QcRowTraits ctor
+  RefugePtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   RefugePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   RefugePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   RefugePtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -336,7 +337,7 @@ class RefugeCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Refuge * Key;
+  typedef Refuge * t_Key;
   typedef RefugePtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -357,8 +358,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/

@@ -126,7 +126,7 @@ public:
 
   Document & operator=(const Document & other);
 
-  bool operator==(const Document & other);
+  bool operator==(const Document & other) const;
 
   // Getter/Setter
 
@@ -241,6 +241,7 @@ public:
    }
 
   // QcRowTraits ctor
+  DocumentPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   DocumentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   DocumentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   DocumentPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -287,7 +288,7 @@ class DocumentCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Document * Key;
+  typedef Document * t_Key;
   typedef DocumentPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -308,8 +309,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/

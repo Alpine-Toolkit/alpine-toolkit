@@ -38,7 +38,6 @@
 
 // QC_BEGIN_NAMESPACE
 
-/**************************************************************************************************/
 
 DirectorySchema::DirectorySchema()
 : QcSchema(QLatin1String("Directory"), QLatin1String("directory"))
@@ -165,7 +164,7 @@ Directory::operator=(const Directory & other)
 
 // bit array ?
 bool
-Directory::operator==(const Directory & other)
+Directory::operator==(const Directory & other) const
 {
   if (not QcRow<DirectorySchema>::operator==(other))
     return false;
@@ -718,7 +717,7 @@ Key::operator=(const Key & other)
 
 // bit array ?
 bool
-Key::operator==(const Key & other)
+Key::operator==(const Key & other) const
 {
   if (not QcRow<KeySchema>::operator==(other))
     return false;
