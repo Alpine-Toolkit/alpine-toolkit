@@ -71,11 +71,7 @@ public:
 
   // Get refuges as a list
   const Refuge::PtrList refuges() const { return m_refuge_cache.items(); }
-  // const Refuge::PtrList & refuges_list() const { return m_refuges; }
-
-  // Q_INVOKABLE QList<QObject *> refuges_as_object_list(); // const
-  // Q_INVOKABLE QVariant refuges_as_object_list_variant() { return QVariant::fromValue(refuges_as_object_list()); } // const
-  // Q_INVOKABLE RefugeModel * model() { return &m_refuge_model; }
+  const Refuge::PtrList & filtered_refuges() const { return m_filtered_refuges; }
 
   // QML API
   Q_INVOKABLE void filter_refuge_list(const QString & query);
@@ -94,8 +90,6 @@ private:
   RefugeCache m_refuge_cache;
   Refuge::PtrList m_filtered_refuges;
   TextDocumentIndexer<Refuge> m_refuge_index;
-  // Refuge::PtrList m_refuges;
-  // RefugeModel m_refuge_model;
 };
 
 /**************************************************************************************************/

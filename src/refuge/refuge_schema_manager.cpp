@@ -47,8 +47,6 @@ RefugeSchemaManager::RefugeSchemaManager()
     m_refuge_cache(),
     m_filtered_refuges(),
     m_refuge_index(true) // use phonetic encoder
-    // m_refuges(),
-    // m_refuge_model()
 {
   Tokenizer & tokenizer = m_refuge_index.tokenizer();
   tokenizer << new PreLanguageFilter();
@@ -81,15 +79,11 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
   for (const auto & json_value : array) {
     RefugePtr refuge(json_value.toObject());
     m_refuge_cache.add(refuge);
-    // m_refuges << refuge;
     TextDocument short_name(QLocale::French, refuge->short_name());
     m_refuge_index.insert(short_name, refuge.ptr());
   }
 
   m_filtered_refuges = refuges();
-
-  // m_filtered_refuges = m_refuges;
-  // m_refuge_model.set_items(m_refuges);
 }
 
 QJsonDocument
@@ -112,21 +106,6 @@ RefugeSchemaManager::to_sql(const QString & sqlite_path)
   // for (const auto & refuge : ...)
   //   refuge_schema.add_ptr(refuge);
 }
-
-/*
-QList<QObject *>
-RefugeSchemaManager::refuges_as_object_list() // const
-{
-  qInfo() << "RefugeSchemaManager::refuges_as_object_list";
-
-  QList<QObject *> list;
-
-  for (auto & refuge : m_filtered_refuges)
-    list << refuge.data();
-
-  return list;
-}
-*/
 
 QQmlListProperty<Refuge>
 RefugeSchemaManager::refuge_list_property()
@@ -164,7 +143,7 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
   qInfo() << "filter_refuge_list" << query;
 
   if (query.isEmpty()) {
-    m_filtered_refuges = refuges(); // m_refuges
+    m_filtered_refuges = refuges();
   } else {
     m_filtered_refuges.clear();
     auto matches = m_refuge_index.query(TextDocument(QLocale::French, query), true); // use like
