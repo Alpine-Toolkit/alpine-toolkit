@@ -45,10 +45,10 @@
 RefugeSchemaManager::RefugeSchemaManager()
   : SchemaManager(),
     m_refuge_cache(),
-    m_refuges(),
     m_filtered_refuges(),
-    m_refuge_index(true), // use phonetic encoder
-    m_refuge_model()
+    m_refuge_index(true) // use phonetic encoder
+    // m_refuges(),
+    // m_refuge_model()
 {
   Tokenizer & tokenizer = m_refuge_index.tokenizer();
   tokenizer << new PreLanguageFilter();
@@ -81,17 +81,15 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
   for (const auto & json_value : array) {
     RefugePtr refuge(json_value.toObject());
     m_refuge_cache.add(refuge);
-    m_refuges << refuge;
-    // qInfo() << refuge->short_name() << soundex;
+    // m_refuges << refuge;
     TextDocument short_name(QLocale::French, refuge->short_name());
     m_refuge_index.insert(short_name, refuge.ptr());
   }
 
-  m_filtered_refuges = m_refuges;
-  m_refuge_model.set_items(m_refuges);
+  m_filtered_refuges = refuges();
 
-  // #include <algorithm>
-  // std::sort(refuges.begin(), refuges.end()); // , qLess<Refuge *>()
+  // m_filtered_refuges = m_refuges;
+  // m_refuge_model.set_items(m_refuges);
 }
 
 QJsonDocument
@@ -115,10 +113,11 @@ RefugeSchemaManager::to_sql(const QString & sqlite_path)
   //   refuge_schema.add_ptr(refuge);
 }
 
+/*
 QList<QObject *>
 RefugeSchemaManager::refuges_as_object_list() // const
 {
-  // qInfo() << "RefugeSchemaManager::refuges_as_object_list";
+  qInfo() << "RefugeSchemaManager::refuges_as_object_list";
 
   QList<QObject *> list;
 
@@ -127,10 +126,12 @@ RefugeSchemaManager::refuges_as_object_list() // const
 
   return list;
 }
+*/
 
 QQmlListProperty<Refuge>
 RefugeSchemaManager::refuge_list_property()
 {
+  // Called at init or when the list change
   // qInfo() << "RefugeSchemaManager::refuge_list_property";
   return QQmlListProperty<Refuge>(this,
                                   nullptr, // data
@@ -141,6 +142,7 @@ RefugeSchemaManager::refuge_list_property()
 int
 RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 {
+  // Called several times
   // qInfo() << "RefugeSchemaManager::refuge_list_property_count";
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   return refuge_schema_manager->m_filtered_refuges.size();
@@ -149,6 +151,7 @@ RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 Refuge *
 RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, int index)
 {
+  // Called several times
   // qInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   RefugePtr & refuge = refuge_schema_manager->m_filtered_refuges[index];
@@ -161,7 +164,7 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
   qInfo() << "filter_refuge_list" << query;
 
   if (query.isEmpty()) {
-    m_filtered_refuges = m_refuges;
+    m_filtered_refuges = refuges(); // m_refuges
   } else {
     m_filtered_refuges.clear();
     auto matches = m_refuge_index.query(TextDocument(QLocale::French, query), true); // use like
