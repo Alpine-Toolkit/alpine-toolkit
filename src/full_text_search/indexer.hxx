@@ -152,6 +152,25 @@ DocumentMatches<T>::insert(const DocumentMatchType match)
 }
 
 template<typename T>
+DocumentMatches<T> &
+DocumentMatches<T>::operator<<(const DocumentMatchType & match)
+{
+  insert(match);
+
+  return *this;
+}
+
+template<typename T>
+DocumentMatches<T> &
+DocumentMatches<T>::operator<<(const DocumentMatches & other)
+{
+  for (const auto & match : other.m_document_map.values())
+    insert(match);
+
+  return *this;
+}
+
+template<typename T>
 void
 DocumentMatches<T>::sort()
 {
@@ -177,12 +196,26 @@ DocumentMatches<T>::end() const
   return m_matches.crend();
 }
 
+/*
+template<typename T>
+typename DocumentMatches<T>::DocumentPtrList
+DocumentMatches<T>::values() const
+{
+  sort();
+
+  DocumentPtrList documents;
+  for (const auto & match : m_matches)
+    documents << match.document();
+
+  return documents;
+}
+*/
+
 /**************************************************************************************************/
 
 template<typename T>
 DocumentIndexer<T>::DocumentIndexer()
-  : m_tokenizer(new Tokenizer()), // Fixme: check for leak
-    m_token_map(),
+  : m_token_map(),
     m_document_map()
 {}
 
@@ -211,15 +244,7 @@ DocumentIndexer<T>::insert(const TokenizedTextDocument & tokenized_document,
 
 template<typename T>
 void
-DocumentIndexer<T>::insert(const TextDocument & text_document, const DocumentTypePtr & document)
-{
-  TokenizedTextDocument tokenized_document = m_tokenizer->process(text_document);
-  insert(tokenized_document, document);
-}
-
-template<typename T>
-void
-DocumentIndexer<T>::remove(const DocumentType & document)
+DocumentIndexer<T>::remove(const DocumentTypePtr & document)
 {
   if (not m_document_map.contains(document)) {
     for (const auto & token : m_document_map[document])
@@ -252,7 +277,7 @@ DocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) cons
     for (const auto & document : query(token)) {
       // qInfo() << "Query token" << token << document;
       DocumentMatchType match(document, token);
-      matches.insert(match);
+      matches << match;
     }
   }
 
@@ -261,17 +286,115 @@ DocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) cons
 
 template<typename T>
 typename DocumentIndexer<T>::DocumentMatchesType
-DocumentIndexer<T>::query(const TextDocument & document) const
+DocumentIndexer<T>::like(const Token & query_token) const
 {
-  auto tokenized_document = m_tokenizer->process(document);
-  return query(tokenized_document);
+  DocumentMatchesType matches;
+
+  for (const auto & token : m_token_map.keys())
+    if (token.contains(query_token)) {
+      DocumentTypePtrList documents = m_token_map.values(token);
+      for (const auto & document : query(token)) {
+        DocumentMatchType match(document, token);
+        matches << match;
+      }
+    }
+
+  return matches;
+}
+
+template<typename T>
+typename DocumentIndexer<T>::DocumentMatchesType
+DocumentIndexer<T>::like(const TokenizedTextDocument & tokenized_document) const
+{
+  DocumentMatchesType matches;
+
+  for (const auto & token : tokenized_document)
+    matches << like(token);
+
+  return matches;
 }
 
 template<typename T>
 typename DocumentIndexer<T>::TokenList
-DocumentIndexer<T>::document_tokens(const DocumentTypePtr & document)
+DocumentIndexer<T>::document_tokens(const DocumentTypePtr & document) const
 {
   return m_document_map.values(document);
+}
+
+template<typename T>
+typename DocumentIndexer<T>::TokenList
+DocumentIndexer<T>::tokens() const
+{
+  return m_document_map.values();
+}
+
+/**************************************************************************************************/
+
+template<typename T>
+PhoneticDocumentIndexer<T>::PhoneticDocumentIndexer()
+  : DocumentIndexer<T>(),
+    m_tokenizer_pipe()
+{
+  m_tokenizer_pipe << new LocalizedPhoneticFilter();
+}
+
+template<typename T>
+PhoneticDocumentIndexer<T>::~PhoneticDocumentIndexer()
+{}
+
+template<typename T>
+void
+PhoneticDocumentIndexer<T>::insert(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document)
+{
+  TokenizedTextDocument output = m_tokenizer_pipe.process(tokenized_document);
+  DocumentIndexer<T>::insert(output, document);
+}
+
+template<typename T>
+typename DocumentIndexer<T>::DocumentMatchesType
+PhoneticDocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) const
+{
+  TokenizedTextDocument output = m_tokenizer_pipe.process(tokenized_document);
+  return DocumentIndexer<T>::query(output);
+}
+
+/**************************************************************************************************/
+
+template<typename T>
+TextDocumentIndexer<T>::TextDocumentIndexer(bool use_phonetic_encoder)
+  : DocumentIndexer<T>(),
+    m_tokenizer(new Tokenizer()), // Fixme: check for leak
+    m_phonetic_index()
+{
+  if (use_phonetic_encoder)
+    m_phonetic_index.reset(new PhoneticDocumentIndexerType());
+}
+
+template<typename T>
+TextDocumentIndexer<T>::~TextDocumentIndexer()
+{}
+
+template<typename T>
+void
+TextDocumentIndexer<T>::insert(const TextDocument & text_document, const DocumentTypePtr & document)
+{
+  TokenizedTextDocument tokenized_document = m_tokenizer->process(text_document);
+  DocumentIndexerType::insert(tokenized_document, document);
+  if (has_phonetic_encoder())
+    m_phonetic_index->insert(tokenized_document, document);
+}
+
+template<typename T>
+typename DocumentIndexer<T>::DocumentMatchesType
+TextDocumentIndexer<T>::query(const TextDocument & document, bool like) const
+{
+  TokenizedTextDocument tokenized_document = m_tokenizer->process(document);
+  DocumentMatchesType matches = DocumentIndexerType::query(tokenized_document);
+  if (like)
+    matches << DocumentIndexerType::like(tokenized_document);
+  if (has_phonetic_encoder())
+    matches << m_phonetic_index->query(tokenized_document);
+  return matches;
 }
 
 /**************************************************************************************************/

@@ -87,6 +87,7 @@ public:
   typedef DocumentMatch<DocumentType> DocumentMatchType;
   typedef QMap<DocumentTypePtr, DocumentMatchType> DocumentMap;
   typedef QList<DocumentMatchType> DocumentMatchList;
+  typedef QList<DocumentTypePtr> DocumentPtrList;
 
 public:
   DocumentMatches();
@@ -97,9 +98,13 @@ public:
   bool operator==(const DocumentMatches & other) const;
 
   void insert(const DocumentMatchType match);
+  DocumentMatches & operator<<(const DocumentMatchType & match);
+  DocumentMatches & operator<<(const DocumentMatches & other);
 
   typename DocumentMatchList::const_reverse_iterator begin(); // call sort
   typename DocumentMatchList::const_reverse_iterator end() const;
+
+  // DocumentPtrList values() const;
 
 private:
   void sort();
@@ -123,38 +128,82 @@ public:
   typedef QList<Token> TokenList;
   typedef QMultiMap<Token, DocumentTypePtr> TokenMap;
   typedef QMultiMap<DocumentTypePtr, Token> DocumentMap; // TokenList
-  typedef DocumentMatch<T> DocumentMatchType;
-  typedef DocumentMatches<T> DocumentMatchesType;
+  typedef DocumentMatch<DocumentType> DocumentMatchType;
+  typedef DocumentMatches<DocumentType> DocumentMatchesType;
 
 public:
   DocumentIndexer();
-  // DocumentIndexer(Tokenizer * tokenizer);
   ~DocumentIndexer();
+
+  void insert(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document);
+  void insert(const Token & token, const DocumentTypePtr & document);
+
+  DocumentMatchesType query(const TokenizedTextDocument & tokenized_document) const;
+  DocumentTypePtrList query(const Token & token) const;
+
+  DocumentMatchesType like(const Token & token) const;
+  DocumentMatchesType like(const TokenizedTextDocument & tokenized_document) const;
+
+  void remove(const DocumentTypePtr & document);
+
+  bool contains(const Token & token) const;
+
+  TokenList document_tokens(const DocumentTypePtr & document) const;
+  TokenList tokens() const;
+
+private:
+  TokenMap m_token_map;
+  DocumentMap m_document_map;
+};
+
+/**************************************************************************************************/
+
+template<typename T>
+class PhoneticDocumentIndexer : public DocumentIndexer<T>
+{
+public:
+  typedef typename DocumentIndexer<T>::DocumentTypePtr DocumentTypePtr;
+  typedef typename DocumentIndexer<T>::DocumentMatchesType DocumentMatchesType;
+
+public:
+  PhoneticDocumentIndexer();
+  ~PhoneticDocumentIndexer();
+
+  void insert(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document);
+  DocumentMatchesType query(const TokenizedTextDocument & tokenized_document) const;
+
+private:
+  TokenizerPipe m_tokenizer_pipe;
+};
+
+/**************************************************************************************************/
+
+template<typename T>
+class TextDocumentIndexer : public DocumentIndexer<T>
+{
+public:
+  typedef typename DocumentIndexer<T>::DocumentTypePtr DocumentTypePtr;
+  typedef typename DocumentIndexer<T>::DocumentMatchesType DocumentMatchesType;
+  typedef PhoneticDocumentIndexer<T> PhoneticDocumentIndexerType;
+  typedef DocumentIndexer<T> DocumentIndexerType;
+
+public:
+  TextDocumentIndexer(bool use_phonetic_encoder = false);
+  ~TextDocumentIndexer();
 
   Tokenizer & tokenizer() { return *m_tokenizer; }
   void tokenizer(const Tokenizer * tokenizer) { m_tokenizer = tokenizer; }
 
-  // void insert(const QString & text, const DocumentTypePtr & document);
   void insert(const TextDocument & text_document, const DocumentTypePtr & document);
-  void insert(const TokenizedTextDocument & tokenized_document, const DocumentTypePtr & document);
-  void insert(const Token & token, const DocumentTypePtr & document);
+  DocumentMatchesType query(const TextDocument & text_document, bool like = false) const;
+  // DocumentMatchesType like(const TextDocument & text_document) const;
 
-  // DocumentTypePtrList query(const QString & text) const;
-  DocumentMatchesType query(const TextDocument & text_document) const;
-  DocumentMatchesType query(const TokenizedTextDocument & tokenized_document) const;
-  DocumentTypePtrList query(const Token & token) const;
-
-  void remove(const DocumentType & document);
-
-  // bool contains(const QString & text) const;
-  bool contains(const Token & token) const;
-
-  TokenList document_tokens(const DocumentTypePtr & document);
+  bool has_phonetic_encoder() const { return not m_phonetic_index.isNull(); }
+  const PhoneticDocumentIndexerType * phonetic_index() const { return m_phonetic_index.data(); }
 
 private:
   QSharedPointer<Tokenizer> m_tokenizer;
-  TokenMap m_token_map;
-  DocumentMap m_document_map;
+  QSharedPointer<PhoneticDocumentIndexerType> m_phonetic_index;
 };
 
 /**************************************************************************************************/

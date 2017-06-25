@@ -44,7 +44,7 @@ private slots:
 
 void TestPhoneticAlgorithm::test()
 {
-  PhoneticEncoder phonetic_encoder;
+  PhoneticEncoder & phonetic_encoder = PhoneticEncoder::instance();
 
   QStringList word_pairs = {
     "Robert", "r163",

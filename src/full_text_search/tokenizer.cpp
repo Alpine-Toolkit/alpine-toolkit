@@ -211,9 +211,60 @@ LanguageFilter::process(const TokenizedTextDocument & document) const
 
 /**************************************************************************************************/
 
+TokenizerPipe::TokenizerPipe()
+  : m_filters()
+{
+}
+
+TokenizerPipe::TokenizerPipe(const TokenizerPipe & other)
+  : m_filters(other.m_filters)
+{}
+
+TokenizerPipe::~TokenizerPipe()
+{}
+
+TokenizerPipe &
+TokenizerPipe::operator=(const TokenizerPipe & other)
+{
+  if (this != &other) {
+    m_filters = other.m_filters;
+  }
+
+  return *this;
+}
+
+void
+TokenizerPipe::add_filter(TokenFilterTraits * filter)
+{
+  m_filters << FilterPtr(filter);
+}
+
+TokenizerPipe &
+TokenizerPipe::operator<<(TokenFilterTraits * filter)
+{
+  add_filter(filter);
+  return *this;
+}
+
+TokenizedTextDocument
+TokenizerPipe::process(const TokenizedTextDocument & document) const
+{
+  TokenizedTextDocument output;
+
+  bool is_input = true;
+  for (const auto & filter : m_filters) {
+    output = filter->process(is_input ? document : output);
+    is_input = false;
+  }
+
+  return output;
+}
+
+/**************************************************************************************************/
+
 Tokenizer::Tokenizer(WordTokenizer * word_tokenizer)
   : m_word_tokenizer(nullptr),
-    m_filters()
+    m_pipe()
 {
   if (word_tokenizer == nullptr)
     m_word_tokenizer = WordTokenizerPtr(new WordTokenizer());
@@ -221,7 +272,7 @@ Tokenizer::Tokenizer(WordTokenizer * word_tokenizer)
 
 Tokenizer::Tokenizer(const Tokenizer & other)
   : m_word_tokenizer(other.m_word_tokenizer),
-    m_filters(other.m_filters)
+    m_pipe(other.m_pipe)
 {}
 
 Tokenizer::~Tokenizer()
@@ -232,7 +283,7 @@ Tokenizer::operator=(const Tokenizer & other)
 {
   if (this != &other) {
     m_word_tokenizer = other.m_word_tokenizer;
-    m_filters = other.m_filters;
+    m_pipe = other.m_pipe;
   }
 
   return *this;
@@ -241,7 +292,7 @@ Tokenizer::operator=(const Tokenizer & other)
 void
 Tokenizer::add_filter(TokenFilterTraits * filter)
 {
-  m_filters << FilterPtr(filter);
+  m_pipe.add_filter(filter);
 }
 
 Tokenizer &
@@ -255,11 +306,7 @@ TokenizedTextDocument
 Tokenizer::process(const TextDocument & document) const
 {
   TokenizedTextDocument output = m_word_tokenizer->process(document);
-
-  for (const auto & filter : m_filters)
-    output = filter->process(output);
-
-  return output;
+  return  m_pipe.process(output);
 }
 
 /**************************************************************************************************/
@@ -388,16 +435,15 @@ LocalizedStemmerFilter::LocalizedStemmerFilter()
 
 /**************************************************************************************************/
 
-PhoneticFilter::PhoneticFilter(const PhoneticEncoder * phonetic_encoder,
-                               const LanguageCode & language)
-  : m_phonetic_encoder(phonetic_encoder),
-    m_language(language)
+PhoneticFilter::PhoneticFilter(const LanguageCode & language)
+  : m_language(language)
 {}
 
 Token
 PhoneticFilter::process(const Token & token) const
 {
-  QString output = m_phonetic_encoder->soundex(m_language, token);
+  PhoneticEncoder & phonetic_encoder = PhoneticEncoder::instance();
+  QString output = phonetic_encoder.soundex(m_language, token);
   // qInfo() << token << "->" << output;
   return Token(output);
 }
@@ -405,12 +451,11 @@ PhoneticFilter::process(const Token & token) const
 /**************************************************************************************************/
 
 LocalizedPhoneticFilter::LocalizedPhoneticFilter()
-  : LanguageFilter(),
-    m_phonetic_encoder()
+  : LanguageFilter()
 {
   // Fixme:: better ?
-  add_language_filter(QLocale::English, new PhoneticFilter(&m_phonetic_encoder, QLocale::English));
-  add_language_filter(QLocale::French, new PhoneticFilter(&m_phonetic_encoder, QLocale::French));
+  add_language_filter(QLocale::English, new PhoneticFilter(QLocale::English));
+  add_language_filter(QLocale::French, new PhoneticFilter(QLocale::French));
 }
 
 /***************************************************************************************************

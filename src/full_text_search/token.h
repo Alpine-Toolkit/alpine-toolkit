@@ -122,6 +122,8 @@ public:
   // Token remove(const QChar c) const { return Token(m_string.remove(c)); }
   // Token translate(const CharTranslator & translation_map);
 
+  bool contains(const Token & other) const { return m_string.contains(other.m_string); }
+
 private:
   void set(const QString & string, int force_flags = 0);
   void set(const QStringRef & string, int force_flags = 0);

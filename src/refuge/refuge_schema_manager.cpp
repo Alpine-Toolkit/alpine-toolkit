@@ -47,7 +47,7 @@ RefugeSchemaManager::RefugeSchemaManager()
     m_refuge_cache(),
     m_refuges(),
     m_filtered_refuges(),
-    m_refuge_index(),
+    m_refuge_index(true), // use phonetic encoder
     m_refuge_model()
 {
   Tokenizer & tokenizer = m_refuge_index.tokenizer();
@@ -55,7 +55,7 @@ RefugeSchemaManager::RefugeSchemaManager()
   tokenizer << new CaseFoldingFilter();
   tokenizer << new AccentFoldingFilter(); // Must run language filter before !
   tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
-  tokenizer << new LocalizedPhoneticFilter();
+  // tokenizer << new LocalizedStemmerFilter(); // is not suited for names or localities
 }
 
 RefugeSchemaManager::RefugeSchemaManager(const QString & json_path)
@@ -78,7 +78,6 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
 {
   QJsonArray array = json_document.array();
 
-  PhoneticEncoder phonetic_encoder;
   for (const auto & json_value : array) {
     RefugePtr refuge(json_value.toObject());
     m_refuge_cache.add(refuge);
@@ -165,22 +164,12 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
     m_filtered_refuges = m_refuges;
   } else {
     m_filtered_refuges.clear();
-    QSet<RefugePtr> matches;
-    auto index_matches = m_refuge_index.query(TextDocument(QLocale::French, query));
-    for (const auto & match : index_matches)
+    auto matches = m_refuge_index.query(TextDocument(QLocale::French, query), true); // use like
+    for (const auto & match : matches) {
       qInfo() << query << "Matched" << match.pertinence() << match.document()->short_name();
-    for (const auto & refuge : m_refuges) {
-      QString name = refuge->name();
-      QString normalized_name = name.normalized(QString::NormalizationForm_D);
-      QString alpha_name;
-      for (const auto & c : normalized_name)
-        if (c.isLetterOrNumber() or c.isSpace())
-          alpha_name += c;
-      // qInfo() << name << alpha_name;
-      if (alpha_name.contains(query, Qt::CaseInsensitive))
-        matches << refuge;
+      m_filtered_refuges << match.document();
     }
-    m_filtered_refuges = matches.values();
+    // m_filtered_refuges = matches.values(); // RefugePtr versus QSharedPointer<Refuge>
   }
 
   emit refugeListChanged();

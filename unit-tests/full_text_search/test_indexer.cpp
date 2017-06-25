@@ -41,13 +41,14 @@ class TestIndexer: public QObject
 
 private slots:
   void test();
+  void test_phonetic();
 };
 
 void
 TestIndexer::test()
 {
   // Fixme: init ok ???
-  DocumentIndexer<TextDocument> indexer; // new Tokenizer()
+  TextDocumentIndexer<TextDocument> indexer; // new Tokenizer()
 
   Tokenizer & tokenizer = indexer.tokenizer();
   tokenizer << new PreLanguageFilter();
@@ -81,6 +82,28 @@ TestIndexer::test()
   auto matches = indexer.query(TextDocument(QLocale::French, query_text));
   for (const auto & match : matches)
     qInfo() << query_text << "Matched" << match.pertinence() << match.document()->document();
+}
+
+void
+TestIndexer::test_phonetic()
+{
+  TextDocumentIndexer<TextDocument> indexer(true);
+
+  Tokenizer & tokenizer = indexer.tokenizer();
+  tokenizer << new PreLanguageFilter();
+  tokenizer << new CaseFoldingFilter();
+  tokenizer << new AccentFoldingFilter(); // Must run language filter before !
+  tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
+  tokenizer << new LocalizedStemmerFilter();
+
+  QString text1 = "Wikipédia est un projet d’encyclopédie collective en ligne, universelle, multilingue et fonctionnant sur le principe du wiki. Wikipédia a pour objectif d’offrir un contenu librement réutilisable, objectif et vérifiable, que chacun peut modifier et améliorer.";
+  auto document1 = QSharedPointer<TextDocument>(new TextDocument(QLocale::French, text1));
+  indexer.insert(*document1, document1);
+  qInfo() << text1;
+  for (const auto & token : indexer.tokens())
+    qInfo() << token;
+  for (const auto & token : indexer.phonetic_index()->tokens())
+    qInfo() << token;
 }
 
 /***************************************************************************************************/

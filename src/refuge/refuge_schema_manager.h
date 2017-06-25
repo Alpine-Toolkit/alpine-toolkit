@@ -93,7 +93,7 @@ private:
   RefugeCache m_refuge_cache;
   Refuge::PtrList m_refuges;
   Refuge::PtrList m_filtered_refuges;
-  DocumentIndexer<Refuge> m_refuge_index;
+  TextDocumentIndexer<Refuge> m_refuge_index;
   RefugeModel m_refuge_model;
 };
 

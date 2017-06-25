@@ -54,7 +54,6 @@ PhoneticEncoder::zero_padding(const QString & string, const int encoded_length)
 /**************************************************************************************************/
 
 PhoneticEncoder::PhoneticEncoder()
-  : m_language_map()
 {
   m_language_map[QLocale::English] = CharTranslator({"bfpv", "cgjkqsxz", "dt", "l", "mn", "r"});
   m_language_map[QLocale::French] = CharTranslator({"bp", "ckq", "dt", "l", "mn", "r", "gj", "xzs", "fv"});

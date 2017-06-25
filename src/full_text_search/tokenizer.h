@@ -174,12 +174,34 @@ private:
 
 /**************************************************************************************************/
 
+class TokenizerPipe
+{
+public:
+  typedef TokenFilterTraits::FilterPtr FilterPtr;
+  typedef TokenFilterTraits::FilterList FilterList;
+
+public:
+  TokenizerPipe();
+  TokenizerPipe(const TokenizerPipe & other);
+  ~TokenizerPipe();
+
+  TokenizerPipe & operator=(const TokenizerPipe & other);
+
+  void add_filter(TokenFilterTraits * filter);
+  TokenizerPipe & operator<<(TokenFilterTraits * filter);
+
+  TokenizedTextDocument process(const TokenizedTextDocument & document) const;
+
+private:
+  FilterList m_filters;
+};
+
+/**************************************************************************************************/
+
 class Tokenizer
 {
 public:
   typedef WordTokenizer::WordTokenizerPtr WordTokenizerPtr;
-  typedef TokenFilterTraits::FilterPtr FilterPtr;
-  typedef TokenFilterTraits::FilterList FilterList;
 
 public:
   Tokenizer(WordTokenizer * word_tokenizer = nullptr);
@@ -197,7 +219,7 @@ public:
 
 private:
   WordTokenizerPtr m_word_tokenizer = nullptr;
-  FilterList m_filters;
+  TokenizerPipe m_pipe;
 };
 
 /**************************************************************************************************/
@@ -297,12 +319,11 @@ public:
 class PhoneticFilter : public WordFilterTraits
 {
 public:
-  PhoneticFilter(const PhoneticEncoder * phonetic_encoder, const LanguageCode & language);
+  PhoneticFilter(const LanguageCode & language);
 
   Token process(const Token & token) const;
 
 private:
-  const PhoneticEncoder * m_phonetic_encoder;
   LanguageCode m_language;
 };
 
@@ -312,9 +333,6 @@ class LocalizedPhoneticFilter : public LanguageFilter
 {
 public:
   LocalizedPhoneticFilter();
-
-private:
-  PhoneticEncoder m_phonetic_encoder;
 };
 
 /**************************************************************************************************/
