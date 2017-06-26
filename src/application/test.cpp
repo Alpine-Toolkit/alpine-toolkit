@@ -53,12 +53,28 @@ Application::run_before_event_loop()
   /*
   QFile input_file("assets:/file1.txt");
   if (!input_file.open(QIODevice::ReadOnly | QIODevice::Text))
-    qWarning() << "couldn't read to file";
+    qWarning() << "couldn't read file";
   while (!input_file.atEnd()) {
     QByteArray line = input_file.readLine();
     qInfo() << line;
   }
   */
+
+  QFile input_file("/storage/0060-1F18/external-sdcard-test.txt");
+  if (input_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    while (!input_file.atEnd()) {
+      QByteArray line = input_file.readLine();
+      qInfo() << line;
+    }
+    input_file.close();
+  } else
+    qWarning() << "couldn't read file on external sdcard";
+  if (input_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    input_file.write("foo");
+    input_file.close();
+  } else {
+    qWarning() << "couldn't write file on external sdcard";
+  }
 
   /*
   qInfo() << "SQLite Plugin Test";
