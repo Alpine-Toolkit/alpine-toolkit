@@ -80,9 +80,8 @@ NetworkFetcher::add_request(const NetworkRessourceRequest & request)
   m_queue += request;
 
   // Start timer to fetch ressource from queue
-  if (m_enabled and not m_queue.isEmpty() and not m_timer.isActive()) {
+  if (m_enabled and not m_queue.isEmpty() and not m_timer.isActive())
     m_timer.start(0, this);
-  }
 }
 
 void

@@ -55,7 +55,8 @@ public:
   };
 
 public:
-  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply); // Fixme: reply.request()
+  // Fixme: reply.request() but NetworkRessourceRequest is not a subclass of QNetworkRequest
+  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply);
   // NetworkReply(Error error, const QString & error_string);
   ~NetworkReply();
 
