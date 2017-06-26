@@ -40,9 +40,9 @@ Widgets.Page {
 
     property var model: null
 
-    Component.onCompleted: {
-        console.info("Refuge Model:", model.name);
-    }
+    // Component.onCompleted: {
+    //     console.info("Refuge Model:", model.name);
+    // }
 
     Column {
         width: parent.width
