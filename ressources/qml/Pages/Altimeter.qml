@@ -38,7 +38,9 @@ import Qt.labs.settings 1.0
 
 import Local 1.0
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: altimeter_pane
 
     Settings {

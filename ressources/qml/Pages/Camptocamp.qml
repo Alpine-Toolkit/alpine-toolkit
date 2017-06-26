@@ -32,9 +32,10 @@ import QtQuick.Controls 2.1
 
 import Local 1.0
 
+import "qrc:Widgets" as Widgets
 import "qrc:/js/camptocamp_search_filter_definitions.js" as C2cDefinition
 
-Pane {
+Widgets.Page {
     id: camptocamp_pane
 
     C2cSearchSettings {

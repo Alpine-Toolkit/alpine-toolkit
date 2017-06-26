@@ -118,13 +118,9 @@ Widgets.Page {
         }
     }
 
-    Widgets.Popup {
-        id: settings_dialog
-
-        Text {
-            text: "foo bar"
-        }
-    }
+    // Widgets.Popup {
+    //     id: settings_dialog
+    // }
 
     function search() {
         refuge_schema_manager.filter_refuge_list(search_textfield.text)

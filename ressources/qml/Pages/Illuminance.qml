@@ -33,7 +33,9 @@ import QtQuick.Controls 2.0
 
 import QtSensors 5.1
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: illuminance_pane
 
     function format_lux(value) {

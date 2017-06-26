@@ -36,9 +36,10 @@ import QtSensors 5.1
 
 import Local 1.0
 
+import "qrc:Widgets" as Widgets
 import "qrc:/js/gps.js" as GpsHelper
 
-Pane {
+Widgets.Page {
     id: gps_pane
 
     transform: Scale {

@@ -32,11 +32,10 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 // import QtWebView 1.1
 
+import "qrc:/Widgets" as Widgets
 import "qrc:/js/camptocamp_definitions.js" as C2cDefinitions
 
-import "qrc:/Widgets" as Widgets
-
-Pane {
+Widgets.Page {
     id: camptocamp_route_pane
 
     property var route: null

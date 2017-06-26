@@ -33,7 +33,9 @@ import QtQuick.Controls 2.0
 
 import QtCharts 2.0
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: chart_pane
 
     ChartView {

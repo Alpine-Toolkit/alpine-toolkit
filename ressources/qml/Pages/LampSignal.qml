@@ -31,7 +31,9 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: lamp_signal_pane
 
     property int button_point_size: 30

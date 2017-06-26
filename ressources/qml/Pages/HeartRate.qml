@@ -36,7 +36,9 @@ import QtSensors 5.1 // .8
 
 import Local 1.0
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: altimeter_pane
 
     StepCounterSensor {

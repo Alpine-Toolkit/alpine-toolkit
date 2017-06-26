@@ -34,7 +34,9 @@ import QtQuick.Controls 2.0
 
 import QtPositioning 5.5
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: ephemeride_pane
 
     property int font_size: 20

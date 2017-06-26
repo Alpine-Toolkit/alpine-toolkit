@@ -33,7 +33,9 @@ import QtQuick.Controls 2.0
 
 import QtMultimedia 5.5
 
-Pane {
+import "qrc:Widgets" as Widgets
+
+Widgets.Page {
     id: camera_pane
 
     //color: "black"
