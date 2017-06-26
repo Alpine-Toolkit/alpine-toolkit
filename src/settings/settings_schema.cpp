@@ -88,7 +88,8 @@ DirectorySchema::~DirectorySchema()
 /**************************************************************************************************/
 
 Directory::Directory()
-  : QcRow<DirectorySchema>(),
+  : QObject(),
+    QcRow<DirectorySchema>(),
     m_id(),
     m_name(),
     m_parent()
@@ -96,7 +97,8 @@ Directory::Directory()
 }
 
 Directory::Directory(const Directory & other)
-  : QcRow<DirectorySchema>(other),
+  : QObject(),
+    QcRow<DirectorySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_parent(other.m_parent)
@@ -484,7 +486,9 @@ DirectoryCache::add(DirectoryPtr & ptr)
 
 void
 DirectoryCache::remove(DirectoryPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 DirectoryCache::on_changed()
@@ -633,7 +637,8 @@ KeySchema::~KeySchema()
 /**************************************************************************************************/
 
 Key::Key()
-  : QcRow<KeySchema>(),
+  : QObject(),
+    QcRow<KeySchema>(),
     m_id(),
     m_name(),
     m_directory_id(),
@@ -642,7 +647,8 @@ Key::Key()
 }
 
 Key::Key(const Key & other)
-  : QcRow<KeySchema>(other),
+  : QObject(),
+    QcRow<KeySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_directory_id(other.m_directory_id),
@@ -1085,7 +1091,9 @@ KeyCache::add(KeyPtr & ptr)
 
 void
 KeyCache::remove(KeyPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 KeyCache::on_changed()

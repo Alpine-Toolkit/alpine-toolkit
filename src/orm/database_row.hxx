@@ -46,7 +46,9 @@ template<class S>
 QcRow<S>::QcRow(const QcRow & other)
   : QcRow()
     // m_bits(other.m_bits) // Fixme: ???
-{}
+{
+    Q_UNUSED(other);
+}
 
 /**************************************************************************************************/
 

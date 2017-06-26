@@ -87,11 +87,13 @@
 /**************************************************************************************************/
 
 {% set base_class = schema.base_class + '<' + class_name_schema + '>' %}
-{% set base_classes = (base_class,) %}{# Fixme: !!! #}
+{% set base_classes = ('QObject', base_class,) %}{# Fixme: !!! #}
 
 {{ ctor_impl(class_name, all_members, base_classes, post_init) }}
 
 {{ copy_ctor_impl(class_name, all_members, base_classes, post_init) }}
+
+{% set base_classes = (base_class,) %}{# Fixme: !!! #}
 
 {{ json_ctor(class_name, schema, post_init) }}
 
@@ -285,7 +287,9 @@ void
 
 void
 {{class_name_cache}}::remove({{class_name_ptr}} & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 {{class_name_cache}}::on_changed()

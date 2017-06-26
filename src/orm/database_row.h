@@ -82,7 +82,7 @@ public:
   void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
 
   // To set id when the row was inserted
-  virtual void set_insert_id(int id) {};
+  virtual void set_insert_id(int id) { Q_UNUSED(id); };
   virtual bool exists_on_database() const {
     return m_database_schema != nullptr; // Fixme: right ??? commited !
   }
@@ -116,16 +116,16 @@ public:
 public:
   QcRow();
   QcRow(const QcRow & other);
-  QcRow(const QJsonObject & json_object) : QcRow() {} // JSON deserializer
-  QcRow(const QVariantHash & variant_hash) : QcRow() {}
-  QcRow(const QVariantList & variants) : QcRow() {}
-  QcRow(const QSqlRecord & record) : QcRow() {} // SQL deserializer
-  QcRow(const QSqlQuery & query, int offset = 0) : QcRow() {} // SQL deserializer
+  QcRow(const QJsonObject & json_object) : QcRow() { Q_UNUSED(json_object); } // JSON deserializer
+  QcRow(const QVariantHash & variant_hash) : QcRow() { Q_UNUSED(variant_hash); }
+  QcRow(const QVariantList & variants) : QcRow() { Q_UNUSED(variants); }
+  QcRow(const QSqlRecord & record) : QcRow() { Q_UNUSED(record); } // SQL deserializer
+  QcRow(const QSqlQuery & query, int offset = 0) : QcRow() { Q_UNUSED(query); Q_UNUSED(offset); } // SQL deserializer
   ~QcRow() {}
 
-  QcRow & operator=(const QcRow & other) { return *this; } // Fixme: m_bits ?
+  QcRow & operator=(const QcRow & other) { Q_UNUSED(other); return *this; } // Fixme: m_bits ?
 
-  bool operator==(const QcRow & other) const { return true; } // Fixme: m_bits ?
+  bool operator==(const QcRow & other) const { Q_UNUSED(other); return true; } // Fixme: m_bits ?
 
   bool is_modified() const {
     return m_bits.count(true);

@@ -94,7 +94,7 @@
 {% macro copy_ctor_impl(class_name, members, base_classes, post_init) -%}
 {{class_name}}::{{class_name}}(const {{class_name}} & other)
 {% for base_class in base_classes %}
-{% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}(other){% if not loop.last or members %},{% endif %} 
+{% if loop.first %}  : {% else %}    {% endif %}{{ base_class }}({% if base_class != 'QObject'%}other{% endif %}){% if not loop.last or members %},{% endif %} 
 {% endfor %}{# space #}
 {% for member in members %}
 {% if loop.first and not base_classes %}  : {% else %}    {% endif %}{{member.m_name}}(other.{{member.m_name}}){% if not loop.last %},{% endif %} 

@@ -89,7 +89,7 @@ public:
 
 public:
   WordTokenizer() {}
-  ~WordTokenizer() {}
+  virtual ~WordTokenizer() {}
 
   virtual TokenizedTextDocument process(const TextDocument & document) const;
 };
@@ -103,6 +103,7 @@ public:
   typedef QList<FilterPtr> FilterList;
 
 public:
+  virtual ~TokenFilterTraits() {}
   virtual TokenizedTextDocument process(const TokenizedTextDocument & document) const = 0;
 };
 

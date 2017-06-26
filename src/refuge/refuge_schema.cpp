@@ -195,7 +195,8 @@ RefugeSchema::~RefugeSchema()
 /**************************************************************************************************/
 
 Refuge::Refuge()
-  : QcRow<RefugeSchema>(),
+  : QObject(),
+    QcRow<RefugeSchema>(),
     m_id(),
     m_name(),
     m_short_name(),
@@ -213,7 +214,8 @@ Refuge::Refuge()
 }
 
 Refuge::Refuge(const Refuge & other)
-  : QcRow<RefugeSchema>(other),
+  : QObject(),
+    QcRow<RefugeSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_short_name(other.m_short_name),
@@ -994,7 +996,9 @@ RefugeCache::add(RefugePtr & ptr)
 
 void
 RefugeCache::remove(RefugePtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 RefugeCache::on_changed()

@@ -297,6 +297,8 @@ Application::load_qml_main()
     int height = 1900;
     application_window->setProperty("width", width / device_pixel_scale);
     application_window->setProperty("height", height / device_pixel_scale);
+#else
+    Q_UNUSED(application_window);
 #endif
   }
 }

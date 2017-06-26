@@ -111,7 +111,8 @@ BleauPlaceSchema::~BleauPlaceSchema()
 /**************************************************************************************************/
 
 BleauPlace::BleauPlace()
-  : QcRow<BleauPlaceSchema>(),
+  : QObject(),
+    QcRow<BleauPlaceSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -121,7 +122,8 @@ BleauPlace::BleauPlace()
 }
 
 BleauPlace::BleauPlace(const BleauPlace & other)
-  : QcRow<BleauPlaceSchema>(other),
+  : QObject(),
+    QcRow<BleauPlaceSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -564,7 +566,9 @@ BleauPlaceCache::add(BleauPlacePtr & ptr)
 
 void
 BleauPlaceCache::remove(BleauPlacePtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 BleauPlaceCache::on_changed()
@@ -802,7 +806,8 @@ BleauMassifSchema::~BleauMassifSchema()
 /**************************************************************************************************/
 
 BleauMassif::BleauMassif()
-  : QcRow<BleauMassifSchema>(),
+  : QObject(),
+    QcRow<BleauMassifSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -818,7 +823,8 @@ BleauMassif::BleauMassif()
 }
 
 BleauMassif::BleauMassif(const BleauMassif & other)
-  : QcRow<BleauMassifSchema>(other),
+  : QObject(),
+    QcRow<BleauMassifSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -1563,7 +1569,9 @@ BleauMassifCache::add(BleauMassifPtr & ptr)
 
 void
 BleauMassifCache::remove(BleauMassifPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 BleauMassifCache::on_changed()
@@ -1856,7 +1864,8 @@ BleauCircuitSchema::~BleauCircuitSchema()
 /**************************************************************************************************/
 
 BleauCircuit::BleauCircuit()
-  : QcRow<BleauCircuitSchema>(),
+  : QObject(),
+    QcRow<BleauCircuitSchema>(),
     m_id(),
     m_coordinate(),
     m_colour(),
@@ -1875,7 +1884,8 @@ BleauCircuit::BleauCircuit()
 }
 
 BleauCircuit::BleauCircuit(const BleauCircuit & other)
-  : QcRow<BleauCircuitSchema>(other),
+  : QObject(),
+    QcRow<BleauCircuitSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_colour(other.m_colour),
@@ -2785,7 +2795,9 @@ BleauCircuitCache::add(BleauCircuitPtr & ptr)
 
 void
 BleauCircuitCache::remove(BleauCircuitPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 BleauCircuitCache::on_changed()
@@ -3003,7 +3015,8 @@ BleauBoulderSchema::~BleauBoulderSchema()
 /**************************************************************************************************/
 
 BleauBoulder::BleauBoulder()
-  : QcRow<BleauBoulderSchema>(),
+  : QObject(),
+    QcRow<BleauBoulderSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -3015,7 +3028,8 @@ BleauBoulder::BleauBoulder()
 }
 
 BleauBoulder::BleauBoulder(const BleauBoulder & other)
-  : QcRow<BleauBoulderSchema>(other),
+  : QObject(),
+    QcRow<BleauBoulderSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -3588,7 +3602,9 @@ BleauBoulderCache::add(BleauBoulderPtr & ptr)
 
 void
 BleauBoulderCache::remove(BleauBoulderPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 BleauBoulderCache::on_changed()

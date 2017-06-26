@@ -110,7 +110,7 @@ public:
   QcSqlField(const QString & name);
   QcSqlField(const QString & name, const QString & table_name);
   QcSqlField(const QcSqlField & other);
-  ~QcSqlField();
+  virtual ~QcSqlField();
 
   QcSqlField & operator=(const QcSqlField & other);
 
@@ -161,6 +161,7 @@ class QcSqlFieldExpression : public QcSqlExpressionTraits
 {
 public:
   QcSqlFieldExpression(const QcSqlField & field, const QVariant & value);
+  virtual ~QcSqlFieldExpression() {}
 
   const QcSqlField & field() const { return m_field; }
   const QVariant & value() const { return m_value; }
@@ -179,6 +180,7 @@ class QcSqlFieldExpressionTwoValue : public QcSqlExpressionTraits
 {
 public:
   QcSqlFieldExpressionTwoValue(const QcSqlField & field, const QVariant & value1, const QVariant & value2);
+  virtual ~QcSqlFieldExpressionTwoValue() {}
 
   const QcSqlField & field() const { return m_field; }
   const QVariant & value1() const { return m_value1; }
@@ -205,6 +207,7 @@ class QcSqlFieldExpressionValueList : public QcSqlExpressionTraits
 {
 public:
   QcSqlFieldExpressionValueList(const QcSqlField & field, const QVariantList & values);
+  virtual ~QcSqlFieldExpressionValueList() {}
 
   const QcSqlField & field() const { return m_field; }
   const QVariantList & values() const { return m_values; }
@@ -236,6 +239,7 @@ class QcSqlFieldSuffixExpression : public QcSqlExpressionTraits
 
 public:
   QcSqlFieldSuffixExpression(const QcSqlField & field);
+  virtual ~QcSqlFieldSuffixExpression() {}
 
   const QcSqlField & field() const { return m_field; }
 
@@ -257,6 +261,7 @@ class QcSqlUnaryExpression : public QcSqlExpressionTraits
 {
 public:
   QcSqlUnaryExpression(const QcSqlExpressionPtr & expression);
+  virtual ~QcSqlUnaryExpression() {}
 
   const QcSqlExpressionPtr & expresion() const { return m_expression; }
 
@@ -279,6 +284,7 @@ class QcSqlBinaryExpression : public QcSqlExpressionTraits
 public:
   QcSqlBinaryExpression(const QcSqlExpressionPtr & expression1,
                         const QcSqlExpressionPtr & expression2);
+  virtual ~QcSqlBinaryExpression() {}
 
   const QcSqlExpressionPtr & expresion1() const { return m_expression1; }
   const QcSqlExpressionPtr & expresion2() const { return m_expression2; }

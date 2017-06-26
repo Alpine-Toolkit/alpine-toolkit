@@ -147,7 +147,8 @@ DocumentSchema::~DocumentSchema()
 /**************************************************************************************************/
 
 Document::Document()
-  : QcRow<DocumentSchema>(),
+  : QObject(),
+    QcRow<DocumentSchema>(),
     m_id(),
     m_name(),
     m_author(),
@@ -160,7 +161,8 @@ Document::Document()
 }
 
 Document::Document(const Document & other)
-  : QcRow<DocumentSchema>(other),
+  : QObject(),
+    QcRow<DocumentSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_author(other.m_author),
@@ -745,7 +747,9 @@ DocumentCache::add(DocumentPtr & ptr)
 
 void
 DocumentCache::remove(DocumentPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 DocumentCache::on_changed()

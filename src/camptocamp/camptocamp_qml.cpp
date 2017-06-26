@@ -295,6 +295,7 @@ C2cQmlClient::is_media_cached(const QString & media)
 QByteArray *
 C2cQmlClient::get_media(const QString & media, bool use_cache) // unused
 {
+  Q_UNUSED(use_cache);
   // Fixme: use_cache ???
   // if (use_cache) {
   //   QByteArray data = m_media_cache.get_media(media);
