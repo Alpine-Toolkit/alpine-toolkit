@@ -54,6 +54,7 @@
 
     <file>data/bleau.json</file>
     <file>data/ffcam-refuges.json</file>
+    <file>data/stop-words.json</file>
     <!-- file>data/ffcam-refuges.sqlite</file> -->
 
     <file>icons/add-black.png</file>

@@ -387,25 +387,29 @@ LocalizedStopWordFilter::LocalizedStopWordFilter()
 LocalizedStopWordFilter::LocalizedStopWordFilter(const QString & json_path)
   : LanguageFilter()
 {
+  // Fixme: singleton
+
   QFile json_file(json_path);
 
-  if (!json_file.open(QIODevice::ReadOnly))
-    throw std::invalid_argument("Couldn't open file."); // Fixme: ???
-
-  QByteArray json_data = json_file.readAll();
-  QJsonParseError parse_error;
-  QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
-  if (parse_error.error == QJsonParseError::NoError) {
-    // Keys are ISO 639-1 language code
-    QJsonObject root = json_document.object();
-    for (const auto & iso_language : root.keys()) {
-      QLocale language(iso_language);
-      FilterPtr filter(new StopWordFilter(root[iso_language].toArray()));
-      add_language_filter(language.language(), filter);
+  if (!json_file.open(QIODevice::ReadOnly)) {
+    QByteArray json_data = json_file.readAll();
+    QJsonParseError parse_error;
+    QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
+    if (parse_error.error == QJsonParseError::NoError) {
+      // Keys are ISO 639-1 language code
+      QJsonObject root = json_document.object();
+      for (const auto & iso_language : root.keys()) {
+        QLocale language(iso_language);
+        FilterPtr filter(new StopWordFilter(root[iso_language].toArray()));
+        add_language_filter(language.language(), filter);
+      }
     }
+    else
+      qCritical() << parse_error.errorString();
+  } else {
+    qCritical() << QStringLiteral("Couldn't open file") << json_path;
+    // throw std::invalid_argument("Couldn't open file."); // Fixme: ???
   }
-  else
-    qCritical() << parse_error.errorString();
 }
 
 /**************************************************************************************************/

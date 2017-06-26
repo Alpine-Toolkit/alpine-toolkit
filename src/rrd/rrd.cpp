@@ -131,8 +131,8 @@ void
 QcRoundRobinDatabase::open()
 {
   m_created = !m_file.exists();
-  if (! m_file.open(QIODevice::ReadWrite))
-    ; // Fixme:
+  if (! m_file.open(QIODevice::ReadWrite)) {
+  } // Fixme:
   m_buffer.setDevice(&m_file);
 }
 
@@ -167,8 +167,8 @@ QcRoundRobinDatabase::set_length()
 {
   if (m_file.resize(m_header_size + m_number_of_reserved_slots * m_slot_size))
     clear();
-  else
-    ; // Fixme
+  else {
+  } // Fixme
 }
 
 void
@@ -256,8 +256,8 @@ QcRoundRobinDatabase::seek_to(size_t position)
 {
   size_t device_position = m_header_size + position * m_slot_size;
   // qInfo() << "QcRoundRobinDatabase::seek_to" << device_position;
-  if (! m_file.seek(device_position))
-    ; // Fixme:
+  if (! m_file.seek(device_position)) {
+  } // Fixme:
 }
 
 void

@@ -52,7 +52,7 @@ RefugeSchemaManager::RefugeSchemaManager()
   tokenizer << new PreLanguageFilter();
   tokenizer << new CaseFoldingFilter();
   tokenizer << new AccentFoldingFilter(); // Must run language filter before !
-  tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
+  tokenizer << new LocalizedStopWordFilter(QLatin1String(":/data/stop-words.json"));
   // tokenizer << new LocalizedStemmerFilter(); // is not suited for names or localities
 }
 
