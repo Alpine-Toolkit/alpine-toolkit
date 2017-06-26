@@ -106,13 +106,10 @@ RefugeSchemaManager::to_sql(const QString & sqlite_path)
   RefugeSqliteDatabase refuge_sqlite_database(sqlite_path);
   RefugeDatabaseSchema & refuge_schema = refuge_sqlite_database.schema();
 
-  // Run as transaction
-  // for (const auto & refuge : refuges())
-  //   refuge_schema.add_ptr(refuge, false, false);
-  // refuge_sqlite_database.commit();
-
   // Fixme: if use cache, in an arbitrary order, and const issue
   // m_refuge_cache.items()
+
+  // Run as transaction
   refuge_schema.add_row_ptrs(m_refuges);
 }
 
