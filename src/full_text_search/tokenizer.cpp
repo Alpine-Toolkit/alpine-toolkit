@@ -391,7 +391,7 @@ LocalizedStopWordFilter::LocalizedStopWordFilter(const QString & json_path)
 
   QFile json_file(json_path);
 
-  if (!json_file.open(QIODevice::ReadOnly)) {
+  if (json_file.open(QIODevice::ReadOnly)) {
     QByteArray json_data = json_file.readAll();
     QJsonParseError parse_error;
     QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
