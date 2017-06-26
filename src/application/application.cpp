@@ -79,6 +79,8 @@ Application * Application::m_instance = nullptr;
 Application &
 Application::create(int & argc, char ** argv)
 {
+  setup_gui_application();
+
   m_instance = new Application(argc, argv);
 
   return *m_instance;
@@ -94,7 +96,6 @@ Application::Application(int & argc, char ** argv)
     m_engine(),
     m_qml_application()
 {
-  setup_gui_application();
   load_translation();
   m_config.init(); // Fixme: ???
   write_debug_data();
@@ -112,6 +113,7 @@ void
 Application::setup_gui_application()
 {
   // Set QGuiApplication statics
+  // Must be called before to instanciate Application
 
   // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "Alpine Toolkit "));
   QGuiApplication::setApplicationName("Alpine Toolkit");
