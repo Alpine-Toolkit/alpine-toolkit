@@ -60,7 +60,9 @@ Application::run_before_event_loop()
   }
   */
 
-  QFile input_file("/storage/0060-1F18/external-sdcard-test.txt");
+  // /storage/0060-1F18/
+  // /storage/0060-1F18/Android/data/org.alpine_toolkit/files
+  QFile input_file("/storage/0060-1F18/Android/data/org.alpine_toolkit/files/external-sdcard-test.txt");
   if (input_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     while (!input_file.atEnd()) {
       QByteArray line = input_file.readLine();
