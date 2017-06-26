@@ -97,6 +97,7 @@ HEADERS += \
   src/orm/type_conversion.h \
   src/refuge/refuge_schema.h \
   src/refuge/refuge_schema_manager.h \
+  src/refuge/refuge_sqlite_database.h \
   src/rrd/rrd.h \
   src/satellite_model/satellite_model.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
@@ -153,6 +154,7 @@ SOURCES += \
   src/refuge/refuge_schema.cpp \
   src/refuge/refuge_schema_custom_code.cpp \
   src/refuge/refuge_schema_manager.cpp \
+  src/refuge/refuge_sqlite_database.cpp \
   src/rrd/rrd.cpp \
   src/satellite_model/satellite_model.cpp \
   src/sensors/qml_barimeter_altimeter_sensor.cpp \
