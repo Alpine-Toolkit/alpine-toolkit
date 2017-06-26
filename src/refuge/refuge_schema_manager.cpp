@@ -30,7 +30,7 @@
 
 #include "full_text_search/phonetic_encoder.h"
 
-// #include "refuge_sqlite_database.h"
+#include "refuge_sqlite_database.h"
 
 #include <QByteArray>
 #include <QFile>
@@ -81,9 +81,11 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
     m_refuge_cache.add(refuge);
     TextDocument short_name(QLocale::French, refuge->short_name());
     m_refuge_index.insert(short_name, refuge.ptr());
+    m_refuges << refuge;
   }
 
   m_filtered_refuges = refuges();
+  sort(); // Fixme: more effecient way ?
 }
 
 QJsonDocument
@@ -100,11 +102,18 @@ RefugeSchemaManager::to_json_document() // const
 void
 RefugeSchemaManager::to_sql(const QString & sqlite_path)
 {
-  // RefugeSqliteDatabase refuge_sqlite_database(sqlite_path);
-  // RefugeSchema & refuge_schema = refuge_sqlite_database.schema();
+  // Fixme: has a cache
+  RefugeSqliteDatabase refuge_sqlite_database(sqlite_path);
+  RefugeDatabaseSchema & refuge_schema = refuge_sqlite_database.schema();
 
-  // for (const auto & refuge : ...)
-  //   refuge_schema.add_ptr(refuge);
+  // Run as transaction
+  // for (const auto & refuge : refuges())
+  //   refuge_schema.add_ptr(refuge, false, false);
+  // refuge_sqlite_database.commit();
+
+  // Fixme: if use cache, in an arbitrary order, and const issue
+  // m_refuge_cache.items()
+  refuge_schema.add_row_ptrs(m_refuges);
 }
 
 QQmlListProperty<Refuge>
@@ -138,9 +147,22 @@ RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, in
 }
 
 void
+RefugeSchemaManager::sort()
+{
+  struct {
+    bool operator()(RefugePtr a, RefugePtr b) const
+    {
+      return *a < *b;
+    }
+  } compare;
+
+  std::sort(m_filtered_refuges.begin(), m_filtered_refuges.end(), compare);
+}
+
+void
 RefugeSchemaManager::filter_refuge_list(const QString & query)
 {
-  qInfo() << "filter_refuge_list" << query;
+  // qInfo() << "filter_refuge_list" << query;
 
   if (query.isEmpty()) {
     m_filtered_refuges = refuges();
@@ -148,11 +170,13 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
     m_filtered_refuges.clear();
     auto matches = m_refuge_index.query(TextDocument(QLocale::French, query), true); // use like
     for (const auto & match : matches) {
-      qInfo() << query << "Matched" << match.pertinence() << match.document()->short_name();
+      // qInfo() << query << "Matched" << match.pertinence() << match.tokens() << match.document()->short_name();
       m_filtered_refuges << match.document();
     }
     // m_filtered_refuges = matches.values(); // RefugePtr versus QSharedPointer<Refuge>
   }
+  // else sorted by pertinence
+  sort(); // Fixme: more effecient way ?
 
   emit refugeListChanged();
 }

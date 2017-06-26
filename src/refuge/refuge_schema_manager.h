@@ -85,11 +85,13 @@ private:
   QQmlListProperty<Refuge> refuge_list_property();
   static int refuge_list_property_count(QQmlListProperty<Refuge> * list);
   static Refuge * refuge_list_property_at(QQmlListProperty<Refuge> * list, int index);
+  void sort();
 
 private:
   RefugeCache m_refuge_cache;
   Refuge::PtrList m_filtered_refuges;
   TextDocumentIndexer<Refuge> m_refuge_index;
+  Refuge::PtrList m_refuges; // ordered
 };
 
 /**************************************************************************************************/

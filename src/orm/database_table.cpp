@@ -235,7 +235,7 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
     query.addBindValue(value);
 
   // Fixme: namesapce ???
-  if (QcDatabase::exec_and_check_prepared_query(query) and _commit)
+  if (_commit and QcDatabase::exec_and_check_prepared_query(query))
     commit();
 
   return query;
@@ -260,7 +260,7 @@ QcDatabaseTable::add(QcRowTraits & row, bool commit)
 }
 
 void
-QcDatabaseTable::add(const QList<QcRowTraits *> rows, bool _commit)
+QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
 {
   QSqlQuery query;
   if (m_schema.has_rowid_primary_key())
@@ -273,9 +273,8 @@ QcDatabaseTable::add(const QList<QcRowTraits *> rows, bool _commit)
     int i = 0;
     for (const auto & value : row->to_variant_list_sql())
       query.bindValue(i++, value);
-    if (QcDatabase::exec_and_check_prepared_query(query)) {
+    if (QcDatabase::exec_and_check_prepared_query(query))
       row->set_insert_id(last_insert_id(query));
-    }
   }
 
   if (_commit)
@@ -283,14 +282,14 @@ QcDatabaseTable::add(const QList<QcRowTraits *> rows, bool _commit)
 }
 
 void
-QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool m_commit)
+QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool _commit)
 {
   // qInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
     query.addBindValue(value);
 
-  if (QcDatabase::exec_and_check_prepared_query(query) and m_commit)
+  if (_commit and QcDatabase::exec_and_check_prepared_query(query))
     commit();
 }
 

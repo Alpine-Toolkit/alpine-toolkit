@@ -38,7 +38,7 @@
 
 template<class T>
 void
-QcDatabaseSchema::add(T & row, bool save_relations)
+QcDatabaseSchema::add(T & row, bool save_relations, bool commit)
 {
   // Check foreign keys are set
   if (not row.can_save()) {
@@ -47,8 +47,9 @@ QcDatabaseSchema::add(T & row, bool save_relations)
   }
 
   QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(row); // call set_insert_id
+  table.add(row, commit); // call set_insert_id
 
+  // Fixme: if error ?
   row.set_database_schema(this);
 
   if (save_relations) {
@@ -58,31 +59,61 @@ QcDatabaseSchema::add(T & row, bool save_relations)
 }
 
 template<class T>
+void
+QcDatabaseSchema::add_ptr(T & row_ptr, bool save_relations, bool commit)
+{
+  add(*row_ptr, save_relations, commit);
+}
+
+template<class T>
 QcDatabaseSchema &
 QcDatabaseSchema::operator<<(QcRowTraits & row)
 {
-  add(row); // save_relations
+  add(row); // Fixme: save_relations, commit
   return *this;
 }
 
 template<class T>
 void
-QcDatabaseSchema::add(const QList<T *> rows, bool save_relations)
+QcDatabaseSchema::add_row_ptrs(QList<T> & row_ptrs, bool commit) // Fixme: const
 {
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(rows, save_relations);
+  // Fixme: more efficient way ? base Ptr class ?
+  QList<QcRowTraits*> rows;
+  for (auto & row : row_ptrs)
+    rows << row.data();
+
+  QcDatabaseTable & table = get_table_by_schema(T::Class::schema());
+  table.add(rows, commit);
+
+  for (auto & row : row_ptrs)
+    row->set_database_schema(this);
 }
 
 template<class T>
 void
-QcDatabaseSchema::add(const QList<T> rows, bool save_relations)
+QcDatabaseSchema::add_rows(const QList<T *> & rows, bool commit)
+{
+  // Fixme:
+  QList<QcRowTraits*> _rows;
+  for (auto * row : rows)
+    _rows << row;
+  // error: invalid cast from type ‘const QList<Refuge*>’ to type ‘const QList<QcRowTraits*>’
+  // reinterpret_cast<const QList<QcRowTraits*> >(rows)
+  // http://en.cppreference.com/w/cpp/algorithm/transform
+
+  QcDatabaseTable & table = get_table_by_schema(T::schema());
+  table.add(_rows, commit);
+}
+
+template<class T>
+void
+QcDatabaseSchema::add_rows(const QList<T> & rows, bool commit)
 {
   QList<T * > row_ptrs;
   for (auto & row : rows)
     row_ptrs << &row;
 
-  QcDatabaseTable & table = get_table_by_schema(T::schema());
-  table.add(row_ptrs, save_relations);
+  add(row_ptrs, commit);
 }
 
 template<class T>

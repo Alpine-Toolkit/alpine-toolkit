@@ -135,9 +135,11 @@ public:
 
   QSqlQuery join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const;
 
+  // Add a complete row
   QSqlQuery complete_insert(const QVariantList & variants, bool commit = true);
+  // Add a row or rows
   void add(QcRowTraits & row, bool commit = true);
-  void add(const QList<QcRowTraits *> rows, bool commit = true);
+  void add(const QList<QcRowTraits *> & rows, bool commit = true);
 
   QSqlQuery insert(const QVariantHash & kwargs, bool commit = true);
 

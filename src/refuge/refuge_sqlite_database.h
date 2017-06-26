@@ -1,8 +1,9 @@
+// -*- mode: c++ -*-
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2017 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -26,40 +27,31 @@
 
 /**************************************************************************************************/
 
-#include "refuge_schema.h"
-
-#include<QtDebug>
+#ifndef __REFUGE_SQLITE_DATABASE_H__
+#define __REFUGE_SQLITE_DATABASE_H__
 
 /**************************************************************************************************/
 
-void
-Refuge::post_init()
+#include "orm/sqlite_database.h"
+#include "refuge/refuge_schema.h"
+
+/**************************************************************************************************/
+
+class RefugeSqliteDatabase : public QcSqliteDatabase
 {
-  set_first_letter();
+public:
+  RefugeSqliteDatabase(const QString & sqlite_path);
+  ~RefugeSqliteDatabase();
 
-  QObject::connect(this, &Refuge::short_nameChanged, this, &Refuge::set_first_letter);
-}
+  RefugeDatabaseSchema & schema() { return *m_schema; }
 
-bool
-Refuge::operator<(const Refuge & other) const
-{
-  // qInfo() << m_short_name << other.m_short_name;
+private:
+  RefugeDatabaseSchema * m_schema = nullptr; // database must be opened before to instanciate DatabaseSchema
+};
 
-  // Fixme: segfault
-  // return m_short_name.localeAwareCompare(other.m_short_name);
+/**************************************************************************************************/
 
-  auto a = m_short_name.normalized(QString::NormalizationForm_D);
-  auto b = other.m_short_name.normalized(QString::NormalizationForm_D);
-  return a < b;
-}
-
-void
-Refuge::set_first_letter()
-{
-  // Fixme: to function
-  m_first_letter = m_short_name.normalized(QString::NormalizationForm_D)[0].toUpper();
-  // m_short_name[0].toUpper();
-}
+#endif /* __REFUGE_SQLITE_DATABASE_H__ */
 
 /***************************************************************************************************
  *

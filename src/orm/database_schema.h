@@ -83,11 +83,15 @@ public:
 
   QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
-  template<class T> void add(T & row, bool save_relations = true);
-  template<class T> void add_ptr(T & row_ptr, bool save_relations = true) { add(*row_ptr); }
-  template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row);
-  template<class T> void add(const QList<T *> rows, bool save_relations = true);
-  template<class T> void add(const QList<T> rows, bool save_relations = true);
+  // Add a row
+  template<class T> void add(T & row, bool save_relations = true, bool commit = true);
+  template<class T> void add_ptr(T & row_ptr, bool save_relations = true, bool commit = true);
+  template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row); // Fixme: save_relations, commit
+
+  // Add rows
+  template<class T> void add_row_ptrs(QList<T> & row_ptrs, bool commit = true); // , bool save_relations = true // Fixme: const ?
+  template<class T> void add_rows(const QList<T *> & rows, bool commit = true); // , bool save_relations = true
+  template<class T> void add_rows(const QList<T> & rows, bool commit = true); // , bool save_relations = true // Fixme: purpose ?
 
   template<class T> typename T::PtrList query(bool lazy_load = true);
   template<class T> typename T::Ptr query_by_id(int rowid, bool lazy_load = true);

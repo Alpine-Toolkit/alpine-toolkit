@@ -2,7 +2,7 @@
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2017 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the QtCarto library.
@@ -26,39 +26,23 @@
 
 /**************************************************************************************************/
 
-#include "refuge_schema.h"
+#include "refuge_sqlite_database.h"
 
-#include<QtDebug>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
-void
-Refuge::post_init()
+RefugeSqliteDatabase::RefugeSqliteDatabase(const QString & sqlite_path)
+  : QcSqliteDatabase(sqlite_path),
+    m_schema(nullptr)
 {
-  set_first_letter();
-
-  QObject::connect(this, &Refuge::short_nameChanged, this, &Refuge::set_first_letter);
+  m_schema = new RefugeDatabaseSchema(*this);
 }
 
-bool
-Refuge::operator<(const Refuge & other) const
+RefugeSqliteDatabase::~RefugeSqliteDatabase()
 {
-  // qInfo() << m_short_name << other.m_short_name;
-
-  // Fixme: segfault
-  // return m_short_name.localeAwareCompare(other.m_short_name);
-
-  auto a = m_short_name.normalized(QString::NormalizationForm_D);
-  auto b = other.m_short_name.normalized(QString::NormalizationForm_D);
-  return a < b;
-}
-
-void
-Refuge::set_first_letter()
-{
-  // Fixme: to function
-  m_first_letter = m_short_name.normalized(QString::NormalizationForm_D)[0].toUpper();
-  // m_short_name[0].toUpper();
+  if (m_schema)
+    delete m_schema;
 }
 
 /***************************************************************************************************

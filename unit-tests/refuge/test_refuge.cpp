@@ -54,6 +54,8 @@ TestRefugeSchemaManager::test()
   for (const auto & refuge : refuge_schema_manager.refuges()) {
     qInfo() << refuge << refuge->first_letter();
   }
+
+  refuge_schema_manager.to_sql("ffcam-refuge.sqlite");
 }
 
 /***************************************************************************************************/

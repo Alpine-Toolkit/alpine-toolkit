@@ -79,6 +79,7 @@ set(alpine_toolkit_library_files
   refuge/refuge_schema.cpp
   refuge/refuge_schema_custom_code.cpp
   refuge/refuge_schema_manager.cpp
+  refuge/refuge_sqlite_database.cpp
   rrd/rrd.cpp
   settings/settings_database.cpp
   settings/settings_tree.cpp
