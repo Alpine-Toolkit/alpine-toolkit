@@ -32,6 +32,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
@@ -54,6 +55,8 @@ public class AlpineToolkitService extends QtService
 
   final int NOTIFICATION_ID = 1; // The identifier for this notification, must not be 0.
 
+  private static BatteryReceiver m_battery_receiver = null; // Fixme: static ???
+
   public static void start_service(Context ctx)
   {
     Log.i(LOG_TAG, "start_service");
@@ -71,6 +74,17 @@ public class AlpineToolkitService extends QtService
   {
     Log.i(LOG_TAG, "onCreate");
     super.onCreate();
+
+    if (m_battery_receiver == null) { // Fixme: ???
+      m_battery_receiver = new BatteryReceiver();
+      IntentFilter intent_filter = new IntentFilter();
+      intent_filter.addAction(Intent.ACTION_BATTERY_CHANGED);
+      intent_filter.addAction(Intent.ACTION_POWER_CONNECTED);
+      intent_filter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+      intent_filter.addAction(Intent.ACTION_BATTERY_LOW);
+      intent_filter.addAction(Intent.ACTION_BATTERY_OKAY);
+      registerReceiver(m_battery_receiver, intent_filter);
+    }
   }
 
   @Override
@@ -91,6 +105,11 @@ public class AlpineToolkitService extends QtService
   {
     Log.i(LOG_TAG, "onDestroy");
     super.onDestroy();
+
+    if (m_battery_receiver != null) {
+      unregisterReceiver(m_battery_receiver);
+      m_battery_receiver = null;
+    }
   }
 
   @Override

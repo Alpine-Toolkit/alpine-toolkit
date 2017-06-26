@@ -54,9 +54,9 @@ public class BatteryReceiver extends BroadcastReceiver
 
     int level = battery_status.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
     int scale = battery_status.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-    float percent = level / (float) scale;
+    int percent = (int) (100 * level / (float) scale);
 
-    String message = String.format("Battery receiver: %1$s %2$s %3$f ", is_charging, charge_plug, percent);
+    String message = String.format("Battery receiver: %1$s %2$s %3$d ", is_charging, charge_plug, percent);
     Log.i(LOG_TAG, message);
 
     // call c++

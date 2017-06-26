@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <manifest package="org.alpine_toolkit" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
-  <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:hardwareAccelerated="true" android:icon="@drawable/icon">
+  <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:hardwareAccelerated="true" android:icon="@drawable/icon" android:installLocation="auto" >
 
     <!-- android:name="org.qtproject.qt5.android.bindings.QtActivity" -->
     <activity android:name=".AlpineToolkitActivity" android:label="-- %%INSERT_APP_NAME%% --" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:screenOrientation="unspecified" android:launchMode="singleTop">
@@ -109,14 +109,14 @@
       <!-- Background running -->
     </service>
 
-    <receiver android:name=".BatteryReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-        <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-        <action android:name="android.intent.action.BATTERY_LOW"/>
-        <!-- <action android:name="android.intent.action.BATTERY_OKAY"/> -->
-      </intent-filter>
-    </receiver>
+    <!-- <receiver android:name=".BatteryReceiver"> -->
+    <!--   <intent-filter> -->
+    <!--     <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/> -->
+    <!--     <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/> -->
+    <!--     <action android:name="android.intent.action.BATTERY_LOW"/> -->
+    <!--     android:name="android.intent.action.BATTERY_OKAY"/> -->
+    <!--   </intent-filter> -->
+    <!-- </receiver> -->
 
   </application>
 
@@ -126,16 +126,20 @@
   <!-- The following comment will be replaced upon deployment with default permissions based on the dependencies of the application.
        Remove the comment if you do not require these default permissions. -->
   <!-- %%INSERT_PERMISSIONS -->
+  <!-- <uses-permission android:name="android.permission.INTERNET" /> -->
+  <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+  <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
+  <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
+  <!-- <uses-permission android:name="android.permission.CAMERA" /> --> <!-- Protection level: dangerous -->
+  <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
+
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/> <!-- Protection level: dangerous -->
-  <uses-permission android:name="android.permission.CAMERA"/> <!-- Protection level: dangerous -->
   <uses-permission android:name="android.permission.BODY_SENSORS"/> <!-- Protection level: dangerous -->
   <uses-permission android:name="android.permission.FLASHLIGHT"/>
   <!-- <uses-permission android:name="android.permission.BATTERY_STATS"/> -->
 
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-  <uses-feature android:name="android.hardware.camera" android:required="false"/>
+  <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/> -->
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
   <!-- <uses-feature android:name="android.hardware.camera.autofocus" /> -->
   <!-- <uses-feature android:name="android.hardware.camera.flash" /> -->
@@ -144,5 +148,8 @@
   <!-- The following comment will be replaced upon deployment with default features based on the dependencies of the application.
        Remove the comment if you do not require these default features. -->
   <!-- %%INSERT_FEATURES -->
-
+  <!-- <uses-feature android:name="android.hardware.camera" android:required="false" /> -->
+  <!-- <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" /> -->
+  <!-- <uses-feature android:name="android.hardware.microphone" android:required="false" /> -->
+  <!-- <uses-feature android:glEsVersion="0x00020000" android:required="true" /> -->
 </manifest>

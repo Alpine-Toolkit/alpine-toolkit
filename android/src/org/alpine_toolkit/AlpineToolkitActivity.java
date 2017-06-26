@@ -41,6 +41,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 
+import android.support.v4.content.ContextCompat;
+
 /**************************************************************************************************/
 
 // class LampSignalRunnable implements Runnable {
@@ -63,8 +65,6 @@ public class AlpineToolkitActivity extends QtActivity
   private PermissionHelper m_permission_helper = null;
   private PhoneHelper m_phone_helper = null;
   private ServiceHelper m_service_helper = null;
-
-  private static Boolean m_battery_receiver_regsitered = false;
 
   /**********************************************/
 
@@ -91,12 +91,6 @@ public class AlpineToolkitActivity extends QtActivity
 
     super.onCreate(savedInstanceState);
 
-    if (!m_battery_receiver_regsitered) {
-      IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-      this.registerReceiver(new BatteryReceiver(), ifilter);
-      m_battery_receiver_regsitered = true;
-    }
-
     Log.i(LOG_TAG, "Is servic running? " + m_service_helper.is_service_running());
 
     try {
@@ -117,6 +111,9 @@ public class AlpineToolkitActivity extends QtActivity
 
     Log.i(LOG_TAG, "External SDCard: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
     // File[] paths = getExternalMediaDirs(); // API 21
+    File[] external_files_dirs = ContextCompat.getExternalFilesDirs(this, null);
+    for (File path : external_files_dirs)
+      Log.i(LOG_TAG, "external files dir: " + path);
 
     String[] permissions = {
             "android.permission.BODY_SENSORS",
