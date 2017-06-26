@@ -135,8 +135,8 @@ Widgets.Page {
                     }
                     onClicked: {
 			/* var search_settings = C2cSearchSettings() */
-			/* c2c_client.search(search_textfield.text, search_settings); */
-                        c2c_client.route(570170);
+			c2c_client.search(search_textfield.text, search_settings);
+                        // c2c_client.route(570170);
                         busy_indicator.running = true;
                     }
 		}
