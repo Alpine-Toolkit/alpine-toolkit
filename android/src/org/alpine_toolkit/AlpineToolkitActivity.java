@@ -91,7 +91,7 @@ public class AlpineToolkitActivity extends QtActivity
 
     super.onCreate(savedInstanceState);
 
-    Log.i(LOG_TAG, "Is servic running? " + m_service_helper.is_service_running());
+    Log.i(LOG_TAG, "Is service running? " + m_service_helper.is_service_running());
 
     try {
       Process process = Runtime.getRuntime().exec("mount");
