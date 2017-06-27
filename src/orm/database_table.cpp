@@ -321,7 +321,7 @@ QcDatabaseTable::select(const QStringList & fields, const QString & where) const
   QSqlQuery query = m_database->new_query();
   // Fixme: use query api ?
   //   but only strings : basic
-  //   modify ORM to use QcSqlField instead 
+  //   modify ORM to use QcSqlField instead
   QString sql_query = QLatin1String("SELECT ") + comma_join(fields) + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;

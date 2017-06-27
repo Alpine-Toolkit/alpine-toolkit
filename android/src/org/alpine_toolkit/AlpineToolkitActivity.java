@@ -93,6 +93,7 @@ public class AlpineToolkitActivity extends QtActivity
 
     Log.i(LOG_TAG, "Is service running? " + m_service_helper.is_service_running());
 
+    // Debug
     try {
       Process process = Runtime.getRuntime().exec("mount");
       process.waitFor();
@@ -109,12 +110,14 @@ public class AlpineToolkitActivity extends QtActivity
     catch (java.lang.InterruptedException e)
     {}
 
+    // Get external SDCard path
     Log.i(LOG_TAG, "External SDCard: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
     // File[] paths = getExternalMediaDirs(); // API 21
     File[] external_files_dirs = ContextCompat.getExternalFilesDirs(this, null);
     for (File path : external_files_dirs)
       Log.i(LOG_TAG, "external files dir: " + path);
 
+    // Check permissions
     String[] permissions = {
             "android.permission.BODY_SENSORS",
             "android.permission.CAMERA",

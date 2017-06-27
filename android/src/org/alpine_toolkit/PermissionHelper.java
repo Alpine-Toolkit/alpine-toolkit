@@ -103,7 +103,7 @@ public class PermissionHelper
         // id is an app-defined int constant. The callback method gets
         // the result of the request.
         ActivityCompat.requestPermissions(m_activity, new String[]{permission}, permission_id);
-        Log.i(LOG_TAG, "Permission: " + permission + " need granted");
+        Log.i(LOG_TAG, "Permission: " + permission + " need grant");
         return PermissionStatus.NeedGrant.ordinal();
       }
   }
