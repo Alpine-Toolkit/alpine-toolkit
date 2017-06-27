@@ -117,8 +117,8 @@ public:
 
   QcSqlField & operator=(const QcSqlField & other);
 
-  QcSqlExpressionPtr to_ptr() const { return QcSqlExpressionPtr(new QcSqlField(*this)); }
-  operator QcSqlExpressionPtr () const { return to_ptr(); }
+  // Used to cast a field to a expression traits
+  operator QcSqlExpressionPtr () const { return QcSqlExpressionPtr(new QcSqlField(*this)); }
 
   const QString & name() const { return m_name; }
   void set_name(const QString & name) { m_name = name; }
@@ -329,17 +329,12 @@ private:
 // not is a keyword
 QcSqlExpressionPtr Not(const QcSqlExpressionPtr & expression);
 
-// QcSqlExpressionPtr Count(const QcSqlField & field);
 QcSqlExpressionPtr Count(const QcSqlExpressionPtr & expression);
 
-// QcSqlExpressionPtr Min(const QcSqlField & field);
 QcSqlExpressionPtr Min(const QcSqlExpressionPtr & expression);
-// QcSqlExpressionPtr Max(const QcSqlField & field);
 QcSqlExpressionPtr Max(const QcSqlExpressionPtr & expression);
 
-// QcSqlExpressionPtr Sum(const QcSqlField & field);
 QcSqlExpressionPtr Sum(const QcSqlExpressionPtr & expression);
-// QcSqlExpressionPtr Avg(const QcSqlField & field);
 QcSqlExpressionPtr Avg(const QcSqlExpressionPtr & expression);
 
 QcSqlExpressionPtr operator&&(const QcSqlExpressionPtr & expression1,
@@ -401,7 +396,6 @@ public:
   QcSqlQuery & count();
   QcSqlQuery & exists();
 
-  QcSqlQuery & add_column(const QcSqlField & field);
   QcSqlQuery & add_column(const QcSqlExpressionPtr & expression);
   QcSqlQuery & add_column(const QString & name) {
     return add_column(QcSqlField(name));

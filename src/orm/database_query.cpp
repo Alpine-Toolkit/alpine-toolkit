@@ -329,14 +329,6 @@ Count(const QcSqlExpressionPtr & expression)
   return QcSqlExpressionPtr(new QcSqlFunctionExpression<COUNT>(expression));
 }
 
-/*
-QcSqlExpressionPtr
-Min(const QcSqlField & field)
-{
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MIN>(field)); // .to_ptr()
-}
-*/
-
 QcSqlExpressionPtr
 Min(const QcSqlExpressionPtr & expression)
 {
@@ -481,14 +473,6 @@ QcSqlQuery &
 QcSqlQuery::delete_()
 {
   m_query_type = QueryType::Delete;
-
-  return *this;
-}
-
-QcSqlQuery &
-QcSqlQuery::add_column(const QcSqlField & field)
-{
-  m_fields << field.to_ptr();
 
   return *this;
 }
