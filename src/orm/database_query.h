@@ -99,6 +99,9 @@ public:
 
 public:
   virtual QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const = 0;
+
+  // Fixme: label
+  //  Session.query(func.sum(UnitPrice.price).label('price'))
 };
 
 /**************************************************************************************************/
@@ -113,6 +116,9 @@ public:
   virtual ~QcSqlField();
 
   QcSqlField & operator=(const QcSqlField & other);
+
+  QcSqlExpressionPtr to_ptr() const { return QcSqlExpressionPtr(new QcSqlField(*this)); }
+  operator QcSqlExpressionPtr () const { return to_ptr(); }
 
   const QString & name() const { return m_name; }
   void set_name(const QString & name) { m_name = name; }
@@ -149,7 +155,7 @@ public:
 };
 
 typedef QSharedPointer<QcSqlField> QcSqlFieldPtr;
-typedef QList<QcSqlField> FieldList;
+typedef QList<QcSqlField> QcFieldList;
 
 /**************************************************************************************************/
 
@@ -172,6 +178,24 @@ public:
 private:
   QcSqlField m_field; // Ptr ?
   QVariant m_value;
+};
+
+/**************************************************************************************************/
+
+template<const char * Symbol>
+class QcSqlFunctionExpression : public QcSqlExpressionTraits
+{
+public:
+  QcSqlFunctionExpression(const QcSqlExpressionPtr & expression);
+  virtual ~QcSqlFunctionExpression() {}
+
+  const QcSqlExpressionPtr & expression() const { return m_expression; }
+
+  QString symbol() const { return Symbol; }
+  QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
+
+private:
+  QcSqlExpressionPtr m_expression;
 };
 
 /**************************************************************************************************/
@@ -263,7 +287,7 @@ public:
   QcSqlUnaryExpression(const QcSqlExpressionPtr & expression);
   virtual ~QcSqlUnaryExpression() {}
 
-  const QcSqlExpressionPtr & expresion() const { return m_expression; }
+  const QcSqlExpressionPtr & expression() const { return m_expression; }
 
   QString symbol() const { return Symbol; }
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
@@ -286,8 +310,8 @@ public:
                         const QcSqlExpressionPtr & expression2);
   virtual ~QcSqlBinaryExpression() {}
 
-  const QcSqlExpressionPtr & expresion1() const { return m_expression1; }
-  const QcSqlExpressionPtr & expresion2() const { return m_expression2; }
+  const QcSqlExpressionPtr & expression1() const { return m_expression1; }
+  const QcSqlExpressionPtr & expression2() const { return m_expression2; }
 
   QString symbol() const { return Symbol; }
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
@@ -305,12 +329,17 @@ private:
 // not is a keyword
 QcSqlExpressionPtr Not(const QcSqlExpressionPtr & expression);
 
+// QcSqlExpressionPtr Count(const QcSqlField & field);
 QcSqlExpressionPtr Count(const QcSqlExpressionPtr & expression);
 
+// QcSqlExpressionPtr Min(const QcSqlField & field);
 QcSqlExpressionPtr Min(const QcSqlExpressionPtr & expression);
+// QcSqlExpressionPtr Max(const QcSqlField & field);
 QcSqlExpressionPtr Max(const QcSqlExpressionPtr & expression);
 
+// QcSqlExpressionPtr Sum(const QcSqlField & field);
 QcSqlExpressionPtr Sum(const QcSqlExpressionPtr & expression);
+// QcSqlExpressionPtr Avg(const QcSqlField & field);
 QcSqlExpressionPtr Avg(const QcSqlExpressionPtr & expression);
 
 QcSqlExpressionPtr operator&&(const QcSqlExpressionPtr & expression1,
@@ -373,6 +402,7 @@ public:
   QcSqlQuery & exists();
 
   QcSqlQuery & add_column(const QcSqlField & field);
+  QcSqlQuery & add_column(const QcSqlExpressionPtr & expression);
   QcSqlQuery & add_column(const QString & name) {
     return add_column(QcSqlField(name));
   }
@@ -424,7 +454,8 @@ private:
   static QString comma_interrogation_list(int count);
   void set_flags(Flags flag, bool value = true) { m_flags.setBit(static_cast<int>(flag), value); }
   bool get_flags(Flags flag) const { return m_flags[static_cast<int>(flag)]; }
-  QStringList field_names(const FieldList & fields) const;
+  QStringList field_names(const QcSqlExpressionList & fields) const;
+  QStringList field_names(const QcFieldList & fields) const;
   QStringList fields_for_update() const;
   QString table_name_as(const QString & name) const;
   QString quote_sql_identifier(const QString & name) const {
@@ -438,9 +469,9 @@ public:
   QueryType m_query_type = QueryType::None;
   SelectType m_select_type = SelectType::None;
   QBitArray m_flags;
-  FieldList m_fields;
+  QcSqlExpressionList m_fields;
   QcSqlExpressionPtr m_where = nullptr;
-  FieldList m_group_by;
+  QcFieldList m_group_by;
   QcSqlExpressionPtr m_having = nullptr;
   QcSqlExpressionList m_order_by;
   int m_limit = -1;

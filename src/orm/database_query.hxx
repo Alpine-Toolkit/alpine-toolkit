@@ -37,6 +37,20 @@
 /**************************************************************************************************/
 
 template<const char * Symbol>
+QcSqlFunctionExpression<Symbol>::QcSqlFunctionExpression(const QcSqlExpressionPtr & expression)
+  : m_expression(expression)
+{}
+
+template<const char * Symbol>
+QString
+QcSqlFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
+{
+  return Symbol + QString('(') + m_expression->to_sql(flavour) + ')';
+};
+
+/**************************************************************************************************/
+
+template<const char * Symbol>
 QcSqlFieldExpression<Symbol>::QcSqlFieldExpression(const QcSqlField & field,
                                                    const QVariant & value)
   : m_field(field),

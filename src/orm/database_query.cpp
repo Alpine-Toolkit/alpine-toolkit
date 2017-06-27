@@ -315,6 +315,8 @@ operator!(const QcSqlExpressionPtr & expression)
 }
 */
 
+// Fixme: name clash
+
 QcSqlExpressionPtr
 Not(const QcSqlExpressionPtr & expression)
 {
@@ -324,31 +326,39 @@ Not(const QcSqlExpressionPtr & expression)
 QcSqlExpressionPtr
 Count(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<COUNT>(expression));
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<COUNT>(expression));
 }
+
+/*
+QcSqlExpressionPtr
+Min(const QcSqlField & field)
+{
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MIN>(field)); // .to_ptr()
+}
+*/
 
 QcSqlExpressionPtr
 Min(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<MIN>(expression));
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MIN>(expression));
 }
 
 QcSqlExpressionPtr
 Max(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<MAX>(expression));
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MAX>(expression));
 }
 
 QcSqlExpressionPtr
 Avg(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<AVG>(expression));
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<AVG>(expression));
 }
 
 QcSqlExpressionPtr
 Sum(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<SUM>(expression));
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<SUM>(expression));
 }
 
 /**************************************************************************************************/
@@ -478,7 +488,15 @@ QcSqlQuery::delete_()
 QcSqlQuery &
 QcSqlQuery::add_column(const QcSqlField & field)
 {
-  m_fields << field;
+  m_fields << field.to_ptr();
+
+  return *this;
+}
+
+QcSqlQuery &
+QcSqlQuery::add_column(const QcSqlExpressionPtr & expression)
+{
+  m_fields << expression;
 
   return *this;
 }
@@ -560,8 +578,22 @@ QcSqlQuery::one()
 }
 
 QStringList
-QcSqlQuery::field_names(const FieldList & fields) const
+QcSqlQuery::field_names(const QcSqlExpressionList & fields) const
 {
+  SqlFlavour flavour = sql_flavour();
+  QStringList field_names;
+
+  for (const auto & field : fields)
+    field_names << field->to_sql(flavour);
+
+  return field_names;
+}
+
+QStringList
+QcSqlQuery::field_names(const QcFieldList & fields) const
+{
+  // Fixme: cf. infra
+
   SqlFlavour flavour = sql_flavour();
   QStringList field_names;
 
@@ -578,7 +610,7 @@ QcSqlQuery::fields_for_update() const
   QStringList field_names;
 
   for (const auto & field : m_fields)
-    field_names << field.to_sql(flavour) + QLatin1String(" = ?");
+    field_names << field->to_sql(flavour) + QLatin1String(" = ?");
 
   return field_names;
 }

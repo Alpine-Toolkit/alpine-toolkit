@@ -95,12 +95,15 @@ void TestQuery::constructor()
   check_sql(table.sql_query().add_column(field1).all(), "SELECT field1 FROM table;");
   check_sql(table.sql_query().add_column(field1).add_column(field2).all().filter(field1 > 1),
             "SELECT field1, field2 FROM table WHERE field1 > 1;");
-  check_sql(table.sql_query().add_column(field1).add_column(field2).all().filter(field1 > 1 and field1 < 10 or field2 > 2),
+  check_sql(table.sql_query().add_column(field1).add_column(field2).all().filter((field1 > 1 and field1 < 10) or field2 > 2),
             "SELECT field1, field2 FROM table WHERE ((field1 > 1 AND field1 < 10) OR field2 > 2);");
   check_sql(table.sql_query().order_by(field1).all(),
             "SELECT * FROM table ORDER BY field1;");
   check_sql(table.sql_query().order_by(field1.desc()).all(),
             "SELECT * FROM table ORDER BY field1 DESC;");
+
+  check_sql(table.sql_query().add_column(Min(field1)).all(),
+            "SELECT MIN(field1) FROM table;");
 
   check_sql(table.sql_query().delete_().filter(field1 > 1),
             "DELETE FROM table WHERE field1 > 1;");
