@@ -35,6 +35,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QQmlApplicationEngine>
+#include <QNetworkConfigurationManager>
 #include <QSettings>
 #include <QTranslator>
 // #include <QGuiApplication>
@@ -56,6 +57,8 @@ class QmlApplication : public QObject
   Q_OBJECT
   Q_PROPERTY(QString version READ version CONSTANT)
   Q_PROPERTY(QUrl home_page READ home_page CONSTANT)
+  Q_PROPERTY(bool online_state READ is_online NOTIFY onlineStateChanged)
+  Q_PROPERTY(bool wifi_state READ wifi_state NOTIFY wifiStateChanged)
 
 public:
   QmlApplication();
@@ -63,6 +66,23 @@ public:
 
   const QString & version() const;
   QUrl home_page() const;
+
+  bool is_online() const;
+  bool wifi_state() const { return m_wifi_state; }
+
+signals:
+  void onlineStateChanged(bool is_online);
+  void wifiStateChanged(bool wifi_state);
+
+private slots:
+  void network_configuration_changed(const QNetworkConfiguration & config);
+
+private:
+  bool get_wifi_state();
+
+private:
+  QNetworkConfigurationManager m_network_configuration_manager;
+  bool m_wifi_state;
 };
 
 /**************************************************************************************************/

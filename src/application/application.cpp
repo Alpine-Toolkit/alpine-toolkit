@@ -55,7 +55,17 @@
 /**************************************************************************************************/
 
 QmlApplication::QmlApplication()
-{}
+  : QObject(),
+    m_network_configuration_manager()
+{
+  m_wifi_state = get_wifi_state();
+
+  // connect(&m_network_configuration_manager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
+  connect(&m_network_configuration_manager, &QNetworkConfigurationManager::onlineStateChanged,
+          this, &QmlApplication::onlineStateChanged);
+  connect(&m_network_configuration_manager, &QNetworkConfigurationManager::configurationChanged,
+          this, &QmlApplication::network_configuration_changed);
+}
 
 QmlApplication::~QmlApplication()
 {}
@@ -70,6 +80,42 @@ QUrl
 QmlApplication::home_page() const
 {
   return QUrl(QLatin1String("http://alpine-toolkit.fabrice-salvaire.fr"));
+}
+
+void
+QmlApplication::network_configuration_changed(const QNetworkConfiguration & config)
+{
+  qInfo() << "Network Configuration Changed";
+  bool wifi_state = get_wifi_state();
+  if (wifi_state != m_wifi_state) {
+    m_wifi_state = wifi_state;
+    emit wifiStateChanged(wifi_state);
+  }
+}
+
+bool
+QmlApplication::get_wifi_state()
+{
+  QList<QNetworkConfiguration> network_configurations = m_network_configuration_manager.allConfigurations(QNetworkConfiguration::Active);
+  for (const auto & network_configuration : network_configurations) {
+    qInfo() << "Network Configuration" << network_configuration.name() << network_configuration.bearerType() << network_configuration.state();
+    auto bearer_type = network_configuration.bearerType();
+    if (bearer_type == QNetworkConfiguration::BearerWLAN or
+        bearer_type == QNetworkConfiguration::BearerEthernet) {
+      qInfo() << "Wifi is Up";
+      return true;
+    }
+  }
+
+
+  qInfo() << "Wifi is Down";
+  return false;
+}
+
+bool
+QmlApplication::is_online() const
+{
+  return m_network_configuration_manager.isOnline();
 }
 
 /**************************************************************************************************/
