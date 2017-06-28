@@ -102,14 +102,23 @@ void TestQuery::constructor()
   check_sql(table.sql_query().order_by(field1.desc()).all(),
             "SELECT * FROM table ORDER BY field1 DESC;");
 
-  check_sql(table.sql_query().add_column(Min(field1)).all(),
-            "SELECT MIN(field1) FROM table;");
+  // Fixme: ->as
+  check_sql(table.sql_query().add_column(Min(field1)->as("min_field1")).all(),
+            "SELECT MIN(field1) AS min_field1 FROM table;");
+
+  // Fixme: INSERT INTO table VALUES (?, ...);
+  check_sql(table.sql_query().add_column(field1).insert(),
+            "INSERT INTO table (field1) VALUES (?);");
+  check_sql(table.sql_query().add_column(field1).add_column(field2).insert(),
+            "INSERT INTO table (field1, field2) VALUES (?, ?);");
+
+  check_sql(table.sql_query().add_column(field1).update().filter(field1 > 1),
+            "UPDATE table SET field1 = ? WHERE field1 > 1;");
+  check_sql(table.sql_query().add_column(field1).add_column(field2).update().filter(field1 > 1),
+            "UPDATE table SET field1 = ?, field2 = ? WHERE field1 > 1;");
 
   check_sql(table.sql_query().delete_().filter(field1 > 1),
             "DELETE FROM table WHERE field1 > 1;");
-
-  // INSERT
-  // UPDATE
 }
 
 /***************************************************************************************************/

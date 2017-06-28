@@ -62,7 +62,7 @@ constexpr const char ASC[] = "ASC";
 
 /**************************************************************************************************/
 
-typedef QcSqlExpressionTraits ExpTraits;
+typedef QcSqlExpressionTrait ExpTrait;
 
 /**************************************************************************************************/
 
@@ -77,7 +77,7 @@ _is_alpha_string(const QString & name)
 }
 
 QString
-QcSqlExpressionTraits::quote_sql_identifier(const QString & name, SqlFlavour flavour)
+QcSqlExpressionTrait::quote_sql_identifier(const QString & name, SqlFlavour flavour)
 {
   /*
    * 'keyword'		A keyword in single quotes is a string literal.
@@ -102,8 +102,14 @@ QcSqlExpressionTraits::quote_sql_identifier(const QString & name, SqlFlavour fla
   }
 }
 
+QcSqlExpressionPtr
+QcSqlExpressionTrait::as(const QString & label) const
+{
+  return QcSqlExpressionPtr(new QcSqlAsExpression(clone(), label));
+}
+
 QString
-QcSqlExpressionTraits::to_sql(const QVariant & value)
+QcSqlExpressionTrait::to_sql(const QVariant & value)
 {
   if (value.type() == QVariant::String)
     return QLatin1String("'") + value.toString() + QLatin1String("'");
@@ -112,13 +118,13 @@ QcSqlExpressionTraits::to_sql(const QVariant & value)
 }
 
 QString
-QcSqlExpressionTraits::comma_join(const QStringList & strings)
+QcSqlExpressionTrait::comma_join(const QStringList & strings)
 {
   return strings.join(QLatin1String(", "));
 }
 
 QString
-QcSqlExpressionTraits::comma_join(const QcSqlExpressionList & expressions, SqlFlavour flavour)
+QcSqlExpressionTrait::comma_join(const QcSqlExpressionList & expressions, SqlFlavour flavour)
 {
   QStringList strings;
 
@@ -126,6 +132,21 @@ QcSqlExpressionTraits::comma_join(const QcSqlExpressionList & expressions, SqlFl
     strings << expression->to_sql(flavour);
 
   return comma_join(strings);
+}
+
+/**************************************************************************************************/
+
+QcSqlAsExpression::QcSqlAsExpression(const QcSqlExpressionPtr & expression,
+                                     const QString & label)
+  : m_expression(expression),
+    m_label(label)
+{
+}
+
+QString
+QcSqlAsExpression::to_sql(SqlFlavour flavour) const
+{
+  return m_expression->to_sql(flavour) + QLatin1String(" AS ") + m_label;
 }
 
 /**************************************************************************************************/
@@ -222,7 +243,7 @@ QString
 QcSqlBetweenExpression::to_sql(SqlFlavour flavour) const
 {
   return m_field.to_sql(flavour) + QLatin1String(" BETWEEN ") +
-    ExpTraits::to_sql(m_value1) + QLatin1String(" AND ") + ExpTraits::to_sql(m_value2);
+    ExpTrait::to_sql(m_value1) + QLatin1String(" AND ") + ExpTrait::to_sql(m_value2);
 }
 
 /**************************************************************************************************/
@@ -470,6 +491,22 @@ QcSqlQuery::exists()
 }
 
 QcSqlQuery &
+QcSqlQuery::insert()
+{
+  m_query_type = QueryType::Insert;
+
+  return *this;
+}
+
+QcSqlQuery &
+QcSqlQuery::update()
+{
+  m_query_type = QueryType::Update;
+
+  return *this;
+}
+
+QcSqlQuery &
 QcSqlQuery::delete_()
 {
   m_query_type = QueryType::Delete;
@@ -679,7 +716,7 @@ QcSqlQuery::to_sql() const
     if (m_fields.isEmpty())
       query += '*';
     else
-      query += ExpTraits::comma_join(field_names(m_fields));
+      query += ExpTrait::comma_join(field_names(m_fields));
   }
 
   if (m_query_type == QueryType::Select)
@@ -687,22 +724,22 @@ QcSqlQuery::to_sql() const
 
   if (m_query_type == QueryType::Select or
       m_query_type == QueryType::Delete) {
-    query += QLatin1String("FROM");
+    query += QLatin1String("FROM ");
   }
 
   if (m_query_type == QueryType::Insert)
-    query += QLatin1String(" INTO");
+    query += QLatin1String("INTO ");
 
-  query += ' '  + quote_sql_identifier(table_name());
+  query += quote_sql_identifier(table_name());
 
   if (m_query_type == QueryType::Update) {
-    query += QLatin1String(" Set ");
-      query += ExpTraits::comma_join(fields_for_update());
+    query += QLatin1String(" SET ");
+      query += ExpTrait::comma_join(fields_for_update());
   }
 
   if (m_query_type == QueryType::Insert) {
-    query += '(';
-    query += ExpTraits::comma_join(field_names(m_fields));
+    query += QLatin1String(" (");
+    query += ExpTrait::comma_join(field_names(m_fields));
     query += QLatin1String(") VALUES (");
     query += comma_interrogation_list(m_fields.size());
     query += ')';
@@ -715,13 +752,13 @@ QcSqlQuery::to_sql() const
 
   if (m_query_type == QueryType::Select) {
     if (not m_group_by.isEmpty())
-      query += QLatin1String(" GROUP BY ") + ExpTraits::comma_join(field_names(m_group_by));
+      query += QLatin1String(" GROUP BY ") + ExpTrait::comma_join(field_names(m_group_by));
 
     if (not m_having.isNull())
       query += QLatin1String(" HAVING ") + m_having->to_sql(flavour);
 
     if (not m_order_by.isEmpty())
-      query += QLatin1String(" ORDER BY ") + ExpTraits::comma_join(m_order_by, flavour);
+      query += QLatin1String(" ORDER BY ") + ExpTrait::comma_join(m_order_by, flavour);
 
     // MySQL syntax: LIMIT limit, offset
     // but also support ANSI

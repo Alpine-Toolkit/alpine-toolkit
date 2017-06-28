@@ -61,7 +61,7 @@ template<const char * Symbol>
 QString
 QcSqlFieldExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
-  return m_field.to_sql(flavour) + ' ' + Symbol + ' ' + QcSqlExpressionTraits::to_sql(m_value);
+  return m_field.to_sql(flavour) + ' ' + Symbol + ' ' + QcSqlExpressionTrait::to_sql(m_value);
 };
 
 /**************************************************************************************************/
