@@ -122,7 +122,13 @@ QcDatabaseSchema::query(bool lazy_load)
 {
   const QcSchema & schema = T::schema();
   QcDatabaseTable & table = get_table_by_schema(schema);
-  QSqlQuery query = table.select_where();
+
+  // Fixme: for test
+  QSqlQuery query;
+  if (schema.has_sql_value_ctor())
+    query = table.select_all();
+  else
+    query = table.select_where();
 
   typename T::PtrList rows;
   while (query.next()) {

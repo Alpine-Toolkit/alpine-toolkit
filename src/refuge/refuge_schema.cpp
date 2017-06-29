@@ -30,6 +30,7 @@
 
 #include "refuge_schema.h"
 
+#include "orm/database_query.h"
 #include "orm/type_conversion.h"
 
 #include <QtDebug>
@@ -137,6 +138,9 @@ RefugeSchema::RefugeSchema()
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
+    field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('refuge', 'coordinate', 4326, 'POINT', 'XY');"));
+    field.set_sql_value_ctor(ST_GeomFromWKB());
+    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
@@ -299,7 +303,7 @@ Refuge::Refuge(const QSqlRecord & record)
   m_description = record.value(4).toString();
   m_guardian = record.value(5).toString();
   m_picture_path = record.value(6).toString();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(record.value(7));
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(7));
   m_number_of_places = record.value(8).toString();
   m_region = record.value(9).toString();
   m_url = record.value(10).toString();
@@ -318,7 +322,7 @@ Refuge::Refuge(const QSqlQuery & query, int offset)
   m_description = query.value(offset++).toString();
   m_guardian = query.value(offset++).toString();
   m_picture_path = query.value(offset++).toString();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(query.value(offset++));
+  m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
   m_number_of_places = query.value(offset++).toString();
   m_region = query.value(offset++).toString();
   m_url = query.value(offset++).toString();
@@ -709,7 +713,7 @@ Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_picture_path_modified())
       variant_hash[QLatin1String("picture_path")] = m_picture_path;
     if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     if (is_number_of_places_modified())
       variant_hash[QLatin1String("number_of_places")] = m_number_of_places;
     if (is_region_modified())
@@ -727,7 +731,7 @@ Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
     variant_hash[QLatin1String("description")] = m_description;
     variant_hash[QLatin1String("guardian")] = m_guardian;
     variant_hash[QLatin1String("picture_path")] = m_picture_path;
-    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     variant_hash[QLatin1String("number_of_places")] = m_number_of_places;
     variant_hash[QLatin1String("region")] = m_region;
     variant_hash[QLatin1String("url")] = m_url;
@@ -750,7 +754,7 @@ Refuge::to_variant_list_sql(bool duplicate) const
   variants << m_description;
   variants << m_guardian;
   variants << m_picture_path;
-  variants << orm_type_conversion::dump_sql_coordinate(m_coordinate);
+  variants << orm_type_conversion::dump_wkb_point(m_coordinate);
   variants << m_number_of_places;
   variants << m_region;
   variants << m_url;

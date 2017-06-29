@@ -61,6 +61,7 @@
 /**************************************************************************************************/
 
 class QcSchema;
+typedef QSharedPointer<QcSchema> QcSchemaPtr;
 
 /**************************************************************************************************/
 
@@ -91,6 +92,8 @@ public:
   virtual QcSchemaFieldTrait * clone() const = 0;
 
   QcSchemaFieldTrait & operator=(const QcSchemaFieldTrait & other);
+
+  bool is_rowid() const;
 
   bool is_normal_type() const {
     return m_field_type == FieldType::Normal;
@@ -128,11 +131,26 @@ public:
   const QString & description() const { return m_description; }
   void set_description(const QString & value) { m_description = value; }
 
+  bool has_sql_column_ctor() const { return not m_sql_column_ctor.isEmpty(); }
+  const QString & sql_column_ctor() const { return m_sql_column_ctor; }
+  void set_sql_column_ctor(const QString & sql_ctor) { m_sql_column_ctor = sql_ctor; }
+
+  bool has_sql_value_ctor() const { return not m_sql_value_ctor.isNull(); }
+  const QcSqlExpressionPtr & sql_value_ctor() const { return m_sql_value_ctor; }
+  void set_sql_value_ctor(const QcSqlExpressionPtr & sql_ctor) { m_sql_value_ctor = sql_ctor; }
+
+  bool has_sql_value_getter() const { return not m_sql_value_getter.isNull(); }
+  const QcSqlExpressionPtr & sql_value_getter() const { return m_sql_value_getter; }
+  void set_sql_value_getter(const QcSqlExpressionPtr & sql_getter) { m_sql_value_getter = sql_getter; }
+
+  const QcSchema * schema() const { return m_schema; }
   int position() const { return m_position; }
-  void set_position(int value) { m_position = value; }
+  void set_position(QcSchema * schema, int value);
 
   QString to_sql_definition(const QStringList & parts) const;
   virtual QString to_sql_definition() const = 0;
+
+  QcSqlField to_sql_field() const;
 
   int qt_type_id() const { return QMetaType::type(m_qt_type.toLatin1()); } // Fixme: cache ?
   QVariant * variant() const { return new QVariant(qt_type_id()); };
@@ -145,6 +163,7 @@ protected:
   void set_field_type(FieldType field_type) { m_field_type = field_type; }
 
 private:
+  QcSchema * m_schema = nullptr;
   FieldType m_field_type = FieldType::Normal;
   int m_position = -1;
   QString m_name;
@@ -159,7 +178,13 @@ private:
   bool m_nullable = true;
   bool m_unique = false;
   QVariant m_default = QVariant();
+  QString m_sql_column_ctor = QString();
+  QcSqlExpressionPtr m_sql_value_ctor = nullptr;
+  QcSqlExpressionPtr m_sql_value_getter = nullptr;
 };
+
+typedef QSharedPointer<QcSchemaFieldTrait> QcSchemaFieldPtr;
+typedef QList<QcSchemaFieldPtr> QcSchemaFieldList;
 
 /**************************************************************************************************/
 
@@ -253,8 +278,8 @@ public:
   const QString & referenced_field_name() const { return m_referenced_field_name; }
   void set_referenced_field_name(const QString & value) { m_referenced_field_name = value; }
 
-  QSharedPointer<QcSchema> referenced_schema() const { return m_referenced_schema; }
-  void set_referenced_schema(QSharedPointer<QcSchema> schema) { m_referenced_schema = schema; }
+  QcSchemaPtr referenced_schema() const { return m_referenced_schema; }
+  void set_referenced_schema(QcSchemaPtr schema) { m_referenced_schema = schema; }
 
   QSharedPointer<const QcSchemaFieldTrait> referenced_field() const;
 
@@ -263,7 +288,7 @@ public:
 private:
   QString m_referenced_table;
   QString m_referenced_field_name;
-  QSharedPointer<QcSchema> m_referenced_schema;
+  QcSchemaPtr m_referenced_schema;
 };
 
 /**************************************************************************************************/
@@ -309,28 +334,30 @@ public:
   bool without_rowid() const { return m_without_rowid; }
   bool has_rowid_primary_key() const { return m_has_rowid_primary_key; }
   bool has_foreign_keys() const {  return m_has_foreign_keys; }
+  bool has_sql_value_ctor() const {  return m_has_sql_value_ctor; }
 
   int number_of_fields() { return m_fields.size(); } // Fixme: cf. NUMBER_OF_FIELDS
-  const QList<QSharedPointer<QcSchemaFieldTrait>> & fields() const { return m_fields; } // Fixme: const QcSchemaField
+  const QcSchemaFieldList & fields() const { return m_fields; } // Fixme: const QcSchemaField
   const QStringList & field_names() const { return m_field_names; }
   const QStringList & field_names_witout_rowid() const { return m_field_names_without_rowid; }
   QStringList prefixed_field_names() const;
 
-  QString to_sql_definition() const;
+  QStringList to_sql_definition() const;
 
-  QSharedPointer<const QcSchemaFieldTrait> operator[](int position) const { return m_fields[position]; }
-  QSharedPointer<const QcSchemaFieldTrait> operator[](const QString & name) const { return m_field_map[name]; }
+  const QcSchemaFieldPtr operator[](int position) const { return m_fields[position]; }
+  const QcSchemaFieldPtr operator[](const QString & name) const { return m_field_map[name]; }
 
   // Note: Subclasses can define field shortcuts
-  // Fixme: QcSchemaFieldTrait is not aware of its schema. Implement a link ???
-  //        Merge QcSqlField with QcSchemaFieldTrait ???
-  QcSqlField sql_field(int position) const { return QcSqlField(m_fields[position]->name(), m_name); }
-  QcSqlField sql_field(const QString & name) const { return QcSqlField(name, m_name); } // Fixme: check name ?
+  // Fixme: Merge QcSqlField with QcSchemaFieldTrait ???
+  QcSqlField sql_field(int position) const { return m_fields[position]->to_sql_field(); }
+  //!!!// QcSqlField sql_field(const QString & name) const { return QcSqlField(name, m_name); } // Fixme: check name ?
 
-  QList<QSharedPointer<QcSchemaFieldTrait>>::iterator begin() { return m_fields.begin(); }
-  QList<QSharedPointer<QcSchemaFieldTrait>>::iterator end() { return m_fields.end(); }
-  QList<QSharedPointer<QcSchemaFieldTrait>>::const_iterator cbegin() const { return m_fields.cbegin(); }
-  QList<QSharedPointer<QcSchemaFieldTrait>>::const_iterator cend() const { return m_fields.cend(); }
+  QcSchemaFieldList::iterator begin() { return m_fields.begin(); }
+  QcSchemaFieldList::iterator end() { return m_fields.end(); }
+  QcSchemaFieldList::const_iterator cbegin() const { return m_fields.cbegin(); }
+  QcSchemaFieldList::const_iterator cend() const { return m_fields.cend(); }
+
+  const QcSchemaFieldList & fields_without_row_id() const { return m_fields_without_rowid; }
 
 private:
   int m_schema_id;
@@ -340,10 +367,12 @@ private:
   bool m_has_rowid_primary_key = false;
   // QString m_sql_table_option;
   bool m_has_foreign_keys = false;
-  QList<QSharedPointer<QcSchemaFieldTrait>> m_fields;
-  QHash<QString, QSharedPointer<QcSchemaFieldTrait>> m_field_map;
+  bool m_has_sql_value_ctor = false;
+  QcSchemaFieldList m_fields;
+  QcSchemaFieldList m_fields_without_rowid;
+  QHash<QString, QcSchemaFieldPtr> m_field_map;
   QStringList m_field_names;
-  QStringList m_field_names_without_rowid;
+  QStringList m_field_names_without_rowid; // Fixme: cf. m_fields_without_rowid
 };
 
 /**************************************************************************************************/

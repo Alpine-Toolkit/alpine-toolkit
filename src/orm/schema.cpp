@@ -40,6 +40,7 @@
 
 QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type)
   : m_field_type(field_type),
+    // m_external_creation(false),
     m_name(),
     m_sql_name(),
     m_json_name(),
@@ -59,6 +60,7 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type,
                                        const QString & description
                                        )
   : m_field_type(field_type),
+    // m_external_creation(false),
     m_name(name),
     m_sql_name(),
     m_json_name(),
@@ -72,7 +74,8 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type,
 }
 
 QcSchemaFieldTrait::QcSchemaFieldTrait(const QcSchemaFieldTrait & other)
-  : m_field_type(other.m_field_type),
+  : m_schema(other.m_schema),
+    m_field_type(other.m_field_type),
     m_position(other.m_position),
     m_name(other.m_name),
     m_sql_name(other.m_sql_name),
@@ -81,7 +84,10 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(const QcSchemaFieldTrait & other)
     m_sql_type(other.m_sql_type),
     m_title(other.m_title),
     m_description(other.m_description),
-    m_nullable(other.m_nullable)
+    m_nullable(other.m_nullable),
+    m_sql_column_ctor(other.m_sql_column_ctor),
+    m_sql_value_ctor(other.m_sql_value_ctor),
+    m_sql_value_getter(other.m_sql_value_getter)
 {}
 
 QcSchemaFieldTrait::~QcSchemaFieldTrait()
@@ -93,6 +99,7 @@ QcSchemaFieldTrait &
 QcSchemaFieldTrait::operator=(const QcSchemaFieldTrait & other)
 {
   if (this != &other) {
+    m_schema = other.m_schema;
     m_field_type = other.m_field_type;
     m_position = other.m_position;
     m_name = other.m_name;
@@ -103,9 +110,36 @@ QcSchemaFieldTrait::operator=(const QcSchemaFieldTrait & other)
     m_title = other.m_title;
     m_description = other.m_description;
     m_nullable = other.m_nullable;
+    m_sql_column_ctor = other.m_sql_column_ctor;
+    m_sql_value_ctor = other.m_sql_value_ctor;
+    m_sql_value_getter = other.m_sql_value_getter;
   }
 
   return *this;
+}
+
+void
+QcSchemaFieldTrait::set_position(QcSchema * schema, int value)
+{
+  m_schema = schema;
+  m_position = value;
+}
+
+bool
+QcSchemaFieldTrait::is_rowid() const
+{
+  return is_primary_key()
+    and m_position == 0
+    and m_sql_type == QLatin1String("integer");
+}
+
+QcSqlField
+QcSchemaFieldTrait::to_sql_field() const
+{
+  if (m_schema)
+    return QcSqlField(m_schema->name(), m_name);
+  else
+    return QcSqlField(QString(), m_name);
 }
 
 QString
@@ -341,7 +375,10 @@ QcSchema::QcSchema(const QcSchema & other)
     // m_sql_table_option(other.m_sql_table_option),
     m_without_rowid(other.m_without_rowid),
     m_has_rowid_primary_key(other.m_has_rowid_primary_key),
+    m_has_foreign_keys(other.m_has_foreign_keys),
+    m_has_sql_value_ctor(other.m_has_sql_value_ctor),
     m_fields(other.m_fields),
+    m_fields_without_rowid(other.m_fields_without_rowid),
     m_field_map(other.m_field_map),
     m_field_names(other.m_field_names),
     m_field_names_without_rowid(other.m_field_names_without_rowid)
@@ -360,7 +397,10 @@ QcSchema::operator=(const QcSchema & other)
     // m_sql_table_option = other.m_sql_table_option;
     m_without_rowid = other.m_without_rowid;
     m_has_rowid_primary_key = other.m_has_rowid_primary_key;
+    m_has_foreign_keys = other.m_has_foreign_keys;
+    m_has_sql_value_ctor = other.m_has_sql_value_ctor;
     m_fields = other.m_fields;
+    m_fields_without_rowid = other.m_fields_without_rowid;
     m_field_map = other.m_field_map;
     m_field_names = other.m_field_names;
     m_field_names_without_rowid = other.m_field_names_without_rowid;
@@ -372,18 +412,20 @@ QcSchema::operator=(const QcSchema & other)
 void
 QcSchema::add_field(const QcSchemaFieldTrait & field)
 {
-  m_fields << QSharedPointer<QcSchemaFieldTrait>(field.clone());
-  QSharedPointer<QcSchemaFieldTrait> owned_field = m_fields.last();
-  owned_field->set_position(m_fields.size() -1);
+  m_fields << QcSchemaFieldPtr(field.clone());
+  QcSchemaFieldPtr owned_field = m_fields.last();
+  owned_field->set_position(this, m_fields.size() -1);
   m_field_map.insert(owned_field->name(), owned_field);
   const QString & name = owned_field->sql_name();
   m_field_names << name;
-  if (owned_field->is_primary_key()
-      and owned_field->position() == 0
-      and owned_field->sql_type() == QLatin1String("integer"))
+  if (owned_field->is_rowid())
     m_has_rowid_primary_key = true;
-  else
+  else {
+    m_fields_without_rowid << owned_field;
     m_field_names_without_rowid << name;
+  }
+  if (owned_field->has_sql_value_ctor())
+    m_has_sql_value_ctor = true;
 }
 
 QcSchema &
@@ -404,9 +446,11 @@ QcSchema::prefixed_field_names() const
   return string_list;
 }
 
-QString
+QStringList
 QcSchema::to_sql_definition() const
 {
+  QStringList sql_queries;
+
   // CREATE [TEMP|TEMPORARY] TABLE [IF NOT EXISTS]
   QString sql_query = QLatin1String("CREATE TABLE ");
   sql_query += m_table_name;
@@ -416,7 +460,8 @@ QcSchema::to_sql_definition() const
   QStringList primary_keys;
   QList<QcSchemaForeignKey *> foreign_keys;
   for (const auto & field : m_fields) {
-    sql_fields << field->to_sql_definition();
+    if (not field->has_sql_column_ctor())
+      sql_fields << field->to_sql_definition();
     if (field->is_primary_key())
       primary_keys << field->name();
     else if (field->is_foreign_key())
@@ -438,7 +483,14 @@ QcSchema::to_sql_definition() const
   //   sql_query += m_sql_table_option;
   // }
 
-  return sql_query;
+  sql_queries << sql_query;
+
+  for (const auto & field : m_fields) {
+    if (field->has_sql_column_ctor())
+      sql_queries << field->sql_column_ctor();
+  }
+
+  return sql_queries;
 }
 
 /**************************************************************************************************/

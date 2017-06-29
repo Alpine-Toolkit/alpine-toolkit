@@ -28,6 +28,8 @@
 
 #include "orm/type_conversion.h"
 
+#include "geo_data_format/wkb.h"
+
 /**************************************************************************************************/
 
 namespace orm_type_conversion {
@@ -88,6 +90,19 @@ namespace orm_type_conversion {
     return QString("%1,%2").arg(QString::number(coordinate.longitude())).arg(QString::number(coordinate.latitude()));
   }
 
+  QGeoCoordinate
+  load_wkb_point(const QVariant & variant) {
+    QcWkbPoint point(variant.toByteArray());
+    double longitude = point.x();
+    double latitude = point.y();
+    return QGeoCoordinate(latitude, longitude);
+  }
+
+  QByteArray
+  dump_wkb_point(const QGeoCoordinate & coordinate) {
+    QcWkbPoint point(coordinate.longitude(), coordinate.latitude());
+    return point.to_wkb();
+  }
 }
 
 /***************************************************************************************************

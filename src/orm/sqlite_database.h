@@ -39,17 +39,19 @@
 class QcSqliteDatabase : public QcDatabase
 {
 public:
-  QcSqliteDatabase(const QString & sqlite_path);
+  QcSqliteDatabase(const QString & sqlite_path, bool use_spatialite = false);
   virtual ~QcSqliteDatabase();
 
   bool created() { return m_created; }
 
 private:
   void open();
+  void init_spatialite();
 
 private:
   QString m_sqlite_path;
   bool m_created = false;
+  bool m_use_spatialite;
 };
 
 /**************************************************************************************************/

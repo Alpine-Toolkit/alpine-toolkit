@@ -88,6 +88,7 @@ public:
   QcSqlQuery sql_query();
   QSqlQuery exec(const QcSqlQuery & query); // Fixme: execute_query
 
+  QSqlQuery select_all(); // const
   QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
   QSqlQuery select(const QString & field, const QString & where = QString()) const {
     return select(QStringList(field), where);
@@ -162,6 +163,7 @@ public:
 private:
   static QVariantHash kwarg_for_id(int rowid) { return {{QLatin1String("rowid"), rowid}}; }
   void commit();
+  QSqlQuery prepare_complete_insert();
   QSqlQuery prepare_complete_insert(int number_of_fields);
   QSqlQuery prepare_complete_insert(const QStringList & fields);
   QSqlQuery prepare_insert(const QStringList & fields);

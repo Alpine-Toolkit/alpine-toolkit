@@ -68,6 +68,7 @@ public:
   QJsonDocument to_json_document(); // const
 
   void to_sql(const QString & sqlite_path);
+  void from_sql(const QString & sqlite_path);
 
   // Get refuges as a list
   const Refuge::PtrList refuges() const { return m_refuge_cache.items(); }

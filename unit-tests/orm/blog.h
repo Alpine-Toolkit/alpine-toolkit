@@ -118,7 +118,7 @@ public:
 
   Author & operator=(const Author & other);
 
-  bool operator==(const Author & other);
+  bool operator==(const Author & other) const;
 
   // Getter/Setter
 
@@ -209,6 +209,7 @@ public:
    }
 
   // QcRowTraits ctor
+  AuthorPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   AuthorPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   AuthorPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   AuthorPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -255,7 +256,7 @@ class AuthorCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Author * Key;
+  typedef Author * t_Key;
   typedef AuthorPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -276,8 +277,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -376,7 +377,7 @@ public:
 
   Category & operator=(const Category & other);
 
-  bool operator==(const Category & other);
+  bool operator==(const Category & other) const;
 
   // Getter/Setter
 
@@ -461,6 +462,7 @@ public:
    }
 
   // QcRowTraits ctor
+  CategoryPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   CategoryPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   CategoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   CategoryPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -507,7 +509,7 @@ class CategoryCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Category * Key;
+  typedef Category * t_Key;
   typedef CategoryPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -528,8 +530,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -630,7 +632,7 @@ public:
 
   Blog & operator=(const Blog & other);
 
-  bool operator==(const Blog & other);
+  bool operator==(const Blog & other) const;
 
   // Getter/Setter
 
@@ -729,6 +731,7 @@ public:
    }
 
   // QcRowTraits ctor
+  BlogPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BlogPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BlogPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   BlogPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -776,7 +779,7 @@ class BlogCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Blog * Key;
+  typedef Blog * t_Key;
   typedef BlogPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -797,8 +800,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/
@@ -900,7 +903,7 @@ public:
 
   Comment & operator=(const Comment & other);
 
-  bool operator==(const Comment & other);
+  bool operator==(const Comment & other) const;
 
   // Getter/Setter
 
@@ -991,6 +994,7 @@ public:
    }
 
   // QcRowTraits ctor
+  CommentPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   CommentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   CommentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
   CommentPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
@@ -1037,7 +1041,7 @@ class CommentCache : public QObject
   Q_OBJECT
 
 public:
-  typedef Comment * Key;
+  typedef Comment * t_Key;
   typedef CommentPtr Ptr;
   typedef QList<Ptr> PtrList;
 
@@ -1058,8 +1062,8 @@ public slots:
 private:
   // QLinkedList<Ptr> m_loaded_instances;
   // QLinkedList<Ptr> m_modified_instances;
-  QMap<Key, Ptr> m_loaded_instances;
-  QMap<Key, Ptr> m_modified_instances;
+  QMap<t_Key, Ptr> m_loaded_instances;
+  QMap<t_Key, Ptr> m_modified_instances;
 };
 
 /**************************************************************************************************/

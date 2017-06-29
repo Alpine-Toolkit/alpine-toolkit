@@ -30,6 +30,7 @@
 
 #include "bleau_schema.h"
 
+#include "orm/database_query.h"
 #include "orm/type_conversion.h"
 
 #include <QtDebug>
@@ -65,6 +66,9 @@ BleauPlaceSchema::BleauPlaceSchema()
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
+    field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('place', 'coordinate', 4326, 'POINT', 'XY');"));
+    field.set_sql_value_ctor(ST_GeomFromWKB());
+    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
@@ -166,7 +170,7 @@ BleauPlace::BleauPlace(const QSqlRecord & record)
  : QcRow<BleauPlaceSchema>(record)
 {
   m_id = record.value(0).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(record.value(1));
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
   m_name = record.value(2).toString();
   m_category = record.value(3).toString();
   m_note = record.value(4).toString();
@@ -176,7 +180,7 @@ BleauPlace::BleauPlace(const QSqlQuery & query, int offset)
  : QcRow<BleauPlaceSchema>(query)
 {
   m_id = query.value(offset++).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(query.value(offset++));
+  m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
   m_name = query.value(offset++).toString();
   m_category = query.value(offset++).toString();
   m_note = query.value(offset).toString();
@@ -372,7 +376,7 @@ BleauPlace::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
     if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     if (is_name_modified())
       variant_hash[QLatin1String("name")] = m_name;
     if (is_category_modified())
@@ -382,7 +386,7 @@ BleauPlace::to_variant_hash_sql(bool only_changed, bool duplicate) const
   } else {
     if (duplicate)
       variant_hash[QLatin1String("id")] = m_id;
-    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("category")] = m_category;
     variant_hash[QLatin1String("note")] = m_note;
@@ -398,7 +402,7 @@ BleauPlace::to_variant_list_sql(bool duplicate) const
 
   if (duplicate)
     variants << m_id;
-  variants << orm_type_conversion::dump_sql_coordinate(m_coordinate);
+  variants << orm_type_conversion::dump_wkb_point(m_coordinate);
   variants << m_name;
   variants << m_category;
   variants << m_note;
@@ -688,6 +692,9 @@ BleauMassifSchema::BleauMassifSchema()
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
+    field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('massif', 'coordinate', 4326, 'POINT', 'XY');"));
+    field.set_sql_value_ctor(ST_GeomFromWKB());
+    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
@@ -891,7 +898,7 @@ BleauMassif::BleauMassif(const QSqlRecord & record)
  : QcRow<BleauMassifSchema>(record)
 {
   m_id = record.value(0).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(record.value(1));
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
   m_name = record.value(2).toString();
   m_access = record.value(3).toString();
   m_alternative_name = record.value(4).toString();
@@ -907,7 +914,7 @@ BleauMassif::BleauMassif(const QSqlQuery & query, int offset)
  : QcRow<BleauMassifSchema>(query)
 {
   m_id = query.value(offset++).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(query.value(offset++));
+  m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
   m_name = query.value(offset++).toString();
   m_access = query.value(offset++).toString();
   m_alternative_name = query.value(offset++).toString();
@@ -1259,7 +1266,7 @@ BleauMassif::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
     if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     if (is_name_modified())
       variant_hash[QLatin1String("name")] = m_name;
     if (is_access_modified())
@@ -1281,7 +1288,7 @@ BleauMassif::to_variant_hash_sql(bool only_changed, bool duplicate) const
   } else {
     if (duplicate)
       variant_hash[QLatin1String("id")] = m_id;
-    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("access")] = m_access;
     variant_hash[QLatin1String("alternative_name")] = m_alternative_name;
@@ -1303,7 +1310,7 @@ BleauMassif::to_variant_list_sql(bool duplicate) const
 
   if (duplicate)
     variants << m_id;
-  variants << orm_type_conversion::dump_sql_coordinate(m_coordinate);
+  variants << orm_type_conversion::dump_wkb_point(m_coordinate);
   variants << m_name;
   variants << m_access;
   variants << m_alternative_name;
@@ -1709,6 +1716,9 @@ BleauCircuitSchema::BleauCircuitSchema()
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
+    field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('circuit', 'coordinate', 4326, 'POINT', 'XY');"));
+    field.set_sql_value_ctor(ST_GeomFromWKB());
+    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
@@ -1964,7 +1974,7 @@ BleauCircuit::BleauCircuit(const QSqlRecord & record)
  : QcRow<BleauCircuitSchema>(record)
 {
   m_id = record.value(0).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(record.value(1));
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
   m_colour = record.value(2).toString();
   m_creation_date = record.value(3).toInt();
   m_gestion = record.value(4).toString();
@@ -1983,7 +1993,7 @@ BleauCircuit::BleauCircuit(const QSqlQuery & query, int offset)
  : QcRow<BleauCircuitSchema>(query)
 {
   m_id = query.value(offset++).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(query.value(offset++));
+  m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
   m_colour = query.value(offset++).toString();
   m_creation_date = query.value(offset++).toInt();
   m_gestion = query.value(offset++).toString();
@@ -2410,7 +2420,7 @@ BleauCircuit::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
     if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     if (is_colour_modified())
       variant_hash[QLatin1String("colour")] = m_colour;
     if (is_creation_date_modified())
@@ -2438,7 +2448,7 @@ BleauCircuit::to_variant_hash_sql(bool only_changed, bool duplicate) const
   } else {
     if (duplicate)
       variant_hash[QLatin1String("id")] = m_id;
-    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     variant_hash[QLatin1String("colour")] = m_colour;
     variant_hash[QLatin1String("creation_date")] = m_creation_date;
     variant_hash[QLatin1String("gestion")] = m_gestion;
@@ -2463,7 +2473,7 @@ BleauCircuit::to_variant_list_sql(bool duplicate) const
 
   if (duplicate)
     variants << m_id;
-  variants << orm_type_conversion::dump_sql_coordinate(m_coordinate);
+  variants << orm_type_conversion::dump_wkb_point(m_coordinate);
   variants << m_colour;
   variants << m_creation_date;
   variants << m_gestion;
@@ -2944,6 +2954,9 @@ BleauBoulderSchema::BleauBoulderSchema()
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
+    field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('boulder', 'coordinate', 4326, 'POINT', 'XY');"));
+    field.set_sql_value_ctor(ST_GeomFromWKB());
+    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
@@ -3080,7 +3093,7 @@ BleauBoulder::BleauBoulder(const QSqlRecord & record)
  : QcRow<BleauBoulderSchema>(record)
 {
   m_id = record.value(0).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(record.value(1));
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
   m_name = record.value(2).toString();
   m_comment = record.value(3).toString();
   m_grade = record.value(4).toString();
@@ -3092,7 +3105,7 @@ BleauBoulder::BleauBoulder(const QSqlQuery & query, int offset)
  : QcRow<BleauBoulderSchema>(query)
 {
   m_id = query.value(offset++).toInt();
-  m_coordinate = orm_type_conversion::load_sql_coordinate(query.value(offset++));
+  m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
   m_name = query.value(offset++).toString();
   m_comment = query.value(offset++).toString();
   m_grade = query.value(offset++).toString();
@@ -3337,7 +3350,7 @@ BleauBoulder::to_variant_hash_sql(bool only_changed, bool duplicate) const
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
     if (is_coordinate_modified())
-      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+      variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     if (is_name_modified())
       variant_hash[QLatin1String("name")] = m_name;
     if (is_comment_modified())
@@ -3351,7 +3364,7 @@ BleauBoulder::to_variant_hash_sql(bool only_changed, bool duplicate) const
   } else {
     if (duplicate)
       variant_hash[QLatin1String("id")] = m_id;
-    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_sql_coordinate(m_coordinate);
+    variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
     variant_hash[QLatin1String("name")] = m_name;
     variant_hash[QLatin1String("comment")] = m_comment;
     variant_hash[QLatin1String("grade")] = m_grade;
@@ -3369,7 +3382,7 @@ BleauBoulder::to_variant_list_sql(bool duplicate) const
 
   if (duplicate)
     variants << m_id;
-  variants << orm_type_conversion::dump_sql_coordinate(m_coordinate);
+  variants << orm_type_conversion::dump_wkb_point(m_coordinate);
   variants << m_name;
   variants << m_comment;
   variants << m_grade;

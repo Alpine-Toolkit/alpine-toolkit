@@ -112,6 +112,22 @@ QcSqlBinaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
 
 /**************************************************************************************************/
 
+template<const char * Symbol>
+QcSqlSpatialFunctionExpression<Symbol>::QcSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid)
+  : m_expression(expression),
+    m_srid(srid)
+{}
+
+template<const char * Symbol>
+QString
+QcSqlSpatialFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
+{
+  return Symbol + QString('(') + m_expression->to_sql(flavour) +
+    QLatin1String(", ") + QString::number(m_srid) + ')';
+};
+
+/**************************************************************************************************/
+
 #endif /* __DATABASE_QUERY_HXX__ */
 
 /***************************************************************************************************

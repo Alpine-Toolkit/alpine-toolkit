@@ -137,6 +137,10 @@ class Field:
     def parent_schema(self):
         return self._parent_schema
 
+    @property
+    def table_name(self):
+        return self._parent_schema.table_name
+
     @parent_schema.setter
     def parent_schema(self, value):
         self._parent_schema = value
@@ -174,6 +178,18 @@ class Field:
             return 'QcSchemaForeignKey'
         else:
             return 'QcSchemaField'
+
+    @property
+    def sql_column_ctor(self):
+        return self._type.__sql_column_ctor__.format(self)
+
+    @property
+    def sql_value_ctor(self):
+        return self._type.__sql_value_ctor__
+
+    @property
+    def sql_value_getter(self):
+        return self._type.__sql_value_getter__.format(self)
 
     ##############################################
 

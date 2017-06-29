@@ -100,6 +100,9 @@ namespace orm_type_conversion {
 
   QGeoCoordinate load_sql_coordinate(const QVariant & variant);
   QString dump_sql_coordinate(const QGeoCoordinate & coordinate);
+
+  QGeoCoordinate load_wkb_point(const QVariant & variant);
+  QByteArray dump_wkb_point(const QGeoCoordinate & coordinate);
 }
 
 /**************************************************************************************************/

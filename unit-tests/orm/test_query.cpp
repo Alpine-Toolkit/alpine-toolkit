@@ -122,8 +122,8 @@ void TestQuery::constructor()
 
   check_sql(table.sql_query().add_column(ST_AsBinary(field1)).all(),
             "SELECT ST_AsBinary(field1) FROM table;");
-  check_sql(table.sql_query().add_column(field1).add_column(field2, ST_GeomFromWBK()).insert(),
-            "INSERT INTO table (field1, field2) VALUES (?, ST_GeomFromWBK(?));");
+  check_sql(table.sql_query().add_column(field1).add_column(field2, ST_GeomFromWKB()).insert(),
+            "INSERT INTO table (field1, field2) VALUES (?, ST_GeomFromWKB(?));");
 }
 
 /***************************************************************************************************/

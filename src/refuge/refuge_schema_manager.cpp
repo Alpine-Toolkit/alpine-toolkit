@@ -113,6 +113,19 @@ RefugeSchemaManager::to_sql(const QString & sqlite_path)
   refuge_schema.add_row_ptrs(m_refuges);
 }
 
+void
+RefugeSchemaManager::from_sql(const QString & sqlite_path)
+{
+  // Fixme: has a cache
+  RefugeSqliteDatabase refuge_sqlite_database(sqlite_path);
+  RefugeDatabaseSchema & refuge_schema = refuge_sqlite_database.schema();
+
+  qInfo() << "Load refuges";
+  Refuge::PtrList refuges = refuge_schema.query<Refuge>(false);
+  for (const auto refuge : refuges)
+    qInfo() << refuge;
+}
+
 QQmlListProperty<Refuge>
 RefugeSchemaManager::refuge_list_property()
 {

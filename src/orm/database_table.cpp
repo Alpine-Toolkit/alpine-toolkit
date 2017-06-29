@@ -170,8 +170,7 @@ QcDatabaseTable::exists() const
 bool
 QcDatabaseTable::create()
 {
-  QString sql_query = m_schema.to_sql_definition();
-  return m_database->execute_query(sql_query);
+  return m_database->execute_queries(m_schema.to_sql_definition());
 }
 
 QcSqlQuery
@@ -198,6 +197,27 @@ QcDatabaseTable::drop()
 }
 
 QSqlQuery
+QcDatabaseTable::prepare_complete_insert()
+{
+  QSqlQuery query = m_database->new_query();
+  QcSqlQuery _sql_query = sql_query(); // Fixme: name clash
+  for (const auto & field : m_schema.fields_without_row_id()) {
+    // QcSqlField sql_field = field->to_sql_field()
+    // need a QcSqlFieldPtr alive
+    QString sql_field = field->name();
+    if (field->has_sql_column_ctor())
+      _sql_query.add_column(sql_field, field->sql_value_ctor());
+    else
+      _sql_query.add_column(sql_field);
+  }
+  _sql_query.insert();
+  qInfo() << "prepare_complete_insert" << _sql_query.to_sql();
+  query.prepare(_sql_query.to_sql());
+
+  return query;
+}
+
+QSqlQuery
 QcDatabaseTable::prepare_complete_insert(int number_of_fields)
 {
   QSqlQuery query = m_database->new_query();
@@ -212,10 +232,11 @@ QSqlQuery
 QcDatabaseTable::prepare_complete_insert(const QStringList & fields)
 {
   QSqlQuery query = m_database->new_query();
-  QString sql_query =
-    QLatin1String("INSERT INTO ") + m_name +
-    QLatin1String(" (") + comma_join(fields) + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
-  query.prepare(sql_query);
+  // QString sql_query =
+  //   QLatin1String("INSERT INTO ") + m_name +
+  //   QLatin1String(" (") + comma_join(fields) + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
+  QcSqlQuery _sql_query = sql_query().add_columns(fields).insert(); // Fixme: name clash
+  query.prepare(_sql_query.to_sql());
 
   return query;
 }
@@ -224,7 +245,10 @@ QSqlQuery
 QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
 {
   QSqlQuery query;
-  if (m_schema.has_rowid_primary_key())
+  if (m_schema.has_sql_value_ctor())
+    // Use Sql Query builder
+    query = prepare_complete_insert();
+  else if (m_schema.has_rowid_primary_key())
     // excepted if we want to set the id manually
     query = prepare_complete_insert(m_schema.field_names_witout_rowid());
   else
@@ -263,7 +287,10 @@ void
 QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
 {
   QSqlQuery query;
-  if (m_schema.has_rowid_primary_key())
+  if (m_schema.has_sql_value_ctor())
+    // Use Sql Query builder
+    query = prepare_complete_insert();
+  else if (m_schema.has_rowid_primary_key())
     // excepted if we want to set the id manually
     query = prepare_complete_insert(m_schema.field_names_witout_rowid());
   else
@@ -311,6 +338,29 @@ QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
   QSqlQuery query = prepare_insert(kwargs.keys());
   qInfo() << query.lastQuery() << kwargs;
   bind_and_exec(query, kwargs, commit);
+
+  return query;
+}
+
+QSqlQuery
+QcDatabaseTable::select_all() // const // Fixme: sql_query() is not const due to QcSqlQuery::exec
+{
+  QSqlQuery query = m_database->new_query();
+
+  QcSqlQuery _sql_query = sql_query(); // Fixme: name clash
+  for (const auto & field : m_schema) {
+    // QcSqlField sql_field = field->to_sql_field()
+    // need a QcSqlFieldPtr alive
+    QString sql_field = field->name();
+    if (field->has_sql_value_getter())
+      _sql_query.add_column(field->sql_value_getter()); // Fixme: pass field ?
+    else
+      _sql_query.add_column(sql_field);
+  }
+  _sql_query.all();
+  qInfo() << _sql_query.to_sql();
+
+  QcDatabase::exec_and_check(query, _sql_query);
 
   return query;
 }

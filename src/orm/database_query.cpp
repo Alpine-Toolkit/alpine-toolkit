@@ -62,7 +62,7 @@ constexpr const char ASC[] = "ASC";
 
 constexpr const char __ST_GeomFromText__[] = "ST_GeomFromText";
 constexpr const char __ST_AsText__[] = "ST_AsText";
-constexpr const char __ST_GeomFromWBK__[] = "ST_GeomFromWBK";
+constexpr const char __ST_GeomFromWKB__[] = "ST_GeomFromWKB";
 constexpr const char __ST_AsBinary__[] = "ST_AsBinary";
 
 /**************************************************************************************************/
@@ -431,7 +431,7 @@ ST_GeomFromText()
 QcSqlExpressionPtr
 ST_GeomFromText(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_GeomFromText__>(expression));
+  return QcSqlExpressionPtr(new QcSqlSpatialFunctionExpression<__ST_GeomFromText__>(expression));
 }
 
 QcSqlExpressionPtr
@@ -441,15 +441,15 @@ ST_AsText(const QcSqlExpressionPtr & expression)
 }
 
 QcSqlExpressionPtr
-ST_GeomFromWBK()
+ST_GeomFromWKB()
 {
-  return ST_GeomFromWBK(QcSqlPrepareValue());
+  return ST_GeomFromWKB(QcSqlPrepareValue());
 }
 
 QcSqlExpressionPtr
-ST_GeomFromWBK(const QcSqlExpressionPtr & expression)
+ST_GeomFromWKB(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_GeomFromWBK__>(expression));
+  return QcSqlExpressionPtr(new QcSqlSpatialFunctionExpression<__ST_GeomFromWKB__>(expression));
 }
 
 QcSqlExpressionPtr
@@ -590,6 +590,15 @@ QcSqlQuery &
 QcSqlQuery::add_column(const QcSqlExpressionPtr & expression)
 {
   m_fields << expression;
+
+  return *this;
+}
+
+QcSqlQuery &
+QcSqlQuery::add_columns(const QStringList & names)
+{
+  for (const auto & name : names)
+    m_fields << QcSqlField(name); // Fixme: table_name()
 
   return *this;
 }
@@ -744,9 +753,13 @@ QcSqlQuery::insert_values(const SqlFlavour & flavour) const
     for (const auto & field : m_fields) {
       if (not query.isEmpty())
         query += QLatin1String(", ");
-      if (m_value_expressions.contains(field))
-        query += m_value_expressions[field]->to_sql(flavour); // Fixme: ? is implicit
-      else
+      if (m_value_expressions.contains(field)) {
+        const QcSqlExpressionPtr & ctor = m_value_expressions[field];
+        if (ctor.isNull())
+          qCritical() << QLatin1String("SQL value ctor is null for") << field->to_sql();
+        else
+          query += ctor->to_sql(flavour); // Fixme: ? is implicit
+      } else
         query += '?';
     }
     return query;

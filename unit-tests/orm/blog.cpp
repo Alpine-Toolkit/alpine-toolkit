@@ -30,6 +30,7 @@
 
 #include "blog.h"
 
+#include "orm/database_query.h"
 #include "orm/type_conversion.h"
 
 #include <QtDebug>
@@ -87,7 +88,8 @@ AuthorSchema::~AuthorSchema()
 /**************************************************************************************************/
 
 Author::Author()
-  : QcRow<AuthorSchema>(),
+  : QObject(),
+    QcRow<AuthorSchema>(),
     m_id(),
     m_name(),
     m_birthdate()
@@ -95,7 +97,8 @@ Author::Author()
 }
 
 Author::Author(const Author & other)
-  : QcRow<AuthorSchema>(other),
+  : QObject(),
+    QcRow<AuthorSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_birthdate(other.m_birthdate)
@@ -163,7 +166,7 @@ Author::operator=(const Author & other)
 
 // bit array ?
 bool
-Author::operator==(const Author & other)
+Author::operator==(const Author & other) const
 {
   if (not QcRow<AuthorSchema>::operator==(other))
     return false;
@@ -475,7 +478,9 @@ AuthorCache::add(AuthorPtr & ptr)
 
 void
 AuthorCache::remove(AuthorPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 AuthorCache::on_changed()
@@ -611,7 +616,8 @@ CategorySchema::~CategorySchema()
 /**************************************************************************************************/
 
 Category::Category()
-  : QcRow<CategorySchema>(),
+  : QObject(),
+    QcRow<CategorySchema>(),
     m_id(),
     m_name(),
     m_description()
@@ -619,7 +625,8 @@ Category::Category()
 }
 
 Category::Category(const Category & other)
-  : QcRow<CategorySchema>(other),
+  : QObject(),
+    QcRow<CategorySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_description(other.m_description)
@@ -687,7 +694,7 @@ Category::operator=(const Category & other)
 
 // bit array ?
 bool
-Category::operator==(const Category & other)
+Category::operator==(const Category & other) const
 {
   if (not QcRow<CategorySchema>::operator==(other))
     return false;
@@ -972,7 +979,9 @@ CategoryCache::add(CategoryPtr & ptr)
 
 void
 CategoryCache::remove(CategoryPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 CategoryCache::on_changed()
@@ -1121,7 +1130,8 @@ BlogSchema::~BlogSchema()
 /**************************************************************************************************/
 
 Blog::Blog()
-  : QcRow<BlogSchema>(),
+  : QObject(),
+    QcRow<BlogSchema>(),
     m_id(),
     m_text(),
     m_date(),
@@ -1130,7 +1140,8 @@ Blog::Blog()
 }
 
 Blog::Blog(const Blog & other)
-  : QcRow<BlogSchema>(other),
+  : QObject(),
+    QcRow<BlogSchema>(other),
     m_id(other.m_id),
     m_text(other.m_text),
     m_date(other.m_date),
@@ -1205,7 +1216,7 @@ Blog::operator=(const Blog & other)
 
 // bit array ?
 bool
-Blog::operator==(const Blog & other)
+Blog::operator==(const Blog & other) const
 {
   if (not QcRow<BlogSchema>::operator==(other))
     return false;
@@ -1571,7 +1582,9 @@ BlogCache::add(BlogPtr & ptr)
 
 void
 BlogCache::remove(BlogPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 BlogCache::on_changed()
@@ -1723,7 +1736,8 @@ CommentSchema::~CommentSchema()
 /**************************************************************************************************/
 
 Comment::Comment()
-  : QcRow<CommentSchema>(),
+  : QObject(),
+    QcRow<CommentSchema>(),
     m_id(),
     m_text(),
     m_date(),
@@ -1732,7 +1746,8 @@ Comment::Comment()
 }
 
 Comment::Comment(const Comment & other)
-  : QcRow<CommentSchema>(other),
+  : QObject(),
+    QcRow<CommentSchema>(other),
     m_id(other.m_id),
     m_text(other.m_text),
     m_date(other.m_date),
@@ -1807,7 +1822,7 @@ Comment::operator=(const Comment & other)
 
 // bit array ?
 bool
-Comment::operator==(const Comment & other)
+Comment::operator==(const Comment & other) const
 {
   if (not QcRow<CommentSchema>::operator==(other))
     return false;
@@ -2132,7 +2147,9 @@ CommentCache::add(CommentPtr & ptr)
 
 void
 CommentCache::remove(CommentPtr & ptr)
-{}
+{
+  Q_UNUSED(ptr);
+}
 
 void
 CommentCache::on_changed()

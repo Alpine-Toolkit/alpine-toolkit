@@ -409,12 +409,30 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
  *
  */
 
+template<const char * Symbol>
+class QcSqlSpatialFunctionExpression : public QcSqlExpressionTraitCrtp<QcSqlFunctionExpression<Symbol>>
+{
+public:
+  QcSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid = 4326);
+  virtual ~QcSqlSpatialFunctionExpression() {}
+
+  const QcSqlExpressionPtr & expression() const { return m_expression; }
+
+  QString symbol() const { return Symbol; }
+  int srid() const { return m_srid; }
+  QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
+
+private:
+  QcSqlExpressionPtr m_expression;
+  int m_srid;
+};
+
 QcSqlExpressionPtr ST_GeomFromText();
 QcSqlExpressionPtr ST_GeomFromText(const QcSqlExpressionPtr & expression);
 QcSqlExpressionPtr ST_AsText(const QcSqlExpressionPtr & expression);
 
-QcSqlExpressionPtr ST_GeomFromWBK();
-QcSqlExpressionPtr ST_GeomFromWBK(const QcSqlExpressionPtr & expression);
+QcSqlExpressionPtr ST_GeomFromWKB();
+QcSqlExpressionPtr ST_GeomFromWKB(const QcSqlExpressionPtr & expression);
 QcSqlExpressionPtr ST_AsBinary(const QcSqlExpressionPtr & expression);
 
 /**************************************************************************************************/
@@ -473,8 +491,9 @@ public:
 
   QcSqlQuery & add_column(const QcSqlExpressionPtr & expression);
   QcSqlQuery & add_column(const QString & name) {
-    return add_column(QcSqlField(name));
+    return add_column(QcSqlField(name)); // Fixme: , table_name()
   }
+  QcSqlQuery & add_columns(const QStringList & names);
   QcSqlQuery & add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression);
   QcSqlQuery & add_column(const QString & name, const QcSqlExpressionPtr & value_expression) {
     return add_column(QcSqlField(name), value_expression);

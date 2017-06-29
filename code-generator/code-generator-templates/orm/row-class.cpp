@@ -77,6 +77,15 @@
 {% if field.default %}
     field.set_default_value({{field.default}});
 {% endif %}
+{% if field.sql_column_ctor %}
+    field.set_sql_column_ctor(QLatin1String("{{field.sql_column_ctor}}"));
+{% endif %}
+{% if field.sql_value_ctor %}
+    field.set_sql_value_ctor({{field.sql_value_ctor}});
+{% endif %}
+{% if field.sql_value_getter %}
+    field.set_sql_value_getter({{field.sql_value_getter}});
+{% endif %}
     add_field(field);
   }
 {% endfor %}

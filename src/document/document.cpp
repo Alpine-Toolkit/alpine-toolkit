@@ -30,6 +30,7 @@
 
 #include "document.h"
 
+#include "orm/database_query.h"
 #include "orm/type_conversion.h"
 
 #include <QtDebug>

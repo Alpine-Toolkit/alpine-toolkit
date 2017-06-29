@@ -34,9 +34,10 @@
 
 /**************************************************************************************************/
 
-QcSqliteDatabase::QcSqliteDatabase(const QString & sqlite_path)
+QcSqliteDatabase::QcSqliteDatabase(const QString & sqlite_path, bool use_spatialite)
   : m_sqlite_path(sqlite_path),
-    m_created(false)
+    m_created(false),
+    m_use_spatialite(use_spatialite)
 {
   open();
 }
@@ -51,10 +52,29 @@ QcSqliteDatabase::open()
 
   // Set the connection name to sqlite_path
   m_sql_flavour = SqlFlavour::SQLite;
-  m_database = QSqlDatabase::addDatabase(QLatin1String("QSQLITE"), m_sqlite_path);
+  QString plugin = m_use_spatialite ? QLatin1String("QSQLITE-AT") : QLatin1String("QSQLITE");
+  qInfo() << "Open SQLite" << m_sqlite_path << plugin;
+  m_database = QSqlDatabase::addDatabase(plugin, m_sqlite_path);
   m_database.setDatabaseName(m_sqlite_path);
   if (not m_database.open())
     qWarning() << m_database.lastError().text();
+
+  if (m_use_spatialite)
+    init_spatialite();
+}
+
+void
+QcSqliteDatabase::init_spatialite()
+{
+  execute_query(QLatin1String("SELECT load_extension('mod_spatialite')"));
+
+  QSqlQuery query = new_query();
+  exec_and_check(query, QLatin1String("SELECT spatialite_version()"));
+  query.first();
+  qInfo() << "Spatialite Version" << query.value(0).toString();
+
+  if (m_created)
+    execute_query(QLatin1String("SELECT InitSpatialMetaData(1);"));
 }
 
 /***************************************************************************************************

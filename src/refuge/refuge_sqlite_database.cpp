@@ -33,7 +33,7 @@
 /**************************************************************************************************/
 
 RefugeSqliteDatabase::RefugeSqliteDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(sqlite_path),
+  : QcSqliteDatabase(sqlite_path, true), // use Spatialite
     m_schema(nullptr)
 {
   m_schema = new RefugeDatabaseSchema(*this);
