@@ -206,6 +206,19 @@ if(NOT ANDROID)
 endif(NOT ANDROID)
 
 ####################################################################################################
+#
+# Find Proj4
+#
+
+if(NOT ANDROID)
+  include(FindProj4)
+  if(PROJ4_FOUND)
+    # add_definitions(-DWITH_PROJ4)
+    INCLUDE_DIRECTORIES(PROJ4_INCLUDE_DIR)
+  endif(PROJ4_FOUND)
+endif(NOT ANDROID)
+
+####################################################################################################
 
 # Fixme: clash with third parties
 if(NOT ANDROID)
@@ -224,6 +237,7 @@ add_subdirectory(third-parties)
 
 if(NOT ANDROID)
   include_directories(src)
+  include_directories(src/qtcarto)
   include_directories(third-parties/include)
 
   # add_subdirectory(cpp-test)

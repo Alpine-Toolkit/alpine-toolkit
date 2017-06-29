@@ -27,6 +27,10 @@
 ####################################################################################################
 
 ####################################################################################################
+
+add_subdirectory(qtcarto)
+
+####################################################################################################
 #
 # Include directories
 #
@@ -86,8 +90,15 @@ set(alpine_toolkit_library_files
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit
-  Qt5::Core Qt5::Sql Qt5::Positioning Qt5::Network Qt5::Qml
-  cmark snowball
+  Qt5::Core
+  Qt5::Sql
+  Qt5::Positioning
+  Qt5::Network
+  Qt5::Qml
+  Qt5::Gui
+  cmark
+  snowball
+  qtcarto
   )
 
 ####################################################################################################
@@ -116,7 +127,13 @@ qt5_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 # Not available
 # qtquick_compiler_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${ressources})
-target_link_libraries(alpine-toolkit alpine_toolkit Qt5::Qml Qt5::Widgets Qt5::Sensors Qt5::RemoteObjects)
+target_link_libraries(alpine-toolkit
+  alpine_toolkit
+  Qt5::Qml
+  Qt5::Widgets
+  Qt5::Sensors
+  Qt5::RemoteObjects
+  )
 
 ####################################################################################################
 #
