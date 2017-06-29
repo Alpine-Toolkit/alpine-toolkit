@@ -121,9 +121,9 @@ public:
 };
 
 // Fixme: for abstract-derived classes
-#define CloneableExpression(Class) \
-  virtual QcSqlExpressionPtr clone() const { \
-    return QcSqlExpressionPtr(new Class(*this)); \
+#define CloneableExpression(Class)                      \
+  virtual QcSqlExpressionPtr clone() const {            \
+    return QcSqlExpressionPtr(new Class(*this));        \
   }
 
 /**************************************************************************************************/
@@ -197,6 +197,21 @@ public:
 
 typedef QSharedPointer<QcSqlField> QcSqlFieldPtr;
 typedef QList<QcSqlField> QcFieldList;
+
+/**************************************************************************************************/
+
+class QcSqlPrepareValue : public QcSqlExpressionTraitCrtp<QcSqlPrepareValue>
+{
+public:
+  // QcSqlPrepareValue();
+  QcSqlPrepareValue();
+  QcSqlPrepareValue(const QcSqlPrepareValue & other);
+  virtual ~QcSqlPrepareValue();
+
+  QcSqlPrepareValue & operator=(const QcSqlPrepareValue & other);
+
+  QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
+};
 
 /**************************************************************************************************/
 
@@ -388,6 +403,20 @@ QcSqlExpressionPtr operator&&(const QcSqlExpressionPtr & expression1,
 QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
                               const QcSqlExpressionPtr & expression2);
 
+/**************************************************************************************************
+ *
+ * Spatial Functions defined by Open Geospatial Consortium
+ *
+ */
+
+QcSqlExpressionPtr ST_GeomFromText();
+QcSqlExpressionPtr ST_GeomFromText(const QcSqlExpressionPtr & expression);
+QcSqlExpressionPtr ST_AsText(const QcSqlExpressionPtr & expression);
+
+QcSqlExpressionPtr ST_GeomFromWBK();
+QcSqlExpressionPtr ST_GeomFromWBK(const QcSqlExpressionPtr & expression);
+QcSqlExpressionPtr ST_AsBinary(const QcSqlExpressionPtr & expression);
+
 /**************************************************************************************************/
 
 // Fixme: QcSqlQuery vs QSqlQuery ???
@@ -437,7 +466,7 @@ public:
   SelectType select_type() const { return m_select_type; }
 
   // session.query(func.count(distinct(User.name)))
-   QcSqlQuery & distinct();
+  QcSqlQuery & distinct();
 
   QcSqlQuery & count();
   QcSqlQuery & exists();
@@ -445,6 +474,10 @@ public:
   QcSqlQuery & add_column(const QcSqlExpressionPtr & expression);
   QcSqlQuery & add_column(const QString & name) {
     return add_column(QcSqlField(name));
+  }
+  QcSqlQuery & add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression);
+  QcSqlQuery & add_column(const QString & name, const QcSqlExpressionPtr & value_expression) {
+    return add_column(QcSqlField(name), value_expression);
   }
 
   QcSqlQuery & filter(const QcSqlExpressionPtr & expression);
@@ -504,15 +537,17 @@ private:
   QString quote_sql_identifier(const QString & name) const {
     return QcSqlExpressionTrait::quote_sql_identifier(name, sql_flavour());
   }
+  QString insert_values(const SqlFlavour & flavour) const;
 
   // virtual QString quote_sql_identifier(const QString & name) const;
 
-public:
+private:
   QcDatabaseTable * m_table;
   QueryType m_query_type = QueryType::None;
   SelectType m_select_type = SelectType::None;
   QBitArray m_flags;
   QcSqlExpressionList m_fields;
+  QHash<QcSqlExpressionPtr, QcSqlExpressionPtr> m_value_expressions;
   QcSqlExpressionPtr m_where = nullptr;
   QcFieldList m_group_by;
   QcSqlExpressionPtr m_having = nullptr;

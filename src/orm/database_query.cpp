@@ -60,6 +60,11 @@ constexpr const char IS_NOT_NULL[] = "IS NOT NULL";
 constexpr const char DESC[] = "DESC";
 constexpr const char ASC[] = "ASC";
 
+constexpr const char __ST_GeomFromText__[] = "ST_GeomFromText";
+constexpr const char __ST_AsText__[] = "ST_AsText";
+constexpr const char __ST_GeomFromWBK__[] = "ST_GeomFromWBK";
+constexpr const char __ST_AsBinary__[] = "ST_AsBinary";
+
 /**************************************************************************************************/
 
 typedef QcSqlExpressionTrait ExpTrait;
@@ -198,6 +203,33 @@ QcSqlField::as(SqlFlavour flavour) const
 {
   QString name = m_table_name + '_' + m_name;
   return as(name, flavour);
+}
+
+/**************************************************************************************************/
+
+QcSqlPrepareValue::QcSqlPrepareValue()
+{}
+
+QcSqlPrepareValue::QcSqlPrepareValue(const QcSqlPrepareValue & other)
+  : QcSqlPrepareValue()
+{
+  Q_UNUSED(other);
+}
+
+QcSqlPrepareValue &
+QcSqlPrepareValue::operator=(const QcSqlPrepareValue & other)
+{
+  Q_UNUSED(other);
+  return *this;
+}
+
+QcSqlPrepareValue::~QcSqlPrepareValue()
+{}
+
+QString
+QcSqlPrepareValue::to_sql(SqlFlavour flavour) const
+{
+  return QLatin1String("?");
 }
 
 /**************************************************************************************************/
@@ -390,10 +422,49 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
 
 /**************************************************************************************************/
 
+QcSqlExpressionPtr
+ST_GeomFromText()
+{
+  return ST_GeomFromText(QcSqlPrepareValue());
+}
+
+QcSqlExpressionPtr
+ST_GeomFromText(const QcSqlExpressionPtr & expression)
+{
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_GeomFromText__>(expression));
+}
+
+QcSqlExpressionPtr
+ST_AsText(const QcSqlExpressionPtr & expression)
+{
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_AsText__>(expression));
+}
+
+QcSqlExpressionPtr
+ST_GeomFromWBK()
+{
+  return ST_GeomFromWBK(QcSqlPrepareValue());
+}
+
+QcSqlExpressionPtr
+ST_GeomFromWBK(const QcSqlExpressionPtr & expression)
+{
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_GeomFromWBK__>(expression));
+}
+
+QcSqlExpressionPtr
+ST_AsBinary(const QcSqlExpressionPtr & expression)
+{
+  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_AsBinary__>(expression));
+}
+
+/**************************************************************************************************/
+
 QcSqlQuery::QcSqlQuery()
   : m_table(nullptr),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
+    m_value_expressions(),
     m_where(nullptr),
     m_group_by(),
     m_order_by()
@@ -403,6 +474,7 @@ QcSqlQuery::QcSqlQuery(QcDatabaseTable * table)
   : m_table(table),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
+    m_value_expressions(),
     m_where(nullptr),
     m_group_by(),
     m_order_by()
@@ -518,6 +590,17 @@ QcSqlQuery &
 QcSqlQuery::add_column(const QcSqlExpressionPtr & expression)
 {
   m_fields << expression;
+
+  return *this;
+}
+
+QcSqlQuery &
+QcSqlQuery::add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression)
+{
+  m_fields << expression;
+
+  const QcSqlExpressionPtr & _expression = m_fields.last();
+  m_value_expressions.insert(_expression, value_expression);
 
   return *this;
 }
@@ -641,14 +724,33 @@ QcSqlQuery::comma_interrogation_list(int count)
 {
   QString query;
 
-  int i_last = count -1;
-  for (int i = 0; i <= i_last; i++) {
-    query += '?';
-    if (i < i_last)
+  for (int i = 0; i < count; i++) {
+    if (not query.isEmpty())
       query += QLatin1String(", ");
+    query += '?';
   }
 
   return query;
+}
+
+QString
+QcSqlQuery::insert_values(const SqlFlavour & flavour) const
+{
+  // Fixme: API ???
+  if (m_value_expressions.isEmpty())
+    return comma_interrogation_list(m_fields.size());
+  else {
+    QString query;
+    for (const auto & field : m_fields) {
+      if (not query.isEmpty())
+        query += QLatin1String(", ");
+      if (m_value_expressions.contains(field))
+        query += m_value_expressions[field]->to_sql(flavour); // Fixme: ? is implicit
+      else
+        query += '?';
+    }
+    return query;
+  }
 }
 
 QString
@@ -741,7 +843,7 @@ QcSqlQuery::to_sql() const
     query += QLatin1String(" (");
     query += ExpTrait::comma_join(field_names(m_fields));
     query += QLatin1String(") VALUES (");
-    query += comma_interrogation_list(m_fields.size());
+    query += insert_values(flavour);
     query += ')';
   } else { // Not INSERT
     if (not m_where.isNull()) {

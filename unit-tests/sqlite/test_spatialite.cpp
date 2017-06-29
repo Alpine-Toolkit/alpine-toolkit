@@ -89,7 +89,7 @@ TestSpatialite::constructor()
     qInfo() << query.value(0).toString() << query.value(1).toByteArray();
   }
 
-  // OGC: ST_AsTex
+  // OGC: ST_AsText
   // Return: POINT(4.1 3.2)
   query = db.exec("SELECT name, ST_AsText(geometry) FROM places");
   qWarning() << query.size() << db.lastError();
