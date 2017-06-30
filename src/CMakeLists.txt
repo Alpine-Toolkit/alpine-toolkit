@@ -55,6 +55,7 @@ set(alpine_toolkit_library_files
   camptocamp/camptocamp_media_cache.cpp
   camptocamp/camptocamp_qml.cpp
   camptocamp/camptocamp_search_settings.cpp
+  camptocamp/camptocamp_schema.cpp
   document/document.cpp
   document/document_database.cpp
   ephemeride/ephemeride.cpp

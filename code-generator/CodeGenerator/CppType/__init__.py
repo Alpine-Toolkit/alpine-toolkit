@@ -123,6 +123,7 @@ class Type:
         'int': 'toInt',
         'unsigned int': 'toUInt',
         'double': 'toDouble',
+        'qreal': 'toDouble', # Fixme: float ?
         }
 
     _logger = _module_logger.getChild("Type")
@@ -273,7 +274,9 @@ class Type:
 
         if self._type == 'QVariant':
             return 'toVariant'
-        if self._type in ('int', 'unsigned int'):
+        elif self._type == 'bool':
+            return 'toBool'
+        elif self._type in ('int', 'unsigned int'):
             return 'toInt'
         elif self._type in ('float', 'double', 'qreal'):
             return 'toDouble'
@@ -281,7 +284,7 @@ class Type:
             return 'toString'
         elif self._type in ('QChar',): # ''QDateTime',
             return 'toVariant().' + self.from_variant
-        elif self._type in ('QDateTime', 'QGeoCoordinate', 'QStringList'):
+        elif self._type in ('QDate', 'QDateTime', 'QGeoCoordinate', 'QStringList'):
             return None
         # toArray / toObject
         else:
@@ -300,6 +303,8 @@ class Type:
 
         if self._type_conversion is not None:
             return self._type_conversion.cast_from_json
+        elif self._type == 'QDate':
+            return 'orm_type_conversion::load_date'
         elif self._type == 'QDateTime':
             return 'orm_type_conversion::load_datetime'
         elif self._type == 'QStringList':
@@ -336,6 +341,8 @@ class Type:
 
         if self._type_conversion is not None:
             return self._type_conversion.cast_to_json
+        elif self._type == 'QDate':
+            return 'orm_type_conversion::dump_date'
         elif self._type == 'QDateTime':
             return 'orm_type_conversion::dump_datetime'
         elif self._type == 'QStringList':

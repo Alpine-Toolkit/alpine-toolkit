@@ -54,6 +54,16 @@ namespace orm_type_conversion {
 
   QJsonArray dump_string_list(const QStringList & string_list);
 
+  // Date
+
+  inline QDate load_date(const QJsonValue & json_value) {
+    // return json_value.toVariant().toDateTime();
+    return QDate::fromString(json_value.toString());
+  }
+  inline QString dump_date(const QDate & date) {
+    return date.toString(Qt::ISODate);
+  }
+
   // DateTime
 
   inline QDateTime load_datetime(const QJsonValue & json_value) {

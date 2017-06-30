@@ -31,6 +31,10 @@ from CodeGenerator.CppType import TypeConversion
 
 ####################################################################################################
 
+class Boolean(FieldType):
+    def __init__(self):
+        FieldType.__init__(self, sql_type='integer', qt_type='bool')
+
 class Integer(FieldType):
     def __init__(self):
         FieldType.__init__(self, sql_type='integer', qt_type='int')
@@ -58,6 +62,10 @@ class StringList(FieldType):
 class Url(FieldType):
     def __init__(self):
         FieldType.__init__(self, sql_type='text', qt_type='QUrl')
+
+class Date(FieldType):
+    def __init__(self):
+        FieldType.__init__(self, sql_type='text', qt_type='QDate')
 
 class DateTime(FieldType):
     def __init__(self):
