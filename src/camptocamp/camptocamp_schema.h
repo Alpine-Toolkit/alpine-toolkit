@@ -59,12 +59,12 @@
 
 /**************************************************************************************************/
 
-class AreaAssociations;
-class AreaAssociationsPtr;
+class C2cAreaAssociations;
+class C2cAreaAssociationsPtr;
 
 /**************************************************************************************************/
 
-class AreaAssociationsSchema : public QcSchema
+class C2cAreaAssociationsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -74,49 +74,49 @@ public:
   static const int NUMBER_OF_FIELDS = 2;
 
 public:
-  static AreaAssociationsSchema & instance()
+  static C2cAreaAssociationsSchema & instance()
   {
-    static AreaAssociationsSchema m_instance;
+    static C2cAreaAssociationsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  AreaAssociationsSchema(const AreaAssociationsSchema &) = delete;
-  AreaAssociationsSchema(AreaAssociationsSchema &&) = delete;
-  AreaAssociationsSchema & operator=(const AreaAssociationsSchema &) = delete;
-  AreaAssociationsSchema & operator=(AreaAssociationsSchema &&) = delete;
+  C2cAreaAssociationsSchema(const C2cAreaAssociationsSchema &) = delete;
+  C2cAreaAssociationsSchema(C2cAreaAssociationsSchema &&) = delete;
+  C2cAreaAssociationsSchema & operator=(const C2cAreaAssociationsSchema &) = delete;
+  C2cAreaAssociationsSchema & operator=(C2cAreaAssociationsSchema &&) = delete;
 
 protected:
-  AreaAssociationsSchema();
-  ~AreaAssociationsSchema();
+  C2cAreaAssociationsSchema();
+  ~C2cAreaAssociationsSchema();
 };
 
 /**************************************************************************************************/
 
-class AreaAssociations : public QObject, public QcRow<AreaAssociationsSchema>
+class C2cAreaAssociations : public QObject, public QcRow<C2cAreaAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int area_id READ area_id WRITE set_area_id NOTIFY area_idChanged)
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
 
 public:
-  typedef AreaAssociationsPtr Ptr;
+  typedef C2cAreaAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class AreaAssociationsPtr;
+  friend class C2cAreaAssociationsPtr;
 
 public:
-  AreaAssociations();
-  AreaAssociations(const AreaAssociations & other);
-  AreaAssociations(const QJsonObject & json_object); // JSON deserializer
-  AreaAssociations(const QVariantHash & variant_hash);
-  AreaAssociations(const QVariantList & variants);
-  AreaAssociations(const QSqlRecord & record); // SQL deserializer
-  AreaAssociations(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~AreaAssociations();
+  C2cAreaAssociations();
+  C2cAreaAssociations(const C2cAreaAssociations & other);
+  C2cAreaAssociations(const QJsonObject & json_object); // JSON deserializer
+  C2cAreaAssociations(const QVariantHash & variant_hash);
+  C2cAreaAssociations(const QVariantList & variants);
+  C2cAreaAssociations(const QSqlRecord & record); // SQL deserializer
+  C2cAreaAssociations(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cAreaAssociations();
 
-  AreaAssociations & operator=(const AreaAssociations & other);
+  C2cAreaAssociations & operator=(const C2cAreaAssociations & other);
 
-  bool operator==(const AreaAssociations & other) const;
+  bool operator==(const C2cAreaAssociations & other) const;
 
   // Getter/Setter
 
@@ -162,46 +162,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const AreaAssociations & obj);
-QDataStream & operator>>(QDataStream & in, AreaAssociations & obj);
-// qRegisterMetaTypeStreamOperators<AreaAssociations>("AreaAssociations");
+QDataStream & operator<<(QDataStream & out, const C2cAreaAssociations & obj);
+QDataStream & operator>>(QDataStream & in, C2cAreaAssociations & obj);
+// qRegisterMetaTypeStreamOperators<C2cAreaAssociations>("C2cAreaAssociations");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const AreaAssociations & obj);
+QDebug operator<<(QDebug debug, const C2cAreaAssociations & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AreaAssociationsPtr
+class C2cAreaAssociationsPtr
 {
 public:
-  typedef AreaAssociations Class;
+  typedef C2cAreaAssociations Class;
 
 public:
-  AreaAssociationsPtr() : m_ptr() {}
-  AreaAssociationsPtr(const AreaAssociationsPtr & other) : m_ptr(other.m_ptr) {}
-  ~AreaAssociationsPtr() {
+  C2cAreaAssociationsPtr() : m_ptr() {}
+  C2cAreaAssociationsPtr(const C2cAreaAssociationsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cAreaAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete AreaAssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete AreaAssociationsPtr";
+    //// qInfo() << "--- Delete C2cAreaAssociationsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cAreaAssociationsPtr";
     // m_ptr.clear();
   }
 
-  AreaAssociationsPtr & operator=(const AreaAssociationsPtr & other) {
+  C2cAreaAssociationsPtr & operator=(const C2cAreaAssociationsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  AreaAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  AreaAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  AreaAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  AreaAssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  AreaAssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  AreaAssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  AreaAssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cAreaAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cAreaAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cAreaAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cAreaAssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cAreaAssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cAreaAssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cAreaAssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -221,7 +221,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const AreaAssociationsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cAreaAssociationsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -229,26 +229,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const AreaAssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cAreaAssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const AreaAssociationsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cAreaAssociationsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AreaAssociationsCache : public QObject
+class C2cAreaAssociationsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef AreaAssociations * t_Key;
-  typedef AreaAssociationsPtr Ptr;
+  typedef C2cAreaAssociations * t_Key;
+  typedef C2cAreaAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  AreaAssociationsCache();
-  ~AreaAssociationsCache();
+  C2cAreaAssociationsCache();
+  ~C2cAreaAssociationsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -269,20 +269,20 @@ private:
 
 /**************************************************************************************************/
 
-class AreaAssociationsModel : public QAbstractListModel
+class C2cAreaAssociationsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef AreaAssociationsPtr Item;
+  typedef C2cAreaAssociationsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  AreaAssociationsModel();
-  AreaAssociationsModel(const ItemList & items);
-  ~AreaAssociationsModel();
+  C2cAreaAssociationsModel();
+  C2cAreaAssociationsModel(const ItemList & items);
+  ~C2cAreaAssociationsModel();
 
-  // Fixme: use AreaAssociationsSchema::Fields ???
+  // Fixme: use C2cAreaAssociationsSchema::Fields ???
   enum Roles {
     AREA_ID = Qt::UserRole + 1,
     DOCUMENT_ID
@@ -303,12 +303,12 @@ private:
 
 /**************************************************************************************************/
 
-class Areas;
-class AreasPtr;
+class C2cAreas;
+class C2cAreasPtr;
 
 /**************************************************************************************************/
 
-class AreasSchema : public QcSchema
+class C2cAreasSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -318,49 +318,49 @@ public:
   static const int NUMBER_OF_FIELDS = 2;
 
 public:
-  static AreasSchema & instance()
+  static C2cAreasSchema & instance()
   {
-    static AreasSchema m_instance;
+    static C2cAreasSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  AreasSchema(const AreasSchema &) = delete;
-  AreasSchema(AreasSchema &&) = delete;
-  AreasSchema & operator=(const AreasSchema &) = delete;
-  AreasSchema & operator=(AreasSchema &&) = delete;
+  C2cAreasSchema(const C2cAreasSchema &) = delete;
+  C2cAreasSchema(C2cAreasSchema &&) = delete;
+  C2cAreasSchema & operator=(const C2cAreasSchema &) = delete;
+  C2cAreasSchema & operator=(C2cAreasSchema &&) = delete;
 
 protected:
-  AreasSchema();
-  ~AreasSchema();
+  C2cAreasSchema();
+  ~C2cAreasSchema();
 };
 
 /**************************************************************************************************/
 
-class Areas : public QObject, public QcRow<AreasSchema>
+class C2cAreas : public QObject, public QcRow<C2cAreasSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
   Q_PROPERTY(QString area_type READ area_type WRITE set_area_type NOTIFY area_typeChanged)
 
 public:
-  typedef AreasPtr Ptr;
+  typedef C2cAreasPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class AreasPtr;
+  friend class C2cAreasPtr;
 
 public:
-  Areas();
-  Areas(const Areas & other);
-  Areas(const QJsonObject & json_object); // JSON deserializer
-  Areas(const QVariantHash & variant_hash);
-  Areas(const QVariantList & variants);
-  Areas(const QSqlRecord & record); // SQL deserializer
-  Areas(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Areas();
+  C2cAreas();
+  C2cAreas(const C2cAreas & other);
+  C2cAreas(const QJsonObject & json_object); // JSON deserializer
+  C2cAreas(const QVariantHash & variant_hash);
+  C2cAreas(const QVariantList & variants);
+  C2cAreas(const QSqlRecord & record); // SQL deserializer
+  C2cAreas(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cAreas();
 
-  Areas & operator=(const Areas & other);
+  C2cAreas & operator=(const C2cAreas & other);
 
-  bool operator==(const Areas & other) const;
+  bool operator==(const C2cAreas & other) const;
 
   // Getter/Setter
 
@@ -406,46 +406,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Areas & obj);
-QDataStream & operator>>(QDataStream & in, Areas & obj);
-// qRegisterMetaTypeStreamOperators<Areas>("Areas");
+QDataStream & operator<<(QDataStream & out, const C2cAreas & obj);
+QDataStream & operator>>(QDataStream & in, C2cAreas & obj);
+// qRegisterMetaTypeStreamOperators<C2cAreas>("C2cAreas");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Areas & obj);
+QDebug operator<<(QDebug debug, const C2cAreas & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AreasPtr
+class C2cAreasPtr
 {
 public:
-  typedef Areas Class;
+  typedef C2cAreas Class;
 
 public:
-  AreasPtr() : m_ptr() {}
-  AreasPtr(const AreasPtr & other) : m_ptr(other.m_ptr) {}
-  ~AreasPtr() {
+  C2cAreasPtr() : m_ptr() {}
+  C2cAreasPtr(const C2cAreasPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cAreasPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete AreasPtr of" << *m_ptr;
-    // qInfo() << "--- Delete AreasPtr";
+    //// qInfo() << "--- Delete C2cAreasPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cAreasPtr";
     // m_ptr.clear();
   }
 
-  AreasPtr & operator=(const AreasPtr & other) {
+  C2cAreasPtr & operator=(const C2cAreasPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  AreasPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  AreasPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  AreasPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  AreasPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  AreasPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  AreasPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  AreasPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cAreasPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cAreasPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cAreasPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cAreasPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cAreasPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cAreasPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cAreasPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -465,7 +465,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const AreasPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cAreasPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -473,26 +473,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const AreasPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cAreasPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const AreasPtr & obj);
+QDebug operator<<(QDebug debug, const C2cAreasPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AreasCache : public QObject
+class C2cAreasCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Areas * t_Key;
-  typedef AreasPtr Ptr;
+  typedef C2cAreas * t_Key;
+  typedef C2cAreasPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  AreasCache();
-  ~AreasCache();
+  C2cAreasCache();
+  ~C2cAreasCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -513,20 +513,20 @@ private:
 
 /**************************************************************************************************/
 
-class AreasModel : public QAbstractListModel
+class C2cAreasModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef AreasPtr Item;
+  typedef C2cAreasPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  AreasModel();
-  AreasModel(const ItemList & items);
-  ~AreasModel();
+  C2cAreasModel();
+  C2cAreasModel(const ItemList & items);
+  ~C2cAreasModel();
 
-  // Fixme: use AreasSchema::Fields ???
+  // Fixme: use C2cAreasSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     AREA_TYPE
@@ -547,12 +547,12 @@ private:
 
 /**************************************************************************************************/
 
-class Articles;
-class ArticlesPtr;
+class C2cArticles;
+class C2cArticlesPtr;
 
 /**************************************************************************************************/
 
-class ArticlesSchema : public QcSchema
+class C2cArticlesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -564,26 +564,26 @@ public:
   static const int NUMBER_OF_FIELDS = 4;
 
 public:
-  static ArticlesSchema & instance()
+  static C2cArticlesSchema & instance()
   {
-    static ArticlesSchema m_instance;
+    static C2cArticlesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  ArticlesSchema(const ArticlesSchema &) = delete;
-  ArticlesSchema(ArticlesSchema &&) = delete;
-  ArticlesSchema & operator=(const ArticlesSchema &) = delete;
-  ArticlesSchema & operator=(ArticlesSchema &&) = delete;
+  C2cArticlesSchema(const C2cArticlesSchema &) = delete;
+  C2cArticlesSchema(C2cArticlesSchema &&) = delete;
+  C2cArticlesSchema & operator=(const C2cArticlesSchema &) = delete;
+  C2cArticlesSchema & operator=(C2cArticlesSchema &&) = delete;
 
 protected:
-  ArticlesSchema();
-  ~ArticlesSchema();
+  C2cArticlesSchema();
+  ~C2cArticlesSchema();
 };
 
 /**************************************************************************************************/
 
-class Articles : public QObject, public QcRow<ArticlesSchema>
+class C2cArticles : public QObject, public QcRow<C2cArticlesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -592,23 +592,23 @@ class Articles : public QObject, public QcRow<ArticlesSchema>
   Q_PROPERTY(QStringList categories READ categories WRITE set_categories NOTIFY categoriesChanged)
 
 public:
-  typedef ArticlesPtr Ptr;
+  typedef C2cArticlesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class ArticlesPtr;
+  friend class C2cArticlesPtr;
 
 public:
-  Articles();
-  Articles(const Articles & other);
-  Articles(const QJsonObject & json_object); // JSON deserializer
-  Articles(const QVariantHash & variant_hash);
-  Articles(const QVariantList & variants);
-  Articles(const QSqlRecord & record); // SQL deserializer
-  Articles(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Articles();
+  C2cArticles();
+  C2cArticles(const C2cArticles & other);
+  C2cArticles(const QJsonObject & json_object); // JSON deserializer
+  C2cArticles(const QVariantHash & variant_hash);
+  C2cArticles(const QVariantList & variants);
+  C2cArticles(const QSqlRecord & record); // SQL deserializer
+  C2cArticles(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cArticles();
 
-  Articles & operator=(const Articles & other);
+  C2cArticles & operator=(const C2cArticles & other);
 
-  bool operator==(const Articles & other) const;
+  bool operator==(const C2cArticles & other) const;
 
   // Getter/Setter
 
@@ -666,46 +666,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Articles & obj);
-QDataStream & operator>>(QDataStream & in, Articles & obj);
-// qRegisterMetaTypeStreamOperators<Articles>("Articles");
+QDataStream & operator<<(QDataStream & out, const C2cArticles & obj);
+QDataStream & operator>>(QDataStream & in, C2cArticles & obj);
+// qRegisterMetaTypeStreamOperators<C2cArticles>("C2cArticles");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Articles & obj);
+QDebug operator<<(QDebug debug, const C2cArticles & obj);
 #endif
 
 /**************************************************************************************************/
 
-class ArticlesPtr
+class C2cArticlesPtr
 {
 public:
-  typedef Articles Class;
+  typedef C2cArticles Class;
 
 public:
-  ArticlesPtr() : m_ptr() {}
-  ArticlesPtr(const ArticlesPtr & other) : m_ptr(other.m_ptr) {}
-  ~ArticlesPtr() {
+  C2cArticlesPtr() : m_ptr() {}
+  C2cArticlesPtr(const C2cArticlesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cArticlesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete ArticlesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete ArticlesPtr";
+    //// qInfo() << "--- Delete C2cArticlesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cArticlesPtr";
     // m_ptr.clear();
   }
 
-  ArticlesPtr & operator=(const ArticlesPtr & other) {
+  C2cArticlesPtr & operator=(const C2cArticlesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  ArticlesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  ArticlesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  ArticlesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  ArticlesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  ArticlesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  ArticlesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  ArticlesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cArticlesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cArticlesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cArticlesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cArticlesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cArticlesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cArticlesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cArticlesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -725,7 +725,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const ArticlesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cArticlesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -733,26 +733,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const ArticlesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cArticlesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const ArticlesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cArticlesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class ArticlesCache : public QObject
+class C2cArticlesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Articles * t_Key;
-  typedef ArticlesPtr Ptr;
+  typedef C2cArticles * t_Key;
+  typedef C2cArticlesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  ArticlesCache();
-  ~ArticlesCache();
+  C2cArticlesCache();
+  ~C2cArticlesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -773,20 +773,20 @@ private:
 
 /**************************************************************************************************/
 
-class ArticlesModel : public QAbstractListModel
+class C2cArticlesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef ArticlesPtr Item;
+  typedef C2cArticlesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  ArticlesModel();
-  ArticlesModel(const ItemList & items);
-  ~ArticlesModel();
+  C2cArticlesModel();
+  C2cArticlesModel(const ItemList & items);
+  ~C2cArticlesModel();
 
-  // Fixme: use ArticlesSchema::Fields ???
+  // Fixme: use C2cArticlesSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -809,12 +809,12 @@ private:
 
 /**************************************************************************************************/
 
-class Associations;
-class AssociationsPtr;
+class C2cAssociations;
+class C2cAssociationsPtr;
 
 /**************************************************************************************************/
 
-class AssociationsSchema : public QcSchema
+class C2cAssociationsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -826,26 +826,26 @@ public:
   static const int NUMBER_OF_FIELDS = 4;
 
 public:
-  static AssociationsSchema & instance()
+  static C2cAssociationsSchema & instance()
   {
-    static AssociationsSchema m_instance;
+    static C2cAssociationsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  AssociationsSchema(const AssociationsSchema &) = delete;
-  AssociationsSchema(AssociationsSchema &&) = delete;
-  AssociationsSchema & operator=(const AssociationsSchema &) = delete;
-  AssociationsSchema & operator=(AssociationsSchema &&) = delete;
+  C2cAssociationsSchema(const C2cAssociationsSchema &) = delete;
+  C2cAssociationsSchema(C2cAssociationsSchema &&) = delete;
+  C2cAssociationsSchema & operator=(const C2cAssociationsSchema &) = delete;
+  C2cAssociationsSchema & operator=(C2cAssociationsSchema &&) = delete;
 
 protected:
-  AssociationsSchema();
-  ~AssociationsSchema();
+  C2cAssociationsSchema();
+  ~C2cAssociationsSchema();
 };
 
 /**************************************************************************************************/
 
-class Associations : public QObject, public QcRow<AssociationsSchema>
+class C2cAssociations : public QObject, public QcRow<C2cAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int child_document_id READ child_document_id WRITE set_child_document_id NOTIFY child_document_idChanged)
@@ -854,23 +854,23 @@ class Associations : public QObject, public QcRow<AssociationsSchema>
   Q_PROPERTY(QChar parent_document_type READ parent_document_type WRITE set_parent_document_type NOTIFY parent_document_typeChanged)
 
 public:
-  typedef AssociationsPtr Ptr;
+  typedef C2cAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class AssociationsPtr;
+  friend class C2cAssociationsPtr;
 
 public:
-  Associations();
-  Associations(const Associations & other);
-  Associations(const QJsonObject & json_object); // JSON deserializer
-  Associations(const QVariantHash & variant_hash);
-  Associations(const QVariantList & variants);
-  Associations(const QSqlRecord & record); // SQL deserializer
-  Associations(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Associations();
+  C2cAssociations();
+  C2cAssociations(const C2cAssociations & other);
+  C2cAssociations(const QJsonObject & json_object); // JSON deserializer
+  C2cAssociations(const QVariantHash & variant_hash);
+  C2cAssociations(const QVariantList & variants);
+  C2cAssociations(const QSqlRecord & record); // SQL deserializer
+  C2cAssociations(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cAssociations();
 
-  Associations & operator=(const Associations & other);
+  C2cAssociations & operator=(const C2cAssociations & other);
 
-  bool operator==(const Associations & other) const;
+  bool operator==(const C2cAssociations & other) const;
 
   // Getter/Setter
 
@@ -928,46 +928,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Associations & obj);
-QDataStream & operator>>(QDataStream & in, Associations & obj);
-// qRegisterMetaTypeStreamOperators<Associations>("Associations");
+QDataStream & operator<<(QDataStream & out, const C2cAssociations & obj);
+QDataStream & operator>>(QDataStream & in, C2cAssociations & obj);
+// qRegisterMetaTypeStreamOperators<C2cAssociations>("C2cAssociations");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Associations & obj);
+QDebug operator<<(QDebug debug, const C2cAssociations & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AssociationsPtr
+class C2cAssociationsPtr
 {
 public:
-  typedef Associations Class;
+  typedef C2cAssociations Class;
 
 public:
-  AssociationsPtr() : m_ptr() {}
-  AssociationsPtr(const AssociationsPtr & other) : m_ptr(other.m_ptr) {}
-  ~AssociationsPtr() {
+  C2cAssociationsPtr() : m_ptr() {}
+  C2cAssociationsPtr(const C2cAssociationsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete AssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete AssociationsPtr";
+    //// qInfo() << "--- Delete C2cAssociationsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cAssociationsPtr";
     // m_ptr.clear();
   }
 
-  AssociationsPtr & operator=(const AssociationsPtr & other) {
+  C2cAssociationsPtr & operator=(const C2cAssociationsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  AssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  AssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  AssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  AssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  AssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  AssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  AssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cAssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cAssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cAssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cAssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -987,7 +987,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const AssociationsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cAssociationsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -995,26 +995,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const AssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cAssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const AssociationsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cAssociationsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class AssociationsCache : public QObject
+class C2cAssociationsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Associations * t_Key;
-  typedef AssociationsPtr Ptr;
+  typedef C2cAssociations * t_Key;
+  typedef C2cAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  AssociationsCache();
-  ~AssociationsCache();
+  C2cAssociationsCache();
+  ~C2cAssociationsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -1035,20 +1035,20 @@ private:
 
 /**************************************************************************************************/
 
-class AssociationsModel : public QAbstractListModel
+class C2cAssociationsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef AssociationsPtr Item;
+  typedef C2cAssociationsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  AssociationsModel();
-  AssociationsModel(const ItemList & items);
-  ~AssociationsModel();
+  C2cAssociationsModel();
+  C2cAssociationsModel(const ItemList & items);
+  ~C2cAssociationsModel();
 
-  // Fixme: use AssociationsSchema::Fields ???
+  // Fixme: use C2cAssociationsSchema::Fields ???
   enum Roles {
     CHILD_DOCUMENT_ID = Qt::UserRole + 1,
     PARENT_DOCUMENT_ID,
@@ -1071,12 +1071,12 @@ private:
 
 /**************************************************************************************************/
 
-class Books;
-class BooksPtr;
+class C2cBooks;
+class C2cBooksPtr;
 
 /**************************************************************************************************/
 
-class BooksSchema : public QcSchema
+class C2cBooksSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -1094,26 +1094,26 @@ public:
   static const int NUMBER_OF_FIELDS = 10;
 
 public:
-  static BooksSchema & instance()
+  static C2cBooksSchema & instance()
   {
-    static BooksSchema m_instance;
+    static C2cBooksSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  BooksSchema(const BooksSchema &) = delete;
-  BooksSchema(BooksSchema &&) = delete;
-  BooksSchema & operator=(const BooksSchema &) = delete;
-  BooksSchema & operator=(BooksSchema &&) = delete;
+  C2cBooksSchema(const C2cBooksSchema &) = delete;
+  C2cBooksSchema(C2cBooksSchema &&) = delete;
+  C2cBooksSchema & operator=(const C2cBooksSchema &) = delete;
+  C2cBooksSchema & operator=(C2cBooksSchema &&) = delete;
 
 protected:
-  BooksSchema();
-  ~BooksSchema();
+  C2cBooksSchema();
+  ~C2cBooksSchema();
 };
 
 /**************************************************************************************************/
 
-class Books : public QObject, public QcRow<BooksSchema>
+class C2cBooks : public QObject, public QcRow<C2cBooksSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1128,23 +1128,23 @@ class Books : public QObject, public QcRow<BooksSchema>
   Q_PROPERTY(QString url READ url WRITE set_url NOTIFY urlChanged)
 
 public:
-  typedef BooksPtr Ptr;
+  typedef C2cBooksPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class BooksPtr;
+  friend class C2cBooksPtr;
 
 public:
-  Books();
-  Books(const Books & other);
-  Books(const QJsonObject & json_object); // JSON deserializer
-  Books(const QVariantHash & variant_hash);
-  Books(const QVariantList & variants);
-  Books(const QSqlRecord & record); // SQL deserializer
-  Books(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Books();
+  C2cBooks();
+  C2cBooks(const C2cBooks & other);
+  C2cBooks(const QJsonObject & json_object); // JSON deserializer
+  C2cBooks(const QVariantHash & variant_hash);
+  C2cBooks(const QVariantList & variants);
+  C2cBooks(const QSqlRecord & record); // SQL deserializer
+  C2cBooks(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cBooks();
 
-  Books & operator=(const Books & other);
+  C2cBooks & operator=(const C2cBooks & other);
 
-  bool operator==(const Books & other) const;
+  bool operator==(const C2cBooks & other) const;
 
   // Getter/Setter
 
@@ -1238,46 +1238,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Books & obj);
-QDataStream & operator>>(QDataStream & in, Books & obj);
-// qRegisterMetaTypeStreamOperators<Books>("Books");
+QDataStream & operator<<(QDataStream & out, const C2cBooks & obj);
+QDataStream & operator>>(QDataStream & in, C2cBooks & obj);
+// qRegisterMetaTypeStreamOperators<C2cBooks>("C2cBooks");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Books & obj);
+QDebug operator<<(QDebug debug, const C2cBooks & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BooksPtr
+class C2cBooksPtr
 {
 public:
-  typedef Books Class;
+  typedef C2cBooks Class;
 
 public:
-  BooksPtr() : m_ptr() {}
-  BooksPtr(const BooksPtr & other) : m_ptr(other.m_ptr) {}
-  ~BooksPtr() {
+  C2cBooksPtr() : m_ptr() {}
+  C2cBooksPtr(const C2cBooksPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cBooksPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BooksPtr of" << *m_ptr;
-    // qInfo() << "--- Delete BooksPtr";
+    //// qInfo() << "--- Delete C2cBooksPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cBooksPtr";
     // m_ptr.clear();
   }
 
-  BooksPtr & operator=(const BooksPtr & other) {
+  C2cBooksPtr & operator=(const C2cBooksPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  BooksPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  BooksPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  BooksPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  BooksPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  BooksPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  BooksPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  BooksPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cBooksPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cBooksPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cBooksPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cBooksPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cBooksPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cBooksPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cBooksPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -1297,7 +1297,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const BooksPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cBooksPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -1305,26 +1305,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const BooksPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cBooksPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const BooksPtr & obj);
+QDebug operator<<(QDebug debug, const C2cBooksPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class BooksCache : public QObject
+class C2cBooksCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Books * t_Key;
-  typedef BooksPtr Ptr;
+  typedef C2cBooks * t_Key;
+  typedef C2cBooksPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  BooksCache();
-  ~BooksCache();
+  C2cBooksCache();
+  ~C2cBooksCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -1345,20 +1345,20 @@ private:
 
 /**************************************************************************************************/
 
-class BooksModel : public QAbstractListModel
+class C2cBooksModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef BooksPtr Item;
+  typedef C2cBooksPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  BooksModel();
-  BooksModel(const ItemList & items);
-  ~BooksModel();
+  C2cBooksModel();
+  C2cBooksModel(const ItemList & items);
+  ~C2cBooksModel();
 
-  // Fixme: use BooksSchema::Fields ???
+  // Fixme: use C2cBooksSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -1387,12 +1387,12 @@ private:
 
 /**************************************************************************************************/
 
-class Documents;
-class DocumentsPtr;
+class C2cDocuments;
+class C2cDocumentsPtr;
 
 /**************************************************************************************************/
 
-class DocumentsSchema : public QcSchema
+class C2cDocumentsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -1406,26 +1406,26 @@ public:
   static const int NUMBER_OF_FIELDS = 6;
 
 public:
-  static DocumentsSchema & instance()
+  static C2cDocumentsSchema & instance()
   {
-    static DocumentsSchema m_instance;
+    static C2cDocumentsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  DocumentsSchema(const DocumentsSchema &) = delete;
-  DocumentsSchema(DocumentsSchema &&) = delete;
-  DocumentsSchema & operator=(const DocumentsSchema &) = delete;
-  DocumentsSchema & operator=(DocumentsSchema &&) = delete;
+  C2cDocumentsSchema(const C2cDocumentsSchema &) = delete;
+  C2cDocumentsSchema(C2cDocumentsSchema &&) = delete;
+  C2cDocumentsSchema & operator=(const C2cDocumentsSchema &) = delete;
+  C2cDocumentsSchema & operator=(C2cDocumentsSchema &&) = delete;
 
 protected:
-  DocumentsSchema();
-  ~DocumentsSchema();
+  C2cDocumentsSchema();
+  ~C2cDocumentsSchema();
 };
 
 /**************************************************************************************************/
 
-class Documents : public QObject, public QcRow<DocumentsSchema>
+class C2cDocuments : public QObject, public QcRow<C2cDocumentsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1436,23 +1436,23 @@ class Documents : public QObject, public QcRow<DocumentsSchema>
   Q_PROPERTY(int version READ version WRITE set_version NOTIFY versionChanged)
 
 public:
-  typedef DocumentsPtr Ptr;
+  typedef C2cDocumentsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class DocumentsPtr;
+  friend class C2cDocumentsPtr;
 
 public:
-  Documents();
-  Documents(const Documents & other);
-  Documents(const QJsonObject & json_object); // JSON deserializer
-  Documents(const QVariantHash & variant_hash);
-  Documents(const QVariantList & variants);
-  Documents(const QSqlRecord & record); // SQL deserializer
-  Documents(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Documents();
+  C2cDocuments();
+  C2cDocuments(const C2cDocuments & other);
+  C2cDocuments(const QJsonObject & json_object); // JSON deserializer
+  C2cDocuments(const QVariantHash & variant_hash);
+  C2cDocuments(const QVariantList & variants);
+  C2cDocuments(const QSqlRecord & record); // SQL deserializer
+  C2cDocuments(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cDocuments();
 
-  Documents & operator=(const Documents & other);
+  C2cDocuments & operator=(const C2cDocuments & other);
 
-  bool operator==(const Documents & other) const;
+  bool operator==(const C2cDocuments & other) const;
 
   // Getter/Setter
 
@@ -1522,46 +1522,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Documents & obj);
-QDataStream & operator>>(QDataStream & in, Documents & obj);
-// qRegisterMetaTypeStreamOperators<Documents>("Documents");
+QDataStream & operator<<(QDataStream & out, const C2cDocuments & obj);
+QDataStream & operator>>(QDataStream & in, C2cDocuments & obj);
+// qRegisterMetaTypeStreamOperators<C2cDocuments>("C2cDocuments");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Documents & obj);
+QDebug operator<<(QDebug debug, const C2cDocuments & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsPtr
+class C2cDocumentsPtr
 {
 public:
-  typedef Documents Class;
+  typedef C2cDocuments Class;
 
 public:
-  DocumentsPtr() : m_ptr() {}
-  DocumentsPtr(const DocumentsPtr & other) : m_ptr(other.m_ptr) {}
-  ~DocumentsPtr() {
+  C2cDocumentsPtr() : m_ptr() {}
+  C2cDocumentsPtr(const C2cDocumentsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cDocumentsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DocumentsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DocumentsPtr";
+    //// qInfo() << "--- Delete C2cDocumentsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cDocumentsPtr";
     // m_ptr.clear();
   }
 
-  DocumentsPtr & operator=(const DocumentsPtr & other) {
+  C2cDocumentsPtr & operator=(const C2cDocumentsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  DocumentsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  DocumentsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  DocumentsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  DocumentsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  DocumentsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  DocumentsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  DocumentsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cDocumentsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cDocumentsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cDocumentsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cDocumentsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cDocumentsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cDocumentsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cDocumentsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -1581,7 +1581,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const DocumentsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cDocumentsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -1589,26 +1589,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const DocumentsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cDocumentsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsCache : public QObject
+class C2cDocumentsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Documents * t_Key;
-  typedef DocumentsPtr Ptr;
+  typedef C2cDocuments * t_Key;
+  typedef C2cDocumentsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  DocumentsCache();
-  ~DocumentsCache();
+  C2cDocumentsCache();
+  ~C2cDocumentsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -1629,20 +1629,20 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsModel : public QAbstractListModel
+class C2cDocumentsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsPtr Item;
+  typedef C2cDocumentsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  DocumentsModel();
-  DocumentsModel(const ItemList & items);
-  ~DocumentsModel();
+  C2cDocumentsModel();
+  C2cDocumentsModel(const ItemList & items);
+  ~C2cDocumentsModel();
 
-  // Fixme: use DocumentsSchema::Fields ???
+  // Fixme: use C2cDocumentsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     PROTECTED_FLAG,
@@ -1667,12 +1667,12 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsGeometries;
-class DocumentsGeometriesPtr;
+class C2cDocumentsGeometries;
+class C2cDocumentsGeometriesPtr;
 
 /**************************************************************************************************/
 
-class DocumentsGeometriesSchema : public QcSchema
+class C2cDocumentsGeometriesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -1684,26 +1684,26 @@ public:
   static const int NUMBER_OF_FIELDS = 4;
 
 public:
-  static DocumentsGeometriesSchema & instance()
+  static C2cDocumentsGeometriesSchema & instance()
   {
-    static DocumentsGeometriesSchema m_instance;
+    static C2cDocumentsGeometriesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  DocumentsGeometriesSchema(const DocumentsGeometriesSchema &) = delete;
-  DocumentsGeometriesSchema(DocumentsGeometriesSchema &&) = delete;
-  DocumentsGeometriesSchema & operator=(const DocumentsGeometriesSchema &) = delete;
-  DocumentsGeometriesSchema & operator=(DocumentsGeometriesSchema &&) = delete;
+  C2cDocumentsGeometriesSchema(const C2cDocumentsGeometriesSchema &) = delete;
+  C2cDocumentsGeometriesSchema(C2cDocumentsGeometriesSchema &&) = delete;
+  C2cDocumentsGeometriesSchema & operator=(const C2cDocumentsGeometriesSchema &) = delete;
+  C2cDocumentsGeometriesSchema & operator=(C2cDocumentsGeometriesSchema &&) = delete;
 
 protected:
-  DocumentsGeometriesSchema();
-  ~DocumentsGeometriesSchema();
+  C2cDocumentsGeometriesSchema();
+  ~C2cDocumentsGeometriesSchema();
 };
 
 /**************************************************************************************************/
 
-class DocumentsGeometries : public QObject, public QcRow<DocumentsGeometriesSchema>
+class C2cDocumentsGeometries : public QObject, public QcRow<C2cDocumentsGeometriesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1712,23 +1712,23 @@ class DocumentsGeometries : public QObject, public QcRow<DocumentsGeometriesSche
   Q_PROPERTY(int version READ version WRITE set_version NOTIFY versionChanged)
 
 public:
-  typedef DocumentsGeometriesPtr Ptr;
+  typedef C2cDocumentsGeometriesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class DocumentsGeometriesPtr;
+  friend class C2cDocumentsGeometriesPtr;
 
 public:
-  DocumentsGeometries();
-  DocumentsGeometries(const DocumentsGeometries & other);
-  DocumentsGeometries(const QJsonObject & json_object); // JSON deserializer
-  DocumentsGeometries(const QVariantHash & variant_hash);
-  DocumentsGeometries(const QVariantList & variants);
-  DocumentsGeometries(const QSqlRecord & record); // SQL deserializer
-  DocumentsGeometries(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~DocumentsGeometries();
+  C2cDocumentsGeometries();
+  C2cDocumentsGeometries(const C2cDocumentsGeometries & other);
+  C2cDocumentsGeometries(const QJsonObject & json_object); // JSON deserializer
+  C2cDocumentsGeometries(const QVariantHash & variant_hash);
+  C2cDocumentsGeometries(const QVariantList & variants);
+  C2cDocumentsGeometries(const QSqlRecord & record); // SQL deserializer
+  C2cDocumentsGeometries(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cDocumentsGeometries();
 
-  DocumentsGeometries & operator=(const DocumentsGeometries & other);
+  C2cDocumentsGeometries & operator=(const C2cDocumentsGeometries & other);
 
-  bool operator==(const DocumentsGeometries & other) const;
+  bool operator==(const C2cDocumentsGeometries & other) const;
 
   // Getter/Setter
 
@@ -1786,46 +1786,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const DocumentsGeometries & obj);
-QDataStream & operator>>(QDataStream & in, DocumentsGeometries & obj);
-// qRegisterMetaTypeStreamOperators<DocumentsGeometries>("DocumentsGeometries");
+QDataStream & operator<<(QDataStream & out, const C2cDocumentsGeometries & obj);
+QDataStream & operator>>(QDataStream & in, C2cDocumentsGeometries & obj);
+// qRegisterMetaTypeStreamOperators<C2cDocumentsGeometries>("C2cDocumentsGeometries");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsGeometries & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsGeometries & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsGeometriesPtr
+class C2cDocumentsGeometriesPtr
 {
 public:
-  typedef DocumentsGeometries Class;
+  typedef C2cDocumentsGeometries Class;
 
 public:
-  DocumentsGeometriesPtr() : m_ptr() {}
-  DocumentsGeometriesPtr(const DocumentsGeometriesPtr & other) : m_ptr(other.m_ptr) {}
-  ~DocumentsGeometriesPtr() {
+  C2cDocumentsGeometriesPtr() : m_ptr() {}
+  C2cDocumentsGeometriesPtr(const C2cDocumentsGeometriesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cDocumentsGeometriesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DocumentsGeometriesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DocumentsGeometriesPtr";
+    //// qInfo() << "--- Delete C2cDocumentsGeometriesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cDocumentsGeometriesPtr";
     // m_ptr.clear();
   }
 
-  DocumentsGeometriesPtr & operator=(const DocumentsGeometriesPtr & other) {
+  C2cDocumentsGeometriesPtr & operator=(const C2cDocumentsGeometriesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  DocumentsGeometriesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  DocumentsGeometriesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  DocumentsGeometriesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  DocumentsGeometriesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  DocumentsGeometriesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  DocumentsGeometriesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  DocumentsGeometriesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cDocumentsGeometriesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cDocumentsGeometriesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cDocumentsGeometriesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cDocumentsGeometriesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cDocumentsGeometriesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cDocumentsGeometriesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cDocumentsGeometriesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -1845,7 +1845,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const DocumentsGeometriesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cDocumentsGeometriesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -1853,26 +1853,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const DocumentsGeometriesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cDocumentsGeometriesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsGeometriesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsGeometriesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsGeometriesCache : public QObject
+class C2cDocumentsGeometriesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsGeometries * t_Key;
-  typedef DocumentsGeometriesPtr Ptr;
+  typedef C2cDocumentsGeometries * t_Key;
+  typedef C2cDocumentsGeometriesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  DocumentsGeometriesCache();
-  ~DocumentsGeometriesCache();
+  C2cDocumentsGeometriesCache();
+  ~C2cDocumentsGeometriesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -1893,20 +1893,20 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsGeometriesModel : public QAbstractListModel
+class C2cDocumentsGeometriesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsGeometriesPtr Item;
+  typedef C2cDocumentsGeometriesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  DocumentsGeometriesModel();
-  DocumentsGeometriesModel(const ItemList & items);
-  ~DocumentsGeometriesModel();
+  C2cDocumentsGeometriesModel();
+  C2cDocumentsGeometriesModel(const ItemList & items);
+  ~C2cDocumentsGeometriesModel();
 
-  // Fixme: use DocumentsGeometriesSchema::Fields ???
+  // Fixme: use C2cDocumentsGeometriesSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     GEOM,
@@ -1929,12 +1929,12 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsLocales;
-class DocumentsLocalesPtr;
+class C2cDocumentsLocales;
+class C2cDocumentsLocalesPtr;
 
 /**************************************************************************************************/
 
-class DocumentsLocalesSchema : public QcSchema
+class C2cDocumentsLocalesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -1950,26 +1950,26 @@ public:
   static const int NUMBER_OF_FIELDS = 8;
 
 public:
-  static DocumentsLocalesSchema & instance()
+  static C2cDocumentsLocalesSchema & instance()
   {
-    static DocumentsLocalesSchema m_instance;
+    static C2cDocumentsLocalesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  DocumentsLocalesSchema(const DocumentsLocalesSchema &) = delete;
-  DocumentsLocalesSchema(DocumentsLocalesSchema &&) = delete;
-  DocumentsLocalesSchema & operator=(const DocumentsLocalesSchema &) = delete;
-  DocumentsLocalesSchema & operator=(DocumentsLocalesSchema &&) = delete;
+  C2cDocumentsLocalesSchema(const C2cDocumentsLocalesSchema &) = delete;
+  C2cDocumentsLocalesSchema(C2cDocumentsLocalesSchema &&) = delete;
+  C2cDocumentsLocalesSchema & operator=(const C2cDocumentsLocalesSchema &) = delete;
+  C2cDocumentsLocalesSchema & operator=(C2cDocumentsLocalesSchema &&) = delete;
 
 protected:
-  DocumentsLocalesSchema();
-  ~DocumentsLocalesSchema();
+  C2cDocumentsLocalesSchema();
+  ~C2cDocumentsLocalesSchema();
 };
 
 /**************************************************************************************************/
 
-class DocumentsLocales : public QObject, public QcRow<DocumentsLocalesSchema>
+class C2cDocumentsLocales : public QObject, public QcRow<C2cDocumentsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -1982,23 +1982,23 @@ class DocumentsLocales : public QObject, public QcRow<DocumentsLocalesSchema>
   Q_PROPERTY(int version READ version WRITE set_version NOTIFY versionChanged)
 
 public:
-  typedef DocumentsLocalesPtr Ptr;
+  typedef C2cDocumentsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class DocumentsLocalesPtr;
+  friend class C2cDocumentsLocalesPtr;
 
 public:
-  DocumentsLocales();
-  DocumentsLocales(const DocumentsLocales & other);
-  DocumentsLocales(const QJsonObject & json_object); // JSON deserializer
-  DocumentsLocales(const QVariantHash & variant_hash);
-  DocumentsLocales(const QVariantList & variants);
-  DocumentsLocales(const QSqlRecord & record); // SQL deserializer
-  DocumentsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~DocumentsLocales();
+  C2cDocumentsLocales();
+  C2cDocumentsLocales(const C2cDocumentsLocales & other);
+  C2cDocumentsLocales(const QJsonObject & json_object); // JSON deserializer
+  C2cDocumentsLocales(const QVariantHash & variant_hash);
+  C2cDocumentsLocales(const QVariantList & variants);
+  C2cDocumentsLocales(const QSqlRecord & record); // SQL deserializer
+  C2cDocumentsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cDocumentsLocales();
 
-  DocumentsLocales & operator=(const DocumentsLocales & other);
+  C2cDocumentsLocales & operator=(const C2cDocumentsLocales & other);
 
-  bool operator==(const DocumentsLocales & other) const;
+  bool operator==(const C2cDocumentsLocales & other) const;
 
   // Getter/Setter
 
@@ -2080,46 +2080,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const DocumentsLocales & obj);
-QDataStream & operator>>(QDataStream & in, DocumentsLocales & obj);
-// qRegisterMetaTypeStreamOperators<DocumentsLocales>("DocumentsLocales");
+QDataStream & operator<<(QDataStream & out, const C2cDocumentsLocales & obj);
+QDataStream & operator>>(QDataStream & in, C2cDocumentsLocales & obj);
+// qRegisterMetaTypeStreamOperators<C2cDocumentsLocales>("C2cDocumentsLocales");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsLocales & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsLocales & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsLocalesPtr
+class C2cDocumentsLocalesPtr
 {
 public:
-  typedef DocumentsLocales Class;
+  typedef C2cDocumentsLocales Class;
 
 public:
-  DocumentsLocalesPtr() : m_ptr() {}
-  DocumentsLocalesPtr(const DocumentsLocalesPtr & other) : m_ptr(other.m_ptr) {}
-  ~DocumentsLocalesPtr() {
+  C2cDocumentsLocalesPtr() : m_ptr() {}
+  C2cDocumentsLocalesPtr(const C2cDocumentsLocalesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cDocumentsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DocumentsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DocumentsLocalesPtr";
+    //// qInfo() << "--- Delete C2cDocumentsLocalesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cDocumentsLocalesPtr";
     // m_ptr.clear();
   }
 
-  DocumentsLocalesPtr & operator=(const DocumentsLocalesPtr & other) {
+  C2cDocumentsLocalesPtr & operator=(const C2cDocumentsLocalesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  DocumentsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  DocumentsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  DocumentsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  DocumentsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  DocumentsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  DocumentsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  DocumentsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cDocumentsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cDocumentsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cDocumentsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cDocumentsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cDocumentsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cDocumentsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cDocumentsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -2139,7 +2139,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const DocumentsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cDocumentsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -2147,26 +2147,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const DocumentsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cDocumentsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsLocalesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsLocalesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsLocalesCache : public QObject
+class C2cDocumentsLocalesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsLocales * t_Key;
-  typedef DocumentsLocalesPtr Ptr;
+  typedef C2cDocumentsLocales * t_Key;
+  typedef C2cDocumentsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  DocumentsLocalesCache();
-  ~DocumentsLocalesCache();
+  C2cDocumentsLocalesCache();
+  ~C2cDocumentsLocalesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -2187,20 +2187,20 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsLocalesModel : public QAbstractListModel
+class C2cDocumentsLocalesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsLocalesPtr Item;
+  typedef C2cDocumentsLocalesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  DocumentsLocalesModel();
-  DocumentsLocalesModel(const ItemList & items);
-  ~DocumentsLocalesModel();
+  C2cDocumentsLocalesModel();
+  C2cDocumentsLocalesModel(const ItemList & items);
+  ~C2cDocumentsLocalesModel();
 
-  // Fixme: use DocumentsLocalesSchema::Fields ???
+  // Fixme: use C2cDocumentsLocalesSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     DESCRIPTION,
@@ -2227,12 +2227,12 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsTopics;
-class DocumentsTopicsPtr;
+class C2cDocumentsTopics;
+class C2cDocumentsTopicsPtr;
 
 /**************************************************************************************************/
 
-class DocumentsTopicsSchema : public QcSchema
+class C2cDocumentsTopicsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -2242,49 +2242,49 @@ public:
   static const int NUMBER_OF_FIELDS = 2;
 
 public:
-  static DocumentsTopicsSchema & instance()
+  static C2cDocumentsTopicsSchema & instance()
   {
-    static DocumentsTopicsSchema m_instance;
+    static C2cDocumentsTopicsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  DocumentsTopicsSchema(const DocumentsTopicsSchema &) = delete;
-  DocumentsTopicsSchema(DocumentsTopicsSchema &&) = delete;
-  DocumentsTopicsSchema & operator=(const DocumentsTopicsSchema &) = delete;
-  DocumentsTopicsSchema & operator=(DocumentsTopicsSchema &&) = delete;
+  C2cDocumentsTopicsSchema(const C2cDocumentsTopicsSchema &) = delete;
+  C2cDocumentsTopicsSchema(C2cDocumentsTopicsSchema &&) = delete;
+  C2cDocumentsTopicsSchema & operator=(const C2cDocumentsTopicsSchema &) = delete;
+  C2cDocumentsTopicsSchema & operator=(C2cDocumentsTopicsSchema &&) = delete;
 
 protected:
-  DocumentsTopicsSchema();
-  ~DocumentsTopicsSchema();
+  C2cDocumentsTopicsSchema();
+  ~C2cDocumentsTopicsSchema();
 };
 
 /**************************************************************************************************/
 
-class DocumentsTopics : public QObject, public QcRow<DocumentsTopicsSchema>
+class C2cDocumentsTopics : public QObject, public QcRow<C2cDocumentsTopicsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_locale_id READ document_locale_id WRITE set_document_locale_id NOTIFY document_locale_idChanged)
   Q_PROPERTY(int topic_id READ topic_id WRITE set_topic_id NOTIFY topic_idChanged)
 
 public:
-  typedef DocumentsTopicsPtr Ptr;
+  typedef C2cDocumentsTopicsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class DocumentsTopicsPtr;
+  friend class C2cDocumentsTopicsPtr;
 
 public:
-  DocumentsTopics();
-  DocumentsTopics(const DocumentsTopics & other);
-  DocumentsTopics(const QJsonObject & json_object); // JSON deserializer
-  DocumentsTopics(const QVariantHash & variant_hash);
-  DocumentsTopics(const QVariantList & variants);
-  DocumentsTopics(const QSqlRecord & record); // SQL deserializer
-  DocumentsTopics(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~DocumentsTopics();
+  C2cDocumentsTopics();
+  C2cDocumentsTopics(const C2cDocumentsTopics & other);
+  C2cDocumentsTopics(const QJsonObject & json_object); // JSON deserializer
+  C2cDocumentsTopics(const QVariantHash & variant_hash);
+  C2cDocumentsTopics(const QVariantList & variants);
+  C2cDocumentsTopics(const QSqlRecord & record); // SQL deserializer
+  C2cDocumentsTopics(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cDocumentsTopics();
 
-  DocumentsTopics & operator=(const DocumentsTopics & other);
+  C2cDocumentsTopics & operator=(const C2cDocumentsTopics & other);
 
-  bool operator==(const DocumentsTopics & other) const;
+  bool operator==(const C2cDocumentsTopics & other) const;
 
   // Getter/Setter
 
@@ -2330,46 +2330,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const DocumentsTopics & obj);
-QDataStream & operator>>(QDataStream & in, DocumentsTopics & obj);
-// qRegisterMetaTypeStreamOperators<DocumentsTopics>("DocumentsTopics");
+QDataStream & operator<<(QDataStream & out, const C2cDocumentsTopics & obj);
+QDataStream & operator>>(QDataStream & in, C2cDocumentsTopics & obj);
+// qRegisterMetaTypeStreamOperators<C2cDocumentsTopics>("C2cDocumentsTopics");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsTopics & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsTopics & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsTopicsPtr
+class C2cDocumentsTopicsPtr
 {
 public:
-  typedef DocumentsTopics Class;
+  typedef C2cDocumentsTopics Class;
 
 public:
-  DocumentsTopicsPtr() : m_ptr() {}
-  DocumentsTopicsPtr(const DocumentsTopicsPtr & other) : m_ptr(other.m_ptr) {}
-  ~DocumentsTopicsPtr() {
+  C2cDocumentsTopicsPtr() : m_ptr() {}
+  C2cDocumentsTopicsPtr(const C2cDocumentsTopicsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cDocumentsTopicsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DocumentsTopicsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DocumentsTopicsPtr";
+    //// qInfo() << "--- Delete C2cDocumentsTopicsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cDocumentsTopicsPtr";
     // m_ptr.clear();
   }
 
-  DocumentsTopicsPtr & operator=(const DocumentsTopicsPtr & other) {
+  C2cDocumentsTopicsPtr & operator=(const C2cDocumentsTopicsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  DocumentsTopicsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  DocumentsTopicsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  DocumentsTopicsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  DocumentsTopicsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  DocumentsTopicsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  DocumentsTopicsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  DocumentsTopicsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cDocumentsTopicsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cDocumentsTopicsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cDocumentsTopicsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cDocumentsTopicsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cDocumentsTopicsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cDocumentsTopicsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cDocumentsTopicsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -2389,7 +2389,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const DocumentsTopicsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cDocumentsTopicsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -2397,26 +2397,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const DocumentsTopicsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cDocumentsTopicsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsTopicsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsTopicsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsTopicsCache : public QObject
+class C2cDocumentsTopicsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsTopics * t_Key;
-  typedef DocumentsTopicsPtr Ptr;
+  typedef C2cDocumentsTopics * t_Key;
+  typedef C2cDocumentsTopicsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  DocumentsTopicsCache();
-  ~DocumentsTopicsCache();
+  C2cDocumentsTopicsCache();
+  ~C2cDocumentsTopicsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -2437,20 +2437,20 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsTopicsModel : public QAbstractListModel
+class C2cDocumentsTopicsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsTopicsPtr Item;
+  typedef C2cDocumentsTopicsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  DocumentsTopicsModel();
-  DocumentsTopicsModel(const ItemList & items);
-  ~DocumentsTopicsModel();
+  C2cDocumentsTopicsModel();
+  C2cDocumentsTopicsModel(const ItemList & items);
+  ~C2cDocumentsTopicsModel();
 
-  // Fixme: use DocumentsTopicsSchema::Fields ???
+  // Fixme: use C2cDocumentsTopicsSchema::Fields ???
   enum Roles {
     DOCUMENT_LOCALE_ID = Qt::UserRole + 1,
     TOPIC_ID
@@ -2471,12 +2471,12 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsVersions;
-class DocumentsVersionsPtr;
+class C2cDocumentsVersions;
+class C2cDocumentsVersionsPtr;
 
 /**************************************************************************************************/
 
-class DocumentsVersionsSchema : public QcSchema
+class C2cDocumentsVersionsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -2491,26 +2491,26 @@ public:
   static const int NUMBER_OF_FIELDS = 7;
 
 public:
-  static DocumentsVersionsSchema & instance()
+  static C2cDocumentsVersionsSchema & instance()
   {
-    static DocumentsVersionsSchema m_instance;
+    static C2cDocumentsVersionsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  DocumentsVersionsSchema(const DocumentsVersionsSchema &) = delete;
-  DocumentsVersionsSchema(DocumentsVersionsSchema &&) = delete;
-  DocumentsVersionsSchema & operator=(const DocumentsVersionsSchema &) = delete;
-  DocumentsVersionsSchema & operator=(DocumentsVersionsSchema &&) = delete;
+  C2cDocumentsVersionsSchema(const C2cDocumentsVersionsSchema &) = delete;
+  C2cDocumentsVersionsSchema(C2cDocumentsVersionsSchema &&) = delete;
+  C2cDocumentsVersionsSchema & operator=(const C2cDocumentsVersionsSchema &) = delete;
+  C2cDocumentsVersionsSchema & operator=(C2cDocumentsVersionsSchema &&) = delete;
 
 protected:
-  DocumentsVersionsSchema();
-  ~DocumentsVersionsSchema();
+  C2cDocumentsVersionsSchema();
+  ~C2cDocumentsVersionsSchema();
 };
 
 /**************************************************************************************************/
 
-class DocumentsVersions : public QObject, public QcRow<DocumentsVersionsSchema>
+class C2cDocumentsVersions : public QObject, public QcRow<C2cDocumentsVersionsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -2522,23 +2522,23 @@ class DocumentsVersions : public QObject, public QcRow<DocumentsVersionsSchema>
   Q_PROPERTY(QString lang READ lang WRITE set_lang NOTIFY langChanged)
 
 public:
-  typedef DocumentsVersionsPtr Ptr;
+  typedef C2cDocumentsVersionsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class DocumentsVersionsPtr;
+  friend class C2cDocumentsVersionsPtr;
 
 public:
-  DocumentsVersions();
-  DocumentsVersions(const DocumentsVersions & other);
-  DocumentsVersions(const QJsonObject & json_object); // JSON deserializer
-  DocumentsVersions(const QVariantHash & variant_hash);
-  DocumentsVersions(const QVariantList & variants);
-  DocumentsVersions(const QSqlRecord & record); // SQL deserializer
-  DocumentsVersions(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~DocumentsVersions();
+  C2cDocumentsVersions();
+  C2cDocumentsVersions(const C2cDocumentsVersions & other);
+  C2cDocumentsVersions(const QJsonObject & json_object); // JSON deserializer
+  C2cDocumentsVersions(const QVariantHash & variant_hash);
+  C2cDocumentsVersions(const QVariantList & variants);
+  C2cDocumentsVersions(const QSqlRecord & record); // SQL deserializer
+  C2cDocumentsVersions(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cDocumentsVersions();
 
-  DocumentsVersions & operator=(const DocumentsVersions & other);
+  C2cDocumentsVersions & operator=(const C2cDocumentsVersions & other);
 
-  bool operator==(const DocumentsVersions & other) const;
+  bool operator==(const C2cDocumentsVersions & other) const;
 
   // Getter/Setter
 
@@ -2614,46 +2614,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const DocumentsVersions & obj);
-QDataStream & operator>>(QDataStream & in, DocumentsVersions & obj);
-// qRegisterMetaTypeStreamOperators<DocumentsVersions>("DocumentsVersions");
+QDataStream & operator<<(QDataStream & out, const C2cDocumentsVersions & obj);
+QDataStream & operator>>(QDataStream & in, C2cDocumentsVersions & obj);
+// qRegisterMetaTypeStreamOperators<C2cDocumentsVersions>("C2cDocumentsVersions");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsVersions & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsVersions & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsVersionsPtr
+class C2cDocumentsVersionsPtr
 {
 public:
-  typedef DocumentsVersions Class;
+  typedef C2cDocumentsVersions Class;
 
 public:
-  DocumentsVersionsPtr() : m_ptr() {}
-  DocumentsVersionsPtr(const DocumentsVersionsPtr & other) : m_ptr(other.m_ptr) {}
-  ~DocumentsVersionsPtr() {
+  C2cDocumentsVersionsPtr() : m_ptr() {}
+  C2cDocumentsVersionsPtr(const C2cDocumentsVersionsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cDocumentsVersionsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DocumentsVersionsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DocumentsVersionsPtr";
+    //// qInfo() << "--- Delete C2cDocumentsVersionsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cDocumentsVersionsPtr";
     // m_ptr.clear();
   }
 
-  DocumentsVersionsPtr & operator=(const DocumentsVersionsPtr & other) {
+  C2cDocumentsVersionsPtr & operator=(const C2cDocumentsVersionsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  DocumentsVersionsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  DocumentsVersionsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  DocumentsVersionsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  DocumentsVersionsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  DocumentsVersionsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  DocumentsVersionsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  DocumentsVersionsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cDocumentsVersionsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cDocumentsVersionsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cDocumentsVersionsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cDocumentsVersionsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cDocumentsVersionsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cDocumentsVersionsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cDocumentsVersionsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -2673,7 +2673,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const DocumentsVersionsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cDocumentsVersionsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -2681,26 +2681,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const DocumentsVersionsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cDocumentsVersionsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const DocumentsVersionsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cDocumentsVersionsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class DocumentsVersionsCache : public QObject
+class C2cDocumentsVersionsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsVersions * t_Key;
-  typedef DocumentsVersionsPtr Ptr;
+  typedef C2cDocumentsVersions * t_Key;
+  typedef C2cDocumentsVersionsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  DocumentsVersionsCache();
-  ~DocumentsVersionsCache();
+  C2cDocumentsVersionsCache();
+  ~C2cDocumentsVersionsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -2721,20 +2721,20 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentsVersionsModel : public QAbstractListModel
+class C2cDocumentsVersionsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef DocumentsVersionsPtr Item;
+  typedef C2cDocumentsVersionsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  DocumentsVersionsModel();
-  DocumentsVersionsModel(const ItemList & items);
-  ~DocumentsVersionsModel();
+  C2cDocumentsVersionsModel();
+  C2cDocumentsVersionsModel(const ItemList & items);
+  ~C2cDocumentsVersionsModel();
 
-  // Fixme: use DocumentsVersionsSchema::Fields ???
+  // Fixme: use C2cDocumentsVersionsSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     DOCUMENT_ARCHIVE_ID,
@@ -2760,12 +2760,12 @@ private:
 
 /**************************************************************************************************/
 
-class Images;
-class ImagesPtr;
+class C2cImages;
+class C2cImagesPtr;
 
 /**************************************************************************************************/
 
-class ImagesSchema : public QcSchema
+class C2cImagesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -2789,26 +2789,26 @@ public:
   static const int NUMBER_OF_FIELDS = 16;
 
 public:
-  static ImagesSchema & instance()
+  static C2cImagesSchema & instance()
   {
-    static ImagesSchema m_instance;
+    static C2cImagesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  ImagesSchema(const ImagesSchema &) = delete;
-  ImagesSchema(ImagesSchema &&) = delete;
-  ImagesSchema & operator=(const ImagesSchema &) = delete;
-  ImagesSchema & operator=(ImagesSchema &&) = delete;
+  C2cImagesSchema(const C2cImagesSchema &) = delete;
+  C2cImagesSchema(C2cImagesSchema &&) = delete;
+  C2cImagesSchema & operator=(const C2cImagesSchema &) = delete;
+  C2cImagesSchema & operator=(C2cImagesSchema &&) = delete;
 
 protected:
-  ImagesSchema();
-  ~ImagesSchema();
+  C2cImagesSchema();
+  ~C2cImagesSchema();
 };
 
 /**************************************************************************************************/
 
-class Images : public QObject, public QcRow<ImagesSchema>
+class C2cImages : public QObject, public QcRow<C2cImagesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -2829,23 +2829,23 @@ class Images : public QObject, public QcRow<ImagesSchema>
   Q_PROPERTY(int width READ width WRITE set_width NOTIFY widthChanged)
 
 public:
-  typedef ImagesPtr Ptr;
+  typedef C2cImagesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class ImagesPtr;
+  friend class C2cImagesPtr;
 
 public:
-  Images();
-  Images(const Images & other);
-  Images(const QJsonObject & json_object); // JSON deserializer
-  Images(const QVariantHash & variant_hash);
-  Images(const QVariantList & variants);
-  Images(const QSqlRecord & record); // SQL deserializer
-  Images(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Images();
+  C2cImages();
+  C2cImages(const C2cImages & other);
+  C2cImages(const QJsonObject & json_object); // JSON deserializer
+  C2cImages(const QVariantHash & variant_hash);
+  C2cImages(const QVariantList & variants);
+  C2cImages(const QSqlRecord & record); // SQL deserializer
+  C2cImages(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cImages();
 
-  Images & operator=(const Images & other);
+  C2cImages & operator=(const C2cImages & other);
 
-  bool operator==(const Images & other) const;
+  bool operator==(const C2cImages & other) const;
 
   // Getter/Setter
 
@@ -2975,46 +2975,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Images & obj);
-QDataStream & operator>>(QDataStream & in, Images & obj);
-// qRegisterMetaTypeStreamOperators<Images>("Images");
+QDataStream & operator<<(QDataStream & out, const C2cImages & obj);
+QDataStream & operator>>(QDataStream & in, C2cImages & obj);
+// qRegisterMetaTypeStreamOperators<C2cImages>("C2cImages");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Images & obj);
+QDebug operator<<(QDebug debug, const C2cImages & obj);
 #endif
 
 /**************************************************************************************************/
 
-class ImagesPtr
+class C2cImagesPtr
 {
 public:
-  typedef Images Class;
+  typedef C2cImages Class;
 
 public:
-  ImagesPtr() : m_ptr() {}
-  ImagesPtr(const ImagesPtr & other) : m_ptr(other.m_ptr) {}
-  ~ImagesPtr() {
+  C2cImagesPtr() : m_ptr() {}
+  C2cImagesPtr(const C2cImagesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cImagesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete ImagesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete ImagesPtr";
+    //// qInfo() << "--- Delete C2cImagesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cImagesPtr";
     // m_ptr.clear();
   }
 
-  ImagesPtr & operator=(const ImagesPtr & other) {
+  C2cImagesPtr & operator=(const C2cImagesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  ImagesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  ImagesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  ImagesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  ImagesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  ImagesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  ImagesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  ImagesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cImagesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cImagesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cImagesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cImagesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cImagesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cImagesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cImagesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -3034,7 +3034,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const ImagesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cImagesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -3042,26 +3042,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const ImagesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cImagesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const ImagesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cImagesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class ImagesCache : public QObject
+class C2cImagesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Images * t_Key;
-  typedef ImagesPtr Ptr;
+  typedef C2cImages * t_Key;
+  typedef C2cImagesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  ImagesCache();
-  ~ImagesCache();
+  C2cImagesCache();
+  ~C2cImagesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -3082,20 +3082,20 @@ private:
 
 /**************************************************************************************************/
 
-class ImagesModel : public QAbstractListModel
+class C2cImagesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef ImagesPtr Item;
+  typedef C2cImagesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  ImagesModel();
-  ImagesModel(const ItemList & items);
-  ~ImagesModel();
+  C2cImagesModel();
+  C2cImagesModel(const ItemList & items);
+  ~C2cImagesModel();
 
-  // Fixme: use ImagesSchema::Fields ???
+  // Fixme: use C2cImagesSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -3130,12 +3130,12 @@ private:
 
 /**************************************************************************************************/
 
-class MapAssociations;
-class MapAssociationsPtr;
+class C2cMapAssociations;
+class C2cMapAssociationsPtr;
 
 /**************************************************************************************************/
 
-class MapAssociationsSchema : public QcSchema
+class C2cMapAssociationsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -3145,49 +3145,49 @@ public:
   static const int NUMBER_OF_FIELDS = 2;
 
 public:
-  static MapAssociationsSchema & instance()
+  static C2cMapAssociationsSchema & instance()
   {
-    static MapAssociationsSchema m_instance;
+    static C2cMapAssociationsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  MapAssociationsSchema(const MapAssociationsSchema &) = delete;
-  MapAssociationsSchema(MapAssociationsSchema &&) = delete;
-  MapAssociationsSchema & operator=(const MapAssociationsSchema &) = delete;
-  MapAssociationsSchema & operator=(MapAssociationsSchema &&) = delete;
+  C2cMapAssociationsSchema(const C2cMapAssociationsSchema &) = delete;
+  C2cMapAssociationsSchema(C2cMapAssociationsSchema &&) = delete;
+  C2cMapAssociationsSchema & operator=(const C2cMapAssociationsSchema &) = delete;
+  C2cMapAssociationsSchema & operator=(C2cMapAssociationsSchema &&) = delete;
 
 protected:
-  MapAssociationsSchema();
-  ~MapAssociationsSchema();
+  C2cMapAssociationsSchema();
+  ~C2cMapAssociationsSchema();
 };
 
 /**************************************************************************************************/
 
-class MapAssociations : public QObject, public QcRow<MapAssociationsSchema>
+class C2cMapAssociations : public QObject, public QcRow<C2cMapAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
   Q_PROPERTY(int topo_map_id READ topo_map_id WRITE set_topo_map_id NOTIFY topo_map_idChanged)
 
 public:
-  typedef MapAssociationsPtr Ptr;
+  typedef C2cMapAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class MapAssociationsPtr;
+  friend class C2cMapAssociationsPtr;
 
 public:
-  MapAssociations();
-  MapAssociations(const MapAssociations & other);
-  MapAssociations(const QJsonObject & json_object); // JSON deserializer
-  MapAssociations(const QVariantHash & variant_hash);
-  MapAssociations(const QVariantList & variants);
-  MapAssociations(const QSqlRecord & record); // SQL deserializer
-  MapAssociations(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~MapAssociations();
+  C2cMapAssociations();
+  C2cMapAssociations(const C2cMapAssociations & other);
+  C2cMapAssociations(const QJsonObject & json_object); // JSON deserializer
+  C2cMapAssociations(const QVariantHash & variant_hash);
+  C2cMapAssociations(const QVariantList & variants);
+  C2cMapAssociations(const QSqlRecord & record); // SQL deserializer
+  C2cMapAssociations(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cMapAssociations();
 
-  MapAssociations & operator=(const MapAssociations & other);
+  C2cMapAssociations & operator=(const C2cMapAssociations & other);
 
-  bool operator==(const MapAssociations & other) const;
+  bool operator==(const C2cMapAssociations & other) const;
 
   // Getter/Setter
 
@@ -3233,46 +3233,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const MapAssociations & obj);
-QDataStream & operator>>(QDataStream & in, MapAssociations & obj);
-// qRegisterMetaTypeStreamOperators<MapAssociations>("MapAssociations");
+QDataStream & operator<<(QDataStream & out, const C2cMapAssociations & obj);
+QDataStream & operator>>(QDataStream & in, C2cMapAssociations & obj);
+// qRegisterMetaTypeStreamOperators<C2cMapAssociations>("C2cMapAssociations");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const MapAssociations & obj);
+QDebug operator<<(QDebug debug, const C2cMapAssociations & obj);
 #endif
 
 /**************************************************************************************************/
 
-class MapAssociationsPtr
+class C2cMapAssociationsPtr
 {
 public:
-  typedef MapAssociations Class;
+  typedef C2cMapAssociations Class;
 
 public:
-  MapAssociationsPtr() : m_ptr() {}
-  MapAssociationsPtr(const MapAssociationsPtr & other) : m_ptr(other.m_ptr) {}
-  ~MapAssociationsPtr() {
+  C2cMapAssociationsPtr() : m_ptr() {}
+  C2cMapAssociationsPtr(const C2cMapAssociationsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cMapAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete MapAssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete MapAssociationsPtr";
+    //// qInfo() << "--- Delete C2cMapAssociationsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cMapAssociationsPtr";
     // m_ptr.clear();
   }
 
-  MapAssociationsPtr & operator=(const MapAssociationsPtr & other) {
+  C2cMapAssociationsPtr & operator=(const C2cMapAssociationsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  MapAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  MapAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  MapAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  MapAssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  MapAssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  MapAssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  MapAssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cMapAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cMapAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cMapAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cMapAssociationsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cMapAssociationsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cMapAssociationsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cMapAssociationsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -3292,7 +3292,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const MapAssociationsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cMapAssociationsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -3300,26 +3300,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const MapAssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cMapAssociationsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const MapAssociationsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cMapAssociationsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class MapAssociationsCache : public QObject
+class C2cMapAssociationsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef MapAssociations * t_Key;
-  typedef MapAssociationsPtr Ptr;
+  typedef C2cMapAssociations * t_Key;
+  typedef C2cMapAssociationsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  MapAssociationsCache();
-  ~MapAssociationsCache();
+  C2cMapAssociationsCache();
+  ~C2cMapAssociationsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -3340,20 +3340,20 @@ private:
 
 /**************************************************************************************************/
 
-class MapAssociationsModel : public QAbstractListModel
+class C2cMapAssociationsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef MapAssociationsPtr Item;
+  typedef C2cMapAssociationsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  MapAssociationsModel();
-  MapAssociationsModel(const ItemList & items);
-  ~MapAssociationsModel();
+  C2cMapAssociationsModel();
+  C2cMapAssociationsModel(const ItemList & items);
+  ~C2cMapAssociationsModel();
 
-  // Fixme: use MapAssociationsSchema::Fields ???
+  // Fixme: use C2cMapAssociationsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     TOPO_MAP_ID
@@ -3374,12 +3374,12 @@ private:
 
 /**************************************************************************************************/
 
-class Maps;
-class MapsPtr;
+class C2cMaps;
+class C2cMapsPtr;
 
 /**************************************************************************************************/
 
-class MapsSchema : public QcSchema
+class C2cMapsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -3391,26 +3391,26 @@ public:
   static const int NUMBER_OF_FIELDS = 4;
 
 public:
-  static MapsSchema & instance()
+  static C2cMapsSchema & instance()
   {
-    static MapsSchema m_instance;
+    static C2cMapsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  MapsSchema(const MapsSchema &) = delete;
-  MapsSchema(MapsSchema &&) = delete;
-  MapsSchema & operator=(const MapsSchema &) = delete;
-  MapsSchema & operator=(MapsSchema &&) = delete;
+  C2cMapsSchema(const C2cMapsSchema &) = delete;
+  C2cMapsSchema(C2cMapsSchema &&) = delete;
+  C2cMapsSchema & operator=(const C2cMapsSchema &) = delete;
+  C2cMapsSchema & operator=(C2cMapsSchema &&) = delete;
 
 protected:
-  MapsSchema();
-  ~MapsSchema();
+  C2cMapsSchema();
+  ~C2cMapsSchema();
 };
 
 /**************************************************************************************************/
 
-class Maps : public QObject, public QcRow<MapsSchema>
+class C2cMaps : public QObject, public QcRow<C2cMapsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3419,23 +3419,23 @@ class Maps : public QObject, public QcRow<MapsSchema>
   Q_PROPERTY(QString scale READ scale WRITE set_scale NOTIFY scaleChanged)
 
 public:
-  typedef MapsPtr Ptr;
+  typedef C2cMapsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class MapsPtr;
+  friend class C2cMapsPtr;
 
 public:
-  Maps();
-  Maps(const Maps & other);
-  Maps(const QJsonObject & json_object); // JSON deserializer
-  Maps(const QVariantHash & variant_hash);
-  Maps(const QVariantList & variants);
-  Maps(const QSqlRecord & record); // SQL deserializer
-  Maps(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Maps();
+  C2cMaps();
+  C2cMaps(const C2cMaps & other);
+  C2cMaps(const QJsonObject & json_object); // JSON deserializer
+  C2cMaps(const QVariantHash & variant_hash);
+  C2cMaps(const QVariantList & variants);
+  C2cMaps(const QSqlRecord & record); // SQL deserializer
+  C2cMaps(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cMaps();
 
-  Maps & operator=(const Maps & other);
+  C2cMaps & operator=(const C2cMaps & other);
 
-  bool operator==(const Maps & other) const;
+  bool operator==(const C2cMaps & other) const;
 
   // Getter/Setter
 
@@ -3493,46 +3493,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Maps & obj);
-QDataStream & operator>>(QDataStream & in, Maps & obj);
-// qRegisterMetaTypeStreamOperators<Maps>("Maps");
+QDataStream & operator<<(QDataStream & out, const C2cMaps & obj);
+QDataStream & operator>>(QDataStream & in, C2cMaps & obj);
+// qRegisterMetaTypeStreamOperators<C2cMaps>("C2cMaps");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Maps & obj);
+QDebug operator<<(QDebug debug, const C2cMaps & obj);
 #endif
 
 /**************************************************************************************************/
 
-class MapsPtr
+class C2cMapsPtr
 {
 public:
-  typedef Maps Class;
+  typedef C2cMaps Class;
 
 public:
-  MapsPtr() : m_ptr() {}
-  MapsPtr(const MapsPtr & other) : m_ptr(other.m_ptr) {}
-  ~MapsPtr() {
+  C2cMapsPtr() : m_ptr() {}
+  C2cMapsPtr(const C2cMapsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cMapsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete MapsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete MapsPtr";
+    //// qInfo() << "--- Delete C2cMapsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cMapsPtr";
     // m_ptr.clear();
   }
 
-  MapsPtr & operator=(const MapsPtr & other) {
+  C2cMapsPtr & operator=(const C2cMapsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  MapsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  MapsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  MapsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  MapsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  MapsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  MapsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  MapsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cMapsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cMapsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cMapsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cMapsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cMapsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cMapsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cMapsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -3552,7 +3552,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const MapsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cMapsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -3560,26 +3560,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const MapsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cMapsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const MapsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cMapsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class MapsCache : public QObject
+class C2cMapsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Maps * t_Key;
-  typedef MapsPtr Ptr;
+  typedef C2cMaps * t_Key;
+  typedef C2cMapsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  MapsCache();
-  ~MapsCache();
+  C2cMapsCache();
+  ~C2cMapsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -3600,20 +3600,20 @@ private:
 
 /**************************************************************************************************/
 
-class MapsModel : public QAbstractListModel
+class C2cMapsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef MapsPtr Item;
+  typedef C2cMapsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  MapsModel();
-  MapsModel(const ItemList & items);
-  ~MapsModel();
+  C2cMapsModel();
+  C2cMapsModel(const ItemList & items);
+  ~C2cMapsModel();
 
-  // Fixme: use MapsSchema::Fields ???
+  // Fixme: use C2cMapsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     CODE,
@@ -3636,12 +3636,12 @@ private:
 
 /**************************************************************************************************/
 
-class Outings;
-class OutingsPtr;
+class C2cOutings;
+class C2cOutingsPtr;
 
 /**************************************************************************************************/
 
-class OutingsSchema : public QcSchema
+class C2cOutingsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -3674,26 +3674,26 @@ public:
   static const int NUMBER_OF_FIELDS = 25;
 
 public:
-  static OutingsSchema & instance()
+  static C2cOutingsSchema & instance()
   {
-    static OutingsSchema m_instance;
+    static C2cOutingsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  OutingsSchema(const OutingsSchema &) = delete;
-  OutingsSchema(OutingsSchema &&) = delete;
-  OutingsSchema & operator=(const OutingsSchema &) = delete;
-  OutingsSchema & operator=(OutingsSchema &&) = delete;
+  C2cOutingsSchema(const C2cOutingsSchema &) = delete;
+  C2cOutingsSchema(C2cOutingsSchema &&) = delete;
+  C2cOutingsSchema & operator=(const C2cOutingsSchema &) = delete;
+  C2cOutingsSchema & operator=(C2cOutingsSchema &&) = delete;
 
 protected:
-  OutingsSchema();
-  ~OutingsSchema();
+  C2cOutingsSchema();
+  ~C2cOutingsSchema();
 };
 
 /**************************************************************************************************/
 
-class Outings : public QObject, public QcRow<OutingsSchema>
+class C2cOutings : public QObject, public QcRow<C2cOutingsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3723,23 +3723,23 @@ class Outings : public QObject, public QcRow<OutingsSchema>
   Q_PROPERTY(QString snow_quantity READ snow_quantity WRITE set_snow_quantity NOTIFY snow_quantityChanged)
 
 public:
-  typedef OutingsPtr Ptr;
+  typedef C2cOutingsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class OutingsPtr;
+  friend class C2cOutingsPtr;
 
 public:
-  Outings();
-  Outings(const Outings & other);
-  Outings(const QJsonObject & json_object); // JSON deserializer
-  Outings(const QVariantHash & variant_hash);
-  Outings(const QVariantList & variants);
-  Outings(const QSqlRecord & record); // SQL deserializer
-  Outings(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Outings();
+  C2cOutings();
+  C2cOutings(const C2cOutings & other);
+  C2cOutings(const QJsonObject & json_object); // JSON deserializer
+  C2cOutings(const QVariantHash & variant_hash);
+  C2cOutings(const QVariantList & variants);
+  C2cOutings(const QSqlRecord & record); // SQL deserializer
+  C2cOutings(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cOutings();
 
-  Outings & operator=(const Outings & other);
+  C2cOutings & operator=(const C2cOutings & other);
 
-  bool operator==(const Outings & other) const;
+  bool operator==(const C2cOutings & other) const;
 
   // Getter/Setter
 
@@ -3923,46 +3923,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Outings & obj);
-QDataStream & operator>>(QDataStream & in, Outings & obj);
-// qRegisterMetaTypeStreamOperators<Outings>("Outings");
+QDataStream & operator<<(QDataStream & out, const C2cOutings & obj);
+QDataStream & operator>>(QDataStream & in, C2cOutings & obj);
+// qRegisterMetaTypeStreamOperators<C2cOutings>("C2cOutings");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Outings & obj);
+QDebug operator<<(QDebug debug, const C2cOutings & obj);
 #endif
 
 /**************************************************************************************************/
 
-class OutingsPtr
+class C2cOutingsPtr
 {
 public:
-  typedef Outings Class;
+  typedef C2cOutings Class;
 
 public:
-  OutingsPtr() : m_ptr() {}
-  OutingsPtr(const OutingsPtr & other) : m_ptr(other.m_ptr) {}
-  ~OutingsPtr() {
+  C2cOutingsPtr() : m_ptr() {}
+  C2cOutingsPtr(const C2cOutingsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cOutingsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete OutingsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete OutingsPtr";
+    //// qInfo() << "--- Delete C2cOutingsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cOutingsPtr";
     // m_ptr.clear();
   }
 
-  OutingsPtr & operator=(const OutingsPtr & other) {
+  C2cOutingsPtr & operator=(const C2cOutingsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  OutingsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  OutingsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  OutingsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  OutingsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  OutingsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  OutingsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  OutingsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cOutingsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cOutingsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cOutingsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cOutingsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cOutingsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cOutingsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cOutingsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -3982,7 +3982,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const OutingsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cOutingsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -3990,26 +3990,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const OutingsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cOutingsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const OutingsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cOutingsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class OutingsCache : public QObject
+class C2cOutingsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Outings * t_Key;
-  typedef OutingsPtr Ptr;
+  typedef C2cOutings * t_Key;
+  typedef C2cOutingsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  OutingsCache();
-  ~OutingsCache();
+  C2cOutingsCache();
+  ~C2cOutingsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -4030,20 +4030,20 @@ private:
 
 /**************************************************************************************************/
 
-class OutingsModel : public QAbstractListModel
+class C2cOutingsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef OutingsPtr Item;
+  typedef C2cOutingsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  OutingsModel();
-  OutingsModel(const ItemList & items);
-  ~OutingsModel();
+  C2cOutingsModel();
+  C2cOutingsModel(const ItemList & items);
+  ~C2cOutingsModel();
 
-  // Fixme: use OutingsSchema::Fields ???
+  // Fixme: use C2cOutingsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACCESS_CONDITION,
@@ -4087,12 +4087,12 @@ private:
 
 /**************************************************************************************************/
 
-class OutingsLocales;
-class OutingsLocalesPtr;
+class C2cOutingsLocales;
+class C2cOutingsLocalesPtr;
 
 /**************************************************************************************************/
 
-class OutingsLocalesSchema : public QcSchema
+class C2cOutingsLocalesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -4110,26 +4110,26 @@ public:
   static const int NUMBER_OF_FIELDS = 10;
 
 public:
-  static OutingsLocalesSchema & instance()
+  static C2cOutingsLocalesSchema & instance()
   {
-    static OutingsLocalesSchema m_instance;
+    static C2cOutingsLocalesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  OutingsLocalesSchema(const OutingsLocalesSchema &) = delete;
-  OutingsLocalesSchema(OutingsLocalesSchema &&) = delete;
-  OutingsLocalesSchema & operator=(const OutingsLocalesSchema &) = delete;
-  OutingsLocalesSchema & operator=(OutingsLocalesSchema &&) = delete;
+  C2cOutingsLocalesSchema(const C2cOutingsLocalesSchema &) = delete;
+  C2cOutingsLocalesSchema(C2cOutingsLocalesSchema &&) = delete;
+  C2cOutingsLocalesSchema & operator=(const C2cOutingsLocalesSchema &) = delete;
+  C2cOutingsLocalesSchema & operator=(C2cOutingsLocalesSchema &&) = delete;
 
 protected:
-  OutingsLocalesSchema();
-  ~OutingsLocalesSchema();
+  C2cOutingsLocalesSchema();
+  ~C2cOutingsLocalesSchema();
 };
 
 /**************************************************************************************************/
 
-class OutingsLocales : public QObject, public QcRow<OutingsLocalesSchema>
+class C2cOutingsLocales : public QObject, public QcRow<C2cOutingsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -4144,23 +4144,23 @@ class OutingsLocales : public QObject, public QcRow<OutingsLocalesSchema>
   Q_PROPERTY(QString weather READ weather WRITE set_weather NOTIFY weatherChanged)
 
 public:
-  typedef OutingsLocalesPtr Ptr;
+  typedef C2cOutingsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class OutingsLocalesPtr;
+  friend class C2cOutingsLocalesPtr;
 
 public:
-  OutingsLocales();
-  OutingsLocales(const OutingsLocales & other);
-  OutingsLocales(const QJsonObject & json_object); // JSON deserializer
-  OutingsLocales(const QVariantHash & variant_hash);
-  OutingsLocales(const QVariantList & variants);
-  OutingsLocales(const QSqlRecord & record); // SQL deserializer
-  OutingsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~OutingsLocales();
+  C2cOutingsLocales();
+  C2cOutingsLocales(const C2cOutingsLocales & other);
+  C2cOutingsLocales(const QJsonObject & json_object); // JSON deserializer
+  C2cOutingsLocales(const QVariantHash & variant_hash);
+  C2cOutingsLocales(const QVariantList & variants);
+  C2cOutingsLocales(const QSqlRecord & record); // SQL deserializer
+  C2cOutingsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cOutingsLocales();
 
-  OutingsLocales & operator=(const OutingsLocales & other);
+  C2cOutingsLocales & operator=(const C2cOutingsLocales & other);
 
-  bool operator==(const OutingsLocales & other) const;
+  bool operator==(const C2cOutingsLocales & other) const;
 
   // Getter/Setter
 
@@ -4254,46 +4254,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const OutingsLocales & obj);
-QDataStream & operator>>(QDataStream & in, OutingsLocales & obj);
-// qRegisterMetaTypeStreamOperators<OutingsLocales>("OutingsLocales");
+QDataStream & operator<<(QDataStream & out, const C2cOutingsLocales & obj);
+QDataStream & operator>>(QDataStream & in, C2cOutingsLocales & obj);
+// qRegisterMetaTypeStreamOperators<C2cOutingsLocales>("C2cOutingsLocales");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const OutingsLocales & obj);
+QDebug operator<<(QDebug debug, const C2cOutingsLocales & obj);
 #endif
 
 /**************************************************************************************************/
 
-class OutingsLocalesPtr
+class C2cOutingsLocalesPtr
 {
 public:
-  typedef OutingsLocales Class;
+  typedef C2cOutingsLocales Class;
 
 public:
-  OutingsLocalesPtr() : m_ptr() {}
-  OutingsLocalesPtr(const OutingsLocalesPtr & other) : m_ptr(other.m_ptr) {}
-  ~OutingsLocalesPtr() {
+  C2cOutingsLocalesPtr() : m_ptr() {}
+  C2cOutingsLocalesPtr(const C2cOutingsLocalesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cOutingsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete OutingsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete OutingsLocalesPtr";
+    //// qInfo() << "--- Delete C2cOutingsLocalesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cOutingsLocalesPtr";
     // m_ptr.clear();
   }
 
-  OutingsLocalesPtr & operator=(const OutingsLocalesPtr & other) {
+  C2cOutingsLocalesPtr & operator=(const C2cOutingsLocalesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  OutingsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  OutingsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  OutingsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  OutingsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  OutingsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  OutingsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  OutingsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cOutingsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cOutingsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cOutingsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cOutingsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cOutingsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cOutingsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cOutingsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -4313,7 +4313,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const OutingsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cOutingsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -4321,26 +4321,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const OutingsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cOutingsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const OutingsLocalesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cOutingsLocalesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class OutingsLocalesCache : public QObject
+class C2cOutingsLocalesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef OutingsLocales * t_Key;
-  typedef OutingsLocalesPtr Ptr;
+  typedef C2cOutingsLocales * t_Key;
+  typedef C2cOutingsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  OutingsLocalesCache();
-  ~OutingsLocalesCache();
+  C2cOutingsLocalesCache();
+  ~C2cOutingsLocalesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -4361,20 +4361,20 @@ private:
 
 /**************************************************************************************************/
 
-class OutingsLocalesModel : public QAbstractListModel
+class C2cOutingsLocalesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef OutingsLocalesPtr Item;
+  typedef C2cOutingsLocalesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  OutingsLocalesModel();
-  OutingsLocalesModel(const ItemList & items);
-  ~OutingsLocalesModel();
+  C2cOutingsLocalesModel();
+  C2cOutingsLocalesModel(const ItemList & items);
+  ~C2cOutingsLocalesModel();
 
-  // Fixme: use OutingsLocalesSchema::Fields ???
+  // Fixme: use C2cOutingsLocalesSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     ACCESS_COMMENT,
@@ -4403,12 +4403,12 @@ private:
 
 /**************************************************************************************************/
 
-class Routes;
-class RoutesPtr;
+class C2cRoutes;
+class C2cRoutesPtr;
 
 /**************************************************************************************************/
 
-class RoutesSchema : public QcSchema
+class C2cRoutesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -4460,26 +4460,26 @@ public:
   static const int NUMBER_OF_FIELDS = 44;
 
 public:
-  static RoutesSchema & instance()
+  static C2cRoutesSchema & instance()
   {
-    static RoutesSchema m_instance;
+    static C2cRoutesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  RoutesSchema(const RoutesSchema &) = delete;
-  RoutesSchema(RoutesSchema &&) = delete;
-  RoutesSchema & operator=(const RoutesSchema &) = delete;
-  RoutesSchema & operator=(RoutesSchema &&) = delete;
+  C2cRoutesSchema(const C2cRoutesSchema &) = delete;
+  C2cRoutesSchema(C2cRoutesSchema &&) = delete;
+  C2cRoutesSchema & operator=(const C2cRoutesSchema &) = delete;
+  C2cRoutesSchema & operator=(C2cRoutesSchema &&) = delete;
 
 protected:
-  RoutesSchema();
-  ~RoutesSchema();
+  C2cRoutesSchema();
+  ~C2cRoutesSchema();
 };
 
 /**************************************************************************************************/
 
-class Routes : public QObject, public QcRow<RoutesSchema>
+class C2cRoutes : public QObject, public QcRow<C2cRoutesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -4528,23 +4528,23 @@ class Routes : public QObject, public QcRow<RoutesSchema>
   Q_PROPERTY(QString via_ferrata_rating READ via_ferrata_rating WRITE set_via_ferrata_rating NOTIFY via_ferrata_ratingChanged)
 
 public:
-  typedef RoutesPtr Ptr;
+  typedef C2cRoutesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class RoutesPtr;
+  friend class C2cRoutesPtr;
 
 public:
-  Routes();
-  Routes(const Routes & other);
-  Routes(const QJsonObject & json_object); // JSON deserializer
-  Routes(const QVariantHash & variant_hash);
-  Routes(const QVariantList & variants);
-  Routes(const QSqlRecord & record); // SQL deserializer
-  Routes(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Routes();
+  C2cRoutes();
+  C2cRoutes(const C2cRoutes & other);
+  C2cRoutes(const QJsonObject & json_object); // JSON deserializer
+  C2cRoutes(const QVariantHash & variant_hash);
+  C2cRoutes(const QVariantList & variants);
+  C2cRoutes(const QSqlRecord & record); // SQL deserializer
+  C2cRoutes(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cRoutes();
 
-  Routes & operator=(const Routes & other);
+  C2cRoutes & operator=(const C2cRoutes & other);
 
-  bool operator==(const Routes & other) const;
+  bool operator==(const C2cRoutes & other) const;
 
   // Getter/Setter
 
@@ -4842,46 +4842,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Routes & obj);
-QDataStream & operator>>(QDataStream & in, Routes & obj);
-// qRegisterMetaTypeStreamOperators<Routes>("Routes");
+QDataStream & operator<<(QDataStream & out, const C2cRoutes & obj);
+QDataStream & operator>>(QDataStream & in, C2cRoutes & obj);
+// qRegisterMetaTypeStreamOperators<C2cRoutes>("C2cRoutes");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Routes & obj);
+QDebug operator<<(QDebug debug, const C2cRoutes & obj);
 #endif
 
 /**************************************************************************************************/
 
-class RoutesPtr
+class C2cRoutesPtr
 {
 public:
-  typedef Routes Class;
+  typedef C2cRoutes Class;
 
 public:
-  RoutesPtr() : m_ptr() {}
-  RoutesPtr(const RoutesPtr & other) : m_ptr(other.m_ptr) {}
-  ~RoutesPtr() {
+  C2cRoutesPtr() : m_ptr() {}
+  C2cRoutesPtr(const C2cRoutesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cRoutesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete RoutesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete RoutesPtr";
+    //// qInfo() << "--- Delete C2cRoutesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cRoutesPtr";
     // m_ptr.clear();
   }
 
-  RoutesPtr & operator=(const RoutesPtr & other) {
+  C2cRoutesPtr & operator=(const C2cRoutesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  RoutesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  RoutesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  RoutesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  RoutesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  RoutesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  RoutesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  RoutesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cRoutesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cRoutesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cRoutesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cRoutesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cRoutesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cRoutesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cRoutesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -4901,7 +4901,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const RoutesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cRoutesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -4909,26 +4909,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const RoutesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cRoutesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const RoutesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cRoutesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class RoutesCache : public QObject
+class C2cRoutesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Routes * t_Key;
-  typedef RoutesPtr Ptr;
+  typedef C2cRoutes * t_Key;
+  typedef C2cRoutesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  RoutesCache();
-  ~RoutesCache();
+  C2cRoutesCache();
+  ~C2cRoutesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -4949,20 +4949,20 @@ private:
 
 /**************************************************************************************************/
 
-class RoutesModel : public QAbstractListModel
+class C2cRoutesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef RoutesPtr Item;
+  typedef C2cRoutesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  RoutesModel();
-  RoutesModel(const ItemList & items);
-  ~RoutesModel();
+  C2cRoutesModel();
+  C2cRoutesModel(const ItemList & items);
+  ~C2cRoutesModel();
 
-  // Fixme: use RoutesSchema::Fields ???
+  // Fixme: use C2cRoutesSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -5025,12 +5025,12 @@ private:
 
 /**************************************************************************************************/
 
-class RoutesLocales;
-class RoutesLocalesPtr;
+class C2cRoutesLocales;
+class C2cRoutesLocalesPtr;
 
 /**************************************************************************************************/
 
-class RoutesLocalesSchema : public QcSchema
+class C2cRoutesLocalesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -5047,26 +5047,26 @@ public:
   static const int NUMBER_OF_FIELDS = 9;
 
 public:
-  static RoutesLocalesSchema & instance()
+  static C2cRoutesLocalesSchema & instance()
   {
-    static RoutesLocalesSchema m_instance;
+    static C2cRoutesLocalesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  RoutesLocalesSchema(const RoutesLocalesSchema &) = delete;
-  RoutesLocalesSchema(RoutesLocalesSchema &&) = delete;
-  RoutesLocalesSchema & operator=(const RoutesLocalesSchema &) = delete;
-  RoutesLocalesSchema & operator=(RoutesLocalesSchema &&) = delete;
+  C2cRoutesLocalesSchema(const C2cRoutesLocalesSchema &) = delete;
+  C2cRoutesLocalesSchema(C2cRoutesLocalesSchema &&) = delete;
+  C2cRoutesLocalesSchema & operator=(const C2cRoutesLocalesSchema &) = delete;
+  C2cRoutesLocalesSchema & operator=(C2cRoutesLocalesSchema &&) = delete;
 
 protected:
-  RoutesLocalesSchema();
-  ~RoutesLocalesSchema();
+  C2cRoutesLocalesSchema();
+  ~C2cRoutesLocalesSchema();
 };
 
 /**************************************************************************************************/
 
-class RoutesLocales : public QObject, public QcRow<RoutesLocalesSchema>
+class C2cRoutesLocales : public QObject, public QcRow<C2cRoutesLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -5080,23 +5080,23 @@ class RoutesLocales : public QObject, public QcRow<RoutesLocalesSchema>
   Q_PROPERTY(QString title_prefix READ title_prefix WRITE set_title_prefix NOTIFY title_prefixChanged)
 
 public:
-  typedef RoutesLocalesPtr Ptr;
+  typedef C2cRoutesLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class RoutesLocalesPtr;
+  friend class C2cRoutesLocalesPtr;
 
 public:
-  RoutesLocales();
-  RoutesLocales(const RoutesLocales & other);
-  RoutesLocales(const QJsonObject & json_object); // JSON deserializer
-  RoutesLocales(const QVariantHash & variant_hash);
-  RoutesLocales(const QVariantList & variants);
-  RoutesLocales(const QSqlRecord & record); // SQL deserializer
-  RoutesLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~RoutesLocales();
+  C2cRoutesLocales();
+  C2cRoutesLocales(const C2cRoutesLocales & other);
+  C2cRoutesLocales(const QJsonObject & json_object); // JSON deserializer
+  C2cRoutesLocales(const QVariantHash & variant_hash);
+  C2cRoutesLocales(const QVariantList & variants);
+  C2cRoutesLocales(const QSqlRecord & record); // SQL deserializer
+  C2cRoutesLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cRoutesLocales();
 
-  RoutesLocales & operator=(const RoutesLocales & other);
+  C2cRoutesLocales & operator=(const C2cRoutesLocales & other);
 
-  bool operator==(const RoutesLocales & other) const;
+  bool operator==(const C2cRoutesLocales & other) const;
 
   // Getter/Setter
 
@@ -5184,46 +5184,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const RoutesLocales & obj);
-QDataStream & operator>>(QDataStream & in, RoutesLocales & obj);
-// qRegisterMetaTypeStreamOperators<RoutesLocales>("RoutesLocales");
+QDataStream & operator<<(QDataStream & out, const C2cRoutesLocales & obj);
+QDataStream & operator>>(QDataStream & in, C2cRoutesLocales & obj);
+// qRegisterMetaTypeStreamOperators<C2cRoutesLocales>("C2cRoutesLocales");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const RoutesLocales & obj);
+QDebug operator<<(QDebug debug, const C2cRoutesLocales & obj);
 #endif
 
 /**************************************************************************************************/
 
-class RoutesLocalesPtr
+class C2cRoutesLocalesPtr
 {
 public:
-  typedef RoutesLocales Class;
+  typedef C2cRoutesLocales Class;
 
 public:
-  RoutesLocalesPtr() : m_ptr() {}
-  RoutesLocalesPtr(const RoutesLocalesPtr & other) : m_ptr(other.m_ptr) {}
-  ~RoutesLocalesPtr() {
+  C2cRoutesLocalesPtr() : m_ptr() {}
+  C2cRoutesLocalesPtr(const C2cRoutesLocalesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cRoutesLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete RoutesLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete RoutesLocalesPtr";
+    //// qInfo() << "--- Delete C2cRoutesLocalesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cRoutesLocalesPtr";
     // m_ptr.clear();
   }
 
-  RoutesLocalesPtr & operator=(const RoutesLocalesPtr & other) {
+  C2cRoutesLocalesPtr & operator=(const C2cRoutesLocalesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  RoutesLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  RoutesLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  RoutesLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  RoutesLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  RoutesLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  RoutesLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  RoutesLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cRoutesLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cRoutesLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cRoutesLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cRoutesLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cRoutesLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cRoutesLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cRoutesLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -5243,7 +5243,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const RoutesLocalesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cRoutesLocalesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -5251,26 +5251,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const RoutesLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cRoutesLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const RoutesLocalesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cRoutesLocalesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class RoutesLocalesCache : public QObject
+class C2cRoutesLocalesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef RoutesLocales * t_Key;
-  typedef RoutesLocalesPtr Ptr;
+  typedef C2cRoutesLocales * t_Key;
+  typedef C2cRoutesLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  RoutesLocalesCache();
-  ~RoutesLocalesCache();
+  C2cRoutesLocalesCache();
+  ~C2cRoutesLocalesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -5291,20 +5291,20 @@ private:
 
 /**************************************************************************************************/
 
-class RoutesLocalesModel : public QAbstractListModel
+class C2cRoutesLocalesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef RoutesLocalesPtr Item;
+  typedef C2cRoutesLocalesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  RoutesLocalesModel();
-  RoutesLocalesModel(const ItemList & items);
-  ~RoutesLocalesModel();
+  C2cRoutesLocalesModel();
+  C2cRoutesLocalesModel(const ItemList & items);
+  ~C2cRoutesLocalesModel();
 
-  // Fixme: use RoutesLocalesSchema::Fields ???
+  // Fixme: use C2cRoutesLocalesSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     EXTERNAL_RESOURCES,
@@ -5332,12 +5332,12 @@ private:
 
 /**************************************************************************************************/
 
-class User;
-class UserPtr;
+class C2cUser;
+class C2cUserPtr;
 
 /**************************************************************************************************/
 
-class UserSchema : public QcSchema
+class C2cUserSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -5362,26 +5362,26 @@ public:
   static const int NUMBER_OF_FIELDS = 17;
 
 public:
-  static UserSchema & instance()
+  static C2cUserSchema & instance()
   {
-    static UserSchema m_instance;
+    static C2cUserSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  UserSchema(const UserSchema &) = delete;
-  UserSchema(UserSchema &&) = delete;
-  UserSchema & operator=(const UserSchema &) = delete;
-  UserSchema & operator=(UserSchema &&) = delete;
+  C2cUserSchema(const C2cUserSchema &) = delete;
+  C2cUserSchema(C2cUserSchema &&) = delete;
+  C2cUserSchema & operator=(const C2cUserSchema &) = delete;
+  C2cUserSchema & operator=(C2cUserSchema &&) = delete;
 
 protected:
-  UserSchema();
-  ~UserSchema();
+  C2cUserSchema();
+  ~C2cUserSchema();
 };
 
 /**************************************************************************************************/
 
-class User : public QObject, public QcRow<UserSchema>
+class C2cUser : public QObject, public QcRow<C2cUserSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -5403,23 +5403,23 @@ class User : public QObject, public QcRow<UserSchema>
   Q_PROPERTY(QDateTime validation_nonce_expire READ validation_nonce_expire WRITE set_validation_nonce_expire NOTIFY validation_nonce_expireChanged)
 
 public:
-  typedef UserPtr Ptr;
+  typedef C2cUserPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class UserPtr;
+  friend class C2cUserPtr;
 
 public:
-  User();
-  User(const User & other);
-  User(const QJsonObject & json_object); // JSON deserializer
-  User(const QVariantHash & variant_hash);
-  User(const QVariantList & variants);
-  User(const QSqlRecord & record); // SQL deserializer
-  User(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~User();
+  C2cUser();
+  C2cUser(const C2cUser & other);
+  C2cUser(const QJsonObject & json_object); // JSON deserializer
+  C2cUser(const QVariantHash & variant_hash);
+  C2cUser(const QVariantList & variants);
+  C2cUser(const QSqlRecord & record); // SQL deserializer
+  C2cUser(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cUser();
 
-  User & operator=(const User & other);
+  C2cUser & operator=(const C2cUser & other);
 
-  bool operator==(const User & other) const;
+  bool operator==(const C2cUser & other) const;
 
   // Getter/Setter
 
@@ -5555,46 +5555,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const User & obj);
-QDataStream & operator>>(QDataStream & in, User & obj);
-// qRegisterMetaTypeStreamOperators<User>("User");
+QDataStream & operator<<(QDataStream & out, const C2cUser & obj);
+QDataStream & operator>>(QDataStream & in, C2cUser & obj);
+// qRegisterMetaTypeStreamOperators<C2cUser>("C2cUser");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const User & obj);
+QDebug operator<<(QDebug debug, const C2cUser & obj);
 #endif
 
 /**************************************************************************************************/
 
-class UserPtr
+class C2cUserPtr
 {
 public:
-  typedef User Class;
+  typedef C2cUser Class;
 
 public:
-  UserPtr() : m_ptr() {}
-  UserPtr(const UserPtr & other) : m_ptr(other.m_ptr) {}
-  ~UserPtr() {
+  C2cUserPtr() : m_ptr() {}
+  C2cUserPtr(const C2cUserPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cUserPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete UserPtr of" << *m_ptr;
-    // qInfo() << "--- Delete UserPtr";
+    //// qInfo() << "--- Delete C2cUserPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cUserPtr";
     // m_ptr.clear();
   }
 
-  UserPtr & operator=(const UserPtr & other) {
+  C2cUserPtr & operator=(const C2cUserPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  UserPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  UserPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  UserPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  UserPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  UserPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  UserPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  UserPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cUserPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cUserPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cUserPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cUserPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cUserPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cUserPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cUserPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -5614,7 +5614,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const UserPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cUserPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -5622,26 +5622,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const UserPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cUserPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const UserPtr & obj);
+QDebug operator<<(QDebug debug, const C2cUserPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class UserCache : public QObject
+class C2cUserCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef User * t_Key;
-  typedef UserPtr Ptr;
+  typedef C2cUser * t_Key;
+  typedef C2cUserPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  UserCache();
-  ~UserCache();
+  C2cUserCache();
+  ~C2cUserCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -5662,20 +5662,20 @@ private:
 
 /**************************************************************************************************/
 
-class UserModel : public QAbstractListModel
+class C2cUserModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef UserPtr Item;
+  typedef C2cUserPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  UserModel();
-  UserModel(const ItemList & items);
-  ~UserModel();
+  C2cUserModel();
+  C2cUserModel(const ItemList & items);
+  ~C2cUserModel();
 
-  // Fixme: use UserSchema::Fields ???
+  // Fixme: use C2cUserSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     BLOCKED,
@@ -5711,12 +5711,12 @@ private:
 
 /**************************************************************************************************/
 
-class UserProfiles;
-class UserProfilesPtr;
+class C2cUserProfiles;
+class C2cUserProfilesPtr;
 
 /**************************************************************************************************/
 
-class UserProfilesSchema : public QcSchema
+class C2cUserProfilesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -5727,26 +5727,26 @@ public:
   static const int NUMBER_OF_FIELDS = 3;
 
 public:
-  static UserProfilesSchema & instance()
+  static C2cUserProfilesSchema & instance()
   {
-    static UserProfilesSchema m_instance;
+    static C2cUserProfilesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  UserProfilesSchema(const UserProfilesSchema &) = delete;
-  UserProfilesSchema(UserProfilesSchema &&) = delete;
-  UserProfilesSchema & operator=(const UserProfilesSchema &) = delete;
-  UserProfilesSchema & operator=(UserProfilesSchema &&) = delete;
+  C2cUserProfilesSchema(const C2cUserProfilesSchema &) = delete;
+  C2cUserProfilesSchema(C2cUserProfilesSchema &&) = delete;
+  C2cUserProfilesSchema & operator=(const C2cUserProfilesSchema &) = delete;
+  C2cUserProfilesSchema & operator=(C2cUserProfilesSchema &&) = delete;
 
 protected:
-  UserProfilesSchema();
-  ~UserProfilesSchema();
+  C2cUserProfilesSchema();
+  ~C2cUserProfilesSchema();
 };
 
 /**************************************************************************************************/
 
-class UserProfiles : public QObject, public QcRow<UserProfilesSchema>
+class C2cUserProfiles : public QObject, public QcRow<C2cUserProfilesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -5754,23 +5754,23 @@ class UserProfiles : public QObject, public QcRow<UserProfilesSchema>
   Q_PROPERTY(QStringList categories READ categories WRITE set_categories NOTIFY categoriesChanged)
 
 public:
-  typedef UserProfilesPtr Ptr;
+  typedef C2cUserProfilesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class UserProfilesPtr;
+  friend class C2cUserProfilesPtr;
 
 public:
-  UserProfiles();
-  UserProfiles(const UserProfiles & other);
-  UserProfiles(const QJsonObject & json_object); // JSON deserializer
-  UserProfiles(const QVariantHash & variant_hash);
-  UserProfiles(const QVariantList & variants);
-  UserProfiles(const QSqlRecord & record); // SQL deserializer
-  UserProfiles(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~UserProfiles();
+  C2cUserProfiles();
+  C2cUserProfiles(const C2cUserProfiles & other);
+  C2cUserProfiles(const QJsonObject & json_object); // JSON deserializer
+  C2cUserProfiles(const QVariantHash & variant_hash);
+  C2cUserProfiles(const QVariantList & variants);
+  C2cUserProfiles(const QSqlRecord & record); // SQL deserializer
+  C2cUserProfiles(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cUserProfiles();
 
-  UserProfiles & operator=(const UserProfiles & other);
+  C2cUserProfiles & operator=(const C2cUserProfiles & other);
 
-  bool operator==(const UserProfiles & other) const;
+  bool operator==(const C2cUserProfiles & other) const;
 
   // Getter/Setter
 
@@ -5822,46 +5822,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const UserProfiles & obj);
-QDataStream & operator>>(QDataStream & in, UserProfiles & obj);
-// qRegisterMetaTypeStreamOperators<UserProfiles>("UserProfiles");
+QDataStream & operator<<(QDataStream & out, const C2cUserProfiles & obj);
+QDataStream & operator>>(QDataStream & in, C2cUserProfiles & obj);
+// qRegisterMetaTypeStreamOperators<C2cUserProfiles>("C2cUserProfiles");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const UserProfiles & obj);
+QDebug operator<<(QDebug debug, const C2cUserProfiles & obj);
 #endif
 
 /**************************************************************************************************/
 
-class UserProfilesPtr
+class C2cUserProfilesPtr
 {
 public:
-  typedef UserProfiles Class;
+  typedef C2cUserProfiles Class;
 
 public:
-  UserProfilesPtr() : m_ptr() {}
-  UserProfilesPtr(const UserProfilesPtr & other) : m_ptr(other.m_ptr) {}
-  ~UserProfilesPtr() {
+  C2cUserProfilesPtr() : m_ptr() {}
+  C2cUserProfilesPtr(const C2cUserProfilesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cUserProfilesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete UserProfilesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete UserProfilesPtr";
+    //// qInfo() << "--- Delete C2cUserProfilesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cUserProfilesPtr";
     // m_ptr.clear();
   }
 
-  UserProfilesPtr & operator=(const UserProfilesPtr & other) {
+  C2cUserProfilesPtr & operator=(const C2cUserProfilesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  UserProfilesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  UserProfilesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  UserProfilesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  UserProfilesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  UserProfilesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  UserProfilesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  UserProfilesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cUserProfilesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cUserProfilesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cUserProfilesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cUserProfilesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cUserProfilesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cUserProfilesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cUserProfilesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -5881,7 +5881,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const UserProfilesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cUserProfilesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -5889,26 +5889,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const UserProfilesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cUserProfilesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const UserProfilesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cUserProfilesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class UserProfilesCache : public QObject
+class C2cUserProfilesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef UserProfiles * t_Key;
-  typedef UserProfilesPtr Ptr;
+  typedef C2cUserProfiles * t_Key;
+  typedef C2cUserProfilesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  UserProfilesCache();
-  ~UserProfilesCache();
+  C2cUserProfilesCache();
+  ~C2cUserProfilesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -5929,20 +5929,20 @@ private:
 
 /**************************************************************************************************/
 
-class UserProfilesModel : public QAbstractListModel
+class C2cUserProfilesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef UserProfilesPtr Item;
+  typedef C2cUserProfilesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  UserProfilesModel();
-  UserProfilesModel(const ItemList & items);
-  ~UserProfilesModel();
+  C2cUserProfilesModel();
+  C2cUserProfilesModel(const ItemList & items);
+  ~C2cUserProfilesModel();
 
-  // Fixme: use UserProfilesSchema::Fields ???
+  // Fixme: use C2cUserProfilesSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -5964,12 +5964,12 @@ private:
 
 /**************************************************************************************************/
 
-class Waypoints;
-class WaypointsPtr;
+class C2cWaypoints;
+class C2cWaypointsPtr;
 
 /**************************************************************************************************/
 
-class WaypointsSchema : public QcSchema
+class C2cWaypointsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -6025,26 +6025,26 @@ public:
   static const int NUMBER_OF_FIELDS = 48;
 
 public:
-  static WaypointsSchema & instance()
+  static C2cWaypointsSchema & instance()
   {
-    static WaypointsSchema m_instance;
+    static C2cWaypointsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  WaypointsSchema(const WaypointsSchema &) = delete;
-  WaypointsSchema(WaypointsSchema &&) = delete;
-  WaypointsSchema & operator=(const WaypointsSchema &) = delete;
-  WaypointsSchema & operator=(WaypointsSchema &&) = delete;
+  C2cWaypointsSchema(const C2cWaypointsSchema &) = delete;
+  C2cWaypointsSchema(C2cWaypointsSchema &&) = delete;
+  C2cWaypointsSchema & operator=(const C2cWaypointsSchema &) = delete;
+  C2cWaypointsSchema & operator=(C2cWaypointsSchema &&) = delete;
 
 protected:
-  WaypointsSchema();
-  ~WaypointsSchema();
+  C2cWaypointsSchema();
+  ~C2cWaypointsSchema();
 };
 
 /**************************************************************************************************/
 
-class Waypoints : public QObject, public QcRow<WaypointsSchema>
+class C2cWaypoints : public QObject, public QcRow<C2cWaypointsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -6097,23 +6097,23 @@ class Waypoints : public QObject, public QcRow<WaypointsSchema>
   Q_PROPERTY(QStringList weather_station_types READ weather_station_types WRITE set_weather_station_types NOTIFY weather_station_typesChanged)
 
 public:
-  typedef WaypointsPtr Ptr;
+  typedef C2cWaypointsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class WaypointsPtr;
+  friend class C2cWaypointsPtr;
 
 public:
-  Waypoints();
-  Waypoints(const Waypoints & other);
-  Waypoints(const QJsonObject & json_object); // JSON deserializer
-  Waypoints(const QVariantHash & variant_hash);
-  Waypoints(const QVariantList & variants);
-  Waypoints(const QSqlRecord & record); // SQL deserializer
-  Waypoints(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Waypoints();
+  C2cWaypoints();
+  C2cWaypoints(const C2cWaypoints & other);
+  C2cWaypoints(const QJsonObject & json_object); // JSON deserializer
+  C2cWaypoints(const QVariantHash & variant_hash);
+  C2cWaypoints(const QVariantList & variants);
+  C2cWaypoints(const QSqlRecord & record); // SQL deserializer
+  C2cWaypoints(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cWaypoints();
 
-  Waypoints & operator=(const Waypoints & other);
+  C2cWaypoints & operator=(const C2cWaypoints & other);
 
-  bool operator==(const Waypoints & other) const;
+  bool operator==(const C2cWaypoints & other) const;
 
   // Getter/Setter
 
@@ -6435,46 +6435,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Waypoints & obj);
-QDataStream & operator>>(QDataStream & in, Waypoints & obj);
-// qRegisterMetaTypeStreamOperators<Waypoints>("Waypoints");
+QDataStream & operator<<(QDataStream & out, const C2cWaypoints & obj);
+QDataStream & operator>>(QDataStream & in, C2cWaypoints & obj);
+// qRegisterMetaTypeStreamOperators<C2cWaypoints>("C2cWaypoints");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Waypoints & obj);
+QDebug operator<<(QDebug debug, const C2cWaypoints & obj);
 #endif
 
 /**************************************************************************************************/
 
-class WaypointsPtr
+class C2cWaypointsPtr
 {
 public:
-  typedef Waypoints Class;
+  typedef C2cWaypoints Class;
 
 public:
-  WaypointsPtr() : m_ptr() {}
-  WaypointsPtr(const WaypointsPtr & other) : m_ptr(other.m_ptr) {}
-  ~WaypointsPtr() {
+  C2cWaypointsPtr() : m_ptr() {}
+  C2cWaypointsPtr(const C2cWaypointsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cWaypointsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete WaypointsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete WaypointsPtr";
+    //// qInfo() << "--- Delete C2cWaypointsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cWaypointsPtr";
     // m_ptr.clear();
   }
 
-  WaypointsPtr & operator=(const WaypointsPtr & other) {
+  C2cWaypointsPtr & operator=(const C2cWaypointsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  WaypointsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  WaypointsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  WaypointsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  WaypointsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  WaypointsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  WaypointsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  WaypointsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cWaypointsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cWaypointsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cWaypointsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cWaypointsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cWaypointsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cWaypointsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cWaypointsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -6494,7 +6494,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const WaypointsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cWaypointsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -6502,26 +6502,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const WaypointsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cWaypointsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const WaypointsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cWaypointsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class WaypointsCache : public QObject
+class C2cWaypointsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Waypoints * t_Key;
-  typedef WaypointsPtr Ptr;
+  typedef C2cWaypoints * t_Key;
+  typedef C2cWaypointsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  WaypointsCache();
-  ~WaypointsCache();
+  C2cWaypointsCache();
+  ~C2cWaypointsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -6542,20 +6542,20 @@ private:
 
 /**************************************************************************************************/
 
-class WaypointsModel : public QAbstractListModel
+class C2cWaypointsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef WaypointsPtr Item;
+  typedef C2cWaypointsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  WaypointsModel();
-  WaypointsModel(const ItemList & items);
-  ~WaypointsModel();
+  C2cWaypointsModel();
+  C2cWaypointsModel(const ItemList & items);
+  ~C2cWaypointsModel();
 
-  // Fixme: use WaypointsSchema::Fields ???
+  // Fixme: use C2cWaypointsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACCESS_TIME,
@@ -6622,12 +6622,12 @@ private:
 
 /**************************************************************************************************/
 
-class WaypointsLocales;
-class WaypointsLocalesPtr;
+class C2cWaypointsLocales;
+class C2cWaypointsLocalesPtr;
 
 /**************************************************************************************************/
 
-class WaypointsLocalesSchema : public QcSchema
+class C2cWaypointsLocalesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -6638,26 +6638,26 @@ public:
   static const int NUMBER_OF_FIELDS = 3;
 
 public:
-  static WaypointsLocalesSchema & instance()
+  static C2cWaypointsLocalesSchema & instance()
   {
-    static WaypointsLocalesSchema m_instance;
+    static C2cWaypointsLocalesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  WaypointsLocalesSchema(const WaypointsLocalesSchema &) = delete;
-  WaypointsLocalesSchema(WaypointsLocalesSchema &&) = delete;
-  WaypointsLocalesSchema & operator=(const WaypointsLocalesSchema &) = delete;
-  WaypointsLocalesSchema & operator=(WaypointsLocalesSchema &&) = delete;
+  C2cWaypointsLocalesSchema(const C2cWaypointsLocalesSchema &) = delete;
+  C2cWaypointsLocalesSchema(C2cWaypointsLocalesSchema &&) = delete;
+  C2cWaypointsLocalesSchema & operator=(const C2cWaypointsLocalesSchema &) = delete;
+  C2cWaypointsLocalesSchema & operator=(C2cWaypointsLocalesSchema &&) = delete;
 
 protected:
-  WaypointsLocalesSchema();
-  ~WaypointsLocalesSchema();
+  C2cWaypointsLocalesSchema();
+  ~C2cWaypointsLocalesSchema();
 };
 
 /**************************************************************************************************/
 
-class WaypointsLocales : public QObject, public QcRow<WaypointsLocalesSchema>
+class C2cWaypointsLocales : public QObject, public QcRow<C2cWaypointsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -6665,23 +6665,23 @@ class WaypointsLocales : public QObject, public QcRow<WaypointsLocalesSchema>
   Q_PROPERTY(QString access_period READ access_period WRITE set_access_period NOTIFY access_periodChanged)
 
 public:
-  typedef WaypointsLocalesPtr Ptr;
+  typedef C2cWaypointsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class WaypointsLocalesPtr;
+  friend class C2cWaypointsLocalesPtr;
 
 public:
-  WaypointsLocales();
-  WaypointsLocales(const WaypointsLocales & other);
-  WaypointsLocales(const QJsonObject & json_object); // JSON deserializer
-  WaypointsLocales(const QVariantHash & variant_hash);
-  WaypointsLocales(const QVariantList & variants);
-  WaypointsLocales(const QSqlRecord & record); // SQL deserializer
-  WaypointsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~WaypointsLocales();
+  C2cWaypointsLocales();
+  C2cWaypointsLocales(const C2cWaypointsLocales & other);
+  C2cWaypointsLocales(const QJsonObject & json_object); // JSON deserializer
+  C2cWaypointsLocales(const QVariantHash & variant_hash);
+  C2cWaypointsLocales(const QVariantList & variants);
+  C2cWaypointsLocales(const QSqlRecord & record); // SQL deserializer
+  C2cWaypointsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cWaypointsLocales();
 
-  WaypointsLocales & operator=(const WaypointsLocales & other);
+  C2cWaypointsLocales & operator=(const C2cWaypointsLocales & other);
 
-  bool operator==(const WaypointsLocales & other) const;
+  bool operator==(const C2cWaypointsLocales & other) const;
 
   // Getter/Setter
 
@@ -6733,46 +6733,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const WaypointsLocales & obj);
-QDataStream & operator>>(QDataStream & in, WaypointsLocales & obj);
-// qRegisterMetaTypeStreamOperators<WaypointsLocales>("WaypointsLocales");
+QDataStream & operator<<(QDataStream & out, const C2cWaypointsLocales & obj);
+QDataStream & operator>>(QDataStream & in, C2cWaypointsLocales & obj);
+// qRegisterMetaTypeStreamOperators<C2cWaypointsLocales>("C2cWaypointsLocales");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const WaypointsLocales & obj);
+QDebug operator<<(QDebug debug, const C2cWaypointsLocales & obj);
 #endif
 
 /**************************************************************************************************/
 
-class WaypointsLocalesPtr
+class C2cWaypointsLocalesPtr
 {
 public:
-  typedef WaypointsLocales Class;
+  typedef C2cWaypointsLocales Class;
 
 public:
-  WaypointsLocalesPtr() : m_ptr() {}
-  WaypointsLocalesPtr(const WaypointsLocalesPtr & other) : m_ptr(other.m_ptr) {}
-  ~WaypointsLocalesPtr() {
+  C2cWaypointsLocalesPtr() : m_ptr() {}
+  C2cWaypointsLocalesPtr(const C2cWaypointsLocalesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cWaypointsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete WaypointsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete WaypointsLocalesPtr";
+    //// qInfo() << "--- Delete C2cWaypointsLocalesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cWaypointsLocalesPtr";
     // m_ptr.clear();
   }
 
-  WaypointsLocalesPtr & operator=(const WaypointsLocalesPtr & other) {
+  C2cWaypointsLocalesPtr & operator=(const C2cWaypointsLocalesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  WaypointsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  WaypointsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  WaypointsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  WaypointsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  WaypointsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  WaypointsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  WaypointsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cWaypointsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cWaypointsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cWaypointsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cWaypointsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cWaypointsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cWaypointsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cWaypointsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -6792,7 +6792,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const WaypointsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cWaypointsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -6800,26 +6800,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const WaypointsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cWaypointsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const WaypointsLocalesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cWaypointsLocalesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class WaypointsLocalesCache : public QObject
+class C2cWaypointsLocalesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef WaypointsLocales * t_Key;
-  typedef WaypointsLocalesPtr Ptr;
+  typedef C2cWaypointsLocales * t_Key;
+  typedef C2cWaypointsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  WaypointsLocalesCache();
-  ~WaypointsLocalesCache();
+  C2cWaypointsLocalesCache();
+  ~C2cWaypointsLocalesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -6840,20 +6840,20 @@ private:
 
 /**************************************************************************************************/
 
-class WaypointsLocalesModel : public QAbstractListModel
+class C2cWaypointsLocalesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef WaypointsLocalesPtr Item;
+  typedef C2cWaypointsLocalesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  WaypointsLocalesModel();
-  WaypointsLocalesModel(const ItemList & items);
-  ~WaypointsLocalesModel();
+  C2cWaypointsLocalesModel();
+  C2cWaypointsLocalesModel(const ItemList & items);
+  ~C2cWaypointsLocalesModel();
 
-  // Fixme: use WaypointsLocalesSchema::Fields ???
+  // Fixme: use C2cWaypointsLocalesSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     ACCESS,
@@ -6875,12 +6875,12 @@ private:
 
 /**************************************************************************************************/
 
-class Xreports;
-class XreportsPtr;
+class C2cXreports;
+class C2cXreportsPtr;
 
 /**************************************************************************************************/
 
-class XreportsSchema : public QcSchema
+class C2cXreportsSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -6907,26 +6907,26 @@ public:
   static const int NUMBER_OF_FIELDS = 19;
 
 public:
-  static XreportsSchema & instance()
+  static C2cXreportsSchema & instance()
   {
-    static XreportsSchema m_instance;
+    static C2cXreportsSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  XreportsSchema(const XreportsSchema &) = delete;
-  XreportsSchema(XreportsSchema &&) = delete;
-  XreportsSchema & operator=(const XreportsSchema &) = delete;
-  XreportsSchema & operator=(XreportsSchema &&) = delete;
+  C2cXreportsSchema(const C2cXreportsSchema &) = delete;
+  C2cXreportsSchema(C2cXreportsSchema &&) = delete;
+  C2cXreportsSchema & operator=(const C2cXreportsSchema &) = delete;
+  C2cXreportsSchema & operator=(C2cXreportsSchema &&) = delete;
 
 protected:
-  XreportsSchema();
-  ~XreportsSchema();
+  C2cXreportsSchema();
+  ~C2cXreportsSchema();
 };
 
 /**************************************************************************************************/
 
-class Xreports : public QObject, public QcRow<XreportsSchema>
+class C2cXreports : public QObject, public QcRow<C2cXreportsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -6950,23 +6950,23 @@ class Xreports : public QObject, public QcRow<XreportsSchema>
   Q_PROPERTY(QString severity READ severity WRITE set_severity NOTIFY severityChanged)
 
 public:
-  typedef XreportsPtr Ptr;
+  typedef C2cXreportsPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class XreportsPtr;
+  friend class C2cXreportsPtr;
 
 public:
-  Xreports();
-  Xreports(const Xreports & other);
-  Xreports(const QJsonObject & json_object); // JSON deserializer
-  Xreports(const QVariantHash & variant_hash);
-  Xreports(const QVariantList & variants);
-  Xreports(const QSqlRecord & record); // SQL deserializer
-  Xreports(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~Xreports();
+  C2cXreports();
+  C2cXreports(const C2cXreports & other);
+  C2cXreports(const QJsonObject & json_object); // JSON deserializer
+  C2cXreports(const QVariantHash & variant_hash);
+  C2cXreports(const QVariantList & variants);
+  C2cXreports(const QSqlRecord & record); // SQL deserializer
+  C2cXreports(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cXreports();
 
-  Xreports & operator=(const Xreports & other);
+  C2cXreports & operator=(const C2cXreports & other);
 
-  bool operator==(const Xreports & other) const;
+  bool operator==(const C2cXreports & other) const;
 
   // Getter/Setter
 
@@ -7114,46 +7114,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const Xreports & obj);
-QDataStream & operator>>(QDataStream & in, Xreports & obj);
-// qRegisterMetaTypeStreamOperators<Xreports>("Xreports");
+QDataStream & operator<<(QDataStream & out, const C2cXreports & obj);
+QDataStream & operator>>(QDataStream & in, C2cXreports & obj);
+// qRegisterMetaTypeStreamOperators<C2cXreports>("C2cXreports");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const Xreports & obj);
+QDebug operator<<(QDebug debug, const C2cXreports & obj);
 #endif
 
 /**************************************************************************************************/
 
-class XreportsPtr
+class C2cXreportsPtr
 {
 public:
-  typedef Xreports Class;
+  typedef C2cXreports Class;
 
 public:
-  XreportsPtr() : m_ptr() {}
-  XreportsPtr(const XreportsPtr & other) : m_ptr(other.m_ptr) {}
-  ~XreportsPtr() {
+  C2cXreportsPtr() : m_ptr() {}
+  C2cXreportsPtr(const C2cXreportsPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cXreportsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete XreportsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete XreportsPtr";
+    //// qInfo() << "--- Delete C2cXreportsPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cXreportsPtr";
     // m_ptr.clear();
   }
 
-  XreportsPtr & operator=(const XreportsPtr & other) {
+  C2cXreportsPtr & operator=(const C2cXreportsPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  XreportsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  XreportsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  XreportsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  XreportsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  XreportsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  XreportsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  XreportsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cXreportsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cXreportsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cXreportsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cXreportsPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cXreportsPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cXreportsPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cXreportsPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -7173,7 +7173,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const XreportsPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cXreportsPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -7181,26 +7181,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const XreportsPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cXreportsPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const XreportsPtr & obj);
+QDebug operator<<(QDebug debug, const C2cXreportsPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class XreportsCache : public QObject
+class C2cXreportsCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef Xreports * t_Key;
-  typedef XreportsPtr Ptr;
+  typedef C2cXreports * t_Key;
+  typedef C2cXreportsPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  XreportsCache();
-  ~XreportsCache();
+  C2cXreportsCache();
+  ~C2cXreportsCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -7221,20 +7221,20 @@ private:
 
 /**************************************************************************************************/
 
-class XreportsModel : public QAbstractListModel
+class C2cXreportsModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef XreportsPtr Item;
+  typedef C2cXreportsPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  XreportsModel();
-  XreportsModel(const ItemList & items);
-  ~XreportsModel();
+  C2cXreportsModel();
+  C2cXreportsModel(const ItemList & items);
+  ~C2cXreportsModel();
 
-  // Fixme: use XreportsSchema::Fields ???
+  // Fixme: use C2cXreportsSchema::Fields ???
   enum Roles {
     DOCUMENT_ID = Qt::UserRole + 1,
     ACTIVITIES,
@@ -7272,12 +7272,12 @@ private:
 
 /**************************************************************************************************/
 
-class XreportsLocales;
-class XreportsLocalesPtr;
+class C2cXreportsLocales;
+class C2cXreportsLocalesPtr;
 
 /**************************************************************************************************/
 
-class XreportsLocalesSchema : public QcSchema
+class C2cXreportsLocalesSchema : public QcSchema
 {
 public:
   enum Fields {
@@ -7299,26 +7299,26 @@ public:
   static const int NUMBER_OF_FIELDS = 14;
 
 public:
-  static XreportsLocalesSchema & instance()
+  static C2cXreportsLocalesSchema & instance()
   {
-    static XreportsLocalesSchema m_instance;
+    static C2cXreportsLocalesSchema m_instance;
     return m_instance;
   }
 
   // delete copy and move constructors and assign operators
-  XreportsLocalesSchema(const XreportsLocalesSchema &) = delete;
-  XreportsLocalesSchema(XreportsLocalesSchema &&) = delete;
-  XreportsLocalesSchema & operator=(const XreportsLocalesSchema &) = delete;
-  XreportsLocalesSchema & operator=(XreportsLocalesSchema &&) = delete;
+  C2cXreportsLocalesSchema(const C2cXreportsLocalesSchema &) = delete;
+  C2cXreportsLocalesSchema(C2cXreportsLocalesSchema &&) = delete;
+  C2cXreportsLocalesSchema & operator=(const C2cXreportsLocalesSchema &) = delete;
+  C2cXreportsLocalesSchema & operator=(C2cXreportsLocalesSchema &&) = delete;
 
 protected:
-  XreportsLocalesSchema();
-  ~XreportsLocalesSchema();
+  C2cXreportsLocalesSchema();
+  ~C2cXreportsLocalesSchema();
 };
 
 /**************************************************************************************************/
 
-class XreportsLocales : public QObject, public QcRow<XreportsLocalesSchema>
+class C2cXreportsLocales : public QObject, public QcRow<C2cXreportsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -7337,23 +7337,23 @@ class XreportsLocales : public QObject, public QcRow<XreportsLocalesSchema>
   Q_PROPERTY(QString training READ training WRITE set_training NOTIFY trainingChanged)
 
 public:
-  typedef XreportsLocalesPtr Ptr;
+  typedef C2cXreportsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
-  friend class XreportsLocalesPtr;
+  friend class C2cXreportsLocalesPtr;
 
 public:
-  XreportsLocales();
-  XreportsLocales(const XreportsLocales & other);
-  XreportsLocales(const QJsonObject & json_object); // JSON deserializer
-  XreportsLocales(const QVariantHash & variant_hash);
-  XreportsLocales(const QVariantList & variants);
-  XreportsLocales(const QSqlRecord & record); // SQL deserializer
-  XreportsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
-  ~XreportsLocales();
+  C2cXreportsLocales();
+  C2cXreportsLocales(const C2cXreportsLocales & other);
+  C2cXreportsLocales(const QJsonObject & json_object); // JSON deserializer
+  C2cXreportsLocales(const QVariantHash & variant_hash);
+  C2cXreportsLocales(const QVariantList & variants);
+  C2cXreportsLocales(const QSqlRecord & record); // SQL deserializer
+  C2cXreportsLocales(const QSqlQuery & query, int offset = 0); // SQL deserializer
+  ~C2cXreportsLocales();
 
-  XreportsLocales & operator=(const XreportsLocales & other);
+  C2cXreportsLocales & operator=(const C2cXreportsLocales & other);
 
-  bool operator==(const XreportsLocales & other) const;
+  bool operator==(const C2cXreportsLocales & other) const;
 
   // Getter/Setter
 
@@ -7471,46 +7471,46 @@ private:
 
 };
 
-QDataStream & operator<<(QDataStream & out, const XreportsLocales & obj);
-QDataStream & operator>>(QDataStream & in, XreportsLocales & obj);
-// qRegisterMetaTypeStreamOperators<XreportsLocales>("XreportsLocales");
+QDataStream & operator<<(QDataStream & out, const C2cXreportsLocales & obj);
+QDataStream & operator>>(QDataStream & in, C2cXreportsLocales & obj);
+// qRegisterMetaTypeStreamOperators<C2cXreportsLocales>("C2cXreportsLocales");
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const XreportsLocales & obj);
+QDebug operator<<(QDebug debug, const C2cXreportsLocales & obj);
 #endif
 
 /**************************************************************************************************/
 
-class XreportsLocalesPtr
+class C2cXreportsLocalesPtr
 {
 public:
-  typedef XreportsLocales Class;
+  typedef C2cXreportsLocales Class;
 
 public:
-  XreportsLocalesPtr() : m_ptr() {}
-  XreportsLocalesPtr(const XreportsLocalesPtr & other) : m_ptr(other.m_ptr) {}
-  ~XreportsLocalesPtr() {
+  C2cXreportsLocalesPtr() : m_ptr() {}
+  C2cXreportsLocalesPtr(const C2cXreportsLocalesPtr & other) : m_ptr(other.m_ptr) {}
+  ~C2cXreportsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete XreportsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete XreportsLocalesPtr";
+    //// qInfo() << "--- Delete C2cXreportsLocalesPtr of" << *m_ptr;
+    // qInfo() << "--- Delete C2cXreportsLocalesPtr";
     // m_ptr.clear();
   }
 
-  XreportsLocalesPtr & operator=(const XreportsLocalesPtr & other) {
+  C2cXreportsLocalesPtr & operator=(const C2cXreportsLocalesPtr & other) {
     if (this != &other)
       m_ptr = other.m_ptr;
     return *this;
    }
 
   // QcRowTraits ctor
-  XreportsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
-  XreportsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
-  XreportsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
-  XreportsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
-  XreportsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
-  XreportsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
-  XreportsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
+  C2cXreportsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
+  C2cXreportsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
+  C2cXreportsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
+  C2cXreportsLocalesPtr(const QVariantHash & variant_hash) : m_ptr(new Class(variant_hash)) {}
+  C2cXreportsLocalesPtr(const QVariantList & variants) : m_ptr(new Class(variants)) {}
+  C2cXreportsLocalesPtr(const QSqlRecord & record) : m_ptr(new Class(record)) {}
+  C2cXreportsLocalesPtr(const QSqlQuery & query, int offset = 0) : m_ptr(new Class(query, offset)) {}
 
   // QSharedPointer API
 
@@ -7530,7 +7530,7 @@ public:
 
   void clear() { m_ptr.clear(); } // Fixme: danger ???
 
-  bool operator==(const XreportsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
+  bool operator==(const C2cXreportsLocalesPtr & other) const { return m_ptr == other.m_ptr; }
 
   // Relations API
 
@@ -7538,26 +7538,26 @@ private:
   QSharedPointer<Class> m_ptr;
 };
 
-// uint qHash(const XreportsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
+// uint qHash(const C2cXreportsLocalesPtr & obj) { return static_cast<uint>(obj.data()); }
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const XreportsLocalesPtr & obj);
+QDebug operator<<(QDebug debug, const C2cXreportsLocalesPtr & obj);
 #endif
 
 /**************************************************************************************************/
 
-class XreportsLocalesCache : public QObject
+class C2cXreportsLocalesCache : public QObject
 {
   Q_OBJECT
 
 public:
-  typedef XreportsLocales * t_Key;
-  typedef XreportsLocalesPtr Ptr;
+  typedef C2cXreportsLocales * t_Key;
+  typedef C2cXreportsLocalesPtr Ptr;
   typedef QList<Ptr> PtrList;
 
 public:
-  XreportsLocalesCache();
-  ~XreportsLocalesCache();
+  C2cXreportsLocalesCache();
+  ~C2cXreportsLocalesCache();
 
    void add(Ptr & ptr);
    void remove(Ptr & ptr);
@@ -7578,20 +7578,20 @@ private:
 
 /**************************************************************************************************/
 
-class XreportsLocalesModel : public QAbstractListModel
+class C2cXreportsLocalesModel : public QAbstractListModel
 {
   Q_OBJECT
 
 public:
-  typedef XreportsLocalesPtr Item;
+  typedef C2cXreportsLocalesPtr Item;
   typedef QList<Item> ItemList;
 
 public:
-  XreportsLocalesModel();
-  XreportsLocalesModel(const ItemList & items);
-  ~XreportsLocalesModel();
+  C2cXreportsLocalesModel();
+  C2cXreportsLocalesModel(const ItemList & items);
+  ~C2cXreportsLocalesModel();
 
-  // Fixme: use XreportsLocalesSchema::Fields ???
+  // Fixme: use C2cXreportsLocalesSchema::Fields ???
   enum Roles {
     ID = Qt::UserRole + 1,
     CONDITIONS,
@@ -7624,89 +7624,89 @@ private:
 
 /**************************************************************************************************/
 
-class CamptocampDatabaseSchema : public QcDatabaseSchema
+class C2c : public QcDatabaseSchema
 {
 public:
-  CamptocampDatabaseSchema(QcDatabase & database);
-  CamptocampDatabaseSchema(const CamptocampDatabaseSchema & other) = delete;
-  ~CamptocampDatabaseSchema();
+  C2c(QcDatabase & database);
+  C2c(const C2c & other) = delete;
+  ~C2c();
 
-  CamptocampDatabaseSchema & operator=(const CamptocampDatabaseSchema & other) = delete;
+  C2c & operator=(const C2c & other) = delete;
 
-  QcDatabaseTable & area_associations() { return *m_area_associations; }
-  QcDatabaseTable & areas() { return *m_areas; }
-  QcDatabaseTable & articles() { return *m_articles; }
-  QcDatabaseTable & associations() { return *m_associations; }
-  QcDatabaseTable & books() { return *m_books; }
-  QcDatabaseTable & documents() { return *m_documents; }
-  QcDatabaseTable & documents_geometries() { return *m_documents_geometries; }
-  QcDatabaseTable & documents_locales() { return *m_documents_locales; }
-  QcDatabaseTable & documents_topics() { return *m_documents_topics; }
-  QcDatabaseTable & documents_versions() { return *m_documents_versions; }
-  QcDatabaseTable & images() { return *m_images; }
-  QcDatabaseTable & map_associations() { return *m_map_associations; }
-  QcDatabaseTable & maps() { return *m_maps; }
-  QcDatabaseTable & outings() { return *m_outings; }
-  QcDatabaseTable & outings_locales() { return *m_outings_locales; }
-  QcDatabaseTable & routes() { return *m_routes; }
-  QcDatabaseTable & routes_locales() { return *m_routes_locales; }
-  QcDatabaseTable & user() { return *m_user; }
-  QcDatabaseTable & user_profiles() { return *m_user_profiles; }
-  QcDatabaseTable & waypoints() { return *m_waypoints; }
-  QcDatabaseTable & waypoints_locales() { return *m_waypoints_locales; }
-  QcDatabaseTable & xreports() { return *m_xreports; }
-  QcDatabaseTable & xreports_locales() { return *m_xreports_locales; }
+  QcDatabaseTable & c2c_area_associations() { return *m_c2c_area_associations; }
+  QcDatabaseTable & c2c_areas() { return *m_c2c_areas; }
+  QcDatabaseTable & c2c_articles() { return *m_c2c_articles; }
+  QcDatabaseTable & c2c_associations() { return *m_c2c_associations; }
+  QcDatabaseTable & c2c_books() { return *m_c2c_books; }
+  QcDatabaseTable & c2c_documents() { return *m_c2c_documents; }
+  QcDatabaseTable & c2c_documents_geometries() { return *m_c2c_documents_geometries; }
+  QcDatabaseTable & c2c_documents_locales() { return *m_c2c_documents_locales; }
+  QcDatabaseTable & c2c_documents_topics() { return *m_c2c_documents_topics; }
+  QcDatabaseTable & c2c_documents_versions() { return *m_c2c_documents_versions; }
+  QcDatabaseTable & c2c_images() { return *m_c2c_images; }
+  QcDatabaseTable & c2c_map_associations() { return *m_c2c_map_associations; }
+  QcDatabaseTable & c2c_maps() { return *m_c2c_maps; }
+  QcDatabaseTable & c2c_outings() { return *m_c2c_outings; }
+  QcDatabaseTable & c2c_outings_locales() { return *m_c2c_outings_locales; }
+  QcDatabaseTable & c2c_routes() { return *m_c2c_routes; }
+  QcDatabaseTable & c2c_routes_locales() { return *m_c2c_routes_locales; }
+  QcDatabaseTable & c2c_user() { return *m_c2c_user; }
+  QcDatabaseTable & c2c_user_profiles() { return *m_c2c_user_profiles; }
+  QcDatabaseTable & c2c_waypoints() { return *m_c2c_waypoints; }
+  QcDatabaseTable & c2c_waypoints_locales() { return *m_c2c_waypoints_locales; }
+  QcDatabaseTable & c2c_xreports() { return *m_c2c_xreports; }
+  QcDatabaseTable & c2c_xreports_locales() { return *m_c2c_xreports_locales; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_area_associations;
-  QcDatabaseTable * m_areas;
-  QcDatabaseTable * m_articles;
-  QcDatabaseTable * m_associations;
-  QcDatabaseTable * m_books;
-  QcDatabaseTable * m_documents;
-  QcDatabaseTable * m_documents_geometries;
-  QcDatabaseTable * m_documents_locales;
-  QcDatabaseTable * m_documents_topics;
-  QcDatabaseTable * m_documents_versions;
-  QcDatabaseTable * m_images;
-  QcDatabaseTable * m_map_associations;
-  QcDatabaseTable * m_maps;
-  QcDatabaseTable * m_outings;
-  QcDatabaseTable * m_outings_locales;
-  QcDatabaseTable * m_routes;
-  QcDatabaseTable * m_routes_locales;
-  QcDatabaseTable * m_user;
-  QcDatabaseTable * m_user_profiles;
-  QcDatabaseTable * m_waypoints;
-  QcDatabaseTable * m_waypoints_locales;
-  QcDatabaseTable * m_xreports;
-  QcDatabaseTable * m_xreports_locales;
-  AreaAssociationsCache m_area_associations_cache;
-  AreasCache m_areas_cache;
-  ArticlesCache m_articles_cache;
-  AssociationsCache m_associations_cache;
-  BooksCache m_books_cache;
-  DocumentsCache m_documents_cache;
-  DocumentsGeometriesCache m_documents_geometries_cache;
-  DocumentsLocalesCache m_documents_locales_cache;
-  DocumentsTopicsCache m_documents_topics_cache;
-  DocumentsVersionsCache m_documents_versions_cache;
-  ImagesCache m_images_cache;
-  MapAssociationsCache m_map_associations_cache;
-  MapsCache m_maps_cache;
-  OutingsCache m_outings_cache;
-  OutingsLocalesCache m_outings_locales_cache;
-  RoutesCache m_routes_cache;
-  RoutesLocalesCache m_routes_locales_cache;
-  UserCache m_user_cache;
-  UserProfilesCache m_user_profiles_cache;
-  WaypointsCache m_waypoints_cache;
-  WaypointsLocalesCache m_waypoints_locales_cache;
-  XreportsCache m_xreports_cache;
-  XreportsLocalesCache m_xreports_locales_cache;
+  QcDatabaseTable * m_c2c_area_associations;
+  QcDatabaseTable * m_c2c_areas;
+  QcDatabaseTable * m_c2c_articles;
+  QcDatabaseTable * m_c2c_associations;
+  QcDatabaseTable * m_c2c_books;
+  QcDatabaseTable * m_c2c_documents;
+  QcDatabaseTable * m_c2c_documents_geometries;
+  QcDatabaseTable * m_c2c_documents_locales;
+  QcDatabaseTable * m_c2c_documents_topics;
+  QcDatabaseTable * m_c2c_documents_versions;
+  QcDatabaseTable * m_c2c_images;
+  QcDatabaseTable * m_c2c_map_associations;
+  QcDatabaseTable * m_c2c_maps;
+  QcDatabaseTable * m_c2c_outings;
+  QcDatabaseTable * m_c2c_outings_locales;
+  QcDatabaseTable * m_c2c_routes;
+  QcDatabaseTable * m_c2c_routes_locales;
+  QcDatabaseTable * m_c2c_user;
+  QcDatabaseTable * m_c2c_user_profiles;
+  QcDatabaseTable * m_c2c_waypoints;
+  QcDatabaseTable * m_c2c_waypoints_locales;
+  QcDatabaseTable * m_c2c_xreports;
+  QcDatabaseTable * m_c2c_xreports_locales;
+  C2cAreaAssociationsCache m_c2c_area_associations_cache;
+  C2cAreasCache m_c2c_areas_cache;
+  C2cArticlesCache m_c2c_articles_cache;
+  C2cAssociationsCache m_c2c_associations_cache;
+  C2cBooksCache m_c2c_books_cache;
+  C2cDocumentsCache m_c2c_documents_cache;
+  C2cDocumentsGeometriesCache m_c2c_documents_geometries_cache;
+  C2cDocumentsLocalesCache m_c2c_documents_locales_cache;
+  C2cDocumentsTopicsCache m_c2c_documents_topics_cache;
+  C2cDocumentsVersionsCache m_c2c_documents_versions_cache;
+  C2cImagesCache m_c2c_images_cache;
+  C2cMapAssociationsCache m_c2c_map_associations_cache;
+  C2cMapsCache m_c2c_maps_cache;
+  C2cOutingsCache m_c2c_outings_cache;
+  C2cOutingsLocalesCache m_c2c_outings_locales_cache;
+  C2cRoutesCache m_c2c_routes_cache;
+  C2cRoutesLocalesCache m_c2c_routes_locales_cache;
+  C2cUserCache m_c2c_user_cache;
+  C2cUserProfilesCache m_c2c_user_profiles_cache;
+  C2cWaypointsCache m_c2c_waypoints_cache;
+  C2cWaypointsLocalesCache m_c2c_waypoints_locales_cache;
+  C2cXreportsCache m_c2c_xreports_cache;
+  C2cXreportsLocalesCache m_c2c_xreports_locales_cache;
 };
 
 /**************************************************************************************************/

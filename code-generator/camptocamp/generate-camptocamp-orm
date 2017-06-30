@@ -114,4 +114,6 @@ for table_name in table_names:
 
 ouput_path = os.path.join(os.path.dirname(generator_path), 'Schemas', 'CampToCamp.py')
 with open(ouput_path, 'w') as fd:
-    fd.write(template_environment.render('camptocamp.jinja', tables=table_definition))
+    fd.write(template_environment.render('camptocamp.jinja',
+                                         tables=table_definition,
+                                         version=json_root['__v6_version__']))

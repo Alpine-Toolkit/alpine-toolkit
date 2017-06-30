@@ -40,8 +40,8 @@
 // QC_BEGIN_NAMESPACE
 
 
-AreaAssociationsSchema::AreaAssociationsSchema()
-: QcSchema(QLatin1String("AreaAssociations"), QLatin1String("area_associations"))
+C2cAreaAssociationsSchema::C2cAreaAssociationsSchema()
+: QcSchema(QLatin1String("C2cAreaAssociations"), QLatin1String("c2c_area_associations"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -71,73 +71,73 @@ AreaAssociationsSchema::AreaAssociationsSchema()
   }
 }
 
-AreaAssociationsSchema::~AreaAssociationsSchema()
+C2cAreaAssociationsSchema::~C2cAreaAssociationsSchema()
 {}
 
 /**************************************************************************************************/
 
-AreaAssociations::AreaAssociations()
+C2cAreaAssociations::C2cAreaAssociations()
   : QObject(),
-    QcRow<AreaAssociationsSchema>(),
+    QcRow<C2cAreaAssociationsSchema>(),
     m_area_id(),
     m_document_id()
 {
 }
 
-AreaAssociations::AreaAssociations(const AreaAssociations & other)
+C2cAreaAssociations::C2cAreaAssociations(const C2cAreaAssociations & other)
   : QObject(),
-    QcRow<AreaAssociationsSchema>(other),
+    QcRow<C2cAreaAssociationsSchema>(other),
     m_area_id(other.m_area_id),
     m_document_id(other.m_document_id)
 {
 }
 
-AreaAssociations::AreaAssociations(const QJsonObject & json_object)
- : AreaAssociations()
+C2cAreaAssociations::C2cAreaAssociations(const QJsonObject & json_object)
+ : C2cAreaAssociations()
 {
   m_area_id = json_object[QLatin1String("area_id")].toInt();
   m_document_id = json_object[QLatin1String("document_id")].toInt();
 }
 
-AreaAssociations::AreaAssociations(const QVariantHash & variant_hash)
- : AreaAssociations()
+C2cAreaAssociations::C2cAreaAssociations(const QVariantHash & variant_hash)
+ : C2cAreaAssociations()
 {
   m_area_id = variant_hash[QLatin1String("area_id")].toInt();
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
 }
 
-AreaAssociations::AreaAssociations(const QVariantList & variants)
- : AreaAssociations()
+C2cAreaAssociations::C2cAreaAssociations(const QVariantList & variants)
+ : C2cAreaAssociations()
 {
   m_area_id = variants[0].toInt();
   m_document_id = variants[1].toInt();
 }
 
-AreaAssociations::AreaAssociations(const QSqlRecord & record)
- : QcRow<AreaAssociationsSchema>(record)
+C2cAreaAssociations::C2cAreaAssociations(const QSqlRecord & record)
+ : QcRow<C2cAreaAssociationsSchema>(record)
 {
   m_area_id = record.value(0).toInt();
   m_document_id = record.value(1).toInt();
 }
 
-AreaAssociations::AreaAssociations(const QSqlQuery & query, int offset)
- : QcRow<AreaAssociationsSchema>(query)
+C2cAreaAssociations::C2cAreaAssociations(const QSqlQuery & query, int offset)
+ : QcRow<C2cAreaAssociationsSchema>(query)
 {
   m_area_id = query.value(offset++).toInt();
   m_document_id = query.value(offset).toInt();
 }
 
-AreaAssociations::~AreaAssociations()
+C2cAreaAssociations::~C2cAreaAssociations()
 {
-// qInfo() << "--- Delete" << "AreaAssociations" << *this;
+// qInfo() << "--- Delete" << "C2cAreaAssociations" << *this;
 }
 
 // bit array ?
-AreaAssociations &
-AreaAssociations::operator=(const AreaAssociations & other)
+C2cAreaAssociations &
+C2cAreaAssociations::operator=(const C2cAreaAssociations & other)
 {
   if (this != &other) {
-    QcRow<AreaAssociationsSchema>::operator=(other);
+    QcRow<C2cAreaAssociationsSchema>::operator=(other);
     m_area_id = other.m_area_id;
     m_document_id = other.m_document_id;
   }
@@ -147,9 +147,9 @@ AreaAssociations::operator=(const AreaAssociations & other)
 
 // bit array ?
 bool
-AreaAssociations::operator==(const AreaAssociations & other) const
+C2cAreaAssociations::operator==(const C2cAreaAssociations & other) const
 {
-  if (not QcRow<AreaAssociationsSchema>::operator==(other))
+  if (not QcRow<C2cAreaAssociationsSchema>::operator==(other))
     return false;
   if (m_area_id != other.m_area_id)
     return false;
@@ -160,7 +160,7 @@ AreaAssociations::operator==(const AreaAssociations & other) const
 }
 
 void
-AreaAssociations::set_area_id(int value)
+C2cAreaAssociations::set_area_id(int value)
 {
   if (m_area_id != value) {
     m_area_id = value;
@@ -175,7 +175,7 @@ AreaAssociations::set_area_id(int value)
 }
 
 void
-AreaAssociations::set_document_id(int value)
+C2cAreaAssociations::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -190,7 +190,7 @@ AreaAssociations::set_document_id(int value)
 }
 
 QJsonObject
-AreaAssociations::to_json(bool only_changed) const
+C2cAreaAssociations::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -208,7 +208,7 @@ AreaAssociations::to_json(bool only_changed) const
 }
 
 QVariantHash
-AreaAssociations::to_variant_hash(bool only_changed) const
+C2cAreaAssociations::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -226,7 +226,7 @@ AreaAssociations::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-AreaAssociations::to_variant_list() const
+C2cAreaAssociations::to_variant_list() const
 {
   QVariantList variants;
 
@@ -237,7 +237,7 @@ AreaAssociations::to_variant_list() const
 }
 
 QVariantHash
-AreaAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cAreaAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -256,7 +256,7 @@ AreaAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-AreaAssociations::to_variant_list_sql(bool duplicate) const
+C2cAreaAssociations::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -268,7 +268,7 @@ AreaAssociations::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-AreaAssociations::field(int position) const
+C2cAreaAssociations::field(int position) const
 {
   switch(position) {
    case Schema::Fields::AREA_ID:
@@ -281,7 +281,7 @@ AreaAssociations::field(int position) const
 }
 
 void
-AreaAssociations::set_field(int position, const QVariant & value)
+C2cAreaAssociations::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::AREA_ID: {
@@ -296,20 +296,20 @@ AreaAssociations::set_field(int position, const QVariant & value)
 }
 
 void
-AreaAssociations::set_insert_id(int id)
+C2cAreaAssociations::set_insert_id(int id)
 {
   set_area_id(id);
 
 }
 
 bool
-AreaAssociations::can_update() const
+C2cAreaAssociations::can_update() const
 {
   return m_area_id > 0;
 }
 
 QVariantHash
-AreaAssociations::rowid_kwargs() const // To update row
+C2cAreaAssociations::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("area_id")] = m_area_id;
@@ -318,7 +318,7 @@ AreaAssociations::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const AreaAssociations & obj)
+operator<<(QDataStream & out, const C2cAreaAssociations & obj)
 {
   out << obj.area_id();
   out << obj.document_id();
@@ -327,7 +327,7 @@ operator<<(QDataStream & out, const AreaAssociations & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, AreaAssociations & obj)
+operator>>(QDataStream & in, C2cAreaAssociations & obj)
 {
   int _int;
   in >> _int;
@@ -340,12 +340,12 @@ operator>>(QDataStream & in, AreaAssociations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const AreaAssociations & obj)
+operator<<(QDebug debug, const C2cAreaAssociations & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("AreaAssociations(");
+  debug.nospace() << QLatin1Literal("C2cAreaAssociations(");
   debug << obj.area_id();
   debug << QLatin1Literal(", ");
   debug << obj.document_id();
@@ -359,11 +359,11 @@ operator<<(QDebug debug, const AreaAssociations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const AreaAssociationsPtr & obj)
+operator<<(QDebug debug, const C2cAreaAssociationsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("AreaAssociationsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cAreaAssociationsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -375,68 +375,68 @@ operator<<(QDebug debug, const AreaAssociationsPtr & obj)
 
 /**************************************************************************************************/
 
-AreaAssociationsCache::AreaAssociationsCache()
+C2cAreaAssociationsCache::C2cAreaAssociationsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-AreaAssociationsCache::~AreaAssociationsCache()
+C2cAreaAssociationsCache::~C2cAreaAssociationsCache()
 {}
 
 void
-AreaAssociationsCache::add(AreaAssociationsPtr & ptr)
+C2cAreaAssociationsCache::add(C2cAreaAssociationsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &AreaAssociations::changed,
-                   this, &AreaAssociationsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cAreaAssociations::changed,
+                   this, &C2cAreaAssociationsCache::on_changed);
 }
 
 void
-AreaAssociationsCache::remove(AreaAssociationsPtr & ptr)
+C2cAreaAssociationsCache::remove(C2cAreaAssociationsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-AreaAssociationsCache::on_changed()
+C2cAreaAssociationsCache::on_changed()
 {
-  AreaAssociations * row = qobject_cast<AreaAssociations *>(QObject::sender());
+  C2cAreaAssociations * row = qobject_cast<C2cAreaAssociations *>(QObject::sender());
   qInfo() << "On changed" << row;
-  AreaAssociationsPtr row_ptr = m_loaded_instances[row];
+  C2cAreaAssociationsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-AreaAssociationsModel::AreaAssociationsModel()
+C2cAreaAssociationsModel::C2cAreaAssociationsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-AreaAssociationsModel::AreaAssociationsModel(const ItemList & items)
+C2cAreaAssociationsModel::C2cAreaAssociationsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-AreaAssociationsModel::~AreaAssociationsModel()
+C2cAreaAssociationsModel::~C2cAreaAssociationsModel()
 {}
 
 int
-AreaAssociationsModel::rowCount(const QModelIndex & parent) const
+C2cAreaAssociationsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-AreaAssociationsModel::data(const QModelIndex & index, int role) const
+C2cAreaAssociationsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "AreaAssociationsModel: Index out of bound";
+    qWarning() << "C2cAreaAssociationsModel: Index out of bound";
     return QVariant();
   }
 
@@ -454,7 +454,7 @@ AreaAssociationsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-AreaAssociationsModel::roleNames() const
+C2cAreaAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -465,7 +465,7 @@ AreaAssociationsModel::roleNames() const
 }
 
 void
-AreaAssociationsModel::clear_items()
+C2cAreaAssociationsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -473,15 +473,15 @@ AreaAssociationsModel::clear_items()
 }
 
 void
-AreaAssociationsModel::set_items(const ItemList & items)
+C2cAreaAssociationsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-AreasSchema::AreasSchema()
-: QcSchema(QLatin1String("Areas"), QLatin1String("areas"))
+C2cAreasSchema::C2cAreasSchema()
+: QcSchema(QLatin1String("C2cAreas"), QLatin1String("c2c_areas"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -510,73 +510,73 @@ AreasSchema::AreasSchema()
   }
 }
 
-AreasSchema::~AreasSchema()
+C2cAreasSchema::~C2cAreasSchema()
 {}
 
 /**************************************************************************************************/
 
-Areas::Areas()
+C2cAreas::C2cAreas()
   : QObject(),
-    QcRow<AreasSchema>(),
+    QcRow<C2cAreasSchema>(),
     m_document_id(),
     m_area_type()
 {
 }
 
-Areas::Areas(const Areas & other)
+C2cAreas::C2cAreas(const C2cAreas & other)
   : QObject(),
-    QcRow<AreasSchema>(other),
+    QcRow<C2cAreasSchema>(other),
     m_document_id(other.m_document_id),
     m_area_type(other.m_area_type)
 {
 }
 
-Areas::Areas(const QJsonObject & json_object)
- : Areas()
+C2cAreas::C2cAreas(const QJsonObject & json_object)
+ : C2cAreas()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_area_type = json_object[QLatin1String("area_type")].toString();
 }
 
-Areas::Areas(const QVariantHash & variant_hash)
- : Areas()
+C2cAreas::C2cAreas(const QVariantHash & variant_hash)
+ : C2cAreas()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_area_type = variant_hash[QLatin1String("area_type")].toString();
 }
 
-Areas::Areas(const QVariantList & variants)
- : Areas()
+C2cAreas::C2cAreas(const QVariantList & variants)
+ : C2cAreas()
 {
   m_document_id = variants[0].toInt();
   m_area_type = variants[1].toString();
 }
 
-Areas::Areas(const QSqlRecord & record)
- : QcRow<AreasSchema>(record)
+C2cAreas::C2cAreas(const QSqlRecord & record)
+ : QcRow<C2cAreasSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_area_type = record.value(1).toString();
 }
 
-Areas::Areas(const QSqlQuery & query, int offset)
- : QcRow<AreasSchema>(query)
+C2cAreas::C2cAreas(const QSqlQuery & query, int offset)
+ : QcRow<C2cAreasSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_area_type = query.value(offset).toString();
 }
 
-Areas::~Areas()
+C2cAreas::~C2cAreas()
 {
-// qInfo() << "--- Delete" << "Areas" << *this;
+// qInfo() << "--- Delete" << "C2cAreas" << *this;
 }
 
 // bit array ?
-Areas &
-Areas::operator=(const Areas & other)
+C2cAreas &
+C2cAreas::operator=(const C2cAreas & other)
 {
   if (this != &other) {
-    QcRow<AreasSchema>::operator=(other);
+    QcRow<C2cAreasSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_area_type = other.m_area_type;
   }
@@ -586,9 +586,9 @@ Areas::operator=(const Areas & other)
 
 // bit array ?
 bool
-Areas::operator==(const Areas & other) const
+C2cAreas::operator==(const C2cAreas & other) const
 {
-  if (not QcRow<AreasSchema>::operator==(other))
+  if (not QcRow<C2cAreasSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -599,7 +599,7 @@ Areas::operator==(const Areas & other) const
 }
 
 void
-Areas::set_document_id(int value)
+C2cAreas::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -614,7 +614,7 @@ Areas::set_document_id(int value)
 }
 
 void
-Areas::set_area_type(const QString & value)
+C2cAreas::set_area_type(const QString & value)
 {
   if (m_area_type != value) {
     m_area_type = value;
@@ -629,7 +629,7 @@ Areas::set_area_type(const QString & value)
 }
 
 QJsonObject
-Areas::to_json(bool only_changed) const
+C2cAreas::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -647,7 +647,7 @@ Areas::to_json(bool only_changed) const
 }
 
 QVariantHash
-Areas::to_variant_hash(bool only_changed) const
+C2cAreas::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -665,7 +665,7 @@ Areas::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Areas::to_variant_list() const
+C2cAreas::to_variant_list() const
 {
   QVariantList variants;
 
@@ -676,7 +676,7 @@ Areas::to_variant_list() const
 }
 
 QVariantHash
-Areas::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cAreas::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -695,7 +695,7 @@ Areas::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Areas::to_variant_list_sql(bool duplicate) const
+C2cAreas::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -707,7 +707,7 @@ Areas::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Areas::field(int position) const
+C2cAreas::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -720,7 +720,7 @@ Areas::field(int position) const
 }
 
 void
-Areas::set_field(int position, const QVariant & value)
+C2cAreas::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -735,20 +735,20 @@ Areas::set_field(int position, const QVariant & value)
 }
 
 void
-Areas::set_insert_id(int id)
+C2cAreas::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Areas::can_update() const
+C2cAreas::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Areas::rowid_kwargs() const // To update row
+C2cAreas::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -756,7 +756,7 @@ Areas::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Areas & obj)
+operator<<(QDataStream & out, const C2cAreas & obj)
 {
   out << obj.document_id();
   out << obj.area_type();
@@ -765,7 +765,7 @@ operator<<(QDataStream & out, const Areas & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Areas & obj)
+operator>>(QDataStream & in, C2cAreas & obj)
 {
   QString _QString;
   int _int;
@@ -779,12 +779,12 @@ operator>>(QDataStream & in, Areas & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Areas & obj)
+operator<<(QDebug debug, const C2cAreas & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Areas(");
+  debug.nospace() << QLatin1Literal("C2cAreas(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.area_type();
@@ -798,11 +798,11 @@ operator<<(QDebug debug, const Areas & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const AreasPtr & obj)
+operator<<(QDebug debug, const C2cAreasPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("AreasPtr ->");
+  debug.noquote() << QLatin1Literal("C2cAreasPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -814,68 +814,68 @@ operator<<(QDebug debug, const AreasPtr & obj)
 
 /**************************************************************************************************/
 
-AreasCache::AreasCache()
+C2cAreasCache::C2cAreasCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-AreasCache::~AreasCache()
+C2cAreasCache::~C2cAreasCache()
 {}
 
 void
-AreasCache::add(AreasPtr & ptr)
+C2cAreasCache::add(C2cAreasPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Areas::changed,
-                   this, &AreasCache::on_changed);
+  QObject::connect(ptr.data(), &C2cAreas::changed,
+                   this, &C2cAreasCache::on_changed);
 }
 
 void
-AreasCache::remove(AreasPtr & ptr)
+C2cAreasCache::remove(C2cAreasPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-AreasCache::on_changed()
+C2cAreasCache::on_changed()
 {
-  Areas * row = qobject_cast<Areas *>(QObject::sender());
+  C2cAreas * row = qobject_cast<C2cAreas *>(QObject::sender());
   qInfo() << "On changed" << row;
-  AreasPtr row_ptr = m_loaded_instances[row];
+  C2cAreasPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-AreasModel::AreasModel()
+C2cAreasModel::C2cAreasModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-AreasModel::AreasModel(const ItemList & items)
+C2cAreasModel::C2cAreasModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-AreasModel::~AreasModel()
+C2cAreasModel::~C2cAreasModel()
 {}
 
 int
-AreasModel::rowCount(const QModelIndex & parent) const
+C2cAreasModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-AreasModel::data(const QModelIndex & index, int role) const
+C2cAreasModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "AreasModel: Index out of bound";
+    qWarning() << "C2cAreasModel: Index out of bound";
     return QVariant();
   }
 
@@ -893,7 +893,7 @@ AreasModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-AreasModel::roleNames() const
+C2cAreasModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -904,7 +904,7 @@ AreasModel::roleNames() const
 }
 
 void
-AreasModel::clear_items()
+C2cAreasModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -912,15 +912,15 @@ AreasModel::clear_items()
 }
 
 void
-AreasModel::set_items(const ItemList & items)
+C2cAreasModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-ArticlesSchema::ArticlesSchema()
-: QcSchema(QLatin1String("Articles"), QLatin1String("articles"))
+C2cArticlesSchema::C2cArticlesSchema()
+: QcSchema(QLatin1String("C2cArticles"), QLatin1String("c2c_articles"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -973,14 +973,14 @@ ArticlesSchema::ArticlesSchema()
   }
 }
 
-ArticlesSchema::~ArticlesSchema()
+C2cArticlesSchema::~C2cArticlesSchema()
 {}
 
 /**************************************************************************************************/
 
-Articles::Articles()
+C2cArticles::C2cArticles()
   : QObject(),
-    QcRow<ArticlesSchema>(),
+    QcRow<C2cArticlesSchema>(),
     m_document_id(),
     m_activities(),
     m_article_type(),
@@ -988,9 +988,9 @@ Articles::Articles()
 {
 }
 
-Articles::Articles(const Articles & other)
+C2cArticles::C2cArticles(const C2cArticles & other)
   : QObject(),
-    QcRow<ArticlesSchema>(other),
+    QcRow<C2cArticlesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_article_type(other.m_article_type),
@@ -998,8 +998,8 @@ Articles::Articles(const Articles & other)
 {
 }
 
-Articles::Articles(const QJsonObject & json_object)
- : Articles()
+C2cArticles::C2cArticles(const QJsonObject & json_object)
+ : C2cArticles()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
@@ -1007,8 +1007,8 @@ Articles::Articles(const QJsonObject & json_object)
   m_categories = orm_type_conversion::load_string_list(json_object[QLatin1String("categories")]);
 }
 
-Articles::Articles(const QVariantHash & variant_hash)
- : Articles()
+C2cArticles::C2cArticles(const QVariantHash & variant_hash)
+ : C2cArticles()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
@@ -1016,8 +1016,8 @@ Articles::Articles(const QVariantHash & variant_hash)
   m_categories = variant_hash[QLatin1String("categories")].toStringList();
 }
 
-Articles::Articles(const QVariantList & variants)
- : Articles()
+C2cArticles::C2cArticles(const QVariantList & variants)
+ : C2cArticles()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
@@ -1025,8 +1025,8 @@ Articles::Articles(const QVariantList & variants)
   m_categories = variants[3].toStringList();
 }
 
-Articles::Articles(const QSqlRecord & record)
- : QcRow<ArticlesSchema>(record)
+C2cArticles::C2cArticles(const QSqlRecord & record)
+ : QcRow<C2cArticlesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -1034,8 +1034,8 @@ Articles::Articles(const QSqlRecord & record)
   m_categories = record.value(3).toStringList();
 }
 
-Articles::Articles(const QSqlQuery & query, int offset)
- : QcRow<ArticlesSchema>(query)
+C2cArticles::C2cArticles(const QSqlQuery & query, int offset)
+ : QcRow<C2cArticlesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -1043,17 +1043,17 @@ Articles::Articles(const QSqlQuery & query, int offset)
   m_categories = query.value(offset).toStringList();
 }
 
-Articles::~Articles()
+C2cArticles::~C2cArticles()
 {
-// qInfo() << "--- Delete" << "Articles" << *this;
+// qInfo() << "--- Delete" << "C2cArticles" << *this;
 }
 
 // bit array ?
-Articles &
-Articles::operator=(const Articles & other)
+C2cArticles &
+C2cArticles::operator=(const C2cArticles & other)
 {
   if (this != &other) {
-    QcRow<ArticlesSchema>::operator=(other);
+    QcRow<C2cArticlesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_article_type = other.m_article_type;
@@ -1065,9 +1065,9 @@ Articles::operator=(const Articles & other)
 
 // bit array ?
 bool
-Articles::operator==(const Articles & other) const
+C2cArticles::operator==(const C2cArticles & other) const
 {
-  if (not QcRow<ArticlesSchema>::operator==(other))
+  if (not QcRow<C2cArticlesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -1082,7 +1082,7 @@ Articles::operator==(const Articles & other) const
 }
 
 void
-Articles::set_document_id(int value)
+C2cArticles::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -1097,7 +1097,7 @@ Articles::set_document_id(int value)
 }
 
 void
-Articles::set_activities(const QStringList & value)
+C2cArticles::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -1112,7 +1112,7 @@ Articles::set_activities(const QStringList & value)
 }
 
 void
-Articles::set_article_type(const QString & value)
+C2cArticles::set_article_type(const QString & value)
 {
   if (m_article_type != value) {
     m_article_type = value;
@@ -1127,7 +1127,7 @@ Articles::set_article_type(const QString & value)
 }
 
 void
-Articles::set_categories(const QStringList & value)
+C2cArticles::set_categories(const QStringList & value)
 {
   if (m_categories != value) {
     m_categories = value;
@@ -1142,7 +1142,7 @@ Articles::set_categories(const QStringList & value)
 }
 
 QJsonObject
-Articles::to_json(bool only_changed) const
+C2cArticles::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -1166,7 +1166,7 @@ Articles::to_json(bool only_changed) const
 }
 
 QVariantHash
-Articles::to_variant_hash(bool only_changed) const
+C2cArticles::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -1190,7 +1190,7 @@ Articles::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Articles::to_variant_list() const
+C2cArticles::to_variant_list() const
 {
   QVariantList variants;
 
@@ -1203,7 +1203,7 @@ Articles::to_variant_list() const
 }
 
 QVariantHash
-Articles::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cArticles::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -1228,7 +1228,7 @@ Articles::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Articles::to_variant_list_sql(bool duplicate) const
+C2cArticles::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -1242,7 +1242,7 @@ Articles::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Articles::field(int position) const
+C2cArticles::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -1259,7 +1259,7 @@ Articles::field(int position) const
 }
 
 void
-Articles::set_field(int position, const QVariant & value)
+C2cArticles::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -1282,20 +1282,20 @@ Articles::set_field(int position, const QVariant & value)
 }
 
 void
-Articles::set_insert_id(int id)
+C2cArticles::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Articles::can_update() const
+C2cArticles::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Articles::rowid_kwargs() const // To update row
+C2cArticles::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -1303,7 +1303,7 @@ Articles::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Articles & obj)
+operator<<(QDataStream & out, const C2cArticles & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -1314,7 +1314,7 @@ operator<<(QDataStream & out, const Articles & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Articles & obj)
+operator>>(QDataStream & in, C2cArticles & obj)
 {
   QString _QString;
   QStringList _QStringList;
@@ -1333,12 +1333,12 @@ operator>>(QDataStream & in, Articles & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Articles & obj)
+operator<<(QDebug debug, const C2cArticles & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Articles(");
+  debug.nospace() << QLatin1Literal("C2cArticles(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -1356,11 +1356,11 @@ operator<<(QDebug debug, const Articles & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const ArticlesPtr & obj)
+operator<<(QDebug debug, const C2cArticlesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("ArticlesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cArticlesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -1372,68 +1372,68 @@ operator<<(QDebug debug, const ArticlesPtr & obj)
 
 /**************************************************************************************************/
 
-ArticlesCache::ArticlesCache()
+C2cArticlesCache::C2cArticlesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-ArticlesCache::~ArticlesCache()
+C2cArticlesCache::~C2cArticlesCache()
 {}
 
 void
-ArticlesCache::add(ArticlesPtr & ptr)
+C2cArticlesCache::add(C2cArticlesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Articles::changed,
-                   this, &ArticlesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cArticles::changed,
+                   this, &C2cArticlesCache::on_changed);
 }
 
 void
-ArticlesCache::remove(ArticlesPtr & ptr)
+C2cArticlesCache::remove(C2cArticlesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-ArticlesCache::on_changed()
+C2cArticlesCache::on_changed()
 {
-  Articles * row = qobject_cast<Articles *>(QObject::sender());
+  C2cArticles * row = qobject_cast<C2cArticles *>(QObject::sender());
   qInfo() << "On changed" << row;
-  ArticlesPtr row_ptr = m_loaded_instances[row];
+  C2cArticlesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-ArticlesModel::ArticlesModel()
+C2cArticlesModel::C2cArticlesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-ArticlesModel::ArticlesModel(const ItemList & items)
+C2cArticlesModel::C2cArticlesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-ArticlesModel::~ArticlesModel()
+C2cArticlesModel::~C2cArticlesModel()
 {}
 
 int
-ArticlesModel::rowCount(const QModelIndex & parent) const
+C2cArticlesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-ArticlesModel::data(const QModelIndex & index, int role) const
+C2cArticlesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "ArticlesModel: Index out of bound";
+    qWarning() << "C2cArticlesModel: Index out of bound";
     return QVariant();
   }
 
@@ -1455,7 +1455,7 @@ ArticlesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-ArticlesModel::roleNames() const
+C2cArticlesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -1468,7 +1468,7 @@ ArticlesModel::roleNames() const
 }
 
 void
-ArticlesModel::clear_items()
+C2cArticlesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -1476,15 +1476,15 @@ ArticlesModel::clear_items()
 }
 
 void
-ArticlesModel::set_items(const ItemList & items)
+C2cArticlesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-AssociationsSchema::AssociationsSchema()
-: QcSchema(QLatin1String("Associations"), QLatin1String("associations"))
+C2cAssociationsSchema::C2cAssociationsSchema()
+: QcSchema(QLatin1String("C2cAssociations"), QLatin1String("c2c_associations"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -1540,14 +1540,14 @@ AssociationsSchema::AssociationsSchema()
   }
 }
 
-AssociationsSchema::~AssociationsSchema()
+C2cAssociationsSchema::~C2cAssociationsSchema()
 {}
 
 /**************************************************************************************************/
 
-Associations::Associations()
+C2cAssociations::C2cAssociations()
   : QObject(),
-    QcRow<AssociationsSchema>(),
+    QcRow<C2cAssociationsSchema>(),
     m_child_document_id(),
     m_parent_document_id(),
     m_child_document_type(),
@@ -1555,9 +1555,9 @@ Associations::Associations()
 {
 }
 
-Associations::Associations(const Associations & other)
+C2cAssociations::C2cAssociations(const C2cAssociations & other)
   : QObject(),
-    QcRow<AssociationsSchema>(other),
+    QcRow<C2cAssociationsSchema>(other),
     m_child_document_id(other.m_child_document_id),
     m_parent_document_id(other.m_parent_document_id),
     m_child_document_type(other.m_child_document_type),
@@ -1565,8 +1565,8 @@ Associations::Associations(const Associations & other)
 {
 }
 
-Associations::Associations(const QJsonObject & json_object)
- : Associations()
+C2cAssociations::C2cAssociations(const QJsonObject & json_object)
+ : C2cAssociations()
 {
   m_child_document_id = json_object[QLatin1String("child_document_id")].toInt();
   m_parent_document_id = json_object[QLatin1String("parent_document_id")].toInt();
@@ -1574,8 +1574,8 @@ Associations::Associations(const QJsonObject & json_object)
   m_parent_document_type = json_object[QLatin1String("parent_document_type")].toVariant().toChar();
 }
 
-Associations::Associations(const QVariantHash & variant_hash)
- : Associations()
+C2cAssociations::C2cAssociations(const QVariantHash & variant_hash)
+ : C2cAssociations()
 {
   m_child_document_id = variant_hash[QLatin1String("child_document_id")].toInt();
   m_parent_document_id = variant_hash[QLatin1String("parent_document_id")].toInt();
@@ -1583,8 +1583,8 @@ Associations::Associations(const QVariantHash & variant_hash)
   m_parent_document_type = variant_hash[QLatin1String("parent_document_type")].toChar();
 }
 
-Associations::Associations(const QVariantList & variants)
- : Associations()
+C2cAssociations::C2cAssociations(const QVariantList & variants)
+ : C2cAssociations()
 {
   m_child_document_id = variants[0].toInt();
   m_parent_document_id = variants[1].toInt();
@@ -1592,8 +1592,8 @@ Associations::Associations(const QVariantList & variants)
   m_parent_document_type = variants[3].toChar();
 }
 
-Associations::Associations(const QSqlRecord & record)
- : QcRow<AssociationsSchema>(record)
+C2cAssociations::C2cAssociations(const QSqlRecord & record)
+ : QcRow<C2cAssociationsSchema>(record)
 {
   m_child_document_id = record.value(0).toInt();
   m_parent_document_id = record.value(1).toInt();
@@ -1601,8 +1601,8 @@ Associations::Associations(const QSqlRecord & record)
   m_parent_document_type = record.value(3).toChar();
 }
 
-Associations::Associations(const QSqlQuery & query, int offset)
- : QcRow<AssociationsSchema>(query)
+C2cAssociations::C2cAssociations(const QSqlQuery & query, int offset)
+ : QcRow<C2cAssociationsSchema>(query)
 {
   m_child_document_id = query.value(offset++).toInt();
   m_parent_document_id = query.value(offset++).toInt();
@@ -1610,17 +1610,17 @@ Associations::Associations(const QSqlQuery & query, int offset)
   m_parent_document_type = query.value(offset).toChar();
 }
 
-Associations::~Associations()
+C2cAssociations::~C2cAssociations()
 {
-// qInfo() << "--- Delete" << "Associations" << *this;
+// qInfo() << "--- Delete" << "C2cAssociations" << *this;
 }
 
 // bit array ?
-Associations &
-Associations::operator=(const Associations & other)
+C2cAssociations &
+C2cAssociations::operator=(const C2cAssociations & other)
 {
   if (this != &other) {
-    QcRow<AssociationsSchema>::operator=(other);
+    QcRow<C2cAssociationsSchema>::operator=(other);
     m_child_document_id = other.m_child_document_id;
     m_parent_document_id = other.m_parent_document_id;
     m_child_document_type = other.m_child_document_type;
@@ -1632,9 +1632,9 @@ Associations::operator=(const Associations & other)
 
 // bit array ?
 bool
-Associations::operator==(const Associations & other) const
+C2cAssociations::operator==(const C2cAssociations & other) const
 {
-  if (not QcRow<AssociationsSchema>::operator==(other))
+  if (not QcRow<C2cAssociationsSchema>::operator==(other))
     return false;
   if (m_child_document_id != other.m_child_document_id)
     return false;
@@ -1649,7 +1649,7 @@ Associations::operator==(const Associations & other) const
 }
 
 void
-Associations::set_child_document_id(int value)
+C2cAssociations::set_child_document_id(int value)
 {
   if (m_child_document_id != value) {
     m_child_document_id = value;
@@ -1664,7 +1664,7 @@ Associations::set_child_document_id(int value)
 }
 
 void
-Associations::set_parent_document_id(int value)
+C2cAssociations::set_parent_document_id(int value)
 {
   if (m_parent_document_id != value) {
     m_parent_document_id = value;
@@ -1679,7 +1679,7 @@ Associations::set_parent_document_id(int value)
 }
 
 void
-Associations::set_child_document_type(const QChar & value)
+C2cAssociations::set_child_document_type(const QChar & value)
 {
   if (m_child_document_type != value) {
     m_child_document_type = value;
@@ -1694,7 +1694,7 @@ Associations::set_child_document_type(const QChar & value)
 }
 
 void
-Associations::set_parent_document_type(const QChar & value)
+C2cAssociations::set_parent_document_type(const QChar & value)
 {
   if (m_parent_document_type != value) {
     m_parent_document_type = value;
@@ -1709,7 +1709,7 @@ Associations::set_parent_document_type(const QChar & value)
 }
 
 QJsonObject
-Associations::to_json(bool only_changed) const
+C2cAssociations::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -1733,7 +1733,7 @@ Associations::to_json(bool only_changed) const
 }
 
 QVariantHash
-Associations::to_variant_hash(bool only_changed) const
+C2cAssociations::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -1757,7 +1757,7 @@ Associations::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Associations::to_variant_list() const
+C2cAssociations::to_variant_list() const
 {
   QVariantList variants;
 
@@ -1770,7 +1770,7 @@ Associations::to_variant_list() const
 }
 
 QVariantHash
-Associations::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -1795,7 +1795,7 @@ Associations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Associations::to_variant_list_sql(bool duplicate) const
+C2cAssociations::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -1809,7 +1809,7 @@ Associations::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Associations::field(int position) const
+C2cAssociations::field(int position) const
 {
   switch(position) {
    case Schema::Fields::CHILD_DOCUMENT_ID:
@@ -1826,7 +1826,7 @@ Associations::field(int position) const
 }
 
 void
-Associations::set_field(int position, const QVariant & value)
+C2cAssociations::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::CHILD_DOCUMENT_ID: {
@@ -1849,20 +1849,20 @@ Associations::set_field(int position, const QVariant & value)
 }
 
 void
-Associations::set_insert_id(int id)
+C2cAssociations::set_insert_id(int id)
 {
   set_child_document_id(id);
 
 }
 
 bool
-Associations::can_update() const
+C2cAssociations::can_update() const
 {
   return m_child_document_id > 0;
 }
 
 QVariantHash
-Associations::rowid_kwargs() const // To update row
+C2cAssociations::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("child_document_id")] = m_child_document_id;
@@ -1871,7 +1871,7 @@ Associations::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Associations & obj)
+operator<<(QDataStream & out, const C2cAssociations & obj)
 {
   out << obj.child_document_id();
   out << obj.parent_document_id();
@@ -1882,7 +1882,7 @@ operator<<(QDataStream & out, const Associations & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Associations & obj)
+operator>>(QDataStream & in, C2cAssociations & obj)
 {
   QChar _QChar;
   int _int;
@@ -1900,12 +1900,12 @@ operator>>(QDataStream & in, Associations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Associations & obj)
+operator<<(QDebug debug, const C2cAssociations & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Associations(");
+  debug.nospace() << QLatin1Literal("C2cAssociations(");
   debug << obj.child_document_id();
   debug << QLatin1Literal(", ");
   debug << obj.parent_document_id();
@@ -1923,11 +1923,11 @@ operator<<(QDebug debug, const Associations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const AssociationsPtr & obj)
+operator<<(QDebug debug, const C2cAssociationsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("AssociationsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cAssociationsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -1939,68 +1939,68 @@ operator<<(QDebug debug, const AssociationsPtr & obj)
 
 /**************************************************************************************************/
 
-AssociationsCache::AssociationsCache()
+C2cAssociationsCache::C2cAssociationsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-AssociationsCache::~AssociationsCache()
+C2cAssociationsCache::~C2cAssociationsCache()
 {}
 
 void
-AssociationsCache::add(AssociationsPtr & ptr)
+C2cAssociationsCache::add(C2cAssociationsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Associations::changed,
-                   this, &AssociationsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cAssociations::changed,
+                   this, &C2cAssociationsCache::on_changed);
 }
 
 void
-AssociationsCache::remove(AssociationsPtr & ptr)
+C2cAssociationsCache::remove(C2cAssociationsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-AssociationsCache::on_changed()
+C2cAssociationsCache::on_changed()
 {
-  Associations * row = qobject_cast<Associations *>(QObject::sender());
+  C2cAssociations * row = qobject_cast<C2cAssociations *>(QObject::sender());
   qInfo() << "On changed" << row;
-  AssociationsPtr row_ptr = m_loaded_instances[row];
+  C2cAssociationsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-AssociationsModel::AssociationsModel()
+C2cAssociationsModel::C2cAssociationsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-AssociationsModel::AssociationsModel(const ItemList & items)
+C2cAssociationsModel::C2cAssociationsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-AssociationsModel::~AssociationsModel()
+C2cAssociationsModel::~C2cAssociationsModel()
 {}
 
 int
-AssociationsModel::rowCount(const QModelIndex & parent) const
+C2cAssociationsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-AssociationsModel::data(const QModelIndex & index, int role) const
+C2cAssociationsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "AssociationsModel: Index out of bound";
+    qWarning() << "C2cAssociationsModel: Index out of bound";
     return QVariant();
   }
 
@@ -2022,7 +2022,7 @@ AssociationsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-AssociationsModel::roleNames() const
+C2cAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -2035,7 +2035,7 @@ AssociationsModel::roleNames() const
 }
 
 void
-AssociationsModel::clear_items()
+C2cAssociationsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -2043,15 +2043,15 @@ AssociationsModel::clear_items()
 }
 
 void
-AssociationsModel::set_items(const ItemList & items)
+C2cAssociationsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-BooksSchema::BooksSchema()
-: QcSchema(QLatin1String("Books"), QLatin1String("books"))
+C2cBooksSchema::C2cBooksSchema()
+: QcSchema(QLatin1String("C2cBooks"), QLatin1String("c2c_books"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -2176,14 +2176,14 @@ BooksSchema::BooksSchema()
   }
 }
 
-BooksSchema::~BooksSchema()
+C2cBooksSchema::~C2cBooksSchema()
 {}
 
 /**************************************************************************************************/
 
-Books::Books()
+C2cBooks::C2cBooks()
   : QObject(),
-    QcRow<BooksSchema>(),
+    QcRow<C2cBooksSchema>(),
     m_document_id(),
     m_activities(),
     m_author(),
@@ -2197,9 +2197,9 @@ Books::Books()
 {
 }
 
-Books::Books(const Books & other)
+C2cBooks::C2cBooks(const C2cBooks & other)
   : QObject(),
-    QcRow<BooksSchema>(other),
+    QcRow<C2cBooksSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_author(other.m_author),
@@ -2213,8 +2213,8 @@ Books::Books(const Books & other)
 {
 }
 
-Books::Books(const QJsonObject & json_object)
- : Books()
+C2cBooks::C2cBooks(const QJsonObject & json_object)
+ : C2cBooks()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
@@ -2228,8 +2228,8 @@ Books::Books(const QJsonObject & json_object)
   m_url = json_object[QLatin1String("url")].toString();
 }
 
-Books::Books(const QVariantHash & variant_hash)
- : Books()
+C2cBooks::C2cBooks(const QVariantHash & variant_hash)
+ : C2cBooks()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
@@ -2243,8 +2243,8 @@ Books::Books(const QVariantHash & variant_hash)
   m_url = variant_hash[QLatin1String("url")].toString();
 }
 
-Books::Books(const QVariantList & variants)
- : Books()
+C2cBooks::C2cBooks(const QVariantList & variants)
+ : C2cBooks()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
@@ -2258,8 +2258,8 @@ Books::Books(const QVariantList & variants)
   m_url = variants[9].toString();
 }
 
-Books::Books(const QSqlRecord & record)
- : QcRow<BooksSchema>(record)
+C2cBooks::C2cBooks(const QSqlRecord & record)
+ : QcRow<C2cBooksSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -2273,8 +2273,8 @@ Books::Books(const QSqlRecord & record)
   m_url = record.value(9).toString();
 }
 
-Books::Books(const QSqlQuery & query, int offset)
- : QcRow<BooksSchema>(query)
+C2cBooks::C2cBooks(const QSqlQuery & query, int offset)
+ : QcRow<C2cBooksSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -2288,17 +2288,17 @@ Books::Books(const QSqlQuery & query, int offset)
   m_url = query.value(offset).toString();
 }
 
-Books::~Books()
+C2cBooks::~C2cBooks()
 {
-// qInfo() << "--- Delete" << "Books" << *this;
+// qInfo() << "--- Delete" << "C2cBooks" << *this;
 }
 
 // bit array ?
-Books &
-Books::operator=(const Books & other)
+C2cBooks &
+C2cBooks::operator=(const C2cBooks & other)
 {
   if (this != &other) {
-    QcRow<BooksSchema>::operator=(other);
+    QcRow<C2cBooksSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_author = other.m_author;
@@ -2316,9 +2316,9 @@ Books::operator=(const Books & other)
 
 // bit array ?
 bool
-Books::operator==(const Books & other) const
+C2cBooks::operator==(const C2cBooks & other) const
 {
-  if (not QcRow<BooksSchema>::operator==(other))
+  if (not QcRow<C2cBooksSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -2345,7 +2345,7 @@ Books::operator==(const Books & other) const
 }
 
 void
-Books::set_document_id(int value)
+C2cBooks::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -2360,7 +2360,7 @@ Books::set_document_id(int value)
 }
 
 void
-Books::set_activities(const QStringList & value)
+C2cBooks::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -2375,7 +2375,7 @@ Books::set_activities(const QStringList & value)
 }
 
 void
-Books::set_author(const QString & value)
+C2cBooks::set_author(const QString & value)
 {
   if (m_author != value) {
     m_author = value;
@@ -2390,7 +2390,7 @@ Books::set_author(const QString & value)
 }
 
 void
-Books::set_book_types(const QStringList & value)
+C2cBooks::set_book_types(const QStringList & value)
 {
   if (m_book_types != value) {
     m_book_types = value;
@@ -2405,7 +2405,7 @@ Books::set_book_types(const QStringList & value)
 }
 
 void
-Books::set_editor(const QString & value)
+C2cBooks::set_editor(const QString & value)
 {
   if (m_editor != value) {
     m_editor = value;
@@ -2420,7 +2420,7 @@ Books::set_editor(const QString & value)
 }
 
 void
-Books::set_isbn(const QString & value)
+C2cBooks::set_isbn(const QString & value)
 {
   if (m_isbn != value) {
     m_isbn = value;
@@ -2435,7 +2435,7 @@ Books::set_isbn(const QString & value)
 }
 
 void
-Books::set_langs(const QStringList & value)
+C2cBooks::set_langs(const QStringList & value)
 {
   if (m_langs != value) {
     m_langs = value;
@@ -2450,7 +2450,7 @@ Books::set_langs(const QStringList & value)
 }
 
 void
-Books::set_nb_pages(int value)
+C2cBooks::set_nb_pages(int value)
 {
   if (m_nb_pages != value) {
     m_nb_pages = value;
@@ -2465,7 +2465,7 @@ Books::set_nb_pages(int value)
 }
 
 void
-Books::set_publication_date(const QString & value)
+C2cBooks::set_publication_date(const QString & value)
 {
   if (m_publication_date != value) {
     m_publication_date = value;
@@ -2480,7 +2480,7 @@ Books::set_publication_date(const QString & value)
 }
 
 void
-Books::set_url(const QString & value)
+C2cBooks::set_url(const QString & value)
 {
   if (m_url != value) {
     m_url = value;
@@ -2495,7 +2495,7 @@ Books::set_url(const QString & value)
 }
 
 QJsonObject
-Books::to_json(bool only_changed) const
+C2cBooks::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -2537,7 +2537,7 @@ Books::to_json(bool only_changed) const
 }
 
 QVariantHash
-Books::to_variant_hash(bool only_changed) const
+C2cBooks::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -2579,7 +2579,7 @@ Books::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Books::to_variant_list() const
+C2cBooks::to_variant_list() const
 {
   QVariantList variants;
 
@@ -2598,7 +2598,7 @@ Books::to_variant_list() const
 }
 
 QVariantHash
-Books::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cBooks::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -2641,7 +2641,7 @@ Books::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Books::to_variant_list_sql(bool duplicate) const
+C2cBooks::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -2661,7 +2661,7 @@ Books::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Books::field(int position) const
+C2cBooks::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -2690,7 +2690,7 @@ Books::field(int position) const
 }
 
 void
-Books::set_field(int position, const QVariant & value)
+C2cBooks::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -2737,20 +2737,20 @@ Books::set_field(int position, const QVariant & value)
 }
 
 void
-Books::set_insert_id(int id)
+C2cBooks::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Books::can_update() const
+C2cBooks::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Books::rowid_kwargs() const // To update row
+C2cBooks::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -2758,7 +2758,7 @@ Books::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Books & obj)
+operator<<(QDataStream & out, const C2cBooks & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -2775,7 +2775,7 @@ operator<<(QDataStream & out, const Books & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Books & obj)
+operator>>(QDataStream & in, C2cBooks & obj)
 {
   QString _QString;
   QStringList _QStringList;
@@ -2806,12 +2806,12 @@ operator>>(QDataStream & in, Books & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Books & obj)
+operator<<(QDebug debug, const C2cBooks & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Books(");
+  debug.nospace() << QLatin1Literal("C2cBooks(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -2841,11 +2841,11 @@ operator<<(QDebug debug, const Books & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const BooksPtr & obj)
+operator<<(QDebug debug, const C2cBooksPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BooksPtr ->");
+  debug.noquote() << QLatin1Literal("C2cBooksPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -2857,68 +2857,68 @@ operator<<(QDebug debug, const BooksPtr & obj)
 
 /**************************************************************************************************/
 
-BooksCache::BooksCache()
+C2cBooksCache::C2cBooksCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-BooksCache::~BooksCache()
+C2cBooksCache::~C2cBooksCache()
 {}
 
 void
-BooksCache::add(BooksPtr & ptr)
+C2cBooksCache::add(C2cBooksPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Books::changed,
-                   this, &BooksCache::on_changed);
+  QObject::connect(ptr.data(), &C2cBooks::changed,
+                   this, &C2cBooksCache::on_changed);
 }
 
 void
-BooksCache::remove(BooksPtr & ptr)
+C2cBooksCache::remove(C2cBooksPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-BooksCache::on_changed()
+C2cBooksCache::on_changed()
 {
-  Books * row = qobject_cast<Books *>(QObject::sender());
+  C2cBooks * row = qobject_cast<C2cBooks *>(QObject::sender());
   qInfo() << "On changed" << row;
-  BooksPtr row_ptr = m_loaded_instances[row];
+  C2cBooksPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-BooksModel::BooksModel()
+C2cBooksModel::C2cBooksModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-BooksModel::BooksModel(const ItemList & items)
+C2cBooksModel::C2cBooksModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-BooksModel::~BooksModel()
+C2cBooksModel::~C2cBooksModel()
 {}
 
 int
-BooksModel::rowCount(const QModelIndex & parent) const
+C2cBooksModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-BooksModel::data(const QModelIndex & index, int role) const
+C2cBooksModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "BooksModel: Index out of bound";
+    qWarning() << "C2cBooksModel: Index out of bound";
     return QVariant();
   }
 
@@ -2952,7 +2952,7 @@ BooksModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-BooksModel::roleNames() const
+C2cBooksModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -2971,7 +2971,7 @@ BooksModel::roleNames() const
 }
 
 void
-BooksModel::clear_items()
+C2cBooksModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -2979,15 +2979,15 @@ BooksModel::clear_items()
 }
 
 void
-BooksModel::set_items(const ItemList & items)
+C2cBooksModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-DocumentsSchema::DocumentsSchema()
-: QcSchema(QLatin1String("Documents"), QLatin1String("documents"))
+C2cDocumentsSchema::C2cDocumentsSchema()
+: QcSchema(QLatin1String("C2cDocuments"), QLatin1String("c2c_documents"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -3067,14 +3067,14 @@ DocumentsSchema::DocumentsSchema()
   }
 }
 
-DocumentsSchema::~DocumentsSchema()
+C2cDocumentsSchema::~C2cDocumentsSchema()
 {}
 
 /**************************************************************************************************/
 
-Documents::Documents()
+C2cDocuments::C2cDocuments()
   : QObject(),
-    QcRow<DocumentsSchema>(),
+    QcRow<C2cDocumentsSchema>(),
     m_document_id(),
     m_protected_flag(),
     m_quality(),
@@ -3084,9 +3084,9 @@ Documents::Documents()
 {
 }
 
-Documents::Documents(const Documents & other)
+C2cDocuments::C2cDocuments(const C2cDocuments & other)
   : QObject(),
-    QcRow<DocumentsSchema>(other),
+    QcRow<C2cDocumentsSchema>(other),
     m_document_id(other.m_document_id),
     m_protected_flag(other.m_protected_flag),
     m_quality(other.m_quality),
@@ -3096,8 +3096,8 @@ Documents::Documents(const Documents & other)
 {
 }
 
-Documents::Documents(const QJsonObject & json_object)
- : Documents()
+C2cDocuments::C2cDocuments(const QJsonObject & json_object)
+ : C2cDocuments()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_protected_flag = json_object[QLatin1String("protected_flag")].toBool();
@@ -3107,8 +3107,8 @@ Documents::Documents(const QJsonObject & json_object)
   m_version = json_object[QLatin1String("version")].toInt();
 }
 
-Documents::Documents(const QVariantHash & variant_hash)
- : Documents()
+C2cDocuments::C2cDocuments(const QVariantHash & variant_hash)
+ : C2cDocuments()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_protected_flag = variant_hash[QLatin1String("protected_flag")].toBool();
@@ -3118,8 +3118,8 @@ Documents::Documents(const QVariantHash & variant_hash)
   m_version = variant_hash[QLatin1String("version")].toInt();
 }
 
-Documents::Documents(const QVariantList & variants)
- : Documents()
+C2cDocuments::C2cDocuments(const QVariantList & variants)
+ : C2cDocuments()
 {
   m_document_id = variants[0].toInt();
   m_protected_flag = variants[1].toBool();
@@ -3129,8 +3129,8 @@ Documents::Documents(const QVariantList & variants)
   m_version = variants[5].toInt();
 }
 
-Documents::Documents(const QSqlRecord & record)
- : QcRow<DocumentsSchema>(record)
+C2cDocuments::C2cDocuments(const QSqlRecord & record)
+ : QcRow<C2cDocumentsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_protected_flag = record.value(1).toBool();
@@ -3140,8 +3140,8 @@ Documents::Documents(const QSqlRecord & record)
   m_version = record.value(5).toInt();
 }
 
-Documents::Documents(const QSqlQuery & query, int offset)
- : QcRow<DocumentsSchema>(query)
+C2cDocuments::C2cDocuments(const QSqlQuery & query, int offset)
+ : QcRow<C2cDocumentsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_protected_flag = query.value(offset++).toBool();
@@ -3151,17 +3151,17 @@ Documents::Documents(const QSqlQuery & query, int offset)
   m_version = query.value(offset).toInt();
 }
 
-Documents::~Documents()
+C2cDocuments::~C2cDocuments()
 {
-// qInfo() << "--- Delete" << "Documents" << *this;
+// qInfo() << "--- Delete" << "C2cDocuments" << *this;
 }
 
 // bit array ?
-Documents &
-Documents::operator=(const Documents & other)
+C2cDocuments &
+C2cDocuments::operator=(const C2cDocuments & other)
 {
   if (this != &other) {
-    QcRow<DocumentsSchema>::operator=(other);
+    QcRow<C2cDocumentsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_protected_flag = other.m_protected_flag;
     m_quality = other.m_quality;
@@ -3175,9 +3175,9 @@ Documents::operator=(const Documents & other)
 
 // bit array ?
 bool
-Documents::operator==(const Documents & other) const
+C2cDocuments::operator==(const C2cDocuments & other) const
 {
-  if (not QcRow<DocumentsSchema>::operator==(other))
+  if (not QcRow<C2cDocumentsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -3196,7 +3196,7 @@ Documents::operator==(const Documents & other) const
 }
 
 void
-Documents::set_document_id(int value)
+C2cDocuments::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -3211,7 +3211,7 @@ Documents::set_document_id(int value)
 }
 
 void
-Documents::set_protected_flag(bool value)
+C2cDocuments::set_protected_flag(bool value)
 {
   if (m_protected_flag != value) {
     m_protected_flag = value;
@@ -3226,7 +3226,7 @@ Documents::set_protected_flag(bool value)
 }
 
 void
-Documents::set_quality(const QString & value)
+C2cDocuments::set_quality(const QString & value)
 {
   if (m_quality != value) {
     m_quality = value;
@@ -3241,7 +3241,7 @@ Documents::set_quality(const QString & value)
 }
 
 void
-Documents::set_redirects_to(int value)
+C2cDocuments::set_redirects_to(int value)
 {
   if (m_redirects_to != value) {
     m_redirects_to = value;
@@ -3256,7 +3256,7 @@ Documents::set_redirects_to(int value)
 }
 
 void
-Documents::set_type(const QChar & value)
+C2cDocuments::set_type(const QChar & value)
 {
   if (m_type != value) {
     m_type = value;
@@ -3271,7 +3271,7 @@ Documents::set_type(const QChar & value)
 }
 
 void
-Documents::set_version(int value)
+C2cDocuments::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
@@ -3286,7 +3286,7 @@ Documents::set_version(int value)
 }
 
 QJsonObject
-Documents::to_json(bool only_changed) const
+C2cDocuments::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -3316,7 +3316,7 @@ Documents::to_json(bool only_changed) const
 }
 
 QVariantHash
-Documents::to_variant_hash(bool only_changed) const
+C2cDocuments::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -3346,7 +3346,7 @@ Documents::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Documents::to_variant_list() const
+C2cDocuments::to_variant_list() const
 {
   QVariantList variants;
 
@@ -3361,7 +3361,7 @@ Documents::to_variant_list() const
 }
 
 QVariantHash
-Documents::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cDocuments::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -3392,7 +3392,7 @@ Documents::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Documents::to_variant_list_sql(bool duplicate) const
+C2cDocuments::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -3408,7 +3408,7 @@ Documents::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Documents::field(int position) const
+C2cDocuments::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -3429,7 +3429,7 @@ Documents::field(int position) const
 }
 
 void
-Documents::set_field(int position, const QVariant & value)
+C2cDocuments::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -3460,20 +3460,20 @@ Documents::set_field(int position, const QVariant & value)
 }
 
 void
-Documents::set_insert_id(int id)
+C2cDocuments::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Documents::can_update() const
+C2cDocuments::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Documents::rowid_kwargs() const // To update row
+C2cDocuments::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -3481,7 +3481,7 @@ Documents::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Documents & obj)
+operator<<(QDataStream & out, const C2cDocuments & obj)
 {
   out << obj.document_id();
   out << obj.protected_flag();
@@ -3494,7 +3494,7 @@ operator<<(QDataStream & out, const Documents & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Documents & obj)
+operator>>(QDataStream & in, C2cDocuments & obj)
 {
   QChar _QChar;
   QString _QString;
@@ -3518,12 +3518,12 @@ operator>>(QDataStream & in, Documents & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Documents & obj)
+operator<<(QDebug debug, const C2cDocuments & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Documents(");
+  debug.nospace() << QLatin1Literal("C2cDocuments(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.protected_flag();
@@ -3545,11 +3545,11 @@ operator<<(QDebug debug, const Documents & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsPtr & obj)
+operator<<(QDebug debug, const C2cDocumentsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cDocumentsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -3561,68 +3561,68 @@ operator<<(QDebug debug, const DocumentsPtr & obj)
 
 /**************************************************************************************************/
 
-DocumentsCache::DocumentsCache()
+C2cDocumentsCache::C2cDocumentsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-DocumentsCache::~DocumentsCache()
+C2cDocumentsCache::~C2cDocumentsCache()
 {}
 
 void
-DocumentsCache::add(DocumentsPtr & ptr)
+C2cDocumentsCache::add(C2cDocumentsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Documents::changed,
-                   this, &DocumentsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cDocuments::changed,
+                   this, &C2cDocumentsCache::on_changed);
 }
 
 void
-DocumentsCache::remove(DocumentsPtr & ptr)
+C2cDocumentsCache::remove(C2cDocumentsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-DocumentsCache::on_changed()
+C2cDocumentsCache::on_changed()
 {
-  Documents * row = qobject_cast<Documents *>(QObject::sender());
+  C2cDocuments * row = qobject_cast<C2cDocuments *>(QObject::sender());
   qInfo() << "On changed" << row;
-  DocumentsPtr row_ptr = m_loaded_instances[row];
+  C2cDocumentsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-DocumentsModel::DocumentsModel()
+C2cDocumentsModel::C2cDocumentsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-DocumentsModel::DocumentsModel(const ItemList & items)
+C2cDocumentsModel::C2cDocumentsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-DocumentsModel::~DocumentsModel()
+C2cDocumentsModel::~C2cDocumentsModel()
 {}
 
 int
-DocumentsModel::rowCount(const QModelIndex & parent) const
+C2cDocumentsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-DocumentsModel::data(const QModelIndex & index, int role) const
+C2cDocumentsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "DocumentsModel: Index out of bound";
+    qWarning() << "C2cDocumentsModel: Index out of bound";
     return QVariant();
   }
 
@@ -3648,7 +3648,7 @@ DocumentsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-DocumentsModel::roleNames() const
+C2cDocumentsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -3663,7 +3663,7 @@ DocumentsModel::roleNames() const
 }
 
 void
-DocumentsModel::clear_items()
+C2cDocumentsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -3671,15 +3671,15 @@ DocumentsModel::clear_items()
 }
 
 void
-DocumentsModel::set_items(const ItemList & items)
+C2cDocumentsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-DocumentsGeometriesSchema::DocumentsGeometriesSchema()
-: QcSchema(QLatin1String("DocumentsGeometries"), QLatin1String("documents_geometries"))
+C2cDocumentsGeometriesSchema::C2cDocumentsGeometriesSchema()
+: QcSchema(QLatin1String("C2cDocumentsGeometries"), QLatin1String("c2c_documents_geometries"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -3733,14 +3733,14 @@ DocumentsGeometriesSchema::DocumentsGeometriesSchema()
   }
 }
 
-DocumentsGeometriesSchema::~DocumentsGeometriesSchema()
+C2cDocumentsGeometriesSchema::~C2cDocumentsGeometriesSchema()
 {}
 
 /**************************************************************************************************/
 
-DocumentsGeometries::DocumentsGeometries()
+C2cDocumentsGeometries::C2cDocumentsGeometries()
   : QObject(),
-    QcRow<DocumentsGeometriesSchema>(),
+    QcRow<C2cDocumentsGeometriesSchema>(),
     m_document_id(),
     m_geom(),
     m_geom_detail(),
@@ -3748,9 +3748,9 @@ DocumentsGeometries::DocumentsGeometries()
 {
 }
 
-DocumentsGeometries::DocumentsGeometries(const DocumentsGeometries & other)
+C2cDocumentsGeometries::C2cDocumentsGeometries(const C2cDocumentsGeometries & other)
   : QObject(),
-    QcRow<DocumentsGeometriesSchema>(other),
+    QcRow<C2cDocumentsGeometriesSchema>(other),
     m_document_id(other.m_document_id),
     m_geom(other.m_geom),
     m_geom_detail(other.m_geom_detail),
@@ -3758,8 +3758,8 @@ DocumentsGeometries::DocumentsGeometries(const DocumentsGeometries & other)
 {
 }
 
-DocumentsGeometries::DocumentsGeometries(const QJsonObject & json_object)
- : DocumentsGeometries()
+C2cDocumentsGeometries::C2cDocumentsGeometries(const QJsonObject & json_object)
+ : C2cDocumentsGeometries()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_geom = json_object[QLatin1String("geom")].toString();
@@ -3767,8 +3767,8 @@ DocumentsGeometries::DocumentsGeometries(const QJsonObject & json_object)
   m_version = json_object[QLatin1String("version")].toInt();
 }
 
-DocumentsGeometries::DocumentsGeometries(const QVariantHash & variant_hash)
- : DocumentsGeometries()
+C2cDocumentsGeometries::C2cDocumentsGeometries(const QVariantHash & variant_hash)
+ : C2cDocumentsGeometries()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_geom = variant_hash[QLatin1String("geom")].toString();
@@ -3776,8 +3776,8 @@ DocumentsGeometries::DocumentsGeometries(const QVariantHash & variant_hash)
   m_version = variant_hash[QLatin1String("version")].toInt();
 }
 
-DocumentsGeometries::DocumentsGeometries(const QVariantList & variants)
- : DocumentsGeometries()
+C2cDocumentsGeometries::C2cDocumentsGeometries(const QVariantList & variants)
+ : C2cDocumentsGeometries()
 {
   m_document_id = variants[0].toInt();
   m_geom = variants[1].toString();
@@ -3785,8 +3785,8 @@ DocumentsGeometries::DocumentsGeometries(const QVariantList & variants)
   m_version = variants[3].toInt();
 }
 
-DocumentsGeometries::DocumentsGeometries(const QSqlRecord & record)
- : QcRow<DocumentsGeometriesSchema>(record)
+C2cDocumentsGeometries::C2cDocumentsGeometries(const QSqlRecord & record)
+ : QcRow<C2cDocumentsGeometriesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_geom = record.value(1).toString();
@@ -3794,8 +3794,8 @@ DocumentsGeometries::DocumentsGeometries(const QSqlRecord & record)
   m_version = record.value(3).toInt();
 }
 
-DocumentsGeometries::DocumentsGeometries(const QSqlQuery & query, int offset)
- : QcRow<DocumentsGeometriesSchema>(query)
+C2cDocumentsGeometries::C2cDocumentsGeometries(const QSqlQuery & query, int offset)
+ : QcRow<C2cDocumentsGeometriesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_geom = query.value(offset++).toString();
@@ -3803,17 +3803,17 @@ DocumentsGeometries::DocumentsGeometries(const QSqlQuery & query, int offset)
   m_version = query.value(offset).toInt();
 }
 
-DocumentsGeometries::~DocumentsGeometries()
+C2cDocumentsGeometries::~C2cDocumentsGeometries()
 {
-// qInfo() << "--- Delete" << "DocumentsGeometries" << *this;
+// qInfo() << "--- Delete" << "C2cDocumentsGeometries" << *this;
 }
 
 // bit array ?
-DocumentsGeometries &
-DocumentsGeometries::operator=(const DocumentsGeometries & other)
+C2cDocumentsGeometries &
+C2cDocumentsGeometries::operator=(const C2cDocumentsGeometries & other)
 {
   if (this != &other) {
-    QcRow<DocumentsGeometriesSchema>::operator=(other);
+    QcRow<C2cDocumentsGeometriesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_geom = other.m_geom;
     m_geom_detail = other.m_geom_detail;
@@ -3825,9 +3825,9 @@ DocumentsGeometries::operator=(const DocumentsGeometries & other)
 
 // bit array ?
 bool
-DocumentsGeometries::operator==(const DocumentsGeometries & other) const
+C2cDocumentsGeometries::operator==(const C2cDocumentsGeometries & other) const
 {
-  if (not QcRow<DocumentsGeometriesSchema>::operator==(other))
+  if (not QcRow<C2cDocumentsGeometriesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -3842,7 +3842,7 @@ DocumentsGeometries::operator==(const DocumentsGeometries & other) const
 }
 
 void
-DocumentsGeometries::set_document_id(int value)
+C2cDocumentsGeometries::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -3857,7 +3857,7 @@ DocumentsGeometries::set_document_id(int value)
 }
 
 void
-DocumentsGeometries::set_geom(const QString & value)
+C2cDocumentsGeometries::set_geom(const QString & value)
 {
   if (m_geom != value) {
     m_geom = value;
@@ -3872,7 +3872,7 @@ DocumentsGeometries::set_geom(const QString & value)
 }
 
 void
-DocumentsGeometries::set_geom_detail(const QString & value)
+C2cDocumentsGeometries::set_geom_detail(const QString & value)
 {
   if (m_geom_detail != value) {
     m_geom_detail = value;
@@ -3887,7 +3887,7 @@ DocumentsGeometries::set_geom_detail(const QString & value)
 }
 
 void
-DocumentsGeometries::set_version(int value)
+C2cDocumentsGeometries::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
@@ -3902,7 +3902,7 @@ DocumentsGeometries::set_version(int value)
 }
 
 QJsonObject
-DocumentsGeometries::to_json(bool only_changed) const
+C2cDocumentsGeometries::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -3926,7 +3926,7 @@ DocumentsGeometries::to_json(bool only_changed) const
 }
 
 QVariantHash
-DocumentsGeometries::to_variant_hash(bool only_changed) const
+C2cDocumentsGeometries::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -3950,7 +3950,7 @@ DocumentsGeometries::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-DocumentsGeometries::to_variant_list() const
+C2cDocumentsGeometries::to_variant_list() const
 {
   QVariantList variants;
 
@@ -3963,7 +3963,7 @@ DocumentsGeometries::to_variant_list() const
 }
 
 QVariantHash
-DocumentsGeometries::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cDocumentsGeometries::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -3988,7 +3988,7 @@ DocumentsGeometries::to_variant_hash_sql(bool only_changed, bool duplicate) cons
 }
 
 QVariantList
-DocumentsGeometries::to_variant_list_sql(bool duplicate) const
+C2cDocumentsGeometries::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -4002,7 +4002,7 @@ DocumentsGeometries::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-DocumentsGeometries::field(int position) const
+C2cDocumentsGeometries::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -4019,7 +4019,7 @@ DocumentsGeometries::field(int position) const
 }
 
 void
-DocumentsGeometries::set_field(int position, const QVariant & value)
+C2cDocumentsGeometries::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -4042,20 +4042,20 @@ DocumentsGeometries::set_field(int position, const QVariant & value)
 }
 
 void
-DocumentsGeometries::set_insert_id(int id)
+C2cDocumentsGeometries::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-DocumentsGeometries::can_update() const
+C2cDocumentsGeometries::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-DocumentsGeometries::rowid_kwargs() const // To update row
+C2cDocumentsGeometries::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -4063,7 +4063,7 @@ DocumentsGeometries::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const DocumentsGeometries & obj)
+operator<<(QDataStream & out, const C2cDocumentsGeometries & obj)
 {
   out << obj.document_id();
   out << obj.geom();
@@ -4074,7 +4074,7 @@ operator<<(QDataStream & out, const DocumentsGeometries & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, DocumentsGeometries & obj)
+operator>>(QDataStream & in, C2cDocumentsGeometries & obj)
 {
   QString _QString;
   int _int;
@@ -4092,12 +4092,12 @@ operator>>(QDataStream & in, DocumentsGeometries & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsGeometries & obj)
+operator<<(QDebug debug, const C2cDocumentsGeometries & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("DocumentsGeometries(");
+  debug.nospace() << QLatin1Literal("C2cDocumentsGeometries(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.geom();
@@ -4115,11 +4115,11 @@ operator<<(QDebug debug, const DocumentsGeometries & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsGeometriesPtr & obj)
+operator<<(QDebug debug, const C2cDocumentsGeometriesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentsGeometriesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cDocumentsGeometriesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -4131,68 +4131,68 @@ operator<<(QDebug debug, const DocumentsGeometriesPtr & obj)
 
 /**************************************************************************************************/
 
-DocumentsGeometriesCache::DocumentsGeometriesCache()
+C2cDocumentsGeometriesCache::C2cDocumentsGeometriesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-DocumentsGeometriesCache::~DocumentsGeometriesCache()
+C2cDocumentsGeometriesCache::~C2cDocumentsGeometriesCache()
 {}
 
 void
-DocumentsGeometriesCache::add(DocumentsGeometriesPtr & ptr)
+C2cDocumentsGeometriesCache::add(C2cDocumentsGeometriesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &DocumentsGeometries::changed,
-                   this, &DocumentsGeometriesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cDocumentsGeometries::changed,
+                   this, &C2cDocumentsGeometriesCache::on_changed);
 }
 
 void
-DocumentsGeometriesCache::remove(DocumentsGeometriesPtr & ptr)
+C2cDocumentsGeometriesCache::remove(C2cDocumentsGeometriesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-DocumentsGeometriesCache::on_changed()
+C2cDocumentsGeometriesCache::on_changed()
 {
-  DocumentsGeometries * row = qobject_cast<DocumentsGeometries *>(QObject::sender());
+  C2cDocumentsGeometries * row = qobject_cast<C2cDocumentsGeometries *>(QObject::sender());
   qInfo() << "On changed" << row;
-  DocumentsGeometriesPtr row_ptr = m_loaded_instances[row];
+  C2cDocumentsGeometriesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-DocumentsGeometriesModel::DocumentsGeometriesModel()
+C2cDocumentsGeometriesModel::C2cDocumentsGeometriesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-DocumentsGeometriesModel::DocumentsGeometriesModel(const ItemList & items)
+C2cDocumentsGeometriesModel::C2cDocumentsGeometriesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-DocumentsGeometriesModel::~DocumentsGeometriesModel()
+C2cDocumentsGeometriesModel::~C2cDocumentsGeometriesModel()
 {}
 
 int
-DocumentsGeometriesModel::rowCount(const QModelIndex & parent) const
+C2cDocumentsGeometriesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-DocumentsGeometriesModel::data(const QModelIndex & index, int role) const
+C2cDocumentsGeometriesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "DocumentsGeometriesModel: Index out of bound";
+    qWarning() << "C2cDocumentsGeometriesModel: Index out of bound";
     return QVariant();
   }
 
@@ -4214,7 +4214,7 @@ DocumentsGeometriesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-DocumentsGeometriesModel::roleNames() const
+C2cDocumentsGeometriesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -4227,7 +4227,7 @@ DocumentsGeometriesModel::roleNames() const
 }
 
 void
-DocumentsGeometriesModel::clear_items()
+C2cDocumentsGeometriesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -4235,15 +4235,15 @@ DocumentsGeometriesModel::clear_items()
 }
 
 void
-DocumentsGeometriesModel::set_items(const ItemList & items)
+C2cDocumentsGeometriesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-DocumentsLocalesSchema::DocumentsLocalesSchema()
-: QcSchema(QLatin1String("DocumentsLocales"), QLatin1String("documents_locales"))
+C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
+: QcSchema(QLatin1String("C2cDocumentsLocales"), QLatin1String("c2c_documents_locales"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -4348,14 +4348,14 @@ DocumentsLocalesSchema::DocumentsLocalesSchema()
   }
 }
 
-DocumentsLocalesSchema::~DocumentsLocalesSchema()
+C2cDocumentsLocalesSchema::~C2cDocumentsLocalesSchema()
 {}
 
 /**************************************************************************************************/
 
-DocumentsLocales::DocumentsLocales()
+C2cDocumentsLocales::C2cDocumentsLocales()
   : QObject(),
-    QcRow<DocumentsLocalesSchema>(),
+    QcRow<C2cDocumentsLocalesSchema>(),
     m_id(),
     m_description(),
     m_document_id(),
@@ -4367,9 +4367,9 @@ DocumentsLocales::DocumentsLocales()
 {
 }
 
-DocumentsLocales::DocumentsLocales(const DocumentsLocales & other)
+C2cDocumentsLocales::C2cDocumentsLocales(const C2cDocumentsLocales & other)
   : QObject(),
-    QcRow<DocumentsLocalesSchema>(other),
+    QcRow<C2cDocumentsLocalesSchema>(other),
     m_id(other.m_id),
     m_description(other.m_description),
     m_document_id(other.m_document_id),
@@ -4381,8 +4381,8 @@ DocumentsLocales::DocumentsLocales(const DocumentsLocales & other)
 {
 }
 
-DocumentsLocales::DocumentsLocales(const QJsonObject & json_object)
- : DocumentsLocales()
+C2cDocumentsLocales::C2cDocumentsLocales(const QJsonObject & json_object)
+ : C2cDocumentsLocales()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_description = json_object[QLatin1String("description")].toString();
@@ -4394,8 +4394,8 @@ DocumentsLocales::DocumentsLocales(const QJsonObject & json_object)
   m_version = json_object[QLatin1String("version")].toInt();
 }
 
-DocumentsLocales::DocumentsLocales(const QVariantHash & variant_hash)
- : DocumentsLocales()
+C2cDocumentsLocales::C2cDocumentsLocales(const QVariantHash & variant_hash)
+ : C2cDocumentsLocales()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_description = variant_hash[QLatin1String("description")].toString();
@@ -4407,8 +4407,8 @@ DocumentsLocales::DocumentsLocales(const QVariantHash & variant_hash)
   m_version = variant_hash[QLatin1String("version")].toInt();
 }
 
-DocumentsLocales::DocumentsLocales(const QVariantList & variants)
- : DocumentsLocales()
+C2cDocumentsLocales::C2cDocumentsLocales(const QVariantList & variants)
+ : C2cDocumentsLocales()
 {
   m_id = variants[0].toInt();
   m_description = variants[1].toString();
@@ -4420,8 +4420,8 @@ DocumentsLocales::DocumentsLocales(const QVariantList & variants)
   m_version = variants[7].toInt();
 }
 
-DocumentsLocales::DocumentsLocales(const QSqlRecord & record)
- : QcRow<DocumentsLocalesSchema>(record)
+C2cDocumentsLocales::C2cDocumentsLocales(const QSqlRecord & record)
+ : QcRow<C2cDocumentsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_description = record.value(1).toString();
@@ -4433,8 +4433,8 @@ DocumentsLocales::DocumentsLocales(const QSqlRecord & record)
   m_version = record.value(7).toInt();
 }
 
-DocumentsLocales::DocumentsLocales(const QSqlQuery & query, int offset)
- : QcRow<DocumentsLocalesSchema>(query)
+C2cDocumentsLocales::C2cDocumentsLocales(const QSqlQuery & query, int offset)
+ : QcRow<C2cDocumentsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_description = query.value(offset++).toString();
@@ -4446,17 +4446,17 @@ DocumentsLocales::DocumentsLocales(const QSqlQuery & query, int offset)
   m_version = query.value(offset).toInt();
 }
 
-DocumentsLocales::~DocumentsLocales()
+C2cDocumentsLocales::~C2cDocumentsLocales()
 {
-// qInfo() << "--- Delete" << "DocumentsLocales" << *this;
+// qInfo() << "--- Delete" << "C2cDocumentsLocales" << *this;
 }
 
 // bit array ?
-DocumentsLocales &
-DocumentsLocales::operator=(const DocumentsLocales & other)
+C2cDocumentsLocales &
+C2cDocumentsLocales::operator=(const C2cDocumentsLocales & other)
 {
   if (this != &other) {
-    QcRow<DocumentsLocalesSchema>::operator=(other);
+    QcRow<C2cDocumentsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_description = other.m_description;
     m_document_id = other.m_document_id;
@@ -4472,9 +4472,9 @@ DocumentsLocales::operator=(const DocumentsLocales & other)
 
 // bit array ?
 bool
-DocumentsLocales::operator==(const DocumentsLocales & other) const
+C2cDocumentsLocales::operator==(const C2cDocumentsLocales & other) const
 {
-  if (not QcRow<DocumentsLocalesSchema>::operator==(other))
+  if (not QcRow<C2cDocumentsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -4497,7 +4497,7 @@ DocumentsLocales::operator==(const DocumentsLocales & other) const
 }
 
 void
-DocumentsLocales::set_id(int value)
+C2cDocumentsLocales::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -4512,7 +4512,7 @@ DocumentsLocales::set_id(int value)
 }
 
 void
-DocumentsLocales::set_description(const QString & value)
+C2cDocumentsLocales::set_description(const QString & value)
 {
   if (m_description != value) {
     m_description = value;
@@ -4527,7 +4527,7 @@ DocumentsLocales::set_description(const QString & value)
 }
 
 void
-DocumentsLocales::set_document_id(int value)
+C2cDocumentsLocales::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -4542,7 +4542,7 @@ DocumentsLocales::set_document_id(int value)
 }
 
 void
-DocumentsLocales::set_lang(const QString & value)
+C2cDocumentsLocales::set_lang(const QString & value)
 {
   if (m_lang != value) {
     m_lang = value;
@@ -4557,7 +4557,7 @@ DocumentsLocales::set_lang(const QString & value)
 }
 
 void
-DocumentsLocales::set_summary(const QString & value)
+C2cDocumentsLocales::set_summary(const QString & value)
 {
   if (m_summary != value) {
     m_summary = value;
@@ -4572,7 +4572,7 @@ DocumentsLocales::set_summary(const QString & value)
 }
 
 void
-DocumentsLocales::set_title(const QString & value)
+C2cDocumentsLocales::set_title(const QString & value)
 {
   if (m_title != value) {
     m_title = value;
@@ -4587,7 +4587,7 @@ DocumentsLocales::set_title(const QString & value)
 }
 
 void
-DocumentsLocales::set_type(const QChar & value)
+C2cDocumentsLocales::set_type(const QChar & value)
 {
   if (m_type != value) {
     m_type = value;
@@ -4602,7 +4602,7 @@ DocumentsLocales::set_type(const QChar & value)
 }
 
 void
-DocumentsLocales::set_version(int value)
+C2cDocumentsLocales::set_version(int value)
 {
   if (m_version != value) {
     m_version = value;
@@ -4617,7 +4617,7 @@ DocumentsLocales::set_version(int value)
 }
 
 QJsonObject
-DocumentsLocales::to_json(bool only_changed) const
+C2cDocumentsLocales::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -4653,7 +4653,7 @@ DocumentsLocales::to_json(bool only_changed) const
 }
 
 QVariantHash
-DocumentsLocales::to_variant_hash(bool only_changed) const
+C2cDocumentsLocales::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -4689,7 +4689,7 @@ DocumentsLocales::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-DocumentsLocales::to_variant_list() const
+C2cDocumentsLocales::to_variant_list() const
 {
   QVariantList variants;
 
@@ -4706,7 +4706,7 @@ DocumentsLocales::to_variant_list() const
 }
 
 QVariantHash
-DocumentsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cDocumentsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -4743,7 +4743,7 @@ DocumentsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-DocumentsLocales::to_variant_list_sql(bool duplicate) const
+C2cDocumentsLocales::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -4761,7 +4761,7 @@ DocumentsLocales::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-DocumentsLocales::field(int position) const
+C2cDocumentsLocales::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -4786,7 +4786,7 @@ DocumentsLocales::field(int position) const
 }
 
 void
-DocumentsLocales::set_field(int position, const QVariant & value)
+C2cDocumentsLocales::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -4825,20 +4825,20 @@ DocumentsLocales::set_field(int position, const QVariant & value)
 }
 
 void
-DocumentsLocales::set_insert_id(int id)
+C2cDocumentsLocales::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-DocumentsLocales::can_update() const
+C2cDocumentsLocales::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-DocumentsLocales::rowid_kwargs() const // To update row
+C2cDocumentsLocales::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -4846,7 +4846,7 @@ DocumentsLocales::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const DocumentsLocales & obj)
+operator<<(QDataStream & out, const C2cDocumentsLocales & obj)
 {
   out << obj.id();
   out << obj.description();
@@ -4861,7 +4861,7 @@ operator<<(QDataStream & out, const DocumentsLocales & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, DocumentsLocales & obj)
+operator>>(QDataStream & in, C2cDocumentsLocales & obj)
 {
   QChar _QChar;
   QString _QString;
@@ -4888,12 +4888,12 @@ operator>>(QDataStream & in, DocumentsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsLocales & obj)
+operator<<(QDebug debug, const C2cDocumentsLocales & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("DocumentsLocales(");
+  debug.nospace() << QLatin1Literal("C2cDocumentsLocales(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.description();
@@ -4919,11 +4919,11 @@ operator<<(QDebug debug, const DocumentsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsLocalesPtr & obj)
+operator<<(QDebug debug, const C2cDocumentsLocalesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentsLocalesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cDocumentsLocalesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -4935,68 +4935,68 @@ operator<<(QDebug debug, const DocumentsLocalesPtr & obj)
 
 /**************************************************************************************************/
 
-DocumentsLocalesCache::DocumentsLocalesCache()
+C2cDocumentsLocalesCache::C2cDocumentsLocalesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-DocumentsLocalesCache::~DocumentsLocalesCache()
+C2cDocumentsLocalesCache::~C2cDocumentsLocalesCache()
 {}
 
 void
-DocumentsLocalesCache::add(DocumentsLocalesPtr & ptr)
+C2cDocumentsLocalesCache::add(C2cDocumentsLocalesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &DocumentsLocales::changed,
-                   this, &DocumentsLocalesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cDocumentsLocales::changed,
+                   this, &C2cDocumentsLocalesCache::on_changed);
 }
 
 void
-DocumentsLocalesCache::remove(DocumentsLocalesPtr & ptr)
+C2cDocumentsLocalesCache::remove(C2cDocumentsLocalesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-DocumentsLocalesCache::on_changed()
+C2cDocumentsLocalesCache::on_changed()
 {
-  DocumentsLocales * row = qobject_cast<DocumentsLocales *>(QObject::sender());
+  C2cDocumentsLocales * row = qobject_cast<C2cDocumentsLocales *>(QObject::sender());
   qInfo() << "On changed" << row;
-  DocumentsLocalesPtr row_ptr = m_loaded_instances[row];
+  C2cDocumentsLocalesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-DocumentsLocalesModel::DocumentsLocalesModel()
+C2cDocumentsLocalesModel::C2cDocumentsLocalesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-DocumentsLocalesModel::DocumentsLocalesModel(const ItemList & items)
+C2cDocumentsLocalesModel::C2cDocumentsLocalesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-DocumentsLocalesModel::~DocumentsLocalesModel()
+C2cDocumentsLocalesModel::~C2cDocumentsLocalesModel()
 {}
 
 int
-DocumentsLocalesModel::rowCount(const QModelIndex & parent) const
+C2cDocumentsLocalesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-DocumentsLocalesModel::data(const QModelIndex & index, int role) const
+C2cDocumentsLocalesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "DocumentsLocalesModel: Index out of bound";
+    qWarning() << "C2cDocumentsLocalesModel: Index out of bound";
     return QVariant();
   }
 
@@ -5026,7 +5026,7 @@ DocumentsLocalesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-DocumentsLocalesModel::roleNames() const
+C2cDocumentsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -5043,7 +5043,7 @@ DocumentsLocalesModel::roleNames() const
 }
 
 void
-DocumentsLocalesModel::clear_items()
+C2cDocumentsLocalesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -5051,15 +5051,15 @@ DocumentsLocalesModel::clear_items()
 }
 
 void
-DocumentsLocalesModel::set_items(const ItemList & items)
+C2cDocumentsLocalesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-DocumentsTopicsSchema::DocumentsTopicsSchema()
-: QcSchema(QLatin1String("DocumentsTopics"), QLatin1String("documents_topics"))
+C2cDocumentsTopicsSchema::C2cDocumentsTopicsSchema()
+: QcSchema(QLatin1String("C2cDocumentsTopics"), QLatin1String("c2c_documents_topics"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -5089,73 +5089,73 @@ DocumentsTopicsSchema::DocumentsTopicsSchema()
   }
 }
 
-DocumentsTopicsSchema::~DocumentsTopicsSchema()
+C2cDocumentsTopicsSchema::~C2cDocumentsTopicsSchema()
 {}
 
 /**************************************************************************************************/
 
-DocumentsTopics::DocumentsTopics()
+C2cDocumentsTopics::C2cDocumentsTopics()
   : QObject(),
-    QcRow<DocumentsTopicsSchema>(),
+    QcRow<C2cDocumentsTopicsSchema>(),
     m_document_locale_id(),
     m_topic_id()
 {
 }
 
-DocumentsTopics::DocumentsTopics(const DocumentsTopics & other)
+C2cDocumentsTopics::C2cDocumentsTopics(const C2cDocumentsTopics & other)
   : QObject(),
-    QcRow<DocumentsTopicsSchema>(other),
+    QcRow<C2cDocumentsTopicsSchema>(other),
     m_document_locale_id(other.m_document_locale_id),
     m_topic_id(other.m_topic_id)
 {
 }
 
-DocumentsTopics::DocumentsTopics(const QJsonObject & json_object)
- : DocumentsTopics()
+C2cDocumentsTopics::C2cDocumentsTopics(const QJsonObject & json_object)
+ : C2cDocumentsTopics()
 {
   m_document_locale_id = json_object[QLatin1String("document_locale_id")].toInt();
   m_topic_id = json_object[QLatin1String("topic_id")].toInt();
 }
 
-DocumentsTopics::DocumentsTopics(const QVariantHash & variant_hash)
- : DocumentsTopics()
+C2cDocumentsTopics::C2cDocumentsTopics(const QVariantHash & variant_hash)
+ : C2cDocumentsTopics()
 {
   m_document_locale_id = variant_hash[QLatin1String("document_locale_id")].toInt();
   m_topic_id = variant_hash[QLatin1String("topic_id")].toInt();
 }
 
-DocumentsTopics::DocumentsTopics(const QVariantList & variants)
- : DocumentsTopics()
+C2cDocumentsTopics::C2cDocumentsTopics(const QVariantList & variants)
+ : C2cDocumentsTopics()
 {
   m_document_locale_id = variants[0].toInt();
   m_topic_id = variants[1].toInt();
 }
 
-DocumentsTopics::DocumentsTopics(const QSqlRecord & record)
- : QcRow<DocumentsTopicsSchema>(record)
+C2cDocumentsTopics::C2cDocumentsTopics(const QSqlRecord & record)
+ : QcRow<C2cDocumentsTopicsSchema>(record)
 {
   m_document_locale_id = record.value(0).toInt();
   m_topic_id = record.value(1).toInt();
 }
 
-DocumentsTopics::DocumentsTopics(const QSqlQuery & query, int offset)
- : QcRow<DocumentsTopicsSchema>(query)
+C2cDocumentsTopics::C2cDocumentsTopics(const QSqlQuery & query, int offset)
+ : QcRow<C2cDocumentsTopicsSchema>(query)
 {
   m_document_locale_id = query.value(offset++).toInt();
   m_topic_id = query.value(offset).toInt();
 }
 
-DocumentsTopics::~DocumentsTopics()
+C2cDocumentsTopics::~C2cDocumentsTopics()
 {
-// qInfo() << "--- Delete" << "DocumentsTopics" << *this;
+// qInfo() << "--- Delete" << "C2cDocumentsTopics" << *this;
 }
 
 // bit array ?
-DocumentsTopics &
-DocumentsTopics::operator=(const DocumentsTopics & other)
+C2cDocumentsTopics &
+C2cDocumentsTopics::operator=(const C2cDocumentsTopics & other)
 {
   if (this != &other) {
-    QcRow<DocumentsTopicsSchema>::operator=(other);
+    QcRow<C2cDocumentsTopicsSchema>::operator=(other);
     m_document_locale_id = other.m_document_locale_id;
     m_topic_id = other.m_topic_id;
   }
@@ -5165,9 +5165,9 @@ DocumentsTopics::operator=(const DocumentsTopics & other)
 
 // bit array ?
 bool
-DocumentsTopics::operator==(const DocumentsTopics & other) const
+C2cDocumentsTopics::operator==(const C2cDocumentsTopics & other) const
 {
-  if (not QcRow<DocumentsTopicsSchema>::operator==(other))
+  if (not QcRow<C2cDocumentsTopicsSchema>::operator==(other))
     return false;
   if (m_document_locale_id != other.m_document_locale_id)
     return false;
@@ -5178,7 +5178,7 @@ DocumentsTopics::operator==(const DocumentsTopics & other) const
 }
 
 void
-DocumentsTopics::set_document_locale_id(int value)
+C2cDocumentsTopics::set_document_locale_id(int value)
 {
   if (m_document_locale_id != value) {
     m_document_locale_id = value;
@@ -5193,7 +5193,7 @@ DocumentsTopics::set_document_locale_id(int value)
 }
 
 void
-DocumentsTopics::set_topic_id(int value)
+C2cDocumentsTopics::set_topic_id(int value)
 {
   if (m_topic_id != value) {
     m_topic_id = value;
@@ -5208,7 +5208,7 @@ DocumentsTopics::set_topic_id(int value)
 }
 
 QJsonObject
-DocumentsTopics::to_json(bool only_changed) const
+C2cDocumentsTopics::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -5226,7 +5226,7 @@ DocumentsTopics::to_json(bool only_changed) const
 }
 
 QVariantHash
-DocumentsTopics::to_variant_hash(bool only_changed) const
+C2cDocumentsTopics::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -5244,7 +5244,7 @@ DocumentsTopics::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-DocumentsTopics::to_variant_list() const
+C2cDocumentsTopics::to_variant_list() const
 {
   QVariantList variants;
 
@@ -5255,7 +5255,7 @@ DocumentsTopics::to_variant_list() const
 }
 
 QVariantHash
-DocumentsTopics::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cDocumentsTopics::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -5274,7 +5274,7 @@ DocumentsTopics::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-DocumentsTopics::to_variant_list_sql(bool duplicate) const
+C2cDocumentsTopics::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -5286,7 +5286,7 @@ DocumentsTopics::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-DocumentsTopics::field(int position) const
+C2cDocumentsTopics::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_LOCALE_ID:
@@ -5299,7 +5299,7 @@ DocumentsTopics::field(int position) const
 }
 
 void
-DocumentsTopics::set_field(int position, const QVariant & value)
+C2cDocumentsTopics::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_LOCALE_ID: {
@@ -5314,20 +5314,20 @@ DocumentsTopics::set_field(int position, const QVariant & value)
 }
 
 void
-DocumentsTopics::set_insert_id(int id)
+C2cDocumentsTopics::set_insert_id(int id)
 {
   set_document_locale_id(id);
 
 }
 
 bool
-DocumentsTopics::can_update() const
+C2cDocumentsTopics::can_update() const
 {
   return m_document_locale_id > 0;
 }
 
 QVariantHash
-DocumentsTopics::rowid_kwargs() const // To update row
+C2cDocumentsTopics::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_locale_id")] = m_document_locale_id;
@@ -5335,7 +5335,7 @@ DocumentsTopics::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const DocumentsTopics & obj)
+operator<<(QDataStream & out, const C2cDocumentsTopics & obj)
 {
   out << obj.document_locale_id();
   out << obj.topic_id();
@@ -5344,7 +5344,7 @@ operator<<(QDataStream & out, const DocumentsTopics & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, DocumentsTopics & obj)
+operator>>(QDataStream & in, C2cDocumentsTopics & obj)
 {
   int _int;
   in >> _int;
@@ -5357,12 +5357,12 @@ operator>>(QDataStream & in, DocumentsTopics & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsTopics & obj)
+operator<<(QDebug debug, const C2cDocumentsTopics & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("DocumentsTopics(");
+  debug.nospace() << QLatin1Literal("C2cDocumentsTopics(");
   debug << obj.document_locale_id();
   debug << QLatin1Literal(", ");
   debug << obj.topic_id();
@@ -5376,11 +5376,11 @@ operator<<(QDebug debug, const DocumentsTopics & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsTopicsPtr & obj)
+operator<<(QDebug debug, const C2cDocumentsTopicsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentsTopicsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cDocumentsTopicsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -5392,68 +5392,68 @@ operator<<(QDebug debug, const DocumentsTopicsPtr & obj)
 
 /**************************************************************************************************/
 
-DocumentsTopicsCache::DocumentsTopicsCache()
+C2cDocumentsTopicsCache::C2cDocumentsTopicsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-DocumentsTopicsCache::~DocumentsTopicsCache()
+C2cDocumentsTopicsCache::~C2cDocumentsTopicsCache()
 {}
 
 void
-DocumentsTopicsCache::add(DocumentsTopicsPtr & ptr)
+C2cDocumentsTopicsCache::add(C2cDocumentsTopicsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &DocumentsTopics::changed,
-                   this, &DocumentsTopicsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cDocumentsTopics::changed,
+                   this, &C2cDocumentsTopicsCache::on_changed);
 }
 
 void
-DocumentsTopicsCache::remove(DocumentsTopicsPtr & ptr)
+C2cDocumentsTopicsCache::remove(C2cDocumentsTopicsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-DocumentsTopicsCache::on_changed()
+C2cDocumentsTopicsCache::on_changed()
 {
-  DocumentsTopics * row = qobject_cast<DocumentsTopics *>(QObject::sender());
+  C2cDocumentsTopics * row = qobject_cast<C2cDocumentsTopics *>(QObject::sender());
   qInfo() << "On changed" << row;
-  DocumentsTopicsPtr row_ptr = m_loaded_instances[row];
+  C2cDocumentsTopicsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-DocumentsTopicsModel::DocumentsTopicsModel()
+C2cDocumentsTopicsModel::C2cDocumentsTopicsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-DocumentsTopicsModel::DocumentsTopicsModel(const ItemList & items)
+C2cDocumentsTopicsModel::C2cDocumentsTopicsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-DocumentsTopicsModel::~DocumentsTopicsModel()
+C2cDocumentsTopicsModel::~C2cDocumentsTopicsModel()
 {}
 
 int
-DocumentsTopicsModel::rowCount(const QModelIndex & parent) const
+C2cDocumentsTopicsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-DocumentsTopicsModel::data(const QModelIndex & index, int role) const
+C2cDocumentsTopicsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "DocumentsTopicsModel: Index out of bound";
+    qWarning() << "C2cDocumentsTopicsModel: Index out of bound";
     return QVariant();
   }
 
@@ -5471,7 +5471,7 @@ DocumentsTopicsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-DocumentsTopicsModel::roleNames() const
+C2cDocumentsTopicsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -5482,7 +5482,7 @@ DocumentsTopicsModel::roleNames() const
 }
 
 void
-DocumentsTopicsModel::clear_items()
+C2cDocumentsTopicsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -5490,15 +5490,15 @@ DocumentsTopicsModel::clear_items()
 }
 
 void
-DocumentsTopicsModel::set_items(const ItemList & items)
+C2cDocumentsTopicsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-DocumentsVersionsSchema::DocumentsVersionsSchema()
-: QcSchema(QLatin1String("DocumentsVersions"), QLatin1String("documents_versions"))
+C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
+: QcSchema(QLatin1String("C2cDocumentsVersions"), QLatin1String("c2c_documents_versions"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -5592,14 +5592,14 @@ DocumentsVersionsSchema::DocumentsVersionsSchema()
   }
 }
 
-DocumentsVersionsSchema::~DocumentsVersionsSchema()
+C2cDocumentsVersionsSchema::~C2cDocumentsVersionsSchema()
 {}
 
 /**************************************************************************************************/
 
-DocumentsVersions::DocumentsVersions()
+C2cDocumentsVersions::C2cDocumentsVersions()
   : QObject(),
-    QcRow<DocumentsVersionsSchema>(),
+    QcRow<C2cDocumentsVersionsSchema>(),
     m_id(),
     m_document_archive_id(),
     m_document_geometry_archive_id(),
@@ -5610,9 +5610,9 @@ DocumentsVersions::DocumentsVersions()
 {
 }
 
-DocumentsVersions::DocumentsVersions(const DocumentsVersions & other)
+C2cDocumentsVersions::C2cDocumentsVersions(const C2cDocumentsVersions & other)
   : QObject(),
-    QcRow<DocumentsVersionsSchema>(other),
+    QcRow<C2cDocumentsVersionsSchema>(other),
     m_id(other.m_id),
     m_document_archive_id(other.m_document_archive_id),
     m_document_geometry_archive_id(other.m_document_geometry_archive_id),
@@ -5623,8 +5623,8 @@ DocumentsVersions::DocumentsVersions(const DocumentsVersions & other)
 {
 }
 
-DocumentsVersions::DocumentsVersions(const QJsonObject & json_object)
- : DocumentsVersions()
+C2cDocumentsVersions::C2cDocumentsVersions(const QJsonObject & json_object)
+ : C2cDocumentsVersions()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_document_archive_id = json_object[QLatin1String("document_archive_id")].toInt();
@@ -5635,8 +5635,8 @@ DocumentsVersions::DocumentsVersions(const QJsonObject & json_object)
   m_lang = json_object[QLatin1String("lang")].toString();
 }
 
-DocumentsVersions::DocumentsVersions(const QVariantHash & variant_hash)
- : DocumentsVersions()
+C2cDocumentsVersions::C2cDocumentsVersions(const QVariantHash & variant_hash)
+ : C2cDocumentsVersions()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_document_archive_id = variant_hash[QLatin1String("document_archive_id")].toInt();
@@ -5647,8 +5647,8 @@ DocumentsVersions::DocumentsVersions(const QVariantHash & variant_hash)
   m_lang = variant_hash[QLatin1String("lang")].toString();
 }
 
-DocumentsVersions::DocumentsVersions(const QVariantList & variants)
- : DocumentsVersions()
+C2cDocumentsVersions::C2cDocumentsVersions(const QVariantList & variants)
+ : C2cDocumentsVersions()
 {
   m_id = variants[0].toInt();
   m_document_archive_id = variants[1].toInt();
@@ -5659,8 +5659,8 @@ DocumentsVersions::DocumentsVersions(const QVariantList & variants)
   m_lang = variants[6].toString();
 }
 
-DocumentsVersions::DocumentsVersions(const QSqlRecord & record)
- : QcRow<DocumentsVersionsSchema>(record)
+C2cDocumentsVersions::C2cDocumentsVersions(const QSqlRecord & record)
+ : QcRow<C2cDocumentsVersionsSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_document_archive_id = record.value(1).toInt();
@@ -5671,8 +5671,8 @@ DocumentsVersions::DocumentsVersions(const QSqlRecord & record)
   m_lang = record.value(6).toString();
 }
 
-DocumentsVersions::DocumentsVersions(const QSqlQuery & query, int offset)
- : QcRow<DocumentsVersionsSchema>(query)
+C2cDocumentsVersions::C2cDocumentsVersions(const QSqlQuery & query, int offset)
+ : QcRow<C2cDocumentsVersionsSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_document_archive_id = query.value(offset++).toInt();
@@ -5683,17 +5683,17 @@ DocumentsVersions::DocumentsVersions(const QSqlQuery & query, int offset)
   m_lang = query.value(offset).toString();
 }
 
-DocumentsVersions::~DocumentsVersions()
+C2cDocumentsVersions::~C2cDocumentsVersions()
 {
-// qInfo() << "--- Delete" << "DocumentsVersions" << *this;
+// qInfo() << "--- Delete" << "C2cDocumentsVersions" << *this;
 }
 
 // bit array ?
-DocumentsVersions &
-DocumentsVersions::operator=(const DocumentsVersions & other)
+C2cDocumentsVersions &
+C2cDocumentsVersions::operator=(const C2cDocumentsVersions & other)
 {
   if (this != &other) {
-    QcRow<DocumentsVersionsSchema>::operator=(other);
+    QcRow<C2cDocumentsVersionsSchema>::operator=(other);
     m_id = other.m_id;
     m_document_archive_id = other.m_document_archive_id;
     m_document_geometry_archive_id = other.m_document_geometry_archive_id;
@@ -5708,9 +5708,9 @@ DocumentsVersions::operator=(const DocumentsVersions & other)
 
 // bit array ?
 bool
-DocumentsVersions::operator==(const DocumentsVersions & other) const
+C2cDocumentsVersions::operator==(const C2cDocumentsVersions & other) const
 {
-  if (not QcRow<DocumentsVersionsSchema>::operator==(other))
+  if (not QcRow<C2cDocumentsVersionsSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -5731,7 +5731,7 @@ DocumentsVersions::operator==(const DocumentsVersions & other) const
 }
 
 void
-DocumentsVersions::set_id(int value)
+C2cDocumentsVersions::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -5746,7 +5746,7 @@ DocumentsVersions::set_id(int value)
 }
 
 void
-DocumentsVersions::set_document_archive_id(int value)
+C2cDocumentsVersions::set_document_archive_id(int value)
 {
   if (m_document_archive_id != value) {
     m_document_archive_id = value;
@@ -5761,7 +5761,7 @@ DocumentsVersions::set_document_archive_id(int value)
 }
 
 void
-DocumentsVersions::set_document_geometry_archive_id(int value)
+C2cDocumentsVersions::set_document_geometry_archive_id(int value)
 {
   if (m_document_geometry_archive_id != value) {
     m_document_geometry_archive_id = value;
@@ -5776,7 +5776,7 @@ DocumentsVersions::set_document_geometry_archive_id(int value)
 }
 
 void
-DocumentsVersions::set_document_id(int value)
+C2cDocumentsVersions::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -5791,7 +5791,7 @@ DocumentsVersions::set_document_id(int value)
 }
 
 void
-DocumentsVersions::set_document_locales_archive_id(int value)
+C2cDocumentsVersions::set_document_locales_archive_id(int value)
 {
   if (m_document_locales_archive_id != value) {
     m_document_locales_archive_id = value;
@@ -5806,7 +5806,7 @@ DocumentsVersions::set_document_locales_archive_id(int value)
 }
 
 void
-DocumentsVersions::set_history_metadata_id(int value)
+C2cDocumentsVersions::set_history_metadata_id(int value)
 {
   if (m_history_metadata_id != value) {
     m_history_metadata_id = value;
@@ -5821,7 +5821,7 @@ DocumentsVersions::set_history_metadata_id(int value)
 }
 
 void
-DocumentsVersions::set_lang(const QString & value)
+C2cDocumentsVersions::set_lang(const QString & value)
 {
   if (m_lang != value) {
     m_lang = value;
@@ -5836,7 +5836,7 @@ DocumentsVersions::set_lang(const QString & value)
 }
 
 QJsonObject
-DocumentsVersions::to_json(bool only_changed) const
+C2cDocumentsVersions::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -5869,7 +5869,7 @@ DocumentsVersions::to_json(bool only_changed) const
 }
 
 QVariantHash
-DocumentsVersions::to_variant_hash(bool only_changed) const
+C2cDocumentsVersions::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -5902,7 +5902,7 @@ DocumentsVersions::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-DocumentsVersions::to_variant_list() const
+C2cDocumentsVersions::to_variant_list() const
 {
   QVariantList variants;
 
@@ -5918,7 +5918,7 @@ DocumentsVersions::to_variant_list() const
 }
 
 QVariantHash
-DocumentsVersions::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cDocumentsVersions::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -5952,7 +5952,7 @@ DocumentsVersions::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-DocumentsVersions::to_variant_list_sql(bool duplicate) const
+C2cDocumentsVersions::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -5969,7 +5969,7 @@ DocumentsVersions::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-DocumentsVersions::field(int position) const
+C2cDocumentsVersions::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -5992,7 +5992,7 @@ DocumentsVersions::field(int position) const
 }
 
 void
-DocumentsVersions::set_field(int position, const QVariant & value)
+C2cDocumentsVersions::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -6027,20 +6027,20 @@ DocumentsVersions::set_field(int position, const QVariant & value)
 }
 
 void
-DocumentsVersions::set_insert_id(int id)
+C2cDocumentsVersions::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-DocumentsVersions::can_update() const
+C2cDocumentsVersions::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-DocumentsVersions::rowid_kwargs() const // To update row
+C2cDocumentsVersions::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -6048,7 +6048,7 @@ DocumentsVersions::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const DocumentsVersions & obj)
+operator<<(QDataStream & out, const C2cDocumentsVersions & obj)
 {
   out << obj.id();
   out << obj.document_archive_id();
@@ -6062,7 +6062,7 @@ operator<<(QDataStream & out, const DocumentsVersions & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, DocumentsVersions & obj)
+operator>>(QDataStream & in, C2cDocumentsVersions & obj)
 {
   QString _QString;
   int _int;
@@ -6086,12 +6086,12 @@ operator>>(QDataStream & in, DocumentsVersions & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsVersions & obj)
+operator<<(QDebug debug, const C2cDocumentsVersions & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("DocumentsVersions(");
+  debug.nospace() << QLatin1Literal("C2cDocumentsVersions(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.document_archive_id();
@@ -6115,11 +6115,11 @@ operator<<(QDebug debug, const DocumentsVersions & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const DocumentsVersionsPtr & obj)
+operator<<(QDebug debug, const C2cDocumentsVersionsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentsVersionsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cDocumentsVersionsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -6131,68 +6131,68 @@ operator<<(QDebug debug, const DocumentsVersionsPtr & obj)
 
 /**************************************************************************************************/
 
-DocumentsVersionsCache::DocumentsVersionsCache()
+C2cDocumentsVersionsCache::C2cDocumentsVersionsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-DocumentsVersionsCache::~DocumentsVersionsCache()
+C2cDocumentsVersionsCache::~C2cDocumentsVersionsCache()
 {}
 
 void
-DocumentsVersionsCache::add(DocumentsVersionsPtr & ptr)
+C2cDocumentsVersionsCache::add(C2cDocumentsVersionsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &DocumentsVersions::changed,
-                   this, &DocumentsVersionsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cDocumentsVersions::changed,
+                   this, &C2cDocumentsVersionsCache::on_changed);
 }
 
 void
-DocumentsVersionsCache::remove(DocumentsVersionsPtr & ptr)
+C2cDocumentsVersionsCache::remove(C2cDocumentsVersionsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-DocumentsVersionsCache::on_changed()
+C2cDocumentsVersionsCache::on_changed()
 {
-  DocumentsVersions * row = qobject_cast<DocumentsVersions *>(QObject::sender());
+  C2cDocumentsVersions * row = qobject_cast<C2cDocumentsVersions *>(QObject::sender());
   qInfo() << "On changed" << row;
-  DocumentsVersionsPtr row_ptr = m_loaded_instances[row];
+  C2cDocumentsVersionsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-DocumentsVersionsModel::DocumentsVersionsModel()
+C2cDocumentsVersionsModel::C2cDocumentsVersionsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-DocumentsVersionsModel::DocumentsVersionsModel(const ItemList & items)
+C2cDocumentsVersionsModel::C2cDocumentsVersionsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-DocumentsVersionsModel::~DocumentsVersionsModel()
+C2cDocumentsVersionsModel::~C2cDocumentsVersionsModel()
 {}
 
 int
-DocumentsVersionsModel::rowCount(const QModelIndex & parent) const
+C2cDocumentsVersionsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-DocumentsVersionsModel::data(const QModelIndex & index, int role) const
+C2cDocumentsVersionsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "DocumentsVersionsModel: Index out of bound";
+    qWarning() << "C2cDocumentsVersionsModel: Index out of bound";
     return QVariant();
   }
 
@@ -6220,7 +6220,7 @@ DocumentsVersionsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-DocumentsVersionsModel::roleNames() const
+C2cDocumentsVersionsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -6236,7 +6236,7 @@ DocumentsVersionsModel::roleNames() const
 }
 
 void
-DocumentsVersionsModel::clear_items()
+C2cDocumentsVersionsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -6244,15 +6244,15 @@ DocumentsVersionsModel::clear_items()
 }
 
 void
-DocumentsVersionsModel::set_items(const ItemList & items)
+C2cDocumentsVersionsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-ImagesSchema::ImagesSchema()
-: QcSchema(QLatin1String("Images"), QLatin1String("images"))
+C2cImagesSchema::C2cImagesSchema()
+: QcSchema(QLatin1String("C2cImages"), QLatin1String("c2c_images"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -6450,14 +6450,14 @@ ImagesSchema::ImagesSchema()
   }
 }
 
-ImagesSchema::~ImagesSchema()
+C2cImagesSchema::~C2cImagesSchema()
 {}
 
 /**************************************************************************************************/
 
-Images::Images()
+C2cImages::C2cImages()
   : QObject(),
-    QcRow<ImagesSchema>(),
+    QcRow<C2cImagesSchema>(),
     m_document_id(),
     m_activities(),
     m_author(),
@@ -6477,9 +6477,9 @@ Images::Images()
 {
 }
 
-Images::Images(const Images & other)
+C2cImages::C2cImages(const C2cImages & other)
   : QObject(),
-    QcRow<ImagesSchema>(other),
+    QcRow<C2cImagesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_author(other.m_author),
@@ -6499,8 +6499,8 @@ Images::Images(const Images & other)
 {
 }
 
-Images::Images(const QJsonObject & json_object)
- : Images()
+C2cImages::C2cImages(const QJsonObject & json_object)
+ : C2cImages()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
@@ -6520,8 +6520,8 @@ Images::Images(const QJsonObject & json_object)
   m_width = json_object[QLatin1String("width")].toInt();
 }
 
-Images::Images(const QVariantHash & variant_hash)
- : Images()
+C2cImages::C2cImages(const QVariantHash & variant_hash)
+ : C2cImages()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
@@ -6541,8 +6541,8 @@ Images::Images(const QVariantHash & variant_hash)
   m_width = variant_hash[QLatin1String("width")].toInt();
 }
 
-Images::Images(const QVariantList & variants)
- : Images()
+C2cImages::C2cImages(const QVariantList & variants)
+ : C2cImages()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
@@ -6562,8 +6562,8 @@ Images::Images(const QVariantList & variants)
   m_width = variants[15].toInt();
 }
 
-Images::Images(const QSqlRecord & record)
- : QcRow<ImagesSchema>(record)
+C2cImages::C2cImages(const QSqlRecord & record)
+ : QcRow<C2cImagesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -6583,8 +6583,8 @@ Images::Images(const QSqlRecord & record)
   m_width = record.value(15).toInt();
 }
 
-Images::Images(const QSqlQuery & query, int offset)
- : QcRow<ImagesSchema>(query)
+C2cImages::C2cImages(const QSqlQuery & query, int offset)
+ : QcRow<C2cImagesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -6604,17 +6604,17 @@ Images::Images(const QSqlQuery & query, int offset)
   m_width = query.value(offset).toInt();
 }
 
-Images::~Images()
+C2cImages::~C2cImages()
 {
-// qInfo() << "--- Delete" << "Images" << *this;
+// qInfo() << "--- Delete" << "C2cImages" << *this;
 }
 
 // bit array ?
-Images &
-Images::operator=(const Images & other)
+C2cImages &
+C2cImages::operator=(const C2cImages & other)
 {
   if (this != &other) {
-    QcRow<ImagesSchema>::operator=(other);
+    QcRow<C2cImagesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_author = other.m_author;
@@ -6638,9 +6638,9 @@ Images::operator=(const Images & other)
 
 // bit array ?
 bool
-Images::operator==(const Images & other) const
+C2cImages::operator==(const C2cImages & other) const
 {
-  if (not QcRow<ImagesSchema>::operator==(other))
+  if (not QcRow<C2cImagesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -6679,7 +6679,7 @@ Images::operator==(const Images & other) const
 }
 
 void
-Images::set_document_id(int value)
+C2cImages::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -6694,7 +6694,7 @@ Images::set_document_id(int value)
 }
 
 void
-Images::set_activities(const QStringList & value)
+C2cImages::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -6709,7 +6709,7 @@ Images::set_activities(const QStringList & value)
 }
 
 void
-Images::set_author(const QString & value)
+C2cImages::set_author(const QString & value)
 {
   if (m_author != value) {
     m_author = value;
@@ -6724,7 +6724,7 @@ Images::set_author(const QString & value)
 }
 
 void
-Images::set_camera_name(const QString & value)
+C2cImages::set_camera_name(const QString & value)
 {
   if (m_camera_name != value) {
     m_camera_name = value;
@@ -6739,7 +6739,7 @@ Images::set_camera_name(const QString & value)
 }
 
 void
-Images::set_categories(const QStringList & value)
+C2cImages::set_categories(const QStringList & value)
 {
   if (m_categories != value) {
     m_categories = value;
@@ -6754,7 +6754,7 @@ Images::set_categories(const QStringList & value)
 }
 
 void
-Images::set_date_time(const QDateTime & value)
+C2cImages::set_date_time(const QDateTime & value)
 {
   if (m_date_time != value) {
     m_date_time = value;
@@ -6769,7 +6769,7 @@ Images::set_date_time(const QDateTime & value)
 }
 
 void
-Images::set_elevation(int value)
+C2cImages::set_elevation(int value)
 {
   if (m_elevation != value) {
     m_elevation = value;
@@ -6784,7 +6784,7 @@ Images::set_elevation(int value)
 }
 
 void
-Images::set_exposure_time(qreal value)
+C2cImages::set_exposure_time(qreal value)
 {
   if (m_exposure_time != value) {
     m_exposure_time = value;
@@ -6799,7 +6799,7 @@ Images::set_exposure_time(qreal value)
 }
 
 void
-Images::set_file_size(int value)
+C2cImages::set_file_size(int value)
 {
   if (m_file_size != value) {
     m_file_size = value;
@@ -6814,7 +6814,7 @@ Images::set_file_size(int value)
 }
 
 void
-Images::set_filename(const QString & value)
+C2cImages::set_filename(const QString & value)
 {
   if (m_filename != value) {
     m_filename = value;
@@ -6829,7 +6829,7 @@ Images::set_filename(const QString & value)
 }
 
 void
-Images::set_fnumber(qreal value)
+C2cImages::set_fnumber(qreal value)
 {
   if (m_fnumber != value) {
     m_fnumber = value;
@@ -6844,7 +6844,7 @@ Images::set_fnumber(qreal value)
 }
 
 void
-Images::set_focal_length(qreal value)
+C2cImages::set_focal_length(qreal value)
 {
   if (m_focal_length != value) {
     m_focal_length = value;
@@ -6859,7 +6859,7 @@ Images::set_focal_length(qreal value)
 }
 
 void
-Images::set_height(int value)
+C2cImages::set_height(int value)
 {
   if (m_height != value) {
     m_height = value;
@@ -6874,7 +6874,7 @@ Images::set_height(int value)
 }
 
 void
-Images::set_image_type(const QString & value)
+C2cImages::set_image_type(const QString & value)
 {
   if (m_image_type != value) {
     m_image_type = value;
@@ -6889,7 +6889,7 @@ Images::set_image_type(const QString & value)
 }
 
 void
-Images::set_iso_speed(int value)
+C2cImages::set_iso_speed(int value)
 {
   if (m_iso_speed != value) {
     m_iso_speed = value;
@@ -6904,7 +6904,7 @@ Images::set_iso_speed(int value)
 }
 
 void
-Images::set_width(int value)
+C2cImages::set_width(int value)
 {
   if (m_width != value) {
     m_width = value;
@@ -6919,7 +6919,7 @@ Images::set_width(int value)
 }
 
 QJsonObject
-Images::to_json(bool only_changed) const
+C2cImages::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -6979,7 +6979,7 @@ Images::to_json(bool only_changed) const
 }
 
 QVariantHash
-Images::to_variant_hash(bool only_changed) const
+C2cImages::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -7039,7 +7039,7 @@ Images::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Images::to_variant_list() const
+C2cImages::to_variant_list() const
 {
   QVariantList variants;
 
@@ -7064,7 +7064,7 @@ Images::to_variant_list() const
 }
 
 QVariantHash
-Images::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cImages::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -7125,7 +7125,7 @@ Images::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Images::to_variant_list_sql(bool duplicate) const
+C2cImages::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -7151,7 +7151,7 @@ Images::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Images::field(int position) const
+C2cImages::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -7192,7 +7192,7 @@ Images::field(int position) const
 }
 
 void
-Images::set_field(int position, const QVariant & value)
+C2cImages::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -7263,20 +7263,20 @@ Images::set_field(int position, const QVariant & value)
 }
 
 void
-Images::set_insert_id(int id)
+C2cImages::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Images::can_update() const
+C2cImages::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Images::rowid_kwargs() const // To update row
+C2cImages::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -7284,7 +7284,7 @@ Images::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Images & obj)
+operator<<(QDataStream & out, const C2cImages & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -7307,7 +7307,7 @@ operator<<(QDataStream & out, const Images & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Images & obj)
+operator>>(QDataStream & in, C2cImages & obj)
 {
   QDateTime _QDateTime;
   QString _QString;
@@ -7352,12 +7352,12 @@ operator>>(QDataStream & in, Images & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Images & obj)
+operator<<(QDebug debug, const C2cImages & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Images(");
+  debug.nospace() << QLatin1Literal("C2cImages(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -7399,11 +7399,11 @@ operator<<(QDebug debug, const Images & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const ImagesPtr & obj)
+operator<<(QDebug debug, const C2cImagesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("ImagesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cImagesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -7415,68 +7415,68 @@ operator<<(QDebug debug, const ImagesPtr & obj)
 
 /**************************************************************************************************/
 
-ImagesCache::ImagesCache()
+C2cImagesCache::C2cImagesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-ImagesCache::~ImagesCache()
+C2cImagesCache::~C2cImagesCache()
 {}
 
 void
-ImagesCache::add(ImagesPtr & ptr)
+C2cImagesCache::add(C2cImagesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Images::changed,
-                   this, &ImagesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cImages::changed,
+                   this, &C2cImagesCache::on_changed);
 }
 
 void
-ImagesCache::remove(ImagesPtr & ptr)
+C2cImagesCache::remove(C2cImagesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-ImagesCache::on_changed()
+C2cImagesCache::on_changed()
 {
-  Images * row = qobject_cast<Images *>(QObject::sender());
+  C2cImages * row = qobject_cast<C2cImages *>(QObject::sender());
   qInfo() << "On changed" << row;
-  ImagesPtr row_ptr = m_loaded_instances[row];
+  C2cImagesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-ImagesModel::ImagesModel()
+C2cImagesModel::C2cImagesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-ImagesModel::ImagesModel(const ItemList & items)
+C2cImagesModel::C2cImagesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-ImagesModel::~ImagesModel()
+C2cImagesModel::~C2cImagesModel()
 {}
 
 int
-ImagesModel::rowCount(const QModelIndex & parent) const
+C2cImagesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-ImagesModel::data(const QModelIndex & index, int role) const
+C2cImagesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "ImagesModel: Index out of bound";
+    qWarning() << "C2cImagesModel: Index out of bound";
     return QVariant();
   }
 
@@ -7522,7 +7522,7 @@ ImagesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-ImagesModel::roleNames() const
+C2cImagesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -7547,7 +7547,7 @@ ImagesModel::roleNames() const
 }
 
 void
-ImagesModel::clear_items()
+C2cImagesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -7555,15 +7555,15 @@ ImagesModel::clear_items()
 }
 
 void
-ImagesModel::set_items(const ItemList & items)
+C2cImagesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-MapAssociationsSchema::MapAssociationsSchema()
-: QcSchema(QLatin1String("MapAssociations"), QLatin1String("map_associations"))
+C2cMapAssociationsSchema::C2cMapAssociationsSchema()
+: QcSchema(QLatin1String("C2cMapAssociations"), QLatin1String("c2c_map_associations"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -7593,73 +7593,73 @@ MapAssociationsSchema::MapAssociationsSchema()
   }
 }
 
-MapAssociationsSchema::~MapAssociationsSchema()
+C2cMapAssociationsSchema::~C2cMapAssociationsSchema()
 {}
 
 /**************************************************************************************************/
 
-MapAssociations::MapAssociations()
+C2cMapAssociations::C2cMapAssociations()
   : QObject(),
-    QcRow<MapAssociationsSchema>(),
+    QcRow<C2cMapAssociationsSchema>(),
     m_document_id(),
     m_topo_map_id()
 {
 }
 
-MapAssociations::MapAssociations(const MapAssociations & other)
+C2cMapAssociations::C2cMapAssociations(const C2cMapAssociations & other)
   : QObject(),
-    QcRow<MapAssociationsSchema>(other),
+    QcRow<C2cMapAssociationsSchema>(other),
     m_document_id(other.m_document_id),
     m_topo_map_id(other.m_topo_map_id)
 {
 }
 
-MapAssociations::MapAssociations(const QJsonObject & json_object)
- : MapAssociations()
+C2cMapAssociations::C2cMapAssociations(const QJsonObject & json_object)
+ : C2cMapAssociations()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_topo_map_id = json_object[QLatin1String("topo_map_id")].toInt();
 }
 
-MapAssociations::MapAssociations(const QVariantHash & variant_hash)
- : MapAssociations()
+C2cMapAssociations::C2cMapAssociations(const QVariantHash & variant_hash)
+ : C2cMapAssociations()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_topo_map_id = variant_hash[QLatin1String("topo_map_id")].toInt();
 }
 
-MapAssociations::MapAssociations(const QVariantList & variants)
- : MapAssociations()
+C2cMapAssociations::C2cMapAssociations(const QVariantList & variants)
+ : C2cMapAssociations()
 {
   m_document_id = variants[0].toInt();
   m_topo_map_id = variants[1].toInt();
 }
 
-MapAssociations::MapAssociations(const QSqlRecord & record)
- : QcRow<MapAssociationsSchema>(record)
+C2cMapAssociations::C2cMapAssociations(const QSqlRecord & record)
+ : QcRow<C2cMapAssociationsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_topo_map_id = record.value(1).toInt();
 }
 
-MapAssociations::MapAssociations(const QSqlQuery & query, int offset)
- : QcRow<MapAssociationsSchema>(query)
+C2cMapAssociations::C2cMapAssociations(const QSqlQuery & query, int offset)
+ : QcRow<C2cMapAssociationsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_topo_map_id = query.value(offset).toInt();
 }
 
-MapAssociations::~MapAssociations()
+C2cMapAssociations::~C2cMapAssociations()
 {
-// qInfo() << "--- Delete" << "MapAssociations" << *this;
+// qInfo() << "--- Delete" << "C2cMapAssociations" << *this;
 }
 
 // bit array ?
-MapAssociations &
-MapAssociations::operator=(const MapAssociations & other)
+C2cMapAssociations &
+C2cMapAssociations::operator=(const C2cMapAssociations & other)
 {
   if (this != &other) {
-    QcRow<MapAssociationsSchema>::operator=(other);
+    QcRow<C2cMapAssociationsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_topo_map_id = other.m_topo_map_id;
   }
@@ -7669,9 +7669,9 @@ MapAssociations::operator=(const MapAssociations & other)
 
 // bit array ?
 bool
-MapAssociations::operator==(const MapAssociations & other) const
+C2cMapAssociations::operator==(const C2cMapAssociations & other) const
 {
-  if (not QcRow<MapAssociationsSchema>::operator==(other))
+  if (not QcRow<C2cMapAssociationsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -7682,7 +7682,7 @@ MapAssociations::operator==(const MapAssociations & other) const
 }
 
 void
-MapAssociations::set_document_id(int value)
+C2cMapAssociations::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -7697,7 +7697,7 @@ MapAssociations::set_document_id(int value)
 }
 
 void
-MapAssociations::set_topo_map_id(int value)
+C2cMapAssociations::set_topo_map_id(int value)
 {
   if (m_topo_map_id != value) {
     m_topo_map_id = value;
@@ -7712,7 +7712,7 @@ MapAssociations::set_topo_map_id(int value)
 }
 
 QJsonObject
-MapAssociations::to_json(bool only_changed) const
+C2cMapAssociations::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -7730,7 +7730,7 @@ MapAssociations::to_json(bool only_changed) const
 }
 
 QVariantHash
-MapAssociations::to_variant_hash(bool only_changed) const
+C2cMapAssociations::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -7748,7 +7748,7 @@ MapAssociations::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-MapAssociations::to_variant_list() const
+C2cMapAssociations::to_variant_list() const
 {
   QVariantList variants;
 
@@ -7759,7 +7759,7 @@ MapAssociations::to_variant_list() const
 }
 
 QVariantHash
-MapAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cMapAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -7778,7 +7778,7 @@ MapAssociations::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-MapAssociations::to_variant_list_sql(bool duplicate) const
+C2cMapAssociations::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -7790,7 +7790,7 @@ MapAssociations::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-MapAssociations::field(int position) const
+C2cMapAssociations::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -7803,7 +7803,7 @@ MapAssociations::field(int position) const
 }
 
 void
-MapAssociations::set_field(int position, const QVariant & value)
+C2cMapAssociations::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -7818,20 +7818,20 @@ MapAssociations::set_field(int position, const QVariant & value)
 }
 
 void
-MapAssociations::set_insert_id(int id)
+C2cMapAssociations::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-MapAssociations::can_update() const
+C2cMapAssociations::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-MapAssociations::rowid_kwargs() const // To update row
+C2cMapAssociations::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -7840,7 +7840,7 @@ MapAssociations::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const MapAssociations & obj)
+operator<<(QDataStream & out, const C2cMapAssociations & obj)
 {
   out << obj.document_id();
   out << obj.topo_map_id();
@@ -7849,7 +7849,7 @@ operator<<(QDataStream & out, const MapAssociations & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, MapAssociations & obj)
+operator>>(QDataStream & in, C2cMapAssociations & obj)
 {
   int _int;
   in >> _int;
@@ -7862,12 +7862,12 @@ operator>>(QDataStream & in, MapAssociations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const MapAssociations & obj)
+operator<<(QDebug debug, const C2cMapAssociations & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("MapAssociations(");
+  debug.nospace() << QLatin1Literal("C2cMapAssociations(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.topo_map_id();
@@ -7881,11 +7881,11 @@ operator<<(QDebug debug, const MapAssociations & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const MapAssociationsPtr & obj)
+operator<<(QDebug debug, const C2cMapAssociationsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("MapAssociationsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cMapAssociationsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -7897,68 +7897,68 @@ operator<<(QDebug debug, const MapAssociationsPtr & obj)
 
 /**************************************************************************************************/
 
-MapAssociationsCache::MapAssociationsCache()
+C2cMapAssociationsCache::C2cMapAssociationsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-MapAssociationsCache::~MapAssociationsCache()
+C2cMapAssociationsCache::~C2cMapAssociationsCache()
 {}
 
 void
-MapAssociationsCache::add(MapAssociationsPtr & ptr)
+C2cMapAssociationsCache::add(C2cMapAssociationsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &MapAssociations::changed,
-                   this, &MapAssociationsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cMapAssociations::changed,
+                   this, &C2cMapAssociationsCache::on_changed);
 }
 
 void
-MapAssociationsCache::remove(MapAssociationsPtr & ptr)
+C2cMapAssociationsCache::remove(C2cMapAssociationsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-MapAssociationsCache::on_changed()
+C2cMapAssociationsCache::on_changed()
 {
-  MapAssociations * row = qobject_cast<MapAssociations *>(QObject::sender());
+  C2cMapAssociations * row = qobject_cast<C2cMapAssociations *>(QObject::sender());
   qInfo() << "On changed" << row;
-  MapAssociationsPtr row_ptr = m_loaded_instances[row];
+  C2cMapAssociationsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-MapAssociationsModel::MapAssociationsModel()
+C2cMapAssociationsModel::C2cMapAssociationsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-MapAssociationsModel::MapAssociationsModel(const ItemList & items)
+C2cMapAssociationsModel::C2cMapAssociationsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-MapAssociationsModel::~MapAssociationsModel()
+C2cMapAssociationsModel::~C2cMapAssociationsModel()
 {}
 
 int
-MapAssociationsModel::rowCount(const QModelIndex & parent) const
+C2cMapAssociationsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-MapAssociationsModel::data(const QModelIndex & index, int role) const
+C2cMapAssociationsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "MapAssociationsModel: Index out of bound";
+    qWarning() << "C2cMapAssociationsModel: Index out of bound";
     return QVariant();
   }
 
@@ -7976,7 +7976,7 @@ MapAssociationsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-MapAssociationsModel::roleNames() const
+C2cMapAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -7987,7 +7987,7 @@ MapAssociationsModel::roleNames() const
 }
 
 void
-MapAssociationsModel::clear_items()
+C2cMapAssociationsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -7995,15 +7995,15 @@ MapAssociationsModel::clear_items()
 }
 
 void
-MapAssociationsModel::set_items(const ItemList & items)
+C2cMapAssociationsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-MapsSchema::MapsSchema()
-: QcSchema(QLatin1String("Maps"), QLatin1String("maps"))
+C2cMapsSchema::C2cMapsSchema()
+: QcSchema(QLatin1String("C2cMaps"), QLatin1String("c2c_maps"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -8056,14 +8056,14 @@ MapsSchema::MapsSchema()
   }
 }
 
-MapsSchema::~MapsSchema()
+C2cMapsSchema::~C2cMapsSchema()
 {}
 
 /**************************************************************************************************/
 
-Maps::Maps()
+C2cMaps::C2cMaps()
   : QObject(),
-    QcRow<MapsSchema>(),
+    QcRow<C2cMapsSchema>(),
     m_document_id(),
     m_code(),
     m_editor(),
@@ -8071,9 +8071,9 @@ Maps::Maps()
 {
 }
 
-Maps::Maps(const Maps & other)
+C2cMaps::C2cMaps(const C2cMaps & other)
   : QObject(),
-    QcRow<MapsSchema>(other),
+    QcRow<C2cMapsSchema>(other),
     m_document_id(other.m_document_id),
     m_code(other.m_code),
     m_editor(other.m_editor),
@@ -8081,8 +8081,8 @@ Maps::Maps(const Maps & other)
 {
 }
 
-Maps::Maps(const QJsonObject & json_object)
- : Maps()
+C2cMaps::C2cMaps(const QJsonObject & json_object)
+ : C2cMaps()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_code = json_object[QLatin1String("code")].toString();
@@ -8090,8 +8090,8 @@ Maps::Maps(const QJsonObject & json_object)
   m_scale = json_object[QLatin1String("scale")].toString();
 }
 
-Maps::Maps(const QVariantHash & variant_hash)
- : Maps()
+C2cMaps::C2cMaps(const QVariantHash & variant_hash)
+ : C2cMaps()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_code = variant_hash[QLatin1String("code")].toString();
@@ -8099,8 +8099,8 @@ Maps::Maps(const QVariantHash & variant_hash)
   m_scale = variant_hash[QLatin1String("scale")].toString();
 }
 
-Maps::Maps(const QVariantList & variants)
- : Maps()
+C2cMaps::C2cMaps(const QVariantList & variants)
+ : C2cMaps()
 {
   m_document_id = variants[0].toInt();
   m_code = variants[1].toString();
@@ -8108,8 +8108,8 @@ Maps::Maps(const QVariantList & variants)
   m_scale = variants[3].toString();
 }
 
-Maps::Maps(const QSqlRecord & record)
- : QcRow<MapsSchema>(record)
+C2cMaps::C2cMaps(const QSqlRecord & record)
+ : QcRow<C2cMapsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_code = record.value(1).toString();
@@ -8117,8 +8117,8 @@ Maps::Maps(const QSqlRecord & record)
   m_scale = record.value(3).toString();
 }
 
-Maps::Maps(const QSqlQuery & query, int offset)
- : QcRow<MapsSchema>(query)
+C2cMaps::C2cMaps(const QSqlQuery & query, int offset)
+ : QcRow<C2cMapsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_code = query.value(offset++).toString();
@@ -8126,17 +8126,17 @@ Maps::Maps(const QSqlQuery & query, int offset)
   m_scale = query.value(offset).toString();
 }
 
-Maps::~Maps()
+C2cMaps::~C2cMaps()
 {
-// qInfo() << "--- Delete" << "Maps" << *this;
+// qInfo() << "--- Delete" << "C2cMaps" << *this;
 }
 
 // bit array ?
-Maps &
-Maps::operator=(const Maps & other)
+C2cMaps &
+C2cMaps::operator=(const C2cMaps & other)
 {
   if (this != &other) {
-    QcRow<MapsSchema>::operator=(other);
+    QcRow<C2cMapsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_code = other.m_code;
     m_editor = other.m_editor;
@@ -8148,9 +8148,9 @@ Maps::operator=(const Maps & other)
 
 // bit array ?
 bool
-Maps::operator==(const Maps & other) const
+C2cMaps::operator==(const C2cMaps & other) const
 {
-  if (not QcRow<MapsSchema>::operator==(other))
+  if (not QcRow<C2cMapsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -8165,7 +8165,7 @@ Maps::operator==(const Maps & other) const
 }
 
 void
-Maps::set_document_id(int value)
+C2cMaps::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -8180,7 +8180,7 @@ Maps::set_document_id(int value)
 }
 
 void
-Maps::set_code(const QString & value)
+C2cMaps::set_code(const QString & value)
 {
   if (m_code != value) {
     m_code = value;
@@ -8195,7 +8195,7 @@ Maps::set_code(const QString & value)
 }
 
 void
-Maps::set_editor(const QString & value)
+C2cMaps::set_editor(const QString & value)
 {
   if (m_editor != value) {
     m_editor = value;
@@ -8210,7 +8210,7 @@ Maps::set_editor(const QString & value)
 }
 
 void
-Maps::set_scale(const QString & value)
+C2cMaps::set_scale(const QString & value)
 {
   if (m_scale != value) {
     m_scale = value;
@@ -8225,7 +8225,7 @@ Maps::set_scale(const QString & value)
 }
 
 QJsonObject
-Maps::to_json(bool only_changed) const
+C2cMaps::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -8249,7 +8249,7 @@ Maps::to_json(bool only_changed) const
 }
 
 QVariantHash
-Maps::to_variant_hash(bool only_changed) const
+C2cMaps::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -8273,7 +8273,7 @@ Maps::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Maps::to_variant_list() const
+C2cMaps::to_variant_list() const
 {
   QVariantList variants;
 
@@ -8286,7 +8286,7 @@ Maps::to_variant_list() const
 }
 
 QVariantHash
-Maps::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cMaps::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -8311,7 +8311,7 @@ Maps::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Maps::to_variant_list_sql(bool duplicate) const
+C2cMaps::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -8325,7 +8325,7 @@ Maps::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Maps::field(int position) const
+C2cMaps::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -8342,7 +8342,7 @@ Maps::field(int position) const
 }
 
 void
-Maps::set_field(int position, const QVariant & value)
+C2cMaps::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -8365,20 +8365,20 @@ Maps::set_field(int position, const QVariant & value)
 }
 
 void
-Maps::set_insert_id(int id)
+C2cMaps::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Maps::can_update() const
+C2cMaps::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Maps::rowid_kwargs() const // To update row
+C2cMaps::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -8386,7 +8386,7 @@ Maps::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Maps & obj)
+operator<<(QDataStream & out, const C2cMaps & obj)
 {
   out << obj.document_id();
   out << obj.code();
@@ -8397,7 +8397,7 @@ operator<<(QDataStream & out, const Maps & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Maps & obj)
+operator>>(QDataStream & in, C2cMaps & obj)
 {
   QString _QString;
   int _int;
@@ -8415,12 +8415,12 @@ operator>>(QDataStream & in, Maps & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Maps & obj)
+operator<<(QDebug debug, const C2cMaps & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Maps(");
+  debug.nospace() << QLatin1Literal("C2cMaps(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.code();
@@ -8438,11 +8438,11 @@ operator<<(QDebug debug, const Maps & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const MapsPtr & obj)
+operator<<(QDebug debug, const C2cMapsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("MapsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cMapsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -8454,68 +8454,68 @@ operator<<(QDebug debug, const MapsPtr & obj)
 
 /**************************************************************************************************/
 
-MapsCache::MapsCache()
+C2cMapsCache::C2cMapsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-MapsCache::~MapsCache()
+C2cMapsCache::~C2cMapsCache()
 {}
 
 void
-MapsCache::add(MapsPtr & ptr)
+C2cMapsCache::add(C2cMapsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Maps::changed,
-                   this, &MapsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cMaps::changed,
+                   this, &C2cMapsCache::on_changed);
 }
 
 void
-MapsCache::remove(MapsPtr & ptr)
+C2cMapsCache::remove(C2cMapsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-MapsCache::on_changed()
+C2cMapsCache::on_changed()
 {
-  Maps * row = qobject_cast<Maps *>(QObject::sender());
+  C2cMaps * row = qobject_cast<C2cMaps *>(QObject::sender());
   qInfo() << "On changed" << row;
-  MapsPtr row_ptr = m_loaded_instances[row];
+  C2cMapsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-MapsModel::MapsModel()
+C2cMapsModel::C2cMapsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-MapsModel::MapsModel(const ItemList & items)
+C2cMapsModel::C2cMapsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-MapsModel::~MapsModel()
+C2cMapsModel::~C2cMapsModel()
 {}
 
 int
-MapsModel::rowCount(const QModelIndex & parent) const
+C2cMapsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-MapsModel::data(const QModelIndex & index, int role) const
+C2cMapsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "MapsModel: Index out of bound";
+    qWarning() << "C2cMapsModel: Index out of bound";
     return QVariant();
   }
 
@@ -8537,7 +8537,7 @@ MapsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-MapsModel::roleNames() const
+C2cMapsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -8550,7 +8550,7 @@ MapsModel::roleNames() const
 }
 
 void
-MapsModel::clear_items()
+C2cMapsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -8558,15 +8558,15 @@ MapsModel::clear_items()
 }
 
 void
-MapsModel::set_items(const ItemList & items)
+C2cMapsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-OutingsSchema::OutingsSchema()
-: QcSchema(QLatin1String("Outings"), QLatin1String("outings"))
+C2cOutingsSchema::C2cOutingsSchema()
+: QcSchema(QLatin1String("C2cOutings"), QLatin1String("c2c_outings"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -8874,14 +8874,14 @@ OutingsSchema::OutingsSchema()
   }
 }
 
-OutingsSchema::~OutingsSchema()
+C2cOutingsSchema::~C2cOutingsSchema()
 {}
 
 /**************************************************************************************************/
 
-Outings::Outings()
+C2cOutings::C2cOutings()
   : QObject(),
-    QcRow<OutingsSchema>(),
+    QcRow<C2cOutingsSchema>(),
     m_document_id(),
     m_access_condition(),
     m_activities(),
@@ -8910,9 +8910,9 @@ Outings::Outings()
 {
 }
 
-Outings::Outings(const Outings & other)
+C2cOutings::C2cOutings(const C2cOutings & other)
   : QObject(),
-    QcRow<OutingsSchema>(other),
+    QcRow<C2cOutingsSchema>(other),
     m_document_id(other.m_document_id),
     m_access_condition(other.m_access_condition),
     m_activities(other.m_activities),
@@ -8941,8 +8941,8 @@ Outings::Outings(const Outings & other)
 {
 }
 
-Outings::Outings(const QJsonObject & json_object)
- : Outings()
+C2cOutings::C2cOutings(const QJsonObject & json_object)
+ : C2cOutings()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_access_condition = json_object[QLatin1String("access_condition")].toString();
@@ -8971,8 +8971,8 @@ Outings::Outings(const QJsonObject & json_object)
   m_snow_quantity = json_object[QLatin1String("snow_quantity")].toString();
 }
 
-Outings::Outings(const QVariantHash & variant_hash)
- : Outings()
+C2cOutings::C2cOutings(const QVariantHash & variant_hash)
+ : C2cOutings()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_access_condition = variant_hash[QLatin1String("access_condition")].toString();
@@ -9001,8 +9001,8 @@ Outings::Outings(const QVariantHash & variant_hash)
   m_snow_quantity = variant_hash[QLatin1String("snow_quantity")].toString();
 }
 
-Outings::Outings(const QVariantList & variants)
- : Outings()
+C2cOutings::C2cOutings(const QVariantList & variants)
+ : C2cOutings()
 {
   m_document_id = variants[0].toInt();
   m_access_condition = variants[1].toString();
@@ -9031,8 +9031,8 @@ Outings::Outings(const QVariantList & variants)
   m_snow_quantity = variants[24].toString();
 }
 
-Outings::Outings(const QSqlRecord & record)
- : QcRow<OutingsSchema>(record)
+C2cOutings::C2cOutings(const QSqlRecord & record)
+ : QcRow<C2cOutingsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_access_condition = record.value(1).toString();
@@ -9061,8 +9061,8 @@ Outings::Outings(const QSqlRecord & record)
   m_snow_quantity = record.value(24).toString();
 }
 
-Outings::Outings(const QSqlQuery & query, int offset)
- : QcRow<OutingsSchema>(query)
+C2cOutings::C2cOutings(const QSqlQuery & query, int offset)
+ : QcRow<C2cOutingsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_access_condition = query.value(offset++).toString();
@@ -9091,17 +9091,17 @@ Outings::Outings(const QSqlQuery & query, int offset)
   m_snow_quantity = query.value(offset).toString();
 }
 
-Outings::~Outings()
+C2cOutings::~C2cOutings()
 {
-// qInfo() << "--- Delete" << "Outings" << *this;
+// qInfo() << "--- Delete" << "C2cOutings" << *this;
 }
 
 // bit array ?
-Outings &
-Outings::operator=(const Outings & other)
+C2cOutings &
+C2cOutings::operator=(const C2cOutings & other)
 {
   if (this != &other) {
-    QcRow<OutingsSchema>::operator=(other);
+    QcRow<C2cOutingsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_access_condition = other.m_access_condition;
     m_activities = other.m_activities;
@@ -9134,9 +9134,9 @@ Outings::operator=(const Outings & other)
 
 // bit array ?
 bool
-Outings::operator==(const Outings & other) const
+C2cOutings::operator==(const C2cOutings & other) const
 {
-  if (not QcRow<OutingsSchema>::operator==(other))
+  if (not QcRow<C2cOutingsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -9193,7 +9193,7 @@ Outings::operator==(const Outings & other) const
 }
 
 void
-Outings::set_document_id(int value)
+C2cOutings::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -9208,7 +9208,7 @@ Outings::set_document_id(int value)
 }
 
 void
-Outings::set_access_condition(const QString & value)
+C2cOutings::set_access_condition(const QString & value)
 {
   if (m_access_condition != value) {
     m_access_condition = value;
@@ -9223,7 +9223,7 @@ Outings::set_access_condition(const QString & value)
 }
 
 void
-Outings::set_activities(const QStringList & value)
+C2cOutings::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -9238,7 +9238,7 @@ Outings::set_activities(const QStringList & value)
 }
 
 void
-Outings::set_avalanche_signs(const QStringList & value)
+C2cOutings::set_avalanche_signs(const QStringList & value)
 {
   if (m_avalanche_signs != value) {
     m_avalanche_signs = value;
@@ -9253,7 +9253,7 @@ Outings::set_avalanche_signs(const QStringList & value)
 }
 
 void
-Outings::set_condition_rating(const QString & value)
+C2cOutings::set_condition_rating(const QString & value)
 {
   if (m_condition_rating != value) {
     m_condition_rating = value;
@@ -9268,7 +9268,7 @@ Outings::set_condition_rating(const QString & value)
 }
 
 void
-Outings::set_date_end(const QDate & value)
+C2cOutings::set_date_end(const QDate & value)
 {
   if (m_date_end != value) {
     m_date_end = value;
@@ -9283,7 +9283,7 @@ Outings::set_date_end(const QDate & value)
 }
 
 void
-Outings::set_date_start(const QDate & value)
+C2cOutings::set_date_start(const QDate & value)
 {
   if (m_date_start != value) {
     m_date_start = value;
@@ -9298,7 +9298,7 @@ Outings::set_date_start(const QDate & value)
 }
 
 void
-Outings::set_disable_comments(bool value)
+C2cOutings::set_disable_comments(bool value)
 {
   if (m_disable_comments != value) {
     m_disable_comments = value;
@@ -9313,7 +9313,7 @@ Outings::set_disable_comments(bool value)
 }
 
 void
-Outings::set_elevation_access(int value)
+C2cOutings::set_elevation_access(int value)
 {
   if (m_elevation_access != value) {
     m_elevation_access = value;
@@ -9328,7 +9328,7 @@ Outings::set_elevation_access(int value)
 }
 
 void
-Outings::set_elevation_down_snow(int value)
+C2cOutings::set_elevation_down_snow(int value)
 {
   if (m_elevation_down_snow != value) {
     m_elevation_down_snow = value;
@@ -9343,7 +9343,7 @@ Outings::set_elevation_down_snow(int value)
 }
 
 void
-Outings::set_elevation_max(int value)
+C2cOutings::set_elevation_max(int value)
 {
   if (m_elevation_max != value) {
     m_elevation_max = value;
@@ -9358,7 +9358,7 @@ Outings::set_elevation_max(int value)
 }
 
 void
-Outings::set_elevation_min(int value)
+C2cOutings::set_elevation_min(int value)
 {
   if (m_elevation_min != value) {
     m_elevation_min = value;
@@ -9373,7 +9373,7 @@ Outings::set_elevation_min(int value)
 }
 
 void
-Outings::set_elevation_up_snow(int value)
+C2cOutings::set_elevation_up_snow(int value)
 {
   if (m_elevation_up_snow != value) {
     m_elevation_up_snow = value;
@@ -9388,7 +9388,7 @@ Outings::set_elevation_up_snow(int value)
 }
 
 void
-Outings::set_frequentation(const QString & value)
+C2cOutings::set_frequentation(const QString & value)
 {
   if (m_frequentation != value) {
     m_frequentation = value;
@@ -9403,7 +9403,7 @@ Outings::set_frequentation(const QString & value)
 }
 
 void
-Outings::set_glacier_rating(const QString & value)
+C2cOutings::set_glacier_rating(const QString & value)
 {
   if (m_glacier_rating != value) {
     m_glacier_rating = value;
@@ -9418,7 +9418,7 @@ Outings::set_glacier_rating(const QString & value)
 }
 
 void
-Outings::set_height_diff_down(int value)
+C2cOutings::set_height_diff_down(int value)
 {
   if (m_height_diff_down != value) {
     m_height_diff_down = value;
@@ -9433,7 +9433,7 @@ Outings::set_height_diff_down(int value)
 }
 
 void
-Outings::set_height_diff_up(int value)
+C2cOutings::set_height_diff_up(int value)
 {
   if (m_height_diff_up != value) {
     m_height_diff_up = value;
@@ -9448,7 +9448,7 @@ Outings::set_height_diff_up(int value)
 }
 
 void
-Outings::set_hut_status(const QString & value)
+C2cOutings::set_hut_status(const QString & value)
 {
   if (m_hut_status != value) {
     m_hut_status = value;
@@ -9463,7 +9463,7 @@ Outings::set_hut_status(const QString & value)
 }
 
 void
-Outings::set_length_total(int value)
+C2cOutings::set_length_total(int value)
 {
   if (m_length_total != value) {
     m_length_total = value;
@@ -9478,7 +9478,7 @@ Outings::set_length_total(int value)
 }
 
 void
-Outings::set_lift_status(const QString & value)
+C2cOutings::set_lift_status(const QString & value)
 {
   if (m_lift_status != value) {
     m_lift_status = value;
@@ -9493,7 +9493,7 @@ Outings::set_lift_status(const QString & value)
 }
 
 void
-Outings::set_partial_trip(bool value)
+C2cOutings::set_partial_trip(bool value)
 {
   if (m_partial_trip != value) {
     m_partial_trip = value;
@@ -9508,7 +9508,7 @@ Outings::set_partial_trip(bool value)
 }
 
 void
-Outings::set_participant_count(int value)
+C2cOutings::set_participant_count(int value)
 {
   if (m_participant_count != value) {
     m_participant_count = value;
@@ -9523,7 +9523,7 @@ Outings::set_participant_count(int value)
 }
 
 void
-Outings::set_public_transport(bool value)
+C2cOutings::set_public_transport(bool value)
 {
   if (m_public_transport != value) {
     m_public_transport = value;
@@ -9538,7 +9538,7 @@ Outings::set_public_transport(bool value)
 }
 
 void
-Outings::set_snow_quality(const QString & value)
+C2cOutings::set_snow_quality(const QString & value)
 {
   if (m_snow_quality != value) {
     m_snow_quality = value;
@@ -9553,7 +9553,7 @@ Outings::set_snow_quality(const QString & value)
 }
 
 void
-Outings::set_snow_quantity(const QString & value)
+C2cOutings::set_snow_quantity(const QString & value)
 {
   if (m_snow_quantity != value) {
     m_snow_quantity = value;
@@ -9568,7 +9568,7 @@ Outings::set_snow_quantity(const QString & value)
 }
 
 QJsonObject
-Outings::to_json(bool only_changed) const
+C2cOutings::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -9655,7 +9655,7 @@ Outings::to_json(bool only_changed) const
 }
 
 QVariantHash
-Outings::to_variant_hash(bool only_changed) const
+C2cOutings::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -9742,7 +9742,7 @@ Outings::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Outings::to_variant_list() const
+C2cOutings::to_variant_list() const
 {
   QVariantList variants;
 
@@ -9776,7 +9776,7 @@ Outings::to_variant_list() const
 }
 
 QVariantHash
-Outings::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cOutings::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -9864,7 +9864,7 @@ Outings::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Outings::to_variant_list_sql(bool duplicate) const
+C2cOutings::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -9899,7 +9899,7 @@ Outings::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Outings::field(int position) const
+C2cOutings::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -9958,7 +9958,7 @@ Outings::field(int position) const
 }
 
 void
-Outings::set_field(int position, const QVariant & value)
+C2cOutings::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -10065,20 +10065,20 @@ Outings::set_field(int position, const QVariant & value)
 }
 
 void
-Outings::set_insert_id(int id)
+C2cOutings::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Outings::can_update() const
+C2cOutings::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Outings::rowid_kwargs() const // To update row
+C2cOutings::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -10086,7 +10086,7 @@ Outings::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Outings & obj)
+operator<<(QDataStream & out, const C2cOutings & obj)
 {
   out << obj.document_id();
   out << obj.access_condition();
@@ -10118,7 +10118,7 @@ operator<<(QDataStream & out, const Outings & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Outings & obj)
+operator>>(QDataStream & in, C2cOutings & obj)
 {
   QDate _QDate;
   QString _QString;
@@ -10181,12 +10181,12 @@ operator>>(QDataStream & in, Outings & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Outings & obj)
+operator<<(QDebug debug, const C2cOutings & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Outings(");
+  debug.nospace() << QLatin1Literal("C2cOutings(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.access_condition();
@@ -10246,11 +10246,11 @@ operator<<(QDebug debug, const Outings & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const OutingsPtr & obj)
+operator<<(QDebug debug, const C2cOutingsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("OutingsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cOutingsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -10262,68 +10262,68 @@ operator<<(QDebug debug, const OutingsPtr & obj)
 
 /**************************************************************************************************/
 
-OutingsCache::OutingsCache()
+C2cOutingsCache::C2cOutingsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-OutingsCache::~OutingsCache()
+C2cOutingsCache::~C2cOutingsCache()
 {}
 
 void
-OutingsCache::add(OutingsPtr & ptr)
+C2cOutingsCache::add(C2cOutingsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Outings::changed,
-                   this, &OutingsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cOutings::changed,
+                   this, &C2cOutingsCache::on_changed);
 }
 
 void
-OutingsCache::remove(OutingsPtr & ptr)
+C2cOutingsCache::remove(C2cOutingsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-OutingsCache::on_changed()
+C2cOutingsCache::on_changed()
 {
-  Outings * row = qobject_cast<Outings *>(QObject::sender());
+  C2cOutings * row = qobject_cast<C2cOutings *>(QObject::sender());
   qInfo() << "On changed" << row;
-  OutingsPtr row_ptr = m_loaded_instances[row];
+  C2cOutingsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-OutingsModel::OutingsModel()
+C2cOutingsModel::C2cOutingsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-OutingsModel::OutingsModel(const ItemList & items)
+C2cOutingsModel::C2cOutingsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-OutingsModel::~OutingsModel()
+C2cOutingsModel::~C2cOutingsModel()
 {}
 
 int
-OutingsModel::rowCount(const QModelIndex & parent) const
+C2cOutingsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-OutingsModel::data(const QModelIndex & index, int role) const
+C2cOutingsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "OutingsModel: Index out of bound";
+    qWarning() << "C2cOutingsModel: Index out of bound";
     return QVariant();
   }
 
@@ -10387,7 +10387,7 @@ OutingsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-OutingsModel::roleNames() const
+C2cOutingsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -10421,7 +10421,7 @@ OutingsModel::roleNames() const
 }
 
 void
-OutingsModel::clear_items()
+C2cOutingsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -10429,15 +10429,15 @@ OutingsModel::clear_items()
 }
 
 void
-OutingsModel::set_items(const ItemList & items)
+C2cOutingsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-OutingsLocalesSchema::OutingsLocalesSchema()
-: QcSchema(QLatin1String("OutingsLocales"), QLatin1String("outings_locales"))
+C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
+: QcSchema(QLatin1String("C2cOutingsLocales"), QLatin1String("c2c_outings_locales"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -10562,14 +10562,14 @@ OutingsLocalesSchema::OutingsLocalesSchema()
   }
 }
 
-OutingsLocalesSchema::~OutingsLocalesSchema()
+C2cOutingsLocalesSchema::~C2cOutingsLocalesSchema()
 {}
 
 /**************************************************************************************************/
 
-OutingsLocales::OutingsLocales()
+C2cOutingsLocales::C2cOutingsLocales()
   : QObject(),
-    QcRow<OutingsLocalesSchema>(),
+    QcRow<C2cOutingsLocalesSchema>(),
     m_id(),
     m_access_comment(),
     m_avalanches(),
@@ -10583,9 +10583,9 @@ OutingsLocales::OutingsLocales()
 {
 }
 
-OutingsLocales::OutingsLocales(const OutingsLocales & other)
+C2cOutingsLocales::C2cOutingsLocales(const C2cOutingsLocales & other)
   : QObject(),
-    QcRow<OutingsLocalesSchema>(other),
+    QcRow<C2cOutingsLocalesSchema>(other),
     m_id(other.m_id),
     m_access_comment(other.m_access_comment),
     m_avalanches(other.m_avalanches),
@@ -10599,8 +10599,8 @@ OutingsLocales::OutingsLocales(const OutingsLocales & other)
 {
 }
 
-OutingsLocales::OutingsLocales(const QJsonObject & json_object)
- : OutingsLocales()
+C2cOutingsLocales::C2cOutingsLocales(const QJsonObject & json_object)
+ : C2cOutingsLocales()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_access_comment = json_object[QLatin1String("access_comment")].toString();
@@ -10614,8 +10614,8 @@ OutingsLocales::OutingsLocales(const QJsonObject & json_object)
   m_weather = json_object[QLatin1String("weather")].toString();
 }
 
-OutingsLocales::OutingsLocales(const QVariantHash & variant_hash)
- : OutingsLocales()
+C2cOutingsLocales::C2cOutingsLocales(const QVariantHash & variant_hash)
+ : C2cOutingsLocales()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_access_comment = variant_hash[QLatin1String("access_comment")].toString();
@@ -10629,8 +10629,8 @@ OutingsLocales::OutingsLocales(const QVariantHash & variant_hash)
   m_weather = variant_hash[QLatin1String("weather")].toString();
 }
 
-OutingsLocales::OutingsLocales(const QVariantList & variants)
- : OutingsLocales()
+C2cOutingsLocales::C2cOutingsLocales(const QVariantList & variants)
+ : C2cOutingsLocales()
 {
   m_id = variants[0].toInt();
   m_access_comment = variants[1].toString();
@@ -10644,8 +10644,8 @@ OutingsLocales::OutingsLocales(const QVariantList & variants)
   m_weather = variants[9].toString();
 }
 
-OutingsLocales::OutingsLocales(const QSqlRecord & record)
- : QcRow<OutingsLocalesSchema>(record)
+C2cOutingsLocales::C2cOutingsLocales(const QSqlRecord & record)
+ : QcRow<C2cOutingsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_access_comment = record.value(1).toString();
@@ -10659,8 +10659,8 @@ OutingsLocales::OutingsLocales(const QSqlRecord & record)
   m_weather = record.value(9).toString();
 }
 
-OutingsLocales::OutingsLocales(const QSqlQuery & query, int offset)
- : QcRow<OutingsLocalesSchema>(query)
+C2cOutingsLocales::C2cOutingsLocales(const QSqlQuery & query, int offset)
+ : QcRow<C2cOutingsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_access_comment = query.value(offset++).toString();
@@ -10674,17 +10674,17 @@ OutingsLocales::OutingsLocales(const QSqlQuery & query, int offset)
   m_weather = query.value(offset).toString();
 }
 
-OutingsLocales::~OutingsLocales()
+C2cOutingsLocales::~C2cOutingsLocales()
 {
-// qInfo() << "--- Delete" << "OutingsLocales" << *this;
+// qInfo() << "--- Delete" << "C2cOutingsLocales" << *this;
 }
 
 // bit array ?
-OutingsLocales &
-OutingsLocales::operator=(const OutingsLocales & other)
+C2cOutingsLocales &
+C2cOutingsLocales::operator=(const C2cOutingsLocales & other)
 {
   if (this != &other) {
-    QcRow<OutingsLocalesSchema>::operator=(other);
+    QcRow<C2cOutingsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_access_comment = other.m_access_comment;
     m_avalanches = other.m_avalanches;
@@ -10702,9 +10702,9 @@ OutingsLocales::operator=(const OutingsLocales & other)
 
 // bit array ?
 bool
-OutingsLocales::operator==(const OutingsLocales & other) const
+C2cOutingsLocales::operator==(const C2cOutingsLocales & other) const
 {
-  if (not QcRow<OutingsLocalesSchema>::operator==(other))
+  if (not QcRow<C2cOutingsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -10731,7 +10731,7 @@ OutingsLocales::operator==(const OutingsLocales & other) const
 }
 
 void
-OutingsLocales::set_id(int value)
+C2cOutingsLocales::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -10746,7 +10746,7 @@ OutingsLocales::set_id(int value)
 }
 
 void
-OutingsLocales::set_access_comment(const QString & value)
+C2cOutingsLocales::set_access_comment(const QString & value)
 {
   if (m_access_comment != value) {
     m_access_comment = value;
@@ -10761,7 +10761,7 @@ OutingsLocales::set_access_comment(const QString & value)
 }
 
 void
-OutingsLocales::set_avalanches(const QString & value)
+C2cOutingsLocales::set_avalanches(const QString & value)
 {
   if (m_avalanches != value) {
     m_avalanches = value;
@@ -10776,7 +10776,7 @@ OutingsLocales::set_avalanches(const QString & value)
 }
 
 void
-OutingsLocales::set_conditions(const QString & value)
+C2cOutingsLocales::set_conditions(const QString & value)
 {
   if (m_conditions != value) {
     m_conditions = value;
@@ -10791,7 +10791,7 @@ OutingsLocales::set_conditions(const QString & value)
 }
 
 void
-OutingsLocales::set_conditions_levels(const QString & value)
+C2cOutingsLocales::set_conditions_levels(const QString & value)
 {
   if (m_conditions_levels != value) {
     m_conditions_levels = value;
@@ -10806,7 +10806,7 @@ OutingsLocales::set_conditions_levels(const QString & value)
 }
 
 void
-OutingsLocales::set_hut_comment(const QString & value)
+C2cOutingsLocales::set_hut_comment(const QString & value)
 {
   if (m_hut_comment != value) {
     m_hut_comment = value;
@@ -10821,7 +10821,7 @@ OutingsLocales::set_hut_comment(const QString & value)
 }
 
 void
-OutingsLocales::set_participants(const QString & value)
+C2cOutingsLocales::set_participants(const QString & value)
 {
   if (m_participants != value) {
     m_participants = value;
@@ -10836,7 +10836,7 @@ OutingsLocales::set_participants(const QString & value)
 }
 
 void
-OutingsLocales::set_route_description(const QString & value)
+C2cOutingsLocales::set_route_description(const QString & value)
 {
   if (m_route_description != value) {
     m_route_description = value;
@@ -10851,7 +10851,7 @@ OutingsLocales::set_route_description(const QString & value)
 }
 
 void
-OutingsLocales::set_timing(const QString & value)
+C2cOutingsLocales::set_timing(const QString & value)
 {
   if (m_timing != value) {
     m_timing = value;
@@ -10866,7 +10866,7 @@ OutingsLocales::set_timing(const QString & value)
 }
 
 void
-OutingsLocales::set_weather(const QString & value)
+C2cOutingsLocales::set_weather(const QString & value)
 {
   if (m_weather != value) {
     m_weather = value;
@@ -10881,7 +10881,7 @@ OutingsLocales::set_weather(const QString & value)
 }
 
 QJsonObject
-OutingsLocales::to_json(bool only_changed) const
+C2cOutingsLocales::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -10923,7 +10923,7 @@ OutingsLocales::to_json(bool only_changed) const
 }
 
 QVariantHash
-OutingsLocales::to_variant_hash(bool only_changed) const
+C2cOutingsLocales::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -10965,7 +10965,7 @@ OutingsLocales::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-OutingsLocales::to_variant_list() const
+C2cOutingsLocales::to_variant_list() const
 {
   QVariantList variants;
 
@@ -10984,7 +10984,7 @@ OutingsLocales::to_variant_list() const
 }
 
 QVariantHash
-OutingsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cOutingsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -11027,7 +11027,7 @@ OutingsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-OutingsLocales::to_variant_list_sql(bool duplicate) const
+C2cOutingsLocales::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -11047,7 +11047,7 @@ OutingsLocales::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-OutingsLocales::field(int position) const
+C2cOutingsLocales::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -11076,7 +11076,7 @@ OutingsLocales::field(int position) const
 }
 
 void
-OutingsLocales::set_field(int position, const QVariant & value)
+C2cOutingsLocales::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -11123,20 +11123,20 @@ OutingsLocales::set_field(int position, const QVariant & value)
 }
 
 void
-OutingsLocales::set_insert_id(int id)
+C2cOutingsLocales::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-OutingsLocales::can_update() const
+C2cOutingsLocales::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-OutingsLocales::rowid_kwargs() const // To update row
+C2cOutingsLocales::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -11144,7 +11144,7 @@ OutingsLocales::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const OutingsLocales & obj)
+operator<<(QDataStream & out, const C2cOutingsLocales & obj)
 {
   out << obj.id();
   out << obj.access_comment();
@@ -11161,7 +11161,7 @@ operator<<(QDataStream & out, const OutingsLocales & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, OutingsLocales & obj)
+operator>>(QDataStream & in, C2cOutingsLocales & obj)
 {
   QString _QString;
   int _int;
@@ -11191,12 +11191,12 @@ operator>>(QDataStream & in, OutingsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const OutingsLocales & obj)
+operator<<(QDebug debug, const C2cOutingsLocales & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("OutingsLocales(");
+  debug.nospace() << QLatin1Literal("C2cOutingsLocales(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.access_comment();
@@ -11226,11 +11226,11 @@ operator<<(QDebug debug, const OutingsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const OutingsLocalesPtr & obj)
+operator<<(QDebug debug, const C2cOutingsLocalesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("OutingsLocalesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cOutingsLocalesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -11242,68 +11242,68 @@ operator<<(QDebug debug, const OutingsLocalesPtr & obj)
 
 /**************************************************************************************************/
 
-OutingsLocalesCache::OutingsLocalesCache()
+C2cOutingsLocalesCache::C2cOutingsLocalesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-OutingsLocalesCache::~OutingsLocalesCache()
+C2cOutingsLocalesCache::~C2cOutingsLocalesCache()
 {}
 
 void
-OutingsLocalesCache::add(OutingsLocalesPtr & ptr)
+C2cOutingsLocalesCache::add(C2cOutingsLocalesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &OutingsLocales::changed,
-                   this, &OutingsLocalesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cOutingsLocales::changed,
+                   this, &C2cOutingsLocalesCache::on_changed);
 }
 
 void
-OutingsLocalesCache::remove(OutingsLocalesPtr & ptr)
+C2cOutingsLocalesCache::remove(C2cOutingsLocalesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-OutingsLocalesCache::on_changed()
+C2cOutingsLocalesCache::on_changed()
 {
-  OutingsLocales * row = qobject_cast<OutingsLocales *>(QObject::sender());
+  C2cOutingsLocales * row = qobject_cast<C2cOutingsLocales *>(QObject::sender());
   qInfo() << "On changed" << row;
-  OutingsLocalesPtr row_ptr = m_loaded_instances[row];
+  C2cOutingsLocalesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-OutingsLocalesModel::OutingsLocalesModel()
+C2cOutingsLocalesModel::C2cOutingsLocalesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-OutingsLocalesModel::OutingsLocalesModel(const ItemList & items)
+C2cOutingsLocalesModel::C2cOutingsLocalesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-OutingsLocalesModel::~OutingsLocalesModel()
+C2cOutingsLocalesModel::~C2cOutingsLocalesModel()
 {}
 
 int
-OutingsLocalesModel::rowCount(const QModelIndex & parent) const
+C2cOutingsLocalesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-OutingsLocalesModel::data(const QModelIndex & index, int role) const
+C2cOutingsLocalesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "OutingsLocalesModel: Index out of bound";
+    qWarning() << "C2cOutingsLocalesModel: Index out of bound";
     return QVariant();
   }
 
@@ -11337,7 +11337,7 @@ OutingsLocalesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-OutingsLocalesModel::roleNames() const
+C2cOutingsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -11356,7 +11356,7 @@ OutingsLocalesModel::roleNames() const
 }
 
 void
-OutingsLocalesModel::clear_items()
+C2cOutingsLocalesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -11364,15 +11364,15 @@ OutingsLocalesModel::clear_items()
 }
 
 void
-OutingsLocalesModel::set_items(const ItemList & items)
+C2cOutingsLocalesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-RoutesSchema::RoutesSchema()
-: QcSchema(QLatin1String("Routes"), QLatin1String("routes"))
+C2cRoutesSchema::C2cRoutesSchema()
+: QcSchema(QLatin1String("C2cRoutes"), QLatin1String("c2c_routes"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -11907,14 +11907,14 @@ RoutesSchema::RoutesSchema()
   }
 }
 
-RoutesSchema::~RoutesSchema()
+C2cRoutesSchema::~C2cRoutesSchema()
 {}
 
 /**************************************************************************************************/
 
-Routes::Routes()
+C2cRoutes::C2cRoutes()
   : QObject(),
-    QcRow<RoutesSchema>(),
+    QcRow<C2cRoutesSchema>(),
     m_document_id(),
     m_activities(),
     m_aid_rating(),
@@ -11962,9 +11962,9 @@ Routes::Routes()
 {
 }
 
-Routes::Routes(const Routes & other)
+C2cRoutes::C2cRoutes(const C2cRoutes & other)
   : QObject(),
-    QcRow<RoutesSchema>(other),
+    QcRow<C2cRoutesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_aid_rating(other.m_aid_rating),
@@ -12012,8 +12012,8 @@ Routes::Routes(const Routes & other)
 {
 }
 
-Routes::Routes(const QJsonObject & json_object)
- : Routes()
+C2cRoutes::C2cRoutes(const QJsonObject & json_object)
+ : C2cRoutes()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
@@ -12061,8 +12061,8 @@ Routes::Routes(const QJsonObject & json_object)
   m_via_ferrata_rating = json_object[QLatin1String("via_ferrata_rating")].toString();
 }
 
-Routes::Routes(const QVariantHash & variant_hash)
- : Routes()
+C2cRoutes::C2cRoutes(const QVariantHash & variant_hash)
+ : C2cRoutes()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
@@ -12110,8 +12110,8 @@ Routes::Routes(const QVariantHash & variant_hash)
   m_via_ferrata_rating = variant_hash[QLatin1String("via_ferrata_rating")].toString();
 }
 
-Routes::Routes(const QVariantList & variants)
- : Routes()
+C2cRoutes::C2cRoutes(const QVariantList & variants)
+ : C2cRoutes()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
@@ -12159,8 +12159,8 @@ Routes::Routes(const QVariantList & variants)
   m_via_ferrata_rating = variants[43].toString();
 }
 
-Routes::Routes(const QSqlRecord & record)
- : QcRow<RoutesSchema>(record)
+C2cRoutes::C2cRoutes(const QSqlRecord & record)
+ : QcRow<C2cRoutesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -12208,8 +12208,8 @@ Routes::Routes(const QSqlRecord & record)
   m_via_ferrata_rating = record.value(43).toString();
 }
 
-Routes::Routes(const QSqlQuery & query, int offset)
- : QcRow<RoutesSchema>(query)
+C2cRoutes::C2cRoutes(const QSqlQuery & query, int offset)
+ : QcRow<C2cRoutesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -12257,17 +12257,17 @@ Routes::Routes(const QSqlQuery & query, int offset)
   m_via_ferrata_rating = query.value(offset).toString();
 }
 
-Routes::~Routes()
+C2cRoutes::~C2cRoutes()
 {
-// qInfo() << "--- Delete" << "Routes" << *this;
+// qInfo() << "--- Delete" << "C2cRoutes" << *this;
 }
 
 // bit array ?
-Routes &
-Routes::operator=(const Routes & other)
+C2cRoutes &
+C2cRoutes::operator=(const C2cRoutes & other)
 {
   if (this != &other) {
-    QcRow<RoutesSchema>::operator=(other);
+    QcRow<C2cRoutesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_aid_rating = other.m_aid_rating;
@@ -12319,9 +12319,9 @@ Routes::operator=(const Routes & other)
 
 // bit array ?
 bool
-Routes::operator==(const Routes & other) const
+C2cRoutes::operator==(const C2cRoutes & other) const
 {
-  if (not QcRow<RoutesSchema>::operator==(other))
+  if (not QcRow<C2cRoutesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -12416,7 +12416,7 @@ Routes::operator==(const Routes & other) const
 }
 
 void
-Routes::set_document_id(int value)
+C2cRoutes::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -12431,7 +12431,7 @@ Routes::set_document_id(int value)
 }
 
 void
-Routes::set_activities(const QStringList & value)
+C2cRoutes::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -12446,7 +12446,7 @@ Routes::set_activities(const QStringList & value)
 }
 
 void
-Routes::set_aid_rating(const QString & value)
+C2cRoutes::set_aid_rating(const QString & value)
 {
   if (m_aid_rating != value) {
     m_aid_rating = value;
@@ -12461,7 +12461,7 @@ Routes::set_aid_rating(const QString & value)
 }
 
 void
-Routes::set_climbing_outdoor_type(const QString & value)
+C2cRoutes::set_climbing_outdoor_type(const QString & value)
 {
   if (m_climbing_outdoor_type != value) {
     m_climbing_outdoor_type = value;
@@ -12476,7 +12476,7 @@ Routes::set_climbing_outdoor_type(const QString & value)
 }
 
 void
-Routes::set_configuration(const QStringList & value)
+C2cRoutes::set_configuration(const QStringList & value)
 {
   if (m_configuration != value) {
     m_configuration = value;
@@ -12491,7 +12491,7 @@ Routes::set_configuration(const QStringList & value)
 }
 
 void
-Routes::set_difficulties_height(int value)
+C2cRoutes::set_difficulties_height(int value)
 {
   if (m_difficulties_height != value) {
     m_difficulties_height = value;
@@ -12506,7 +12506,7 @@ Routes::set_difficulties_height(int value)
 }
 
 void
-Routes::set_durations(const QStringList & value)
+C2cRoutes::set_durations(const QStringList & value)
 {
   if (m_durations != value) {
     m_durations = value;
@@ -12521,7 +12521,7 @@ Routes::set_durations(const QStringList & value)
 }
 
 void
-Routes::set_elevation_max(int value)
+C2cRoutes::set_elevation_max(int value)
 {
   if (m_elevation_max != value) {
     m_elevation_max = value;
@@ -12536,7 +12536,7 @@ Routes::set_elevation_max(int value)
 }
 
 void
-Routes::set_elevation_min(int value)
+C2cRoutes::set_elevation_min(int value)
 {
   if (m_elevation_min != value) {
     m_elevation_min = value;
@@ -12551,7 +12551,7 @@ Routes::set_elevation_min(int value)
 }
 
 void
-Routes::set_engagement_rating(const QString & value)
+C2cRoutes::set_engagement_rating(const QString & value)
 {
   if (m_engagement_rating != value) {
     m_engagement_rating = value;
@@ -12566,7 +12566,7 @@ Routes::set_engagement_rating(const QString & value)
 }
 
 void
-Routes::set_equipment_rating(const QString & value)
+C2cRoutes::set_equipment_rating(const QString & value)
 {
   if (m_equipment_rating != value) {
     m_equipment_rating = value;
@@ -12581,7 +12581,7 @@ Routes::set_equipment_rating(const QString & value)
 }
 
 void
-Routes::set_exposition_rock_rating(const QString & value)
+C2cRoutes::set_exposition_rock_rating(const QString & value)
 {
   if (m_exposition_rock_rating != value) {
     m_exposition_rock_rating = value;
@@ -12596,7 +12596,7 @@ Routes::set_exposition_rock_rating(const QString & value)
 }
 
 void
-Routes::set_glacier_gear(const QString & value)
+C2cRoutes::set_glacier_gear(const QString & value)
 {
   if (m_glacier_gear != value) {
     m_glacier_gear = value;
@@ -12611,7 +12611,7 @@ Routes::set_glacier_gear(const QString & value)
 }
 
 void
-Routes::set_global_rating(const QString & value)
+C2cRoutes::set_global_rating(const QString & value)
 {
   if (m_global_rating != value) {
     m_global_rating = value;
@@ -12626,7 +12626,7 @@ Routes::set_global_rating(const QString & value)
 }
 
 void
-Routes::set_height_diff_access(int value)
+C2cRoutes::set_height_diff_access(int value)
 {
   if (m_height_diff_access != value) {
     m_height_diff_access = value;
@@ -12641,7 +12641,7 @@ Routes::set_height_diff_access(int value)
 }
 
 void
-Routes::set_height_diff_difficulties(int value)
+C2cRoutes::set_height_diff_difficulties(int value)
 {
   if (m_height_diff_difficulties != value) {
     m_height_diff_difficulties = value;
@@ -12656,7 +12656,7 @@ Routes::set_height_diff_difficulties(int value)
 }
 
 void
-Routes::set_height_diff_down(int value)
+C2cRoutes::set_height_diff_down(int value)
 {
   if (m_height_diff_down != value) {
     m_height_diff_down = value;
@@ -12671,7 +12671,7 @@ Routes::set_height_diff_down(int value)
 }
 
 void
-Routes::set_height_diff_up(int value)
+C2cRoutes::set_height_diff_up(int value)
 {
   if (m_height_diff_up != value) {
     m_height_diff_up = value;
@@ -12686,7 +12686,7 @@ Routes::set_height_diff_up(int value)
 }
 
 void
-Routes::set_hiking_mtb_exposition(const QString & value)
+C2cRoutes::set_hiking_mtb_exposition(const QString & value)
 {
   if (m_hiking_mtb_exposition != value) {
     m_hiking_mtb_exposition = value;
@@ -12701,7 +12701,7 @@ Routes::set_hiking_mtb_exposition(const QString & value)
 }
 
 void
-Routes::set_hiking_rating(const QString & value)
+C2cRoutes::set_hiking_rating(const QString & value)
 {
   if (m_hiking_rating != value) {
     m_hiking_rating = value;
@@ -12716,7 +12716,7 @@ Routes::set_hiking_rating(const QString & value)
 }
 
 void
-Routes::set_ice_rating(const QString & value)
+C2cRoutes::set_ice_rating(const QString & value)
 {
   if (m_ice_rating != value) {
     m_ice_rating = value;
@@ -12731,7 +12731,7 @@ Routes::set_ice_rating(const QString & value)
 }
 
 void
-Routes::set_labande_global_rating(const QString & value)
+C2cRoutes::set_labande_global_rating(const QString & value)
 {
   if (m_labande_global_rating != value) {
     m_labande_global_rating = value;
@@ -12746,7 +12746,7 @@ Routes::set_labande_global_rating(const QString & value)
 }
 
 void
-Routes::set_labande_ski_rating(const QString & value)
+C2cRoutes::set_labande_ski_rating(const QString & value)
 {
   if (m_labande_ski_rating != value) {
     m_labande_ski_rating = value;
@@ -12761,7 +12761,7 @@ Routes::set_labande_ski_rating(const QString & value)
 }
 
 void
-Routes::set_lift_access(bool value)
+C2cRoutes::set_lift_access(bool value)
 {
   if (m_lift_access != value) {
     m_lift_access = value;
@@ -12776,7 +12776,7 @@ Routes::set_lift_access(bool value)
 }
 
 void
-Routes::set_main_waypoint_id(int value)
+C2cRoutes::set_main_waypoint_id(int value)
 {
   if (m_main_waypoint_id != value) {
     m_main_waypoint_id = value;
@@ -12791,7 +12791,7 @@ Routes::set_main_waypoint_id(int value)
 }
 
 void
-Routes::set_mixed_rating(const QString & value)
+C2cRoutes::set_mixed_rating(const QString & value)
 {
   if (m_mixed_rating != value) {
     m_mixed_rating = value;
@@ -12806,7 +12806,7 @@ Routes::set_mixed_rating(const QString & value)
 }
 
 void
-Routes::set_mtb_down_rating(const QString & value)
+C2cRoutes::set_mtb_down_rating(const QString & value)
 {
   if (m_mtb_down_rating != value) {
     m_mtb_down_rating = value;
@@ -12821,7 +12821,7 @@ Routes::set_mtb_down_rating(const QString & value)
 }
 
 void
-Routes::set_mtb_height_diff_portages(int value)
+C2cRoutes::set_mtb_height_diff_portages(int value)
 {
   if (m_mtb_height_diff_portages != value) {
     m_mtb_height_diff_portages = value;
@@ -12836,7 +12836,7 @@ Routes::set_mtb_height_diff_portages(int value)
 }
 
 void
-Routes::set_mtb_length_asphalt(int value)
+C2cRoutes::set_mtb_length_asphalt(int value)
 {
   if (m_mtb_length_asphalt != value) {
     m_mtb_length_asphalt = value;
@@ -12851,7 +12851,7 @@ Routes::set_mtb_length_asphalt(int value)
 }
 
 void
-Routes::set_mtb_length_trail(int value)
+C2cRoutes::set_mtb_length_trail(int value)
 {
   if (m_mtb_length_trail != value) {
     m_mtb_length_trail = value;
@@ -12866,7 +12866,7 @@ Routes::set_mtb_length_trail(int value)
 }
 
 void
-Routes::set_mtb_up_rating(const QString & value)
+C2cRoutes::set_mtb_up_rating(const QString & value)
 {
   if (m_mtb_up_rating != value) {
     m_mtb_up_rating = value;
@@ -12881,7 +12881,7 @@ Routes::set_mtb_up_rating(const QString & value)
 }
 
 void
-Routes::set_orientations(const QStringList & value)
+C2cRoutes::set_orientations(const QStringList & value)
 {
   if (m_orientations != value) {
     m_orientations = value;
@@ -12896,7 +12896,7 @@ Routes::set_orientations(const QStringList & value)
 }
 
 void
-Routes::set_risk_rating(const QString & value)
+C2cRoutes::set_risk_rating(const QString & value)
 {
   if (m_risk_rating != value) {
     m_risk_rating = value;
@@ -12911,7 +12911,7 @@ Routes::set_risk_rating(const QString & value)
 }
 
 void
-Routes::set_rock_free_rating(const QString & value)
+C2cRoutes::set_rock_free_rating(const QString & value)
 {
   if (m_rock_free_rating != value) {
     m_rock_free_rating = value;
@@ -12926,7 +12926,7 @@ Routes::set_rock_free_rating(const QString & value)
 }
 
 void
-Routes::set_rock_required_rating(const QString & value)
+C2cRoutes::set_rock_required_rating(const QString & value)
 {
   if (m_rock_required_rating != value) {
     m_rock_required_rating = value;
@@ -12941,7 +12941,7 @@ Routes::set_rock_required_rating(const QString & value)
 }
 
 void
-Routes::set_rock_types(const QStringList & value)
+C2cRoutes::set_rock_types(const QStringList & value)
 {
   if (m_rock_types != value) {
     m_rock_types = value;
@@ -12956,7 +12956,7 @@ Routes::set_rock_types(const QStringList & value)
 }
 
 void
-Routes::set_route_length(int value)
+C2cRoutes::set_route_length(int value)
 {
   if (m_route_length != value) {
     m_route_length = value;
@@ -12971,7 +12971,7 @@ Routes::set_route_length(int value)
 }
 
 void
-Routes::set_route_types(const QStringList & value)
+C2cRoutes::set_route_types(const QStringList & value)
 {
   if (m_route_types != value) {
     m_route_types = value;
@@ -12986,7 +12986,7 @@ Routes::set_route_types(const QStringList & value)
 }
 
 void
-Routes::set_ski_exposition(const QString & value)
+C2cRoutes::set_ski_exposition(const QString & value)
 {
   if (m_ski_exposition != value) {
     m_ski_exposition = value;
@@ -13001,7 +13001,7 @@ Routes::set_ski_exposition(const QString & value)
 }
 
 void
-Routes::set_ski_rating(const QString & value)
+C2cRoutes::set_ski_rating(const QString & value)
 {
   if (m_ski_rating != value) {
     m_ski_rating = value;
@@ -13016,7 +13016,7 @@ Routes::set_ski_rating(const QString & value)
 }
 
 void
-Routes::set_slackline_height(int value)
+C2cRoutes::set_slackline_height(int value)
 {
   if (m_slackline_height != value) {
     m_slackline_height = value;
@@ -13031,7 +13031,7 @@ Routes::set_slackline_height(int value)
 }
 
 void
-Routes::set_slackline_type(const QString & value)
+C2cRoutes::set_slackline_type(const QString & value)
 {
   if (m_slackline_type != value) {
     m_slackline_type = value;
@@ -13046,7 +13046,7 @@ Routes::set_slackline_type(const QString & value)
 }
 
 void
-Routes::set_snowshoe_rating(const QString & value)
+C2cRoutes::set_snowshoe_rating(const QString & value)
 {
   if (m_snowshoe_rating != value) {
     m_snowshoe_rating = value;
@@ -13061,7 +13061,7 @@ Routes::set_snowshoe_rating(const QString & value)
 }
 
 void
-Routes::set_via_ferrata_rating(const QString & value)
+C2cRoutes::set_via_ferrata_rating(const QString & value)
 {
   if (m_via_ferrata_rating != value) {
     m_via_ferrata_rating = value;
@@ -13076,7 +13076,7 @@ Routes::set_via_ferrata_rating(const QString & value)
 }
 
 QJsonObject
-Routes::to_json(bool only_changed) const
+C2cRoutes::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -13220,7 +13220,7 @@ Routes::to_json(bool only_changed) const
 }
 
 QVariantHash
-Routes::to_variant_hash(bool only_changed) const
+C2cRoutes::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -13364,7 +13364,7 @@ Routes::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Routes::to_variant_list() const
+C2cRoutes::to_variant_list() const
 {
   QVariantList variants;
 
@@ -13417,7 +13417,7 @@ Routes::to_variant_list() const
 }
 
 QVariantHash
-Routes::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cRoutes::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -13562,7 +13562,7 @@ Routes::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Routes::to_variant_list_sql(bool duplicate) const
+C2cRoutes::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -13616,7 +13616,7 @@ Routes::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Routes::field(int position) const
+C2cRoutes::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -13713,7 +13713,7 @@ Routes::field(int position) const
 }
 
 void
-Routes::set_field(int position, const QVariant & value)
+C2cRoutes::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -13896,20 +13896,20 @@ Routes::set_field(int position, const QVariant & value)
 }
 
 void
-Routes::set_insert_id(int id)
+C2cRoutes::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Routes::can_update() const
+C2cRoutes::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Routes::rowid_kwargs() const // To update row
+C2cRoutes::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -13917,7 +13917,7 @@ Routes::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Routes & obj)
+operator<<(QDataStream & out, const C2cRoutes & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -13968,7 +13968,7 @@ operator<<(QDataStream & out, const Routes & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Routes & obj)
+operator>>(QDataStream & in, C2cRoutes & obj)
 {
   QString _QString;
   QStringList _QStringList;
@@ -14068,12 +14068,12 @@ operator>>(QDataStream & in, Routes & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Routes & obj)
+operator<<(QDebug debug, const C2cRoutes & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Routes(");
+  debug.nospace() << QLatin1Literal("C2cRoutes(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -14171,11 +14171,11 @@ operator<<(QDebug debug, const Routes & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const RoutesPtr & obj)
+operator<<(QDebug debug, const C2cRoutesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("RoutesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cRoutesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -14187,68 +14187,68 @@ operator<<(QDebug debug, const RoutesPtr & obj)
 
 /**************************************************************************************************/
 
-RoutesCache::RoutesCache()
+C2cRoutesCache::C2cRoutesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-RoutesCache::~RoutesCache()
+C2cRoutesCache::~C2cRoutesCache()
 {}
 
 void
-RoutesCache::add(RoutesPtr & ptr)
+C2cRoutesCache::add(C2cRoutesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Routes::changed,
-                   this, &RoutesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cRoutes::changed,
+                   this, &C2cRoutesCache::on_changed);
 }
 
 void
-RoutesCache::remove(RoutesPtr & ptr)
+C2cRoutesCache::remove(C2cRoutesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-RoutesCache::on_changed()
+C2cRoutesCache::on_changed()
 {
-  Routes * row = qobject_cast<Routes *>(QObject::sender());
+  C2cRoutes * row = qobject_cast<C2cRoutes *>(QObject::sender());
   qInfo() << "On changed" << row;
-  RoutesPtr row_ptr = m_loaded_instances[row];
+  C2cRoutesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-RoutesModel::RoutesModel()
+C2cRoutesModel::C2cRoutesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-RoutesModel::RoutesModel(const ItemList & items)
+C2cRoutesModel::C2cRoutesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-RoutesModel::~RoutesModel()
+C2cRoutesModel::~C2cRoutesModel()
 {}
 
 int
-RoutesModel::rowCount(const QModelIndex & parent) const
+C2cRoutesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-RoutesModel::data(const QModelIndex & index, int role) const
+C2cRoutesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "RoutesModel: Index out of bound";
+    qWarning() << "C2cRoutesModel: Index out of bound";
     return QVariant();
   }
 
@@ -14350,7 +14350,7 @@ RoutesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-RoutesModel::roleNames() const
+C2cRoutesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -14403,7 +14403,7 @@ RoutesModel::roleNames() const
 }
 
 void
-RoutesModel::clear_items()
+C2cRoutesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -14411,15 +14411,15 @@ RoutesModel::clear_items()
 }
 
 void
-RoutesModel::set_items(const ItemList & items)
+C2cRoutesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-RoutesLocalesSchema::RoutesLocalesSchema()
-: QcSchema(QLatin1String("RoutesLocales"), QLatin1String("routes_locales"))
+C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
+: QcSchema(QLatin1String("C2cRoutesLocales"), QLatin1String("c2c_routes_locales"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -14532,14 +14532,14 @@ RoutesLocalesSchema::RoutesLocalesSchema()
   }
 }
 
-RoutesLocalesSchema::~RoutesLocalesSchema()
+C2cRoutesLocalesSchema::~C2cRoutesLocalesSchema()
 {}
 
 /**************************************************************************************************/
 
-RoutesLocales::RoutesLocales()
+C2cRoutesLocales::C2cRoutesLocales()
   : QObject(),
-    QcRow<RoutesLocalesSchema>(),
+    QcRow<C2cRoutesLocalesSchema>(),
     m_id(),
     m_external_resources(),
     m_gear(),
@@ -14552,9 +14552,9 @@ RoutesLocales::RoutesLocales()
 {
 }
 
-RoutesLocales::RoutesLocales(const RoutesLocales & other)
+C2cRoutesLocales::C2cRoutesLocales(const C2cRoutesLocales & other)
   : QObject(),
-    QcRow<RoutesLocalesSchema>(other),
+    QcRow<C2cRoutesLocalesSchema>(other),
     m_id(other.m_id),
     m_external_resources(other.m_external_resources),
     m_gear(other.m_gear),
@@ -14567,8 +14567,8 @@ RoutesLocales::RoutesLocales(const RoutesLocales & other)
 {
 }
 
-RoutesLocales::RoutesLocales(const QJsonObject & json_object)
- : RoutesLocales()
+C2cRoutesLocales::C2cRoutesLocales(const QJsonObject & json_object)
+ : C2cRoutesLocales()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_external_resources = json_object[QLatin1String("external_resources")].toString();
@@ -14581,8 +14581,8 @@ RoutesLocales::RoutesLocales(const QJsonObject & json_object)
   m_title_prefix = json_object[QLatin1String("title_prefix")].toString();
 }
 
-RoutesLocales::RoutesLocales(const QVariantHash & variant_hash)
- : RoutesLocales()
+C2cRoutesLocales::C2cRoutesLocales(const QVariantHash & variant_hash)
+ : C2cRoutesLocales()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_external_resources = variant_hash[QLatin1String("external_resources")].toString();
@@ -14595,8 +14595,8 @@ RoutesLocales::RoutesLocales(const QVariantHash & variant_hash)
   m_title_prefix = variant_hash[QLatin1String("title_prefix")].toString();
 }
 
-RoutesLocales::RoutesLocales(const QVariantList & variants)
- : RoutesLocales()
+C2cRoutesLocales::C2cRoutesLocales(const QVariantList & variants)
+ : C2cRoutesLocales()
 {
   m_id = variants[0].toInt();
   m_external_resources = variants[1].toString();
@@ -14609,8 +14609,8 @@ RoutesLocales::RoutesLocales(const QVariantList & variants)
   m_title_prefix = variants[8].toString();
 }
 
-RoutesLocales::RoutesLocales(const QSqlRecord & record)
- : QcRow<RoutesLocalesSchema>(record)
+C2cRoutesLocales::C2cRoutesLocales(const QSqlRecord & record)
+ : QcRow<C2cRoutesLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_external_resources = record.value(1).toString();
@@ -14623,8 +14623,8 @@ RoutesLocales::RoutesLocales(const QSqlRecord & record)
   m_title_prefix = record.value(8).toString();
 }
 
-RoutesLocales::RoutesLocales(const QSqlQuery & query, int offset)
- : QcRow<RoutesLocalesSchema>(query)
+C2cRoutesLocales::C2cRoutesLocales(const QSqlQuery & query, int offset)
+ : QcRow<C2cRoutesLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_external_resources = query.value(offset++).toString();
@@ -14637,17 +14637,17 @@ RoutesLocales::RoutesLocales(const QSqlQuery & query, int offset)
   m_title_prefix = query.value(offset).toString();
 }
 
-RoutesLocales::~RoutesLocales()
+C2cRoutesLocales::~C2cRoutesLocales()
 {
-// qInfo() << "--- Delete" << "RoutesLocales" << *this;
+// qInfo() << "--- Delete" << "C2cRoutesLocales" << *this;
 }
 
 // bit array ?
-RoutesLocales &
-RoutesLocales::operator=(const RoutesLocales & other)
+C2cRoutesLocales &
+C2cRoutesLocales::operator=(const C2cRoutesLocales & other)
 {
   if (this != &other) {
-    QcRow<RoutesLocalesSchema>::operator=(other);
+    QcRow<C2cRoutesLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_external_resources = other.m_external_resources;
     m_gear = other.m_gear;
@@ -14664,9 +14664,9 @@ RoutesLocales::operator=(const RoutesLocales & other)
 
 // bit array ?
 bool
-RoutesLocales::operator==(const RoutesLocales & other) const
+C2cRoutesLocales::operator==(const C2cRoutesLocales & other) const
 {
-  if (not QcRow<RoutesLocalesSchema>::operator==(other))
+  if (not QcRow<C2cRoutesLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -14691,7 +14691,7 @@ RoutesLocales::operator==(const RoutesLocales & other) const
 }
 
 void
-RoutesLocales::set_id(int value)
+C2cRoutesLocales::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -14706,7 +14706,7 @@ RoutesLocales::set_id(int value)
 }
 
 void
-RoutesLocales::set_external_resources(const QString & value)
+C2cRoutesLocales::set_external_resources(const QString & value)
 {
   if (m_external_resources != value) {
     m_external_resources = value;
@@ -14721,7 +14721,7 @@ RoutesLocales::set_external_resources(const QString & value)
 }
 
 void
-RoutesLocales::set_gear(const QString & value)
+C2cRoutesLocales::set_gear(const QString & value)
 {
   if (m_gear != value) {
     m_gear = value;
@@ -14736,7 +14736,7 @@ RoutesLocales::set_gear(const QString & value)
 }
 
 void
-RoutesLocales::set_remarks(const QString & value)
+C2cRoutesLocales::set_remarks(const QString & value)
 {
   if (m_remarks != value) {
     m_remarks = value;
@@ -14751,7 +14751,7 @@ RoutesLocales::set_remarks(const QString & value)
 }
 
 void
-RoutesLocales::set_route_history(const QString & value)
+C2cRoutesLocales::set_route_history(const QString & value)
 {
   if (m_route_history != value) {
     m_route_history = value;
@@ -14766,7 +14766,7 @@ RoutesLocales::set_route_history(const QString & value)
 }
 
 void
-RoutesLocales::set_slackline_anchor1(const QString & value)
+C2cRoutesLocales::set_slackline_anchor1(const QString & value)
 {
   if (m_slackline_anchor1 != value) {
     m_slackline_anchor1 = value;
@@ -14781,7 +14781,7 @@ RoutesLocales::set_slackline_anchor1(const QString & value)
 }
 
 void
-RoutesLocales::set_slackline_anchor2(const QString & value)
+C2cRoutesLocales::set_slackline_anchor2(const QString & value)
 {
   if (m_slackline_anchor2 != value) {
     m_slackline_anchor2 = value;
@@ -14796,7 +14796,7 @@ RoutesLocales::set_slackline_anchor2(const QString & value)
 }
 
 void
-RoutesLocales::set_slope(const QString & value)
+C2cRoutesLocales::set_slope(const QString & value)
 {
   if (m_slope != value) {
     m_slope = value;
@@ -14811,7 +14811,7 @@ RoutesLocales::set_slope(const QString & value)
 }
 
 void
-RoutesLocales::set_title_prefix(const QString & value)
+C2cRoutesLocales::set_title_prefix(const QString & value)
 {
   if (m_title_prefix != value) {
     m_title_prefix = value;
@@ -14826,7 +14826,7 @@ RoutesLocales::set_title_prefix(const QString & value)
 }
 
 QJsonObject
-RoutesLocales::to_json(bool only_changed) const
+C2cRoutesLocales::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -14865,7 +14865,7 @@ RoutesLocales::to_json(bool only_changed) const
 }
 
 QVariantHash
-RoutesLocales::to_variant_hash(bool only_changed) const
+C2cRoutesLocales::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -14904,7 +14904,7 @@ RoutesLocales::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-RoutesLocales::to_variant_list() const
+C2cRoutesLocales::to_variant_list() const
 {
   QVariantList variants;
 
@@ -14922,7 +14922,7 @@ RoutesLocales::to_variant_list() const
 }
 
 QVariantHash
-RoutesLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cRoutesLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -14962,7 +14962,7 @@ RoutesLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-RoutesLocales::to_variant_list_sql(bool duplicate) const
+C2cRoutesLocales::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -14981,7 +14981,7 @@ RoutesLocales::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-RoutesLocales::field(int position) const
+C2cRoutesLocales::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -15008,7 +15008,7 @@ RoutesLocales::field(int position) const
 }
 
 void
-RoutesLocales::set_field(int position, const QVariant & value)
+C2cRoutesLocales::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -15051,20 +15051,20 @@ RoutesLocales::set_field(int position, const QVariant & value)
 }
 
 void
-RoutesLocales::set_insert_id(int id)
+C2cRoutesLocales::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-RoutesLocales::can_update() const
+C2cRoutesLocales::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-RoutesLocales::rowid_kwargs() const // To update row
+C2cRoutesLocales::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -15072,7 +15072,7 @@ RoutesLocales::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const RoutesLocales & obj)
+operator<<(QDataStream & out, const C2cRoutesLocales & obj)
 {
   out << obj.id();
   out << obj.external_resources();
@@ -15088,7 +15088,7 @@ operator<<(QDataStream & out, const RoutesLocales & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, RoutesLocales & obj)
+operator>>(QDataStream & in, C2cRoutesLocales & obj)
 {
   QString _QString;
   int _int;
@@ -15116,12 +15116,12 @@ operator>>(QDataStream & in, RoutesLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const RoutesLocales & obj)
+operator<<(QDebug debug, const C2cRoutesLocales & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("RoutesLocales(");
+  debug.nospace() << QLatin1Literal("C2cRoutesLocales(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.external_resources();
@@ -15149,11 +15149,11 @@ operator<<(QDebug debug, const RoutesLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const RoutesLocalesPtr & obj)
+operator<<(QDebug debug, const C2cRoutesLocalesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("RoutesLocalesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cRoutesLocalesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -15165,68 +15165,68 @@ operator<<(QDebug debug, const RoutesLocalesPtr & obj)
 
 /**************************************************************************************************/
 
-RoutesLocalesCache::RoutesLocalesCache()
+C2cRoutesLocalesCache::C2cRoutesLocalesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-RoutesLocalesCache::~RoutesLocalesCache()
+C2cRoutesLocalesCache::~C2cRoutesLocalesCache()
 {}
 
 void
-RoutesLocalesCache::add(RoutesLocalesPtr & ptr)
+C2cRoutesLocalesCache::add(C2cRoutesLocalesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &RoutesLocales::changed,
-                   this, &RoutesLocalesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cRoutesLocales::changed,
+                   this, &C2cRoutesLocalesCache::on_changed);
 }
 
 void
-RoutesLocalesCache::remove(RoutesLocalesPtr & ptr)
+C2cRoutesLocalesCache::remove(C2cRoutesLocalesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-RoutesLocalesCache::on_changed()
+C2cRoutesLocalesCache::on_changed()
 {
-  RoutesLocales * row = qobject_cast<RoutesLocales *>(QObject::sender());
+  C2cRoutesLocales * row = qobject_cast<C2cRoutesLocales *>(QObject::sender());
   qInfo() << "On changed" << row;
-  RoutesLocalesPtr row_ptr = m_loaded_instances[row];
+  C2cRoutesLocalesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-RoutesLocalesModel::RoutesLocalesModel()
+C2cRoutesLocalesModel::C2cRoutesLocalesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-RoutesLocalesModel::RoutesLocalesModel(const ItemList & items)
+C2cRoutesLocalesModel::C2cRoutesLocalesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-RoutesLocalesModel::~RoutesLocalesModel()
+C2cRoutesLocalesModel::~C2cRoutesLocalesModel()
 {}
 
 int
-RoutesLocalesModel::rowCount(const QModelIndex & parent) const
+C2cRoutesLocalesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-RoutesLocalesModel::data(const QModelIndex & index, int role) const
+C2cRoutesLocalesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "RoutesLocalesModel: Index out of bound";
+    qWarning() << "C2cRoutesLocalesModel: Index out of bound";
     return QVariant();
   }
 
@@ -15258,7 +15258,7 @@ RoutesLocalesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-RoutesLocalesModel::roleNames() const
+C2cRoutesLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -15276,7 +15276,7 @@ RoutesLocalesModel::roleNames() const
 }
 
 void
-RoutesLocalesModel::clear_items()
+C2cRoutesLocalesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -15284,15 +15284,15 @@ RoutesLocalesModel::clear_items()
 }
 
 void
-RoutesLocalesModel::set_items(const ItemList & items)
+C2cRoutesLocalesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-UserSchema::UserSchema()
-: QcSchema(QLatin1String("User"), QLatin1String("user"))
+C2cUserSchema::C2cUserSchema()
+: QcSchema(QLatin1String("C2cUser"), QLatin1String("c2c_user"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -15514,14 +15514,14 @@ UserSchema::UserSchema()
   }
 }
 
-UserSchema::~UserSchema()
+C2cUserSchema::~C2cUserSchema()
 {}
 
 /**************************************************************************************************/
 
-User::User()
+C2cUser::C2cUser()
   : QObject(),
-    QcRow<UserSchema>(),
+    QcRow<C2cUserSchema>(),
     m_id(),
     m_blocked(),
     m_email(),
@@ -15542,9 +15542,9 @@ User::User()
 {
 }
 
-User::User(const User & other)
+C2cUser::C2cUser(const C2cUser & other)
   : QObject(),
-    QcRow<UserSchema>(other),
+    QcRow<C2cUserSchema>(other),
     m_id(other.m_id),
     m_blocked(other.m_blocked),
     m_email(other.m_email),
@@ -15565,8 +15565,8 @@ User::User(const User & other)
 {
 }
 
-User::User(const QJsonObject & json_object)
- : User()
+C2cUser::C2cUser(const QJsonObject & json_object)
+ : C2cUser()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_blocked = json_object[QLatin1String("blocked")].toBool();
@@ -15587,8 +15587,8 @@ User::User(const QJsonObject & json_object)
   m_validation_nonce_expire = orm_type_conversion::load_datetime(json_object[QLatin1String("validation_nonce_expire")]);
 }
 
-User::User(const QVariantHash & variant_hash)
- : User()
+C2cUser::C2cUser(const QVariantHash & variant_hash)
+ : C2cUser()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_blocked = variant_hash[QLatin1String("blocked")].toBool();
@@ -15609,8 +15609,8 @@ User::User(const QVariantHash & variant_hash)
   m_validation_nonce_expire = variant_hash[QLatin1String("validation_nonce_expire")].toDateTime();
 }
 
-User::User(const QVariantList & variants)
- : User()
+C2cUser::C2cUser(const QVariantList & variants)
+ : C2cUser()
 {
   m_id = variants[0].toInt();
   m_blocked = variants[1].toBool();
@@ -15631,8 +15631,8 @@ User::User(const QVariantList & variants)
   m_validation_nonce_expire = variants[16].toDateTime();
 }
 
-User::User(const QSqlRecord & record)
- : QcRow<UserSchema>(record)
+C2cUser::C2cUser(const QSqlRecord & record)
+ : QcRow<C2cUserSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_blocked = record.value(1).toBool();
@@ -15653,8 +15653,8 @@ User::User(const QSqlRecord & record)
   m_validation_nonce_expire = record.value(16).toDateTime();
 }
 
-User::User(const QSqlQuery & query, int offset)
- : QcRow<UserSchema>(query)
+C2cUser::C2cUser(const QSqlQuery & query, int offset)
+ : QcRow<C2cUserSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_blocked = query.value(offset++).toBool();
@@ -15675,17 +15675,17 @@ User::User(const QSqlQuery & query, int offset)
   m_validation_nonce_expire = query.value(offset).toDateTime();
 }
 
-User::~User()
+C2cUser::~C2cUser()
 {
-// qInfo() << "--- Delete" << "User" << *this;
+// qInfo() << "--- Delete" << "C2cUser" << *this;
 }
 
 // bit array ?
-User &
-User::operator=(const User & other)
+C2cUser &
+C2cUser::operator=(const C2cUser & other)
 {
   if (this != &other) {
-    QcRow<UserSchema>::operator=(other);
+    QcRow<C2cUserSchema>::operator=(other);
     m_id = other.m_id;
     m_blocked = other.m_blocked;
     m_email = other.m_email;
@@ -15710,9 +15710,9 @@ User::operator=(const User & other)
 
 // bit array ?
 bool
-User::operator==(const User & other) const
+C2cUser::operator==(const C2cUser & other) const
 {
-  if (not QcRow<UserSchema>::operator==(other))
+  if (not QcRow<C2cUserSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -15753,7 +15753,7 @@ User::operator==(const User & other) const
 }
 
 void
-User::set_id(int value)
+C2cUser::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -15768,7 +15768,7 @@ User::set_id(int value)
 }
 
 void
-User::set_blocked(bool value)
+C2cUser::set_blocked(bool value)
 {
   if (m_blocked != value) {
     m_blocked = value;
@@ -15783,7 +15783,7 @@ User::set_blocked(bool value)
 }
 
 void
-User::set_email(const QString & value)
+C2cUser::set_email(const QString & value)
 {
   if (m_email != value) {
     m_email = value;
@@ -15798,7 +15798,7 @@ User::set_email(const QString & value)
 }
 
 void
-User::set_email_to_validate(const QString & value)
+C2cUser::set_email_to_validate(const QString & value)
 {
   if (m_email_to_validate != value) {
     m_email_to_validate = value;
@@ -15813,7 +15813,7 @@ User::set_email_to_validate(const QString & value)
 }
 
 void
-User::set_email_validated(bool value)
+C2cUser::set_email_validated(bool value)
 {
   if (m_email_validated != value) {
     m_email_validated = value;
@@ -15828,7 +15828,7 @@ User::set_email_validated(bool value)
 }
 
 void
-User::set_feed_filter_activities(const QStringList & value)
+C2cUser::set_feed_filter_activities(const QStringList & value)
 {
   if (m_feed_filter_activities != value) {
     m_feed_filter_activities = value;
@@ -15843,7 +15843,7 @@ User::set_feed_filter_activities(const QStringList & value)
 }
 
 void
-User::set_feed_followed_only(bool value)
+C2cUser::set_feed_followed_only(bool value)
 {
   if (m_feed_followed_only != value) {
     m_feed_followed_only = value;
@@ -15858,7 +15858,7 @@ User::set_feed_followed_only(bool value)
 }
 
 void
-User::set_forum_username(const QString & value)
+C2cUser::set_forum_username(const QString & value)
 {
   if (m_forum_username != value) {
     m_forum_username = value;
@@ -15873,7 +15873,7 @@ User::set_forum_username(const QString & value)
 }
 
 void
-User::set_is_profile_public(bool value)
+C2cUser::set_is_profile_public(bool value)
 {
   if (m_is_profile_public != value) {
     m_is_profile_public = value;
@@ -15888,7 +15888,7 @@ User::set_is_profile_public(bool value)
 }
 
 void
-User::set_lang(const QString & value)
+C2cUser::set_lang(const QString & value)
 {
   if (m_lang != value) {
     m_lang = value;
@@ -15903,7 +15903,7 @@ User::set_lang(const QString & value)
 }
 
 void
-User::set_last_modified(const QDateTime & value)
+C2cUser::set_last_modified(const QDateTime & value)
 {
   if (m_last_modified != value) {
     m_last_modified = value;
@@ -15918,7 +15918,7 @@ User::set_last_modified(const QDateTime & value)
 }
 
 void
-User::set_moderator(bool value)
+C2cUser::set_moderator(bool value)
 {
   if (m_moderator != value) {
     m_moderator = value;
@@ -15933,7 +15933,7 @@ User::set_moderator(bool value)
 }
 
 void
-User::set_name(const QString & value)
+C2cUser::set_name(const QString & value)
 {
   if (m_name != value) {
     m_name = value;
@@ -15948,7 +15948,7 @@ User::set_name(const QString & value)
 }
 
 void
-User::set_password(const QString & value)
+C2cUser::set_password(const QString & value)
 {
   if (m_password != value) {
     m_password = value;
@@ -15963,7 +15963,7 @@ User::set_password(const QString & value)
 }
 
 void
-User::set_username(const QString & value)
+C2cUser::set_username(const QString & value)
 {
   if (m_username != value) {
     m_username = value;
@@ -15978,7 +15978,7 @@ User::set_username(const QString & value)
 }
 
 void
-User::set_validation_nonce(const QString & value)
+C2cUser::set_validation_nonce(const QString & value)
 {
   if (m_validation_nonce != value) {
     m_validation_nonce = value;
@@ -15993,7 +15993,7 @@ User::set_validation_nonce(const QString & value)
 }
 
 void
-User::set_validation_nonce_expire(const QDateTime & value)
+C2cUser::set_validation_nonce_expire(const QDateTime & value)
 {
   if (m_validation_nonce_expire != value) {
     m_validation_nonce_expire = value;
@@ -16008,7 +16008,7 @@ User::set_validation_nonce_expire(const QDateTime & value)
 }
 
 QJsonObject
-User::to_json(bool only_changed) const
+C2cUser::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -16071,7 +16071,7 @@ User::to_json(bool only_changed) const
 }
 
 QVariantHash
-User::to_variant_hash(bool only_changed) const
+C2cUser::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -16134,7 +16134,7 @@ User::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-User::to_variant_list() const
+C2cUser::to_variant_list() const
 {
   QVariantList variants;
 
@@ -16160,7 +16160,7 @@ User::to_variant_list() const
 }
 
 QVariantHash
-User::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cUser::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -16224,7 +16224,7 @@ User::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-User::to_variant_list_sql(bool duplicate) const
+C2cUser::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -16251,7 +16251,7 @@ User::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-User::field(int position) const
+C2cUser::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -16294,7 +16294,7 @@ User::field(int position) const
 }
 
 void
-User::set_field(int position, const QVariant & value)
+C2cUser::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -16369,20 +16369,20 @@ User::set_field(int position, const QVariant & value)
 }
 
 void
-User::set_insert_id(int id)
+C2cUser::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-User::can_update() const
+C2cUser::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-User::rowid_kwargs() const // To update row
+C2cUser::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -16390,7 +16390,7 @@ User::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const User & obj)
+operator<<(QDataStream & out, const C2cUser & obj)
 {
   out << obj.id();
   out << obj.blocked();
@@ -16414,7 +16414,7 @@ operator<<(QDataStream & out, const User & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, User & obj)
+operator>>(QDataStream & in, C2cUser & obj)
 {
   QDateTime _QDateTime;
   QString _QString;
@@ -16461,12 +16461,12 @@ operator>>(QDataStream & in, User & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const User & obj)
+operator<<(QDebug debug, const C2cUser & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("User(");
+  debug.nospace() << QLatin1Literal("C2cUser(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.blocked();
@@ -16510,11 +16510,11 @@ operator<<(QDebug debug, const User & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const UserPtr & obj)
+operator<<(QDebug debug, const C2cUserPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("UserPtr ->");
+  debug.noquote() << QLatin1Literal("C2cUserPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -16526,68 +16526,68 @@ operator<<(QDebug debug, const UserPtr & obj)
 
 /**************************************************************************************************/
 
-UserCache::UserCache()
+C2cUserCache::C2cUserCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-UserCache::~UserCache()
+C2cUserCache::~C2cUserCache()
 {}
 
 void
-UserCache::add(UserPtr & ptr)
+C2cUserCache::add(C2cUserPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &User::changed,
-                   this, &UserCache::on_changed);
+  QObject::connect(ptr.data(), &C2cUser::changed,
+                   this, &C2cUserCache::on_changed);
 }
 
 void
-UserCache::remove(UserPtr & ptr)
+C2cUserCache::remove(C2cUserPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-UserCache::on_changed()
+C2cUserCache::on_changed()
 {
-  User * row = qobject_cast<User *>(QObject::sender());
+  C2cUser * row = qobject_cast<C2cUser *>(QObject::sender());
   qInfo() << "On changed" << row;
-  UserPtr row_ptr = m_loaded_instances[row];
+  C2cUserPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-UserModel::UserModel()
+C2cUserModel::C2cUserModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-UserModel::UserModel(const ItemList & items)
+C2cUserModel::C2cUserModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-UserModel::~UserModel()
+C2cUserModel::~C2cUserModel()
 {}
 
 int
-UserModel::rowCount(const QModelIndex & parent) const
+C2cUserModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-UserModel::data(const QModelIndex & index, int role) const
+C2cUserModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "UserModel: Index out of bound";
+    qWarning() << "C2cUserModel: Index out of bound";
     return QVariant();
   }
 
@@ -16635,7 +16635,7 @@ UserModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-UserModel::roleNames() const
+C2cUserModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -16661,7 +16661,7 @@ UserModel::roleNames() const
 }
 
 void
-UserModel::clear_items()
+C2cUserModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -16669,15 +16669,15 @@ UserModel::clear_items()
 }
 
 void
-UserModel::set_items(const ItemList & items)
+C2cUserModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-UserProfilesSchema::UserProfilesSchema()
-: QcSchema(QLatin1String("UserProfiles"), QLatin1String("user_profiles"))
+C2cUserProfilesSchema::C2cUserProfilesSchema()
+: QcSchema(QLatin1String("C2cUserProfiles"), QLatin1String("c2c_user_profiles"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -16718,80 +16718,80 @@ UserProfilesSchema::UserProfilesSchema()
   }
 }
 
-UserProfilesSchema::~UserProfilesSchema()
+C2cUserProfilesSchema::~C2cUserProfilesSchema()
 {}
 
 /**************************************************************************************************/
 
-UserProfiles::UserProfiles()
+C2cUserProfiles::C2cUserProfiles()
   : QObject(),
-    QcRow<UserProfilesSchema>(),
+    QcRow<C2cUserProfilesSchema>(),
     m_document_id(),
     m_activities(),
     m_categories()
 {
 }
 
-UserProfiles::UserProfiles(const UserProfiles & other)
+C2cUserProfiles::C2cUserProfiles(const C2cUserProfiles & other)
   : QObject(),
-    QcRow<UserProfilesSchema>(other),
+    QcRow<C2cUserProfilesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_categories(other.m_categories)
 {
 }
 
-UserProfiles::UserProfiles(const QJsonObject & json_object)
- : UserProfiles()
+C2cUserProfiles::C2cUserProfiles(const QJsonObject & json_object)
+ : C2cUserProfiles()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
   m_categories = orm_type_conversion::load_string_list(json_object[QLatin1String("categories")]);
 }
 
-UserProfiles::UserProfiles(const QVariantHash & variant_hash)
- : UserProfiles()
+C2cUserProfiles::C2cUserProfiles(const QVariantHash & variant_hash)
+ : C2cUserProfiles()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
   m_categories = variant_hash[QLatin1String("categories")].toStringList();
 }
 
-UserProfiles::UserProfiles(const QVariantList & variants)
- : UserProfiles()
+C2cUserProfiles::C2cUserProfiles(const QVariantList & variants)
+ : C2cUserProfiles()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
   m_categories = variants[2].toStringList();
 }
 
-UserProfiles::UserProfiles(const QSqlRecord & record)
- : QcRow<UserProfilesSchema>(record)
+C2cUserProfiles::C2cUserProfiles(const QSqlRecord & record)
+ : QcRow<C2cUserProfilesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
   m_categories = record.value(2).toStringList();
 }
 
-UserProfiles::UserProfiles(const QSqlQuery & query, int offset)
- : QcRow<UserProfilesSchema>(query)
+C2cUserProfiles::C2cUserProfiles(const QSqlQuery & query, int offset)
+ : QcRow<C2cUserProfilesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
   m_categories = query.value(offset).toStringList();
 }
 
-UserProfiles::~UserProfiles()
+C2cUserProfiles::~C2cUserProfiles()
 {
-// qInfo() << "--- Delete" << "UserProfiles" << *this;
+// qInfo() << "--- Delete" << "C2cUserProfiles" << *this;
 }
 
 // bit array ?
-UserProfiles &
-UserProfiles::operator=(const UserProfiles & other)
+C2cUserProfiles &
+C2cUserProfiles::operator=(const C2cUserProfiles & other)
 {
   if (this != &other) {
-    QcRow<UserProfilesSchema>::operator=(other);
+    QcRow<C2cUserProfilesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_categories = other.m_categories;
@@ -16802,9 +16802,9 @@ UserProfiles::operator=(const UserProfiles & other)
 
 // bit array ?
 bool
-UserProfiles::operator==(const UserProfiles & other) const
+C2cUserProfiles::operator==(const C2cUserProfiles & other) const
 {
-  if (not QcRow<UserProfilesSchema>::operator==(other))
+  if (not QcRow<C2cUserProfilesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -16817,7 +16817,7 @@ UserProfiles::operator==(const UserProfiles & other) const
 }
 
 void
-UserProfiles::set_document_id(int value)
+C2cUserProfiles::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -16832,7 +16832,7 @@ UserProfiles::set_document_id(int value)
 }
 
 void
-UserProfiles::set_activities(const QStringList & value)
+C2cUserProfiles::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -16847,7 +16847,7 @@ UserProfiles::set_activities(const QStringList & value)
 }
 
 void
-UserProfiles::set_categories(const QStringList & value)
+C2cUserProfiles::set_categories(const QStringList & value)
 {
   if (m_categories != value) {
     m_categories = value;
@@ -16862,7 +16862,7 @@ UserProfiles::set_categories(const QStringList & value)
 }
 
 QJsonObject
-UserProfiles::to_json(bool only_changed) const
+C2cUserProfiles::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -16883,7 +16883,7 @@ UserProfiles::to_json(bool only_changed) const
 }
 
 QVariantHash
-UserProfiles::to_variant_hash(bool only_changed) const
+C2cUserProfiles::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -16904,7 +16904,7 @@ UserProfiles::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-UserProfiles::to_variant_list() const
+C2cUserProfiles::to_variant_list() const
 {
   QVariantList variants;
 
@@ -16916,7 +16916,7 @@ UserProfiles::to_variant_list() const
 }
 
 QVariantHash
-UserProfiles::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cUserProfiles::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -16938,7 +16938,7 @@ UserProfiles::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-UserProfiles::to_variant_list_sql(bool duplicate) const
+C2cUserProfiles::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -16951,7 +16951,7 @@ UserProfiles::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-UserProfiles::field(int position) const
+C2cUserProfiles::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -16966,7 +16966,7 @@ UserProfiles::field(int position) const
 }
 
 void
-UserProfiles::set_field(int position, const QVariant & value)
+C2cUserProfiles::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -16985,20 +16985,20 @@ UserProfiles::set_field(int position, const QVariant & value)
 }
 
 void
-UserProfiles::set_insert_id(int id)
+C2cUserProfiles::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-UserProfiles::can_update() const
+C2cUserProfiles::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-UserProfiles::rowid_kwargs() const // To update row
+C2cUserProfiles::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -17006,7 +17006,7 @@ UserProfiles::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const UserProfiles & obj)
+operator<<(QDataStream & out, const C2cUserProfiles & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -17016,7 +17016,7 @@ operator<<(QDataStream & out, const UserProfiles & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, UserProfiles & obj)
+operator>>(QDataStream & in, C2cUserProfiles & obj)
 {
   QStringList _QStringList;
   int _int;
@@ -17032,12 +17032,12 @@ operator>>(QDataStream & in, UserProfiles & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const UserProfiles & obj)
+operator<<(QDebug debug, const C2cUserProfiles & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("UserProfiles(");
+  debug.nospace() << QLatin1Literal("C2cUserProfiles(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -17053,11 +17053,11 @@ operator<<(QDebug debug, const UserProfiles & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const UserProfilesPtr & obj)
+operator<<(QDebug debug, const C2cUserProfilesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("UserProfilesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cUserProfilesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -17069,68 +17069,68 @@ operator<<(QDebug debug, const UserProfilesPtr & obj)
 
 /**************************************************************************************************/
 
-UserProfilesCache::UserProfilesCache()
+C2cUserProfilesCache::C2cUserProfilesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-UserProfilesCache::~UserProfilesCache()
+C2cUserProfilesCache::~C2cUserProfilesCache()
 {}
 
 void
-UserProfilesCache::add(UserProfilesPtr & ptr)
+C2cUserProfilesCache::add(C2cUserProfilesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &UserProfiles::changed,
-                   this, &UserProfilesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cUserProfiles::changed,
+                   this, &C2cUserProfilesCache::on_changed);
 }
 
 void
-UserProfilesCache::remove(UserProfilesPtr & ptr)
+C2cUserProfilesCache::remove(C2cUserProfilesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-UserProfilesCache::on_changed()
+C2cUserProfilesCache::on_changed()
 {
-  UserProfiles * row = qobject_cast<UserProfiles *>(QObject::sender());
+  C2cUserProfiles * row = qobject_cast<C2cUserProfiles *>(QObject::sender());
   qInfo() << "On changed" << row;
-  UserProfilesPtr row_ptr = m_loaded_instances[row];
+  C2cUserProfilesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-UserProfilesModel::UserProfilesModel()
+C2cUserProfilesModel::C2cUserProfilesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-UserProfilesModel::UserProfilesModel(const ItemList & items)
+C2cUserProfilesModel::C2cUserProfilesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-UserProfilesModel::~UserProfilesModel()
+C2cUserProfilesModel::~C2cUserProfilesModel()
 {}
 
 int
-UserProfilesModel::rowCount(const QModelIndex & parent) const
+C2cUserProfilesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-UserProfilesModel::data(const QModelIndex & index, int role) const
+C2cUserProfilesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "UserProfilesModel: Index out of bound";
+    qWarning() << "C2cUserProfilesModel: Index out of bound";
     return QVariant();
   }
 
@@ -17150,7 +17150,7 @@ UserProfilesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-UserProfilesModel::roleNames() const
+C2cUserProfilesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -17162,7 +17162,7 @@ UserProfilesModel::roleNames() const
 }
 
 void
-UserProfilesModel::clear_items()
+C2cUserProfilesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -17170,15 +17170,15 @@ UserProfilesModel::clear_items()
 }
 
 void
-UserProfilesModel::set_items(const ItemList & items)
+C2cUserProfilesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-WaypointsSchema::WaypointsSchema()
-: QcSchema(QLatin1String("Waypoints"), QLatin1String("waypoints"))
+C2cWaypointsSchema::C2cWaypointsSchema()
+: QcSchema(QLatin1String("C2cWaypoints"), QLatin1String("c2c_waypoints"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -17760,14 +17760,14 @@ WaypointsSchema::WaypointsSchema()
   }
 }
 
-WaypointsSchema::~WaypointsSchema()
+C2cWaypointsSchema::~C2cWaypointsSchema()
 {}
 
 /**************************************************************************************************/
 
-Waypoints::Waypoints()
+C2cWaypoints::C2cWaypoints()
   : QObject(),
-    QcRow<WaypointsSchema>(),
+    QcRow<C2cWaypointsSchema>(),
     m_document_id(),
     m_access_time(),
     m_best_periods(),
@@ -17819,9 +17819,9 @@ Waypoints::Waypoints()
 {
 }
 
-Waypoints::Waypoints(const Waypoints & other)
+C2cWaypoints::C2cWaypoints(const C2cWaypoints & other)
   : QObject(),
-    QcRow<WaypointsSchema>(other),
+    QcRow<C2cWaypointsSchema>(other),
     m_document_id(other.m_document_id),
     m_access_time(other.m_access_time),
     m_best_periods(other.m_best_periods),
@@ -17873,8 +17873,8 @@ Waypoints::Waypoints(const Waypoints & other)
 {
 }
 
-Waypoints::Waypoints(const QJsonObject & json_object)
- : Waypoints()
+C2cWaypoints::C2cWaypoints(const QJsonObject & json_object)
+ : C2cWaypoints()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_access_time = json_object[QLatin1String("access_time")].toString();
@@ -17926,8 +17926,8 @@ Waypoints::Waypoints(const QJsonObject & json_object)
   m_weather_station_types = orm_type_conversion::load_string_list(json_object[QLatin1String("weather_station_types")]);
 }
 
-Waypoints::Waypoints(const QVariantHash & variant_hash)
- : Waypoints()
+C2cWaypoints::C2cWaypoints(const QVariantHash & variant_hash)
+ : C2cWaypoints()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_access_time = variant_hash[QLatin1String("access_time")].toString();
@@ -17979,8 +17979,8 @@ Waypoints::Waypoints(const QVariantHash & variant_hash)
   m_weather_station_types = variant_hash[QLatin1String("weather_station_types")].toStringList();
 }
 
-Waypoints::Waypoints(const QVariantList & variants)
- : Waypoints()
+C2cWaypoints::C2cWaypoints(const QVariantList & variants)
+ : C2cWaypoints()
 {
   m_document_id = variants[0].toInt();
   m_access_time = variants[1].toString();
@@ -18032,8 +18032,8 @@ Waypoints::Waypoints(const QVariantList & variants)
   m_weather_station_types = variants[47].toStringList();
 }
 
-Waypoints::Waypoints(const QSqlRecord & record)
- : QcRow<WaypointsSchema>(record)
+C2cWaypoints::C2cWaypoints(const QSqlRecord & record)
+ : QcRow<C2cWaypointsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_access_time = record.value(1).toString();
@@ -18085,8 +18085,8 @@ Waypoints::Waypoints(const QSqlRecord & record)
   m_weather_station_types = record.value(47).toStringList();
 }
 
-Waypoints::Waypoints(const QSqlQuery & query, int offset)
- : QcRow<WaypointsSchema>(query)
+C2cWaypoints::C2cWaypoints(const QSqlQuery & query, int offset)
+ : QcRow<C2cWaypointsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_access_time = query.value(offset++).toString();
@@ -18138,17 +18138,17 @@ Waypoints::Waypoints(const QSqlQuery & query, int offset)
   m_weather_station_types = query.value(offset).toStringList();
 }
 
-Waypoints::~Waypoints()
+C2cWaypoints::~C2cWaypoints()
 {
-// qInfo() << "--- Delete" << "Waypoints" << *this;
+// qInfo() << "--- Delete" << "C2cWaypoints" << *this;
 }
 
 // bit array ?
-Waypoints &
-Waypoints::operator=(const Waypoints & other)
+C2cWaypoints &
+C2cWaypoints::operator=(const C2cWaypoints & other)
 {
   if (this != &other) {
-    QcRow<WaypointsSchema>::operator=(other);
+    QcRow<C2cWaypointsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_access_time = other.m_access_time;
     m_best_periods = other.m_best_periods;
@@ -18204,9 +18204,9 @@ Waypoints::operator=(const Waypoints & other)
 
 // bit array ?
 bool
-Waypoints::operator==(const Waypoints & other) const
+C2cWaypoints::operator==(const C2cWaypoints & other) const
 {
-  if (not QcRow<WaypointsSchema>::operator==(other))
+  if (not QcRow<C2cWaypointsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -18309,7 +18309,7 @@ Waypoints::operator==(const Waypoints & other) const
 }
 
 void
-Waypoints::set_document_id(int value)
+C2cWaypoints::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -18324,7 +18324,7 @@ Waypoints::set_document_id(int value)
 }
 
 void
-Waypoints::set_access_time(const QString & value)
+C2cWaypoints::set_access_time(const QString & value)
 {
   if (m_access_time != value) {
     m_access_time = value;
@@ -18339,7 +18339,7 @@ Waypoints::set_access_time(const QString & value)
 }
 
 void
-Waypoints::set_best_periods(const QStringList & value)
+C2cWaypoints::set_best_periods(const QStringList & value)
 {
   if (m_best_periods != value) {
     m_best_periods = value;
@@ -18354,7 +18354,7 @@ Waypoints::set_best_periods(const QStringList & value)
 }
 
 void
-Waypoints::set_blanket_unstaffed(bool value)
+C2cWaypoints::set_blanket_unstaffed(bool value)
 {
   if (m_blanket_unstaffed != value) {
     m_blanket_unstaffed = value;
@@ -18369,7 +18369,7 @@ Waypoints::set_blanket_unstaffed(bool value)
 }
 
 void
-Waypoints::set_capacity(int value)
+C2cWaypoints::set_capacity(int value)
 {
   if (m_capacity != value) {
     m_capacity = value;
@@ -18384,7 +18384,7 @@ Waypoints::set_capacity(int value)
 }
 
 void
-Waypoints::set_capacity_staffed(int value)
+C2cWaypoints::set_capacity_staffed(int value)
 {
   if (m_capacity_staffed != value) {
     m_capacity_staffed = value;
@@ -18399,7 +18399,7 @@ Waypoints::set_capacity_staffed(int value)
 }
 
 void
-Waypoints::set_children_proof(const QString & value)
+C2cWaypoints::set_children_proof(const QString & value)
 {
   if (m_children_proof != value) {
     m_children_proof = value;
@@ -18414,7 +18414,7 @@ Waypoints::set_children_proof(const QString & value)
 }
 
 void
-Waypoints::set_climbing_indoor_types(const QStringList & value)
+C2cWaypoints::set_climbing_indoor_types(const QStringList & value)
 {
   if (m_climbing_indoor_types != value) {
     m_climbing_indoor_types = value;
@@ -18429,7 +18429,7 @@ Waypoints::set_climbing_indoor_types(const QStringList & value)
 }
 
 void
-Waypoints::set_climbing_outdoor_types(const QStringList & value)
+C2cWaypoints::set_climbing_outdoor_types(const QStringList & value)
 {
   if (m_climbing_outdoor_types != value) {
     m_climbing_outdoor_types = value;
@@ -18444,7 +18444,7 @@ Waypoints::set_climbing_outdoor_types(const QStringList & value)
 }
 
 void
-Waypoints::set_climbing_rating_max(const QString & value)
+C2cWaypoints::set_climbing_rating_max(const QString & value)
 {
   if (m_climbing_rating_max != value) {
     m_climbing_rating_max = value;
@@ -18459,7 +18459,7 @@ Waypoints::set_climbing_rating_max(const QString & value)
 }
 
 void
-Waypoints::set_climbing_rating_median(const QString & value)
+C2cWaypoints::set_climbing_rating_median(const QString & value)
 {
   if (m_climbing_rating_median != value) {
     m_climbing_rating_median = value;
@@ -18474,7 +18474,7 @@ Waypoints::set_climbing_rating_median(const QString & value)
 }
 
 void
-Waypoints::set_climbing_rating_min(const QString & value)
+C2cWaypoints::set_climbing_rating_min(const QString & value)
 {
   if (m_climbing_rating_min != value) {
     m_climbing_rating_min = value;
@@ -18489,7 +18489,7 @@ Waypoints::set_climbing_rating_min(const QString & value)
 }
 
 void
-Waypoints::set_climbing_styles(const QStringList & value)
+C2cWaypoints::set_climbing_styles(const QStringList & value)
 {
   if (m_climbing_styles != value) {
     m_climbing_styles = value;
@@ -18504,7 +18504,7 @@ Waypoints::set_climbing_styles(const QStringList & value)
 }
 
 void
-Waypoints::set_custodianship(const QString & value)
+C2cWaypoints::set_custodianship(const QString & value)
 {
   if (m_custodianship != value) {
     m_custodianship = value;
@@ -18519,7 +18519,7 @@ Waypoints::set_custodianship(const QString & value)
 }
 
 void
-Waypoints::set_elevation(int value)
+C2cWaypoints::set_elevation(int value)
 {
   if (m_elevation != value) {
     m_elevation = value;
@@ -18534,7 +18534,7 @@ Waypoints::set_elevation(int value)
 }
 
 void
-Waypoints::set_elevation_min(int value)
+C2cWaypoints::set_elevation_min(int value)
 {
   if (m_elevation_min != value) {
     m_elevation_min = value;
@@ -18549,7 +18549,7 @@ Waypoints::set_elevation_min(int value)
 }
 
 void
-Waypoints::set_equipment_ratings(const QStringList & value)
+C2cWaypoints::set_equipment_ratings(const QStringList & value)
 {
   if (m_equipment_ratings != value) {
     m_equipment_ratings = value;
@@ -18564,7 +18564,7 @@ Waypoints::set_equipment_ratings(const QStringList & value)
 }
 
 void
-Waypoints::set_exposition_rating(const QString & value)
+C2cWaypoints::set_exposition_rating(const QString & value)
 {
   if (m_exposition_rating != value) {
     m_exposition_rating = value;
@@ -18579,7 +18579,7 @@ Waypoints::set_exposition_rating(const QString & value)
 }
 
 void
-Waypoints::set_gas_unstaffed(bool value)
+C2cWaypoints::set_gas_unstaffed(bool value)
 {
   if (m_gas_unstaffed != value) {
     m_gas_unstaffed = value;
@@ -18594,7 +18594,7 @@ Waypoints::set_gas_unstaffed(bool value)
 }
 
 void
-Waypoints::set_ground_types(const QStringList & value)
+C2cWaypoints::set_ground_types(const QStringList & value)
 {
   if (m_ground_types != value) {
     m_ground_types = value;
@@ -18609,7 +18609,7 @@ Waypoints::set_ground_types(const QStringList & value)
 }
 
 void
-Waypoints::set_heating_unstaffed(bool value)
+C2cWaypoints::set_heating_unstaffed(bool value)
 {
   if (m_heating_unstaffed != value) {
     m_heating_unstaffed = value;
@@ -18624,7 +18624,7 @@ Waypoints::set_heating_unstaffed(bool value)
 }
 
 void
-Waypoints::set_height_max(int value)
+C2cWaypoints::set_height_max(int value)
 {
   if (m_height_max != value) {
     m_height_max = value;
@@ -18639,7 +18639,7 @@ Waypoints::set_height_max(int value)
 }
 
 void
-Waypoints::set_height_median(int value)
+C2cWaypoints::set_height_median(int value)
 {
   if (m_height_median != value) {
     m_height_median = value;
@@ -18654,7 +18654,7 @@ Waypoints::set_height_median(int value)
 }
 
 void
-Waypoints::set_height_min(int value)
+C2cWaypoints::set_height_min(int value)
 {
   if (m_height_min != value) {
     m_height_min = value;
@@ -18669,7 +18669,7 @@ Waypoints::set_height_min(int value)
 }
 
 void
-Waypoints::set_length(int value)
+C2cWaypoints::set_length(int value)
 {
   if (m_length != value) {
     m_length = value;
@@ -18684,7 +18684,7 @@ Waypoints::set_length(int value)
 }
 
 void
-Waypoints::set_lift_access(bool value)
+C2cWaypoints::set_lift_access(bool value)
 {
   if (m_lift_access != value) {
     m_lift_access = value;
@@ -18699,7 +18699,7 @@ Waypoints::set_lift_access(bool value)
 }
 
 void
-Waypoints::set_maps_info(const QString & value)
+C2cWaypoints::set_maps_info(const QString & value)
 {
   if (m_maps_info != value) {
     m_maps_info = value;
@@ -18714,7 +18714,7 @@ Waypoints::set_maps_info(const QString & value)
 }
 
 void
-Waypoints::set_matress_unstaffed(bool value)
+C2cWaypoints::set_matress_unstaffed(bool value)
 {
   if (m_matress_unstaffed != value) {
     m_matress_unstaffed = value;
@@ -18729,7 +18729,7 @@ Waypoints::set_matress_unstaffed(bool value)
 }
 
 void
-Waypoints::set_orientations(const QStringList & value)
+C2cWaypoints::set_orientations(const QStringList & value)
 {
   if (m_orientations != value) {
     m_orientations = value;
@@ -18744,7 +18744,7 @@ Waypoints::set_orientations(const QStringList & value)
 }
 
 void
-Waypoints::set_paragliding_rating(const QChar & value)
+C2cWaypoints::set_paragliding_rating(const QChar & value)
 {
   if (m_paragliding_rating != value) {
     m_paragliding_rating = value;
@@ -18759,7 +18759,7 @@ Waypoints::set_paragliding_rating(const QChar & value)
 }
 
 void
-Waypoints::set_parking_fee(const QString & value)
+C2cWaypoints::set_parking_fee(const QString & value)
 {
   if (m_parking_fee != value) {
     m_parking_fee = value;
@@ -18774,7 +18774,7 @@ Waypoints::set_parking_fee(const QString & value)
 }
 
 void
-Waypoints::set_phone(const QString & value)
+C2cWaypoints::set_phone(const QString & value)
 {
   if (m_phone != value) {
     m_phone = value;
@@ -18789,7 +18789,7 @@ Waypoints::set_phone(const QString & value)
 }
 
 void
-Waypoints::set_phone_custodian(const QString & value)
+C2cWaypoints::set_phone_custodian(const QString & value)
 {
   if (m_phone_custodian != value) {
     m_phone_custodian = value;
@@ -18804,7 +18804,7 @@ Waypoints::set_phone_custodian(const QString & value)
 }
 
 void
-Waypoints::set_product_types(const QStringList & value)
+C2cWaypoints::set_product_types(const QStringList & value)
 {
   if (m_product_types != value) {
     m_product_types = value;
@@ -18819,7 +18819,7 @@ Waypoints::set_product_types(const QStringList & value)
 }
 
 void
-Waypoints::set_prominence(int value)
+C2cWaypoints::set_prominence(int value)
 {
   if (m_prominence != value) {
     m_prominence = value;
@@ -18834,7 +18834,7 @@ Waypoints::set_prominence(int value)
 }
 
 void
-Waypoints::set_public_transportation_rating(const QString & value)
+C2cWaypoints::set_public_transportation_rating(const QString & value)
 {
   if (m_public_transportation_rating != value) {
     m_public_transportation_rating = value;
@@ -18849,7 +18849,7 @@ Waypoints::set_public_transportation_rating(const QString & value)
 }
 
 void
-Waypoints::set_public_transportation_types(const QStringList & value)
+C2cWaypoints::set_public_transportation_types(const QStringList & value)
 {
   if (m_public_transportation_types != value) {
     m_public_transportation_types = value;
@@ -18864,7 +18864,7 @@ Waypoints::set_public_transportation_types(const QStringList & value)
 }
 
 void
-Waypoints::set_rain_proof(const QString & value)
+C2cWaypoints::set_rain_proof(const QString & value)
 {
   if (m_rain_proof != value) {
     m_rain_proof = value;
@@ -18879,7 +18879,7 @@ Waypoints::set_rain_proof(const QString & value)
 }
 
 void
-Waypoints::set_rock_types(const QStringList & value)
+C2cWaypoints::set_rock_types(const QStringList & value)
 {
   if (m_rock_types != value) {
     m_rock_types = value;
@@ -18894,7 +18894,7 @@ Waypoints::set_rock_types(const QStringList & value)
 }
 
 void
-Waypoints::set_routes_quantity(int value)
+C2cWaypoints::set_routes_quantity(int value)
 {
   if (m_routes_quantity != value) {
     m_routes_quantity = value;
@@ -18909,7 +18909,7 @@ Waypoints::set_routes_quantity(int value)
 }
 
 void
-Waypoints::set_slackline_length_max(int value)
+C2cWaypoints::set_slackline_length_max(int value)
 {
   if (m_slackline_length_max != value) {
     m_slackline_length_max = value;
@@ -18924,7 +18924,7 @@ Waypoints::set_slackline_length_max(int value)
 }
 
 void
-Waypoints::set_slackline_length_min(int value)
+C2cWaypoints::set_slackline_length_min(int value)
 {
   if (m_slackline_length_min != value) {
     m_slackline_length_min = value;
@@ -18939,7 +18939,7 @@ Waypoints::set_slackline_length_min(int value)
 }
 
 void
-Waypoints::set_slackline_types(const QStringList & value)
+C2cWaypoints::set_slackline_types(const QStringList & value)
 {
   if (m_slackline_types != value) {
     m_slackline_types = value;
@@ -18954,7 +18954,7 @@ Waypoints::set_slackline_types(const QStringList & value)
 }
 
 void
-Waypoints::set_slope(int value)
+C2cWaypoints::set_slope(int value)
 {
   if (m_slope != value) {
     m_slope = value;
@@ -18969,7 +18969,7 @@ Waypoints::set_slope(int value)
 }
 
 void
-Waypoints::set_snow_clearance_rating(const QString & value)
+C2cWaypoints::set_snow_clearance_rating(const QString & value)
 {
   if (m_snow_clearance_rating != value) {
     m_snow_clearance_rating = value;
@@ -18984,7 +18984,7 @@ Waypoints::set_snow_clearance_rating(const QString & value)
 }
 
 void
-Waypoints::set_url(const QString & value)
+C2cWaypoints::set_url(const QString & value)
 {
   if (m_url != value) {
     m_url = value;
@@ -18999,7 +18999,7 @@ Waypoints::set_url(const QString & value)
 }
 
 void
-Waypoints::set_waypoint_type(const QString & value)
+C2cWaypoints::set_waypoint_type(const QString & value)
 {
   if (m_waypoint_type != value) {
     m_waypoint_type = value;
@@ -19014,7 +19014,7 @@ Waypoints::set_waypoint_type(const QString & value)
 }
 
 void
-Waypoints::set_weather_station_types(const QStringList & value)
+C2cWaypoints::set_weather_station_types(const QStringList & value)
 {
   if (m_weather_station_types != value) {
     m_weather_station_types = value;
@@ -19029,7 +19029,7 @@ Waypoints::set_weather_station_types(const QStringList & value)
 }
 
 QJsonObject
-Waypoints::to_json(bool only_changed) const
+C2cWaypoints::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -19185,7 +19185,7 @@ Waypoints::to_json(bool only_changed) const
 }
 
 QVariantHash
-Waypoints::to_variant_hash(bool only_changed) const
+C2cWaypoints::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -19341,7 +19341,7 @@ Waypoints::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Waypoints::to_variant_list() const
+C2cWaypoints::to_variant_list() const
 {
   QVariantList variants;
 
@@ -19398,7 +19398,7 @@ Waypoints::to_variant_list() const
 }
 
 QVariantHash
-Waypoints::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cWaypoints::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -19555,7 +19555,7 @@ Waypoints::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Waypoints::to_variant_list_sql(bool duplicate) const
+C2cWaypoints::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -19613,7 +19613,7 @@ Waypoints::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Waypoints::field(int position) const
+C2cWaypoints::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -19718,7 +19718,7 @@ Waypoints::field(int position) const
 }
 
 void
-Waypoints::set_field(int position, const QVariant & value)
+C2cWaypoints::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -19917,20 +19917,20 @@ Waypoints::set_field(int position, const QVariant & value)
 }
 
 void
-Waypoints::set_insert_id(int id)
+C2cWaypoints::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Waypoints::can_update() const
+C2cWaypoints::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Waypoints::rowid_kwargs() const // To update row
+C2cWaypoints::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -19938,7 +19938,7 @@ Waypoints::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Waypoints & obj)
+operator<<(QDataStream & out, const C2cWaypoints & obj)
 {
   out << obj.document_id();
   out << obj.access_time();
@@ -19993,7 +19993,7 @@ operator<<(QDataStream & out, const Waypoints & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Waypoints & obj)
+operator>>(QDataStream & in, C2cWaypoints & obj)
 {
   QChar _QChar;
   QString _QString;
@@ -20102,12 +20102,12 @@ operator>>(QDataStream & in, Waypoints & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Waypoints & obj)
+operator<<(QDebug debug, const C2cWaypoints & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Waypoints(");
+  debug.nospace() << QLatin1Literal("C2cWaypoints(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.access_time();
@@ -20213,11 +20213,11 @@ operator<<(QDebug debug, const Waypoints & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const WaypointsPtr & obj)
+operator<<(QDebug debug, const C2cWaypointsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("WaypointsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cWaypointsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -20229,68 +20229,68 @@ operator<<(QDebug debug, const WaypointsPtr & obj)
 
 /**************************************************************************************************/
 
-WaypointsCache::WaypointsCache()
+C2cWaypointsCache::C2cWaypointsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-WaypointsCache::~WaypointsCache()
+C2cWaypointsCache::~C2cWaypointsCache()
 {}
 
 void
-WaypointsCache::add(WaypointsPtr & ptr)
+C2cWaypointsCache::add(C2cWaypointsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Waypoints::changed,
-                   this, &WaypointsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cWaypoints::changed,
+                   this, &C2cWaypointsCache::on_changed);
 }
 
 void
-WaypointsCache::remove(WaypointsPtr & ptr)
+C2cWaypointsCache::remove(C2cWaypointsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-WaypointsCache::on_changed()
+C2cWaypointsCache::on_changed()
 {
-  Waypoints * row = qobject_cast<Waypoints *>(QObject::sender());
+  C2cWaypoints * row = qobject_cast<C2cWaypoints *>(QObject::sender());
   qInfo() << "On changed" << row;
-  WaypointsPtr row_ptr = m_loaded_instances[row];
+  C2cWaypointsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-WaypointsModel::WaypointsModel()
+C2cWaypointsModel::C2cWaypointsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-WaypointsModel::WaypointsModel(const ItemList & items)
+C2cWaypointsModel::C2cWaypointsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-WaypointsModel::~WaypointsModel()
+C2cWaypointsModel::~C2cWaypointsModel()
 {}
 
 int
-WaypointsModel::rowCount(const QModelIndex & parent) const
+C2cWaypointsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-WaypointsModel::data(const QModelIndex & index, int role) const
+C2cWaypointsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "WaypointsModel: Index out of bound";
+    qWarning() << "C2cWaypointsModel: Index out of bound";
     return QVariant();
   }
 
@@ -20400,7 +20400,7 @@ WaypointsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-WaypointsModel::roleNames() const
+C2cWaypointsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -20457,7 +20457,7 @@ WaypointsModel::roleNames() const
 }
 
 void
-WaypointsModel::clear_items()
+C2cWaypointsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -20465,15 +20465,15 @@ WaypointsModel::clear_items()
 }
 
 void
-WaypointsModel::set_items(const ItemList & items)
+C2cWaypointsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-WaypointsLocalesSchema::WaypointsLocalesSchema()
-: QcSchema(QLatin1String("WaypointsLocales"), QLatin1String("waypoints_locales"))
+C2cWaypointsLocalesSchema::C2cWaypointsLocalesSchema()
+: QcSchema(QLatin1String("C2cWaypointsLocales"), QLatin1String("c2c_waypoints_locales"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -20514,80 +20514,80 @@ WaypointsLocalesSchema::WaypointsLocalesSchema()
   }
 }
 
-WaypointsLocalesSchema::~WaypointsLocalesSchema()
+C2cWaypointsLocalesSchema::~C2cWaypointsLocalesSchema()
 {}
 
 /**************************************************************************************************/
 
-WaypointsLocales::WaypointsLocales()
+C2cWaypointsLocales::C2cWaypointsLocales()
   : QObject(),
-    QcRow<WaypointsLocalesSchema>(),
+    QcRow<C2cWaypointsLocalesSchema>(),
     m_id(),
     m_access(),
     m_access_period()
 {
 }
 
-WaypointsLocales::WaypointsLocales(const WaypointsLocales & other)
+C2cWaypointsLocales::C2cWaypointsLocales(const C2cWaypointsLocales & other)
   : QObject(),
-    QcRow<WaypointsLocalesSchema>(other),
+    QcRow<C2cWaypointsLocalesSchema>(other),
     m_id(other.m_id),
     m_access(other.m_access),
     m_access_period(other.m_access_period)
 {
 }
 
-WaypointsLocales::WaypointsLocales(const QJsonObject & json_object)
- : WaypointsLocales()
+C2cWaypointsLocales::C2cWaypointsLocales(const QJsonObject & json_object)
+ : C2cWaypointsLocales()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_access = json_object[QLatin1String("access")].toString();
   m_access_period = json_object[QLatin1String("access_period")].toString();
 }
 
-WaypointsLocales::WaypointsLocales(const QVariantHash & variant_hash)
- : WaypointsLocales()
+C2cWaypointsLocales::C2cWaypointsLocales(const QVariantHash & variant_hash)
+ : C2cWaypointsLocales()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_access = variant_hash[QLatin1String("access")].toString();
   m_access_period = variant_hash[QLatin1String("access_period")].toString();
 }
 
-WaypointsLocales::WaypointsLocales(const QVariantList & variants)
- : WaypointsLocales()
+C2cWaypointsLocales::C2cWaypointsLocales(const QVariantList & variants)
+ : C2cWaypointsLocales()
 {
   m_id = variants[0].toInt();
   m_access = variants[1].toString();
   m_access_period = variants[2].toString();
 }
 
-WaypointsLocales::WaypointsLocales(const QSqlRecord & record)
- : QcRow<WaypointsLocalesSchema>(record)
+C2cWaypointsLocales::C2cWaypointsLocales(const QSqlRecord & record)
+ : QcRow<C2cWaypointsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_access = record.value(1).toString();
   m_access_period = record.value(2).toString();
 }
 
-WaypointsLocales::WaypointsLocales(const QSqlQuery & query, int offset)
- : QcRow<WaypointsLocalesSchema>(query)
+C2cWaypointsLocales::C2cWaypointsLocales(const QSqlQuery & query, int offset)
+ : QcRow<C2cWaypointsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_access = query.value(offset++).toString();
   m_access_period = query.value(offset).toString();
 }
 
-WaypointsLocales::~WaypointsLocales()
+C2cWaypointsLocales::~C2cWaypointsLocales()
 {
-// qInfo() << "--- Delete" << "WaypointsLocales" << *this;
+// qInfo() << "--- Delete" << "C2cWaypointsLocales" << *this;
 }
 
 // bit array ?
-WaypointsLocales &
-WaypointsLocales::operator=(const WaypointsLocales & other)
+C2cWaypointsLocales &
+C2cWaypointsLocales::operator=(const C2cWaypointsLocales & other)
 {
   if (this != &other) {
-    QcRow<WaypointsLocalesSchema>::operator=(other);
+    QcRow<C2cWaypointsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_access = other.m_access;
     m_access_period = other.m_access_period;
@@ -20598,9 +20598,9 @@ WaypointsLocales::operator=(const WaypointsLocales & other)
 
 // bit array ?
 bool
-WaypointsLocales::operator==(const WaypointsLocales & other) const
+C2cWaypointsLocales::operator==(const C2cWaypointsLocales & other) const
 {
-  if (not QcRow<WaypointsLocalesSchema>::operator==(other))
+  if (not QcRow<C2cWaypointsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -20613,7 +20613,7 @@ WaypointsLocales::operator==(const WaypointsLocales & other) const
 }
 
 void
-WaypointsLocales::set_id(int value)
+C2cWaypointsLocales::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -20628,7 +20628,7 @@ WaypointsLocales::set_id(int value)
 }
 
 void
-WaypointsLocales::set_access(const QString & value)
+C2cWaypointsLocales::set_access(const QString & value)
 {
   if (m_access != value) {
     m_access = value;
@@ -20643,7 +20643,7 @@ WaypointsLocales::set_access(const QString & value)
 }
 
 void
-WaypointsLocales::set_access_period(const QString & value)
+C2cWaypointsLocales::set_access_period(const QString & value)
 {
   if (m_access_period != value) {
     m_access_period = value;
@@ -20658,7 +20658,7 @@ WaypointsLocales::set_access_period(const QString & value)
 }
 
 QJsonObject
-WaypointsLocales::to_json(bool only_changed) const
+C2cWaypointsLocales::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -20679,7 +20679,7 @@ WaypointsLocales::to_json(bool only_changed) const
 }
 
 QVariantHash
-WaypointsLocales::to_variant_hash(bool only_changed) const
+C2cWaypointsLocales::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -20700,7 +20700,7 @@ WaypointsLocales::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-WaypointsLocales::to_variant_list() const
+C2cWaypointsLocales::to_variant_list() const
 {
   QVariantList variants;
 
@@ -20712,7 +20712,7 @@ WaypointsLocales::to_variant_list() const
 }
 
 QVariantHash
-WaypointsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cWaypointsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -20734,7 +20734,7 @@ WaypointsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-WaypointsLocales::to_variant_list_sql(bool duplicate) const
+C2cWaypointsLocales::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -20747,7 +20747,7 @@ WaypointsLocales::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-WaypointsLocales::field(int position) const
+C2cWaypointsLocales::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -20762,7 +20762,7 @@ WaypointsLocales::field(int position) const
 }
 
 void
-WaypointsLocales::set_field(int position, const QVariant & value)
+C2cWaypointsLocales::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -20781,20 +20781,20 @@ WaypointsLocales::set_field(int position, const QVariant & value)
 }
 
 void
-WaypointsLocales::set_insert_id(int id)
+C2cWaypointsLocales::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-WaypointsLocales::can_update() const
+C2cWaypointsLocales::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-WaypointsLocales::rowid_kwargs() const // To update row
+C2cWaypointsLocales::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -20802,7 +20802,7 @@ WaypointsLocales::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const WaypointsLocales & obj)
+operator<<(QDataStream & out, const C2cWaypointsLocales & obj)
 {
   out << obj.id();
   out << obj.access();
@@ -20812,7 +20812,7 @@ operator<<(QDataStream & out, const WaypointsLocales & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, WaypointsLocales & obj)
+operator>>(QDataStream & in, C2cWaypointsLocales & obj)
 {
   QString _QString;
   int _int;
@@ -20828,12 +20828,12 @@ operator>>(QDataStream & in, WaypointsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const WaypointsLocales & obj)
+operator<<(QDebug debug, const C2cWaypointsLocales & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("WaypointsLocales(");
+  debug.nospace() << QLatin1Literal("C2cWaypointsLocales(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.access();
@@ -20849,11 +20849,11 @@ operator<<(QDebug debug, const WaypointsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const WaypointsLocalesPtr & obj)
+operator<<(QDebug debug, const C2cWaypointsLocalesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("WaypointsLocalesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cWaypointsLocalesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -20865,68 +20865,68 @@ operator<<(QDebug debug, const WaypointsLocalesPtr & obj)
 
 /**************************************************************************************************/
 
-WaypointsLocalesCache::WaypointsLocalesCache()
+C2cWaypointsLocalesCache::C2cWaypointsLocalesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-WaypointsLocalesCache::~WaypointsLocalesCache()
+C2cWaypointsLocalesCache::~C2cWaypointsLocalesCache()
 {}
 
 void
-WaypointsLocalesCache::add(WaypointsLocalesPtr & ptr)
+C2cWaypointsLocalesCache::add(C2cWaypointsLocalesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &WaypointsLocales::changed,
-                   this, &WaypointsLocalesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cWaypointsLocales::changed,
+                   this, &C2cWaypointsLocalesCache::on_changed);
 }
 
 void
-WaypointsLocalesCache::remove(WaypointsLocalesPtr & ptr)
+C2cWaypointsLocalesCache::remove(C2cWaypointsLocalesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-WaypointsLocalesCache::on_changed()
+C2cWaypointsLocalesCache::on_changed()
 {
-  WaypointsLocales * row = qobject_cast<WaypointsLocales *>(QObject::sender());
+  C2cWaypointsLocales * row = qobject_cast<C2cWaypointsLocales *>(QObject::sender());
   qInfo() << "On changed" << row;
-  WaypointsLocalesPtr row_ptr = m_loaded_instances[row];
+  C2cWaypointsLocalesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-WaypointsLocalesModel::WaypointsLocalesModel()
+C2cWaypointsLocalesModel::C2cWaypointsLocalesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-WaypointsLocalesModel::WaypointsLocalesModel(const ItemList & items)
+C2cWaypointsLocalesModel::C2cWaypointsLocalesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-WaypointsLocalesModel::~WaypointsLocalesModel()
+C2cWaypointsLocalesModel::~C2cWaypointsLocalesModel()
 {}
 
 int
-WaypointsLocalesModel::rowCount(const QModelIndex & parent) const
+C2cWaypointsLocalesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-WaypointsLocalesModel::data(const QModelIndex & index, int role) const
+C2cWaypointsLocalesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "WaypointsLocalesModel: Index out of bound";
+    qWarning() << "C2cWaypointsLocalesModel: Index out of bound";
     return QVariant();
   }
 
@@ -20946,7 +20946,7 @@ WaypointsLocalesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-WaypointsLocalesModel::roleNames() const
+C2cWaypointsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -20958,7 +20958,7 @@ WaypointsLocalesModel::roleNames() const
 }
 
 void
-WaypointsLocalesModel::clear_items()
+C2cWaypointsLocalesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -20966,15 +20966,15 @@ WaypointsLocalesModel::clear_items()
 }
 
 void
-WaypointsLocalesModel::set_items(const ItemList & items)
+C2cWaypointsLocalesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-XreportsSchema::XreportsSchema()
-: QcSchema(QLatin1String("Xreports"), QLatin1String("xreports"))
+C2cXreportsSchema::C2cXreportsSchema()
+: QcSchema(QLatin1String("C2cXreports"), QLatin1String("c2c_xreports"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -21208,14 +21208,14 @@ XreportsSchema::XreportsSchema()
   }
 }
 
-XreportsSchema::~XreportsSchema()
+C2cXreportsSchema::~C2cXreportsSchema()
 {}
 
 /**************************************************************************************************/
 
-Xreports::Xreports()
+C2cXreports::C2cXreports()
   : QObject(),
-    QcRow<XreportsSchema>(),
+    QcRow<C2cXreportsSchema>(),
     m_document_id(),
     m_activities(),
     m_activity_rate(),
@@ -21238,9 +21238,9 @@ Xreports::Xreports()
 {
 }
 
-Xreports::Xreports(const Xreports & other)
+C2cXreports::C2cXreports(const C2cXreports & other)
   : QObject(),
-    QcRow<XreportsSchema>(other),
+    QcRow<C2cXreportsSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_activity_rate(other.m_activity_rate),
@@ -21263,8 +21263,8 @@ Xreports::Xreports(const Xreports & other)
 {
 }
 
-Xreports::Xreports(const QJsonObject & json_object)
- : Xreports()
+C2cXreports::C2cXreports(const QJsonObject & json_object)
+ : C2cXreports()
 {
   m_document_id = json_object[QLatin1String("document_id")].toInt();
   m_activities = orm_type_conversion::load_string_list(json_object[QLatin1String("activities")]);
@@ -21287,8 +21287,8 @@ Xreports::Xreports(const QJsonObject & json_object)
   m_severity = json_object[QLatin1String("severity")].toString();
 }
 
-Xreports::Xreports(const QVariantHash & variant_hash)
- : Xreports()
+C2cXreports::C2cXreports(const QVariantHash & variant_hash)
+ : C2cXreports()
 {
   m_document_id = variant_hash[QLatin1String("document_id")].toInt();
   m_activities = variant_hash[QLatin1String("activities")].toStringList();
@@ -21311,8 +21311,8 @@ Xreports::Xreports(const QVariantHash & variant_hash)
   m_severity = variant_hash[QLatin1String("severity")].toString();
 }
 
-Xreports::Xreports(const QVariantList & variants)
- : Xreports()
+C2cXreports::C2cXreports(const QVariantList & variants)
+ : C2cXreports()
 {
   m_document_id = variants[0].toInt();
   m_activities = variants[1].toStringList();
@@ -21335,8 +21335,8 @@ Xreports::Xreports(const QVariantList & variants)
   m_severity = variants[18].toString();
 }
 
-Xreports::Xreports(const QSqlRecord & record)
- : QcRow<XreportsSchema>(record)
+C2cXreports::C2cXreports(const QSqlRecord & record)
+ : QcRow<C2cXreportsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -21359,8 +21359,8 @@ Xreports::Xreports(const QSqlRecord & record)
   m_severity = record.value(18).toString();
 }
 
-Xreports::Xreports(const QSqlQuery & query, int offset)
- : QcRow<XreportsSchema>(query)
+C2cXreports::C2cXreports(const QSqlQuery & query, int offset)
+ : QcRow<C2cXreportsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -21383,17 +21383,17 @@ Xreports::Xreports(const QSqlQuery & query, int offset)
   m_severity = query.value(offset).toString();
 }
 
-Xreports::~Xreports()
+C2cXreports::~C2cXreports()
 {
-// qInfo() << "--- Delete" << "Xreports" << *this;
+// qInfo() << "--- Delete" << "C2cXreports" << *this;
 }
 
 // bit array ?
-Xreports &
-Xreports::operator=(const Xreports & other)
+C2cXreports &
+C2cXreports::operator=(const C2cXreports & other)
 {
   if (this != &other) {
-    QcRow<XreportsSchema>::operator=(other);
+    QcRow<C2cXreportsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_activity_rate = other.m_activity_rate;
@@ -21420,9 +21420,9 @@ Xreports::operator=(const Xreports & other)
 
 // bit array ?
 bool
-Xreports::operator==(const Xreports & other) const
+C2cXreports::operator==(const C2cXreports & other) const
 {
-  if (not QcRow<XreportsSchema>::operator==(other))
+  if (not QcRow<C2cXreportsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -21467,7 +21467,7 @@ Xreports::operator==(const Xreports & other) const
 }
 
 void
-Xreports::set_document_id(int value)
+C2cXreports::set_document_id(int value)
 {
   if (m_document_id != value) {
     m_document_id = value;
@@ -21482,7 +21482,7 @@ Xreports::set_document_id(int value)
 }
 
 void
-Xreports::set_activities(const QStringList & value)
+C2cXreports::set_activities(const QStringList & value)
 {
   if (m_activities != value) {
     m_activities = value;
@@ -21497,7 +21497,7 @@ Xreports::set_activities(const QStringList & value)
 }
 
 void
-Xreports::set_activity_rate(const QString & value)
+C2cXreports::set_activity_rate(const QString & value)
 {
   if (m_activity_rate != value) {
     m_activity_rate = value;
@@ -21512,7 +21512,7 @@ Xreports::set_activity_rate(const QString & value)
 }
 
 void
-Xreports::set_age(int value)
+C2cXreports::set_age(int value)
 {
   if (m_age != value) {
     m_age = value;
@@ -21527,7 +21527,7 @@ Xreports::set_age(int value)
 }
 
 void
-Xreports::set_author_status(const QString & value)
+C2cXreports::set_author_status(const QString & value)
 {
   if (m_author_status != value) {
     m_author_status = value;
@@ -21542,7 +21542,7 @@ Xreports::set_author_status(const QString & value)
 }
 
 void
-Xreports::set_autonomy(const QString & value)
+C2cXreports::set_autonomy(const QString & value)
 {
   if (m_autonomy != value) {
     m_autonomy = value;
@@ -21557,7 +21557,7 @@ Xreports::set_autonomy(const QString & value)
 }
 
 void
-Xreports::set_avalanche_level(const QString & value)
+C2cXreports::set_avalanche_level(const QString & value)
 {
   if (m_avalanche_level != value) {
     m_avalanche_level = value;
@@ -21572,7 +21572,7 @@ Xreports::set_avalanche_level(const QString & value)
 }
 
 void
-Xreports::set_avalanche_slope(const QString & value)
+C2cXreports::set_avalanche_slope(const QString & value)
 {
   if (m_avalanche_slope != value) {
     m_avalanche_slope = value;
@@ -21587,7 +21587,7 @@ Xreports::set_avalanche_slope(const QString & value)
 }
 
 void
-Xreports::set_date(const QDate & value)
+C2cXreports::set_date(const QDate & value)
 {
   if (m_date != value) {
     m_date = value;
@@ -21602,7 +21602,7 @@ Xreports::set_date(const QDate & value)
 }
 
 void
-Xreports::set_disable_comments(bool value)
+C2cXreports::set_disable_comments(bool value)
 {
   if (m_disable_comments != value) {
     m_disable_comments = value;
@@ -21617,7 +21617,7 @@ Xreports::set_disable_comments(bool value)
 }
 
 void
-Xreports::set_elevation(int value)
+C2cXreports::set_elevation(int value)
 {
   if (m_elevation != value) {
     m_elevation = value;
@@ -21632,7 +21632,7 @@ Xreports::set_elevation(int value)
 }
 
 void
-Xreports::set_event_type(const QStringList & value)
+C2cXreports::set_event_type(const QStringList & value)
 {
   if (m_event_type != value) {
     m_event_type = value;
@@ -21647,7 +21647,7 @@ Xreports::set_event_type(const QStringList & value)
 }
 
 void
-Xreports::set_gender(const QString & value)
+C2cXreports::set_gender(const QString & value)
 {
   if (m_gender != value) {
     m_gender = value;
@@ -21662,7 +21662,7 @@ Xreports::set_gender(const QString & value)
 }
 
 void
-Xreports::set_nb_impacted(int value)
+C2cXreports::set_nb_impacted(int value)
 {
   if (m_nb_impacted != value) {
     m_nb_impacted = value;
@@ -21677,7 +21677,7 @@ Xreports::set_nb_impacted(int value)
 }
 
 void
-Xreports::set_nb_outings(const QString & value)
+C2cXreports::set_nb_outings(const QString & value)
 {
   if (m_nb_outings != value) {
     m_nb_outings = value;
@@ -21692,7 +21692,7 @@ Xreports::set_nb_outings(const QString & value)
 }
 
 void
-Xreports::set_nb_participants(int value)
+C2cXreports::set_nb_participants(int value)
 {
   if (m_nb_participants != value) {
     m_nb_participants = value;
@@ -21707,7 +21707,7 @@ Xreports::set_nb_participants(int value)
 }
 
 void
-Xreports::set_previous_injuries(const QString & value)
+C2cXreports::set_previous_injuries(const QString & value)
 {
   if (m_previous_injuries != value) {
     m_previous_injuries = value;
@@ -21722,7 +21722,7 @@ Xreports::set_previous_injuries(const QString & value)
 }
 
 void
-Xreports::set_rescue(bool value)
+C2cXreports::set_rescue(bool value)
 {
   if (m_rescue != value) {
     m_rescue = value;
@@ -21737,7 +21737,7 @@ Xreports::set_rescue(bool value)
 }
 
 void
-Xreports::set_severity(const QString & value)
+C2cXreports::set_severity(const QString & value)
 {
   if (m_severity != value) {
     m_severity = value;
@@ -21752,7 +21752,7 @@ Xreports::set_severity(const QString & value)
 }
 
 QJsonObject
-Xreports::to_json(bool only_changed) const
+C2cXreports::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -21821,7 +21821,7 @@ Xreports::to_json(bool only_changed) const
 }
 
 QVariantHash
-Xreports::to_variant_hash(bool only_changed) const
+C2cXreports::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -21890,7 +21890,7 @@ Xreports::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-Xreports::to_variant_list() const
+C2cXreports::to_variant_list() const
 {
   QVariantList variants;
 
@@ -21918,7 +21918,7 @@ Xreports::to_variant_list() const
 }
 
 QVariantHash
-Xreports::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cXreports::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -21988,7 +21988,7 @@ Xreports::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-Xreports::to_variant_list_sql(bool duplicate) const
+C2cXreports::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -22017,7 +22017,7 @@ Xreports::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-Xreports::field(int position) const
+C2cXreports::field(int position) const
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID:
@@ -22064,7 +22064,7 @@ Xreports::field(int position) const
 }
 
 void
-Xreports::set_field(int position, const QVariant & value)
+C2cXreports::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::DOCUMENT_ID: {
@@ -22147,20 +22147,20 @@ Xreports::set_field(int position, const QVariant & value)
 }
 
 void
-Xreports::set_insert_id(int id)
+C2cXreports::set_insert_id(int id)
 {
   set_document_id(id);
 
 }
 
 bool
-Xreports::can_update() const
+C2cXreports::can_update() const
 {
   return m_document_id > 0;
 }
 
 QVariantHash
-Xreports::rowid_kwargs() const // To update row
+C2cXreports::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("document_id")] = m_document_id;
@@ -22168,7 +22168,7 @@ Xreports::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const Xreports & obj)
+operator<<(QDataStream & out, const C2cXreports & obj)
 {
   out << obj.document_id();
   out << obj.activities();
@@ -22194,7 +22194,7 @@ operator<<(QDataStream & out, const Xreports & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, Xreports & obj)
+operator>>(QDataStream & in, C2cXreports & obj)
 {
   QDate _QDate;
   QString _QString;
@@ -22245,12 +22245,12 @@ operator>>(QDataStream & in, Xreports & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const Xreports & obj)
+operator<<(QDebug debug, const C2cXreports & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Xreports(");
+  debug.nospace() << QLatin1Literal("C2cXreports(");
   debug << obj.document_id();
   debug << QLatin1Literal(", ");
   debug << obj.activities();
@@ -22298,11 +22298,11 @@ operator<<(QDebug debug, const Xreports & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const XreportsPtr & obj)
+operator<<(QDebug debug, const C2cXreportsPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("XreportsPtr ->");
+  debug.noquote() << QLatin1Literal("C2cXreportsPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -22314,68 +22314,68 @@ operator<<(QDebug debug, const XreportsPtr & obj)
 
 /**************************************************************************************************/
 
-XreportsCache::XreportsCache()
+C2cXreportsCache::C2cXreportsCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-XreportsCache::~XreportsCache()
+C2cXreportsCache::~C2cXreportsCache()
 {}
 
 void
-XreportsCache::add(XreportsPtr & ptr)
+C2cXreportsCache::add(C2cXreportsPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &Xreports::changed,
-                   this, &XreportsCache::on_changed);
+  QObject::connect(ptr.data(), &C2cXreports::changed,
+                   this, &C2cXreportsCache::on_changed);
 }
 
 void
-XreportsCache::remove(XreportsPtr & ptr)
+C2cXreportsCache::remove(C2cXreportsPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-XreportsCache::on_changed()
+C2cXreportsCache::on_changed()
 {
-  Xreports * row = qobject_cast<Xreports *>(QObject::sender());
+  C2cXreports * row = qobject_cast<C2cXreports *>(QObject::sender());
   qInfo() << "On changed" << row;
-  XreportsPtr row_ptr = m_loaded_instances[row];
+  C2cXreportsPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-XreportsModel::XreportsModel()
+C2cXreportsModel::C2cXreportsModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-XreportsModel::XreportsModel(const ItemList & items)
+C2cXreportsModel::C2cXreportsModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-XreportsModel::~XreportsModel()
+C2cXreportsModel::~C2cXreportsModel()
 {}
 
 int
-XreportsModel::rowCount(const QModelIndex & parent) const
+C2cXreportsModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-XreportsModel::data(const QModelIndex & index, int role) const
+C2cXreportsModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "XreportsModel: Index out of bound";
+    qWarning() << "C2cXreportsModel: Index out of bound";
     return QVariant();
   }
 
@@ -22427,7 +22427,7 @@ XreportsModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-XreportsModel::roleNames() const
+C2cXreportsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -22455,7 +22455,7 @@ XreportsModel::roleNames() const
 }
 
 void
-XreportsModel::clear_items()
+C2cXreportsModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -22463,15 +22463,15 @@ XreportsModel::clear_items()
 }
 
 void
-XreportsModel::set_items(const ItemList & items)
+C2cXreportsModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
 
-XreportsLocalesSchema::XreportsLocalesSchema()
-: QcSchema(QLatin1String("XreportsLocales"), QLatin1String("xreports_locales"))
+C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
+: QcSchema(QLatin1String("C2cXreportsLocales"), QLatin1String("c2c_xreports_locales"))
 {
   {
     QcSchemaPrimaryKey field(
@@ -22644,14 +22644,14 @@ XreportsLocalesSchema::XreportsLocalesSchema()
   }
 }
 
-XreportsLocalesSchema::~XreportsLocalesSchema()
+C2cXreportsLocalesSchema::~C2cXreportsLocalesSchema()
 {}
 
 /**************************************************************************************************/
 
-XreportsLocales::XreportsLocales()
+C2cXreportsLocales::C2cXreportsLocales()
   : QObject(),
-    QcRow<XreportsLocalesSchema>(),
+    QcRow<C2cXreportsLocalesSchema>(),
     m_id(),
     m_conditions(),
     m_group_management(),
@@ -22669,9 +22669,9 @@ XreportsLocales::XreportsLocales()
 {
 }
 
-XreportsLocales::XreportsLocales(const XreportsLocales & other)
+C2cXreportsLocales::C2cXreportsLocales(const C2cXreportsLocales & other)
   : QObject(),
-    QcRow<XreportsLocalesSchema>(other),
+    QcRow<C2cXreportsLocalesSchema>(other),
     m_id(other.m_id),
     m_conditions(other.m_conditions),
     m_group_management(other.m_group_management),
@@ -22689,8 +22689,8 @@ XreportsLocales::XreportsLocales(const XreportsLocales & other)
 {
 }
 
-XreportsLocales::XreportsLocales(const QJsonObject & json_object)
- : XreportsLocales()
+C2cXreportsLocales::C2cXreportsLocales(const QJsonObject & json_object)
+ : C2cXreportsLocales()
 {
   m_id = json_object[QLatin1String("id")].toInt();
   m_conditions = json_object[QLatin1String("conditions")].toString();
@@ -22708,8 +22708,8 @@ XreportsLocales::XreportsLocales(const QJsonObject & json_object)
   m_training = json_object[QLatin1String("training")].toString();
 }
 
-XreportsLocales::XreportsLocales(const QVariantHash & variant_hash)
- : XreportsLocales()
+C2cXreportsLocales::C2cXreportsLocales(const QVariantHash & variant_hash)
+ : C2cXreportsLocales()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
   m_conditions = variant_hash[QLatin1String("conditions")].toString();
@@ -22727,8 +22727,8 @@ XreportsLocales::XreportsLocales(const QVariantHash & variant_hash)
   m_training = variant_hash[QLatin1String("training")].toString();
 }
 
-XreportsLocales::XreportsLocales(const QVariantList & variants)
- : XreportsLocales()
+C2cXreportsLocales::C2cXreportsLocales(const QVariantList & variants)
+ : C2cXreportsLocales()
 {
   m_id = variants[0].toInt();
   m_conditions = variants[1].toString();
@@ -22746,8 +22746,8 @@ XreportsLocales::XreportsLocales(const QVariantList & variants)
   m_training = variants[13].toString();
 }
 
-XreportsLocales::XreportsLocales(const QSqlRecord & record)
- : QcRow<XreportsLocalesSchema>(record)
+C2cXreportsLocales::C2cXreportsLocales(const QSqlRecord & record)
+ : QcRow<C2cXreportsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_conditions = record.value(1).toString();
@@ -22765,8 +22765,8 @@ XreportsLocales::XreportsLocales(const QSqlRecord & record)
   m_training = record.value(13).toString();
 }
 
-XreportsLocales::XreportsLocales(const QSqlQuery & query, int offset)
- : QcRow<XreportsLocalesSchema>(query)
+C2cXreportsLocales::C2cXreportsLocales(const QSqlQuery & query, int offset)
+ : QcRow<C2cXreportsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_conditions = query.value(offset++).toString();
@@ -22784,17 +22784,17 @@ XreportsLocales::XreportsLocales(const QSqlQuery & query, int offset)
   m_training = query.value(offset).toString();
 }
 
-XreportsLocales::~XreportsLocales()
+C2cXreportsLocales::~C2cXreportsLocales()
 {
-// qInfo() << "--- Delete" << "XreportsLocales" << *this;
+// qInfo() << "--- Delete" << "C2cXreportsLocales" << *this;
 }
 
 // bit array ?
-XreportsLocales &
-XreportsLocales::operator=(const XreportsLocales & other)
+C2cXreportsLocales &
+C2cXreportsLocales::operator=(const C2cXreportsLocales & other)
 {
   if (this != &other) {
-    QcRow<XreportsLocalesSchema>::operator=(other);
+    QcRow<C2cXreportsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_conditions = other.m_conditions;
     m_group_management = other.m_group_management;
@@ -22816,9 +22816,9 @@ XreportsLocales::operator=(const XreportsLocales & other)
 
 // bit array ?
 bool
-XreportsLocales::operator==(const XreportsLocales & other) const
+C2cXreportsLocales::operator==(const C2cXreportsLocales & other) const
 {
-  if (not QcRow<XreportsLocalesSchema>::operator==(other))
+  if (not QcRow<C2cXreportsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -22853,7 +22853,7 @@ XreportsLocales::operator==(const XreportsLocales & other) const
 }
 
 void
-XreportsLocales::set_id(int value)
+C2cXreportsLocales::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;
@@ -22868,7 +22868,7 @@ XreportsLocales::set_id(int value)
 }
 
 void
-XreportsLocales::set_conditions(const QString & value)
+C2cXreportsLocales::set_conditions(const QString & value)
 {
   if (m_conditions != value) {
     m_conditions = value;
@@ -22883,7 +22883,7 @@ XreportsLocales::set_conditions(const QString & value)
 }
 
 void
-XreportsLocales::set_group_management(const QString & value)
+C2cXreportsLocales::set_group_management(const QString & value)
 {
   if (m_group_management != value) {
     m_group_management = value;
@@ -22898,7 +22898,7 @@ XreportsLocales::set_group_management(const QString & value)
 }
 
 void
-XreportsLocales::set_increase_impact(const QString & value)
+C2cXreportsLocales::set_increase_impact(const QString & value)
 {
   if (m_increase_impact != value) {
     m_increase_impact = value;
@@ -22913,7 +22913,7 @@ XreportsLocales::set_increase_impact(const QString & value)
 }
 
 void
-XreportsLocales::set_modifications(const QString & value)
+C2cXreportsLocales::set_modifications(const QString & value)
 {
   if (m_modifications != value) {
     m_modifications = value;
@@ -22928,7 +22928,7 @@ XreportsLocales::set_modifications(const QString & value)
 }
 
 void
-XreportsLocales::set_motivations(const QString & value)
+C2cXreportsLocales::set_motivations(const QString & value)
 {
   if (m_motivations != value) {
     m_motivations = value;
@@ -22943,7 +22943,7 @@ XreportsLocales::set_motivations(const QString & value)
 }
 
 void
-XreportsLocales::set_other_comments(const QString & value)
+C2cXreportsLocales::set_other_comments(const QString & value)
 {
   if (m_other_comments != value) {
     m_other_comments = value;
@@ -22958,7 +22958,7 @@ XreportsLocales::set_other_comments(const QString & value)
 }
 
 void
-XreportsLocales::set_place(const QString & value)
+C2cXreportsLocales::set_place(const QString & value)
 {
   if (m_place != value) {
     m_place = value;
@@ -22973,7 +22973,7 @@ XreportsLocales::set_place(const QString & value)
 }
 
 void
-XreportsLocales::set_reduce_impact(const QString & value)
+C2cXreportsLocales::set_reduce_impact(const QString & value)
 {
   if (m_reduce_impact != value) {
     m_reduce_impact = value;
@@ -22988,7 +22988,7 @@ XreportsLocales::set_reduce_impact(const QString & value)
 }
 
 void
-XreportsLocales::set_risk(const QString & value)
+C2cXreportsLocales::set_risk(const QString & value)
 {
   if (m_risk != value) {
     m_risk = value;
@@ -23003,7 +23003,7 @@ XreportsLocales::set_risk(const QString & value)
 }
 
 void
-XreportsLocales::set_route_study(const QString & value)
+C2cXreportsLocales::set_route_study(const QString & value)
 {
   if (m_route_study != value) {
     m_route_study = value;
@@ -23018,7 +23018,7 @@ XreportsLocales::set_route_study(const QString & value)
 }
 
 void
-XreportsLocales::set_safety(const QString & value)
+C2cXreportsLocales::set_safety(const QString & value)
 {
   if (m_safety != value) {
     m_safety = value;
@@ -23033,7 +23033,7 @@ XreportsLocales::set_safety(const QString & value)
 }
 
 void
-XreportsLocales::set_time_management(const QString & value)
+C2cXreportsLocales::set_time_management(const QString & value)
 {
   if (m_time_management != value) {
     m_time_management = value;
@@ -23048,7 +23048,7 @@ XreportsLocales::set_time_management(const QString & value)
 }
 
 void
-XreportsLocales::set_training(const QString & value)
+C2cXreportsLocales::set_training(const QString & value)
 {
   if (m_training != value) {
     m_training = value;
@@ -23063,7 +23063,7 @@ XreportsLocales::set_training(const QString & value)
 }
 
 QJsonObject
-XreportsLocales::to_json(bool only_changed) const
+C2cXreportsLocales::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
@@ -23117,7 +23117,7 @@ XreportsLocales::to_json(bool only_changed) const
 }
 
 QVariantHash
-XreportsLocales::to_variant_hash(bool only_changed) const
+C2cXreportsLocales::to_variant_hash(bool only_changed) const
 {
   QVariantHash variant_hash;
 
@@ -23171,7 +23171,7 @@ XreportsLocales::to_variant_hash(bool only_changed) const
 }
 
 QVariantList
-XreportsLocales::to_variant_list() const
+C2cXreportsLocales::to_variant_list() const
 {
   QVariantList variants;
 
@@ -23194,7 +23194,7 @@ XreportsLocales::to_variant_list() const
 }
 
 QVariantHash
-XreportsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
+C2cXreportsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 {
   QVariantHash variant_hash;
 
@@ -23249,7 +23249,7 @@ XreportsLocales::to_variant_hash_sql(bool only_changed, bool duplicate) const
 }
 
 QVariantList
-XreportsLocales::to_variant_list_sql(bool duplicate) const
+C2cXreportsLocales::to_variant_list_sql(bool duplicate) const
 {
   QVariantList variants;
 
@@ -23273,7 +23273,7 @@ XreportsLocales::to_variant_list_sql(bool duplicate) const
 }
 
 QVariant
-XreportsLocales::field(int position) const
+C2cXreportsLocales::field(int position) const
 {
   switch(position) {
    case Schema::Fields::ID:
@@ -23310,7 +23310,7 @@ XreportsLocales::field(int position) const
 }
 
 void
-XreportsLocales::set_field(int position, const QVariant & value)
+C2cXreportsLocales::set_field(int position, const QVariant & value)
 {
   switch(position) {
    case Schema::Fields::ID: {
@@ -23373,20 +23373,20 @@ XreportsLocales::set_field(int position, const QVariant & value)
 }
 
 void
-XreportsLocales::set_insert_id(int id)
+C2cXreportsLocales::set_insert_id(int id)
 {
   set_id(id);
 
 }
 
 bool
-XreportsLocales::can_update() const
+C2cXreportsLocales::can_update() const
 {
   return m_id > 0;
 }
 
 QVariantHash
-XreportsLocales::rowid_kwargs() const // To update row
+C2cXreportsLocales::rowid_kwargs() const // To update row
 {
   QVariantHash where_kwargs;
   where_kwargs[QLatin1String("id")] = m_id;
@@ -23394,7 +23394,7 @@ XreportsLocales::rowid_kwargs() const // To update row
 }
 
 QDataStream &
-operator<<(QDataStream & out, const XreportsLocales & obj)
+operator<<(QDataStream & out, const C2cXreportsLocales & obj)
 {
   out << obj.id();
   out << obj.conditions();
@@ -23415,7 +23415,7 @@ operator<<(QDataStream & out, const XreportsLocales & obj)
 }
 
 QDataStream &
-operator>>(QDataStream & in, XreportsLocales & obj)
+operator>>(QDataStream & in, C2cXreportsLocales & obj)
 {
   QString _QString;
   int _int;
@@ -23453,12 +23453,12 @@ operator>>(QDataStream & in, XreportsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const XreportsLocales & obj)
+operator<<(QDebug debug, const C2cXreportsLocales & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("XreportsLocales(");
+  debug.nospace() << QLatin1Literal("C2cXreportsLocales(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
   debug << obj.conditions();
@@ -23496,11 +23496,11 @@ operator<<(QDebug debug, const XreportsLocales & obj)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const XreportsLocalesPtr & obj)
+operator<<(QDebug debug, const C2cXreportsLocalesPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("XreportsLocalesPtr ->");
+  debug.noquote() << QLatin1Literal("C2cXreportsLocalesPtr ->");
   if (obj)
     debug << *obj;
    else
@@ -23512,68 +23512,68 @@ operator<<(QDebug debug, const XreportsLocalesPtr & obj)
 
 /**************************************************************************************************/
 
-XreportsLocalesCache::XreportsLocalesCache()
+C2cXreportsLocalesCache::C2cXreportsLocalesCache()
  : m_loaded_instances(),
    m_modified_instances()
 {}
 
-XreportsLocalesCache::~XreportsLocalesCache()
+C2cXreportsLocalesCache::~C2cXreportsLocalesCache()
 {}
 
 void
-XreportsLocalesCache::add(XreportsLocalesPtr & ptr)
+C2cXreportsLocalesCache::add(C2cXreportsLocalesPtr & ptr)
 {
   m_loaded_instances.insert(ptr.data(), ptr);
-  QObject::connect(ptr.data(), &XreportsLocales::changed,
-                   this, &XreportsLocalesCache::on_changed);
+  QObject::connect(ptr.data(), &C2cXreportsLocales::changed,
+                   this, &C2cXreportsLocalesCache::on_changed);
 }
 
 void
-XreportsLocalesCache::remove(XreportsLocalesPtr & ptr)
+C2cXreportsLocalesCache::remove(C2cXreportsLocalesPtr & ptr)
 {
   Q_UNUSED(ptr);
 }
 
 void
-XreportsLocalesCache::on_changed()
+C2cXreportsLocalesCache::on_changed()
 {
-  XreportsLocales * row = qobject_cast<XreportsLocales *>(QObject::sender());
+  C2cXreportsLocales * row = qobject_cast<C2cXreportsLocales *>(QObject::sender());
   qInfo() << "On changed" << row;
-  XreportsLocalesPtr row_ptr = m_loaded_instances[row];
+  C2cXreportsLocalesPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
 }
 
 /**************************************************************************************************/
 
-XreportsLocalesModel::XreportsLocalesModel()
+C2cXreportsLocalesModel::C2cXreportsLocalesModel()
   : QAbstractListModel(),
     m_items()
 {}
 
-XreportsLocalesModel::XreportsLocalesModel(const ItemList & items)
+C2cXreportsLocalesModel::C2cXreportsLocalesModel(const ItemList & items)
   : QAbstractListModel(),
     m_items(items)
 {}
 
-XreportsLocalesModel::~XreportsLocalesModel()
+C2cXreportsLocalesModel::~C2cXreportsLocalesModel()
 {}
 
 int
-XreportsLocalesModel::rowCount(const QModelIndex & parent) const
+C2cXreportsLocalesModel::rowCount(const QModelIndex & parent) const
 {
   Q_UNUSED(parent);
   return m_items.size();
 }
 
 QVariant
-XreportsLocalesModel::data(const QModelIndex & index, int role) const
+C2cXreportsLocalesModel::data(const QModelIndex & index, int role) const
 {
   if (!index.isValid() || index.row() < 0)
     return QVariant();
 
   if (index.row() >= m_items.count()) {
-    qWarning() << "XreportsLocalesModel: Index out of bound";
+    qWarning() << "C2cXreportsLocalesModel: Index out of bound";
     return QVariant();
   }
 
@@ -23615,7 +23615,7 @@ XreportsLocalesModel::data(const QModelIndex & index, int role) const
 }
 
 QHash<int, QByteArray>
-XreportsLocalesModel::roleNames() const
+C2cXreportsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
@@ -23638,7 +23638,7 @@ XreportsLocalesModel::roleNames() const
 }
 
 void
-XreportsLocalesModel::clear_items()
+C2cXreportsLocalesModel::clear_items()
 {
   beginResetModel();
   m_items.clear();
@@ -23646,249 +23646,249 @@ XreportsLocalesModel::clear_items()
 }
 
 void
-XreportsLocalesModel::set_items(const ItemList & items)
+C2cXreportsLocalesModel::set_items(const ItemList & items)
 {
   beginResetModel();
   m_items = items;
   endResetModel();
 }
-CamptocampDatabaseSchema::CamptocampDatabaseSchema(QcDatabase & database)
+C2c::C2c(QcDatabase & database)
   : QcDatabaseSchema(database),
-    m_area_associations(nullptr),
-    m_areas(nullptr),
-    m_articles(nullptr),
-    m_associations(nullptr),
-    m_books(nullptr),
-    m_documents(nullptr),
-    m_documents_geometries(nullptr),
-    m_documents_locales(nullptr),
-    m_documents_topics(nullptr),
-    m_documents_versions(nullptr),
-    m_images(nullptr),
-    m_map_associations(nullptr),
-    m_maps(nullptr),
-    m_outings(nullptr),
-    m_outings_locales(nullptr),
-    m_routes(nullptr),
-    m_routes_locales(nullptr),
-    m_user(nullptr),
-    m_user_profiles(nullptr),
-    m_waypoints(nullptr),
-    m_waypoints_locales(nullptr),
-    m_xreports(nullptr),
-    m_xreports_locales(nullptr),
-    m_area_associations_cache(),
-    m_areas_cache(),
-    m_articles_cache(),
-    m_associations_cache(),
-    m_books_cache(),
-    m_documents_cache(),
-    m_documents_geometries_cache(),
-    m_documents_locales_cache(),
-    m_documents_topics_cache(),
-    m_documents_versions_cache(),
-    m_images_cache(),
-    m_map_associations_cache(),
-    m_maps_cache(),
-    m_outings_cache(),
-    m_outings_locales_cache(),
-    m_routes_cache(),
-    m_routes_locales_cache(),
-    m_user_cache(),
-    m_user_profiles_cache(),
-    m_waypoints_cache(),
-    m_waypoints_locales_cache(),
-    m_xreports_cache(),
-    m_xreports_locales_cache()
+    m_c2c_area_associations(nullptr),
+    m_c2c_areas(nullptr),
+    m_c2c_articles(nullptr),
+    m_c2c_associations(nullptr),
+    m_c2c_books(nullptr),
+    m_c2c_documents(nullptr),
+    m_c2c_documents_geometries(nullptr),
+    m_c2c_documents_locales(nullptr),
+    m_c2c_documents_topics(nullptr),
+    m_c2c_documents_versions(nullptr),
+    m_c2c_images(nullptr),
+    m_c2c_map_associations(nullptr),
+    m_c2c_maps(nullptr),
+    m_c2c_outings(nullptr),
+    m_c2c_outings_locales(nullptr),
+    m_c2c_routes(nullptr),
+    m_c2c_routes_locales(nullptr),
+    m_c2c_user(nullptr),
+    m_c2c_user_profiles(nullptr),
+    m_c2c_waypoints(nullptr),
+    m_c2c_waypoints_locales(nullptr),
+    m_c2c_xreports(nullptr),
+    m_c2c_xreports_locales(nullptr),
+    m_c2c_area_associations_cache(),
+    m_c2c_areas_cache(),
+    m_c2c_articles_cache(),
+    m_c2c_associations_cache(),
+    m_c2c_books_cache(),
+    m_c2c_documents_cache(),
+    m_c2c_documents_geometries_cache(),
+    m_c2c_documents_locales_cache(),
+    m_c2c_documents_topics_cache(),
+    m_c2c_documents_versions_cache(),
+    m_c2c_images_cache(),
+    m_c2c_map_associations_cache(),
+    m_c2c_maps_cache(),
+    m_c2c_outings_cache(),
+    m_c2c_outings_locales_cache(),
+    m_c2c_routes_cache(),
+    m_c2c_routes_locales_cache(),
+    m_c2c_user_cache(),
+    m_c2c_user_profiles_cache(),
+    m_c2c_waypoints_cache(),
+    m_c2c_waypoints_locales_cache(),
+    m_c2c_xreports_cache(),
+    m_c2c_xreports_locales_cache()
 {
-  m_area_associations = &register_table(AreaAssociationsSchema::instance());
-  m_areas = &register_table(AreasSchema::instance());
-  m_articles = &register_table(ArticlesSchema::instance());
-  m_associations = &register_table(AssociationsSchema::instance());
-  m_books = &register_table(BooksSchema::instance());
-  m_documents = &register_table(DocumentsSchema::instance());
-  m_documents_geometries = &register_table(DocumentsGeometriesSchema::instance());
-  m_documents_locales = &register_table(DocumentsLocalesSchema::instance());
-  m_documents_topics = &register_table(DocumentsTopicsSchema::instance());
-  m_documents_versions = &register_table(DocumentsVersionsSchema::instance());
-  m_images = &register_table(ImagesSchema::instance());
-  m_map_associations = &register_table(MapAssociationsSchema::instance());
-  m_maps = &register_table(MapsSchema::instance());
-  m_outings = &register_table(OutingsSchema::instance());
-  m_outings_locales = &register_table(OutingsLocalesSchema::instance());
-  m_routes = &register_table(RoutesSchema::instance());
-  m_routes_locales = &register_table(RoutesLocalesSchema::instance());
-  m_user = &register_table(UserSchema::instance());
-  m_user_profiles = &register_table(UserProfilesSchema::instance());
-  m_waypoints = &register_table(WaypointsSchema::instance());
-  m_waypoints_locales = &register_table(WaypointsLocalesSchema::instance());
-  m_xreports = &register_table(XreportsSchema::instance());
-  m_xreports_locales = &register_table(XreportsLocalesSchema::instance());
+  m_c2c_area_associations = &register_table(C2cAreaAssociationsSchema::instance());
+  m_c2c_areas = &register_table(C2cAreasSchema::instance());
+  m_c2c_articles = &register_table(C2cArticlesSchema::instance());
+  m_c2c_associations = &register_table(C2cAssociationsSchema::instance());
+  m_c2c_books = &register_table(C2cBooksSchema::instance());
+  m_c2c_documents = &register_table(C2cDocumentsSchema::instance());
+  m_c2c_documents_geometries = &register_table(C2cDocumentsGeometriesSchema::instance());
+  m_c2c_documents_locales = &register_table(C2cDocumentsLocalesSchema::instance());
+  m_c2c_documents_topics = &register_table(C2cDocumentsTopicsSchema::instance());
+  m_c2c_documents_versions = &register_table(C2cDocumentsVersionsSchema::instance());
+  m_c2c_images = &register_table(C2cImagesSchema::instance());
+  m_c2c_map_associations = &register_table(C2cMapAssociationsSchema::instance());
+  m_c2c_maps = &register_table(C2cMapsSchema::instance());
+  m_c2c_outings = &register_table(C2cOutingsSchema::instance());
+  m_c2c_outings_locales = &register_table(C2cOutingsLocalesSchema::instance());
+  m_c2c_routes = &register_table(C2cRoutesSchema::instance());
+  m_c2c_routes_locales = &register_table(C2cRoutesLocalesSchema::instance());
+  m_c2c_user = &register_table(C2cUserSchema::instance());
+  m_c2c_user_profiles = &register_table(C2cUserProfilesSchema::instance());
+  m_c2c_waypoints = &register_table(C2cWaypointsSchema::instance());
+  m_c2c_waypoints_locales = &register_table(C2cWaypointsLocalesSchema::instance());
+  m_c2c_xreports = &register_table(C2cXreportsSchema::instance());
+  m_c2c_xreports_locales = &register_table(C2cXreportsLocalesSchema::instance());
 }
 
-CamptocampDatabaseSchema::~CamptocampDatabaseSchema()
+C2c::~C2c()
 {}
 
 template<>
 void
-CamptocampDatabaseSchema::register_row<AreaAssociations>(AreaAssociationsPtr & row)
+C2c::register_row<C2cAreaAssociations>(C2cAreaAssociationsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_area_associations_cache.add(row);
+  m_c2c_area_associations_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Areas>(AreasPtr & row)
+C2c::register_row<C2cAreas>(C2cAreasPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_areas_cache.add(row);
+  m_c2c_areas_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Articles>(ArticlesPtr & row)
+C2c::register_row<C2cArticles>(C2cArticlesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_articles_cache.add(row);
+  m_c2c_articles_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Associations>(AssociationsPtr & row)
+C2c::register_row<C2cAssociations>(C2cAssociationsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_associations_cache.add(row);
+  m_c2c_associations_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Books>(BooksPtr & row)
+C2c::register_row<C2cBooks>(C2cBooksPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_books_cache.add(row);
+  m_c2c_books_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Documents>(DocumentsPtr & row)
+C2c::register_row<C2cDocuments>(C2cDocumentsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_documents_cache.add(row);
+  m_c2c_documents_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<DocumentsGeometries>(DocumentsGeometriesPtr & row)
+C2c::register_row<C2cDocumentsGeometries>(C2cDocumentsGeometriesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_documents_geometries_cache.add(row);
+  m_c2c_documents_geometries_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<DocumentsLocales>(DocumentsLocalesPtr & row)
+C2c::register_row<C2cDocumentsLocales>(C2cDocumentsLocalesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_documents_locales_cache.add(row);
+  m_c2c_documents_locales_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<DocumentsTopics>(DocumentsTopicsPtr & row)
+C2c::register_row<C2cDocumentsTopics>(C2cDocumentsTopicsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_documents_topics_cache.add(row);
+  m_c2c_documents_topics_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<DocumentsVersions>(DocumentsVersionsPtr & row)
+C2c::register_row<C2cDocumentsVersions>(C2cDocumentsVersionsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_documents_versions_cache.add(row);
+  m_c2c_documents_versions_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Images>(ImagesPtr & row)
+C2c::register_row<C2cImages>(C2cImagesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_images_cache.add(row);
+  m_c2c_images_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<MapAssociations>(MapAssociationsPtr & row)
+C2c::register_row<C2cMapAssociations>(C2cMapAssociationsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_map_associations_cache.add(row);
+  m_c2c_map_associations_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Maps>(MapsPtr & row)
+C2c::register_row<C2cMaps>(C2cMapsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_maps_cache.add(row);
+  m_c2c_maps_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Outings>(OutingsPtr & row)
+C2c::register_row<C2cOutings>(C2cOutingsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_outings_cache.add(row);
+  m_c2c_outings_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<OutingsLocales>(OutingsLocalesPtr & row)
+C2c::register_row<C2cOutingsLocales>(C2cOutingsLocalesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_outings_locales_cache.add(row);
+  m_c2c_outings_locales_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Routes>(RoutesPtr & row)
+C2c::register_row<C2cRoutes>(C2cRoutesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_routes_cache.add(row);
+  m_c2c_routes_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<RoutesLocales>(RoutesLocalesPtr & row)
+C2c::register_row<C2cRoutesLocales>(C2cRoutesLocalesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_routes_locales_cache.add(row);
+  m_c2c_routes_locales_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<User>(UserPtr & row)
+C2c::register_row<C2cUser>(C2cUserPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_user_cache.add(row);
+  m_c2c_user_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<UserProfiles>(UserProfilesPtr & row)
+C2c::register_row<C2cUserProfiles>(C2cUserProfilesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_user_profiles_cache.add(row);
+  m_c2c_user_profiles_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Waypoints>(WaypointsPtr & row)
+C2c::register_row<C2cWaypoints>(C2cWaypointsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_waypoints_cache.add(row);
+  m_c2c_waypoints_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<WaypointsLocales>(WaypointsLocalesPtr & row)
+C2c::register_row<C2cWaypointsLocales>(C2cWaypointsLocalesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_waypoints_locales_cache.add(row);
+  m_c2c_waypoints_locales_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<Xreports>(XreportsPtr & row)
+C2c::register_row<C2cXreports>(C2cXreportsPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_xreports_cache.add(row);
+  m_c2c_xreports_cache.add(row);
 }
 template<>
 void
-CamptocampDatabaseSchema::register_row<XreportsLocales>(XreportsLocalesPtr & row)
+C2c::register_row<C2cXreportsLocales>(C2cXreportsLocalesPtr & row)
 {
   qInfo() << "Register in cache" << row;
-  m_xreports_locales_cache.add(row);
+  m_c2c_xreports_locales_cache.add(row);
 }
 
 /**************************************************************************************************/
