@@ -99,15 +99,17 @@ QcNetworkReply::on_reply_finished()
     return;
 
   if (m_reply->error() == QNetworkReply::NoError) { // Fixme: when ?
-    QcNetworkRequest::RequestType request_type = m_request->type();
-    if (request_type == QcNetworkRequest::RequestType::Get) {
-      auto get_request = m_request.dynamicCast<QcGetNetworkRequest>();
       QByteArray payload = m_reply->readAll();
-      get_request->on_data_received(payload);
-    } else if(request_type == QcNetworkRequest::RequestType::Post) {
-      auto post_request = m_request.dynamicCast<QcPostNetworkRequest>();
-      post_request->on_success();
-    }
+      m_request->on_data_received(payload);
+      // QcNetworkRequest::RequestType request_type = m_request->type();
+      // if (request_type == QcNetworkRequest::RequestType::Get) {
+      //   auto get_request = m_request.dynamicCast<QcGetNetworkRequest>();
+      //   QByteArray payload = m_reply->readAll();
+      //   get_request->on_data_received(payload);
+      // } else if(request_type == QcNetworkRequest::RequestType::Post) {
+      //   auto post_request = m_request.dynamicCast<QcPostNetworkRequest>();
+      //   post_request->on_success();
+      // }
     release(); // emit finished
 
   } else {

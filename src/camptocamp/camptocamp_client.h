@@ -33,10 +33,12 @@
 
 /**************************************************************************************************/
 
-#include "camptocamp_login.h"
-#include "camptocamp_login_data.h"
-#include "camptocamp_constant.h"
-#include "camptocamp_search_settings.h"
+#include "camptocamp/camptocamp_constant.h"
+#include "camptocamp/camptocamp_login.h"
+#include "camptocamp/camptocamp_login_data.h"
+#include "camptocamp/camptocamp_search_settings.h"
+#include "network/network_request.h"
+#include "network/network_request_manager.h"
 
 #include <QDateTime>
 #include <QJsonDocument>
@@ -52,73 +54,126 @@
 
 class C2cClient;
 
-class C2cRequest : public QObject
+/**************************************************************************************************/
+
+struct C2cApiRequestMixin
 {
-  Q_OBJECT
-
-public:
-  C2cRequest(const QNetworkRequest & request); // parent
-  ~C2cRequest(); // Fixme: delete this and m_reply
-
-  const QUrl url() const { return m_request.url(); }
-  const QNetworkRequest & request() const { return m_request; }
-
-  void set_reply(C2cClient * client, QNetworkReply * network_reply);
-
-  C2cClient * client() const { return m_client; }
-  QNetworkReply * network_reply() const { return m_network_reply; }
-
-private slots:
-  virtual void finished() = 0;
-  // Fixme: void error(Error error, const QString & error_string = QString());
-
-private:
-  QNetworkRequest m_request;
-  QPointer<QNetworkReply> m_network_reply;
-  QPointer<C2cClient> m_client;
+  static bool check_json_response(const QJsonDocument * json_document);
+  static QJsonDocument * to_json_document(const QByteArray & data);
 };
 
 /**************************************************************************************************/
 
-class C2cApiRequest : public C2cRequest
+class C2cApiGetRequest : public QcGetNetworkRequest, public C2cApiRequestMixin
 {
   Q_OBJECT
 
 public:
-  C2cApiRequest(const QNetworkRequest & request); // parent
-  ~C2cApiRequest();
+  // C2cApiGetRequest();
+  C2cApiGetRequest(const QUrl & url);
+  // C2cApiGetRequest(const C2cApiGetRequest & other);
 
-  virtual void handle_reply(const QJsonDocument * json_data) = 0; // Fixme: const
-  virtual void handle_error(const QJsonDocument * json_data) = 0;
-  virtual void handle_network_error() = 0;
+  // C2cApiGetRequest & operator=(const C2cApiGetRequest & other);
 
-private slots:
-  void finished();
-  // Fixme: void error(Error error, const QString & error_string = QString());
+  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
 
-private:
-  QJsonDocument * reply_to_json() const;
-  static bool check_json_response(const QJsonDocument * json_data);
+  // bool operator==(const C2cApiGetRequest & rhs) const;
+
+signals:
+  void finished(const QJsonDocument * json_document);
+  void error(const QJsonDocument * json_document);
+
+public slots:
+  void on_error(const QString & error_string);
+  void on_data_received(const QByteArray & data);
 };
+
+typedef QSharedPointer<C2cApiGetRequest> C2cApiGetRequestPtr;
 
 /**************************************************************************************************/
 
-class C2cMediaRequest : public C2cRequest
+class C2cApiPostRequest : public QcPostNetworkRequest, public C2cApiRequestMixin
 {
   Q_OBJECT
 
 public:
-  C2cMediaRequest(const QNetworkRequest & request); // parent // const QString & media_url, const QString & media
-  ~C2cMediaRequest();
+  // C2cApiPostRequest();
+  C2cApiPostRequest(const QUrl & url, const QJsonDocument & document);
+  // C2cApiPostRequest(const C2cApiPostRequest & other);
+
+  // C2cApiPostRequest & operator=(const C2cApiPostRequest & other);
+
+  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
+
+  // bool operator==(const C2cApiPostRequest & rhs) const;
+
+signals:
+  void finished(const QJsonDocument * json_document);
+  void error(const QJsonDocument * json_document);
+
+public slots:
+  void on_error(const QString & error_string);
+  void on_data_received(const QByteArray & data);
+};
+
+typedef QSharedPointer<C2cApiPostRequest> C2cApiPostRequestPtr;
+
+/**************************************************************************************************/
+
+class C2cApiMediaRequest : public QcGetNetworkRequest
+{
+  Q_OBJECT
+
+public:
+  // C2cApiMediaRequest();
+  C2cApiMediaRequest(const QUrl & url);
+  // C2cApiMediaRequest(const C2cApiMediaRequest & other);
+
+  // C2cApiMediaRequest & operator=(const C2cApiMediaRequest & other);
+
+  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
+
+  // bool operator==(const C2cApiMediaRequest & rhs) const;
 
   const QString & media() const { return m_media; }
 
-private slots:
-  void finished();
-  // Fixme: void error(Error error, const QString & error_string = QString());
+signals:
+  void finished(const QString & media, const QByteArray data);
+  void error(const QString & media);
+
+public slots:
+  void on_error(const QString & error_string);
+  void on_data_received(const QByteArray & data);
 
 private:
   QString m_media;
+};
+
+typedef QSharedPointer<C2cApiMediaRequest> C2cApiMediaRequestPtr;
+
+/**************************************************************************************************/
+
+class C2cNetworkRequestManager : public QcNetworkRequestManager
+{
+public:
+  C2cNetworkRequestManager(C2cClient * client);
+  ~C2cNetworkRequestManager();
+
+  QNetworkRequest make_request(const QcNetworkRequestPtr & request) const;
+
+  void add_request(C2cApiGetRequest * request) {
+    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+  }
+  void add_request(C2cApiPostRequest * request) {
+    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+  }
+  void add_request(C2cApiMediaRequest * request) {
+    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+  }
+  // void cancel_request(const QcNetworkRequestPtr & request);
+
+private:
+  C2cClient * m_client;
 };
 
 /**************************************************************************************************/
@@ -135,6 +190,7 @@ public:
   void login(const C2cLogin & login, bool remember = true, bool discourse = true);
   void update_login();
   const C2cLogin & login_settings() const { return m_login; } // Fixme: name clash
+  const C2cLoginData & login_data() const { return m_login_data; }
   bool is_logged() const { return m_login_data.is_valid(); }
 
   void health();
@@ -164,32 +220,19 @@ signals:
   void search_failed(const QJsonDocument * json_document);
   void received_document(const QJsonDocument * json_document);
   void get_document_failed(const QJsonDocument * json_document);
-  void received_media(const QString & media, const QByteArray data);
+  void received_media(const QString & media, const QByteArray data); // Fixme: const ???
   void get_media_failed(const QString & media);
 
 private:
   QUrl make_api_url(const QString & url) const;
   QUrl make_api_url(const QStringList & strings) const;
   QUrl make_media_url(const QString & media) const;
-  QNetworkRequest create_network_api_request(const QUrl & url, bool token = false) const;
-  QNetworkRequest create_network_api_request(const QStringList & strings, bool token = false) const;
-  QNetworkRequest create_network_media_request(const QString & media) const;
-  void get(C2cApiRequest * request);
   void get_document(const QString & document_type, unsigned int document_id);
   QUrl make_url_for_document(const QJsonDocument * json_document) const;
-  void post(C2cApiRequest * request, const QJsonDocument * json_document, bool check_login = true);
 
-public: // Fixme: wrong design
-  void handle_login_reply(const QJsonDocument * json_data);
-  void handle_login_error(const QJsonDocument * json_data);
-  void handle_health_reply(const QJsonDocument * json_data);
-  void handle_health_error(const QJsonDocument * json_data);
-  void handle_search_reply(const QJsonDocument * json_data);
-  void handle_search_error(const QJsonDocument * json_data);
-  void handle_document_reply(const QJsonDocument * json_data);
-  void handle_document_error(const QJsonDocument * json_data);
-  void handle_media_reply(const QString & media, const QByteArray & data);
-  void handle_media_error(const QString & media);
+public:
+  void on_login_reply(const QJsonDocument * json_data);
+  void on_login_error(const QJsonDocument * json_data);
 
 private:
   QString m_api_url;
@@ -197,7 +240,7 @@ private:
   int m_port;
   C2cLogin m_login;
   C2cLoginData m_login_data;
-  QNetworkAccessManager m_network_manager;
+  C2cNetworkRequestManager m_network_manager;
 };
 
 /**************************************************************************************************/

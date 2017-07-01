@@ -145,6 +145,12 @@ QcPostNetworkRequest::QcPostNetworkRequest(const QUrl & url, const QByteArray & 
     m_data(data)
 {}
 
+QcPostNetworkRequest::QcPostNetworkRequest(const QUrl & url, const QJsonDocument & document)
+  : QcNetworkRequest(url)
+{
+  set_data(document);
+}
+
 QcPostNetworkRequest::QcPostNetworkRequest(const QcPostNetworkRequest & other)
   : QcNetworkRequest(other),
     m_data(other.m_data)
@@ -170,6 +176,13 @@ bool
 QcPostNetworkRequest::operator==(const QcPostNetworkRequest & rhs) const
 {
   return QcNetworkRequest::operator==(rhs) and m_data == rhs.m_data;
+}
+
+void
+QcPostNetworkRequest::set_data(const QJsonDocument & document)
+{
+  // Fixme: set header
+  m_data = document.toJson(QJsonDocument::Compact);
 }
 
 QDebug

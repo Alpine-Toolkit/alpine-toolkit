@@ -33,7 +33,7 @@
 
 /**************************************************************************************************/
 
-#include <QHash>
+#include <QJsonDocument>
 #include <QNetworkRequest>
 #include <QObject>
 #include <QSharedPointer>
@@ -75,6 +75,7 @@ public:
 
 public slots:
   virtual void on_error(const QString & error_string) = 0;
+  virtual void on_data_received(const QByteArray & data) = 0;
 
 private:
   QUrl m_url;
@@ -102,8 +103,8 @@ public:
 
   RequestType type() const { return RequestType::Get; }
 
-public slots:
-  virtual void on_data_received(const QByteArray & data) = 0;
+// public slots:
+//   virtual void on_data_received(const QByteArray & data) = 0;
 };
 
 QDebug operator<<(QDebug, const QcGetNetworkRequest & request);
@@ -117,6 +118,7 @@ class QcPostNetworkRequest : public QcNetworkRequest
 public:
   QcPostNetworkRequest();
   QcPostNetworkRequest(const QUrl & url, const QByteArray & data);
+  QcPostNetworkRequest(const QUrl & url, const QJsonDocument & document);
   QcPostNetworkRequest(const QcPostNetworkRequest & other);
   ~QcPostNetworkRequest();
 
@@ -128,9 +130,10 @@ public:
 
   QByteArray data() const { return m_data; }
   void set_data(const QByteArray & data) { m_data = data; }
+  void set_data(const QJsonDocument & document);
 
-public slots:
-  virtual void on_success() = 0;
+// public slots:
+//   virtual void on_success() = 0;
 
 private:
   QByteArray m_data;
