@@ -35,6 +35,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QSharedPointer>
 
 #include "network/network_request.h"
 #include "network/network_request_manager.h"
@@ -48,58 +49,55 @@
 
 /**************************************************************************************************/
 
-/* The class NetworkDownloadRequest defines the URL of the request and the path of the target.
+/* The class QcNetworkDownloadRequest defines the URL of the request and the path of the target.
  *
  */
-class NetworkDownloadRequest : public QcGetNetworkRequest
+class QcNetworkDownloadRequest : public QcGetNetworkRequest
 {
   Q_OBJECT
 
 public:
-  NetworkDownloadRequest();
-  NetworkDownloadRequest(const QUrl & url, const QString & target_path);
-  NetworkDownloadRequest(const NetworkDownloadRequest & other);
+  QcNetworkDownloadRequest();
+  QcNetworkDownloadRequest(const QUrl & url, const QString & target_path);
+  QcNetworkDownloadRequest(const QcNetworkDownloadRequest & other);
 
-  NetworkDownloadRequest & operator=(const NetworkDownloadRequest & other);
+  QcNetworkDownloadRequest & operator=(const QcNetworkDownloadRequest & other);
 
   QString target_path() const { return m_target_path; }
 
-  bool operator==(const NetworkDownloadRequest & rhs) const;
+  bool operator==(const QcNetworkDownloadRequest & rhs) const;
+
+signals:
+  void finished();
+  void error();
+
+public slots:
+  void on_error(const QString & error_string);
+  void on_data_received(const QByteArray & data);
 
 private:
   QString m_target_path;
 };
 
-QDebug operator<<(QDebug debug, const NetworkDownloadRequest & request);
+typedef QSharedPointer<QcNetworkDownloadRequest> QcNetworkDownloadRequestPtr;
+
+QDebug operator<<(QDebug debug, const QcNetworkDownloadRequest & request);
 
 /**************************************************************************************************/
 
-/* The class NetworkDownloader manages asynchronous ressource downloads.
+/* The class QcNetworkDownloader manages asynchronous ressource downloads.
  *
  */
-class NetworkDownloader : public QObject
+class QcNetworkDownloader : public QcNetworkRequestManager
 {
   Q_OBJECT
 
 public:
-  NetworkDownloader(QcNetworkRequestManager & network_fetcher);
-  ~NetworkDownloader();
+  QcNetworkDownloader(); // QcNetworkRequestManager & network_fetcher
+  ~QcNetworkDownloader();
 
-  void add_request(const QcNetworkRequestPtr & request); // Fixme: NetworkDownloadRequest
-  void cancel_request(const QcNetworkRequestPtr & request);
-
-signals:
-  // void download_progress(const QcNetworkRequestPtr & request, qint64 percent);
-  void finished(const QcNetworkRequestPtr & request);
-  void error(const QcNetworkRequestPtr & request, const QString & error_string);
-
-private slots:
-  void on_request_finished(const QcNetworkRequestPtr & request, const QByteArray & payload); // & ???
-  void on_request_error(const QcNetworkRequestPtr & request, const QString & error_string);
-
-private:
-  QcNetworkRequestManager & m_network_fetcher;
-  QHash<QcNetworkRequestPtr, QcNetworkRequestPtr> m_invmap;
+  void add_request(const QcNetworkDownloadRequestPtr & request);
+  void cancel_request(const QcNetworkDownloadRequestPtr & request);
 };
 
 /**************************************************************************************************/

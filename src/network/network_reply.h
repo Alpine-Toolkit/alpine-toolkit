@@ -73,12 +73,12 @@ public:
   Error error() const { return m_error; };
   QString error_string() const { return m_error_string; };
 
-  const QByteArray & payload() const { return m_payload; };
+  // const QByteArray & payload() const { return m_payload; };
 
 signals:
   // void download_progress(const NetworkRessourceRequest & request, qint64 percent);
   void finished();
-  void error(Error error, const QString & error_string = QString()); // Fixme: args versus sender ?
+  void error();
 
 protected:
   void set_finished(bool finished);
@@ -98,10 +98,11 @@ private:
   QcNetworkRequestPtr m_request;
   QPointer<QNetworkReply> m_reply; // guarded pointer set to nullptr when destroyed
   int m_completion = 0;
+  bool m_aborted = false;
   bool m_is_finished = false;
   Error m_error = QcNetworkReply::NoError;
   QString m_error_string;
-  QByteArray m_payload;
+  // QByteArray m_payload;
 };
 
 /**************************************************************************************************/

@@ -32,23 +32,23 @@
 
 /**************************************************************************************************/
 
-NetworkDownloadRequest::NetworkDownloadRequest()
+QcNetworkDownloadRequest::QcNetworkDownloadRequest()
   : QcGetNetworkRequest(),
     m_target_path()
 {}
 
-NetworkDownloadRequest::NetworkDownloadRequest(const QUrl & url, const QString & target_path)
+QcNetworkDownloadRequest::QcNetworkDownloadRequest(const QUrl & url, const QString & target_path)
   : QcGetNetworkRequest(url),
     m_target_path(target_path)
 {}
 
-NetworkDownloadRequest::NetworkDownloadRequest(const NetworkDownloadRequest & other)
+QcNetworkDownloadRequest::QcNetworkDownloadRequest(const QcNetworkDownloadRequest & other)
   : QcGetNetworkRequest(other),
     m_target_path(other.m_target_path)
 {}
 
-NetworkDownloadRequest &
-NetworkDownloadRequest::operator=(const NetworkDownloadRequest & other)
+QcNetworkDownloadRequest &
+QcNetworkDownloadRequest::operator=(const QcNetworkDownloadRequest & other)
 {
   if (this != &other) {
     QcGetNetworkRequest::operator=(other);
@@ -59,78 +59,58 @@ NetworkDownloadRequest::operator=(const NetworkDownloadRequest & other)
 }
 
 bool
-NetworkDownloadRequest::operator==(const NetworkDownloadRequest & rhs) const
+QcNetworkDownloadRequest::operator==(const QcNetworkDownloadRequest & rhs) const
 {
   return QcGetNetworkRequest::operator==(rhs) && m_target_path == rhs.m_target_path;
 }
 
-QDebug
-operator<<(QDebug debug, const NetworkDownloadRequest & request)
+void
+QcNetworkDownloadRequest::on_error(const QString & error_string)
 {
-  debug << "NetworkDownloadRequest" << request.url().url() << "->" << request.target_path();
+  // Fixme:
+  qInfo() << "QcNetworkDownloadRequest::on_error" << url() << error_string;
+  emit error(); // error_string
+}
+
+void
+QcNetworkDownloadRequest::on_data_received(const QByteArray & data)
+{
+  qInfo() << "QcNetworkDownloadRequest::on_data_received" << url();
+  QFile output_file(m_target_path);
+  if (!output_file.open(QIODevice::WriteOnly | QIODevice::Text))
+    qWarning() << "couldn't write to file";
+  output_file.write(data);
+  emit finished();
+}
+
+QDebug
+operator<<(QDebug debug, const QcNetworkDownloadRequest & request)
+{
+  debug << "QcNetworkDownloadRequest" << request.url().url() << "->" << request.target_path();
   return debug;
 }
 
 /**************************************************************************************************/
 
-NetworkDownloader::NetworkDownloader(QcNetworkRequestManager & network_fetcher)
-  : QObject(),
-    m_network_fetcher(network_fetcher)
-{
-  connect(&m_network_fetcher, &QcNetworkRequestManager::request_finished,
-  	  this, &NetworkDownloader::on_request_finished);
-  connect(&m_network_fetcher, &QcNetworkRequestManager::request_error,
-  	  this, &NetworkDownloader::on_request_error);
+QcNetworkDownloader::QcNetworkDownloader()
+  : QcNetworkRequestManager()
+{}
 
-  // connect(&m_network_fetcher, &QcNetworkRequestManager::download_progress,
-  //         this, &NetworkDownloader::download_progress);
-}
-
-NetworkDownloader::~NetworkDownloader()
+QcNetworkDownloader::~QcNetworkDownloader()
 {}
 
 void
-NetworkDownloader::add_request(const QcNetworkRequestPtr & request)
+QcNetworkDownloader::add_request(const QcNetworkDownloadRequestPtr & request)
 {
-  qInfo() << "NetworkDownloader:add_request" << request;
-  m_invmap.insert(request, request);
-  m_network_fetcher.add_request(request);
+  qInfo() << "QcNetworkDownloader:add_request" << request;
+  QcNetworkRequestManager::add_request(request);
 }
 
 void
-NetworkDownloader::cancel_request(const QcNetworkRequestPtr & request)
+QcNetworkDownloader::cancel_request(const QcNetworkDownloadRequestPtr & request)
 {
-  if (m_invmap.contains(request)) {
-    // Fixme: !!!!
-    // m_network_fetcher.cancel_request(request); // hash ???
-    m_invmap.remove(request);
-  }
-}
-
-void
-NetworkDownloader::on_request_finished(const QcNetworkRequestPtr & request, const QByteArray & payload)
-{
-  qInfo() << "NetworkDownloader::request_finished" << request;
-  if (m_invmap.contains(request)) {
-    // Fixme:
-    //! QcNetworkRequestPtr request = m_invmap.value(request); // pop ???
-    //! m_invmap.remove(request);
-    auto download_request = request.dynamicCast<NetworkDownloadRequest>();
-    qInfo() << "request found" << download_request;
-    QFile output_file(download_request->target_path());
-    if (!output_file.open(QIODevice::WriteOnly | QIODevice::Text))
-      qWarning() << "couldn't write to file";
-    output_file.write(payload);
-    emit finished(request);
-  }
-}
-
-void
-NetworkDownloader::on_request_error(const QcNetworkRequestPtr & request, const QString & error_string)
-{
-  qInfo() << "NetworkDownloader::request_error" << request << error_string;
-  m_invmap.remove(request);
-  emit error(request, error_string);
+  qInfo() << "QcNetworkDownloader:cancel_request" << request;
+  QcNetworkRequestManager::cancel_request(request);
 }
 
 /***************************************************************************************************

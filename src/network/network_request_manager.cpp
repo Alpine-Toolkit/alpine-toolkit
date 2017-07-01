@@ -43,7 +43,7 @@ QcNetworkRequestManager::QcNetworkRequestManager()
   connect(&m_network_manager, &QNetworkAccessManager::authenticationRequired,
 	  this, &QcNetworkRequestManager::on_authentication_request_slot);
 
-  // signal when a reply has finished
+  // Signal when a reply has finished
   // connect(m_network_manager, SIGNAL(finished(QNetworkReply*)),
   // 	  this, SLOT(replyFinished(QNetworkReply*)));
 }
@@ -129,12 +129,23 @@ QcNetworkRequestManager::get_next_request()
     connect(reply, &QcNetworkReply::finished,
             this, &QcNetworkRequestManager::on_reply_finished,
             Qt::QueuedConnection);
-    // connect(reply, &QcNetworkReply::download_progress, this, &QcNetworkRequestManager::download_progress);
     m_invmap.insert(request, reply);
   }
 
   if (m_queue.isEmpty())
     m_timer.stop();
+}
+
+QNetworkRequest
+QcNetworkRequestManager::make_request(const QcNetworkRequestPtr & request) const
+{
+  QNetworkRequest network_request = request->network_request();
+  network_request.setRawHeader("User-Agent", m_user_agent);
+
+  // custom network_request.setRawHeader(...) for authorization etc.
+  // network_request.setPriority();
+
+  return network_request;
 }
 
 QcNetworkReply *
@@ -143,9 +154,7 @@ QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
   qInfo() << "make_reply" << request->url();
 
   // Create request
-  QNetworkRequest network_request = request->network_request();
-  network_request.setRawHeader("User-Agent", m_user_agent);
-  // network_request.setPriority();
+  QNetworkRequest network_request = make_request(request);
 
   // Send request to network manager
   QNetworkReply * network_reply = nullptr;
@@ -153,7 +162,7 @@ QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
   if (request_type == QcNetworkRequest::RequestType::Get)
     network_reply = m_network_manager.get(network_request);
   else if (request_type == QcNetworkRequest::RequestType::Post) {
-    QcPostNetworkRequest * post_request = dynamic_cast<QcPostNetworkRequest *>(request.data());
+    auto post_request = request.dynamicCast<QcPostNetworkRequest>();
     network_reply = m_network_manager.post(network_request, post_request->data());
   }
   // put(const QNetworkRequest &request, const QByteArray &data)
@@ -166,7 +175,7 @@ QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
   // Fixme: ???
   // network_reply.setOriginatingObject(&request); // request must be an unique instance : a pointer !
 
-  return new QcNetworkReply(request, network_reply); // Fixme: smart ?
+  return new QcNetworkReply(request, network_reply); // Fixme: deleted by deleteLater, smart ???
 }
 
 void
@@ -182,9 +191,9 @@ QcNetworkRequestManager::on_reply_finished()
 
   const QcNetworkRequestPtr & request = reply->request();
   qInfo() << "QcNetworkRequestManager::on_reply_finished" << request->url();
-  if (m_invmap.contains(request)) { // cancelled request
+  if (m_invmap.contains(request)) { // else cancelled request
     m_invmap.remove(request);
-    handle_reply(reply);
+   handle_reply(reply);
   } else {
     qWarning() << "QcNetworkRequestManager::reply_finished m_invmap doesn't have url";
     reply->deleteLater(); // Fixme: cancelled ???
@@ -194,19 +203,7 @@ QcNetworkRequestManager::on_reply_finished()
 void
 QcNetworkRequestManager::handle_reply(QcNetworkReply * reply)
 {
-  const QcNetworkRequestPtr & request = reply->request();
-  qInfo() << "QcNetworkRequestManager::handle_reply" << request->url();
-
-  if (m_enabled) {
-    // emit signal according to the reply status
-    if (reply->error() == QcNetworkReply::NoError) {
-      qInfo() << "QcNetworkRequestManager::handle_reply emit tile_finished";
-      emit request_finished(request, reply->payload());
-    } else {
-      qInfo() << "QcNetworkRequestManager::handle_reply emit tile_error" << reply->error_string();
-      emit request_error(request, reply->error_string());
-    }
-  }
+  // Could retry the request
 
   reply->deleteLater();
 }

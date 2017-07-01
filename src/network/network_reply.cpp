@@ -48,6 +48,7 @@ QcNetworkReply::QcNetworkReply(const QcNetworkRequestPtr & request, QNetworkRepl
 
 QcNetworkReply::~QcNetworkReply()
 {
+  qInfo() << "~QcNetworkReply";
   if (m_reply) {
     m_reply->deleteLater();
     m_reply = nullptr; // dtor ???
@@ -66,7 +67,7 @@ QcNetworkReply::set_error(QcNetworkReply::Error error, const QString & error_str
 {
   m_error = error;
   m_error_string = error_string;
-  emit this->error(error, error_string);
+  emit this->error(); // error, error_string
   set_finished(true); // will emit finished as well !
 }
 
@@ -75,6 +76,7 @@ QcNetworkReply::abort()
 {
   if (m_reply)
     m_reply->abort();
+  m_aborted = true; // Fixme: ???
 
   // Fixme: ???
   // if (!is_finished())
@@ -84,7 +86,7 @@ QcNetworkReply::abort()
 void
 QcNetworkReply::release()
 {
-  set_finished(true);
+  set_finished(true); // emit finished
   m_reply->deleteLater();
   m_reply = nullptr;
 }
@@ -97,8 +99,17 @@ QcNetworkReply::on_reply_finished()
     return;
 
   if (m_reply->error() == QNetworkReply::NoError) { // Fixme: when ?
-    m_payload = m_reply->readAll();
-    release();
+    QcNetworkRequest::RequestType request_type = m_request->type();
+    if (request_type == QcNetworkRequest::RequestType::Get) {
+      auto get_request = m_request.dynamicCast<QcGetNetworkRequest>();
+      QByteArray payload = m_reply->readAll();
+      get_request->on_data_received(payload);
+    } else if(request_type == QcNetworkRequest::RequestType::Post) {
+      auto post_request = m_request.dynamicCast<QcPostNetworkRequest>();
+      post_request->on_success();
+    }
+    release(); // emit finished
+
   } else {
     qWarning() << "reply != NoError";
   }
@@ -112,8 +123,9 @@ QcNetworkReply::on_reply_error(QNetworkReply::NetworkError error)
     return;
 
   if (error != QNetworkReply::OperationCanceledError)
-    set_error(QcNetworkReply::CommunicationError, m_reply->errorString());
-  release();
+    set_error(QcNetworkReply::CommunicationError, m_reply->errorString()); // Fixme: emit error and finished
+  release(); // emit finished
+  m_request->on_error(m_error_string);
 }
 
 void

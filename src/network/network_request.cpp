@@ -48,7 +48,9 @@ QcNetworkRequest::QcNetworkRequest(const QcNetworkRequest & other)
 {}
 
 QcNetworkRequest::~QcNetworkRequest()
-{}
+{
+  qInfo() << "~QcNetworkRequest";
+}
 
 QcNetworkRequest &
 QcNetworkRequest::operator=(const QcNetworkRequest & other)
@@ -104,7 +106,9 @@ QcGetNetworkRequest::QcGetNetworkRequest(const QcGetNetworkRequest & other)
 {}
 
 QcGetNetworkRequest::~QcGetNetworkRequest()
-{}
+{
+  qInfo() << "~QcGetNetworkRequest";
+}
 
 QcGetNetworkRequest &
 QcGetNetworkRequest::operator=(const QcGetNetworkRequest & other)
@@ -147,7 +151,9 @@ QcPostNetworkRequest::QcPostNetworkRequest(const QcPostNetworkRequest & other)
 {}
 
 QcPostNetworkRequest::~QcPostNetworkRequest()
-{}
+{
+  qInfo() << "~QcPostNetworkRequest";
+}
 
 QcPostNetworkRequest &
 QcPostNetworkRequest::operator=(const QcPostNetworkRequest & other)

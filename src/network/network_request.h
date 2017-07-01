@@ -73,6 +73,9 @@ public:
 
   QNetworkRequest network_request() const;
 
+public slots:
+  virtual void on_error(const QString & error_string) = 0;
+
 private:
   QUrl m_url;
 };
@@ -98,6 +101,9 @@ public:
   bool operator==(const QcGetNetworkRequest & rhs) const;
 
   RequestType type() const { return RequestType::Get; }
+
+public slots:
+  virtual void on_data_received(const QByteArray & data) = 0;
 };
 
 QDebug operator<<(QDebug, const QcGetNetworkRequest & request);
@@ -122,6 +128,9 @@ public:
 
   QByteArray data() const { return m_data; }
   void set_data(const QByteArray & data) { m_data = data; }
+
+public slots:
+  virtual void on_success() = 0;
 
 private:
   QByteArray m_data;

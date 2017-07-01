@@ -48,8 +48,6 @@
 
 /**************************************************************************************************/
 
-// Fixme: check code against qtcarto
-
 /* The QcNetworkRequestManager class manages a list of asynchronous requests.
  *
  * Note: QNetworkAccessManager queues the requests it receives. The
@@ -68,14 +66,11 @@ public:
   void set_user_agent(const QByteArray & user_agent);
   // void set_connection_identifier();
 
+  virtual QNetworkRequest make_request(const QcNetworkRequestPtr & request) const;
+
 public slots:
   void add_request(const QcNetworkRequestPtr & request);
   void cancel_request(const QcNetworkRequestPtr & request);
-
-signals:
-  // void download_progress(const QcNetworkRequestPtr & request, qint64 percent);
-  void request_finished(const QcNetworkRequestPtr & request, const QByteArray & payload); // & ???
-  void request_error(const QcNetworkRequestPtr & request, const QString & error_string);
 
 protected:
   void timerEvent(QTimerEvent * event); // Fixme: protected ???
