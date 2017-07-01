@@ -57,9 +57,11 @@ class C2cAreaAssociations(Schema):
 
     area_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.areas.document_id']
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
 
 ####################################################################################################
@@ -75,6 +77,7 @@ class C2cAreas(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     area_type = Field(String)
     # Enum -> VARCHAR(12)
@@ -96,6 +99,7 @@ class C2cArticles(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList)
     # ArrayOfEnum -> None
@@ -125,9 +129,11 @@ class C2cAssociations(Schema):
 
     child_document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     parent_document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     child_document_type = Field(Char, nullable=False)
     # String -> VARCHAR(1)
@@ -157,6 +163,7 @@ class C2cBooks(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList)
     # ArrayOfEnum -> None
@@ -215,6 +222,7 @@ class C2cDocuments(Schema):
 
     redirects_to = Field(Integer)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     type = Field(Char)
     # String -> VARCHAR(1)
@@ -238,6 +246,7 @@ class C2cDocumentsGeometries(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     geom = Field(String)
     # Geometry -> geometry(POINT,3857)
@@ -274,9 +283,11 @@ class C2cDocumentsLocales(Schema):
 
     document_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     lang = Field(String, nullable=False)
     # String -> VARCHAR(2)
+    # Foreign Keys: ['guidebook.langs.lang']
 
     summary = Field(String)
     # String -> VARCHAR
@@ -304,6 +315,7 @@ class C2cDocumentsTopics(Schema):
 
     document_locale_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales.id']
 
     topic_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
@@ -330,21 +342,27 @@ class C2cDocumentsVersions(Schema):
 
     document_archive_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_archives.id']
 
     document_geometry_archive_id = Field(Integer)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_geometries_archives.id']
 
     document_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     document_locales_archive_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales_archives.id']
 
     history_metadata_id = Field(Integer, nullable=False)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.history_metadata.id']
 
     lang = Field(String, nullable=False)
     # String -> VARCHAR(2)
+    # Foreign Keys: ['guidebook.langs.lang']
 
 
 ####################################################################################################
@@ -374,6 +392,7 @@ class C2cImages(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList)
     # ArrayOfEnum -> None
@@ -437,9 +456,11 @@ class C2cMapAssociations(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     topo_map_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.maps.document_id']
 
 
 ####################################################################################################
@@ -457,6 +478,7 @@ class C2cMaps(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     code = Field(String)
     # String -> VARCHAR
@@ -506,6 +528,7 @@ class C2cOutings(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     access_condition = Field(String)
     # Enum -> VARCHAR(14)
@@ -611,6 +634,7 @@ class C2cOutingsLocales(Schema):
 
     id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales.id']
 
     access_comment = Field(String)
     # String -> VARCHAR
@@ -695,6 +719,7 @@ class C2cRoutes(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList, nullable=False)
     # ArrayOfEnum -> None
@@ -782,6 +807,7 @@ class C2cRoutes(Schema):
 
     main_waypoint_id = Field(Integer)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     mixed_rating = Field(String)
     # Enum -> VARCHAR(4)
@@ -875,6 +901,7 @@ class C2cRoutesLocales(Schema):
 
     id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales.id']
 
     external_resources = Field(String)
     # String -> VARCHAR
@@ -929,6 +956,7 @@ class C2cUser(Schema):
 
     id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.user_profiles.document_id']
 
     blocked = Field(Boolean, nullable=False)
     # Boolean -> BOOLEAN
@@ -957,6 +985,7 @@ class C2cUser(Schema):
 
     lang = Field(String, nullable=False)
     # String -> VARCHAR(2)
+    # Foreign Keys: ['guidebook.langs.lang']
 
     last_modified = Field(DateTime, nullable=False)
     # DateTime -> DATETIME
@@ -994,6 +1023,7 @@ class C2cUserProfiles(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList)
     # ArrayOfEnum -> None
@@ -1063,6 +1093,7 @@ class C2cWaypoints(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     access_time = Field(String)
     # Enum -> VARCHAR(5)
@@ -1245,6 +1276,7 @@ class C2cWaypointsLocales(Schema):
 
     id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales.id']
 
     access = Field(String)
     # String -> VARCHAR
@@ -1283,6 +1315,7 @@ class C2cXreports(Schema):
 
     document_id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents.document_id']
 
     activities = Field(StringList, nullable=False)
     # ArrayOfEnum -> None
@@ -1375,6 +1408,7 @@ class C2cXreportsLocales(Schema):
 
     id = Field(Integer, nullable=False, primary_key=True)
     # Integer -> INTEGER
+    # Foreign Keys: ['guidebook.documents_locales.id']
 
     conditions = Field(String)
     # String -> VARCHAR

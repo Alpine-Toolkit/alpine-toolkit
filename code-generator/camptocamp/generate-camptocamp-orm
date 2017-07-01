@@ -102,6 +102,7 @@ for table_name in table_names:
             'nullable': field_json.get('nullable', False),
             'primary_key': field_json.get('primary_key', False),
             'enums': str(field_json.get('enums', '')),
+            'foreign_keys': str(field_json.get('foreign_keys', '')),
         }
     primary_keys = sorted([x for x in fields if fields[x]['primary_key']])
     normal_fields = sorted([x for x in fields if not fields[x]['primary_key']])

@@ -93,6 +93,8 @@ def table_to_json(cls):
             json_column['unique'] = column.unique
         if column.primary_key:
             json_column['primary_key'] = column.primary_key
+        if column.foreign_keys:
+            json_column['foreign_keys'] = [repr(x)[len("ForeignKey('"):-2] for x in column.foreign_keys]
         if isinstance(column_type, utils.ArrayOfEnum):
             enum = column_type.item_type
             json_column['enum'] = enum.name
