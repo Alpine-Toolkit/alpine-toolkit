@@ -66,9 +66,9 @@ set(alpine_toolkit_library_files
   full_text_search/tokenizer.cpp
   international_morse_code_engine/international_morse_code_engine.cpp
   network/network_downloader.cpp
-  network/network_fetcher.cpp
   network/network_reply.cpp
-  network/network_ressource_request.cpp
+  network/network_request.cpp
+  network/network_request_manager.cpp
   orm/database.cpp
   orm/database_connection.cpp
   orm/database_query.cpp

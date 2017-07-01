@@ -30,24 +30,23 @@
 
 /**************************************************************************************************/
 
-NetworkReply::NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply)
+QcNetworkReply::QcNetworkReply(const QcNetworkRequestPtr & request, QNetworkReply * reply)
   : QObject(),
     m_request(request),
     m_reply(reply),
-    m_is_finished(false),
-    m_error(NetworkReply::NoError)
+    m_is_finished(false), // Fixme: others
+    m_error(QcNetworkReply::NoError)
 {
-  connect(m_reply, SIGNAL(finished()),
-	  this, SLOT(reply_finished()));
-
+  connect(m_reply, &QNetworkReply::downloadProgress, this, &QcNetworkReply::on_download_progress);
+  connect(m_reply, &QNetworkReply::uploadProgress, this, &QcNetworkReply::on_upload_progress);
+  connect(m_reply, &QNetworkReply::finished, this, &QcNetworkReply::on_reply_finished);
+  // Fixme: compilation error ???
+  // connect(m_reply, &QNetworkReply::error, this, &QcNetworkReply::on_reply_error);
   connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-	  this, SLOT(reply_error(QNetworkReply::NetworkError)));
-
-  connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
-	  this, SLOT(_download_progress(qint64, qint64)));
+	  this, SLOT(on_reply_error(QNetworkReply::NetworkError)));
 }
 
-NetworkReply::~NetworkReply()
+QcNetworkReply::~QcNetworkReply()
 {
   if (m_reply) {
     m_reply->deleteLater();
@@ -55,7 +54,7 @@ NetworkReply::~NetworkReply()
   }
 }
 
-void NetworkReply::set_finished(bool finished)
+void QcNetworkReply::set_finished(bool finished)
 {
   m_is_finished = finished;
   if (m_is_finished)
@@ -63,7 +62,7 @@ void NetworkReply::set_finished(bool finished)
 }
 
 void
-NetworkReply::set_error(NetworkReply::Error error, const QString & error_string)
+QcNetworkReply::set_error(QcNetworkReply::Error error, const QString & error_string)
 {
   m_error = error;
   m_error_string = error_string;
@@ -72,56 +71,71 @@ NetworkReply::set_error(NetworkReply::Error error, const QString & error_string)
 }
 
 void
-NetworkReply::abort()
+QcNetworkReply::abort()
 {
   if (m_reply)
     m_reply->abort();
 
-  // ???
+  // Fixme: ???
   // if (!is_finished())
   //   set_finished(true);
 }
 
 void
-NetworkReply::release() {
+QcNetworkReply::release()
+{
   set_finished(true);
   m_reply->deleteLater();
   m_reply = nullptr;
 }
 
-// Handle a successful request : store image data
+// Handle a successful request :
 void
-NetworkReply::reply_finished()
+QcNetworkReply::on_reply_finished()
 {
-  if (!m_reply)
+  if (!m_reply) // Fixme: ???
     return;
 
-  if (m_reply->error() != QNetworkReply::NoError) { // Fixme: when ?
+  if (m_reply->error() == QNetworkReply::NoError) { // Fixme: when ?
+    m_payload = m_reply->readAll();
+    release();
+  } else {
     qWarning() << "reply != NoError";
-    return;
   }
-
-  m_payload = m_reply->readAll();
-  release();
 }
 
 // Handle an unsuccessful request : set error message
 void
-NetworkReply::reply_error(QNetworkReply::NetworkError error)
+QcNetworkReply::on_reply_error(QNetworkReply::NetworkError error)
 {
   if (!m_reply)
     return;
 
   if (error != QNetworkReply::OperationCanceledError)
-    set_error(NetworkReply::CommunicationError, m_reply->errorString());
+    set_error(QcNetworkReply::CommunicationError, m_reply->errorString());
   release();
 }
 
 void
-NetworkReply::_download_progress(qint64 bytes_received, qint64 bytes_total)
+QcNetworkReply::set_completion(qint64 bytes_done, qint64 bytes_total)
 {
-  // qInfo() << "_download_progress" << bytes_received << bytes_total;
-  emit download_progress(m_request, qRound64(100. * bytes_received / (qreal) bytes_total));
+  m_completion = qRound64(100. * bytes_done / (qreal) bytes_total);
+}
+
+void
+QcNetworkReply::on_download_progress(qint64 bytes_received, qint64 bytes_total)
+{
+  set_completion(bytes_received, bytes_total);
+  qInfo() << "on_download_progress" << m_completion << "%";
+  // emit download_progress(m_request, download_progress);
+}
+
+void
+QcNetworkReply::on_upload_progress(qint64 bytes_sent, qint64 bytes_total)
+{
+  set_completion(bytes_sent, bytes_total);
+  qInfo() << "on_upload_progress" << m_completion << "%";
+  // emit upload_progress(m_request, upload_progress);
 }
 
 /***************************************************************************************************

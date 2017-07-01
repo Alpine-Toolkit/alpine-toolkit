@@ -26,7 +26,7 @@
 
 /**************************************************************************************************/
 
-#include "network_fetcher.h"
+#include "network_request_manager.h"
 
 #include <QDebug>
 #include <QMutexLocker>
@@ -34,34 +34,32 @@
 
 /**************************************************************************************************/
 
-NetworkFetcher::NetworkFetcher()
+QcNetworkRequestManager::QcNetworkRequestManager()
   : QObject(),
-    m_network_manager(new QNetworkAccessManager(this)),
+    m_network_manager(this),
     m_user_agent(""),
     m_enabled(true)
 {
-  connect(m_network_manager,
-	  SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-	  this,
-	  SLOT(on_authentication_request_slot(QNetworkReply*, QAuthenticator*)));
+  connect(&m_network_manager, &QNetworkAccessManager::authenticationRequired,
+	  this, &QcNetworkRequestManager::on_authentication_request_slot);
 
   // signal when a reply has finished
   // connect(m_network_manager, SIGNAL(finished(QNetworkReply*)),
   // 	  this, SLOT(replyFinished(QNetworkReply*)));
 }
 
-NetworkFetcher::~NetworkFetcher()
+QcNetworkRequestManager::~QcNetworkRequestManager()
 {}
 
 void
-NetworkFetcher::set_user_agent(const QByteArray & user_agent)
+QcNetworkRequestManager::set_user_agent(const QByteArray & user_agent)
 {
   m_user_agent = user_agent;
 }
 
 void
-NetworkFetcher::on_authentication_request_slot(QNetworkReply * reply,
-					       QAuthenticator * authenticator)
+QcNetworkRequestManager::on_authentication_request_slot(QNetworkReply * reply,
+                                                        QAuthenticator * authenticator)
 {
   // Fixme: this code do nothing
   Q_UNUSED(reply);
@@ -71,11 +69,10 @@ NetworkFetcher::on_authentication_request_slot(QNetworkReply * reply,
 }
 
 void
-NetworkFetcher::add_request(const NetworkRessourceRequest & request)
+QcNetworkRequestManager::add_request(const QcNetworkRequestPtr & request)
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  // clone request : new NetworkRessourceRequest(request)
   // add to a list
   m_queue += request;
 
@@ -85,11 +82,11 @@ NetworkFetcher::add_request(const NetworkRessourceRequest & request)
 }
 
 void
-NetworkFetcher::cancel_request(const NetworkRessourceRequest & request)
+QcNetworkRequestManager::cancel_request(const QcNetworkRequestPtr & request)
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  NetworkReply * reply = m_invmap.value(request, nullptr);
+  QcNetworkReply * reply = m_invmap.value(request, nullptr);
   if (reply) { // else url wasn't requested
     m_invmap.remove(request);
     reply->abort();
@@ -100,45 +97,39 @@ NetworkFetcher::cancel_request(const NetworkRessourceRequest & request)
 }
 
 void
-NetworkFetcher::timerEvent(QTimerEvent * event)
+QcNetworkRequestManager::timerEvent(QTimerEvent * event)
 {
-  qInfo() << "NetworkFetcher::timerEvent";
-  if (event->timerId() != m_timer.timerId()) { // Fixme: when ?
+  qInfo() << "QcNetworkRequestManager::timerEvent";
+  if (event->timerId() != m_timer.timerId()) // Fixme: when ???
     QObject::timerEvent(event);
-    return;
-  } else if (m_queue.isEmpty()) {
+  else if (m_queue.isEmpty())
     m_timer.stop();
-    return;
-  } else
+  else
     get_next_request();
 }
 
 void
-NetworkFetcher::get_next_request()
+QcNetworkRequestManager::get_next_request()
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  if (!m_enabled || m_queue.isEmpty())
+  if (not m_enabled or m_queue.isEmpty())
     return;
 
-  NetworkRessourceRequest request = m_queue.takeFirst();
+  QcNetworkRequestPtr request = m_queue.takeFirst();
 
-  qInfo() << "NetworkFetcher::get_next_request" << request;
-  // Fixme: could be Get Post ...
-  NetworkReply *reply = get(request);
+  qInfo() << "QcNetworkRequestManager::get_next_request" << request->url();
+  QcNetworkReply *reply = make_reply(request);
 
   // If the request is already finished then handle it
   // Else connect the finished signal
   if (reply->is_finished()) {
     handle_reply(reply);
   } else {
-    connect(reply, SIGNAL(finished()),
-	    this, SLOT(reply_finished()),
-	    Qt::QueuedConnection);
-    // connect(reply, SIGNAL(download_progress(const NetworkRessourceRequest&, qint64)),
-    // 	       this, SLOT(download_progress(const NetworkRessourceRequest&, qint64)));
-    connect(reply, &NetworkReply::download_progress,
-    	    this, &NetworkFetcher::download_progress);
+    connect(reply, &QcNetworkReply::finished,
+            this, &QcNetworkRequestManager::on_reply_finished,
+            Qt::QueuedConnection);
+    // connect(reply, &QcNetworkReply::download_progress, this, &QcNetworkRequestManager::download_progress);
     m_invmap.insert(request, reply);
   }
 
@@ -146,65 +137,73 @@ NetworkFetcher::get_next_request()
     m_timer.stop();
 }
 
-NetworkReply *
-NetworkFetcher::get(const NetworkRessourceRequest & request)
+QcNetworkReply *
+QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
 {
-  qInfo() << "Get" << request;
+  qInfo() << "make_reply" << request->url();
 
-  QNetworkRequest network_request;
+  // Create request
+  QNetworkRequest network_request = request->network_request();
   network_request.setRawHeader("User-Agent", m_user_agent);
-  network_request.setUrl(request.url());
-  // request.setPriority();
+  // network_request.setPriority();
 
-  QNetworkReply * network_reply = m_network_manager->get(network_request);
-  // post(const QNetworkRequest &request, const QByteArray &data)
+  // Send request to network manager
+  QNetworkReply * network_reply = nullptr;
+  QcNetworkRequest::RequestType request_type = request->type();
+  if (request_type == QcNetworkRequest::RequestType::Get)
+    network_reply = m_network_manager.get(network_request);
+  else if (request_type == QcNetworkRequest::RequestType::Post) {
+    QcPostNetworkRequest * post_request = dynamic_cast<QcPostNetworkRequest *>(request.data());
+    network_reply = m_network_manager.post(network_request, post_request->data());
+  }
   // put(const QNetworkRequest &request, const QByteArray &data)
   // deleteResource(const QNetworkRequest &request)
+
+  // Fixme: when ???
   if (network_reply->error() != QNetworkReply::NoError)
     qWarning() << __FUNCTION__ << network_reply->errorString();
 
+  // Fixme: ???
   // network_reply.setOriginatingObject(&request); // request must be an unique instance : a pointer !
 
-  NetworkReply * reply = new NetworkReply(request, network_reply);
-
-  return reply;
+  return new QcNetworkReply(request, network_reply); // Fixme: smart ?
 }
 
 void
-NetworkFetcher::reply_finished()
+QcNetworkRequestManager::on_reply_finished()
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  NetworkReply * reply = qobject_cast<NetworkReply *>(sender());
-  if (!reply) { // Fixme: when ?
-    qWarning() << "NetworkFetcher::reply_finished reply is null";
+  QcNetworkReply * reply = qobject_cast<QcNetworkReply *>(sender());
+  if (not reply) { // Fixme: when ???
+    qWarning() << "QcNetworkRequestManager::reply_finished reply is null";
     return;
   }
 
-  NetworkRessourceRequest request = reply->request();
-  qInfo() << "NetworkFetcher::finished" << request.url();
+  const QcNetworkRequestPtr & request = reply->request();
+  qInfo() << "QcNetworkRequestManager::on_reply_finished" << request->url();
   if (m_invmap.contains(request)) { // cancelled request
     m_invmap.remove(request);
     handle_reply(reply);
   } else {
-    qWarning() << "NetworkFetcher::reply_finished m_invmap doesn't have url";
-    reply->deleteLater(); // Fixme: cancelled ?
+    qWarning() << "QcNetworkRequestManager::reply_finished m_invmap doesn't have url";
+    reply->deleteLater(); // Fixme: cancelled ???
   }
 }
 
 void
-NetworkFetcher::handle_reply(NetworkReply * reply)
+QcNetworkRequestManager::handle_reply(QcNetworkReply * reply)
 {
-  NetworkRessourceRequest request = reply->request();
-  qInfo() << "NetworkFetcher::handle_reply" << request.url();
+  const QcNetworkRequestPtr & request = reply->request();
+  qInfo() << "QcNetworkRequestManager::handle_reply" << request->url();
 
   if (m_enabled) {
     // emit signal according to the reply status
-    if (reply->error() == NetworkReply::NoError) {
-      qInfo() << "NetworkFetcher::handle_reply emit tile_finished";
+    if (reply->error() == QcNetworkReply::NoError) {
+      qInfo() << "QcNetworkRequestManager::handle_reply emit tile_finished";
       emit request_finished(request, reply->payload());
     } else {
-      qInfo() << "NetworkFetcher::handle_reply emit tile_error" << reply->error_string();
+      qInfo() << "QcNetworkRequestManager::handle_reply emit tile_error" << reply->error_string();
       emit request_error(request, reply->error_string());
     }
   }

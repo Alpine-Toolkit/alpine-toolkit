@@ -33,68 +33,73 @@
 
 /**************************************************************************************************/
 
+#include "network/network_request.h"
+
 #include <QNetworkReply>
 #include <QPointer>
 
-#include "network_ressource_request.h"
-
 /**************************************************************************************************/
 
-/* The NetworkReply class contains a request identifier and a QNetworkReply instance.
+/* The QcNetworkReply class encapsulates a request and a QQcNetworkReply instance.
  *
  */
-class NetworkReply : public QObject
+class QcNetworkReply : public QObject
 {
   Q_OBJECT
 
 public:
-  enum Error { // Fixme: check
+  enum Error { // Fixme: check, class enum
     NoError,
     CommunicationError,
     UnknownError
   };
 
 public:
-  // Fixme: reply.request() but NetworkRessourceRequest is not a subclass of QNetworkRequest
-  explicit NetworkReply(const NetworkRessourceRequest & request, QNetworkReply * reply);
-  // NetworkReply(Error error, const QString & error_string);
-  ~NetworkReply();
+  explicit QcNetworkReply(const QcNetworkRequestPtr & request, QNetworkReply * reply);
+  // QcNetworkReply(Error error, const QString & error_string); // Fixme: ???
+  Q_DISABLE_COPY(QcNetworkReply);
+  ~QcNetworkReply();
 
-  NetworkRessourceRequest request() const { return m_request; }
+  const QcNetworkRequestPtr & request() const { return m_request; }
   QNetworkReply * network_reply() const { return m_reply; }
 
+  void abort();
+
+  int completion() const { return m_completion; }
+
   bool is_finished() const { return m_is_finished; }
+  bool succeed() const { return m_is_finished and m_error == NoError; }
 
   Error error() const { return m_error; };
   QString error_string() const { return m_error_string; };
 
   const QByteArray & payload() const { return m_payload; };
 
-  void abort();
-
 signals:
-  void download_progress(const NetworkRessourceRequest & request, qint64 percent);
+  // void download_progress(const NetworkRessourceRequest & request, qint64 percent);
   void finished();
-  void error(Error error, const QString & error_string = QString());
+  void error(Error error, const QString & error_string = QString()); // Fixme: args versus sender ?
 
 protected:
   void set_finished(bool finished);
   void set_error(Error error, const QString & error_string);
 
 private:
-  Q_DISABLE_COPY(NetworkReply);
   void release();
+  void set_completion(qint64 bytes_done, qint64 bytes_total);
 
 private slots:
-  void _download_progress(qint64 bytes_received, qint64 bytes_total);
-  void reply_finished();
-  void reply_error(QNetworkReply::NetworkError error);
+  void on_download_progress(qint64 bytes_received, qint64 bytes_total);
+  void on_upload_progress(qint64 bytes_sent, qint64 bytes_total);
+  void on_reply_finished();
+  void on_reply_error(QNetworkReply::NetworkError error);
 
 private:
-  NetworkRessourceRequest m_request;
-  QPointer<QNetworkReply> m_reply;
-  bool m_is_finished;
-  Error m_error;
+  QcNetworkRequestPtr m_request;
+  QPointer<QNetworkReply> m_reply; // guarded pointer set to nullptr when destroyed
+  int m_completion = 0;
+  bool m_is_finished = false;
+  Error m_error = QcNetworkReply::NoError;
   QString m_error_string;
   QByteArray m_payload;
 };

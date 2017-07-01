@@ -28,10 +28,13 @@
 
 /**************************************************************************************************/
 
-#ifndef __NETWORK_FETCHER_H__
-#define __NETWORK_FETCHER_H__
+#ifndef __NETWORK_REQUEST_MANAGER_H__
+#define __NETWORK_REQUEST_MANAGER_H__
 
 /**************************************************************************************************/
+
+#include "network/network_request.h"
+#include "network/network_reply.h"
 
 #include <QAuthenticator>
 #include <QHash>
@@ -43,65 +46,62 @@
 #include <QObject>
 #include <QTimer>
 
-#include "network_ressource_request.h"
-#include "network_reply.h"
-
 /**************************************************************************************************/
 
 // Fixme: check code against qtcarto
 
-/* The NetworkFetcher class manages a list of asynchronous requests.
+/* The QcNetworkRequestManager class manages a list of asynchronous requests.
  *
  * Note: QNetworkAccessManager queues the requests it receives. The
  * number of requests executed in parallel is dependent on the
  * protocol. Currently, for the HTTP protocol on desktop platforms, 6
  * requests are executed in parallel for one host/port combination.
  */
-class NetworkFetcher : public QObject
+class QcNetworkRequestManager : public QObject
 {
   Q_OBJECT
 
 public:
-  NetworkFetcher();
-  ~NetworkFetcher();
+  QcNetworkRequestManager();
+  ~QcNetworkRequestManager();
 
   void set_user_agent(const QByteArray & user_agent);
   // void set_connection_identifier();
 
 public slots:
-  void add_request(const NetworkRessourceRequest & request);
-  void cancel_request(const NetworkRessourceRequest & request);
+  void add_request(const QcNetworkRequestPtr & request);
+  void cancel_request(const QcNetworkRequestPtr & request);
 
 signals:
-  void download_progress(const NetworkRessourceRequest & request, qint64 percent);
-  void request_finished(const NetworkRessourceRequest & request, const QByteArray & payload); // & ???
-  void request_error(const NetworkRessourceRequest & request, const QString & error_string);
+  // void download_progress(const QcNetworkRequestPtr & request, qint64 percent);
+  void request_finished(const QcNetworkRequestPtr & request, const QByteArray & payload); // & ???
+  void request_error(const QcNetworkRequestPtr & request, const QString & error_string);
 
 protected:
-  void timerEvent(QTimerEvent * event);
+  void timerEvent(QTimerEvent * event); // Fixme: protected ???
 
 private:
-  NetworkReply * get(const NetworkRessourceRequest & request);
-  void handle_reply(NetworkReply * reply);
+  QcNetworkReply * make_reply(const QcNetworkRequestPtr & request);
+  void handle_reply(QcNetworkReply * reply);
 
 private slots:
   void get_next_request();
-  void reply_finished();
+  void on_reply_finished();
   void on_authentication_request_slot(QNetworkReply * reply, QAuthenticator * authenticator);
 
 private:
-  QNetworkAccessManager * m_network_manager;
+  QNetworkAccessManager m_network_manager;
   QByteArray m_user_agent;
   bool m_enabled;
   QBasicTimer m_timer;
   QMutex m_queue_mutex;
-  QList<NetworkRessourceRequest> m_queue;
-  QHash<NetworkRessourceRequest, NetworkReply *> m_invmap;
+  QList<QcNetworkRequestPtr> m_queue;
+  QHash<QcNetworkRequestPtr, QcNetworkReply *> m_invmap;
 };
 
 /**************************************************************************************************/
 
-#endif /* __NETWORK_FETCHER_H__ */
+#endif /* __NETWORK_REQUEST_MANAGER_H__ */
 
 /***************************************************************************************************
  *

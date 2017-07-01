@@ -36,18 +36,22 @@
 #include <QHash>
 #include <QObject>
 
-#include "network_ressource_request.h"
-#include "network_fetcher.h"
+#include "network/network_request.h"
+#include "network/network_request_manager.h"
 
 /**************************************************************************************************/
 
-// request model
-// retry
+/* Fixme:
+ * request model
+ * retry
+ */
+
+/**************************************************************************************************/
 
 /* The class NetworkDownloadRequest defines the URL of the request and the path of the target.
  *
  */
-class NetworkDownloadRequest : public NetworkRessourceRequest
+class NetworkDownloadRequest : public QcGetNetworkRequest
 {
   Q_OBJECT
 
@@ -66,8 +70,6 @@ private:
   QString m_target_path;
 };
 
-unsigned int qHash(const NetworkDownloadRequest & request);
-
 QDebug operator<<(QDebug debug, const NetworkDownloadRequest & request);
 
 /**************************************************************************************************/
@@ -80,24 +82,24 @@ class NetworkDownloader : public QObject
   Q_OBJECT
 
 public:
-  NetworkDownloader(NetworkFetcher & network_fetcher);
+  NetworkDownloader(QcNetworkRequestManager & network_fetcher);
   ~NetworkDownloader();
 
-  void add_request(const NetworkDownloadRequest & request);
-  void cancel_request(const NetworkDownloadRequest & request);
+  void add_request(const QcNetworkRequestPtr & request); // Fixme: NetworkDownloadRequest
+  void cancel_request(const QcNetworkRequestPtr & request);
 
 signals:
-  void download_progress(const NetworkRessourceRequest & request, qint64 percent);
-  void finished(const NetworkRessourceRequest & request);
-  void error(const NetworkRessourceRequest & request, const QString & error_string);
+  // void download_progress(const QcNetworkRequestPtr & request, qint64 percent);
+  void finished(const QcNetworkRequestPtr & request);
+  void error(const QcNetworkRequestPtr & request, const QString & error_string);
 
 private slots:
-  void request_finished(const NetworkRessourceRequest & request, const QByteArray & payload); // & ???
-  void request_error(const NetworkRessourceRequest & request, const QString & error_string);
+  void on_request_finished(const QcNetworkRequestPtr & request, const QByteArray & payload); // & ???
+  void on_request_error(const QcNetworkRequestPtr & request, const QString & error_string);
 
 private:
-  NetworkFetcher & m_network_fetcher;
-  QHash<NetworkRessourceRequest, NetworkDownloadRequest> m_invmap; // NetworkRessourceRequest vs NetworkDownloadRequest
+  QcNetworkRequestManager & m_network_fetcher;
+  QHash<QcNetworkRequestPtr, QcNetworkRequestPtr> m_invmap;
 };
 
 /**************************************************************************************************/
