@@ -151,18 +151,18 @@ QcNetworkRequestManager::make_request(const QcNetworkRequestPtr & request) const
 QcNetworkReply *
 QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
 {
-  qInfo() << "make_reply" << request->url();
-
   // Create request
   QNetworkRequest network_request = make_request(request);
 
   // Send request to network manager
   QNetworkReply * network_reply = nullptr;
   QcNetworkRequest::RequestType request_type = request->type();
-  if (request_type == QcNetworkRequest::RequestType::Get)
+  if (request_type == QcNetworkRequest::RequestType::Get) {
+    qInfo() << "QcNetworkRequestPtr::make_reply GET" << request->url();
     network_reply = m_network_manager.get(network_request);
-  else if (request_type == QcNetworkRequest::RequestType::Post) {
+  } else if (request_type == QcNetworkRequest::RequestType::Post) {
     auto post_request = request.dynamicCast<QcPostNetworkRequest>();
+    qInfo() << "QcNetworkRequestPtr::make_reply POST" << request->url() << "\n" << post_request->data();
     network_reply = m_network_manager.post(network_request, post_request->data());
   }
   // put(const QNetworkRequest &request, const QByteArray &data)

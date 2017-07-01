@@ -72,7 +72,7 @@ signals:
 
 public slots:
   void received_health_status_hook(const QJsonDocument * json_document) {
-    qInfo() << "Received health status" << json_document->toJson(QJsonDocument::Indented);
+    qInfo().noquote() << "Received health status" << json_document->toJson(QJsonDocument::Indented);
     emit received_response();
   }
 
@@ -105,8 +105,8 @@ private slots:
 void
 TestC2cClient::constructor()
 {
-  // C2cLogin login(username, password);
-  // qInfo() << login;
+  C2cLogin login(username, password);
+  qInfo() << login;
   MyC2cClient client;
   // client.login(login);
   // {

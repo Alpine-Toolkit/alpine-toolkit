@@ -133,7 +133,10 @@ QcNetworkReply::on_reply_error(QNetworkReply::NetworkError error)
 void
 QcNetworkReply::set_completion(qint64 bytes_done, qint64 bytes_total)
 {
-  m_completion = qRound64(100. * bytes_done / (qreal) bytes_total);
+  if (bytes_total > 0)
+    m_completion = qRound64(100. * bytes_done / (qreal) bytes_total);
+  else
+    m_completion = 0;
 }
 
 void
