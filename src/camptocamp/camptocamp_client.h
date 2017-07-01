@@ -69,15 +69,7 @@ class C2cApiGetRequest : public QcGetNetworkRequest, public C2cApiRequestMixin
   Q_OBJECT
 
 public:
-  // C2cApiGetRequest();
   C2cApiGetRequest(const QUrl & url);
-  // C2cApiGetRequest(const C2cApiGetRequest & other);
-
-  // C2cApiGetRequest & operator=(const C2cApiGetRequest & other);
-
-  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
-
-  // bool operator==(const C2cApiGetRequest & rhs) const;
 
 signals:
   void finished(const QJsonDocument * json_document);
@@ -97,15 +89,7 @@ class C2cApiPostRequest : public QcPostNetworkRequest, public C2cApiRequestMixin
   Q_OBJECT
 
 public:
-  // C2cApiPostRequest();
   C2cApiPostRequest(const QUrl & url, const QJsonDocument & document);
-  // C2cApiPostRequest(const C2cApiPostRequest & other);
-
-  // C2cApiPostRequest & operator=(const C2cApiPostRequest & other);
-
-  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
-
-  // bool operator==(const C2cApiPostRequest & rhs) const;
 
 signals:
   void finished(const QJsonDocument * json_document);
@@ -125,15 +109,7 @@ class C2cApiMediaRequest : public QcGetNetworkRequest
   Q_OBJECT
 
 public:
-  // C2cApiMediaRequest();
   C2cApiMediaRequest(const QUrl & url);
-  // C2cApiMediaRequest(const C2cApiMediaRequest & other);
-
-  // C2cApiMediaRequest & operator=(const C2cApiMediaRequest & other);
-
-  // operator QcNetworkRequestPtr() { return QcNetworkRequestPtr(this); }
-
-  // bool operator==(const C2cApiMediaRequest & rhs) const;
 
   const QString & media() const { return m_media; }
 

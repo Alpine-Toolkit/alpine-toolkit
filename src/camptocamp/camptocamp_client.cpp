@@ -60,38 +60,10 @@ C2cApiRequestMixin::to_json_document(const QByteArray & json_data)
 
 /**************************************************************************************************/
 
-/*
-C2cApiGetRequest::C2cApiGetRequest()
-  : QcGetNetworkRequest()
-{}
-*/
-
 C2cApiGetRequest::C2cApiGetRequest(const QUrl & url)
   : QcGetNetworkRequest(url),
     C2cApiRequestMixin()
 {}
-
-/*
-C2cApiGetRequest::C2cApiGetRequest(const C2cApiGetRequest & other)
-  : QcGetNetworkRequest(other)
-{}
-
-C2cApiGetRequest &
-C2cApiGetRequest::operator=(const C2cApiGetRequest & other)
-{
-  if (this != &other) {
-    QcGetNetworkRequest::operator=(other);
-  }
-
-  return *this;
-}
-
-bool
-C2cApiGetRequest::operator==(const C2cApiGetRequest & rhs) const
-{
-  return QcGetNetworkRequest::operator==(rhs);
-}
-*/
 
 void
 C2cApiGetRequest::on_error(const QString & error_string)
@@ -115,38 +87,10 @@ C2cApiGetRequest::on_data_received(const QByteArray & json_data)
 
 /**************************************************************************************************/
 
-/*
-C2cApiPostRequest::C2cApiPostRequest()
-  : QcPostNetworkRequest()
-{}
-*/
-
 C2cApiPostRequest::C2cApiPostRequest(const QUrl & url, const QJsonDocument & document)
   : QcPostNetworkRequest(url, document),
     C2cApiRequestMixin()
 {}
-
-/*
-C2cApiPostRequest::C2cApiPostRequest(const C2cApiPostRequest & other)
-  : QcPostNetworkRequest(other)
-{}
-
-C2cApiPostRequest &
-C2cApiPostRequest::operator=(const C2cApiPostRequest & other)
-{
-  if (this != &other) {
-    QcPostNetworkRequest::operator=(other);
-  }
-
-  return *this;
-}
-
-bool
-C2cApiPostRequest::operator==(const C2cApiPostRequest & rhs) const
-{
-  return QcPostNetworkRequest::operator==(rhs);
-}
-*/
 
 void
 C2cApiPostRequest::on_error(const QString & error_string)
@@ -169,38 +113,10 @@ C2cApiPostRequest::on_data_received(const QByteArray & json_data)
 
 /**************************************************************************************************/
 
-/*
-C2cApiMediaRequest::C2cApiMediaRequest()
-  : QcGetNetworkRequest()
-{}
-*/
-
 C2cApiMediaRequest::C2cApiMediaRequest(const QUrl & url)
   : QcGetNetworkRequest(url),
     m_media(url.fileName())
 {}
-
-/*
-C2cApiMediaRequest::C2cApiMediaRequest(const C2cApiMediaRequest & other)
-  : QcGetNetworkRequest(other)
-{}
-
-C2cApiMediaRequest &
-C2cApiMediaRequest::operator=(const C2cApiMediaRequest & other)
-{
-  if (this != &other) {
-    QcGetNetworkRequest::operator=(other);
-  }
-
-  return *this;
-}
-
-bool
-C2cApiMediaRequest::operator==(const C2cApiMediaRequest & rhs) const
-{
-  return QcGetNetworkRequest::operator==(rhs);
-}
-*/
 
 void
 C2cApiMediaRequest::on_error(const QString & error_string)
