@@ -107,19 +107,19 @@ signals:
 private slots:
   void on_logged();
   void on_loggin_failed();
-  void on_received_document(const QJsonDocument * json_document);
-  // void on_get_document_failed(const QJsonDocument * json_document);
+  void on_received_document(const QJsonDocumentPtr & json_document);
+  // void on_get_document_failed(const QJsonDocumentPtr & json_document);
   void on_received_media(const QString & media, QByteArray data);
-  void on_received_search(const QJsonDocument * json_document);
-  // void on_search_failed(const QJsonDocument * json_document);
+  void on_received_search(const QJsonDocumentPtr & json_document);
+  // void on_search_failed(const QJsonDocumentPtr & json_document);
 
 private:
   C2cClient m_client;
   C2cApiCache m_api_cache;
   C2cMediaCache m_media_cache;
   C2cLogin m_login;
-  QHash<unsigned int, C2cDocument *> m_documents; // Fixme: qpointer, use constrained cache
-  QHash<QString, QByteArray *> m_medias; // Fixme: qpointer
+  QHash<unsigned int, C2cDocumentPtr> m_documents;
+  QHash<QString, QSharedPointer<QByteArray>> m_medias;
   C2cSearchResult m_search_result;
 };
 

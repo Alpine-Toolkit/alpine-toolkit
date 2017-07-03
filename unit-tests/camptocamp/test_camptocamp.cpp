@@ -71,19 +71,19 @@ signals:
   void received_response();
 
 public slots:
-  void received_health_status_hook(const QJsonDocument * json_document) {
+  void received_health_status_hook(const QJsonDocumentPtr & json_document) {
     qInfo().noquote() << "Received health status" << json_document->toJson(QJsonDocument::Indented);
     emit received_response();
   }
 
-  void received_document_hook(const QJsonDocument * json_document) {
+  void received_document_hook(const QJsonDocumentPtr & json_document) {
     C2cDocument document(json_document->object());
-    C2cDocument * casted_document = document.cast();
+    C2cDocumentPtr casted_document = document.cast();
     qInfo() << "Received document" << *casted_document; // << json_document->toJson(QJsonDocument::Indented);
     emit received_response();
   }
 
-  void received_search_hook(const QJsonDocument * json_document) {
+  void received_search_hook(const QJsonDocumentPtr & json_document) {
     C2cSearchResult search_result(json_document);
     for (const auto & route : search_result.routes())
       qInfo() << route.id() << route.title(QStringLiteral("fr")) << route.activities();

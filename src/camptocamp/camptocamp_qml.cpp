@@ -42,30 +42,20 @@ C2cQmlClient::C2cQmlClient(const QString & sqlite_path, const QString & media_pa
 {
   m_login = m_api_cache.login();
 
-  connect(&m_client, SIGNAL(logged()),
-          this, SLOT(on_logged()));
-  connect(&m_client, SIGNAL(login_failed()),
-          this, SLOT(on_loggin_failed()));
+  connect(&m_client, &C2cClient::logged, this, &C2cQmlClient::on_logged);
+  connect(&m_client, &C2cClient::login_failed, this, &C2cQmlClient::on_loggin_failed);
 
-  // connect(&m_client, SIGNAL(logged),
-  //         this, SLOT(logged));
-  // connect(&m_client, SIGNAL(login_failed),
-  //         this, SLOT(loggin_failed));
+  // connect(&m_client, &C2cClient::logged), this, &C2cQmlClient::logged);
+  // connect(&m_client, &C2cClient::login_failed, this, &C2cQmlClient::loggin_failed);
 
-  connect(&m_client, SIGNAL(received_document(const QJsonDocument *)),
-          this, SLOT(on_received_document(const QJsonDocument *)));
-  // connect(&m_client, SIGNAL(get_document_failed(const QJsonDocument *)),
-  //         this, SLOT(on_get_document_failed(const QJsonDocument *)));
+  connect(&m_client, &C2cClient::received_document, this, &C2cQmlClient::on_received_document);
+  // connect(&m_client, &C2cClient::get_document_failed, this, &C2cQmlClient::on_get_document_failed);
 
-  connect(&m_client, SIGNAL(received_media(const QString &, QByteArray)),
-          this, SLOT(on_received_media(const QString &, QByteArray)));
-  // connect(&m_client, SIGNAL(get_media_failed(const QJsonMedia *)),
-  //         this, SLOT(on_get_media_failed(const QJsonMedia *)));
+  connect(&m_client, &C2cClient::received_media, this, &C2cQmlClient::on_received_media);
+  // connect(&m_client, &C2cClient::get_media_failed), this, &C2cQmlClient::on_get_media_failed);
 
-  connect(&m_client, SIGNAL(received_search(const QJsonDocument *)),
-          this, SLOT(on_received_search(const QJsonDocument *)));
-  // connect(&m_client, SIGNAL(search_failed(const QJsonDocument *)),
-  //         this, SLOT(on_search_failed(const QJsonDocument *)));
+  connect(&m_client, &C2cClient::received_search, this, &C2cQmlClient::on_received_search);
+  // connect(&m_client, &C2cClient::search_failed, this, &C2cQmlClient::on_search_failed);
 }
 
 /************************************************/
@@ -155,6 +145,7 @@ C2cQmlClient::load_document(unsigned int document_id, bool use_cache,
   if (use_cache and m_api_cache.has_document(document_id))
     emit receivedDocument(document_id);
   else
+    // Fixme: could use C2cClient::get_document(const QString & document_type, unsigned int document_id)
     (m_client.*loader)(document_id);
 }
 
@@ -209,11 +200,11 @@ C2cQmlClient::waypoint(unsigned int document_id, bool use_cache)
 /************************************************/
 
 void
-C2cQmlClient::on_received_document(const QJsonDocument * json_document)
+C2cQmlClient::on_received_document(const QJsonDocumentPtr & json_document)
 {
   // Fixme: ok ???
   C2cDocument document(*json_document);
-  C2cDocument * casted_document = document.cast();
+  C2cDocumentPtr casted_document = document.cast();
   unsigned int document_id = document.id();
   m_documents.insert(document_id, casted_document);
   qInfo() << "C2cQmlClient::on_received_document" << *casted_document;
@@ -232,21 +223,23 @@ C2cQmlClient::get_document(unsigned int document_id, bool use_cache)
 {
   // Fixme: db -> mem cache ?
   if (use_cache) {
-    C2cDocument * document = m_api_cache.get_document(document_id);
-    if (document) {
-      qInfo() << "Found document " << document_id << " in cache";
-      return document;
+    C2cDocumentPtr document = m_api_cache.get_document(document_id);
+    if (not document.isNull()) {
+      qInfo() << "Found document" << document_id << "in cache";
+      m_documents.insert(document_id, document);
+      return document.data();
     }
   }
-  return m_documents.value(document_id, nullptr);
+  C2cDocumentPtr document = m_documents.value(document_id, nullptr);
+  return document.data();
 }
 
 void
 C2cQmlClient::save_document(unsigned int document_id)
 {
-  C2cDocument * document = m_documents.value(document_id, nullptr);
-  if (document)
-    m_api_cache.save_document(*document);
+  C2cDocumentPtr document = m_documents.value(document_id, nullptr);
+  if (not document.isNull())
+    m_api_cache.save_document(document);
 }
 
 /************************************************/
@@ -258,7 +251,7 @@ C2cQmlClient::search(const QString & search_string, const C2cSearchSettings & se
 }
 
 void
-C2cQmlClient::on_received_search(const QJsonDocument * json_document)
+C2cQmlClient::on_received_search(const QJsonDocumentPtr & json_document)
 {
   qInfo() << "C2cQmlClient::on_received_search";
   m_search_result.update(json_document);
@@ -281,7 +274,7 @@ void
 C2cQmlClient::on_received_media(const QString & media, QByteArray data)
 {
   qInfo() << "C2cQmlClient::on_received_media" << media;
-  m_medias.insert(media, new QByteArray(data)); // Fixme: delete
+  m_medias.insert(media, QSharedPointer<QByteArray>(new QByteArray(data)));
   emit receivedMedia(media);
 }
 
@@ -304,13 +297,14 @@ C2cQmlClient::get_media(const QString & media, bool use_cache) // unused
   //     return data;
   //   }
   // }
-  return m_medias.value(media, nullptr);
+  QSharedPointer<QByteArray> ptr = m_medias.value(media, nullptr);
+  return ptr.data();
 }
 
 void
 C2cQmlClient::save_media(const QString & media)
 {
-  QByteArray * data = m_medias.value(media, nullptr);
+  QSharedPointer<QByteArray> data = m_medias.value(media, nullptr);
   if (data)
     m_media_cache.save_media(media, *data);
 }

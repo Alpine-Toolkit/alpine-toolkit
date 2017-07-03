@@ -51,9 +51,9 @@ public:
   C2cLogin login(); // const
   void save_login(const C2cLogin & login);
 
-  void save_document(const C2cDocument & document);
+  void save_document(const C2cDocumentPtr & document);
   bool has_document(unsigned int document_id) const;
-  C2cDocument * get_document(unsigned int document_id) const;
+  C2cDocumentPtr get_document(unsigned int document_id) const;
 
 private:
   void init();

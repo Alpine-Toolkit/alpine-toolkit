@@ -61,7 +61,7 @@ C2cLoginData::~C2cLoginData()
 {}
 
 void
-C2cLoginData::from_json(const QJsonDocument * json_document)
+C2cLoginData::from_json(const QJsonDocumentPtr & json_document)
 {
   QJsonObject root = json_document->object();
   m_language = root[QStringLiteral("lang")].toString();

@@ -135,20 +135,20 @@ C2cApiCache::save_login(const C2cLogin & login)
 }
 
 void
-C2cApiCache::save_document(const C2cDocument & document)
+C2cApiCache::save_document(const C2cDocumentPtr & document)
 {
-  unsigned int document_id = document.id();
+  unsigned int document_id = document->id();
   if (has_document(document_id)) {
     QVariantHash kwargs_where;
     kwargs_where[ID] = document_id;
     QVariantHash kwargs_update;
-    kwargs_update[DATA] = document.to_json();
+    kwargs_update[DATA] = document->to_json();
     m_document_table->update(kwargs_update, kwargs_where);
     qInfo() << "Updated document " << document_id << " in cache";
   } else  {
     QVariantHash kwargs;
     kwargs[ID] = document_id;
-    kwargs[DATA] = document.to_json();
+    kwargs[DATA] = document->to_json();
     m_document_table->insert(kwargs);
     qInfo() << "Inserted document " << document_id << " in cache";
   }
@@ -164,7 +164,7 @@ C2cApiCache::has_document(unsigned int document_id) const
   return record.isEmpty() == false;
 }
 
-C2cDocument *
+C2cDocumentPtr
 C2cApiCache::get_document(unsigned int document_id) const
 {
   QVariantHash kwargs;
@@ -175,7 +175,7 @@ C2cApiCache::get_document(unsigned int document_id) const
   else {
     QByteArray json_data = record.value(0).toByteArray();
     QJsonDocument json_document = QJsonDocument::fromJson(json_data);
-    return C2cDocument(json_document.object()).cast(); // Fixme: delete
+    return C2cDocument(json_document.object()).cast();
   }
 }
 

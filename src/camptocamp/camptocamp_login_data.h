@@ -35,7 +35,12 @@
 
 #include <QDateTime>
 #include <QJsonDocument>
+#include <QSharedPointer>
 #include <QString>
+
+/**************************************************************************************************/
+
+typedef QSharedPointer<QJsonDocument> QJsonDocumentPtr;
 
 /**************************************************************************************************/
 
@@ -48,7 +53,7 @@ public:
 
   C2cLoginData & operator=(const C2cLoginData & other);
 
-  void from_json(const QJsonDocument * json_document);
+  void from_json(const QJsonDocumentPtr & json_document);
   void reset();
 
   bool is_valid() const { return m_id > 0; }

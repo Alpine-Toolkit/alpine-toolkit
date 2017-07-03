@@ -37,14 +37,22 @@
 #include <QJsonObject>
 #include <QList>
 #include <QQmlListProperty>
+#include <QSharedPointer>
 #include <QString>
 #include <QtDebug>
+
+/**************************************************************************************************/
+
+typedef QSharedPointer<QJsonDocument> QJsonDocumentPtr;
 
 /**************************************************************************************************/
 
 QString markdown_to_html(const QString & markdown);
 
 /**************************************************************************************************/
+
+class C2cDocument;
+typedef QSharedPointer<C2cDocument> C2cDocumentPtr;
 
 class C2cDocument : public QObject
 {
@@ -98,7 +106,7 @@ public:
   QByteArray to_json() const;
   Q_INVOKABLE QString to_json_string() const;
 
-  C2cDocument * cast() const;
+  C2cDocumentPtr cast() const;
 
   // C2c attributes
   unsigned int id() const;
@@ -226,6 +234,8 @@ public:
   QString title_fr() const { return title("fr"); };
 };
 
+typedef QSharedPointer<C2cImage> C2cImagePtr;
+
 Q_DECLARE_METATYPE(C2cImage)
 // Q_DECLARE_METATYPE(C2cImage*)
 
@@ -342,7 +352,7 @@ private:
   static C2cImage * image_list_property_at(QQmlListProperty<C2cImage> * list, int index);
 
 private:
-  QList<C2cImage *> m_images;
+  QList<C2cImagePtr> m_images;
 };
 
 Q_DECLARE_METATYPE(C2cRoute)
@@ -357,7 +367,7 @@ class C2cSearchResult : public QObject
 
 public:
   C2cSearchResult();
-  C2cSearchResult(const QJsonDocument * json_document);
+  C2cSearchResult(const QJsonDocumentPtr & json_document);
   C2cSearchResult(const C2cSearchResult & other);
   ~C2cSearchResult();
 
@@ -366,7 +376,7 @@ public:
   const QList<C2cShortRoute> & routes() const { return m_routes; }
   QQmlListProperty<C2cShortRoute> route_list_property(); // const
 
-  void update(const QJsonDocument * json_document);
+  void update(const QJsonDocumentPtr & json_document);
 
 private:
   static int route_list_property_count(QQmlListProperty<C2cShortRoute> * list);

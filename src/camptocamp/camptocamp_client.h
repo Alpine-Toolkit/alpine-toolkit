@@ -45,7 +45,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QPointer>
+#include <QSharedPointer>
 #include <QString>
 #include <QStringList>
 #include <QUrl>
@@ -54,12 +54,14 @@
 
 class C2cClient;
 
+typedef QSharedPointer<QJsonDocument> QJsonDocumentPtr;
+
 /**************************************************************************************************/
 
 struct C2cApiRequestMixin
 {
-  static bool check_json_response(const QJsonDocument * json_document);
-  static QJsonDocument * to_json_document(const QByteArray & data);
+  static bool check_json_response(const QJsonDocumentPtr & json_document);
+  static QJsonDocumentPtr to_json_document(const QByteArray & data);
 };
 
 /**************************************************************************************************/
@@ -72,8 +74,8 @@ public:
   C2cApiGetRequest(const QUrl & url);
 
 signals:
-  void finished(const QJsonDocument * json_document);
-  void error(const QJsonDocument * json_document);
+  void finished(const QJsonDocumentPtr & json_document);
+  void error(const QJsonDocumentPtr & json_document);
 
 public slots:
   void on_error(const QString & error_string);
@@ -92,8 +94,8 @@ public:
   C2cApiPostRequest(const QUrl & url, const QJsonDocument & document);
 
 signals:
-  void finished(const QJsonDocument * json_document);
-  void error(const QJsonDocument * json_document);
+  void finished(const QJsonDocumentPtr & json_document);
+  void error(const QJsonDocumentPtr & json_document);
 
 public slots:
   void on_error(const QString & error_string);
@@ -182,20 +184,20 @@ public:
 
   void search(const QString & search_string, const C2cSearchSettings & settings);
 
-  void post(const QJsonDocument * json_document);
-  void update(const QJsonDocument * json_document, const QString & message = "");
+  void post(const QJsonDocumentPtr & json_document);
+  void update(const QJsonDocumentPtr & json_document, const QString & message = "");
 
   void media(const QString & path);
 
 signals:
   void logged();
   void login_failed();
-  void received_health_status(const QJsonDocument * json_document);
-  void get_health_failed(const QJsonDocument * json_document);
-  void received_search(const QJsonDocument * json_document);
-  void search_failed(const QJsonDocument * json_document);
-  void received_document(const QJsonDocument * json_document);
-  void get_document_failed(const QJsonDocument * json_document);
+  void received_health_status(const QJsonDocumentPtr & json_document);
+  void get_health_failed(const QJsonDocumentPtr & json_document);
+  void received_search(const QJsonDocumentPtr & json_document);
+  void search_failed(const QJsonDocumentPtr & json_document);
+  void received_document(const QJsonDocumentPtr & json_document);
+  void get_document_failed(const QJsonDocumentPtr & json_document);
   void received_media(const QString & media, const QByteArray data); // Fixme: const ???
   void get_media_failed(const QString & media);
 
@@ -204,11 +206,11 @@ private:
   QUrl make_api_url(const QStringList & strings) const;
   QUrl make_media_url(const QString & media) const;
   void get_document(const QString & document_type, unsigned int document_id);
-  QUrl make_url_for_document(const QJsonDocument * json_document) const;
+  QUrl make_url_for_document(const QJsonDocumentPtr & json_document) const;
 
 public:
-  void on_login_reply(const QJsonDocument * json_data);
-  void on_login_error(const QJsonDocument * json_data);
+  void on_login_reply(const QJsonDocumentPtr & json_data);
+  void on_login_error(const QJsonDocumentPtr & json_data);
 
 private:
   QString m_api_url;

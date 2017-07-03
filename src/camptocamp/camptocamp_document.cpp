@@ -236,30 +236,30 @@ C2cDocument::type_string() const
   }
 }
 
-C2cDocument *
+C2cDocumentPtr
 C2cDocument::cast() const
 {
   switch (type()) {
   case Type::Area:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Article:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Book:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Image:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Map:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Outing:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Route:
-    return new C2cRoute(m_json_object); // Fixme: delete
+    return C2cDocumentPtr(new C2cRoute(m_json_object));
   case Type::UserProfile:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::XReport:
-    return nullptr;
+    return C2cDocumentPtr();
   case Type::Waypoint:
-    return nullptr;
+    return C2cDocumentPtr();
     // Fixme:
     // default:
   }
@@ -533,7 +533,7 @@ C2cRoute::init()
   QJsonArray array = associations[IMAGES].toArray();
   for (const auto & json_value : array) {
     QJsonObject object = json_value.toObject();
-    m_images << new C2cImage(object); // Fixme: delete
+    m_images << C2cImagePtr(new C2cImage(object));
   }
 }
 
@@ -622,7 +622,7 @@ C2cImage *
 C2cRoute::image_list_property_at(QQmlListProperty<C2cImage> * list, int index)
 {
   C2cRoute * route = qobject_cast<C2cRoute *>(list->object);
-  return route->m_images[index];
+  return route->m_images[index].data();
 }
 
 /**************************************************************************************************/
@@ -632,7 +632,7 @@ C2cSearchResult::C2cSearchResult()
     m_routes()
 {}
 
-C2cSearchResult::C2cSearchResult(const QJsonDocument * json_document)
+C2cSearchResult::C2cSearchResult(const QJsonDocumentPtr & json_document)
   : QObject(),
     m_routes()
 {
@@ -660,7 +660,7 @@ C2cSearchResult::~C2cSearchResult()
 {}
 
 void
-C2cSearchResult::update(const QJsonDocument * json_document)
+C2cSearchResult::update(const QJsonDocumentPtr & json_document)
 {
   m_routes.clear();
 

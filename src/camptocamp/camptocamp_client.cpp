@@ -39,7 +39,7 @@ using namespace c2c;
 /**************************************************************************************************/
 
 bool
-C2cApiRequestMixin::check_json_response(const QJsonDocument * json_document)
+C2cApiRequestMixin::check_json_response(const QJsonDocumentPtr & json_document)
 {
   QJsonObject root = json_document->object();
   if (root.contains(STATUS) and root[STATUS].toString() == ERROR) {
@@ -52,10 +52,10 @@ C2cApiRequestMixin::check_json_response(const QJsonDocument * json_document)
     return true;
 }
 
-QJsonDocument *
+QJsonDocumentPtr
 C2cApiRequestMixin::to_json_document(const QByteArray & json_data)
 {
-  return new QJsonDocument(QJsonDocument::fromJson(json_data)); // Fixme: delete
+  return QJsonDocumentPtr(new QJsonDocument(QJsonDocument::fromJson(json_data)));
 }
 
 /**************************************************************************************************/
@@ -78,7 +78,7 @@ C2cApiGetRequest::on_data_received(const QByteArray & json_data)
 {
   qInfo() << "C2cApiGetRequest::on_data_received" << url() << '\n' << json_data;
   // Fixme: this code must be duplicated
-  QJsonDocument * json_document = to_json_document(json_data);
+  QJsonDocumentPtr json_document = to_json_document(json_data);
   if (check_json_response(json_document))
     emit finished(json_document);
   else
@@ -104,7 +104,7 @@ void
 C2cApiPostRequest::on_data_received(const QByteArray & json_data)
 {
   qInfo() << "C2cApiPostRequest::on_data_received" << url() << '\n' << json_data;
-  QJsonDocument * json_document = to_json_document(json_data);
+  QJsonDocumentPtr json_document = to_json_document(json_data);
   if (check_json_response(json_document))
     emit finished(json_document);
   else
@@ -226,7 +226,7 @@ C2cClient::login(const C2cLogin & login, bool remember, bool discourse)
 }
 
 void
-C2cClient::on_login_reply(const QJsonDocument * json_document)
+C2cClient::on_login_reply(const QJsonDocumentPtr & json_document)
 {
   m_login_data.from_json(json_document);
   qInfo() << "Logged successfully" << '\n' << m_login_data;
@@ -235,7 +235,7 @@ C2cClient::on_login_reply(const QJsonDocument * json_document)
 }
 
 void
-C2cClient::on_login_error(const QJsonDocument * json_document) // json_document unused
+C2cClient::on_login_error(const QJsonDocumentPtr & json_document) // json_document unused
 {
   Q_UNUSED(json_document);
   m_login_data.reset();
@@ -387,7 +387,7 @@ C2cClient::search(const QString & search_string, const C2cSearchSettings & setti
 }
 
 QUrl
-C2cClient::make_url_for_document(const QJsonDocument * json_document) const
+C2cClient::make_url_for_document(const QJsonDocumentPtr & json_document) const
 {
   QJsonObject root = json_document->object();
   const char type = root[TYPE].toString()[0].toLatin1();
@@ -431,14 +431,14 @@ C2cClient::make_url_for_document(const QJsonDocument * json_document) const
 }
 
 void
-C2cClient::post(const QJsonDocument * json_document)
+C2cClient::post(const QJsonDocumentPtr & json_document)
 {
   QUrl url = make_url_for_document(json_document);
   // Fixme: ...
 }
 
 void
-C2cClient::update(const QJsonDocument * json_document, const QString & message)
+C2cClient::update(const QJsonDocumentPtr & json_document, const QString & message)
 {
   QUrl url = make_url_for_document(json_document);
   QJsonDocument payload;
