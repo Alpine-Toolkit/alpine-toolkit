@@ -40,6 +40,7 @@ Widgets.Page {
     id: ephemeride_pane
 
     property int font_size: 20
+    property bool has_acquired_position: false
 
     PositionSource {
         id: position_source
@@ -58,6 +59,8 @@ Widgets.Page {
             // console.log("noon:", ephemeride.solar_noon);
             // console.log("sunset:", ephemeride.sunset);
 
+	    has_acquired_position = coordinate.isValid
+
             date_label.text = date.toLocaleString(Qt.locale(), "dd/MM/yyyy");
             coordinate_label.text = coordinate.longitude + "\n" + coordinate.latitude;
             sunrise_label.text = ephemeride.sunrise.toLocaleTimeString(Qt.locale(), "hh:mm");
@@ -75,6 +78,14 @@ Widgets.Page {
     Column {
         anchors.fill: parent
         anchors.topMargin: 10
+	spacing : 20
+
+	Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: font_size
+	    visible: has_acquired_position == false
+	    text: qsTr("Position is unknown")
+	}
 
         GridLayout {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -142,5 +153,30 @@ Widgets.Page {
                 text: "unknown"
             }
         }
+
+	RowLayout {
+	    width: parent.width
+	    spacing: 10
+
+            Image {
+		id: warning_icon
+		Layout.alignment: Qt.AlignVCenter
+		fillMode: Image.Pad
+		horizontalAlignment: Image.AlignHCenter
+		verticalAlignment: Image.AlignVCenter
+		source: 'qrc:/icons/warning-black.png'
+            }
+            TextArea {
+		font.pointSize: 10
+		Layout.fillWidth: true
+		readOnly: true
+		text: qsTr("<p>The sunrise and sunset results are theoretically accurate to within a minute for locations between +/- 72° latitude, and within 10 minutes outside of those latitudes. <strong>However, due to variations in atmospheric composition, temperature, pressure and conditions, observed values may vary from calculations.</strong></p>")
+                // <p>The calculations are based on equations from Astronomical Algorithms, by Jean Meeus.</p>
+                // Sunrise/set are accurately derived from celestial mechanics and the local position, but this computation doesn't predict the twilight period which depend of the atmospheric conditions and other parameters.
+		textFormat: TextEdit.RichText
+		wrapMode: Text.WordWrap
+		background: null // suppress bottom line
+            }
+	}
     }
 }

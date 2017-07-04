@@ -2,9 +2,9 @@ copy-icon action build
 copy-icon action delete
 copy-icon action done
 copy-icon action explore
+copy-icon action find_in_page
 copy-icon action help
 copy-icon action info
-copy-icon action find_in_page
 copy-icon action lock
 copy-icon action lock_open
 copy-icon action pan_tool
@@ -14,7 +14,10 @@ copy-icon action timeline
 copy-icon action touch_app
 copy-icon action zoom_in
 copy-icon action zoom_out
+copy-icon alert error
+copy-icon alert warning
 copy-icon communication call
+copy-icon communication comment
 copy-icon communication email
 copy-icon content add
 copy-icon content clear
@@ -39,6 +42,9 @@ copy-icon navigation check
 copy-icon navigation close
 copy-icon navigation menu
 copy-icon navigation more_vert
+copy-icon notification do_not_disturb
+copy-icon notification sd_card
+copy-icon notification wifi
 copy-icon social person
 copy-icon social person_outline
 copy-icon toggle star
