@@ -97,6 +97,7 @@ target_link_libraries(alpine_toolkit
   Qt5::Network
   Qt5::Qml
   Qt5::Gui
+  Qt5::Quick
   cmark
   snowball
   qtcarto

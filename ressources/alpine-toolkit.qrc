@@ -5,6 +5,8 @@
         <file alias="Bleau.qml">qml/Pages/Bleau.qml</file>
         <file alias="Camera.qml">qml/Pages/Camera.qml</file>
         <file alias="Camptocamp.qml">qml/Pages/Camptocamp.qml</file>
+        <file alias="CamptocampCache.qml">qml/Pages/CamptocampCache.qml</file>
+        <file alias="CamptocampRoute.qml">qml/Pages/CamptocampRoute.qml</file>
         <file alias="CamptocampLogin.qml">qml/Pages/CamptocampLogin.qml</file>
         <file alias="CamptocampRoute.qml">qml/Pages/CamptocampRoute.qml</file>
         <file alias="CamptocampSearchFilter.qml">qml/Pages/CamptocampSearchFilter.qml</file>

@@ -98,6 +98,17 @@ Widgets.Page {
 		layoutDirection: Qt.RightToLeft
 
 		ToolButton {
+                    id: download_icon
+                    contentItem: Image {
+			fillMode: Image.Pad
+			horizontalAlignment: Image.AlignHCenter
+			verticalAlignment: Image.AlignVCenter
+			source: 'qrc:/icons/cloud-download-black.png'
+                    }
+                    onClicked: push_page('qrc:/Pages/CamptocampCache.qml')
+		}
+
+		ToolButton {
                     id: login_icon
                     contentItem: Image {
 			fillMode: Image.Pad

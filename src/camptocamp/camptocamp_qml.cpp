@@ -28,6 +28,10 @@
 
 #include "camptocamp/camptocamp_qml.h"
 
+#include <QColor>
+#include <QPixmap>
+#include <QSize>
+
 /**************************************************************************************************/
 
 C2cQmlClient::C2cQmlClient(const QString & sqlite_path, const QString & media_path)
@@ -307,6 +311,79 @@ C2cQmlClient::save_media(const QString & media)
   QSharedPointer<QByteArray> data = m_medias.value(media, nullptr);
   if (data)
     m_media_cache.save_media(media, *data);
+}
+
+/************************************************/
+
+void
+C2cQmlClient::load_document_on_cache()
+{
+  m_document_on_cache.clear(); // Fixme: useless
+  qInfo() << m_api_cache.number_of_documents() << "on cache";
+  m_document_on_cache = m_api_cache.get_documents();
+  for (const auto & document : m_document_on_cache) {
+    qInfo() << document->id();
+  }
+  emit documentOnCacheChanged();
+}
+
+QQmlListProperty<C2cDocument>
+C2cQmlClient::document_on_cache_list_property()
+{
+  // Called at init or when the list change
+  // qInfo() << "C2cQmlClient::document_on_cache_list_property";
+  return QQmlListProperty<C2cDocument>(this,
+                                       nullptr, // data
+                                       &C2cQmlClient::document_on_cache_list_property_count,
+                                       &C2cQmlClient::document_on_cache_list_property_at);
+}
+
+int
+C2cQmlClient::document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list)
+{
+  // Called several times
+  // qInfo() << "C2cQmlClient::document_on_cache_list_property_count";
+  C2cQmlClient * client = qobject_cast<C2cQmlClient *>(list->object);
+  return client->m_document_on_cache.size();
+}
+
+C2cDocument *
+C2cQmlClient::document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, int index)
+{
+  // Called several times
+  // qInfo() << "C2cQmlClient::document_on_cache_list_property_at" << index;
+  C2cQmlClient * client = qobject_cast<C2cQmlClient *>(list->object);
+  C2cDocumentPtr & document = client->m_document_on_cache[index];
+  return document.data();
+}
+
+/**************************************************************************************************/
+
+C2cImageProvider::C2cImageProvider(C2cQmlClient * client)
+  : QQuickImageProvider(QQuickImageProvider::Pixmap),
+    m_client(client)
+{}
+
+QPixmap
+C2cImageProvider::requestPixmap(const QString & id, QSize * size, const QSize & requested_size)
+{
+  qInfo() << "C2C request pixmap" << id << size << requested_size;
+
+  QPixmap pixmap;
+  QByteArray * data = m_client->get_media(id);
+  if (data)
+    pixmap.loadFromData(*data);
+
+  if (size)
+    *size = pixmap.size();
+
+  QSize _size(requested_size.width() > 0 ? requested_size.width() : pixmap.width(),
+              requested_size.height() > 0 ? requested_size.height() : pixmap.height());
+
+  if (_size == pixmap.size())
+    return pixmap;
+  else
+    return pixmap.scaled(_size);
 }
 
 /***************************************************************************************************

@@ -40,6 +40,8 @@ Widgets.Page {
 
     property var route: null
 
+    ListModel { id: image_model }
+
     function format_activity_list(activities) {
         var activity_glyphs = [];
         activities.forEach(function (activity) {
@@ -71,6 +73,7 @@ Widgets.Page {
 	    var image = images[i];
             console.info("Image", image.filename)
             c2c_client.media(image.filename);
+            image_model.append({"filename": image.filename}) // Fixme
         }
     }
 
@@ -95,13 +98,18 @@ Widgets.Page {
             ToolButton {
                 id: download_icon
                 contentItem: Image {
+                    id: download_icon_image
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
                     source: c2c_client.is_document_cached(route.id) ? "qrc:/icons/cloud-done-black.png" : "qrc:/icons/cloud-download-black.png"
                 }
                 // Fixme: cached / update
-                onClicked: c2c_client.save_document(route.id)
+                onClicked: {
+                    c2c_client.save_document(route.id)
+                    // Fixme:
+                    download_icon_image.source = c2c_client.is_document_cached(route.id) ? "qrc:/icons/cloud-done-black.png" : "qrc:/icons/cloud-download-black.png"
+                }
             }
         }
 
@@ -281,24 +289,37 @@ Widgets.Page {
         //     }
         // }
 
-        Pane {
-            // Images
+
+        Repeater {
+            // model: route.images // Fixme
+            model: image_model
+            Pane {
+                Flickable {
+                    anchors.fill: parent
+                    contentWidth: image.width
+                    contentHeight: image.height
+                    Image {
+                        id: image
+                        source: "image://c2c/" + filename
+                    }
+                }
+            }
         }
 
-        Pane {
-            // Remarks
-            // Gear
-            // Route history
-            // external ressources
-        }
+        // Pane {
+        //     // Remarks
+        //     // Gear
+        //     // Route history
+        //     // external ressources
+        // }
 
-        Pane {
-            // Associated waypoints
-        }
+        // Pane {
+        //     // Associated waypoints
+        // }
 
-        Pane {
-            // Last outings
-        }
+        // Pane {
+        //     // Last outings
+        // }
     }
 
     PageIndicator {

@@ -53,6 +53,7 @@ QString markdown_to_html(const QString & markdown);
 
 class C2cDocument;
 typedef QSharedPointer<C2cDocument> C2cDocumentPtr;
+typedef QList<C2cDocumentPtr> C2cDocumentList;
 
 class C2cDocument : public QObject
 {
@@ -354,6 +355,9 @@ private:
 private:
   QList<C2cImagePtr> m_images;
 };
+
+typedef QSharedPointer<C2cRoute> C2cRoutePtr;
+typedef QList<C2cRoutePtr> C2cRouteList;
 
 Q_DECLARE_METATYPE(C2cRoute)
 // Q_DECLARE_METATYPE(C2cRoute*)

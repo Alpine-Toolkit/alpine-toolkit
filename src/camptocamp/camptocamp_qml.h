@@ -39,6 +39,24 @@
 #include "camptocamp/camptocamp_media_cache.h"
 
 #include <QHash>
+#include <QQuickImageProvider>
+
+/**************************************************************************************************/
+
+class C2cQmlClient;
+
+/**************************************************************************************************/
+
+class C2cImageProvider : public QQuickImageProvider
+{
+public:
+  C2cImageProvider(C2cQmlClient * client);
+
+  QPixmap requestPixmap(const QString & id, QSize * size, const QSize & requested_size);
+
+private:
+  C2cQmlClient * m_client;
+};
 
 /**************************************************************************************************/
 
@@ -49,6 +67,7 @@ class C2cQmlClient :public QObject
   Q_PROPERTY(QString username READ username WRITE set_username NOTIFY usernameChanged)
   Q_PROPERTY(QString password READ password WRITE set_password NOTIFY passwordChanged)
   Q_PROPERTY(C2cSearchResult* search_result READ search_result CONSTANT) // NOTIFY receivedSearch
+  Q_PROPERTY(QQmlListProperty<C2cDocument> document_on_cache READ document_on_cache_list_property NOTIFY documentOnCacheChanged)
 
 public:
   C2cQmlClient(const QString & sqlite_path, const QString & media_path);
@@ -80,6 +99,8 @@ public:
   Q_INVOKABLE bool is_media_cached(const QString & media);
   Q_INVOKABLE void save_media(const QString & media);
 
+  Q_INVOKABLE void load_document_on_cache();
+
 private:
   const QString & username() const;
   void set_username(const QString & username);
@@ -93,6 +114,10 @@ private:
 
   void load_document(unsigned int document_id, bool use_cache, void (C2cClient::*loader)(unsigned int));
 
+  QQmlListProperty<C2cDocument> document_on_cache_list_property();
+  static int document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list);
+  static C2cDocument * document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, int index);
+
 signals:
   void receivedDocument(unsigned int document_id);
   void receivedMedia(const QString & media);
@@ -103,6 +128,8 @@ signals:
   void loginStatusChanged();
   // void logged();
   // void login_failed();
+
+  void documentOnCacheChanged();
 
 private slots:
   void on_logged();
@@ -121,6 +148,7 @@ private:
   QHash<unsigned int, C2cDocumentPtr> m_documents;
   QHash<QString, QSharedPointer<QByteArray>> m_medias;
   C2cSearchResult m_search_result;
+  C2cDocumentList m_document_on_cache;
 };
 
 /**************************************************************************************************/

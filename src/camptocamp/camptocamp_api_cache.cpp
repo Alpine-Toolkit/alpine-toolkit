@@ -28,6 +28,8 @@
 
 #include "camptocamp_api_cache.h"
 
+#include "orm/database_query.h"
+
 #include <QJsonDocument>
 #include <QSqlError>
 #include <QtDebug>
@@ -177,6 +179,27 @@ C2cApiCache::get_document(unsigned int document_id) const
     QJsonDocument json_document = QJsonDocument::fromJson(json_data);
     return C2cDocument(json_document.object()).cast();
   }
+}
+
+int
+C2cApiCache::number_of_documents() const
+{
+  return m_document_table->count();
+}
+
+C2cDocumentList
+C2cApiCache::get_documents() const
+{
+  C2cDocumentList documents;
+
+  QSqlQuery query = m_document_table->select_where();
+  while (query.next()) {
+    QByteArray json_data = query.value(1).toByteArray();
+    QJsonDocument json_document = QJsonDocument::fromJson(json_data);
+    documents << C2cDocument(json_document.object()).cast();
+  }
+
+  return documents;
 }
 
 /***************************************************************************************************

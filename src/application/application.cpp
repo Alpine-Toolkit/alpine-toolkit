@@ -291,7 +291,7 @@ Application::set_context_properties()
   context->setContextProperty(QLatin1String("service"), &m_service_client);
   context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);
 
-  QString ffcam_refuge_json = ":/data/ffcam-refuges.json";
+  QString ffcam_refuge_json = ":/data/refuges.json";
   m_refuge_schema_manager.load_json(ffcam_refuge_json);
   context->setContextProperty(QLatin1Literal("refuge_schema_manager"), &m_refuge_schema_manager);
 
@@ -310,11 +310,14 @@ Application::set_context_properties()
 
   // Create Camptocamp client
   QDir offline_storage_path = QDir(context->engine()->offlineStoragePath()); // same as application_user_directory
+  // ~/.local/share/Alpine Toolkit/Alpine Toolkit/QML/OfflineStorage/
   QString c2c_api_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
   QString c2c_media_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("media"));
   qInfo() << "Camptocamp Cache" << c2c_api_cache_path << c2c_media_cache_path;
   C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
   context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
+
+  m_engine.addImageProvider(QLatin1String("c2c"), new C2cImageProvider(c2c_client));
 }
 
 void

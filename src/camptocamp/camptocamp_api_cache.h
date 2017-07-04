@@ -55,6 +55,9 @@ public:
   bool has_document(unsigned int document_id) const;
   C2cDocumentPtr get_document(unsigned int document_id) const;
 
+  C2cDocumentList get_documents() const;
+  int number_of_documents() const;
+
 private:
   void init();
   QString read_metadata(const QString & key);
