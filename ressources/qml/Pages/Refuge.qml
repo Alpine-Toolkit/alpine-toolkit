@@ -60,6 +60,16 @@ Widgets.Page {
 
         Label {
             anchors.horizontalCenter: parent.horizontalCenter
+            topPadding: 20
+            bottomPadding: 30
+            font.pointSize: 16
+            font.bold: true
+            text: model.owner
+            wrapMode: Text.WordWrap
+        }
+
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
             bottomPadding: 10
             font.pointSize: 12
             font.bold: true

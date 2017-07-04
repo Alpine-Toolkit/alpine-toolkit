@@ -52,6 +52,7 @@ class Refuge(Schema):
         'short_name',
         'altitude',
         'description',
+        'owner',
         'guardian',
         'picture_path',
         'coordinate',
@@ -66,6 +67,7 @@ class Refuge(Schema):
     short_name = Field(String)
     altitude = Field(Integer)
     description = Field(String)
+    owner = Field(String)
     guardian = Field(String)
     picture_path = Field(String)
     coordinate = Field(JsonGeoCoordinate)

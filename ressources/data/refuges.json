@@ -4,6 +4,7 @@
     "short_name": "aigle",
     "altitude": 3450,
     "description": "Dans un site exceptionnel, accroché au rocher de l'Aigle, et face aux arêtes de la Meije.",
+    "owner": "FFCAM",
     "guardian": "Louis Gaillot",
     "picture_path": "refuge-de-l'aigle.jpg",
     "coordinate": {
@@ -19,6 +20,7 @@
     "short_name": "aiguilles d'arves",
     "altitude": 2260,
     "description": "En balcon, dans les pentes herbues et fleuries descendant de l'Aiguille de l'Epaisseur, au-dessus du torrent des Aiguilles, face à la longue crête sévère d'Argentière et avec vue sur la Méridionale et la Centrale. La faune est particulièrement présente (chamois, marmottes, hermines et un couple d'aigles).",
+    "owner": "FFCAM",
     "guardian": "Viala Céline",
     "picture_path": "refuge-des-aiguilles-d'arves.jpg",
     "coordinate": {
@@ -35,6 +37,7 @@
     "short_name": "albert 1er",
     "altitude": 2711,
     "description": "Situé au-dessus de glacier du Tour, sur sa rive droite, c'est le seul refuge géré par le CAF de Chamonix que l'on peut atteindre sans passer sur un glacier l'été. Son emplacement est idéal avec vue sur un large éventail de sommets : aiguille du Tour, Grande Fourche, Chardonnet, aiguille d'Argentière, la Verte et les Drus, les Aiguilles Rouges. Son nom est dû au Roi des belges, Albert 1er, alpiniste qui s'est tué en faisant de l'escalade près de Namur. \n\n\n\t\t\t      \n\n\n\t\t\t      La réfection totale du refuge en 2014 permet une ouverture printanière pour la pratique du ski de montagne et l'alpinisme en conditions hivernales. Attention, l'accès à cette période est différente de celui de la saison d'été. Les alpinistes peuvent atteindre le refuge depuis la station de ski des Grands Montets, traversant le glacier d'Argentière, le col du Passon, et le glacier du Tour. C'est l'itinéraire le plus rapide et le plus sûr.",
+    "owner": "FFCAM",
     "guardian": "Paul LABORDE",
     "picture_path": "refuge-albert-1er.jpg",
     "coordinate": {
@@ -51,6 +54,7 @@
     "short_name": "alpe de villar d'arène",
     "altitude": 2079,
     "description": "Sur des mamelons herbus et les replats confortables d'un alpage de moyenne montagne face aux Agneaux, et au groupe aigu de Roche Meane.",
+    "owner": "FFCAM",
     "guardian": "KAINCZ André",
     "picture_path": "refuge-de-l'alpe-de-villar-d'arène.jpg",
     "coordinate": {
@@ -66,6 +70,7 @@
     "short_name": "ambin",
     "altitude": 2270,
     "description": "Au fond du vallon sauvage d'Ambin, sur son verrou rocheux, le refuge d'aspect solide commande un haut bassin aux multiples ressources (randonnée familiale aux lacs, traversée sur l'Italie, escalade aux dents d'Ambin...)",
+    "owner": "FFCAM",
     "guardian": "Camille JULLIEN",
     "picture_path": "refuge-d'ambin.jpg",
     "coordinate": {
@@ -83,6 +88,7 @@
     "short_name": "argentière",
     "altitude": 2771,
     "description": "Site «Haute Montagne» neige, rocs et glace. Une vue particulièrement impressionnante des faces nord de la chaîne allant de l'Aiguille verte au Mont Dolent. Un refuge d'aspect inhabituel avec son niveau supérieur en encorbellement et \"réchauffé\" par son bardage sapin.",
+    "owner": "FFCAM",
     "guardian": "Fred LAURENZIO",
     "picture_path": "refuge-d'argentière.jpg",
     "coordinate": {
@@ -98,6 +104,7 @@
     "name": "Refuge d'Arrémoulit",
     "short_name": "arrémoulit",
     "altitude": 2280,
+    "owner": "FFCAM",
     "guardian": "Eric Courgeon et Rozenn Olichon",
     "picture_path": "refuge-d'arrémoulit.jpg",
     "coordinate": {
@@ -115,6 +122,7 @@
     "short_name": "averole",
     "altitude": 2210,
     "description": "Sur une bosse herbue au-dessus de la vallée d'Averole et du confluent de deux torrents, dans un site fleuri, calme, avec vue sur les glaciers débonnaires de la zone.",
+    "owner": "FFCAM",
     "guardian": "Sébastien NOTTER, Alexandra BUISSON",
     "picture_path": "refuge-d'averole.jpg",
     "coordinate": {
@@ -131,6 +139,7 @@
     "short_name": "balaïtous",
     "altitude": 1917,
     "description": "Situé au pied du Glacier de las Néous, sur la voie normale du Balaïtous. Le vieux refuge bâti au flanc d'un contrefort de la Crête Fachon domine le Plaa de Labassa.",
+    "owner": "FFCAM",
     "guardian": "non gardé",
     "picture_path": "refuge-du-balaïtous-ledormeur.jpg",
     "coordinate": {
@@ -146,6 +155,7 @@
     "short_name": "bans",
     "altitude": 2083,
     "description": "Malgré la faible altitude de ce petit refuge, le site apparaît \"haute montagne\" grâce aux hauts sommets tout proches (Jocelme, Aupillous et Bans).",
+    "owner": "FFCAM",
     "guardian": "Stéphane JULLIEN",
     "picture_path": "refuge-des-bans.jpg",
     "coordinate": {
@@ -162,6 +172,7 @@
     "short_name": "bayssellance",
     "altitude": 2651,
     "description": "de la construction de 1899, à laquelle avaient été associés, en particulier, Russell et Vallot, il reste peu de chose. Le nouveau refuge, entièrement rénové, en conserve néanmoins l'esprit architectural (couverture en cuivre sur structure en voûte). C'est le plus haut refuge gardé des Pyrénées.",
+    "owner": "FFCAM",
     "guardian": "Pierre LAFONT",
     "picture_path": "refuge-de-bayssellance.jpg",
     "coordinate": {
@@ -178,6 +189,7 @@
     "short_name": "bérarde",
     "altitude": 1737,
     "description": "Au pied de la Meije et des Écrins, le chalet CAF de la Bérarde, centre de montagne Oisans-Écrins, est situé au cœur de l'un des plus vastes massifs des Alpes. Dans la vallée du Vénéon, le hameau de la Bérarde a vu défiler de nombreuses générations d'alpinistes depuis le père Gaspard, vainqueur de la Meije. Confortable et chaleureux, le chalet est parti prenante de cette vie de hameau tout à fait unique. Ici,on pose sa voiture, tous les sommets sont à portée de sentiers pour randonner, grimper, skier, flâner...",
+    "owner": "FFCAM",
     "guardian": "Bénédicte SCHOULER",
     "picture_path": "chalet-alpin-de-la-bérarde.jpg",
     "coordinate": {
@@ -193,6 +205,7 @@
     "short_name": "bésines",
     "altitude": 2104,
     "description": "Dans un site à la fois minéral, et boisé (pins à crochets), en balcon sur l'étang des Bésines, le panorama est large ; on y trouve une exceptionnelle richesse tant pour la flore que pour la faune (isard, mouflon, aigle royal, gypaète) ; la proximité de nombreux lacs dont l'étang du Lanoux, le plus grand des Pyrénées, en fait un paradis des pêcheurs.",
+    "owner": "FFCAM",
     "guardian": "Philippe BRINGAY",
     "picture_path": "refuge-des-bésines.jpg",
     "coordinate": {
@@ -209,6 +222,7 @@
     "short_name": "bonneval sur arc",
     "altitude": 1810,
     "description": "Dans le site sauvegardé du village de Bonneval, au fond de la haute vallée de l'Arc une construction traditionnelle de 1985 pour un chalet confortable et plaisant.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-de-bonneval-sur-arc.jpg",
     "coordinate": {
@@ -225,6 +239,7 @@
     "short_name": "bouillouses",
     "altitude": 2005,
     "description": "Le site des Bouillouses est accessible autant l'été que l'hiver aux randonneurs en famille, aux alpinistes et aux skieurs novices ou expérimentés. Dans les paysages magnifiques et grandioses surtout du haut Carlit (2921 m), la zone regorge en été d'une multitude de randonnées, permet l'escalade en toutes saisons et est très favorable en hiver au ski de fond, au ski de randonnée et surtout aux raquettes à neige.",
+    "owner": "FFCAM",
     "guardian": "Christophe Milet",
     "picture_path": "refuge-des-bouillouses.jpg",
     "coordinate": {
@@ -240,6 +255,7 @@
     "short_name": "brèche de roland",
     "altitude": 2587,
     "description": "Culminant à 2587 m d'altitude, le refuge de la brèche de Roland - Les Sarradets fait face à la légendaire brèche que Roland de Roncevaux aurait ouverte grâce à sa célèbre épée Durandal ... Cette véritable porte naturelle taillée une muraille de 100 m de hauteur donne accès, dans un décor minéral, à de nombreux 3000 ainsi qu'au Parc National d'Ordesa et ses canyons (Espagne). Le refuge situé en plein coeur du Parc National des Pyrénées, surplombe le magnifique cirque de Gavarnie.",
+    "owner": "FFCAM",
     "guardian": "Lionel Marquis et Valentine Pelizzari",
     "picture_path": "refuge-de-la-brèche-de-roland-les-sarradets.jpg",
     "coordinate": {
@@ -256,6 +272,7 @@
     "short_name": "campana de cloutou",
     "altitude": 2225,
     "description": "En plein coeur de la région des lacs Caderolles-Grèziolles, le refuge domine le petit lac du Campana qui dort mélancoliquement en ces lieux chaotiques, mais si grandioses en leur dénuement et si attachants.",
+    "owner": "FFCAM",
     "guardian": "Michel COLRAT",
     "picture_path": "refuge-de-campana-de-cloutou.jpg",
     "coordinate": {
@@ -272,6 +289,7 @@
     "short_name": "carro",
     "altitude": 2760,
     "description": "Un refuge \"solide\" sur un grand replat, auprès de deux lacs, mais dans un site de haute montagne aux glaciers proches, et face à la longue arête frontière des Levannas.",
+    "owner": "FFCAM",
     "guardian": "REYNAUD Cyril et SAINTENOY Cedrick",
     "picture_path": "refuge-du-carro.jpg",
     "coordinate": {
@@ -287,6 +305,7 @@
     "short_name": "cezanne",
     "altitude": 1874,
     "description": "Dans les bosquets de mélèze du Pré de Madame Carle et sous les contreforts du Pelvoux.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-cezanne.jpg",
     "coordinate": {
@@ -302,6 +321,7 @@
     "short_name": "chabournéou",
     "altitude": 2020,
     "description": "Sur un promontoire rocheux avec une vue captivante sur le Sirac, près des prairies de rhododendrons, visité par les chamois et les marmottes. Il ravira les skieurs et les alpinistes, mais aussi les familles qui profiteront de la fraîcheur du matin pour y accéder sans effort.",
+    "owner": "FFCAM",
     "guardian": "Dominique LUQUET",
     "picture_path": "refuge-de-chabournéou.jpg",
     "coordinate": {
@@ -318,6 +338,7 @@
     "short_name": "chalance",
     "altitude": 2250,
     "description": "Un chalet en bois, dans un site de haute montagne, face au Sirac. Un havre de paix et de sérénité face à un panorama exceptionnel. La faune (chamois, hermines...) participe à l'ambiance conviviale du refuge au caractère très intime.",
+    "owner": "FFCAM",
     "guardian": "Catherine DOMERGUE",
     "picture_path": "refuge-de-chalance.jpg",
     "coordinate": {
@@ -349,6 +370,7 @@
     "short_name": "chatelleret",
     "altitude": 2225,
     "description": "Au creux du vallon des Etançons, face à la face sud de la Meije, sur une bosse mêlant herbe, roches et fleurs (dont de belles pentes de rhododendrons).",
+    "owner": "FFCAM",
     "guardian": "Brigitte MOREAU et Gérard TURC",
     "picture_path": "refuge-du-chatelleret.jpg",
     "coordinate": {
@@ -365,6 +387,7 @@
     "short_name": "clot",
     "altitude": 1397,
     "description": "Le refuge du Clot-Xavier Blanc (1397 m) riche d'un siècle d'histoire vous accueille à l'ombre de ses arbres souverains pour un instant de détente. Que vous soyez engagé sur le GR54 ou randonneur à la journée vous ne manquerez pas d'être charmé par ce refuge bercé du ronronnement de la Séveraisse toute proche.",
+    "owner": "FFCAM",
     "guardian": "Emilie BRIERRE",
     "picture_path": "refuge-du-clot-xavier-blanc.jpg",
     "coordinate": {
@@ -382,6 +405,7 @@
     "short_name": "col de la vanoise",
     "altitude": 2515,
     "description": "Un refuge historique et entiérement rénové dans l site le plus fréquenté, mais à juste titre, de la Vanoise. Lacs et «herbe à marmottes», vue unique sur la face W de la Grande Casse, et très harmonieuse sur l'Arête de la Réchasse.",
+    "owner": "FFCAM",
     "guardian": "Gérard GIROD",
     "picture_path": "refuge-du-col-de-la-vanoise.jpg",
     "coordinate": {
@@ -399,6 +423,7 @@
     "short_name": "conscrits",
     "altitude": 2580,
     "description": "Dans un site de haute montagne,sur un balcon où se mêlent roches moutonnées et gazon ras, dominant le cours du glacier de Tré la Tête et face au versant glaciaire de la crête conduisant du Mont Tondu à l'Aiguille de Glaciers, un refuge moderne et confortable.",
+    "owner": "FFCAM",
     "guardian": "Christine Mattel",
     "picture_path": "refuge-des-conscrits.jpg",
     "coordinate": {
@@ -429,6 +454,7 @@
     "short_name": "cortalets",
     "altitude": 2150,
     "description": "Le massif du Canigou est la montagne symbolique du pays Catalan. Étape sur la traversée des Pyrénées, le refuge des Cortalets donne accès, en 1h30, au sommet du Canigou à 2784 m d'altitude. C'est un formidable belvédère sur la partie orientale, vous pouvez admirer depuis le refuge la plaine du Roussillon ainsi que la mer méditerranée.\n\t\t\t      \n\t\t\t      Le Canigou est classé grand site de France en 2012.",
+    "owner": "FFCAM",
     "guardian": "Thomas DULAC",
     "picture_path": "refuge-des-cortalets.jpg",
     "coordinate": {
@@ -445,6 +471,7 @@
     "short_name": "cougourde",
     "altitude": 2090,
     "description": "Perché au-dessus du val du Haut Boréon, à la limite des derniers mélèzes ou pins cembro, dans un environnement exceptionnel (flore et faune particulièrement riches) à proximité d'un torrent et d'un lac. Un refuge rénové en 2002.",
+    "owner": "FFCAM",
     "guardian": "Charly BARCELO (hiver) - Hugo PUTELAT (été)",
     "picture_path": "refuge-de-la-cougourde.jpg",
     "coordinate": {
@@ -460,6 +487,7 @@
     "short_name": "couvercle",
     "altitude": 2687,
     "description": "Magnifiquement situé en plein coeur du massif, face aux Grandes Jorasses, ce refuge doit son nom à la grosse pierre qui, tombée du Moine, est restée posée comme un couvercle sur de gros blocs. La première cabane a été construite sous cet abri naturel, au-dessus de la Mer de Glace.",
+    "owner": "FFCAM",
     "guardian": "LELIEVRE Christophe",
     "picture_path": "refuge-du-couvercle.jpg",
     "coordinate": {
@@ -476,6 +504,7 @@
     "short_name": "croix du bonhomme",
     "altitude": 2443,
     "description": "Un passage historique pratiqué depuis \"toujours\", au carrefour du Val-Montjoie, du Beaufortain, et de la vallée des Glaciers. Un refuge offrant aux randonneurs un confort très appréciable, et un panorama très large.",
+    "owner": "FFCAM",
     "guardian": "GUYON Tristan",
     "picture_path": "refuge-de-la-croix-du-bonhomme.jpg",
     "coordinate": {
@@ -492,6 +521,7 @@
     "short_name": "dent d'oche",
     "altitude": 2114,
     "description": "L'implantation en \"nid d'aigle\" du refuge sur une arête 100 m sous la dent d'Oche en fait le refuge panoramique par excellence : la vue, va du Jura (pour les couchers de soleil) à l'Oisans en passant par le Leman, les sommets du Valais, des Alpes Bernoises, du Mont Blanc. Lever de soleil exceptionnel au sommet de la dent.",
+    "owner": "FFCAM",
     "guardian": "Elise CUPELIN",
     "picture_path": "refuge-de-la-dent-d'oche.jpg",
     "coordinate": {
@@ -508,6 +538,7 @@
     "short_name": "dent parrachée",
     "altitude": 2511,
     "description": "Un balcon-terrasse, 500 m au-dessus du Grand Lac de Plan d'Amont, face au sud, et au delà de la profonde vallée de l'Arc, aux sommets frontières de la Maurienne. Le refuge agrandi en 1995 est particulièrement plaisant et chaud.",
+    "owner": "FFCAM",
     "guardian": "BUISSON Franck",
     "picture_path": "refuge-de-la-dent-parrachée.jpg",
     "coordinate": {
@@ -524,6 +555,7 @@
     "short_name": "drayères",
     "altitude": 2180,
     "description": "Tout au fond de la vallée (préservée) de la Clarée et du torrent de Brune,  zone riche en lacs.",
+    "owner": "FFCAM",
     "guardian": "Anne et Boris debeaune",
     "picture_path": "refuge-des-drayères.jpg",
     "coordinate": {
@@ -541,6 +573,7 @@
     "short_name": "durier",
     "altitude": 3358,
     "description": "Sur l'arête frontière, au col de Miage, dans un \"décor\" très haute montagne et dans une solitude très marquée, dominant de 1600 m le replat des chalets de Miage, un refuge dû au travail fraternel des montagnards \"du lieu\".",
+    "owner": "FFCAM",
     "guardian": "Manon NAVILLOD DAVOINE",
     "picture_path": "refuge-durier.jpg",
     "coordinate": {
@@ -556,6 +589,7 @@
     "name": "Refuge des Écrins",
     "short_name": "écrins",
     "altitude": 3170,
+    "owner": "FFCAM",
     "guardian": "Jocelyne et Jef  FOUCHARD",
     "picture_path": "refuge-des-ecrins.jpg",
     "coordinate": {
@@ -573,6 +607,7 @@
     "short_name": "envers des aiguilles",
     "altitude": 2523,
     "description": "Ce refuge est situé, comme son nom l'indique, du côté des aiguilles de Chamonix, que l'on ne voit pas de la vallée. A la base de tours et d'aiguilles rocheuses célèbres,  il est fréquenté par des grimpeurs qui sont aussi alpinistes car il y a des glaciers pour y accéder. Situé plusieurs centaines de mètres au-dessus de la mer de Glace, c'est un lieu privilégié pour le randonneur et le grimpeur qui peuvent prendre leur petit déjeuner sur la terrasse au soleil avant de partir en course, face à la dent du Géant et au mont Mallet.",
+    "owner": "FFCAM",
     "guardian": "Evelyne GIUSTO",
     "picture_path": "refuge-de-l'envers-des-aiguilles.jpg",
     "coordinate": {
@@ -589,6 +624,7 @@
     "short_name": "espingo",
     "altitude": 1967,
     "description": "Au coeur du massif, le site d'Espingo est un magnifique point de départ pour de multiples randonnées et ascensions. Pêche.",
+    "owner": "FFCAM",
     "guardian": "Jean-François MATTESCO",
     "picture_path": "refuge-d'espingo.jpg",
     "coordinate": {
@@ -604,6 +640,7 @@
     "short_name": "étang d'araing",
     "altitude": 1965,
     "description": "A la croisée des grands itinéraires pyrénéens Haute Route des Pyrénées (HRP) et GR 10 , au pied du majestueux Pic de Crabère, le refuge domine le très beau et poissonneux Etang d'Araing qui lui a donné son nom. Site Natura 2000 dans le Parc Naturel Régional, il constitue une étape de l'itinéraire transfrontalier la boucle Pass'Aran.",
+    "owner": "FFCAM",
     "guardian": "Anoura BARRÉ",
     "picture_path": "refuge-de-l'etang-d'araing.jpg",
     "coordinate": {
@@ -620,6 +657,7 @@
     "short_name": "étang fourcat",
     "altitude": 2440,
     "description": "Le plus haut refuge ariégeois dans un cadre de haute montagne. Il est situé dans le cirque des Etangs Fourcat couronné par les pics de l'Aspre, du Tristagne, du Malcaras sur la Haute Route des Pyrénées et sur une variante du GR10. Il constitue également une étape de l'itinéraire transfrontalier du tour du Montcalm.",
+    "owner": "FFCAM",
     "guardian": "Jean Claude PERRY",
     "picture_path": "refuge-de-l'etang-fourcat.jpg",
     "coordinate": {
@@ -636,6 +674,7 @@
     "short_name": "étang pinet",
     "altitude": 2240,
     "description": "Au pied des 3000 ariégeois, au coeur du massif du Montcalm, il est situé au bord de l'étang du Pinet, magnifique belvédère sur la vallée granitique de l'Artigues. Le refuge constitue par ailleurs une étape des itinéraires transfrontaliers : tour du Montcalm et Porta del Cel.",
+    "owner": "FFCAM",
     "guardian": "Patrick CORTADE",
     "picture_path": "refuge-de-l'etang-pinet.jpg",
     "coordinate": {
@@ -652,6 +691,7 @@
     "short_name": "étendard",
     "altitude": 2430,
     "description": "Dans un site très ouvert, sur le Glacier de St Sorlin au sud, sur les Aiguilles de l'Argentière au Nord, au bord du Grand Lac (ou lac Bramans), un refuge particulièrement apprécié de par sa situation en période de ski de printemps, et par les promenades familiales en période d'été. Refuge rénové en 2007.",
+    "owner": "FFCAM",
     "guardian": "AXELRAD Bruno",
     "picture_path": "refuge-de-l'etendard.jpg",
     "coordinate": {
@@ -668,6 +708,7 @@
     "short_name": "evettes",
     "altitude": 2590,
     "description": "Le site (classé) glaciaire du refuge est exceptionnel et malgré son retrait bien apparent le glacier des Evettes reste tout proche. L'implantation même, sur une large butte et près d'un lac est pleine d'agréments.",
+    "owner": "FFCAM",
     "guardian": "Janie GOSSAY et Pierre GRANGE",
     "picture_path": "refuge-des-evettes.jpg",
     "coordinate": {
@@ -684,6 +725,7 @@
     "short_name": "eychauda",
     "altitude": 1250,
     "description": "Un hébergement ouvert à tous, une situation rêvée au pied du massif des Écrins, un climat exceptionnel, un large panel d'activités de montagne à pratiquer toute l'année ; ce centre est le Camp de Base idéal pour vos séjours, stages et formations.",
+    "owner": "FFCAM",
     "guardian": "Damien Haxaire",
     "picture_path": "chalet-alpin-l'eychauda.jpg",
     "coordinate": {
@@ -699,6 +741,7 @@
     "short_name": "fond d'aussois",
     "altitude": 2350,
     "description": "Dans un environnement d'alpages, juste au-dessus du plan du Fond d'Aussois, sous le massif de l'Echelle bien apprécié des bouquetins, un refuge fraîchement construit en 2003 et respectueux du cadre. A quelques pas, l'ancien refuge est redevenu le «chalet de la Marie», un espace de mémoire.",
+    "owner": "FFCAM",
     "guardian": "Thierry MARGUERON",
     "picture_path": "refuge-du-fond-d'aussois.jpg",
     "coordinate": {
@@ -715,6 +758,7 @@
     "short_name": "font turbat",
     "altitude": 2194,
     "description": "Sur une bosse herbue, tout au fond d'un vallon sauvage, sous la face NW de l' Olan, agrandi et rénové en 1996.",
+    "owner": "FFCAM",
     "guardian": "Sandrine DELORME",
     "picture_path": "refuge-du-font-turbat.jpg",
     "coordinate": {
@@ -730,6 +774,7 @@
     "short_name": "gialorgues",
     "altitude": 2300,
     "description": "Dans un cadre d'alpages, au-dessus du Plan de la Sagne, et sous l'étrange Fort Carra tout proche, un refuge « à l'ancienne » dont les amoureux du calme apprécieront et respecteront la chaleur et l'équipement soigné.",
+    "owner": "FFCAM",
     "guardian": "refuge non gardé",
     "picture_path": "refuge-de-gialorgues.jpg",
     "coordinate": {
@@ -745,6 +790,7 @@
     "short_name": "glacier blanc",
     "altitude": 2542,
     "description": "Le Refuge du Glacier Blanc, facilement accessible à tous, est situé au bord (rive gauche) du glacier éponyme et fait face aux grandes, belles et sauvages faces nord du Pelvoux, du pic Sans Nom et des Ailefroides; il permet un accès commode à de nombreuses courses faciles d'alpinisme; c'est un refuge porte d'entrée pour la Haute Montagne. Sa terrasse plein sud est un lieu de rencontre privilégié pour tout type de public, des familles aux alpinistes chevronnés en passant par les vainqueurs.",
+    "owner": "FFCAM",
     "guardian": "Nicolas CHAUD",
     "picture_path": "refuge-du-glacier-blanc.jpg",
     "coordinate": {
@@ -775,6 +821,7 @@
     "short_name": "grand bec",
     "altitude": 2405,
     "description": "Un petit refuge chaleureux niché au pied de la pointe de la Vuzelle, avec une vue imprenable sur la face sud du Grand Bec et de la pointe du Vallonet et sur la vallée de Chavière.",
+    "owner": "FFCAM",
     "guardian": "Dimitri BOUTHENET",
     "picture_path": "refuge-du-grand-bec.jpg",
     "coordinate": {
@@ -791,6 +838,7 @@
     "short_name": "grand ventron",
     "altitude": 1150,
     "description": "En lisière de la forêt domaniale de Cornimont, dans un site tranquille, à proximité du sommet du Grand Ventron, point culminant d'une région boisée, avec une vue remarquable. A proximité du GR5.",
+    "owner": "FFCAM",
     "guardian": "Refuge non gardé",
     "picture_path": "refuge-du-grand-ventron.jpg",
     "coordinate": {
@@ -806,6 +854,7 @@
     "short_name": "grands mulets",
     "altitude": 3051,
     "description": "Sur l'itinéraire historique du mont Blanc, ce refuge est situé sur un îlot rocheux entouré de glaces en pleine ambiance haute montagne.",
+    "owner": "FFCAM",
     "guardian": "MOUCHERONT LUDOVIC",
     "picture_path": "refuge-caf-des-grands-mulets.jpg",
     "coordinate": {
@@ -822,6 +871,7 @@
     "short_name": "grange de holle",
     "altitude": 1495,
     "description": "Confortable et chaleureux le chalet, ouvert à tous, est situé au-dessus du village de Gavarnie. En pleine nature et loin de l'agitation touristique, c'est un camp de base idéal. Eté comme hiver, vous pouvez pratiquer vos activités préférées. Sur le passage du GR et de la Haute Route des Pyrénées, à deux pas de la station de ski et du célèbre cirque de Gavarnie, classé au patrimoine mondial de l'UNESCO au titre des paysages naturels et culturels.",
+    "owner": "FFCAM",
     "guardian": "Philippe CORDIER",
     "picture_path": "chalet-la-grange-de-holle.jpg",
     "coordinate": {
@@ -838,6 +888,7 @@
     "short_name": "graydon",
     "altitude": 1330,
     "description": "Le refuge est niché dans un hameau au pied du Roc d'Enfer, sur un replat au fond d'un long vallon boisé et calme au dessus de la Vallée de Morzine, et fait face à un chalet d'alpage.\n\n\n\t\t\t      Renseignements : gestion.refuges@cafleman.fr",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-du-graydon.jpg",
     "coordinate": {
@@ -853,6 +904,7 @@
     "short_name": "gros morond",
     "altitude": 1320,
     "description": "Sur les hautes pentes du Mont d'Or dans des pâturages fleuris l'été, en haut du domaine skiable de Metabief-les-Longevilles et donc retrouvant le soir le calme de sa situation isolée.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-du-gros-morond.jpg",
     "coordinate": {
@@ -869,6 +921,7 @@
     "short_name": "imlil",
     "altitude": 1740,
     "description": "Au terminus de la piste carrossable, (à 64 km de Marrakech) refuge au centre d'Imlil, village décrit parfois comme la réplique du Haut Atlas de la Bérarde (Oisans).",
+    "owner": "FFCAM",
     "guardian": "Caf de Casablanca",
     "picture_path": "refuge-d'imlil.jpg",
     "coordinate": {
@@ -886,6 +939,7 @@
     "short_name": "conay",
     "altitude": 1220,
     "description": "En limite Nord du Plateau du Retord, sous le Crêt de Beauregard, cette ancienne ferme d'Alpage rénovée en 1990 offre un panorama exceptionnel sur la chaîne des Alpes, Mont Blanc en particulier. Grandes étendues neigeuses en hiver, alpages couverts de fleurs au printemps (jonquilles, narcisses). Le plateau de Retord est un paradis pour la randonnée ou simplement la rêverie.",
+    "owner": "FFCAM",
     "guardian": "Non gardé",
     "picture_path": "chalet-de-la-conay.jpg",
     "coordinate": {
@@ -901,6 +955,7 @@
     "short_name": "glère",
     "altitude": 2153,
     "description": "Situé en fond de vallée et rénové en 2006, c'est un magnifique belvédère sur le massif granitique de Néouvielle et un accès vers ses nombreux lacs cristallins (pêche).",
+    "owner": "FFCAM",
     "guardian": "Béatrice CAUCAT",
     "picture_path": "refuge-de-la-glère.jpg",
     "coordinate": {
@@ -918,6 +973,7 @@
     "short_name": "lavey",
     "altitude": 1797,
     "description": "Alpage du haut vallon de la Lavey, après une montée \"champêtre\". Le refuge apparaît comme un témoin d'une vie pastorale abandonnée.",
+    "owner": "FFCAM",
     "guardian": "Caroline BOUCHARD",
     "picture_path": "refuge-de-la-lavey.jpg",
     "coordinate": {
@@ -933,6 +989,7 @@
     "short_name": "maline",
     "altitude": 900,
     "description": "Le chalet est placé sur l'un des belvédères les plus ouverts sur les Gorges du Verdon. C'est un lieu d'accueil unique sur la route des Crêtes au caractère typiquement provençal. Une situation exceptionnelle sur le grand canyon, au départ du célèbre sentier Martel, au coeur du Parc Naturel Regional du Verdon, pour vos séjours de randonnée, escalade, vélo de montagne ...",
+    "owner": "FFCAM",
     "guardian": "Jean Faure",
     "picture_path": "chalet-de-la-maline-verdon.jpg",
     "coordinate": {
@@ -948,6 +1005,7 @@
     "short_name": "pra",
     "altitude": 2110,
     "description": "Sur une terrasse, au dessus de l'Alpage et du torrent, au pied du prestigieux Grand Pic de Belledonne. Rénové en 2009.",
+    "owner": "FFCAM",
     "guardian": "Claude et Nadine BARNIER",
     "picture_path": "refuge-de-la-pra.jpg",
     "coordinate": {
@@ -965,6 +1023,7 @@
     "short_name": "langenberg",
     "altitude": 1050,
     "description": "A proximité du sommet du Grand Langenberg sur le versant S.E. du Ballon d'Alsace. Un bâtiment clair avec une vue exceptionnelle sur la plaine d'Alsace, la Forêt Noire, et les Alpes suisses (Oberland). C'est un pays de rencontres et de frontières où l'histoire est très présente.",
+    "owner": "FFCAM",
     "guardian": "Gardé à la demande",
     "picture_path": "chalet-de-langenberg.jpg",
     "coordinate": {
@@ -980,6 +1039,7 @@
     "short_name": "larribet",
     "altitude": 2072,
     "description": "Reconstruit en 1992, c'est un merveilleux petit refuge admirablement placé au pied du Balaïtous. Le vallon d'accès de par la faune et la flore qui le composent est une merveille de fraîcheur et de beauté.",
+    "owner": "FFCAM",
     "guardian": "Laetitia HELUIN",
     "picture_path": "refuge-de-larribet.jpg",
     "coordinate": {
@@ -996,6 +1056,7 @@
     "short_name": "tour",
     "altitude": 1466,
     "description": "Au pied du glacier du Tour l'ambiance décontractée du plus haut village de la vallée, à quelques minutes seulement de Chamonix. Le chalet du Tour est un petit havre de paix loin du tumulte et de la foule de la capitale de l'alpinisme. Il est une base exceptionnelle pour grimper ou randonner sur les plus célèbres montagnes d'Europe. Un terrain de jeu pour tous les niveaux.",
+    "owner": "FFCAM",
     "guardian": "Véronique BARBIER",
     "picture_path": "chalet-alpin-du-tour.jpg",
     "coordinate": {
@@ -1012,6 +1073,7 @@
     "short_name": "souffles",
     "altitude": 1975,
     "description": "Le charme de la moyenne montagne en Valgaudemar, verte et fleurie, sous des sommets sévères par leur aridité. Vous apprécierez la tranquillité du lieu après une montée souvent ombragée.",
+    "owner": "FFCAM",
     "guardian": "Jean-Claude ARMAND",
     "picture_path": "refuge-des-souffles.jpg",
     "coordinate": {
@@ -1028,6 +1090,7 @@
     "short_name": "leschaux",
     "altitude": 2431,
     "description": "Situé au-dessus de la moraine droite du glacier de Leschaux, le refuge est le lieu de départ idéal vers la mythique face nord des Grandes Jorasses.",
+    "owner": "FFCAM",
     "guardian": "LAGET Chloé",
     "picture_path": "refuge-de-leschaux.jpg",
     "coordinate": {
@@ -1044,6 +1107,7 @@
     "short_name": "madone de fenestre",
     "altitude": 1903,
     "description": "Au fond du très long haut vallon de la Vésubie, au-dessus de la forêt, le site relativement âpre (avec toutefois un environnement de «prairies» et de lacs) dominé par le Gelas, du sanctuaire de la Madone de Fenestre.",
+    "owner": "FFCAM",
     "guardian": "Patrick MIRAILLET",
     "picture_path": "chalet-de-la-madone-de-fenestre.jpg",
     "coordinate": {
@@ -1060,6 +1124,7 @@
     "short_name": "maljasset",
     "altitude": 1903,
     "description": "Au fond de la haute vallée de l'Ubaye, dans un site classé, une très ancienne ferme, salles voûtées, toit de lauzes au coeur d'un hameau, bâtiment transformé intérieurement en un gîte chaleureux et confortable.",
+    "owner": "FFCAM",
     "guardian": "LE GOFF Stéphane",
     "picture_path": "chalet-de-maljasset.jpg",
     "coordinate": {
@@ -1076,6 +1141,7 @@
     "short_name": "maupas",
     "altitude": 2450,
     "description": "Une belle succession de lacs poissonneux, des itinéraires où il est fréquent de surprendre des isards, de belles parois à escalader, tous les éléments sont réunis pour réussir votre visite au Maupas.",
+    "owner": "FFCAM",
     "guardian": "Emma LEMAIRE GEORGES",
     "picture_path": "refuge-du-maupas.jpg",
     "coordinate": {
@@ -1092,6 +1158,7 @@
     "short_name": "merveilles",
     "altitude": 2130,
     "description": "Un site consacré dans la préhistoire par une foule de signes magiques gravés dans la pierre, dans un univers minéral, mais parsemé de nombreux lacs.",
+    "owner": "FFCAM",
     "guardian": "Alex FERRIER (été) - Mouloud CADDUR (hiver)",
     "picture_path": "refuge-des-merveilles.jpg",
     "coordinate": {
@@ -1107,6 +1174,7 @@
     "short_name": "mont pourri",
     "altitude": 2373,
     "description": "Un caractère de moyenne montagne en Vanoise sur un grand replat sous l'arête rocheuse montant au Mont Pourri, le grand sommet isolé du nord du massif ; plus loin, dans l'axe de la vallée, la Grande Motte regarde le refuge.",
+    "owner": "FFCAM",
     "guardian": "Laurent JULIEN",
     "picture_path": "refuge-du-mont-pourri.jpg",
     "coordinate": {
@@ -1123,6 +1191,7 @@
     "short_name": "mont thabor",
     "altitude": 2502,
     "description": "Au carrefour de la Maurienne, de la Vallée Etroite, de Nevache, un site néanmoins isolé dans une combe «haute montagne» adoucie par la présence des lacs Ste Marguerite.",
+    "owner": "FFCAM",
     "guardian": "Fanny TEPPAZ",
     "picture_path": "refuge-du-mont-thabor.jpg",
     "coordinate": {
@@ -1139,6 +1208,7 @@
     "short_name": "nice",
     "altitude": 2232,
     "description": "Sur une bosse, au-dessus du lac de la Foux, dans un cirque sauvage de roches et d'éboulis, un bâtiment accueillant et une grande terrasse plaisante. La faune (bouquetins...) est particulièrement familière avec les visiteurs. Refuge restauré en 2009.",
+    "owner": "FFCAM",
     "guardian": "Christophe FOURNIER",
     "picture_path": "refuge-de-nice.jpg",
     "coordinate": {
@@ -1155,6 +1225,7 @@
     "short_name": "nohedes",
     "altitude": 2310,
     "description": "Petit refuge non gardé dans le massif du Madrès, beau massif sauvage accessible par plusieurs itinéraires.",
+    "owner": "FFCAM",
     "guardian": "non gardé",
     "picture_path": "refuge-de-nohedes.jpg",
     "coordinate": {
@@ -1170,6 +1241,7 @@
     "short_name": "olan",
     "altitude": 2345,
     "description": "Au pied de la face sud-est de l'Olan (3558 m), de la cime du Vallon (3409 m) et de la Rouye (3085 m), le belvédère du refuge émerveillera aussi bien le randonneur venu découvrir le massif que l'alpiniste faisant étape.",
+    "owner": "FFCAM",
     "guardian": "MARTINOT Mélanie",
     "picture_path": "refuge-de-l'olan.jpg",
     "coordinate": {
@@ -1186,6 +1258,7 @@
     "short_name": "oulettes de gaube",
     "altitude": 2151,
     "description": "de son promontoire granitique entièrement rénové le refuge offre une des plus belles vues sur le massif de Vignemale. On peut admirer sa face nord, Piton Carré, l'aiguille des Glaciers, Chausenque. Accès par la vallée de Gaube depuis le pont d'Espagne.",
+    "owner": "FFCAM",
     "guardian": "Pauline Fabert et Boris Bodda",
     "picture_path": "refuge-des-oulettes-de-gaube.jpg",
     "coordinate": {
@@ -1203,6 +1276,7 @@
     "short_name": "packe",
     "altitude": 2524,
     "description": "Avec sa forme en ogive, il fait partie du patrimoine architectural pyrénéen. de par sa position, il offre un panorama exceptionnel sur le versant nord du pic Long et sur la Brèche de Roland.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-packe.jpg",
     "coordinate": {
@@ -1218,6 +1292,7 @@
     "short_name": "parmelan",
     "altitude": 1825,
     "description": "En bordure de falaise au-dessus du hameau de la Blonnière le panorama est admirable sur le bassin annecien, sur les Aravis, sur la chaîne du Mont Blanc. Aux pieds du visiteur la flore est exceptionnelle, ainsi que les lapiaz.",
+    "owner": "FFCAM",
     "guardian": "Julien LUTZ",
     "picture_path": "refuge-du-parmelan.jpg",
     "coordinate": {
@@ -1233,6 +1308,7 @@
     "short_name": "pavé",
     "altitude": 2841,
     "description": "« Sous les parois sud du Pavé et du pic Gaspard et face à la muraille nord de la Grande Ruine, le lac et le refuge du Pavé (2843 m), oasis dans un monde minéral, donnent vraiment la mesure du grand Oisans sauvage cher au poète Samivel »\n\t\t\t      François Labande\n\n\n\t\t\t      Le site est en effet exceptionnel, dans un des endroits les plus sauvages du massif à l'environnement minéral, adouci par la proximité du lac qui reste partiellement gelé une bonne partie de l'année.",
+    "owner": "FFCAM",
     "guardian": "Sophie LOOS",
     "picture_path": "refuge-du-pavé.jpg",
     "coordinate": {
@@ -1249,6 +1325,7 @@
     "short_name": "péclet-polset",
     "altitude": 2474,
     "description": "Un site large et reposant, avec plus d'herbe que de rocs, à proximité d'un lac (le lac Blanc), dominé par la masse imposante des sommets du massif Péclet-Polset et face aux remarquables glaciers de la Vanoise. Un refuge tout neuf, clair et confortable .",
+    "owner": "FFCAM",
     "guardian": "Gérard VILLIOD",
     "picture_path": "refuge-de-péclet-polset.jpg",
     "coordinate": {
@@ -1265,6 +1342,7 @@
     "short_name": "pelvoux",
     "altitude": 2700,
     "description": "Site de haute montagne en bordure du ravin du Clot de l'Homme sous les rochers Rouges et la face sud du Pelvoux, avec une vue sur Celse Nièvre et le bassin du glacier du Sélé.",
+    "owner": "FFCAM",
     "guardian": "Damien HAXAIRE",
     "picture_path": "refuge-du-pelvoux.jpg",
     "coordinate": {
@@ -1281,6 +1359,7 @@
     "short_name": "pigeonnier",
     "altitude": 2423,
     "description": "Refuge perché à l'extremité d'une arête (crête de l'Orient) dans un univers minéral, en vue de la face est des Rouies, remarquable lors les brumes de l'aube en soulignent le relief. Le refuge restructuré et rénové intégralement en 2002, a vu évoluer sensiblement son confort sans perdre son respect du site majestueux qu'il embrasse. Tranquillité assurée.",
+    "owner": "FFCAM",
     "guardian": "Olivier PARENT",
     "picture_path": "refuge-du-pigeonnier.jpg",
     "coordinate": {
@@ -1298,6 +1377,7 @@
     "short_name": "pilatte",
     "altitude": 2577,
     "description": "Sur un promontoire morainique dominant le glacier de la Pilatte, avec une vue particulièrement belle sur les Bans, l'Ailefroide, les Écrins.",
+    "owner": "FFCAM",
     "guardian": "Mathilde DAHURON et Armand BARBET",
     "picture_path": "refuge-de-pilatte.jpg",
     "coordinate": {
@@ -1314,6 +1394,7 @@
     "short_name": "pla guillem",
     "altitude": 2240,
     "description": "Petit refuge non gardé dans le massif du Canigou, après le lieu-dit la Lipodère en direction du col des Boucacers.",
+    "owner": "FFCAM",
     "guardian": "non gardé",
     "picture_path": "refuge-de-pla-guillem.jpg",
     "coordinate": {
@@ -1329,6 +1410,7 @@
     "short_name": "plain du canon",
     "altitude": 819,
     "description": "Légèrement en contre bas de la route montant de St Maurice au Ballon d'Alsace en bord de clairière, en forêt domaniale, sur les pentes NW du Ballon d'Alsace. Un petit bâtiment préfabriqué inattendu.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-du-plain-du-canon.jpg",
     "coordinate": {
@@ -1344,6 +1426,7 @@
     "short_name": "plan de la lai",
     "altitude": 1822,
     "description": "Le refuge se situe à l'entrée du Plan de la Lai, dominant de 250 m le lac-barrage de Roselend dans des pâturages dominés au Sud par l'Aiguille du Grand Fond, en bord de Route Albertville-Bourg Saint Maurice par le Cormet de Roselend.",
+    "owner": "FFCAM",
     "guardian": "Philippe Letard - Sylvie Cucuat",
     "picture_path": "refuge-du-plan-de-la-lai.jpg",
     "coordinate": {
@@ -1360,6 +1443,7 @@
     "short_name": "plan des gouilles",
     "altitude": 2360,
     "description": "Le calme sur un replat dominant par un versant boisé et raide la vallée de Champagny, avec une vue en enfilade sur les versants Nord du Grand Bec et de la Pointe du Vallonnet, et face à Bellecôte.",
+    "owner": "FFCAM",
     "guardian": "EYVRARD Julien",
     "picture_path": "refuge-du-plan-des-gouilles.jpg",
     "coordinate": {
@@ -1377,6 +1461,7 @@
     "short_name": "platé",
     "altitude": 2032,
     "description": "Domaine géologique unique en Europe, paysage d'aspect quasi lunaire avant tout minéral. Le creux d'une combe où est situé le refuge (récemment rénové) est accueillant (pelouses) et isolé dans le domaine particulier du Lapiaz (ciselure de la roche calcaire, formes multiples...)",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-de-platé.jpg",
     "coordinate": {
@@ -1392,6 +1477,7 @@
     "short_name": "pointe percée",
     "altitude": 2164,
     "description": "Dans un site typiquement \"Aravis\", paysage de Lapiaz, sous la Pointe Percée, face à la chaîne du Bargy et au pic du Jalouvre avec ses couchers du soleil.",
+    "owner": "FFCAM",
     "guardian": "Marie JACQUET",
     "picture_path": "refuge-de-la-pointe-percée-gramusset.jpg",
     "coordinate": {
@@ -1408,6 +1494,7 @@
     "short_name": "pombie",
     "altitude": 2032,
     "description": "Au pied du versant sud du Pic du Midi d'Ossau, et à proximité de plusieurs lacs. Carrefour privilégié de 4 sentiers. Point de départ idéal des voies d'escalade de l'Ossau. Etape sur la Haute Route Pyrénéenne.",
+    "owner": "FFCAM",
     "guardian": "Karine DEPEYRE et Jean-Marc FERRI",
     "picture_path": "refuge-de-pombie.jpg",
     "coordinate": {
@@ -1423,6 +1510,7 @@
     "short_name": "portillon",
     "altitude": 2570,
     "description": "Un séjour au Portillon constitue une parfaite initiation à la haute montagne. L'ambiance de son refuge, enchâssé dans un cirque spectaculaire, ajoute encore à l'intérêt de cette randonnée. Pêche.",
+    "owner": "FFCAM",
     "guardian": "Régis GATTI",
     "picture_path": "refuge-du-portillon.jpg",
     "coordinate": {
@@ -1438,6 +1526,7 @@
     "short_name": "pré la chaumette",
     "altitude": 1805,
     "description": "Situé en fond de vallée du Champoléon (vallée du Drac Blanc) avec son attrait pastoral «rassurant». Un bâtiment généreux en espace construit en 1979. Refuge très facile d'accès pour les familles même avec de jeunes enfants.",
+    "owner": "FFCAM",
     "guardian": "Yves AILLOUD",
     "picture_path": "refuge-du-pré-la-chaumette.jpg",
     "coordinate": {
@@ -1454,6 +1543,7 @@
     "short_name": "presset",
     "altitude": 2514,
     "description": "Dans un site isolé, marqué par la présence de la Pierra Menta, dominé par l'Aiguille de la Nova et la Pointe Presset, adouci par le miroir du lac Presset, un refuge et un cadre dignes de la poésie de Samivel.\n\n\n\t\t\t      Le Refuge rénové a ouvert ses portes le 1er juillet 2013.",
+    "owner": "FFCAM",
     "guardian": "LEROY Nicolas",
     "picture_path": "refuge-de-presset.jpg",
     "coordinate": {
@@ -1470,6 +1560,7 @@
     "short_name": "promontoire",
     "altitude": 3092,
     "description": "Site Haute Montagne sur l'arête du Promontoire de la Meije. Bâtiment face au vide. C'est le refuge de la Meije, la course débute dès la porte franchie (ambiance garantie).",
+    "owner": "FFCAM",
     "guardian": "Nathalie et Fredi MEIGNAN",
     "picture_path": "refuge-du-promontoire.jpg",
     "coordinate": {
@@ -1487,6 +1578,7 @@
     "short_name": "rabuons",
     "altitude": 2523,
     "description": "Le site le plus alpin, mais méconnu, des Alpes Maritimes. Au centre d'un cadre minéral, au bord d'un grand lac (3 ha,) profond (100 m) un petit refuge aux murs de pierre, étape vers des traversées passionnantes en raison des panoramas qu'elles offriront.",
+    "owner": "FFCAM",
     "guardian": "Charly Barcelo",
     "picture_path": "refuge-de-rabuons.jpg",
     "coordinate": {
@@ -1502,6 +1594,7 @@
     "short_name": "ratou",
     "altitude": 1200,
     "description": "En bordure de forêt, dominé par les crêtes du Jura, sous le Crêt de la neige, cette ancienne ferme d'alpage offre un accueil chaleureux en plein milieu du domaine skiable \"Mont Jura\". Possibilité de très belles randonnées au milieu des alpages abondamment fleuris en été, en raquette ou ski de rando en hiver, souvent surpris par la rencontre des chamois. Le chalet est également accessible depuis les pistes de Lélex-Mont Jura.\n\n\n\t\t\t      L'été, le refuge est accessible par un sentier balisé depuis le village de Lélex (300m de dénivélé et 1h00 de marche). Accès possible par le télécabine de la Catheline (20mn de marche en descente).\n\n\n\t\t\t      En hiver, le refuge se situe sur les pistes de ski alpin à 2 pas du départ du télésiège 6 places.",
+    "owner": "FFCAM",
     "guardian": "BENIER Patrick",
     "picture_path": "chalet-refuge-le-ratou.jpg",
     "coordinate": {
@@ -1519,6 +1612,7 @@
     "short_name": "requin",
     "altitude": 2516,
     "description": "Au pied de la dent du Requin, et de l'Aiguille du Plan, en balcon au-dessus de la Mer de Glace, un site très haute montagne face aux séracs du Géant avec un panorama exceptionnel. L'été le refuge offre en outre une tranquillité très appréciable.",
+    "owner": "FFCAM",
     "guardian": "ARIBERT Amélie et Romuald",
     "picture_path": "refuge-du-requin.jpg",
     "coordinate": {
@@ -1535,6 +1629,7 @@
     "short_name": "saint-guilhem-le-désert",
     "altitude": 89,
     "description": "Situé sur le GR 74, à deux pas de l'abbaye de Gellone, c'est un point de départ pour de multiples activités : escalade dans le cirque dolomitique du Bout du Monde ou randonnée et spéléologie dans les Monts de Saint Guilhem - le causse du Larzac.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-de-saint-guilhem-le-désert.jpg",
     "coordinate": {
@@ -1550,6 +1645,7 @@
     "short_name": "sancy",
     "altitude": 1275,
     "description": "Situé au coeur des monts d'Auvergne, au pied des cîmes du Sancy et à proximité des sources de la Dordogne, ce centre séduira les passionnés de montagne autant que les amateurs de nature et de calme !",
+    "owner": "FFCAM",
     "guardian": "Béatrice LEPINE",
     "picture_path": "chalet-du-sancy.jpg",
     "coordinate": {
@@ -1565,6 +1661,7 @@
     "short_name": "sélé",
     "altitude": 2511,
     "description": "Coiffant la barre rocheuse qui ferme le vallon de Calse-Nière, le refuge, construit en 1983, appartient à cet univers minéral de la haute montagne, avec vue panoramique sur le glacier du Sélé.",
+    "owner": "FFCAM",
     "guardian": "Raoul GAENTZHIRT",
     "picture_path": "refuge-du-sélé.jpg",
     "coordinate": {
@@ -1581,6 +1678,7 @@
     "short_name": "tachdirt",
     "altitude": 2314,
     "description": "Refuge à l'entrée du village de Tachdirt, plus haut village berbère de l'Atlas.",
+    "owner": "FFCAM",
     "guardian": "Mohamed IBALINE",
     "picture_path": "refuge-de-tachdirt.jpg",
     "coordinate": {
@@ -1597,6 +1695,7 @@
     "short_name": "tagnarède",
     "altitude": 1052,
     "description": "Dans le massif des Albères, sur la crête frontière Franco-Espagnole, dans une forêt de hêtres. La présence d'une piste forestière carrossable 50 m sous le refuge diminue son isolement.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-de-tagnarède.jpg",
     "coordinate": {
@@ -1612,6 +1711,7 @@
     "short_name": "tazarhart",
     "altitude": 3000,
     "description": "Au pied du Jbel Tazarhart, refuge perché sur un éperon, dans un cadre sauvage de haute montagne avec des couloirs encore enneigés en été.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-de-tazarhart.jpg",
     "coordinate": {
@@ -1628,6 +1728,7 @@
     "short_name": "temple ecrins",
     "altitude": 2410,
     "description": "Le refuge, facilement accessible, est niché au coeur du massif des Écrins, il offre ainsi un magnifique panorama sur les sommets les plus prestigieux de ce massif. Situé dans une prairie alpine peuplée de chamois et de marmottes, il contentera aussi bien le randonneur venu découvrir le massif que l'alpiniste faisant étape vers le sommet du pic Coolidge ou la barre des Écrins ou bien d'autres encore.",
+    "owner": "FFCAM",
     "guardian": "Marie Gardent",
     "picture_path": "refuge-temple-ecrins.jpg",
     "coordinate": {
@@ -1643,6 +1744,7 @@
     "short_name": "tête rousse",
     "altitude": 3167,
     "description": "Dans un site de Haute montagne, près du petit glacier de Tête Rousse et face à la très belle face NW de l'Aiguille de Bionnassay, un très beau et très confortable refuge (rénové en 2003).",
+    "owner": "FFCAM",
     "guardian": "Patricia TUVERI",
     "picture_path": "refuge-de-tête-rousse.jpg",
     "coordinate": {
@@ -1658,6 +1760,7 @@
     "short_name": "toubkal",
     "altitude": 3207,
     "description": "Au pied du Jbel Toubkal, sommet culminant du Haut Atlas (4167 m), un refuge confortable, construit en 1999 et respectant l'architecture berbère traditionnelle .",
+    "owner": "FFCAM",
     "guardian": "Mohamed AIT EL KADI",
     "picture_path": "refuge-du-toubkal.jpg",
     "coordinate": {
@@ -1674,6 +1777,7 @@
     "short_name": "trois fours",
     "altitude": 1200,
     "description": "Entre le col de la Schlucht et le Hohneck, un peu en dessous de la crête (et en versant est), sur un grand replat de \"chaumes\" avec une vue particulièrement belle sur la vallée de Munster et la plaine d'Alsace. Site classé. Réserve naturelle. Flore et faune caractéristiques (chamois, ...)",
+    "owner": "FFCAM",
     "guardian": "Yvane PIERRE (hiver)",
     "picture_path": "chalet-refuge-les-trois-fours.jpg",
     "coordinate": {
@@ -1689,6 +1793,7 @@
     "short_name": "tuffes",
     "altitude": 1217,
     "description": "Entre la montagne des Tuffes et la Dole (1680 m), le chalet est une claire et solide bâtisse totalement rénovée. Idéalement situé dans le Parc naturel du Haut Jura, sur la frontière franco-suisse, il vous permet d'accéder à pied à l'un des plus beaux domaines nordique français.... Pour une pratique sportive sur les traces de la célèbre Transjurassienne, ou pour randonner en toute liberté à ski, à pied, en raquette ! Un vrai paradis en or blanc.",
+    "owner": "FFCAM",
     "guardian": "Tristan BADIE",
     "picture_path": "chalet-des-tuffes.jpg",
     "coordinate": {
@@ -1704,6 +1809,7 @@
     "short_name": "tuquerouye",
     "altitude": 2666,
     "description": "Plus haut refuge des Pyrénées, il en est aussi le doyen (il a été construit en 1890). Situé sur la brêche même de Tuquerouye, en fait certainement le plus beau. Accès difficile (couloir neigeux de 300 m incliné à 40°) situé à cheval sur la crête transfrontalière France/Espagne.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-de-tuquerouye.jpg",
     "coordinate": {
@@ -1719,6 +1825,7 @@
     "short_name": "vacquerie",
     "altitude": 620,
     "description": "Maison de village sur le Causse du Larzac, dans un site minéral superbe. Sur le GR74, à proximité du GR7. Nombreuses possibilités de randonnées, grand site spéléologique.",
+    "owner": "FFCAM",
     "guardian": "BARASCUT Véronique",
     "picture_path": "chalet-de-la-vacquerie.jpg",
     "coordinate": {
@@ -1734,6 +1841,7 @@
     "short_name": "vallonpierre",
     "altitude": 2271,
     "description": "Remarquable par la présence du lac à la porte du refuge et la vue grandiose sur le maître des lieux : Sirac. On peut aussi admirer les Rouies. au lever du jour, une multitude de chamois foule les douces pelouses environnantes. Pendant la journée, de nombreuses marmottes profitent de cet espace. Ce refuge, construit en 2000, vous apportera isolement et confort très agréable.",
+    "owner": "FFCAM",
     "guardian": "Guillaume BAILLY",
     "picture_path": "refuge-de-vallonpierre.jpg",
     "coordinate": {
@@ -1750,6 +1858,7 @@
     "short_name": "vallot",
     "altitude": 4362,
     "description": "Sur l'arête Ouest du Mont-Blanc, au pied de la Bosse Inférieure, à proximité de l'observatoire Vallot et à 2h00 du sommet du Mont-Blanc. Abri bivouac de secours uniquement. ATTENTION BIVOUAQUER DANS CE REFUGE SANS ACCLIMATATION A L'ALTITUDE PEUT ETRE DANGEREUX !",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "refuge-vallot.jpg",
     "coordinate": {
@@ -1765,6 +1874,7 @@
     "short_name": "valmasque",
     "altitude": 2233,
     "description": "Sur les bords du Lac Vert, au-dessus du haut du vallon de la Valmasque, dans un univers de roches et de gazon ras, un refuge réconfortant rénové en 1984, ouvert sur une grande et belle terrasse.",
+    "owner": "FFCAM",
     "guardian": "Michel et Evelyne DURANTI",
     "picture_path": "refuge-de-la-valmasque.jpg",
     "coordinate": {
@@ -1780,6 +1890,7 @@
     "short_name": "vauchignon",
     "altitude": 350,
     "description": "Le seul refuge CAF de Bourgogne, situé à proximité des falaises d'escalade de Cormot, du chemin de randonnée Jean-Marc Boivin et GR7.",
+    "owner": "FFCAM",
     "guardian": "",
     "picture_path": "chalet-de-vauchignon.jpg",
     "coordinate": {
@@ -1795,6 +1906,7 @@
     "short_name": "vénasque",
     "altitude": 2239,
     "description": "Installé au milieu d'un parterre de lacs, le refuge de Vénasque est une étape idéale sur la classique promenade au port de Venasque d'où l'on découvre une vue magnifique sur la Madaletta et l'Aneto, point culminant des Pyrénées.",
+    "owner": "FFCAM",
     "guardian": "GARRIGUES Gulhem",
     "picture_path": "refuge-de-vénasque.jpg",
     "coordinate": {
@@ -1811,6 +1923,7 @@
     "short_name": "vens",
     "altitude": 2380,
     "description": "Un des sites le plus prestigieux du Parc du Mercantour. Un environnement de lacs naturels, de cascades dans un ancien cirque glaciaire, une pelouse alpine riche, une faune nombreuse et variée (mouflons, chamois, aigle...) pour un refuge harmonieux.",
+    "owner": "FFCAM",
     "guardian": "Catherine DEBRAY",
     "picture_path": "refuge-des-lacs-de-vens.jpg",
     "coordinate": {
@@ -1827,6 +1940,7 @@
     "short_name": "veran",
     "altitude": 1600,
     "description": "Sur un replat balcon 1000 m au-dessus de l'Arve et face aux Aravis (dont la Pointe Percée), dans un cadre isolé, un chalet d'alpage agréable mais rustique au pied de la Croix de Fer.",
+    "owner": "FFCAM",
     "guardian": "non gardé",
     "picture_path": "refuge-de-veran.jpg",
     "coordinate": {
@@ -1842,6 +1956,7 @@
     "short_name": "viso",
     "altitude": 2460,
     "description": "Situé sur un grand replat et dans un large cirque d'alpages où les lacs sont nombreux.",
+    "owner": "FFCAM",
     "guardian": "CIESLAR Sarah et Paul",
     "picture_path": "refuge-du-viso.jpg",
     "coordinate": {
@@ -1866,5 +1981,459 @@
     "places": "30",
     "region": "Faucigny",
     "url": "http://chaletlavuagere.ffcam.fr"
+  },
+  {
+    "name": "Aosta",
+    "short_name": "aosta",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Benevolo Gian Federico",
+    "short_name": "benevolo gian federico",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Bobba Giovanni",
+    "short_name": "bobba giovanni",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Boccalatte/Piolti",
+    "short_name": "boccalatte",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Carrel Jean Antoine (AGAI)",
+    "short_name": "carrel jean antoine",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Casale Monferrato",
+    "short_name": "casale monferrato",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Chabod Federico (AGAI)",
+    "short_name": "chabod federico",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Chiarella All Amianthe",
+    "short_name": "chiarella all amianthe",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Citta Di Chivasso",
+    "short_name": "citta di chivasso",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Citta Di Mantova (AGAI)",
+    "short_name": "citta di mantova",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Crêtes Sèches",
+    "short_name": "crêtes sèches",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Cuney",
+    "short_name": "cuney",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Dalmazzi Cesare",
+    "short_name": "dalmazzi",
+    "altitude": 2584,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 7.040533,
+      "longitude": 45.893983
+    },
+    "phone": "0039 0165 1756470",
+    "phone2": "0039 0165 869098",
+    "places": "32",
+    "region": "Valle D'Aosta",
+    "url": "http://www.rifugiodalmazzi.com"
+  },
+  {
+    "name": "Deffeyes Alberto",
+    "short_name": "deffeyes",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Gnifetti Giovanni (CAPANNA)",
+    "short_name": "gnifetti",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Gonella Francesco (Nuovo)",
+    "short_name": "gonella",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Gonella Francesco (Vecchio)",
+    "short_name": "gonella vecchio",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Guide Del Cervino (AGAI)",
+    "short_name": "cervino",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Guide Della Val D'Ayas (AGAI)",
+    "short_name": "ayas",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Mezzalama Ottorino",
+    "short_name": "mezzalama ottorino",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Monte Bianco",
+    "short_name": "bianco",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Nacamuli/Col Collon",
+    "short_name": "nacamuli",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Perucca/Vuillermoz (AGAI)",
+    "short_name": "perucca",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Sella Quintino (Al Rocher Del M.Bianco)",
+    "short_name": "sella quintino",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Sella Quintino Nuovo (Al Felik)",
+    "short_name": "sella quintino nuovo",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Soldini Montanaro Elisabetta",
+    "short_name": "soldini montanaro",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Torino (Nuovo)",
+    "short_name": "torino",
+    "altitude": 3375,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "phone": "+39.0165.844034",
+    "places": "140",
+    "region": "Valle D'Aosta",
+    "url": "http://www.rifugiotorino.com",
+    "build_date": 1952
+  },
+  {
+    "name": "Torino (Vecchio)",
+    "short_name": "torino vecchio",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Vittorio Emanuele (Nuovo)",
+    "short_name": "vittorio",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
+  },
+  {
+    "name": "Vittorio Emanuele (Vecchio)",
+    "short_name": "vittorio",
+    "altitude": 0,
+    "description": "",
+    "owner": "CAI",
+    "picture_path": "",
+    "coordinate": {
+      "latitude": 0.0,
+      "longitude": 0.0
+    },
+    "places": "0",
+    "region": "Valle D'Aosta",
+    "url": ""
   }
 ]

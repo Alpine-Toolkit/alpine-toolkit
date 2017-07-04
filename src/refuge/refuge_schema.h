@@ -70,6 +70,7 @@ public:
     SHORT_NAME,
     ALTITUDE,
     DESCRIPTION,
+    OWNER,
     GUARDIAN,
     PICTURE_PATH,
     COORDINATE,
@@ -78,7 +79,7 @@ public:
     URL,
     PHONE
   };
-  static const int NUMBER_OF_FIELDS = 12;
+  static const int NUMBER_OF_FIELDS = 13;
 
 public:
   static RefugeSchema & instance()
@@ -108,6 +109,7 @@ class Refuge : public QObject, public QcRow<RefugeSchema>
   Q_PROPERTY(QString short_name READ short_name WRITE set_short_name NOTIFY short_nameChanged)
   Q_PROPERTY(int altitude READ altitude WRITE set_altitude NOTIFY altitudeChanged)
   Q_PROPERTY(QString description READ description WRITE set_description NOTIFY descriptionChanged)
+  Q_PROPERTY(QString owner READ owner WRITE set_owner NOTIFY ownerChanged)
   Q_PROPERTY(QString guardian READ guardian WRITE set_guardian NOTIFY guardianChanged)
   Q_PROPERTY(QString picture_path READ picture_path WRITE set_picture_path NOTIFY picture_pathChanged)
   Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE set_coordinate NOTIFY coordinateChanged)
@@ -153,6 +155,9 @@ public:
   const QString & description() const { return m_description; }
   void set_description(const QString & value);
 
+  const QString & owner() const { return m_owner; }
+  void set_owner(const QString & value);
+
   const QString & guardian() const { return m_guardian; }
   void set_guardian(const QString & value);
 
@@ -194,6 +199,7 @@ public:
   bool is_short_name_modified() const { return bit_status(Schema::Fields::SHORT_NAME); }
   bool is_altitude_modified() const { return bit_status(Schema::Fields::ALTITUDE); }
   bool is_description_modified() const { return bit_status(Schema::Fields::DESCRIPTION); }
+  bool is_owner_modified() const { return bit_status(Schema::Fields::OWNER); }
   bool is_guardian_modified() const { return bit_status(Schema::Fields::GUARDIAN); }
   bool is_picture_path_modified() const { return bit_status(Schema::Fields::PICTURE_PATH); }
   bool is_coordinate_modified() const { return bit_status(Schema::Fields::COORDINATE); }
@@ -216,6 +222,7 @@ signals:
   void short_nameChanged();
   void altitudeChanged();
   void descriptionChanged();
+  void ownerChanged();
   void guardianChanged();
   void picture_pathChanged();
   void coordinateChanged();
@@ -234,6 +241,7 @@ private:
   QString m_short_name;
   int m_altitude;
   QString m_description;
+  QString m_owner;
   QString m_guardian;
   QString m_picture_path;
   QGeoCoordinate m_coordinate;
@@ -384,6 +392,7 @@ public:
     SHORT_NAME,
     ALTITUDE,
     DESCRIPTION,
+    OWNER,
     GUARDIAN,
     PICTURE_PATH,
     COORDINATE,

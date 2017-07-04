@@ -106,6 +106,18 @@ RefugeSchema::RefugeSchema()
   }
   {
     QcSchemaField field(
+      QLatin1String("owner"),
+      QLatin1String("QString"),
+      QLatin1String("text"),
+      QLatin1String("owner"),
+      QLatin1String("owner"),
+      QLatin1String(""),
+      QLatin1String(""));
+    // Optional parameters
+    add_field(field);
+  }
+  {
+    QcSchemaField field(
       QLatin1String("guardian"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -206,6 +218,7 @@ Refuge::Refuge()
     m_short_name(),
     m_altitude(),
     m_description(),
+    m_owner(),
     m_guardian(),
     m_picture_path(),
     m_coordinate(),
@@ -225,6 +238,7 @@ Refuge::Refuge(const Refuge & other)
     m_short_name(other.m_short_name),
     m_altitude(other.m_altitude),
     m_description(other.m_description),
+    m_owner(other.m_owner),
     m_guardian(other.m_guardian),
     m_picture_path(other.m_picture_path),
     m_coordinate(other.m_coordinate),
@@ -244,6 +258,7 @@ Refuge::Refuge(const QJsonObject & json_object)
   m_short_name = json_object[QLatin1String("short_name")].toString();
   m_altitude = json_object[QLatin1String("altitude")].toInt();
   m_description = json_object[QLatin1String("description")].toString();
+  m_owner = json_object[QLatin1String("owner")].toString();
   m_guardian = json_object[QLatin1String("guardian")].toString();
   m_picture_path = json_object[QLatin1String("picture_path")].toString();
   m_coordinate = orm_type_conversion::load_json_coordinate(json_object[QLatin1String("coordinate")]);
@@ -263,6 +278,7 @@ Refuge::Refuge(const QVariantHash & variant_hash)
   m_short_name = variant_hash[QLatin1String("short_name")].toString();
   m_altitude = variant_hash[QLatin1String("altitude")].toInt();
   m_description = variant_hash[QLatin1String("description")].toString();
+  m_owner = variant_hash[QLatin1String("owner")].toString();
   m_guardian = variant_hash[QLatin1String("guardian")].toString();
   m_picture_path = variant_hash[QLatin1String("picture_path")].toString();
   m_coordinate = variant_hash[QLatin1String("coordinate")].value<QGeoCoordinate>();
@@ -282,13 +298,14 @@ Refuge::Refuge(const QVariantList & variants)
   m_short_name = variants[2].toString();
   m_altitude = variants[3].toInt();
   m_description = variants[4].toString();
-  m_guardian = variants[5].toString();
-  m_picture_path = variants[6].toString();
-  m_coordinate = variants[7].value<QGeoCoordinate>();
-  m_number_of_places = variants[8].toString();
-  m_region = variants[9].toString();
-  m_url = variants[10].toString();
-  m_phone = variants[11].toString();
+  m_owner = variants[5].toString();
+  m_guardian = variants[6].toString();
+  m_picture_path = variants[7].toString();
+  m_coordinate = variants[8].value<QGeoCoordinate>();
+  m_number_of_places = variants[9].toString();
+  m_region = variants[10].toString();
+  m_url = variants[11].toString();
+  m_phone = variants[12].toString();
 
   post_init();
 }
@@ -301,13 +318,14 @@ Refuge::Refuge(const QSqlRecord & record)
   m_short_name = record.value(2).toString();
   m_altitude = record.value(3).toInt();
   m_description = record.value(4).toString();
-  m_guardian = record.value(5).toString();
-  m_picture_path = record.value(6).toString();
-  m_coordinate = orm_type_conversion::load_wkb_point(record.value(7));
-  m_number_of_places = record.value(8).toString();
-  m_region = record.value(9).toString();
-  m_url = record.value(10).toString();
-  m_phone = record.value(11).toString();
+  m_owner = record.value(5).toString();
+  m_guardian = record.value(6).toString();
+  m_picture_path = record.value(7).toString();
+  m_coordinate = orm_type_conversion::load_wkb_point(record.value(8));
+  m_number_of_places = record.value(9).toString();
+  m_region = record.value(10).toString();
+  m_url = record.value(11).toString();
+  m_phone = record.value(12).toString();
 
   post_init();
 }
@@ -320,6 +338,7 @@ Refuge::Refuge(const QSqlQuery & query, int offset)
   m_short_name = query.value(offset++).toString();
   m_altitude = query.value(offset++).toInt();
   m_description = query.value(offset++).toString();
+  m_owner = query.value(offset++).toString();
   m_guardian = query.value(offset++).toString();
   m_picture_path = query.value(offset++).toString();
   m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
@@ -347,6 +366,7 @@ Refuge::operator=(const Refuge & other)
     m_short_name = other.m_short_name;
     m_altitude = other.m_altitude;
     m_description = other.m_description;
+    m_owner = other.m_owner;
     m_guardian = other.m_guardian;
     m_picture_path = other.m_picture_path;
     m_coordinate = other.m_coordinate;
@@ -376,6 +396,8 @@ Refuge::operator==(const Refuge & other) const
   if (m_altitude != other.m_altitude)
     return false;
   if (m_description != other.m_description)
+    return false;
+  if (m_owner != other.m_owner)
     return false;
   if (m_guardian != other.m_guardian)
     return false;
@@ -465,6 +487,21 @@ Refuge::set_description(const QString & value)
     set_bit(Schema::Fields::DESCRIPTION);
 
     emit descriptionChanged();
+    if (not is_changed)
+      emit changed();
+  }
+}
+
+void
+Refuge::set_owner(const QString & value)
+{
+  if (m_owner != value) {
+    m_owner = value;
+
+    bool is_changed = is_modified();
+    set_bit(Schema::Fields::OWNER);
+
+    emit ownerChanged();
     if (not is_changed)
       emit changed();
   }
@@ -591,6 +628,8 @@ Refuge::to_json(bool only_changed) const
       json_object.insert(QLatin1String("altitude"), QJsonValue(m_altitude));
     if (is_description_modified())
       json_object.insert(QLatin1String("description"), QJsonValue(m_description));
+    if (is_owner_modified())
+      json_object.insert(QLatin1String("owner"), QJsonValue(m_owner));
     if (is_guardian_modified())
       json_object.insert(QLatin1String("guardian"), QJsonValue(m_guardian));
     if (is_picture_path_modified())
@@ -611,6 +650,7 @@ Refuge::to_json(bool only_changed) const
     json_object.insert(QLatin1String("short_name"), QJsonValue(m_short_name));
     json_object.insert(QLatin1String("altitude"), QJsonValue(m_altitude));
     json_object.insert(QLatin1String("description"), QJsonValue(m_description));
+    json_object.insert(QLatin1String("owner"), QJsonValue(m_owner));
     json_object.insert(QLatin1String("guardian"), QJsonValue(m_guardian));
     json_object.insert(QLatin1String("picture_path"), QJsonValue(m_picture_path));
     json_object.insert(QLatin1String("coordinate"), orm_type_conversion::dump_json_coordinate(m_coordinate));
@@ -639,6 +679,8 @@ Refuge::to_variant_hash(bool only_changed) const
       variant_hash[QLatin1String("altitude")] = m_altitude;
     if (is_description_modified())
       variant_hash[QLatin1String("description")] = m_description;
+    if (is_owner_modified())
+      variant_hash[QLatin1String("owner")] = m_owner;
     if (is_guardian_modified())
       variant_hash[QLatin1String("guardian")] = m_guardian;
     if (is_picture_path_modified())
@@ -659,6 +701,7 @@ Refuge::to_variant_hash(bool only_changed) const
     variant_hash[QLatin1String("short_name")] = m_short_name;
     variant_hash[QLatin1String("altitude")] = m_altitude;
     variant_hash[QLatin1String("description")] = m_description;
+    variant_hash[QLatin1String("owner")] = m_owner;
     variant_hash[QLatin1String("guardian")] = m_guardian;
     variant_hash[QLatin1String("picture_path")] = m_picture_path;
     variant_hash[QLatin1String("coordinate")] = QVariant::fromValue(m_coordinate);
@@ -681,6 +724,7 @@ Refuge::to_variant_list() const
   variants << m_short_name;
   variants << m_altitude;
   variants << m_description;
+  variants << m_owner;
   variants << m_guardian;
   variants << m_picture_path;
   variants << QVariant::fromValue(m_coordinate);
@@ -708,6 +752,8 @@ Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
       variant_hash[QLatin1String("altitude")] = m_altitude;
     if (is_description_modified())
       variant_hash[QLatin1String("description")] = m_description;
+    if (is_owner_modified())
+      variant_hash[QLatin1String("owner")] = m_owner;
     if (is_guardian_modified())
       variant_hash[QLatin1String("guardian")] = m_guardian;
     if (is_picture_path_modified())
@@ -729,6 +775,7 @@ Refuge::to_variant_hash_sql(bool only_changed, bool duplicate) const
     variant_hash[QLatin1String("short_name")] = m_short_name;
     variant_hash[QLatin1String("altitude")] = m_altitude;
     variant_hash[QLatin1String("description")] = m_description;
+    variant_hash[QLatin1String("owner")] = m_owner;
     variant_hash[QLatin1String("guardian")] = m_guardian;
     variant_hash[QLatin1String("picture_path")] = m_picture_path;
     variant_hash[QLatin1String("coordinate")] = orm_type_conversion::dump_wkb_point(m_coordinate);
@@ -752,6 +799,7 @@ Refuge::to_variant_list_sql(bool duplicate) const
   variants << m_short_name;
   variants << m_altitude;
   variants << m_description;
+  variants << m_owner;
   variants << m_guardian;
   variants << m_picture_path;
   variants << orm_type_conversion::dump_wkb_point(m_coordinate);
@@ -777,6 +825,8 @@ Refuge::field(int position) const
      return m_altitude;
    case Schema::Fields::DESCRIPTION:
      return m_description;
+   case Schema::Fields::OWNER:
+     return m_owner;
    case Schema::Fields::GUARDIAN:
      return m_guardian;
    case Schema::Fields::PICTURE_PATH:
@@ -818,6 +868,10 @@ Refuge::set_field(int position, const QVariant & value)
    }
    case Schema::Fields::DESCRIPTION: {
      m_description = value.toString();
+     break;
+   }
+   case Schema::Fields::OWNER: {
+     m_owner = value.toString();
      break;
    }
    case Schema::Fields::GUARDIAN: {
@@ -880,6 +934,7 @@ operator<<(QDataStream & out, const Refuge & obj)
   out << obj.short_name();
   out << obj.altitude();
   out << obj.description();
+  out << obj.owner();
   out << obj.guardian();
   out << obj.picture_path();
   out << obj.coordinate();
@@ -907,6 +962,8 @@ operator>>(QDataStream & in, Refuge & obj)
   obj.set_altitude(_int);
   in >> _QString;
   obj.set_description(_QString);
+  in >> _QString;
+  obj.set_owner(_QString);
   in >> _QString;
   obj.set_guardian(_QString);
   in >> _QString;
@@ -942,6 +999,8 @@ operator<<(QDebug debug, const Refuge & obj)
   debug << obj.altitude();
   debug << QLatin1Literal(", ");
   debug << obj.description();
+  debug << QLatin1Literal(", ");
+  debug << obj.owner();
   debug << QLatin1Literal(", ");
   debug << obj.guardian();
   debug << QLatin1Literal(", ");
@@ -1059,6 +1118,8 @@ RefugeModel::data(const QModelIndex & index, int role) const
     return item->altitude();
   case DESCRIPTION:
     return item->description();
+  case OWNER:
+    return item->owner();
   case GUARDIAN:
     return item->guardian();
   case PICTURE_PATH:
@@ -1092,6 +1153,7 @@ RefugeModel::roleNames() const
   role_names[SHORT_NAME] = QLatin1Literal("short_name").latin1();
   role_names[ALTITUDE] = QLatin1Literal("altitude").latin1();
   role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
+  role_names[OWNER] = QLatin1Literal("owner").latin1();
   role_names[GUARDIAN] = QLatin1Literal("guardian").latin1();
   role_names[PICTURE_PATH] = QLatin1Literal("picture_path").latin1();
   role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
