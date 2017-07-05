@@ -1,13 +1,16 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
     <qresource prefix="/Pages">
+        <file alias="PageModel.qml">qml/PageModel.qml</file>
+
+	<file alias="FuelGauge.qml">qml/Pages/FuelGauge.qml</file>
         <file alias="Altimeter.qml">qml/Pages/Altimeter.qml</file>
         <file alias="Bleau.qml">qml/Pages/Bleau.qml</file>
         <file alias="Camera.qml">qml/Pages/Camera.qml</file>
         <file alias="Camptocamp.qml">qml/Pages/Camptocamp.qml</file>
         <file alias="CamptocampCache.qml">qml/Pages/CamptocampCache.qml</file>
-        <file alias="CamptocampRoute.qml">qml/Pages/CamptocampRoute.qml</file>
         <file alias="CamptocampLogin.qml">qml/Pages/CamptocampLogin.qml</file>
+        <file alias="CamptocampMedia.qml">qml/Pages/CamptocampMedia.qml</file>
         <file alias="CamptocampRoute.qml">qml/Pages/CamptocampRoute.qml</file>
         <file alias="CamptocampSearchFilter.qml">qml/Pages/CamptocampSearchFilter.qml</file>
         <file alias="Chart.qml">qml/Pages/Chart.qml</file>
@@ -25,7 +28,6 @@
         <file alias="RefugeDirectory.qml">qml/Pages/RefugeDirectory.qml</file>
         <file alias="Torch.qml">qml/Pages/Torch.qml</file>
         <file alias="UiTest.qml">qml/Pages/UiTest.qml</file>
-        <file alias="PageModel.qml">qml/PageModel.qml</file>
     </qresource>
     <qresource prefix="/Widgets">
         <!-- file alias="qmldir">qml/Widgets/qmldir</file> -->
