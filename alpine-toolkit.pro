@@ -40,13 +40,40 @@ SOURCES += \
 REPC_REPLICA += service/service.rep
 
 ####################################################################################################
+
+# DEFINES += WITH_PROJ4
+linux:!android {
+LIBS += -lproj
+}
+android {
+INCLUDEPATH += $$PWD/third-parties/proj4/proj.4.git/src
+LIBS += -L$$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/proj4 -lqtcarto_proj4
+}
+
+####################################################################################################
 #
 # Sources
 #
 
-INCLUDEPATH += src
+INCLUDEPATH += src src/qtcarto
 
 # Fixme: config.h # symlink to cmake build ...
+
+HEADERS += \
+  src/qtcarto/coordinate/mercator.h \
+  src/qtcarto/coordinate/projection.h \
+  src/qtcarto/coordinate/sexagesimal_angle.h \
+  src/qtcarto/coordinate/wgs84.h \
+  src/qtcarto/coordinate/debug_tools.h \
+  src/qtcarto/data_structure/simd.h \
+  src/qtcarto/geo_data_format/gpx.h \
+  src/qtcarto/geo_data_format/route.h \
+  src/qtcarto/geo_data_format/waypoint.h \
+  src/qtcarto/geo_data_format/xml_reader.h \
+  src/qtcarto/geo_data_format/wkb.h \
+  src/qtcarto/geometry/vector.h \
+  src/qtcarto/math/interval.h \
+  src/qtcarto/math/qc_math.h
 
 HEADERS += \
   src/application/application.h \
@@ -75,9 +102,9 @@ HEADERS += \
   src/full_text_search/tokenizer.h \
   src/international_morse_code_engine/international_morse_code_engine.h \
   src/network/network_downloader.h \
-  src/network/network_fetcher.h \
   src/network/network_reply.h \
-  src/network/network_ressource_request.h \
+  src/network/network_request.h \
+  src/network/network_request_manager.h \
   src/orm/database_connection.h \
   src/orm/database.h \
   src/orm/database_query.h \
@@ -109,6 +136,22 @@ HEADERS += \
   src/tools/logger.h \
   src/tools/platform.h
 
+SOURCES += \
+  src/qtcarto/coordinate/mercator.cpp \
+  src/qtcarto/coordinate/projection.cpp \
+  src/qtcarto/coordinate/sexagesimal_angle.cpp \
+  src/qtcarto/coordinate/wgs84.cpp \
+  src/qtcarto/coordinate/debug_tools.cpp \
+  src/qtcarto/data_structure/simd.cpp \
+  src/qtcarto/geo_data_format/gpx.cpp \
+  src/qtcarto/geo_data_format/route.cpp \
+  src/qtcarto/geo_data_format/waypoint.cpp \
+  src/qtcarto/geo_data_format/xml_reader.cpp \
+  src/qtcarto/geo_data_format/wkb.cpp \
+  src/qtcarto/geometry/vector.cpp \
+  src/qtcarto/math/interval.cpp \
+  src/qtcarto/math/qc_math.cpp
+
 #document/document_manager.cpp
 SOURCES += \
   src/application/application.cpp \
@@ -136,9 +179,9 @@ SOURCES += \
   src/international_morse_code_engine/international_morse_code_engine.cpp \
   src/main.cpp \
   src/network/network_downloader.cpp \
-  src/network/network_fetcher.cpp \
   src/network/network_reply.cpp \
-  src/network/network_ressource_request.cpp \
+  src/network/network_request.cpp \
+  src/network/network_request_manager.cpp \
   src/orm/database.cpp \
   src/orm/database_connection.cpp \
   src/orm/database_query.cpp \
