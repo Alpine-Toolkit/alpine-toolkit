@@ -12,9 +12,12 @@ BUILD_TYPE=Debug
 
 # arm64-v8a
 
+API=19 # Android 4.4
+# API=21 # Android 5.0
+
 cmake \
   -DCMAKE_SYSTEM_NAME=Android \
-  -DCMAKE_SYSTEM_VERSION=21 \
+  -DCMAKE_SYSTEM_VERSION=${API} \
   -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a \
   -DCMAKE_ANDROID_NDK=/opt/android-ndk-r10e \
   -DCMAKE_ANDROID_STL_TYPE=gnustl_static \
