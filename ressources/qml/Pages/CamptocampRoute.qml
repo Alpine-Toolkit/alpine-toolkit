@@ -71,9 +71,9 @@ Widgets.Page {
         var images = route.images
         for (var i = 0; i < images.length; i++) {
 	    var image = images[i];
-            console.info("Image", image.filename)
+            console.info("Load image", image.filename);
+            image_model.append({"filename": image.filename, "loaded": false}); // Fixme:
             c2c_client.media(image.filename);
-            image_model.append({"filename": image.filename}) // Fixme
         }
     }
 
@@ -83,6 +83,12 @@ Widgets.Page {
             // busy_indicator.running = false;
             console.info('Received image ' + media);
             c2c_client.save_media(media);
+            for (var i = 0; i < image_model.count; i++) {
+	        var image = image_model.get(i);
+                if (image.filename == media) {
+                    image_model.setProperty(i, "loaded", true);
+                }
+            }
         }
     }
 
@@ -94,6 +100,11 @@ Widgets.Page {
         Row {
             width: parent.width
             layoutDirection: Qt.RightToLeft
+
+            // BusyIndicator {
+            //     id: busy_indicator
+            //     running: true
+            // }
 
             ToolButton {
                 id: download_icon
@@ -290,19 +301,47 @@ Widgets.Page {
         // }
 
 
-        Repeater {
-            // model: route.images // Fixme
-            model: image_model
-            Pane {
-                Flickable {
-                    anchors.fill: parent
-                    contentWidth: image.width
-                    contentHeight: image.height
-                    Image {
-                        id: image
-                        source: "image://c2c/" + filename
+        Pane {
+            ListView {
+                id: media_list_view
+                width: parent.width
+                height: parent.height
+                model: image_model
+                delegate: ItemDelegate {
+                    width: media_list_view.width
+                    height: media_list_view.height
+
+                    Column {
+                        width: parent.width
+                        height: parent.height
+
+                        Image {
+                            visible: loaded
+                            source: loaded ? "image://c2c/" + filename : null
+                            width: parent.width
+                            height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
+                        }
+
+                        BusyIndicator {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.verticalCenter: parent.verticalCenter
+                            running: loaded == false
+                            visible: running
+                        }
+                    }
+
+                    onClicked: {
+                        console.info("clicked on media", filename);
+                        var properties = { 'media': filename };
+                        push_page('qrc:/Pages/CamptocampMedia.qml', properties);
                     }
                 }
+                clip: true
+                orientation: ListView.Vertical
+                snapMode: ListView.SnapToItem
+                ScrollBar.vertical: ScrollBar { }
             }
         }
 

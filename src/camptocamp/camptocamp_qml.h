@@ -95,11 +95,13 @@ public:
   C2cSearchResult * search_result() { return &m_search_result; } // Fixme: const ???
 
   Q_INVOKABLE void media(const QString & media, bool use_cache = true);
-  Q_INVOKABLE QByteArray * get_media(const QString & media, bool use_cache = true);
   Q_INVOKABLE bool is_media_cached(const QString & media);
   Q_INVOKABLE void save_media(const QString & media);
 
   Q_INVOKABLE void load_document_on_cache();
+
+  // Fixme: QByteArray vs QPixmap
+  QSharedPointer<QByteArray> get_media(const QString & media);
 
 private:
   const QString & username() const;

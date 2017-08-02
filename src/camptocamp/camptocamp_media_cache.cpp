@@ -72,9 +72,12 @@ QByteArray
 C2cMediaCache::get_media(const QString & media) const
 {
   QFile media_file(media_path(media));
-  if (!media_file.open(QIODevice::ReadOnly))
+  if (media_file.open(QIODevice::ReadOnly))
+    return media_file.readAll();
+  else {
     qWarning() << "couldn't read to file" << media;
-  return media_file.readAll();
+    return QByteArray(); // Fixme:
+  }
 }
 
 /***************************************************************************************************

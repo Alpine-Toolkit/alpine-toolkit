@@ -268,6 +268,7 @@ void
 C2cQmlClient::media(const QString & media, bool use_cache)
 {
   if (use_cache and m_media_cache.has_media(media)) {
+    qInfo() << "Found media " << media << " in cache";
     QByteArray data = m_media_cache.get_media(media);
     on_received_media(media, data);
   } else
@@ -289,28 +290,18 @@ C2cQmlClient::is_media_cached(const QString & media)
   return m_media_cache.has_media(media);
 }
 
-QByteArray *
-C2cQmlClient::get_media(const QString & media, bool use_cache) // unused
-{
-  Q_UNUSED(use_cache);
-  // Fixme: use_cache ???
-  // if (use_cache) {
-  //   QByteArray data = m_media_cache.get_media(media);
-  //   if (data) {
-  //     qInfo() << "Found media " << media << " in cache";
-  //     return data;
-  //   }
-  // }
-  QSharedPointer<QByteArray> ptr = m_medias.value(media, nullptr);
-  return ptr.data();
-}
-
 void
 C2cQmlClient::save_media(const QString & media)
 {
   QSharedPointer<QByteArray> data = m_medias.value(media, nullptr);
   if (data)
     m_media_cache.save_media(media, *data);
+}
+
+QSharedPointer<QByteArray>
+C2cQmlClient::get_media(const QString & media)
+{
+  return m_medias.value(media, nullptr);
 }
 
 /************************************************/
@@ -370,8 +361,8 @@ C2cImageProvider::requestPixmap(const QString & id, QSize * size, const QSize & 
   qInfo() << "C2C request pixmap" << id << size << requested_size;
 
   QPixmap pixmap;
-  QByteArray * data = m_client->get_media(id);
-  if (data)
+  QSharedPointer<QByteArray> data = m_client->get_media(id);
+  if (not data.isNull())
     pixmap.loadFromData(*data);
 
   if (size)
