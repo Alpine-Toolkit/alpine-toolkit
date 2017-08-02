@@ -31,6 +31,7 @@ package org.alpine_toolkit;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -126,9 +127,11 @@ public class AlpineToolkitActivity extends QtActivity
             "android.permission.READ_PHONE_STATE",
             "android.permission.WRITE_EXTERNAL_STORAGE",
     };
-    for (String permission : permissions) {
+    if (Build.VERSION.SDK_INT >= 21) { // Build.VERSION_CODES.LOLLIPOP
+      for (String permission : permissions) {
         int rc = m_permission_helper.check_permission(permission);
         // if (rc == PermissionHelper.PermissionStatus.Granted.ordinal())
+      }
     }
 
     // get_display_metrics();
