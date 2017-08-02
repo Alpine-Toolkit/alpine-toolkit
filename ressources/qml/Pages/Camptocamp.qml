@@ -133,7 +133,7 @@ Widgets.Page {
                     id: search_textfield
                     Layout.fillWidth: true
                     placeholderText: qsTr('Search')
-                    text: 'la sonia' // Fixme: remove
+                    text: '' // Fixme: remove
 		}
 
 		ToolButton {
