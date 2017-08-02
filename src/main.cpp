@@ -29,6 +29,8 @@
 #include "application/application.h"
 #include "tools/logger.h"
 
+#include <QDate>
+
 /**************************************************************************************************/
 
 int
@@ -39,7 +41,13 @@ main(int argc, char *argv[])
 #endif
 
   Application & application = Application::create(argc, argv);
-  return application.exec();
+
+  if (QDate::currentDate() < QDate(2017, 9, 1))
+    return application.exec();
+  else {
+    qInfo() << "Out of date";
+    return -1;
+  }
 }
 
 /***************************************************************************************************
