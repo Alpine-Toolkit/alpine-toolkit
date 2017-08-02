@@ -62,6 +62,7 @@ Application::run_before_event_loop()
 
   // /storage/0060-1F18/
   // /storage/0060-1F18/Android/data/org.alpine_toolkit/files
+  /*
   QFile input_file("/storage/0060-1F18/Android/data/org.alpine_toolkit/files/external-sdcard-test.txt");
   if (input_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     while (!input_file.atEnd()) {
@@ -77,6 +78,7 @@ Application::run_before_event_loop()
   } else {
     qWarning() << "couldn't write file on external sdcard";
   }
+  */
 
   /*
   qInfo() << "SQLite Plugin Test";
