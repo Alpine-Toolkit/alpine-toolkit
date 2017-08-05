@@ -31,5 +31,6 @@ generate Schemas.Blog
 generate Schemas.Bleau
 generate Schemas.CampToCamp
 generate Schemas.Document
+generate Schemas.ThirdPartyLicense
 generate Schemas.Refuge
 generate Schemas.Settings
