@@ -28,7 +28,7 @@
 
 /**************************************************************************************************/
 
-#include "license_schema.h"
+#include "third_party_license_schema.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -58,6 +58,30 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
   }
   {
     QcSchemaField field(
+      QLatin1String("used"),
+      QLatin1String("bool"),
+      QLatin1String("integer"),
+      QLatin1String("used"),
+      QLatin1String("used"),
+      QLatin1String(""),
+      QLatin1String(""));
+    // Optional parameters
+    add_field(field);
+  }
+  {
+    QcSchemaField field(
+      QLatin1String("show"),
+      QLatin1String("bool"),
+      QLatin1String("integer"),
+      QLatin1String("show"),
+      QLatin1String("show"),
+      QLatin1String(""),
+      QLatin1String(""));
+    // Optional parameters
+    add_field(field);
+  }
+  {
+    QcSchemaField field(
       QLatin1String("third_party_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -123,6 +147,18 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
       QLatin1String("text"),
       QLatin1String("license_text"),
       QLatin1String("license_text"),
+      QLatin1String(""),
+      QLatin1String(""));
+    // Optional parameters
+    add_field(field);
+  }
+  {
+    QcSchemaField field(
+      QLatin1String("license_note"),
+      QLatin1String("QString"),
+      QLatin1String("text"),
+      QLatin1String("license_note"),
+      QLatin1String("license_note"),
       QLatin1String(""),
       QLatin1String(""));
     // Optional parameters
@@ -139,12 +175,15 @@ ThirdPartyLicense::ThirdPartyLicense()
   : QObject(),
     QcRow<ThirdPartyLicenseSchema>(),
     m_id(),
+    m_used(),
+    m_show(),
     m_third_party_name(),
     m_third_party_url(),
     m_third_party_version(),
     m_license_name(),
     m_license_url(),
-    m_license_text()
+    m_license_text(),
+    m_license_note()
 {
 }
 
@@ -152,12 +191,15 @@ ThirdPartyLicense::ThirdPartyLicense(const ThirdPartyLicense & other)
   : QObject(),
     QcRow<ThirdPartyLicenseSchema>(other),
     m_id(other.m_id),
+    m_used(other.m_used),
+    m_show(other.m_show),
     m_third_party_name(other.m_third_party_name),
     m_third_party_url(other.m_third_party_url),
     m_third_party_version(other.m_third_party_version),
     m_license_name(other.m_license_name),
     m_license_url(other.m_license_url),
-    m_license_text(other.m_license_text)
+    m_license_text(other.m_license_text),
+    m_license_note(other.m_license_note)
 {
 }
 
@@ -165,60 +207,75 @@ ThirdPartyLicense::ThirdPartyLicense(const QJsonObject & json_object)
  : ThirdPartyLicense()
 {
   m_id = json_object[QLatin1String("id")].toInt();
+  m_used = json_object[QLatin1String("used")].toBool();
+  m_show = json_object[QLatin1String("show")].toBool();
   m_third_party_name = json_object[QLatin1String("third_party_name")].toString();
   m_third_party_url = json_object[QLatin1String("third_party_url")].toString();
   m_third_party_version = json_object[QLatin1String("third_party_version")].toString();
   m_license_name = json_object[QLatin1String("license_name")].toString();
   m_license_url = json_object[QLatin1String("license_url")].toString();
   m_license_text = json_object[QLatin1String("license_text")].toString();
+  m_license_note = json_object[QLatin1String("license_note")].toString();
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QVariantHash & variant_hash)
  : ThirdPartyLicense()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
+  m_used = variant_hash[QLatin1String("used")].toBool();
+  m_show = variant_hash[QLatin1String("show")].toBool();
   m_third_party_name = variant_hash[QLatin1String("third_party_name")].toString();
   m_third_party_url = variant_hash[QLatin1String("third_party_url")].toUrl();
   m_third_party_version = variant_hash[QLatin1String("third_party_version")].toString();
   m_license_name = variant_hash[QLatin1String("license_name")].toString();
   m_license_url = variant_hash[QLatin1String("license_url")].toUrl();
   m_license_text = variant_hash[QLatin1String("license_text")].toString();
+  m_license_note = variant_hash[QLatin1String("license_note")].toString();
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QVariantList & variants)
  : ThirdPartyLicense()
 {
   m_id = variants[0].toInt();
-  m_third_party_name = variants[1].toString();
-  m_third_party_url = variants[2].toUrl();
-  m_third_party_version = variants[3].toString();
-  m_license_name = variants[4].toString();
-  m_license_url = variants[5].toUrl();
-  m_license_text = variants[6].toString();
+  m_used = variants[1].toBool();
+  m_show = variants[2].toBool();
+  m_third_party_name = variants[3].toString();
+  m_third_party_url = variants[4].toUrl();
+  m_third_party_version = variants[5].toString();
+  m_license_name = variants[6].toString();
+  m_license_url = variants[7].toUrl();
+  m_license_text = variants[8].toString();
+  m_license_note = variants[9].toString();
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QSqlRecord & record)
  : QcRow<ThirdPartyLicenseSchema>(record)
 {
   m_id = record.value(0).toInt();
-  m_third_party_name = record.value(1).toString();
-  m_third_party_url = record.value(2).toUrl();
-  m_third_party_version = record.value(3).toString();
-  m_license_name = record.value(4).toString();
-  m_license_url = record.value(5).toUrl();
-  m_license_text = record.value(6).toString();
+  m_used = record.value(1).toBool();
+  m_show = record.value(2).toBool();
+  m_third_party_name = record.value(3).toString();
+  m_third_party_url = record.value(4).toUrl();
+  m_third_party_version = record.value(5).toString();
+  m_license_name = record.value(6).toString();
+  m_license_url = record.value(7).toUrl();
+  m_license_text = record.value(8).toString();
+  m_license_note = record.value(9).toString();
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QSqlQuery & query, int offset)
  : QcRow<ThirdPartyLicenseSchema>(query)
 {
   m_id = query.value(offset++).toInt();
+  m_used = query.value(offset++).toBool();
+  m_show = query.value(offset++).toBool();
   m_third_party_name = query.value(offset++).toString();
   m_third_party_url = query.value(offset++).toUrl();
   m_third_party_version = query.value(offset++).toString();
   m_license_name = query.value(offset++).toString();
   m_license_url = query.value(offset++).toUrl();
-  m_license_text = query.value(offset).toString();
+  m_license_text = query.value(offset++).toString();
+  m_license_note = query.value(offset).toString();
 }
 
 ThirdPartyLicense::~ThirdPartyLicense()
@@ -233,12 +290,15 @@ ThirdPartyLicense::operator=(const ThirdPartyLicense & other)
   if (this != &other) {
     QcRow<ThirdPartyLicenseSchema>::operator=(other);
     m_id = other.m_id;
+    m_used = other.m_used;
+    m_show = other.m_show;
     m_third_party_name = other.m_third_party_name;
     m_third_party_url = other.m_third_party_url;
     m_third_party_version = other.m_third_party_version;
     m_license_name = other.m_license_name;
     m_license_url = other.m_license_url;
     m_license_text = other.m_license_text;
+    m_license_note = other.m_license_note;
   }
 
   return *this;
@@ -252,6 +312,10 @@ ThirdPartyLicense::operator==(const ThirdPartyLicense & other) const
     return false;
   if (m_id != other.m_id)
     return false;
+  if (m_used != other.m_used)
+    return false;
+  if (m_show != other.m_show)
+    return false;
   if (m_third_party_name != other.m_third_party_name)
     return false;
   if (m_third_party_url != other.m_third_party_url)
@@ -263,6 +327,8 @@ ThirdPartyLicense::operator==(const ThirdPartyLicense & other) const
   if (m_license_url != other.m_license_url)
     return false;
   if (m_license_text != other.m_license_text)
+    return false;
+  if (m_license_note != other.m_license_note)
     return false;
 
   return true;
@@ -278,6 +344,36 @@ ThirdPartyLicense::set_id(int value)
     set_bit(Schema::Fields::ID);
 
     emit idChanged();
+    if (not is_changed)
+      emit changed();
+  }
+}
+
+void
+ThirdPartyLicense::set_used(bool value)
+{
+  if (m_used != value) {
+    m_used = value;
+
+    bool is_changed = is_modified();
+    set_bit(Schema::Fields::USED);
+
+    emit usedChanged();
+    if (not is_changed)
+      emit changed();
+  }
+}
+
+void
+ThirdPartyLicense::set_show(bool value)
+{
+  if (m_show != value) {
+    m_show = value;
+
+    bool is_changed = is_modified();
+    set_bit(Schema::Fields::SHOW);
+
+    emit showChanged();
     if (not is_changed)
       emit changed();
   }
@@ -373,12 +469,31 @@ ThirdPartyLicense::set_license_text(const QString & value)
   }
 }
 
+void
+ThirdPartyLicense::set_license_note(const QString & value)
+{
+  if (m_license_note != value) {
+    m_license_note = value;
+
+    bool is_changed = is_modified();
+    set_bit(Schema::Fields::LICENSE_NOTE);
+
+    emit license_noteChanged();
+    if (not is_changed)
+      emit changed();
+  }
+}
+
 QJsonObject
 ThirdPartyLicense::to_json(bool only_changed) const
 {
   QJsonObject json_object;
 
  if (only_changed) {
+    if (is_used_modified())
+      json_object.insert(QLatin1String("used"), QJsonValue(m_used));
+    if (is_show_modified())
+      json_object.insert(QLatin1String("show"), QJsonValue(m_show));
     if (is_third_party_name_modified())
       json_object.insert(QLatin1String("third_party_name"), QJsonValue(m_third_party_name));
     if (is_third_party_url_modified())
@@ -391,13 +506,18 @@ ThirdPartyLicense::to_json(bool only_changed) const
       json_object.insert(QLatin1String("license_url"), orm_type_conversion::dump_url(m_license_url));
     if (is_license_text_modified())
       json_object.insert(QLatin1String("license_text"), QJsonValue(m_license_text));
+    if (is_license_note_modified())
+      json_object.insert(QLatin1String("license_note"), QJsonValue(m_license_note));
   } else {
+    json_object.insert(QLatin1String("used"), QJsonValue(m_used));
+    json_object.insert(QLatin1String("show"), QJsonValue(m_show));
     json_object.insert(QLatin1String("third_party_name"), QJsonValue(m_third_party_name));
     json_object.insert(QLatin1String("third_party_url"), orm_type_conversion::dump_url(m_third_party_url));
     json_object.insert(QLatin1String("third_party_version"), QJsonValue(m_third_party_version));
     json_object.insert(QLatin1String("license_name"), QJsonValue(m_license_name));
     json_object.insert(QLatin1String("license_url"), orm_type_conversion::dump_url(m_license_url));
     json_object.insert(QLatin1String("license_text"), QJsonValue(m_license_text));
+    json_object.insert(QLatin1String("license_note"), QJsonValue(m_license_note));
   }
 
   return json_object;
@@ -411,6 +531,10 @@ ThirdPartyLicense::to_variant_hash(bool only_changed) const
   if (only_changed) {
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
+    if (is_used_modified())
+      variant_hash[QLatin1String("used")] = m_used;
+    if (is_show_modified())
+      variant_hash[QLatin1String("show")] = m_show;
     if (is_third_party_name_modified())
       variant_hash[QLatin1String("third_party_name")] = m_third_party_name;
     if (is_third_party_url_modified())
@@ -423,14 +547,19 @@ ThirdPartyLicense::to_variant_hash(bool only_changed) const
       variant_hash[QLatin1String("license_url")] = m_license_url;
     if (is_license_text_modified())
       variant_hash[QLatin1String("license_text")] = m_license_text;
+    if (is_license_note_modified())
+      variant_hash[QLatin1String("license_note")] = m_license_note;
   } else {
     variant_hash[QLatin1String("id")] = m_id;
+    variant_hash[QLatin1String("used")] = m_used;
+    variant_hash[QLatin1String("show")] = m_show;
     variant_hash[QLatin1String("third_party_name")] = m_third_party_name;
     variant_hash[QLatin1String("third_party_url")] = m_third_party_url;
     variant_hash[QLatin1String("third_party_version")] = m_third_party_version;
     variant_hash[QLatin1String("license_name")] = m_license_name;
     variant_hash[QLatin1String("license_url")] = m_license_url;
     variant_hash[QLatin1String("license_text")] = m_license_text;
+    variant_hash[QLatin1String("license_note")] = m_license_note;
   }
 
   return variant_hash;
@@ -442,12 +571,15 @@ ThirdPartyLicense::to_variant_list() const
   QVariantList variants;
 
   variants << m_id;
+  variants << m_used;
+  variants << m_show;
   variants << m_third_party_name;
   variants << m_third_party_url;
   variants << m_third_party_version;
   variants << m_license_name;
   variants << m_license_url;
   variants << m_license_text;
+  variants << m_license_note;
 
   return variants;
 }
@@ -460,6 +592,10 @@ ThirdPartyLicense::to_variant_hash_sql(bool only_changed, bool duplicate) const
   if (only_changed) {
     if (is_id_modified())
       variant_hash[QLatin1String("id")] = m_id;
+    if (is_used_modified())
+      variant_hash[QLatin1String("used")] = m_used;
+    if (is_show_modified())
+      variant_hash[QLatin1String("show")] = m_show;
     if (is_third_party_name_modified())
       variant_hash[QLatin1String("third_party_name")] = m_third_party_name;
     if (is_third_party_url_modified())
@@ -472,15 +608,20 @@ ThirdPartyLicense::to_variant_hash_sql(bool only_changed, bool duplicate) const
       variant_hash[QLatin1String("license_url")] = m_license_url;
     if (is_license_text_modified())
       variant_hash[QLatin1String("license_text")] = m_license_text;
+    if (is_license_note_modified())
+      variant_hash[QLatin1String("license_note")] = m_license_note;
   } else {
     if (duplicate)
       variant_hash[QLatin1String("id")] = m_id;
+    variant_hash[QLatin1String("used")] = m_used;
+    variant_hash[QLatin1String("show")] = m_show;
     variant_hash[QLatin1String("third_party_name")] = m_third_party_name;
     variant_hash[QLatin1String("third_party_url")] = m_third_party_url;
     variant_hash[QLatin1String("third_party_version")] = m_third_party_version;
     variant_hash[QLatin1String("license_name")] = m_license_name;
     variant_hash[QLatin1String("license_url")] = m_license_url;
     variant_hash[QLatin1String("license_text")] = m_license_text;
+    variant_hash[QLatin1String("license_note")] = m_license_note;
   }
 
   return variant_hash;
@@ -493,12 +634,15 @@ ThirdPartyLicense::to_variant_list_sql(bool duplicate) const
 
   if (duplicate)
     variants << m_id;
+  variants << m_used;
+  variants << m_show;
   variants << m_third_party_name;
   variants << m_third_party_url;
   variants << m_third_party_version;
   variants << m_license_name;
   variants << m_license_url;
   variants << m_license_text;
+  variants << m_license_note;
 
   return variants;
 }
@@ -509,6 +653,10 @@ ThirdPartyLicense::field(int position) const
   switch(position) {
    case Schema::Fields::ID:
      return m_id;
+   case Schema::Fields::USED:
+     return m_used;
+   case Schema::Fields::SHOW:
+     return m_show;
    case Schema::Fields::THIRD_PARTY_NAME:
      return m_third_party_name;
    case Schema::Fields::THIRD_PARTY_URL:
@@ -521,6 +669,8 @@ ThirdPartyLicense::field(int position) const
      return m_license_url;
    case Schema::Fields::LICENSE_TEXT:
      return m_license_text;
+   case Schema::Fields::LICENSE_NOTE:
+     return m_license_note;
    default:
      return QVariant(); // error
   }
@@ -532,6 +682,14 @@ ThirdPartyLicense::set_field(int position, const QVariant & value)
   switch(position) {
    case Schema::Fields::ID: {
      m_id = value.toInt();
+     break;
+   }
+   case Schema::Fields::USED: {
+     m_used = value.toBool();
+     break;
+   }
+   case Schema::Fields::SHOW: {
+     m_show = value.toBool();
      break;
    }
    case Schema::Fields::THIRD_PARTY_NAME: {
@@ -556,6 +714,10 @@ ThirdPartyLicense::set_field(int position, const QVariant & value)
    }
    case Schema::Fields::LICENSE_TEXT: {
      m_license_text = value.toString();
+     break;
+   }
+   case Schema::Fields::LICENSE_NOTE: {
+     m_license_note = value.toString();
      break;
    }
   }
@@ -586,12 +748,15 @@ QDataStream &
 operator<<(QDataStream & out, const ThirdPartyLicense & obj)
 {
   out << obj.id();
+  out << obj.used();
+  out << obj.show();
   out << obj.third_party_name();
   out << obj.third_party_url();
   out << obj.third_party_version();
   out << obj.license_name();
   out << obj.license_url();
   out << obj.license_text();
+  out << obj.license_note();
 
   return out;
 }
@@ -601,9 +766,14 @@ operator>>(QDataStream & in, ThirdPartyLicense & obj)
 {
   QString _QString;
   QUrl _QUrl;
+  bool _bool;
   int _int;
   in >> _int;
   obj.set_id(_int);
+  in >> _bool;
+  obj.set_used(_bool);
+  in >> _bool;
+  obj.set_show(_bool);
   in >> _QString;
   obj.set_third_party_name(_QString);
   in >> _QUrl;
@@ -616,6 +786,8 @@ operator>>(QDataStream & in, ThirdPartyLicense & obj)
   obj.set_license_url(_QUrl);
   in >> _QString;
   obj.set_license_text(_QString);
+  in >> _QString;
+  obj.set_license_note(_QString);
 
   return in;
 }
@@ -630,6 +802,10 @@ operator<<(QDebug debug, const ThirdPartyLicense & obj)
   debug.nospace() << QLatin1Literal("ThirdPartyLicense(");
   debug << obj.id();
   debug << QLatin1Literal(", ");
+  debug << obj.used();
+  debug << QLatin1Literal(", ");
+  debug << obj.show();
+  debug << QLatin1Literal(", ");
   debug << obj.third_party_name();
   debug << QLatin1Literal(", ");
   debug << obj.third_party_url();
@@ -641,6 +817,8 @@ operator<<(QDebug debug, const ThirdPartyLicense & obj)
   debug << obj.license_url();
   debug << QLatin1Literal(", ");
   debug << obj.license_text();
+  debug << QLatin1Literal(", ");
+  debug << obj.license_note();
   debug << ')';
 
   return debug;
@@ -736,6 +914,10 @@ ThirdPartyLicenseModel::data(const QModelIndex & index, int role) const
   switch (role) {
   case ID:
     return item->id();
+  case USED:
+    return item->used();
+  case SHOW:
+    return item->show();
   case THIRD_PARTY_NAME:
     return item->third_party_name();
   case THIRD_PARTY_URL:
@@ -748,6 +930,8 @@ ThirdPartyLicenseModel::data(const QModelIndex & index, int role) const
     return item->license_url();
   case LICENSE_TEXT:
     return item->license_text();
+  case LICENSE_NOTE:
+    return item->license_note();
   default:
     break;
   }
@@ -761,12 +945,15 @@ ThirdPartyLicenseModel::roleNames() const
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
   role_names[ID] = QLatin1Literal("id").latin1();
+  role_names[USED] = QLatin1Literal("used").latin1();
+  role_names[SHOW] = QLatin1Literal("show").latin1();
   role_names[THIRD_PARTY_NAME] = QLatin1Literal("third_party_name").latin1();
   role_names[THIRD_PARTY_URL] = QLatin1Literal("third_party_url").latin1();
   role_names[THIRD_PARTY_VERSION] = QLatin1Literal("third_party_version").latin1();
   role_names[LICENSE_NAME] = QLatin1Literal("license_name").latin1();
   role_names[LICENSE_URL] = QLatin1Literal("license_url").latin1();
   role_names[LICENSE_TEXT] = QLatin1Literal("license_text").latin1();
+  role_names[LICENSE_NOTE] = QLatin1Literal("license_note").latin1();
 
   return role_names;
 }
@@ -786,7 +973,7 @@ ThirdPartyLicenseModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-ThirdPartyLicenseSchema::ThirdPartyLicenseSchema(QcDatabase & database)
+ThirdPartyLicenseDatabaseSchema::ThirdPartyLicenseDatabaseSchema(QcDatabase & database)
   : QcDatabaseSchema(database),
     m_third_party_license(nullptr),
     m_third_party_license_cache()
@@ -794,12 +981,12 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema(QcDatabase & database)
   m_third_party_license = &register_table(ThirdPartyLicenseSchema::instance());
 }
 
-ThirdPartyLicenseSchema::~ThirdPartyLicenseSchema()
+ThirdPartyLicenseDatabaseSchema::~ThirdPartyLicenseDatabaseSchema()
 {}
 
 template<>
 void
-ThirdPartyLicenseSchema::register_row<ThirdPartyLicense>(ThirdPartyLicensePtr & row)
+ThirdPartyLicenseDatabaseSchema::register_row<ThirdPartyLicense>(ThirdPartyLicensePtr & row)
 {
   qInfo() << "Register in cache" << row;
   m_third_party_license_cache.add(row);

@@ -1,6 +1,4 @@
-# -*- CMake -*-
-
-####################################################################################################
+###################################################################################################
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
 #
@@ -27,26 +25,51 @@
 ####################################################################################################
 
 ####################################################################################################
-#
-# Sub directories
-#
 
-add_subdirectory(bleaudb)
-add_subdirectory(camptocamp)
-add_subdirectory(documents)
-add_subdirectory(ephemeride)
-add_subdirectory(full_text_search)
-add_subdirectory(international_morse_code_engine)
-add_subdirectory(network)
-add_subdirectory(orm)
-add_subdirectory(refuge)
-add_subdirectory(rrd)
-add_subdirectory(settings)
-add_subdirectory(sqlite)
-add_subdirectory(third_party_license)
+import json
 
 ####################################################################################################
-#
-# End
-#
+
+class ThirdPartyLicense:
+
+    ##############################################
+
+    def __init__(self, **kwargs):
+
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 ####################################################################################################
+
+with open('third_party_licenses.json') as f:
+    data = json.load(f)
+    third_parties = [ThirdPartyLicense(**third_party)
+                     for third_party in data]
+
+with open('third_party_licenses.html', 'w') as f:
+    f.write("""
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+""")
+    for third_party in third_parties:
+        f.write("""
+<h1>{0.third_party_name}</h1>
+<ul>
+  <li>is used: {0.used}</li>
+  <li>is shown: {0.show}</li>
+  <li><a href="{0.third_party_url}">Home page</a></li>
+  <li>Version: {0.third_party_version}</li>
+  <li>License Name: {0.license_name}</li>
+  <li><a href="{0.license_url}">License link</a></li>
+</ul>
+        <div style="background: white; width: 50em">{0.license_text}</div>
+<div style="background: wheat; width: 50em">{0.license_note}</div>
+""".format(third_party))
+    f.write("""
+</body>
+</html>
+""")
