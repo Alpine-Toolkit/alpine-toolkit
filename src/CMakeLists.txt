@@ -47,6 +47,7 @@ set(alpine_toolkit_library_files
   bleaudb/bleau_schema.cpp
   bleaudb/bleau_schema_manager.cpp
   bleaudb/bleau_sqlite_database.cpp
+  checksum/checksum.cpp
   camptocamp/camptocamp_api_cache.cpp
   camptocamp/camptocamp_client.cpp
   camptocamp/camptocamp_document.cpp

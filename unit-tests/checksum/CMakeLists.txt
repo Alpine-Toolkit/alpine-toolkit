@@ -28,23 +28,23 @@
 
 ####################################################################################################
 #
-# Sub directories
+# Include directories
 #
 
-add_subdirectory(bleaudb)
-add_subdirectory(camptocamp)
-add_subdirectory(checksum)
-add_subdirectory(documents)
-add_subdirectory(ephemeride)
-add_subdirectory(full_text_search)
-add_subdirectory(international_morse_code_engine)
-add_subdirectory(network)
-add_subdirectory(orm)
-add_subdirectory(refuge)
-add_subdirectory(rrd)
-add_subdirectory(settings)
-add_subdirectory(sqlite)
-add_subdirectory(third_party_license)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+####################################################################################################
+#
+# Executable
+#
+
+foreach(name
+    checksum
+    )
+  add_executable(test_${name} test_${name}.cpp)
+  target_link_libraries(test_${name} Qt5::Test alpine_toolkit)
+  add_test(NAME ${name} COMMAND test_${name})
+endforeach(name)
 
 ####################################################################################################
 #
