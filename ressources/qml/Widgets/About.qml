@@ -33,6 +33,26 @@ import "qrc:Widgets" as Widgets
 
 Widgets.Popup {
 
+    onAboutToShow: {
+        if (! third_party_license_schema_manager.is_json_loaded()) {
+            third_party_license_schema_manager.load_json();
+            var third_party_licenses = third_party_license_schema_manager.third_party_licenses;
+            for (var i = 0; i < third_party_licenses.length; i++) {
+                var third_party_license = third_party_licenses[i];
+                console.info(third_party_license.third_party_name);
+                about_text += "<h3>" + third_party_license.third_party_name + "</h3>";
+                about_text += "<ul>";
+                about_text += "<li><a href=\"" + third_party_license.third_party_url + "\">Home page</a></li>";
+                // if (third_party_license.licence_name)
+                about_text += "<li>License: " + third_party_license.license_name + "</li>";
+                // if (third_party_license.licence_url)
+                about_text += "<li><a href=\"" + third_party_license.license_url + "\">License page</a></li>";
+                about_text += "</ul>";
+                about_text += "<div>" + third_party_license.license_text + "</div>";
+            }
+        }
+    }
+
     Flickable {
         id: flickable
         anchors.fill: parent
@@ -70,6 +90,8 @@ Widgets.Popup {
 <p><strong>Will stop to work after 2017/08/31</strong></p>
 
 This sofwtare is using Qt LGPL, SQLite, cmark github, SnowBall.
+
+<h2>Third Parties Licenses</h2>
 '.arg(1).arg(application.home_page)
 // application.version
 // v%1

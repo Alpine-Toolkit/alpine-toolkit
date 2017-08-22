@@ -59,6 +59,7 @@
     <file>data/bleau.json</file>
     <file>data/refuges.json</file>
     <file>data/stop-words.json</file>
+    <file>data/third_party_licenses.json</file>
     <!-- file>data/ffcam-refuges.sqlite</file> -->
 
     <file>icons/add-black.png</file>

@@ -66,7 +66,7 @@ with open('third_party_licenses.html', 'w') as f:
   <li>License Name: {0.license_name}</li>
   <li><a href="{0.license_url}">License link</a></li>
 </ul>
-        <div style="background: white; width: 50em">{0.license_text}</div>
+<div style="background: white; width: 50em">{0.license_text}</div>
 <div style="background: wheat; width: 50em">{0.license_note}</div>
 """.format(third_party))
     f.write("""

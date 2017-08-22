@@ -257,6 +257,10 @@ Application::register_qml_types()
 
   QmlRegisterType(SatelliteModel);
 
+  QmlRegisterType(ThirdPartyLicense);
+  // QmlRegisterUncreatableType(ThirdPartyLicenseModel);
+  QmlRegisterUncreatableType(ThirdPartyLicenseSchemaManager);
+
   QmlRegisterType(Refuge);
   QmlRegisterUncreatableType(RefugeModel);
   QmlRegisterUncreatableType(RefugeSchemaManager);
@@ -291,8 +295,13 @@ Application::set_context_properties()
   context->setContextProperty(QLatin1String("service"), &m_service_client);
   context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);
 
-  QString ffcam_refuge_json = ":/data/refuges.json";
-  m_refuge_schema_manager.load_json(ffcam_refuge_json);
+  // Lazy loading
+  QString third_party_licenses_json = ":/data/third_party_licenses.json";
+  m_third_party_license_schema_manager.set_json_path(third_party_licenses_json);
+  context->setContextProperty(QLatin1Literal("third_party_license_schema_manager"), &m_third_party_license_schema_manager);
+
+  QString refuge_json = ":/data/refuges.json";
+  m_refuge_schema_manager.load_json(refuge_json);
   context->setContextProperty(QLatin1Literal("refuge_schema_manager"), &m_refuge_schema_manager);
 
   // Create Bleau Model

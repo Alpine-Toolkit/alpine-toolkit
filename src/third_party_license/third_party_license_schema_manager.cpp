@@ -42,20 +42,26 @@
 
 ThirdPartyLicenseSchemaManager::ThirdPartyLicenseSchemaManager()
   : SchemaManager(),
+    m_json_path(),
+    m_json_loaded(false),
     m_third_party_license_cache()
 {}
 
-ThirdPartyLicenseSchemaManager::ThirdPartyLicenseSchemaManager(const QString & json_path)
+ThirdPartyLicenseSchemaManager::ThirdPartyLicenseSchemaManager(const QString & json_path, bool lazy)
   : ThirdPartyLicenseSchemaManager()
 {
-  load_json(json_path);
+  m_json_path = json_path;
+  if (not lazy)
+    SchemaManager::load_json(json_path);
 }
 
+/*
 ThirdPartyLicenseSchemaManager::ThirdPartyLicenseSchemaManager(const QJsonDocument & json_document)
  : ThirdPartyLicenseSchemaManager()
 {
   load_json_document(json_document);
 }
+*/
 
 ThirdPartyLicenseSchemaManager::~ThirdPartyLicenseSchemaManager()
 {}
@@ -63,6 +69,8 @@ ThirdPartyLicenseSchemaManager::~ThirdPartyLicenseSchemaManager()
 void
 ThirdPartyLicenseSchemaManager::load_json_document(const QJsonDocument & json_document)
 {
+  // qInfo() << "Load Third Party Licenses JSON";
+
   QJsonArray array = json_document.array();
 
   for (const auto & json_value : array) {
@@ -71,6 +79,15 @@ ThirdPartyLicenseSchemaManager::load_json_document(const QJsonDocument & json_do
     m_third_party_license_cache.add(third_party_license);
     m_third_party_licenses << third_party_license;
   }
+
+  emit third_party_license_list_changed();
+}
+
+void
+ThirdPartyLicenseSchemaManager::load_json()
+{
+  if (not (m_json_loaded or m_json_path.isEmpty()))
+    SchemaManager::load_json(m_json_path);
 }
 
 QJsonDocument
@@ -84,6 +101,7 @@ ThirdPartyLicenseSchemaManager::to_json_document() // const
   return QJsonDocument(array);
 }
 
+/*
 void
 ThirdPartyLicenseSchemaManager::to_sql(const QString & sqlite_path)
 {
@@ -110,6 +128,7 @@ ThirdPartyLicenseSchemaManager::from_sql(const QString & sqlite_path)
   for (const auto third_party_license : third_party_licenses)
     qInfo() << third_party_license;
 }
+*/
 
 QQmlListProperty<ThirdPartyLicense>
 ThirdPartyLicenseSchemaManager::third_party_license_list_property()

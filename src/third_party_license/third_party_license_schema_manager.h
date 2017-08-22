@@ -52,30 +52,35 @@
 class ThirdPartyLicenseSchemaManager : public SchemaManager
 {
   Q_OBJECT
-  Q_PROPERTY(QQmlListProperty<ThirdPartyLicense> third_party_licenses READ third_party_license_list_property NOTIFY third_party_licenseListChanged)
+  Q_PROPERTY(QQmlListProperty<ThirdPartyLicense> third_party_licenses READ third_party_license_list_property NOTIFY third_party_license_list_changed)
 
 public:
   ThirdPartyLicenseSchemaManager();
-  ThirdPartyLicenseSchemaManager(const QString & json_path);
-  ThirdPartyLicenseSchemaManager(const QJsonDocument & json_document);
+  ThirdPartyLicenseSchemaManager(const QString & json_path, bool lazy = true);
+  // ThirdPartyLicenseSchemaManager(const QJsonDocument & json_document);
   // ThirdPartyLicenseSchemaManager(const class ThirdPartyLicenseSchemaManager & other);
   ~ThirdPartyLicenseSchemaManager();
 
   // ThirdPartyLicenseSchemaManager & operator=(const ThirdPartyLicenseSchemaManager & other);
 
-  void load_json_document(const QJsonDocument & json_document);
+  const QString & json_path() const { return m_json_path; }
+  void set_json_path(const QString & json_path) { m_json_path = json_path; }
+  Q_INVOKABLE bool is_json_loaded() const { return m_json_loaded; }
+  Q_INVOKABLE void load_json();
+
   QJsonDocument to_json_document(); // const
 
-  void to_sql(const QString & sqlite_path);
-  void from_sql(const QString & sqlite_path);
+  // void to_sql(const QString & sqlite_path);
+  // void from_sql(const QString & sqlite_path);
 
   // Get third_party_licenses as a list
   const ThirdPartyLicense::PtrList third_party_licenses() const { return m_third_party_license_cache.items(); }
 
 signals:
-  void third_party_licenseListChanged();
+  void third_party_license_list_changed();
 
 private:
+  void load_json_document(const QJsonDocument & json_document);
   // QQmlListProperty can only be used for lists of QObject-derived object pointers.
   // ThirdPartyLicenses must be registered
   QQmlListProperty<ThirdPartyLicense> third_party_license_list_property();
@@ -83,6 +88,8 @@ private:
   static ThirdPartyLicense * third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, int index);
 
 private:
+  QString m_json_path;
+  bool m_json_loaded = true;
   ThirdPartyLicenseCache m_third_party_license_cache;
   ThirdPartyLicense::PtrList m_third_party_licenses; // ordered
 };

@@ -44,6 +44,7 @@
 #include "ephemeride/ephemeride.h"
 #include "refuge/refuge_schema_manager.h"
 #include "service/client.h"
+#include "third_party_license/third_party_license_schema_manager.h"
 
 #ifdef ANDROID
 #include "android_activity/android_activity.h"
@@ -142,6 +143,7 @@ private:
   AndroidActivity m_android_activity;
 #endif
   QmlApplication m_qml_application;
+  ThirdPartyLicenseSchemaManager m_third_party_license_schema_manager;
   Ephemeride m_ephemeride;
   RefugeSchemaManager m_refuge_schema_manager;
   ServiceClient m_service_client;

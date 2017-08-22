@@ -47,7 +47,9 @@ void
 TestThirdPartyLicenseSchemaManager::test()
 {
   QString json_path("../ressources/data/third_party_licenses.json");
-  ThirdPartyLicenseSchemaManager third_party_license_schema_manager(json_path);
+  ThirdPartyLicenseSchemaManager third_party_license_schema_manager(json_path, true);
+
+  third_party_license_schema_manager.load_json();
 
   third_party_license_schema_manager.to_json("third_party_licenses.json");
 
