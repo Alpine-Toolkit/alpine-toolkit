@@ -33,8 +33,10 @@ import "qrc:Widgets" as Widgets
 
 Widgets.Popup {
 
-    // Overwriting binding on About_QMLTYPE_9::about_text at qrc:Widgets/About.qml:80 that was initially bound at qrc:Widgets/About.qml:36:34
-    property string about_text : '
+    property string about_text;
+
+    function build_about_text() {
+	var about_text = '
 <h1>About</h1>
 
 <p><strong>Alpine ToolKit Release V%1</strong></p>
@@ -45,7 +47,8 @@ Widgets.Popup {
 <p><a href="%2">%2</a></p>
 
 <h2>Third Parties Licenses</h2>
-'.arg(application.version).arg(application.home_page)
+'.arg(application.version).arg(application.home_page);
+
 // application.version
 // v%1
 // <h2>License</h2>
@@ -70,30 +73,34 @@ Widgets.Popup {
 // href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.
 // <p>
 
-    onAboutToShow: {
-        if (! third_party_license_schema_manager.is_json_loaded()) {
-            third_party_license_schema_manager.load_json();
-            var third_party_licenses = third_party_license_schema_manager.third_party_licenses;
-            for (var i = 0; i < third_party_licenses.length; i++) {
-                var third_party_license = third_party_licenses[i];
-                console.info(third_party_license.third_party_name);
-                if (third_party_license.used && third_party_license.show) {
-                    about_text += "<h3>" + third_party_license.third_party_name + "</h3>";
-                    about_text += "<ul>";
-                    if (third_party_license.third_party_url && third_party_license.third_party_url != 0)
-                        about_text += "<li><a href=\"" + third_party_license.third_party_url + "\">Home page</a></li>";
-                    if (third_party_license.license_name && third_party_license.license_name.length != 0)
-                        about_text += "<li>License : " + third_party_license.license_name + "</li>";
-                    if (third_party_license.license_url && third_party_license.license_url.length != 0)
-                        about_text += "<li><a href=\"" + third_party_license.license_url + "\">License page</a></li>";
-                    if (third_party_license.third_party_version && third_party_license.third_party_version != 0)
-                        about_text += "<li>Version : " + third_party_license.third_party_version + "</li>";
-                    about_text += "</ul>";
-                    if (third_party_license.license_text && third_party_license.license_text.length != 0)
-                        about_text += "<div>" + third_party_license.license_text + "</div>";
-                }
+        third_party_license_schema_manager.load_json();
+        var third_party_licenses = third_party_license_schema_manager.third_party_licenses;
+        for (var i = 0; i < third_party_licenses.length; i++) {
+            var third_party_license = third_party_licenses[i];
+            console.info(third_party_license.third_party_name);
+            if (third_party_license.used && third_party_license.show) {
+                about_text += "<h3>" + third_party_license.third_party_name + "</h3>";
+                about_text += "<ul>";
+                if (third_party_license.third_party_url && third_party_license.third_party_url != 0)
+                    about_text += "<li><a href=\"" + third_party_license.third_party_url + "\">Home page</a></li>";
+                if (third_party_license.license_name && third_party_license.license_name.length != 0)
+                    about_text += "<li>License : " + third_party_license.license_name + "</li>";
+                if (third_party_license.license_url && third_party_license.license_url.length != 0)
+                    about_text += "<li><a href=\"" + third_party_license.license_url + "\">License page</a></li>";
+                if (third_party_license.third_party_version && third_party_license.third_party_version != 0)
+                    about_text += "<li>Version : " + third_party_license.third_party_version + "</li>";
+                about_text += "</ul>";
+                if (third_party_license.license_text && third_party_license.license_text.length != 0)
+                    about_text += "<div>" + third_party_license.license_text + "</div>";
             }
         }
+
+	return about_text;
+    }
+
+    onAboutToShow: {
+        if (! third_party_license_schema_manager.is_json_loaded())
+	    about_text = build_about_text();
     }
 
     Flickable {

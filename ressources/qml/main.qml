@@ -40,6 +40,7 @@ ApplicationWindow {
     title: 'Alpine Toolkit'
     visible: true
 
+    // Overwriting binding on QQuickApplicationWindow_QML_26::stack_view_stack at qrc:/qml/main.qml:169 that was initially bound at qrc:/qml/main.qml:43:36
     property var stack_view_stack: []
     property var stack_view_history: []
 

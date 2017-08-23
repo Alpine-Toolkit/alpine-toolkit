@@ -34,11 +34,12 @@ import "qrc:Widgets" as Widgets
 Menu {
     id: options_menu
 
-    property var about_dialog;
+    property QtObject about_dialog;
 
     // private
     property var has_settings: false;
-    property var settings_item: null;
+    // Overwriting binding on About_QMLTYPE_9::about_text at qrc:Widgets/About.qml:80 that was initially bound at qrc:Widgets/About.qml:36:34
+    property QtObject settings_item;
 
     // To be defined
     // function open_settings_dialog() {}
