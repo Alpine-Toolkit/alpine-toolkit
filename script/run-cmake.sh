@@ -1,6 +1,8 @@
 # QT_VERSION=5.7
 # QT_VERSION=5.8
-QT_VERSION=5.9
+# QT_VERSION=5.9
+# QT_VERSION=5.9.1
+QT_VERSION=5.10.0
 append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
 append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
 
