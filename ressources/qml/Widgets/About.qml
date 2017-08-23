@@ -33,6 +33,43 @@ import "qrc:Widgets" as Widgets
 
 Widgets.Popup {
 
+    // Overwriting binding on About_QMLTYPE_9::about_text at qrc:Widgets/About.qml:80 that was initially bound at qrc:Widgets/About.qml:36:34
+    property string about_text : '
+<h1>About</h1>
+
+<p><strong>Alpine ToolKit Release V%1</strong></p>
+<p><strong>For R&D use only</strong></p>
+
+<p>Copyright © 2017 Fabrice Salvaire</p>
+
+<p><a href="%2">%2</a></p>
+
+<h2>Third Parties Licenses</h2>
+'.arg(application.version).arg(application.home_page)
+// application.version
+// v%1
+// <h2>License</h2>
+//
+// <p>
+// This program is free software: you can redistribute it and/or
+// modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// </p>
+//
+// <p>
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// General Public License for more details.
+// </p>
+//
+// <p>
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <a
+// href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.
+// <p>
+
     onAboutToShow: {
         if (! third_party_license_schema_manager.is_json_loaded()) {
             third_party_license_schema_manager.load_json();
@@ -40,15 +77,21 @@ Widgets.Popup {
             for (var i = 0; i < third_party_licenses.length; i++) {
                 var third_party_license = third_party_licenses[i];
                 console.info(third_party_license.third_party_name);
-                about_text += "<h3>" + third_party_license.third_party_name + "</h3>";
-                about_text += "<ul>";
-                about_text += "<li><a href=\"" + third_party_license.third_party_url + "\">Home page</a></li>";
-                // if (third_party_license.licence_name)
-                about_text += "<li>License: " + third_party_license.license_name + "</li>";
-                // if (third_party_license.licence_url)
-                about_text += "<li><a href=\"" + third_party_license.license_url + "\">License page</a></li>";
-                about_text += "</ul>";
-                about_text += "<div>" + third_party_license.license_text + "</div>";
+                if (third_party_license.used && third_party_license.show) {
+                    about_text += "<h3>" + third_party_license.third_party_name + "</h3>";
+                    about_text += "<ul>";
+                    if (third_party_license.third_party_url && third_party_license.third_party_url != 0)
+                        about_text += "<li><a href=\"" + third_party_license.third_party_url + "\">Home page</a></li>";
+                    if (third_party_license.license_name && third_party_license.license_name.length != 0)
+                        about_text += "<li>License : " + third_party_license.license_name + "</li>";
+                    if (third_party_license.license_url && third_party_license.license_url.length != 0)
+                        about_text += "<li><a href=\"" + third_party_license.license_url + "\">License page</a></li>";
+                    if (third_party_license.third_party_version && third_party_license.third_party_version != 0)
+                        about_text += "<li>Version : " + third_party_license.third_party_version + "</li>";
+                    about_text += "</ul>";
+                    if (third_party_license.license_text && third_party_license.license_text.length != 0)
+                        about_text += "<div>" + third_party_license.license_text + "</div>";
+                }
             }
         }
     }
@@ -75,45 +118,4 @@ Widgets.Popup {
 
         ScrollBar.vertical: ScrollBar { }
     }
-
-    property string about_text : '
-<h1>About</h1>
-
-<p><strong>Alpine ToolKit Test Release V%1</strong></p>
-
-<p>Copyright © 2017 Fabrice Salvaire</p>
-
-<p><a href="%2">%2</a></p>
-
-<p><strong></strong></p>
-<p><strong>For R&D use only</strong></p>
-<p><strong>Will stop to work after 2017/08/31</strong></p>
-
-This sofwtare is using Qt LGPL, SQLite, cmark github, SnowBall.
-
-<h2>Third Parties Licenses</h2>
-'.arg(1).arg(application.home_page)
-// application.version
-// v%1
-// <h2>License</h2>
-// 
-// <p>
-// This program is free software: you can redistribute it and/or
-// modify it under the terms of the GNU General Public License as
-// published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-// </p>
-// 
-// <p>
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// General Public License for more details.
-// </p>
-// 
-// <p>
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <a
-// href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.
-// <p>
 }

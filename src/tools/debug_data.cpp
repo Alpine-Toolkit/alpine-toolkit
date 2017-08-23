@@ -59,7 +59,7 @@ QcDebugData::to_json() const
   root_object[QLatin1Literal("platform")] = platform.to_json();
 
   QJsonObject version_object;
-  version_object[QLatin1Literal("alpine_toolkit_version")] = ALPINE_TOOLKIT_VERSION;
+  version_object[QLatin1Literal("alpine_toolkit_version")] = ALPINE_TOOLKIT_VERSION.toString();
   QJsonObject qt_object;
   qt_object[QLatin1Literal("qt_version")] = qVersion();
   qt_object[QLatin1Literal("prefix_path")] = QLibraryInfo::location(QLibraryInfo::PrefixPath);

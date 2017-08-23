@@ -70,16 +70,17 @@ QmlApplication::QmlApplication()
 QmlApplication::~QmlApplication()
 {}
 
-const QString &
+QString
 QmlApplication::version() const
 {
-  return ALPINE_TOOLKIT_VERSION;
+  const Application & application = Application::instance();
+  return application.version().toString();
 }
 
 QUrl
 QmlApplication::home_page() const
 {
-  return QUrl(QLatin1String("http://alpine-toolkit.fabrice-salvaire.fr"));
+  return ALPINE_TOOLKIT_URL;
 }
 
 void

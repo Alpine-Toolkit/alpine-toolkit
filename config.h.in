@@ -1,5 +1,4 @@
 // -*- mode: c++ -*-
-
 /***************************************************************************************************
 **
 ** $QTCARTO_BEGIN_LICENSE:GPL3$
@@ -31,10 +30,16 @@
 
 /**************************************************************************************************/
 
-constexpr int ALPINE_TOOLKIT_VERSION_MAJOR = @ALPINE_TOOLKIT_VERSION_MAJOR@;
-constexpr int ALPINE_TOOLKIT_VERSION_MINOR = @ALPINE_TOOLKIT_VERSION_MINOR@;
-constexpr int ALPINE_TOOLKIT_VERSION_PATCH = @ALPINE_TOOLKIT_VERSION_PATCH@;
-static const QString ALPINE_TOOLKIT_VERSION = "@ALPINE_TOOLKIT_VERSION@";
+#include <QUrl>
+#include <QVersionNumber>
+
+/**************************************************************************************************/
+
+static QVersionNumber ALPINE_TOOLKIT_VERSION(@ALPINE_TOOLKIT_VERSION_MAJOR@,
+                                             @ALPINE_TOOLKIT_VERSION_MINOR@,
+                                             @ALPINE_TOOLKIT_VERSION_PATCH@);
+
+static QUrl ALPINE_TOOLKIT_URL = QUrl(QLatin1String("https://alpine-toolkit.fabrice-salvaire.fr"));
 
 // #cmakedefine FOO_ENABLE
 // #cmakedefine FOO_STRING "@FOO_STRING@"

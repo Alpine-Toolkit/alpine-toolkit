@@ -86,8 +86,10 @@ ThirdPartyLicenseSchemaManager::load_json_document(const QJsonDocument & json_do
 void
 ThirdPartyLicenseSchemaManager::load_json()
 {
-  if (not (m_json_loaded or m_json_path.isEmpty()))
+  if (not (m_json_loaded or m_json_path.isEmpty())) {
     SchemaManager::load_json(m_json_path);
+    m_json_loaded = true;
+  }
 }
 
 QJsonDocument

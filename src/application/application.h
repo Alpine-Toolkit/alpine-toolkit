@@ -34,12 +34,13 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QQmlApplicationEngine>
 #include <QNetworkConfigurationManager>
+#include <QQmlApplicationEngine>
 #include <QSettings>
 #include <QTranslator>
 // #include <QGuiApplication>
 
+#include "config.h"
 #include "configuration/configuration.h"
 #include "ephemeride/ephemeride.h"
 #include "refuge/refuge_schema_manager.h"
@@ -65,7 +66,7 @@ public:
   QmlApplication();
   ~QmlApplication();
 
-  const QString & version() const;
+  QString version() const;
   QUrl home_page() const;
 
   bool is_online() const;
@@ -113,6 +114,8 @@ public:
   QcConfig & config() { return m_config; }
 
   QSettings & settings() { return m_settings; }
+
+  QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);
