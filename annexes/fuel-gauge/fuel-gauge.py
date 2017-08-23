@@ -155,7 +155,7 @@ code = r'''
 \usepackage{geometry}
 \geometry{a4paper, margin=1cm, headheight=0mm}
 \usepackage{tikz}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{qrcode}
 \renewcommand{\familydefault}{\sfdefault}
 \begin{document}
@@ -164,8 +164,9 @@ code = r'''
 \draw (0,0) rectangle ++(6cm,10cm);
 \node[anchor=north] at (30mm,100mm) {\Large Alpine Toolkit Fuel Gauge};
 \node[anchor=center,inner sep=0pt] at (30mm,82mm) {\includegraphics[height=20mm]{../../ressources/application-icons/icon-transparent-512.png}};
-\node[anchor=south west, rotate=90] at (60mm,5mm) {\tiny \url{http://alpine-toolkit.bleausard.fr/fuel-gauge.pdf} \hspace{5mm} V1 2017};
-\node[anchor=center] at (50mm,82mm) {\qrcode[height=15mm]{http://alpine-toolkit.bleausard.fr/fuel-gauge.pdf}};
+% http://alpine-toolkit.bleausard.fr/fuel-gauge.pdf
+\node[anchor=south west, rotate=90] at (60mm,2mm) {\tiny \url{https://bleausard.fr/alpine-toolkit/fuel-gauge} Copyright Fabrice Salvaire V1 2017};
+\node[anchor=center] at (50mm,85mm) {\qrcode[height=15mm]{https://bleausard.fr/alpine-toolkit/fuel-gauge}};
 \begin{scope}[shift={(42mm,59mm)}]
 \draw[line width=.2mm,fill=gray!25] (0,0) rectangle (10mm,8mm);
 \draw[line width=.2mm,fill=gray!60] (2mm,10mm) -- (2mm,3mm) -- (8mm,3mm) --(8mm,10mm) .. controls (8mm,12mm) and (2mm,12mm) .. (2mm,10mm);
