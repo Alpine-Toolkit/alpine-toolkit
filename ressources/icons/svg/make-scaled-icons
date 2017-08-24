@@ -1,0 +1,11 @@
+#! /bin/bash
+
+for i in *@512px.png; do
+  n=${i%%@512px.png}
+  convert $i -resize 72x72 $n@3x.png
+  convert $i -resize 24x24 $n.png
+  pushd ..
+  ln -sf svg/$n@3x.png $n@3x.png
+  ln -sf svg/$n.png $n.png
+  popd
+done
