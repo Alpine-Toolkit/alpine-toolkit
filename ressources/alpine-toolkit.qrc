@@ -109,6 +109,23 @@
     <file>icons/undo-black.png</file>
     <file>icons/undo-black@3x.png</file>
 
+    <file>icons/ambulance-black.png</file>
+    <file>icons/ambulance-black@3x.png</file>
+    <file>icons/altimeter-black.png</file>
+    <file>icons/altimeter-black@3x.png</file>
+    <file>icons/clignometre-black.png</file>
+    <file>icons/clignometre-black@3x.png</file>
+    <file>icons/ephemeride-black.png</file>
+    <file>icons/ephemeride-black@3x.png</file>
+    <file>icons/fuel-black.png</file>
+    <file>icons/fuel-black@3x.png</file>
+    <file>icons/hut-black.png</file>
+    <file>icons/hut-black@3x.png</file>
+    <file>icons/lamp-signal-black.png</file>
+    <file>icons/lamp-signal-black@3x.png</file>
+    <file>icons/torch-black.png</file>
+    <file>icons/torch-black@3x.png</file>
+
     <file>js/math.js</file>
     <file>js/gps.js</file>
     <file>js/set.js</file>

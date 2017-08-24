@@ -12,12 +12,13 @@ function copy_link() {
   scale=$3
 
   subdir="${category}/drawable-${dpi}"
+  subdir_dest="../icon-ressources/material-design-icons/${subdir}"
   src="ic_${name}_${colour}_${dp}dp.png"
   target=$(tr "_" "-" <<<"${name}-${colour}${scale}.png")
-  mkdir -p ${subdir}
-  cp ${mdi_path}/${subdir}/${src} ${subdir}
+  mkdir -p ${subdir_dest}
+  cp ${mdi_path}/${subdir}/${src} ${subdir_dest}
   rm -f ${target}
-  ln -sf ${subdir}/${src} ${target}
+  ln -sf ${subdir_dest}/${src} ${target}
 }
 
 for colour in white black ; do
