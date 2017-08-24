@@ -51,4 +51,5 @@ copy-icon notification sd_card
 copy-icon notification wifi
 copy-icon social person
 copy-icon social person_outline
+copy-icon social people
 copy-icon toggle star
