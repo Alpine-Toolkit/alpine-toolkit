@@ -136,12 +136,16 @@ ApplicationWindow {
             id: list_view
             currentIndex: -1
             anchors.fill: parent
+	    spacing: 0
 
             delegate: ItemDelegate {
 		id: control
                 width: parent.width
                 font.pixelSize: 18
                 text: model.title
+		// Try to get a smaller spacing
+		topPadding: 0
+		bottomPadding: 0
 		contentItem: Row {
 		    spacing: 10
  		    Image {
