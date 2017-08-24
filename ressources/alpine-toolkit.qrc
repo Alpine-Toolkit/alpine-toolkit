@@ -96,6 +96,8 @@
     <file>icons/more-vert-white@3x.png</file>
     <file>icons/navigation-black.png</file>
     <file>icons/navigation-black@3x.png</file>
+    <file>icons/people-black.png</file>
+    <file>icons/people-black@3x.png</file>
     <file>icons/person-black.png</file>
     <file>icons/person-black@3x.png</file>
     <file>icons/person-outline-black.png</file>
@@ -109,20 +111,26 @@
     <file>icons/undo-black.png</file>
     <file>icons/undo-black@3x.png</file>
 
-    <file>icons/ambulance-black.png</file>
-    <file>icons/ambulance-black@3x.png</file>
     <file>icons/altimeter-black.png</file>
     <file>icons/altimeter-black@3x.png</file>
+    <file>icons/ambulance-black.png</file>
+    <file>icons/ambulance-black@3x.png</file>
+    <file>icons/camptocamp-black.png</file>
+    <file>icons/camptocamp-black@3x.png</file>
     <file>icons/clignometre-black.png</file>
     <file>icons/clignometre-black@3x.png</file>
     <file>icons/ephemeride-black.png</file>
     <file>icons/ephemeride-black@3x.png</file>
     <file>icons/fuel-black.png</file>
     <file>icons/fuel-black@3x.png</file>
+    <file>icons/helicopter-black.png</file>
+    <file>icons/helicopter-black@3x.png</file>
     <file>icons/hut-black.png</file>
     <file>icons/hut-black@3x.png</file>
     <file>icons/lamp-signal-black.png</file>
     <file>icons/lamp-signal-black@3x.png</file>
+    <file>icons/sun-black.png</file>
+    <file>icons/sun-black@3x.png</file>
     <file>icons/torch-black.png</file>
     <file>icons/torch-black@3x.png</file>
 

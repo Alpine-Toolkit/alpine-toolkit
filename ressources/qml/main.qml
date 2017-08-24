@@ -138,10 +138,26 @@ ApplicationWindow {
             anchors.fill: parent
 
             delegate: ItemDelegate {
+		id: control
                 width: parent.width
-                font.pixelSize: 16
+                font.pixelSize: 18
                 text: model.title
-                highlighted: ListView.isCurrentItem
+		contentItem: Row {
+		    spacing: 10
+ 		    Image {
+			// fillMode: Image.Pad
+			// horizontalAlignment: Image.AlignHCenter
+			// verticalAlignment: Image.AlignVCenter
+			anchors.verticalCenter: parent.verticalCenter
+			source: model.icon
+		    }
+		    Label {
+			text: control.text
+			font: control.font
+			// verticalAlignment: Text.AlignVCenter
+			anchors.verticalCenter: parent.verticalCenter
+		    }
+		}
                 onClicked: {
                     if (list_view.currentIndex != index) {
                         list_view.currentIndex = index
