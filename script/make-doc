@@ -1,0 +1,7 @@
+#! /usr/bin/bash
+
+source /opt/python-virtual-env/py35/bin/activate
+
+pushd doc/sphinx
+make html
+popd

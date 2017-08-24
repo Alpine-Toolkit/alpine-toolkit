@@ -1,0 +1,47 @@
+/* -*- Mode: css -*- */
+
+/* ----------------------------------------------------------------------------------------------- *
+ *
+ * Alpine Toolkit stylesheet
+ *
+ * :copyright: Copyright 2017 Fabrice Salvaire
+ *
+ * This file is part of the Alpine Toolkit software.
+ *
+ */
+
+@import url("theme.css");
+
+/* ----------------------------------------------------------------------------------------------- *
+ *
+ * Overwrite RTD Theme
+ *
+ */
+
+.wy-nav-content {
+    padding: 1.618em 3.236em;
+    height: 100%;
+    max-width: 100%;
+    margin: auto;
+}
+
+p {
+    font-size: 100%; /* 16 px */
+}
+
+div[class^="highlight"] pre {
+    font-size: 100%; /* 16 px */
+}
+
+
+.btn {
+    border-radius: 10px; /* 2px */
+    box-shadow: none;
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+dl.class, dl.function {
+    border-top: 1px solid black;
+    padding-top: 5px;
+}
