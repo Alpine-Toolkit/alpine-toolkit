@@ -81,6 +81,10 @@ ressources/js/filters.html
 ressources/pages/Checklist-dev.qml
 ressources/pages/notes.txt
 #
+ressources/tones/*.mp3
+ressources/tones/*.mp4
+ressources/tones/*.wav
+#
 annexes/fuel-gauge/auto/
 annexes/fuel-gauge/fuel-gauge.aux
 annexes/fuel-gauge/fuel-gauge.log

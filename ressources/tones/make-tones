@@ -1,0 +1,36 @@
+#! /bin/bash
+
+short_pulse=200
+long_pulse=$((short_pulse * 3))
+short_pause=$short_pulse
+long_pause=$((short_pause * 5))
+rise_time=10
+
+frequency=1000
+amplitude=.3
+
+python3 generate-wav-tone.py -f${frequency} -a${amplitude} -t${short_pulse} -rt=${rise_time} -ft=${rise_time} short-pulse.wav
+python3 generate-wav-tone.py -f${frequency} -a${amplitude} -t${long_pulse} -rt=${rise_time} -ft=${rise_time} long-pulse.wav
+python3 generate-wav-tone.py -f0 -a0 -t${short_pause} short-pause.wav
+python3 generate-wav-tone.py -f0 -a0 -t${long_pause} long-pause.wav
+
+for i in short-pulse long-pulse short-pause long-pause; do
+  rm $i.mp3 $i.mp4 $i.opus
+  # -vn disable video
+  # -ar samping
+  # -ac 2 channels
+  # -ab bit rate
+  ffmpeg -i $i.wav -vn -ar 44100 -ac 2 -ab 192 -f mp3 $i.mp3
+  ffmpeg -i $i.wav -vn -ar 44100 -ac 2 -c:a aac -b:a 128k -f mp4 $i.mp4
+  # ffmpeg -i $i.wav $i.opus
+done
+
+aplay \
+  long-pulse.wav \
+  short-pause.wav \
+  short-pulse.wav \
+  short-pause.wav \
+  long-pulse.wav \
+  long-pause.wav \
+  short-pulse.wav \
+#
