@@ -252,7 +252,7 @@ QcMapItem {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/svg/polyline-black.png"
+                    source: "qrc:/icons/polyline-black.png"
                 }
                 onClicked: {
                     if (path_tool_icon.checked)
@@ -336,7 +336,7 @@ QcMapItem {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/svg/polyline-dot-black.png"
+                    source: "qrc:/icons/polyline-dot-black.png"
                 }
                 onClicked: {
                     map.path_editor.set_vertex_edition_mode(polyline_dot_icon.checked)
@@ -349,7 +349,7 @@ QcMapItem {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/svg/area-black.png"
+                    source: "qrc:/icons/area-black.png"
                 }
                 onClicked: {
                     map.path_editor.set_closed(area_icon.checked)
@@ -362,7 +362,7 @@ QcMapItem {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/svg/ruler-black.png"
+                    source: "qrc:/icons/ruler-black.png"
                 }
             }
         }
