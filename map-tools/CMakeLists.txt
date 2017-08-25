@@ -13,13 +13,10 @@
 #
 
 add_executable(tile-loader tile-loader.cpp)
-target_link_libraries(tile-loader qtcarto)
+target_link_libraries(tile-loader
+  alpine_toolkit_common
+  qtcarto
+  )
 
 add_executable(spatialite-test spatialite-test.cpp)
 target_link_libraries(spatialite-test Qt5::Sql)
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

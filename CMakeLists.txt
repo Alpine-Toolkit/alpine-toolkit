@@ -178,10 +178,12 @@ if(NOT ANDROID)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5Positioning REQUIRED)
     find_package(Qt5Qml REQUIRED)
-    find_package(Qt5Quick REQUIRED) # QtQuickWidgets
+    find_package(Qt5Quick REQUIRED)
+    find_package(Qt5QuickWidgets REQUIRED)
     find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Sensors REQUIRED)
     find_package(Qt5Sql REQUIRED)
+    find_package(Qt5Svg REQUIRED)
     find_package(Qt5Test REQUIRED)
     find_package(Qt5RemoteObjects REQUIRED)
 
@@ -219,6 +221,27 @@ if(NOT ANDROID)
 endif(NOT ANDROID)
 
 ####################################################################################################
+#
+# Find Protobuf
+#
+
+if(NOT ANDROID)
+  include(FindProtobuf)
+  find_package(Protobuf REQUIRED)
+  include_directories(${PROTOBUF_INCLUDE_DIR})
+endif(NOT ANDROID)
+
+####################################################################################################
+#
+# Find Zlib
+#
+
+if(NOT ANDROID)
+  find_package(ZLIB REQUIRED)
+  include_directories(${ZLIB_INCLUDE_DIR})
+endif(NOT ANDROID)
+
+####################################################################################################
 
 # Fixme: clash with third parties
 if(NOT ANDROID)
@@ -245,10 +268,8 @@ if(NOT ANDROID)
   add_subdirectory(src)
   add_subdirectory(unit-tests)
   # add_subdirectory(imports)
-endif(NOT ANDROID)
 
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+  add_subdirectory(map-tools)
+  add_subdirectory(imports)
+  add_subdirectory(mapviewer)
+endif(NOT ANDROID)

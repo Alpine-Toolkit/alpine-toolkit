@@ -30,6 +30,7 @@
 
 add_subdirectory(cmark)
 add_subdirectory(snowball)
+add_subdirectory(libspatialindex)
 
 if(ANDROID)
 add_subdirectory(sqlite)

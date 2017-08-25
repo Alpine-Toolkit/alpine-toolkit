@@ -34,8 +34,8 @@
 
 /**************************************************************************************************/
 
- #include "src/coordinate/wgs84.h"
- #include "src/coordinate/mercator.h"
+#include "qtcarto/coordinate/wgs84.h"
+#include "qtcarto/coordinate/mercator.h"
 
 // #include "imports/QtCarto/geo_coordinate_animation.h"
 

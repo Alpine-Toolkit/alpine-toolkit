@@ -27,10 +27,6 @@
 ####################################################################################################
 
 ####################################################################################################
-
-add_subdirectory(qtcarto)
-
-####################################################################################################
 #
 # Include directories
 #
@@ -40,6 +36,31 @@ include_directories(${CMAKE_SOURCE_DIR})
 ####################################################################################################
 #
 # Library
+#
+
+set(alpine_toolkit_common_library_files
+  configuration/configuration.cpp
+  tools/debug_data.cpp
+  tools/logger.cpp
+  tools/platform.cpp
+  )
+add_library(alpine_toolkit_common SHARED ${alpine_toolkit_common_library_files})
+target_link_libraries(alpine_toolkit_common
+  Qt5::Core
+  Qt5::Network
+  Qt5::Widgets # for platform.cpp
+  )
+
+####################################################################################################
+#
+# QtCarto Library
+#
+
+add_subdirectory(qtcarto)
+
+####################################################################################################
+#
+# Alpine Toolkit Library
 #
 
 set(alpine_toolkit_library_files
@@ -121,14 +142,10 @@ set(alpine_toolkit_executable_files
   main.cpp
   application/application.cpp
   application/test.cpp
-  configuration/configuration.cpp
   satellite_model/satellite_model.cpp
   sensors/qml_barimeter_altimeter_sensor.cpp
   sensors/qmlsensor.cpp
   sensors/qmlsensorrange.cpp
-  tools/debug_data.cpp
-  tools/logger.cpp
-  tools/platform.cpp
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
@@ -137,15 +154,9 @@ qt5_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 # qtquick_compiler_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${ressources})
 target_link_libraries(alpine-toolkit
+  alpine_toolkit_common
   alpine_toolkit
   Qt5::Qml
-  Qt5::Widgets
   Qt5::Sensors
   Qt5::RemoteObjects
   )
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
