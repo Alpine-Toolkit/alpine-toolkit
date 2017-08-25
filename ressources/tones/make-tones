@@ -15,13 +15,14 @@ python3 generate-wav-tone.py -f0 -a0 -t${short_pause} short-pause.wav
 python3 generate-wav-tone.py -f0 -a0 -t${long_pause} long-pause.wav
 
 for i in short-pulse long-pulse short-pause long-pause; do
-  rm $i.mp3 $i.mp4 $i.opus
+  rm $i.mp3 $i.mp4 $i.opus $i.ogg
   # -vn disable video
   # -ar samping
   # -ac 2 channels
   # -ab bit rate
   ffmpeg -i $i.wav -vn -ar 44100 -ac 2 -ab 192 -f mp3 $i.mp3
   ffmpeg -i $i.wav -vn -ar 44100 -ac 2 -c:a aac -b:a 128k -f mp4 $i.mp4
+  oggenc -o $i.ogg $i.wav
   # ffmpeg -i $i.wav $i.opus
 done
 

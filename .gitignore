@@ -83,6 +83,8 @@ ressources/pages/notes.txt
 #
 ressources/tones/*.mp3
 ressources/tones/*.mp4
+ressources/tones/*.ogg
+ressources/tones/*.opus
 ressources/tones/*.wav
 #
 annexes/fuel-gauge/auto/
