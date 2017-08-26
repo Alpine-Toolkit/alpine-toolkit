@@ -52,54 +52,6 @@ class LampSignalRunnable implements Runnable {
 
 /**************************************************************************************************/
 
-// This implementation Need to open API of CameraHelper
-
-/*
-class DimmerRunnable implements Runnable
-{
-  int m_period; // ms
-  int m_duty_cycle; // %
-  int m_on_time;
-  int m_off_time;
-
-  CameraHelper camera_helper;
-
-  DimmerRunnable(CameraHelper camera_helper, final int periods, final int duty_cycle)
-  {
-    m_period = periods;
-    m_duty_cycle = duty_cycle;
-
-    m_on_time = m_period * m_duty_cycle / 100;
-    m_off_time = m_period - m_on_time;
-  }
-
-  @Override
-  public synchronized void run() {
-    if (camera_helper.has_flash()) {
-      camera_helper.open_camera();
-      camera_helper._disable_torch(); // else don't turn on first time
-
-      boolean is_on = true;
-      while (!Thread.interrupted()) {
-        if (is_on)
-          camera_helper._enable_torch();
-        else
-          camera_helper._disable_torch();
-        try {
-          Thread.sleep(is_on ? m_on_time : m_off_time);
-        } catch (InterruptedException exception) {
-          // Fixme: disable torch ???
-          exception.printStackTrace();
-        }
-        is_on = !is_on;
-      }
-
-      camera_helper.release_camera();
-    }
-  }
-}
-*/
-
 /**************************************************************************************************/
 
 public abstract class CameraHelperBase implements CameraHelperInterface
@@ -108,14 +60,17 @@ public abstract class CameraHelperBase implements CameraHelperInterface
   protected static AlpineToolkitActivity m_activity;
   protected boolean m_torch_enabled = false;
 
+  private Thread m_lamp_signal_thread = null;
   private Thread m_dimmer_thread = null;
 
   /**********************************************/
 
-  public BaseCameraHelper(AlpineToolkitActivity activity)
+  public CameraHelperBase(AlpineToolkitActivity activity)
   {
     m_activity = activity;
   }
+
+  /**********************************************/
 
   public void _enable_torch()
   {
@@ -127,36 +82,61 @@ public abstract class CameraHelperBase implements CameraHelperInterface
     _set_torch_mode_fast(false);
   }
 
-  /*
-  public void perform_lamp_signal(final String encoded_message, final int rate_ms) {
-    Log.i(LOG_TAG, "perform_lamp_signal: " + encoded_message + " " + rate_ms);
-    if (has_flash()) {
-      // Fixme: camera vs thread ???
-      // Fixme: stop thread
-      new Thread(new Runnable() {
-	  @Override
-	  public void run() {
-	    Log.i(LOG_TAG, "perform_lamp_signal run");
-	    open_camera();
-	    for (char bit : encoded_message.toCharArray()) {
-	      // Log.i(LOG_TAG, "perform_lamp_signal bit: " + bit);
-	      if (bit == '1')
-		_enable_torch();
-	      else
-		_disable_torch();
-	      try {
-		Thread.sleep(rate_ms); // 1/4 s = 250 ms
-	      } catch (InterruptedException exception) {
-		// Fixme: disable torch ???
-		exception.printStackTrace();
-	      }
-	    }
-	    release_camera();
-	  }
-	}).start();
+  /**********************************************/
+
+  private final class LampSignalRunnable implements Runnable
+  {
+    private String m_encoded_message;
+    private int m_rate_ms;
+
+    public LampSignalRunnable(String encoded_message, int rate_ms)
+    {
+      m_encoded_message = encoded_message;
+      m_rate_ms = rate_ms;
+    }
+
+    @Override
+    public synchronized void run() {
+      // Log.i(LOG_TAG, "perform_lamp_signal run");
+
+      _open_camera();
+      _disable_torch(); // else don't turn on first time
+
+      // for (char bit : encoded_message.toCharArray()) {
+      //   // Log.i(LOG_TAG, "perform_lamp_signal bit: " + bit);
+      //   if (bit == '1')
+      //     _enable_torch();
+      //   else
+      //     _disable_torch();
+      //   try {
+      //     Thread.sleep(rate_ms); // 1/4 s = 250 ms
+      //   } catch (InterruptedException exception) {
+      //     // Fixme: disable torch ???
+      //     exception.printStackTrace();
+      //   }
+      // }
+
+      boolean is_on = true;
+      for (char run : m_encoded_message.toCharArray()) {
+        int multiple = Character.digit(run, 10); // (int)c - (int)'0'
+        // Log.i(LOG_TAG, "perform_lamp_signal run: " + multiple + " " + is_on);
+        if (is_on)
+          _enable_torch();
+        else
+          _disable_torch();
+        is_on = !is_on;
+        try {
+          Thread.sleep(m_rate_ms * multiple);
+        } catch (InterruptedException e) {
+          // Fixme: when ???
+          break;
+        }
+      }
+
+      _release_camera();
+      m_lamp_signal_thread = null;
     }
   }
-  */
 
   public void perform_lamp_signal(final String encoded_message, final int rate_ms)
   {
@@ -165,40 +145,56 @@ public abstract class CameraHelperBase implements CameraHelperInterface
     if (! has_flash())
       return;
 
-    // Fixme: camera vs thread ???
-    // Fixme: stop thread
-    new Thread(new Runnable() {
-        @Override
-        public void run() {
-          // Log.i(LOG_TAG, "perform_lamp_signal run");
-          _open_camera();
-          _disable_torch(); // else don't turn on first time
-          boolean is_on = true;
-          for (char run : encoded_message.toCharArray()) {
-            int multiple = Character.digit(run, 10); // (int)c - (int)'0'
-            // Log.i(LOG_TAG, "perform_lamp_signal run: " + multiple + " " + is_on);
-            if (is_on)
-              _enable_torch();
-            else
-              _disable_torch();
-            is_on = !is_on;
-            try {
-              Thread.sleep(rate_ms * multiple);
-            } catch (InterruptedException exception) {
-              // Fixme: disable torch ???
-              exception.printStackTrace();
-            }
-          }
-          _release_camera();
-        }
-      }).start();
+    m_lamp_signal_thread = new Thread(new LampSignalRunnable(encoded_message, rate_ms));
+    m_lamp_signal_thread.start();
   }
 
-  public void stop_lamp_dimmer()
+  public void stop_lamp_signal()
   {
-    if (m_dimmer_thread != null) {
-      m_dimmer_thread.interrupt();
-      m_dimmer_thread = null;
+    if (m_lamp_signal_thread != null) {
+      m_lamp_signal_thread.interrupt();
+      m_lamp_signal_thread = null;
+    }
+  }
+
+  /**********************************************/
+
+  private final class DimmerRunnable implements Runnable
+  {
+    int m_period; // ms
+    int m_duty_cycle; // %
+    int m_on_time;
+    int m_off_time;
+
+    DimmerRunnable(final int periods, final int duty_cycle)
+    {
+      m_period = periods;
+      m_duty_cycle = duty_cycle;
+
+      m_on_time = m_period * m_duty_cycle / 100;
+      m_off_time = m_period - m_on_time;
+    }
+
+    @Override
+    public synchronized void run() {
+      _open_camera();
+      _disable_torch(); // else don't turn on first time
+
+      boolean is_on = true;
+      while (!Thread.interrupted()) {
+        if (is_on)
+          _enable_torch();
+        else
+          _disable_torch();
+        try {
+          Thread.sleep(is_on ? m_on_time : m_off_time);
+        } catch (InterruptedException e) {
+          // Fixme: when ???
+        }
+        is_on = !is_on;
+      }
+
+      _release_camera();
     }
   }
 
@@ -211,34 +207,15 @@ public abstract class CameraHelperBase implements CameraHelperInterface
 
     stop_lamp_dimmer();
 
-    // m_dimmer_thread = new Thread(DimmerRunnable(this, period, duty_cycle);
-    final int on_time = period * duty_cycle / 100;
-    final int off_time = period - on_time;
-    m_dimmer_thread = new Thread(new Runnable() {
-        @Override
-        public synchronized void run() {
-          _open_camera();
-          _disable_torch(); // else don't turn on first time
-
-          boolean is_on = true;
-          while (!Thread.interrupted()) {
-            if (is_on)
-              _enable_torch();
-            else
-              _disable_torch();
-            try {
-              Thread.sleep(is_on ? on_time : off_time);
-            } catch (InterruptedException exception) {
-              // Fixme: disable torch ???
-              exception.printStackTrace();
-            }
-            is_on = !is_on;
-          }
-
-          _release_camera();
-        }
-      });
-
+    m_dimmer_thread = new Thread(new DimmerRunnable(period, duty_cycle));
     m_dimmer_thread.start();
+  }
+
+  public void stop_lamp_dimmer()
+  {
+    if (m_dimmer_thread != null) {
+      m_dimmer_thread.interrupt();
+      m_dimmer_thread = null;
+    }
   }
 }
