@@ -42,6 +42,7 @@
 // #include <QSqlDatabase>
 // #include <QSqlError> // Fixme: ???
 // #include <QSqlQuery>
+// #include <QSurfaceFormat>
 
 // #include "bleaudb/bleau_database.h"
 #include "config.h"
@@ -51,6 +52,17 @@
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 #include "tools/debug_data.h"
+
+#include "declarative_map_item.h"
+#include "map_gesture_area.h"
+
+// Fixme:
+#include "coordinate/wgs84.h"
+#include "geometry/vector.h"
+#include "map/location_circle_data.h"
+#include "map/map_event_router.h"
+#include "map/map_path_editor.h"
+#include "map/path_property.h"
 
 /**************************************************************************************************/
 
@@ -167,6 +179,17 @@ Application::setup_gui_application()
   QGuiApplication::setOrganizationName("Alpine Toolkit"); // overridden ???
   // QGuiApplication::setOrganizationDomain("alpine-toolkit.org")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+  // QSurfaceFormat surface_format;
+  // // surface_format.setSamples(4); // max is 8 ?
+  // QSurfaceFormat::setDefaultFormat(surface_format);
+}
+
+void
+Application::set_env_variables()
+{
+  // Set environment variable PROJ_LIB for proj4 so as to find (epsg) date files
+  setenv("PROJ_LIB", m_config.application_user_directory().toStdString().c_str(), 1);
 }
 
 void
@@ -242,6 +265,32 @@ Application::register_qml_types()
 
 #define QmlRegisterUncreatableType2(Type, Name) \
   qmlRegisterUncreatableType<Type>(package, major, minor, #Name, QLatin1String("Cannot create" #Type))
+
+  qRegisterMetaType<QcVectorDouble>();
+  QMetaType::registerEqualsComparator<QcVectorDouble>();
+
+  qRegisterMetaType<QcWgsCoordinate>();
+  QMetaType::registerEqualsComparator<QcWgsCoordinate>();
+  // qRegisterAnimationInterpolator<QGeoCoordinate>(q_coordinateInterpolator);
+
+  qRegisterMetaType<QcMapEvent>();
+  qRegisterMetaType<QcMapScale>();
+  qRegisterMetaType<QcWmtsPluginData>();
+  qRegisterMetaType<QcWmtsPluginLayerData>();
+
+  QmlRegisterUncreatableType(QcLocationCircleData);
+
+  QmlRegisterUncreatableType(QcMapPathEditor);
+
+  QmlRegisterUncreatableType(QcPathProperty);
+
+  // QDeclarativeGeoMap
+  QmlRegisterType(QcMapItem);
+
+  QmlRegisterUncreatableType(QcMapPinchEvent);
+  QmlRegisterUncreatableType(QcMapGestureArea);
+
+  QmlRegisterUncreatableType(QcMapEventRouter);
 
   // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
 
@@ -347,6 +396,19 @@ Application::load_qml_main()
   if (root_objects.size() == 1) {
     QObject * application_window = root_objects[0];
     m_can_start = true;
+
+  // for (auto * obj : engine.rootObjects()) {
+  //   QQuickWindow * window = qobject_cast<QQuickWindow *>(obj);
+  //   if (window != NULL) {
+  //     QSurfaceFormat format = window->format();
+  //     qInfo() << "QQuickWindow found" << format;
+  //     // QQuickWindow found QSurfaceFormat(version 2.0, options QFlags(),
+  //     // depthBufferSize 24,
+  //     // redBufferSize 8, greenBufferSize 8, blueBufferSize 8, alphaBufferSize 0,
+  //     // stencilBufferSize 8,
+  //     // samples 4, swapBehavior 2, swapInterval 1, profile  0)
+  //   }
+  // }
 
 #ifndef ANDROID
     // Set application window size on desktop

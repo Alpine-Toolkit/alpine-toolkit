@@ -7,6 +7,10 @@
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
+
+include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
+
 ####################################################################################################
 
 # Generate in source !
@@ -114,6 +118,11 @@ set(qtcarto_files
   wmts/wmts_reply.cpp
   wmts/wmts_request_manager.cpp
   wmts/wmts_tile_fetcher.cpp
+
+  ../../imports/QtCarto/declarative_map_item.cpp
+  ../../imports/QtCarto/geo_coordinate_animation.cpp
+  ../../imports/QtCarto/map_gesture_area.cpp
+  ../../imports/QtCarto/plugin_data.cpp
   )
 add_library(qtcarto SHARED ${qtcarto_files})
 target_link_libraries(qtcarto
@@ -123,6 +132,7 @@ target_link_libraries(qtcarto
   Qt5::Gui
   Qt5::Network
   Qt5::Positioning
+  Qt5::Qml
   Qt5::Sql
   ${PROJ4_LIBRARIES}
   ${ZLIB_LIBRARY}

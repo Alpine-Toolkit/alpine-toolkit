@@ -126,6 +126,7 @@ private:
   void run_before_event_loop();
   void set_context_properties();
   void set_offline_storage_path();
+  void set_env_variables();
   static void setup_gui_application();
   void write_debug_data() const;
 

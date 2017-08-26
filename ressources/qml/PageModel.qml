@@ -59,7 +59,7 @@ ListModel {
 
     ListElement {
         title: qsTr('Data Logger')
-        icon: ''
+        icon: 'qrc:/icons/data-logger-black.png'
         source: 'qrc:/Pages/DataLogger.qml'
         lock_orientation: false
     }
@@ -110,6 +110,13 @@ ListModel {
         title: qsTr('Lamp Signal')
         icon: 'qrc:/icons/lamp-signal-black.png'
         source: 'qrc:/Pages/LampSignal.qml'
+        lock_orientation: false
+    }
+
+    ListElement {
+        title: qsTr('Map')
+        icon: 'qrc:/icons/map-black.png'
+        source: 'qrc:/Pages/Map.qml'
         lock_orientation: false
     }
 

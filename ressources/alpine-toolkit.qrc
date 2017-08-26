@@ -23,6 +23,7 @@
         <file alias="Illuminance.qml">qml/Pages/Illuminance.qml</file>
         <file alias="Inclination.qml">qml/Pages/Inclination.qml</file>
         <file alias="LampSignal.qml">qml/Pages/LampSignal.qml</file>
+        <file alias="Map.qml">qml/Pages/Map.qml</file>
         <file alias="PersonCounter.qml">qml/Pages/PersonCounter.qml</file>
         <file alias="Refuge.qml">qml/Pages/Refuge.qml</file>
         <file alias="RefugeDirectory.qml">qml/Pages/RefugeDirectory.qml</file>
@@ -33,12 +34,14 @@
         <!-- file alias="qmldir">qml/Widgets/qmldir</file> -->
 	<file alias="CompassRose.qml">qml/Widgets/CompassRose.qml</file>
         <file alias="About.qml">qml/Widgets/About.qml</file>
+        <file alias="Layers.qml">qml/Widgets/Layers.qml</file>
+        <file alias="MapComponent.qml">qml/Widgets/MapComponent.qml</file>
         <file alias="MenuItemIcon.qml">qml/Widgets/MenuItemIcon.qml</file>
         <file alias="OptionsMenu.qml">qml/Widgets/OptionsMenu.qml</file>
         <file alias="Page.qml">qml/Widgets/Page.qml</file>
         <file alias="Popup.qml">qml/Widgets/Popup.qml</file>
+        <file alias="Projections.qml">qml/Widgets/Projections.qml</file>
         <file alias="SplashScreen.qml">qml/Widgets/SplashScreen.qml</file>
-
     </qresource>
     <qresource prefix="/C2cFilter">
 	<file alias="Filter.qml">qml/C2cFilter/Filter.qml</file>
@@ -62,6 +65,8 @@
     <file>data/third_party_licenses.json</file>
     <!-- file>data/ffcam-refuges.sqlite</file> -->
 
+    <!-- file>icons/close-black.png</file> -->
+    <!-- file>icons/close-black@3x.png</file> -->
     <file>icons/add-black.png</file>
     <file>icons/add-black@3x.png</file>
     <file>icons/arrow-back-white.png</file>
@@ -72,24 +77,26 @@
     <file>icons/call-black@3x.png</file>
     <file>icons/clear-black.png</file>
     <file>icons/clear-black@3x.png</file>
-    <!-- file>icons/close-black.png</file> -->
-    <!-- file>icons/close-black@3x.png</file> -->
     <file>icons/cloud-done-black.png</file>
     <file>icons/cloud-done-black@3x.png</file>
     <file>icons/cloud-download-black.png</file>
     <file>icons/cloud-download-black@3x.png</file>
+    <file>icons/data-logger-black.png</file>
+    <file>icons/data-logger-black@3x.png</file>
+    <file>icons/delete-black.png</file>
+    <file>icons/delete-black@3x.png</file>
     <file>icons/explore-black.png</file>
     <file>icons/explore-black@3x.png</file>
     <file>icons/filter-black.png</file>
     <file>icons/filter-black@3x.png</file>
-    <file>icons/help-black.png</file>
-    <file>icons/help-black@3x.png</file>
     <file>icons/gps-fixed-black.png</file>
     <file>icons/gps-fixed-black@3x.png</file>
     <file>icons/gps-not-fixed-black.png</file>
     <file>icons/gps-not-fixed-black@3x.png</file>
     <file>icons/gps-off-black.png</file>
     <file>icons/gps-off-black@3x.png</file>
+    <file>icons/help-black.png</file>
+    <file>icons/help-black@3x.png</file>
     <file>icons/menu-white.png</file>
     <file>icons/menu-white@3x.png</file>
     <file>icons/more-vert-white.png</file>
@@ -102,19 +109,23 @@
     <file>icons/person-black@3x.png</file>
     <file>icons/person-outline-black.png</file>
     <file>icons/person-outline-black@3x.png</file>
+    <file>icons/remove-black.png</file>
+    <file>icons/remove-black@3x.png</file>
     <file>icons/search-black.png</file>
     <file>icons/search-black@3x.png</file>
+    <file>icons/undo-black.png</file>
+    <file>icons/undo-black@3x.png</file>
     <file>icons/warning-black.png</file>
     <file>icons/warning-black@3x.png</file>
     <file>icons/wb-sunny-black.png</file>
     <file>icons/wb-sunny-black@3x.png</file>
-    <file>icons/undo-black.png</file>
-    <file>icons/undo-black@3x.png</file>
 
     <file>icons/altimeter-black.png</file>
     <file>icons/altimeter-black@3x.png</file>
     <file>icons/ambulance-black.png</file>
     <file>icons/ambulance-black@3x.png</file>
+    <file>icons/area-black.png</file>
+    <file>icons/area-black@3x.png</file>
     <file>icons/camptocamp-black.png</file>
     <file>icons/camptocamp-black@3x.png</file>
     <file>icons/clignometre-black.png</file>
@@ -129,6 +140,14 @@
     <file>icons/hut-black@3x.png</file>
     <file>icons/lamp-signal-black.png</file>
     <file>icons/lamp-signal-black@3x.png</file>
+    <file>icons/map-black.png</file>
+    <file>icons/map-black@3x.png</file>
+    <file>icons/polyline-black.png</file>
+    <file>icons/polyline-black@3x.png</file>
+    <file>icons/polyline-dot-black.png</file>
+    <file>icons/polyline-dot-black@3x.png</file>
+    <file>icons/ruler-black.png</file>
+    <file>icons/ruler-black@3x.png</file>
     <file>icons/sun-black.png</file>
     <file>icons/sun-black@3x.png</file>
     <file>icons/torch-black.png</file>
