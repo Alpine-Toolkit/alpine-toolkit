@@ -1,0 +1,15 @@
+#! /bin/bash
+
+rm unit_tests_log.txt
+rm unit_test_failure.txt
+
+for unit_test in $(find unit-tests -executable -type f) ; do
+  echo
+  echo Run ${unit_test}
+  ${unit_test} &>> unit_tests_log.txt
+  status=$?
+  if [ $status -ne 0 ]; then
+    echo ${unit_test} Failed
+    echo ${unit_test} Failed >> unit_test_failure.txt
+  fi
+done
