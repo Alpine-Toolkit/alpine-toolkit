@@ -30,7 +30,7 @@ package org.alpine_toolkit.Camera;
 
 /**************************************************************************************************/
 
-public interface CameraHelperInterface
+public interface CameraManagerInterface
 {
   public boolean has_flash();
   public void set_torch_mode(boolean enabled);

@@ -54,7 +54,7 @@ class LampSignalRunnable implements Runnable {
 
 /**************************************************************************************************/
 
-public abstract class CameraHelperBase implements CameraHelperInterface
+public abstract class CameraManagerBase implements CameraManagerInterface
 {
   protected static final String LOG_TAG = Constants.LOG.TAG;
   protected static AlpineToolkitActivity m_activity;
@@ -65,7 +65,7 @@ public abstract class CameraHelperBase implements CameraHelperInterface
 
   /**********************************************/
 
-  public CameraHelperBase(AlpineToolkitActivity activity)
+  public CameraManagerBase(AlpineToolkitActivity activity)
   {
     m_activity = activity;
   }

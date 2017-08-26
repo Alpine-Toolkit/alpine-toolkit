@@ -31,9 +31,23 @@ package org.alpine_toolkit;
 /**************************************************************************************************/
 
 public class Constants {
+
   public interface LOG {
-    String TAG = "AlpineToolkitActivity";
+    final String TAG = "AlpineToolkitActivity";
   }
+
+  public interface UI {
+    final String BACKGROUND_COLOR = "#3949ab";
+  }
+
+  public static final String[] PERMISSIONS = {
+    "android.permission.BODY_SENSORS",
+    "android.permission.CAMERA",
+    "android.permission.FLASHLIGHT",
+    "android.permission.READ_EXTERNAL_STORAGE",
+    "android.permission.READ_PHONE_STATE",
+    "android.permission.WRITE_EXTERNAL_STORAGE",
+  };
 }
 
 /***************************************************************************************************

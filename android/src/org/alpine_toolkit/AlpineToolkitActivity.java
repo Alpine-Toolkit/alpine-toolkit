@@ -28,14 +28,16 @@
 
 package org.alpine_toolkit;
 
-import org.alpine_toolkit.Camera.CameraHelperBase;
-import org.alpine_toolkit.Camera.CameraHelperIcs;
-import org.alpine_toolkit.Camera.CameraHelperMarshmallow;
+import org.alpine_toolkit.Camera.CameraManagerBase;
+import org.alpine_toolkit.Camera.CameraManagerIcs;
+import org.alpine_toolkit.Camera.CameraManagerMarshmallow;
+import org.alpine_toolkit.Permission.PermissionManager;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.qtproject.qt5.android.bindings.QtActivity;
@@ -63,9 +65,9 @@ public class AlpineToolkitActivity extends QtActivity
 
   private static AlpineToolkitActivity m_instance;
 
-  private CameraHelperBase m_camera_helper = null;
+  private CameraManagerBase m_camera_manager = null;
   private DeviceUserInterfaceHelper m_device_ui_helper = null;
-  private PermissionHelper m_permission_helper = null;
+  private PermissionManager m_permission_manager = null;
   private PhoneHelper m_phone_helper = null;
   private ServiceHelper m_service_helper = null;
 
@@ -83,7 +85,7 @@ public class AlpineToolkitActivity extends QtActivity
   private void _init()
   {
     m_device_ui_helper = new DeviceUserInterfaceHelper(this);
-    m_permission_helper = new PermissionHelper(this);
+    m_permission_manager = new PermissionManager(this);
     m_phone_helper = new PhoneHelper(this);
     m_service_helper = new ServiceHelper(this);
 
@@ -96,25 +98,22 @@ public class AlpineToolkitActivity extends QtActivity
     }
   }
 
-  /**********************************************/
-
   private void _init_ics()
   {
-    m_camera_helper = new CameraHelperIcs(this);
+    Log.i(LOG_TAG, "Init for ICS");
+    m_camera_manager = new CameraManagerIcs(this);
   }
-
-  /**********************************************/
 
   private void _init_lollipop()
   {
-    m_camera_helper = new CameraHelperIcs(this);
+    Log.i(LOG_TAG, "Init for Lollipop");
+    m_camera_manager = new CameraManagerIcs(this);
   }
-
-  /**********************************************/
 
   private void _init_marshmallow()
   {
-    m_camera_helper = new CameraHelperMarshmallow(this);
+    Log.i(LOG_TAG, "Init for Marshmallow");
+    m_camera_manager = new CameraManagerMarshmallow(this);
   }
 
   /**********************************************/
@@ -125,13 +124,27 @@ public class AlpineToolkitActivity extends QtActivity
     Log.i(LOG_TAG, ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
 
     // Fixme: hardcoded
-    set_status_bar_background_color(Color.parseColor("#3949ab"));
+    set_status_bar_background_color(Color.parseColor(Constants.UI.BACKGROUND_COLOR));
 
     super.onCreate(savedInstanceState);
 
-    Log.i(LOG_TAG, "Is service running? " + m_service_helper.is_service_running());
+    m_permission_manager.check_permissions(Constants.PERMISSIONS);
 
-    // Debug
+    Log.i(LOG_TAG, "Is service running? " + m_service_helper.is_service_running());
+    _debug_log();
+  }
+
+  @Override
+  protected void onDestroy()
+  {
+    m_camera_manager._release_camera();
+    super.onDestroy();
+  }
+
+  /**********************************************/
+
+  private void _debug_log()
+  {
     try {
       Process process = Runtime.getRuntime().exec("mount");
       process.waitFor();
@@ -155,32 +168,9 @@ public class AlpineToolkitActivity extends QtActivity
     for (File path : external_files_dirs)
       Log.i(LOG_TAG, "external files dir: " + path);
 
-    // Check permissions
-    String[] permissions = {
-            "android.permission.BODY_SENSORS",
-            "android.permission.CAMERA",
-            "android.permission.FLASHLIGHT",
-            "android.permission.READ_EXTERNAL_STORAGE",
-            "android.permission.READ_PHONE_STATE",
-            "android.permission.WRITE_EXTERNAL_STORAGE",
-    };
-    if (Build.VERSION.SDK_INT >= 21) { // Build.VERSION_CODES.LOLLIPOP
-      for (String permission : permissions) {
-        int rc = m_permission_helper.check_permission(permission);
-        // if (rc == PermissionHelper.PermissionStatus.Granted.ordinal())
-      }
-    }
-
     // get_display_metrics();
     // get_device_id();
     // set_torch_mode(true);
-  }
-
-  @Override
-  protected void onDestroy()
-  {
-    m_camera_helper._release_camera();
-    super.onDestroy();
   }
 
   /**********************************************/
@@ -188,7 +178,33 @@ public class AlpineToolkitActivity extends QtActivity
   @Override
   public void onRequestPermissionsResult(int permission_id, String permissions[], int[] grant_results)
   {
-    m_permission_helper.onRequestPermissionsResult(permission_id, permissions, grant_results);
+    m_permission_manager.onRequestPermissionsResult(permission_id, permissions, grant_results);
+  }
+
+  /**********************************************
+   *
+   * Permission API
+   *
+   */
+
+  public String need_explain()
+  {
+    return TextUtils.join(",", m_permission_manager.need_explain());
+  }
+
+  public void ask_permission(final String permission)
+  {
+    m_permission_manager.ask_permission(permission);
+  }
+
+  public Boolean is_permission_granted(final String permission)
+  {
+    return m_permission_manager.is_permission_granted(permission);
+  }
+
+  public Boolean is_permission_denied(final String permission)
+  {
+    return m_permission_manager.is_permission_denied(permission);
   }
 
   /**********************************************
@@ -284,13 +300,28 @@ public class AlpineToolkitActivity extends QtActivity
   // used
   public void set_torch_mode(boolean enabled)
   {
-    m_camera_helper.set_torch_mode(enabled);
+    m_camera_manager.set_torch_mode(enabled);
   }
 
   // used
   public void perform_lamp_signal(final String encoded_message, final int rate_ms)
   {
-    m_camera_helper.perform_lamp_signal(encoded_message, rate_ms);
+    m_camera_manager.perform_lamp_signal(encoded_message, rate_ms);
+  }
+
+  public void stop_lamp_signal()
+  {
+    m_camera_manager.stop_lamp_signal();
+  }
+
+  public void start_lamp_dimmer(final int period, final int duty_cycle)
+  {
+    m_camera_manager.start_lamp_dimmer(period, duty_cycle);
+  }
+
+  public void stop_lamp_dimmer()
+  {
+    m_camera_manager.stop_lamp_dimmer();
   }
 
   /**********************************************

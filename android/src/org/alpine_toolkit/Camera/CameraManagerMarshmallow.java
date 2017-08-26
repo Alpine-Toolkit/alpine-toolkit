@@ -44,7 +44,7 @@ import android.os.Build;
 
 /*
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class CameraHelperLollipop extends BaseCameraHelper
+public class CameraManagerLollipop extends BaseCameraManager
 {
   see https://github.com/Abhi347/NoobCameraFlash/blob/master/noobcameraflash/src/main/java/com/noob/noobcameraflash/Utilities/CameraUtilLollipop.java
   seems very complicated ...
@@ -54,7 +54,7 @@ public class CameraHelperLollipop extends BaseCameraHelper
 /**************************************************************************************************/
 
 @TargetApi(Build.VERSION_CODES.M)
-public class CameraHelperMarshmallow extends CameraHelperBase
+public class CameraManagerMarshmallow extends CameraManagerBase
 {
   private CameraManager m_camera_manager = null;
   private Boolean m_has_flash = false;
@@ -62,7 +62,7 @@ public class CameraHelperMarshmallow extends CameraHelperBase
 
   /**********************************************/
 
-  public CameraHelperMarshmallow(AlpineToolkitActivity activity)
+  public CameraManagerMarshmallow(AlpineToolkitActivity activity)
   {
     super(activity);
 

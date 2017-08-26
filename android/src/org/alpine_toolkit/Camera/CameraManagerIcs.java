@@ -37,7 +37,7 @@ import android.util.Log;
 /**************************************************************************************************/
 
 @SuppressWarnings("deprecation")
-public class CameraHelperIcs extends CameraHelperBase
+public class CameraManagerIcs extends CameraManagerBase
 {
   private Camera m_camera = null;
   private Camera.Parameters m_camera_parameters = null;
@@ -45,7 +45,7 @@ public class CameraHelperIcs extends CameraHelperBase
 
   /**********************************************/
 
-  public CameraHelperIcs(AlpineToolkitActivity activity)
+  public CameraManagerIcs(AlpineToolkitActivity activity)
   {
     super(activity);
 
