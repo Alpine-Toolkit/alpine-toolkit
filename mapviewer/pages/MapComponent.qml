@@ -25,7 +25,7 @@ QcMapItem {
     // opacity: 1.
 
     // Enable pan, flick, and pinch gestures to zoom in and out
-    gesture.accepted_gestures: MapGestureArea.PanGesture | MapGestureArea.FlickGesture | MapGestureArea.PinchGesture
+    gesture.accepted_gestures: QcMapGestureArea.PanGesture | QcMapGestureArea.FlickGesture | QcMapGestureArea.PinchGesture
     gesture.flick_deceleration: 3000
     gesture.enabled: true
     focus: true
