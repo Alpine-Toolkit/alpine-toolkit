@@ -152,7 +152,7 @@ public class AlpineToolkitActivity extends QtActivity
       StringBuilder output = new StringBuilder();
       String line;
       while ((line = buffered_reader.readLine()) != null)
-        output.append(line + "\n");
+        output.append(line).append("\n");
       Log.i(LOG_TAG, "Mount: " + output);
     }
     // } catch (Exception e) {

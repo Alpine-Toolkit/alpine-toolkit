@@ -162,7 +162,7 @@ public class AlpineToolkitService extends QtService
       .setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false))
       .setContentIntent(pending_intent) // Supply a PendingIntent to send when the notification is clicked.
       .setOngoing(true) //  Ongoing notifications cannot be dismissed by the user
-      .addAction(android.R.drawable.ic_media_pause, "Stop", pending_stop_intent) // ic_media_stop
+      .addAction(android.R.drawable.ic_media_pause, "Stop", pending_stop_intent) // ic_media_stop // deprecated
       .build();
   }
 }

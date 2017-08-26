@@ -124,7 +124,7 @@ public class DeviceUserInterfaceHelper
   public void lock_orientation()
   {
     Log.i(LOG_TAG, "lock_orientation");
-    m_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+    m_activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED); // require API 18
   }
 
   public void unlock_orientation()
@@ -160,7 +160,7 @@ public class DeviceUserInterfaceHelper
     // Keep screen bright
     // http://developer.android.com/reference/android/os/PowerManager.html
     PowerManager power_manager = (PowerManager) m_activity.getSystemService(Context.POWER_SERVICE);
-    m_wave_lock = power_manager.newWakeLock(PowerManager.FULL_WAKE_LOCK
+    m_wave_lock = power_manager.newWakeLock(PowerManager.FULL_WAKE_LOCK // deprecated
 					    | PowerManager.ACQUIRE_CAUSES_WAKEUP
 					    | PowerManager.ON_AFTER_RELEASE,
 					    "AlpineToolkitActivity full wake lock");

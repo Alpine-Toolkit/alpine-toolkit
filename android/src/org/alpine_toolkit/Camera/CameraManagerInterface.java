@@ -32,7 +32,7 @@ package org.alpine_toolkit.Camera;
 
 public interface CameraManagerInterface
 {
-  boolean has_flash();
+  boolean has_flash(); // always inverted
   void set_torch_mode(boolean enabled);
 
   void _set_torch_mode_fast(boolean enabled);

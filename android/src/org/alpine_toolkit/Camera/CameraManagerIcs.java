@@ -90,7 +90,7 @@ public class CameraManagerIcs extends CameraManagerBase
   {
     // Log.i(LOG_TAG, "_set_torch_mode: " + enabled);
 
-    if (m_has_flash == false || m_torch_enabled == enabled || m_camera == null)
+    if (!m_has_flash || m_torch_enabled == enabled || m_camera == null)
       return;
 
     String flash_mode = enabled ? Camera.Parameters.FLASH_MODE_TORCH : Camera.Parameters.FLASH_MODE_OFF;
@@ -110,7 +110,7 @@ public class CameraManagerIcs extends CameraManagerBase
   {
     Log.i(LOG_TAG, "set_torch_mode: " + enabled);
 
-    if (m_has_flash == false || m_torch_enabled == enabled)
+    if (!m_has_flash || m_torch_enabled == enabled)
       return;
 
     if (enabled) {
