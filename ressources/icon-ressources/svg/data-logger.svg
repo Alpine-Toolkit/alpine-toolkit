@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="1000"
+   viewBox="0.1 0.2 1000 1000"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92+devel unknown"
+   sodipodi:docname="data-logger.svg"
+   inkscape:export-filename="/home/fabrice/qtcarto-application/alpine-toolkit/qtcarto/mapviewer/icons/svg/polyline-black.png"
+   inkscape:export-xdpi="2.1600001"
+   inkscape:export-ydpi="2.1600001">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.768"
+     inkscape:cx="500"
+     inkscape:cy="500"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4236"
+     showgrid="true"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1007"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-midpoints="false"
+     inkscape:object-paths="false"
+     inkscape:snap-intersection-paths="false"
+     inkscape:object-nodes="false"
+     inkscape:snap-smooth-nodes="false"
+     inkscape:document-rotation="0"
+     scale-x="1.2"
+     viewbox-y="0.2">
+    <inkscape:grid
+       type="xygrid"
+       id="grid869"
+       empspacing="2"
+       spacingx="5"
+       spacingy="5"
+       enabled="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-114.86216)">
+    <g
+       id="g4236">
+      <g
+         id="g867"
+         transform="matrix(1.007,0,0,1.007,-35.532833,67.364695)">
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path4175"
+           d="m 163.18752,254.61218 282,141 94,376 282,141"
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:70.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.6849817" />
+        <circle
+           r="70.5"
+           cy="254.61218"
+           cx="163.18753"
+           id="path4185-6-9"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:28.20000076;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.32234437" />
+        <circle
+           r="70.5"
+           cy="395.61218"
+           cx="445.18753"
+           id="path4185-6-9-5"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:28.20000076;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.32234437" />
+        <circle
+           r="70.5"
+           cy="771.61218"
+           cx="539.1875"
+           id="path4185-6-9-0"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:28.20000076;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.32234437" />
+        <circle
+           r="70.5"
+           cy="912.61218"
+           cx="821.1875"
+           id="path4185-6-9-57"
+           style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:28.20000076;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.32234437" />
+      </g>
+      <g
+         id="g4281"
+         transform="matrix(1.05,0,0,1.05,-67.50507,9.746892)">
+        <path
+           sodipodi:nodetypes="ccccc"
+           inkscape:connector-curvature="0"
+           id="path843"
+           d="m 563.09365,195.24335 283.315,1.24006 89.26003,73.38084 1.43554,345.01672 H 565.96473"
+           style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.08526969px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
+        <rect
+           ry="10.347167"
+           y="200.65515"
+           x="609.10651"
+           height="126.54314"
+           width="215.83696"
+           id="rect845"
+           style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:25.30099678;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:0.39314521;paint-order:markers stroke fill" />
+        <rect
+           ry="29.533161"
+           y="391.54199"
+           x="617.78876"
+           height="181.3903"
+           width="264.62259"
+           id="rect845-3"
+           style="opacity:0.98999999;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:33.54100037;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:0.39314521;paint-order:markers stroke fill" />
+        <rect
+           ry="0"
+           y="210.74649"
+           x="783.86401"
+           height="101.98133"
+           width="20.671928"
+           id="rect871"
+           style="opacity:0.98999999;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:22.957304;stroke-linecap:round;stroke-linejoin:bevel;stroke-opacity:0.39314521;paint-order:markers stroke fill" />
+      </g>
+    </g>
+  </g>
+</svg>

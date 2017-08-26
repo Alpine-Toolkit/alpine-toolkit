@@ -8,13 +8,16 @@ mkdir -p ${png_path}
 for i in ${svg_path}/*.svg; do
   n=${i##*/}
   n=${n%%.svg}
-  echo $n
   n="$n-black"
 
-  options="--export-area-page --export-background=white --export-background-opacity=0"
-  inkscape --export-png=${png_path}/$n.png ${options} --export-width=24 --export-height=24 $i
-  inkscape --export-png=${png_path}/$n@3x.png ${options} --export-width=72 --export-height=72 $i
+  if [[ $i -nt ${png_path}/$n.png ]]; then
+    echo Generate $n
 
-  ln -sf ${png_path}/$n.png $n.png
-  ln -sf ${png_path}/$n@3x.png $n@3x.png
+    options="--export-area-page --export-background=white --export-background-opacity=0"
+    inkscape --export-png=${png_path}/$n.png ${options} --export-width=24 --export-height=24 $i
+    inkscape --export-png=${png_path}/$n@3x.png ${options} --export-width=72 --export-height=72 $i
+
+    ln -sf ${png_path}/$n.png $n.png
+    ln -sf ${png_path}/$n@3x.png $n@3x.png
+  fi
 done

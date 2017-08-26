@@ -70,7 +70,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -79,22 +79,11 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Layer 1">
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:16.92509651;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
-       id="rect870"
-       width="703.12482"
-       height="609.37482"
-       x="117.18745"
-       y="396.11197"
-       ry="0"
-       rx="0" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:42.29645538;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
-       id="rect882"
-       width="234.37494"
-       height="374.99988"
-       x="351.56238"
-       y="630.48688" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:18.053442;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       d="M 125 300 L 125 950 L 375 950 L 375 550 L 625 550 L 625 950 L 875 950 L 875 300 L 125 300 z "
+       transform="matrix(0.93749971,0,0,0.93749971,0,114.86209)"
+       id="rect870" />
     <path
        style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:14.90524006;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 468.74985,162.15844 47.296278,452.087 H 890.20343 Z"

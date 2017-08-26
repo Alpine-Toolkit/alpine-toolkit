@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1000"
+   height="1000"
+   viewBox="0 0 1000 1000.0001"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.92+devel unknown"
+   sodipodi:docname="map.svg"
+   inkscape:export-filename="/home/fabrice/qtcarto-application/alpine-toolkit/qtcarto/mapviewer/icons/svg/ambulance-black@512pxpng.png"
+   inkscape:export-xdpi="49.152"
+   inkscape:export-ydpi="49.152">
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.768"
+     inkscape:cx="500"
+     inkscape:cy="604.16667"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1007"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:document-rotation="0">
+    <inkscape:grid
+       spacingy="5.0000003"
+       spacingx="5.0000003"
+       id="grid4136"
+       type="xygrid"
+       originx="0"
+       originy="0"
+       empspacing="1"
+       empcolor="#f00000"
+       empopacity="0.15686275"
+       color="#1100f8"
+       opacity="1" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid890"
+       spacingx="10.000001"
+       spacingy="10.000001"
+       empspacing="1"
+       empcolor="#0000f5"
+       empopacity="0.15686275"
+       enabled="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(1.066667,0,0,1.066667,0,-122.5196)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 93.74998,302.36196 V 958.61182"
+       id="path4269"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4271"
+       d="M 843.74979,208.61198 V 864.86184"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 343.74991,208.61198 V 864.86184"
+       id="path4273"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4275"
+       d="M 593.74984,302.36196 V 958.61182"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 93.74998,302.36199 337.49993,208.61198"
+       id="path4279"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4281"
+       d="M 93.749978,958.61185 337.49993,864.86184"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 599.99987,958.61185 843.74982,864.86184"
+       id="path4283"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path4285"
+       d="M 599.99987,302.36199 843.74982,208.61198"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:28.12499046;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 337.49993,864.86184 262.49994,93.74998"
+       id="path4289"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98999999;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:20;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.39314517;paint-order:markers stroke fill"
+       d="M 509.30273 50.550781 A 188.13061 181.92636 0 0 0 371.68945 99.207031 L 370.81641 100 A 188.13061 181.92636 0 0 0 324.30859 296.86328 C 342.14762 360.09843 381.08383 444.73414 400 475 C 425 515 500 580 500 580 C 500 580 574.99999 515 600 475 C 618.97724 444.63641 658.09998 359.55563 675.85938 296.25586 A 188.13061 181.92636 0 0 0 637.38086 107.96484 A 188.13061 181.92636 0 0 0 509.30273 50.550781 z M 504.02734 153.59375 A 81.443889 78.757992 0 0 1 559.47461 178.44727 A 81.443889 78.757992 0 0 1 555.73633 289.68164 A 81.443889 78.757992 0 0 1 440.70312 286.24414 A 81.443889 78.757992 0 0 1 444.07422 175 L 444.45312 174.65625 A 81.443889 78.757992 0 0 1 504.02734 153.59375 z "
+       transform="matrix(0.93749971,0,0,0.93749971,0,114.86209)"
+       id="path4293" />
+  </g>
+</svg>
