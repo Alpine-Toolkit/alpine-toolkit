@@ -33,11 +33,11 @@ package org.alpine_toolkit;
 public class Constants {
 
   public interface LOG {
-    final String TAG = "AlpineToolkitActivity";
+    String TAG = "AlpineToolkitActivity";
   }
 
   public interface UI {
-    final String BACKGROUND_COLOR = "#3949ab";
+    String BACKGROUND_COLOR = "#3949ab";
   }
 
   public static final String[] PERMISSIONS = {

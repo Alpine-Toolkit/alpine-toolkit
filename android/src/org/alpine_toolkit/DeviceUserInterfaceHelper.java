@@ -94,7 +94,7 @@ public class DeviceUserInterfaceHelper
 	window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
 	Class<?> cls = window.getClass();
-	Method method = cls.getDeclaredMethod("setStatusBarColor", new Class<?>[] { Integer.TYPE });
+	Method method = cls.getDeclaredMethod("setStatusBarColor", Integer.TYPE);
 	method.invoke(window, color);
       } catch (Exception e) {
 	// upgrade your SDK and ADT
@@ -165,13 +165,13 @@ public class DeviceUserInterfaceHelper
 					    | PowerManager.ON_AFTER_RELEASE,
 					    "AlpineToolkitActivity full wake lock");
     m_wave_lock.acquire();
-  };
+  }
 
   public void release_full_wake_lock()
   {
     m_wave_lock.release();
     m_wave_lock = null;
-  };
+  }
 }
 
 /***************************************************************************************************

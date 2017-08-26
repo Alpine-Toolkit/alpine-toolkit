@@ -32,10 +32,10 @@ package org.alpine_toolkit.Camera;
 
 public interface CameraManagerInterface
 {
-  public boolean has_flash();
-  public void set_torch_mode(boolean enabled);
+  boolean has_flash();
+  void set_torch_mode(boolean enabled);
 
-  public void _set_torch_mode_fast(boolean enabled);
-  public void _open_camera();
-  public void _release_camera(); // Fixme: called in Activity
+  void _set_torch_mode_fast(boolean enabled);
+  void _open_camera();
+  void _release_camera(); // Fixme: called in Activity
 }

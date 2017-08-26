@@ -39,22 +39,16 @@ public class SdCardHelper
   /* Checks if external storage is available for read and write */
   public boolean is_external_storage_writable() {
     String state = Environment.getExternalStorageState();
-    if (Environment.MEDIA_MOUNTED.equals(state)) {
-      return true;
-    }
-    return false;
+      return Environment.MEDIA_MOUNTED.equals(state);
   }
 
   /* Checks if external storage is available to at least read */
   public boolean is_external_storage_readable() {
     String state = Environment.getExternalStorageState();
-    if (Environment.MEDIA_MOUNTED.equals(state) ||
-        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-      return true;
-    }
-    return false;
+      return Environment.MEDIA_MOUNTED.equals(state) ||
+              Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
 
-    }
+  }
 }
 
 /***************************************************************************************************
