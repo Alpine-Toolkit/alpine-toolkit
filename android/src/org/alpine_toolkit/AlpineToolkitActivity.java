@@ -28,8 +28,10 @@
 
 package org.alpine_toolkit;
 
-import android.content.Intent;
-import android.content.IntentFilter;
+import org.alpine_toolkit.Camera.CameraHelperBase;
+import org.alpine_toolkit.Camera.CameraHelperIcs;
+import org.alpine_toolkit.Camera.CameraHelperMarshmallow;
+
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,7 +63,7 @@ public class AlpineToolkitActivity extends QtActivity
 
   private static AlpineToolkitActivity m_instance;
 
-  private CameraHelper m_camera_helper = null;
+  private CameraHelperBase m_camera_helper = null;
   private DeviceUserInterfaceHelper m_device_ui_helper = null;
   private PermissionHelper m_permission_helper = null;
   private PhoneHelper m_phone_helper = null;
@@ -73,11 +75,46 @@ public class AlpineToolkitActivity extends QtActivity
   {
     m_instance = this;
 
-    m_camera_helper = new CameraHelper(this);
+    _init();
+  }
+
+  /**********************************************/
+
+  private void _init()
+  {
     m_device_ui_helper = new DeviceUserInterfaceHelper(this);
     m_permission_helper = new PermissionHelper(this);
     m_phone_helper = new PhoneHelper(this);
     m_service_helper = new ServiceHelper(this);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      _init_marshmallow();
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      _init_lollipop();
+    } else {
+      _init_ics();
+    }
+  }
+
+  /**********************************************/
+
+  private void _init_ics()
+  {
+    m_camera_helper = new CameraHelperIcs(this);
+  }
+
+  /**********************************************/
+
+  private void _init_lollipop()
+  {
+    m_camera_helper = new CameraHelperIcs(this);
+  }
+
+  /**********************************************/
+
+  private void _init_marshmallow()
+  {
+    m_camera_helper = new CameraHelperMarshmallow(this);
   }
 
   /**********************************************/
@@ -142,7 +179,7 @@ public class AlpineToolkitActivity extends QtActivity
   @Override
   protected void onDestroy()
   {
-    m_camera_helper.release_camera();
+    m_camera_helper._release_camera();
     super.onDestroy();
   }
 
