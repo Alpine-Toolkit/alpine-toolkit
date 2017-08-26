@@ -64,6 +64,7 @@
 
 #include "network_reply.h"
 
+#include <QtGlobal>
 #include <QDebug>
 
 /**************************************************************************************************/
@@ -188,11 +189,18 @@ QcNetworkReply::QcNetworkReply(QNetworkReply * reply)
   : QcNetworkFuture(),
     m_reply(reply)
 {
-  connect(m_reply, SIGNAL(finished()),
-	  this, SLOT(network_reply_finished()));
+  // QObject::connect: No such slot QcNetworkReply::network_reply_finished()
+  // connect(m_reply, SIGNAL(finished()),
+  //         this, SLOT(network_reply_finished()));
+  connect(m_reply, &QNetworkReply::finished,
+          this, &QcNetworkReply::network_reply_finished);
 
-  connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-	  this, SLOT(network_reply_error(QNetworkReply::NetworkError)));
+  // QObject::connect: No such slot QcNetworkReply::network_reply_error(QNetworkReply::NetworkError)
+  // connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+  //         this, SLOT(network_reply_error(QNetworkReply::NetworkError)));
+  // qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error)
+  connect(m_reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
+          this, &QcNetworkReply::network_reply_error);
 }
 
 QcNetworkReply::~QcNetworkReply()
