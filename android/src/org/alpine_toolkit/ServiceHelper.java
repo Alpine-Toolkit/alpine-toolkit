@@ -28,9 +28,9 @@
 
 package org.alpine_toolkit;
 
-import android.app.ActivityManager; // API 23 !!!
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
-import android.util.Log;
 
 /**************************************************************************************************/
 
@@ -53,6 +53,7 @@ public class ServiceHelper
   {
     String service_name = AlpineToolkitService.class.getName();
     // String service_name = "org.alpine_toolkit.AlpineToolkitService";
+    ActivityManager activity_manager = m_activity.getSystemService(ActivityManager); // require API 23
     ActivityManager activity_manager = (ActivityManager) m_activity.getSystemService(Context.ACTIVITY_SERVICE);
     for (ActivityManager.RunningServiceInfo running_service : activity_manager.getRunningServices(Integer.MAX_VALUE)) {
       String running_service_name = running_service.service.getClassName();

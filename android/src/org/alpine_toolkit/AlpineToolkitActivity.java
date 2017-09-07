@@ -274,10 +274,10 @@ public class AlpineToolkitActivity extends QtActivity
    *
    */
 
-  public void get_device_id()
-  {
-     m_phone_helper.get_device_id();
-  }
+  // public void get_device_id()
+  // {
+  //    m_phone_helper.get_device_id();
+  // }
 
   // used
   public void issue_call(String phone_number)

@@ -37,17 +37,18 @@ public class SdCardHelper
   private static final String LOG_TAG = Constants.LOG.TAG;
 
   /* Checks if external storage is available for read and write */
-  public boolean is_external_storage_writable() {
+  public boolean is_external_storage_writable()
+  {
     String state = Environment.getExternalStorageState();
       return Environment.MEDIA_MOUNTED.equals(state);
   }
 
   /* Checks if external storage is available to at least read */
-  public boolean is_external_storage_readable() {
+  public boolean is_external_storage_readable()
+  {
     String state = Environment.getExternalStorageState();
       return Environment.MEDIA_MOUNTED.equals(state) ||
               Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-
   }
 }
 
