@@ -109,11 +109,7 @@ Widgets.Page {
                     verticalAlignment: Image.AlignVCenter
                     source: "qrc:/icons/call-black.png"
                 }
-                onClicked: {
-                    if (on_android) {
-                        android_activity.issue_dial(model.phone);
-                    }
-                }
+                onClicked: platform_abstraction.issue_dial(model.phone)
             }
         }
 

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef ANDROID_ACTIVITY_H
-#define ANDROID_ACTIVITY_H
+#ifndef PLATFORM_ABSTRACTION_H
+#define PLATFORM_ABSTRACTION_H
 
 #include <QObject>
 
@@ -37,17 +37,26 @@
 
 /**************************************************************************************************/
 
-class AndroidActivity : public QObject
+class PlatformAbstraction : public QObject
 {
   Q_OBJECT
+  Q_PROPERTY(bool platform_type READ platform_type CONSTANT)
   Q_PROPERTY(bool orientation_lock READ orientation_lock WRITE set_orientation_lock NOTIFY orientation_lockChanged)
   Q_PROPERTY(ScreenOrientation orientation READ orientation WRITE set_orientation NOTIFY orientationChanged)
   Q_PROPERTY(bool full_wave_lock READ full_wave_lock WRITE set_full_wave_lock NOTIFY full_wave_lockChanged)
   Q_PROPERTY(bool torch READ torch WRITE set_torch NOTIFY torchChanged)
 
 public:
-  explicit AndroidActivity(QObject *parent = 0);
-  ~AndroidActivity();
+  // Fixme: versus tools/platform.h
+  enum PlatformType {
+    Linux = Qt::UserRole + 1,
+    Windows,
+    OSX,
+    Android,
+    IOS,
+  };
+  typedef PlatformType PlatformType;
+  Q_ENUMS(PlatformType)
 
   enum ScreenOrientation {
     Unspecified = Qt::UserRole + 1,
@@ -57,6 +66,12 @@ public:
   };
   typedef ScreenOrientation ScreenOrientation;
   Q_ENUMS(ScreenOrientation)
+
+public:
+  explicit PlatformAbstraction(QObject * parent = nullptr);
+  ~PlatformAbstraction();
+
+  virtual PlatformType platform_type() const = 0;
 
   void set_orientation_lock(bool orientation_lock);
   bool orientation_lock() const;
@@ -70,11 +85,19 @@ public:
   void set_torch(bool enabled);
   bool torch() const;
 
-  Q_INVOKABLE void issue_call(const QString & phone_number);
-  Q_INVOKABLE void issue_dial(const QString & phone_number);
-  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms); // const if not load_morse_code_engine
+  virtual Q_INVOKABLE void issue_call(const QString & phone_number);
+  virtual Q_INVOKABLE void issue_dial(const QString & phone_number);
+  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250); // const if not load_morse_code_engine
   Q_INVOKABLE QString encode_morse(const QString & message);
   Q_INVOKABLE QString decode_morse(const QString & encoded_message);
+
+  virtual void impl_perform_lamp_signal(const QString & encoded_message, int rate_ms = 250) = 0;
+
+  Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
+  Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
+  Q_INVOKABLE bool on_osx() const { return platform_type() == OSX; }
+  Q_INVOKABLE bool on_android() const { return platform_type() == Android; }
+  Q_INVOKABLE bool on_ios() const { return platform_type() == IOS; }
 
 signals:
   void orientation_lockChanged();
@@ -82,23 +105,19 @@ signals:
   void full_wave_lockChanged();
   void torchChanged();
 
-private slots:
-  void update_orientation_lock();
-  void update_orientation();
-  void update_full_wave_lock();
-  void update_torch();
-
 private:
   void load_morse_code_engine();
 
-private:
+protected:
   bool m_orientation_lock;
   ScreenOrientation m_orientation;
   bool m_full_wave_lock;
   bool m_torch_enabled;
+
+private:
   InternationalMorseCodeEngine * m_morse_code_engine;
 };
 
 /**************************************************************************************************/
 
-#endif // ANDROID_ACTIVITY_H
+#endif // PLATFORM_ABSTRACTION_H

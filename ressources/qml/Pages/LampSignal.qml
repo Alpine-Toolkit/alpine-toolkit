@@ -111,14 +111,12 @@ Widgets.Page {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("Send Message")
                     onClicked : {
-                        if (on_android) {
-                            var message = message_textarea.text;
-                            if (message) {
-                                // Fixme: why android_activity ?
-                                send_encoded_message.text = android_activity.encode_morse(message);
-                                var rate_ms = rate_ms_spinbox.value;
-                                android_activity.perform_lamp_signal(message, rate_ms);
-                            }
+                        var message = message_textarea.text;
+                        if (message) {
+                            // Fixme: why platform_abstraction ?
+                            send_encoded_message.text = platform_abstraction.encode_morse(message);
+                            var rate_ms = rate_ms_spinbox.value;
+                            platform_abstraction.perform_lamp_signal(message, rate_ms);
                         }
                     }
                 }
@@ -131,12 +129,9 @@ Widgets.Page {
             height: swipe_view.height
 
             function decode_message() {
-                if (on_android) {
-                    var message = encoded_message.text;
-                    if (message)
-                        decoded_message.text = android_activity.decode_morse(message);
-                } else
-                    decoded_message.text = "Decoded message ..."
+                var message = encoded_message.text;
+                if (message)
+                    decoded_message.text = platform_abstraction.decode_morse(message);
             }
 
             Column {

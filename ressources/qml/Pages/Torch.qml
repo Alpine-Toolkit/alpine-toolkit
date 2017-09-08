@@ -53,11 +53,7 @@ Widgets.Page {
             id: torch_switch
             anchors.horizontalCenter: parent.horizontalCenter
             // text: qsTr("Torch")
-            onCheckedChanged : {
-                if (on_android) {
-                    android_activity.torch = checked
-                }
-            }
+            onCheckedChanged : platform_abstraction.torch = checked
         }
     }
 }

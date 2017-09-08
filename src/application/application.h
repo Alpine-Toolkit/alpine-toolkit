@@ -43,13 +43,10 @@
 #include "config.h"
 #include "configuration/configuration.h"
 #include "ephemeride/ephemeride.h"
+#include "platform_abstraction/platform_abstraction.h"
 #include "refuge/refuge_schema_manager.h"
 #include "service/client.h"
 #include "third_party_license/third_party_license_schema_manager.h"
-
-#ifdef ANDROID
-#include "android_activity/android_activity.h"
-#endif
 
 /**************************************************************************************************/
 
@@ -143,9 +140,7 @@ private:
   QcConfig & m_config; // Fixme: singleton ???
   QQmlApplicationEngine m_engine;
 
-#ifdef ANDROID
-  AndroidActivity m_android_activity;
-#endif
+  PlatformAbstraction * m_platform_abstraction = nullptr; // Fixme: QPointer ?
   QmlApplication m_qml_application;
   ThirdPartyLicenseSchemaManager m_third_party_license_schema_manager;
   Ephemeride m_ephemeride;

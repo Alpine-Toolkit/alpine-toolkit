@@ -106,6 +106,8 @@ set(alpine_toolkit_library_files
   orm/sql_query_model.cpp
   orm/sqlite_database.cpp
   orm/type_conversion.cpp
+  platform_abstraction/platform_abstraction.cpp
+  platform_abstraction/linux_platform.cpp
   refuge/refuge_schema.cpp
   refuge/refuge_schema_custom_code.cpp
   refuge/refuge_schema_manager.cpp

@@ -64,6 +64,13 @@
 #include "map/map_path_editor.h"
 #include "map/path_property.h"
 
+#ifdef ON_LINUX
+#include "platform_abstraction/linux_platform.h"
+#endif
+#ifdef ON_ANDROID
+#include "platform_abstraction/android_platform.h"
+#endif
+
 /**************************************************************************************************/
 
 QmlApplication::QmlApplication()
@@ -166,6 +173,12 @@ Application::Application(int & argc, char ** argv)
   // m_engine.addImportPath(QLatin1String("qrc:///Widgets"));
 
   run_before_event_loop();
+}
+
+Application::~Application()
+{
+  if (m_platform_abstraction)
+    delete m_platform_abstraction;
 }
 
 void
@@ -334,13 +347,13 @@ Application::set_context_properties()
 
   context->setContextProperty(QLatin1String("application"), &m_qml_application);
 
-#ifdef ANDROID
-  int on_android = 1;
-  context->setContextProperty(QLatin1String("android_activity"), &m_android_activity);
-#else
-  int on_android = 0;
+#ifdef ON_LINUX
+  m_platform_abstraction = new LinuxPlatform();
 #endif
-  context->setContextProperty(QLatin1String("on_android"), on_android);
+#ifdef ON_ANDROID
+  m_platform_abstraction = new AndroidPlatform();
+#endif
+  context->setContextProperty(QLatin1String("platform_abstraction"), m_platform_abstraction);
 
   context->setContextProperty(QLatin1String("service"), &m_service_client);
   context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);

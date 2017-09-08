@@ -26,7 +26,7 @@
 
 /**************************************************************************************************/
 
-#include "android_activity.h"
+#include "android_platform.h"
 
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QtAndroid>
@@ -34,13 +34,8 @@
 
 /**************************************************************************************************/
 
-AndroidActivity::AndroidActivity(QObject *parent)
-  : QObject(parent),
-    m_orientation_lock(false),
-    m_orientation(Unspecified),
-    m_full_wave_lock(false),
-    m_torch_enabled(false),
-    m_morse_code_engine(nullptr)
+AndroidPlatform::AndroidPlatform(QObject * parent)
+  : PlatformAbstraction(parent)
 {
   connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
   connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
@@ -48,34 +43,13 @@ AndroidActivity::AndroidActivity(QObject *parent)
   connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
 }
 
-AndroidActivity::~AndroidActivity()
-{
-  if (m_morse_code_engine)
-    delete m_morse_code_engine;
-}
+AndroidPlatform::~AndroidPlatform()
+{}
 
 /**************************************************************************************************/
 
 void
-AndroidActivity::set_orientation_lock(bool orientation_lock)
-{
-  qInfo() << "set_orientation_lock" << orientation_lock;
-
-  if (m_orientation_lock == orientation_lock)
-    return;
-
-  m_orientation_lock = orientation_lock;
-  emit orientation_lockChanged();
-}
-
-bool
-AndroidActivity::orientation_lock() const
-{
-  return m_orientation_lock;
-}
-
-void
-AndroidActivity::update_orientation_lock()
+AndroidPlatform::update_orientation_lock()
 {
   if (m_orientation_lock)
     QtAndroid::androidActivity().callMethod<void>("lock_orientation", "()V");
@@ -86,25 +60,7 @@ AndroidActivity::update_orientation_lock()
 /**************************************************************************************************/
 
 void
-AndroidActivity::set_orientation(AndroidActivity::ScreenOrientation orientation)
-{
-  qInfo() << "set_orientation" << orientation;
-
-  if (m_orientation == orientation)
-    return;
-
-  m_orientation = orientation;
-  emit orientationChanged();
-}
-
-AndroidActivity::ScreenOrientation
-AndroidActivity::orientation() const
-{
-  return m_orientation;
-}
-
-void
-AndroidActivity::update_orientation()
+AndroidPlatform::update_orientation()
 {
   switch (m_orientation) {
   case Portrait:
@@ -120,25 +76,7 @@ AndroidActivity::update_orientation()
 /**************************************************************************************************/
 
 void
-AndroidActivity::set_full_wave_lock(bool full_wave_lock)
-{
-  qInfo() << "set_full_wave_lock" << full_wave_lock;
-
-  if (m_full_wave_lock == full_wave_lock)
-    return;
-
-  m_full_wave_lock = full_wave_lock;
-  emit full_wave_lockChanged();
-}
-
-bool
-AndroidActivity::full_wave_lock() const
-{
-  return m_full_wave_lock;
-}
-
-void
-AndroidActivity::update_full_wave_lock()
+AndroidPlatform::update_full_wave_lock()
 {
   if (m_full_wave_lock)
     QtAndroid::androidActivity().callMethod<void>("acquire_lock_full_wave", "()V");
@@ -149,25 +87,7 @@ AndroidActivity::update_full_wave_lock()
 /**************************************************************************************************/
 
 void
-AndroidActivity::set_torch(bool enabled)
-{
-  qInfo() << "set_torch" << enabled;
-
-  if (m_torch_enabled == enabled)
-    return;
-
-  m_torch_enabled = enabled;
-  emit torchChanged();
-}
-
-bool
-AndroidActivity::torch() const
-{
-  return m_torch_enabled;
-}
-
-void
-AndroidActivity::update_torch()
+AndroidPlatform::update_torch()
 {
   QtAndroid::androidActivity().callMethod<void>("set_torch_mode", "(Z)V", m_torch_enabled);
 }
@@ -175,7 +95,7 @@ AndroidActivity::update_torch()
 /**************************************************************************************************/
 
 void
-AndroidActivity::issue_call(const QString & phone_number)
+AndroidPlatform::issue_call(const QString & phone_number)
 {
   qInfo() << "issue_call" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
@@ -184,7 +104,7 @@ AndroidActivity::issue_call(const QString & phone_number)
 }
 
 void
-AndroidActivity::issue_dial(const QString & phone_number)
+AndroidPlatform::issue_dial(const QString & phone_number)
 {
   qInfo() << "issue_dial" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
@@ -195,32 +115,8 @@ AndroidActivity::issue_dial(const QString & phone_number)
 /**************************************************************************************************/
 
 void
-AndroidActivity::load_morse_code_engine()
+AndroidPlatform::impl_perform_lamp_signal(const QString & encoded_message, int rate_ms)
 {
-  if (!m_morse_code_engine)
-    m_morse_code_engine = new InternationalMorseCodeEngine();
-}
-
-void
-AndroidActivity::perform_lamp_signal(const QString & message, int rate_ms = 250)
-{
-  load_morse_code_engine();
-  QString encoded_message = m_morse_code_engine->encode(message, true, true);
-  qInfo() << "perform_lamp_signal" << message << encoded_message;
   QAndroidJniObject j_encoded_message = QAndroidJniObject::fromString(encoded_message);
   QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_encoded_message.object<jstring>(), rate_ms);
-}
-
-QString
-AndroidActivity::encode_morse(const QString & message)
-{
-  load_morse_code_engine();
-  return m_morse_code_engine->encode(message);
-}
-
-QString
-AndroidActivity::decode_morse(const QString & encoded_message)
-{
-  load_morse_code_engine();
-  return m_morse_code_engine->decode(encoded_message);
 }

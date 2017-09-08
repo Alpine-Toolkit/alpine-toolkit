@@ -118,12 +118,7 @@ Widgets.Page {
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr("Emergency Call")
-                    onClicked: {
-                        console.info("clicked on emergency call", on_android, android_activity)
-                        if (on_android) {
-                            android_activity.issue_dial(emergency_phone_number); // double confirmation ?
-                        }
-                    }
+                    onClicked: platform_abstraction.issue_dial(emergency_phone_number); // double confirmation ?
                 }
             }
         }

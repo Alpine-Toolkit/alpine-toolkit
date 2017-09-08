@@ -185,8 +185,7 @@ ApplicationWindow {
 
     function replace_page(model) {
         title_label.text = model.title
-        if (on_android)
-            android_activity.orientation_lock = model.lock_orientation
+        platform_abstraction.orientation_lock = model.lock_orientation
         stack_view_stack = []
         var data = {page: model.source}
         stack_view_stack.push(data) // {model:model}
