@@ -413,9 +413,3 @@ SqliteSettingsDatabase::SqliteSettingsDatabase(const QString & sqlite_path)
 
 SqliteSettingsDatabase::~SqliteSettingsDatabase()
 {}
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

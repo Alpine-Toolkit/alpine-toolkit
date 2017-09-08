@@ -701,9 +701,3 @@ C2cSearchResult::route_list_property_at(QQmlListProperty<C2cShortRoute> * list, 
   C2cShortRoute & route = search_result->m_routes[index];
   return &route;
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

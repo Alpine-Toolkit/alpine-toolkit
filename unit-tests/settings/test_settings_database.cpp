@@ -133,9 +133,3 @@ TestSettingsDatabase::verify_string_list(const QStringList & list1, const QStrin
 
 QTEST_MAIN(TestSettingsDatabase)
 #include "test_settings_database.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

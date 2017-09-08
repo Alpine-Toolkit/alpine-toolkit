@@ -191,9 +191,3 @@ operator<<(QDebug debug, const QcPostNetworkRequest & request)
   debug << QLatin1String("QcPostNetworkRequest") << request.url().url();
   return debug;
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

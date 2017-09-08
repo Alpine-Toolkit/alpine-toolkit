@@ -112,9 +112,3 @@ QcNetworkDownloader::cancel_request(const QcNetworkDownloadRequestPtr & request)
   qInfo() << "QcNetworkDownloader:cancel_request" << request;
   QcNetworkRequestManager::cancel_request(request);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

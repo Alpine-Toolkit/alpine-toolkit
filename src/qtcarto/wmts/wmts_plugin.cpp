@@ -203,9 +203,3 @@ QcWmtsPlugin::coordinate_elevations(const QVector<QcWgsCoordinate> & coordinates
   Q_UNUSED(coordinates);
   return QSharedPointer<QcElevationServiceReply>(nullptr);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

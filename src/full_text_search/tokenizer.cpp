@@ -461,9 +461,3 @@ LocalizedPhoneticFilter::LocalizedPhoneticFilter()
   add_language_filter(QLocale::English, new PhoneticFilter(QLocale::English));
   add_language_filter(QLocale::French, new PhoneticFilter(QLocale::French));
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

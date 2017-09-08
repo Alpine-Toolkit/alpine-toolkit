@@ -64,9 +64,3 @@ TestInternationalMorseCodeEngine::test_morse_code_engine()
 
 QTEST_MAIN(TestInternationalMorseCodeEngine)
 #include "test_international_morse_code_engine.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

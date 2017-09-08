@@ -57,9 +57,3 @@ void TestQcGeoportailWmtsLicense::constructor()
 
 QTEST_MAIN(TestQcGeoportailWmtsLicense)
 #include "test_geoportail_license.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

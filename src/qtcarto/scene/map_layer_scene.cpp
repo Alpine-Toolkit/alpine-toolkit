@@ -362,9 +362,3 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
 // #include "map_layer_scene.moc"
 
 // QC_END_NAMESPACE
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

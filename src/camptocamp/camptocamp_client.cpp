@@ -456,9 +456,3 @@ C2cClient::media(const QString & media)
   connect(request, &C2cApiMediaRequest::error, this, &C2cClient::get_media_failed);
   m_network_manager.add_request(request);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

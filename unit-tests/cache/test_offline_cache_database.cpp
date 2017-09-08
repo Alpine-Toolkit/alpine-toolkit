@@ -59,9 +59,3 @@ void TestQcOfflineCacheDatabase::constructor()
 
 QTEST_MAIN(TestQcOfflineCacheDatabase)
 #include "test_offline_cache_database.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

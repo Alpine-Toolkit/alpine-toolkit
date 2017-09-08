@@ -224,9 +224,3 @@ AndroidActivity::decode_morse(const QString & encoded_message)
   load_morse_code_engine();
   return m_morse_code_engine->decode(encoded_message);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

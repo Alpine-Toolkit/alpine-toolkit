@@ -16,9 +16,3 @@
 # PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS openstreetmap/fileformat.proto openstreetmap/osmformat.proto)
 
 # add_executable(osmpbf-outline osmpbf-outline.cpp ${PROTO_SRCS} ${PROTO_HDRS})
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

@@ -230,9 +230,3 @@ void TestQcGeoCoordinateAnimation::constructor()
 
 QTEST_MAIN(TestQcGeoCoordinateAnimation)
 #include "test_geo_coordinate_animation.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

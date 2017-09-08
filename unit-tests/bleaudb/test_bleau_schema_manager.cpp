@@ -69,9 +69,3 @@ void TestQcBleauSchemaManager::constructor()
 
 QTEST_MAIN(TestQcBleauSchemaManager)
 #include "test_bleau_schema_manager.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

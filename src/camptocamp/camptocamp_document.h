@@ -168,7 +168,7 @@ Q_DECLARE_METATYPE(C2cDocument)
 //     locales : [{OUTING_LOCALE}]
 
 // User Profile
-//     activities : 
+//     activities :
 //     areas : [{AREA}]
 //     associations : {images : []}
 //     categories : ['amateur']
@@ -396,9 +396,3 @@ Q_DECLARE_METATYPE(C2cSearchResult)
 /**************************************************************************************************/
 
 #endif /* __CAMPTOCAMP_DOCUMENT_H__ */
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

@@ -285,9 +285,3 @@ operator/(const QcRational & rational, unsigned int factor)
 {
   return QcRational(rational.m_numerator, rational.m_denominator * factor);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

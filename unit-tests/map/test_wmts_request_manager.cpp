@@ -121,9 +121,3 @@ void TestQcWmtsRequestManager::constructor()
 
 QTEST_MAIN(TestQcWmtsRequestManager)
 #include "test_wmts_request_manager.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

@@ -150,9 +150,3 @@ DocumentManager::handle_document_list_reply(const QJsonDocument * json_document)
 {
   emit received_document_list(); // json_document
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

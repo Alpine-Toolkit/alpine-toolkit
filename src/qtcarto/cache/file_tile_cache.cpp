@@ -561,9 +561,3 @@ QcFileTileCache::add_to_texture_cache(const QcTileSpec & tile_spec, const QImage
 // #include "file_tile_cache.moc"
 
 // QC_END_NAMESPACE
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

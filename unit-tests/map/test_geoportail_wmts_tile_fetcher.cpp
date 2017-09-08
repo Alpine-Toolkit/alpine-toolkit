@@ -93,9 +93,3 @@ void TestQcGeoportailWmtsTileFetcher::constructor()
 
 QTEST_MAIN(TestQcGeoportailWmtsTileFetcher)
 #include "test_geoportail_wmts_tile_fetcher.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

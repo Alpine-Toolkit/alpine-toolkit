@@ -65,9 +65,3 @@ TestThirdPartyLicenseSchemaManager::test()
 
 QTEST_MAIN(TestThirdPartyLicenseSchemaManager)
 #include "test_third_party_license.moc"
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

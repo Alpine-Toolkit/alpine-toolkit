@@ -61,9 +61,3 @@ QcNetworkDatabase::create_extension(const QString & extension)
   QString sql_query = "CREATE EXTENSION IF NOT EXISTS " + extension + " WITH SCHEMA public;";
   return execute_query(sql_query);
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

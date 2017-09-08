@@ -139,9 +139,3 @@ QcTileMatrix::_to_matrix_index_check(const QcVectorDouble & mapped_coordinate) c
   else
     throw std::invalid_argument("Invalid coordinate");
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

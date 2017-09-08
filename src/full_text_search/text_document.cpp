@@ -107,9 +107,3 @@ TextDocument::operator<(const TextDocument & other) const
   // Don't take into account language
   return m_document < other.m_document;
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/
