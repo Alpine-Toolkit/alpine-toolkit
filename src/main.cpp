@@ -42,10 +42,14 @@ main(int argc, char *argv[])
 
   Application & application = Application::create(argc, argv);
 
+  return application.exec();
+
+  /*
   if (QDate::currentDate() < QDate(2017, 9, 1))
     return application.exec();
   else {
     qInfo() << "Out of date";
     return -1;
   }
+  */
 }
