@@ -33,8 +33,6 @@
 
 #include <QObject>
 
-#include "international_morse_code_engine/international_morse_code_engine.h"
-
 /**************************************************************************************************/
 
 class PlatformAbstraction : public QObject
@@ -87,11 +85,8 @@ public:
 
   virtual Q_INVOKABLE void issue_call(const QString & phone_number);
   virtual Q_INVOKABLE void issue_dial(const QString & phone_number);
-  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250); // const if not load_morse_code_engine
-  Q_INVOKABLE QString encode_morse(const QString & message);
-  Q_INVOKABLE QString decode_morse(const QString & encoded_message);
 
-  virtual void impl_perform_lamp_signal(const QString & encoded_message, int rate_ms = 250) = 0;
+  virtual Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250);
 
   Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
   Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
@@ -105,17 +100,11 @@ signals:
   void full_wave_lockChanged();
   void torchChanged();
 
-private:
-  void load_morse_code_engine();
-
 protected:
   bool m_orientation_lock;
   ScreenOrientation m_orientation;
   bool m_full_wave_lock;
   bool m_torch_enabled;
-
-private:
-  InternationalMorseCodeEngine * m_morse_code_engine;
 };
 
 /**************************************************************************************************/

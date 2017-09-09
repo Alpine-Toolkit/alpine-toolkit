@@ -37,16 +37,12 @@ PlatformAbstraction::PlatformAbstraction(QObject * parent)
     m_orientation_lock(false),
     m_orientation(Unspecified),
     m_full_wave_lock(false),
-    m_torch_enabled(false),
-    m_morse_code_engine(nullptr)
+    m_torch_enabled(false)
 {
 }
 
 PlatformAbstraction::~PlatformAbstraction()
-{
-  if (m_morse_code_engine)
-    delete m_morse_code_engine;
-}
+{}
 
 /**************************************************************************************************/
 
@@ -186,31 +182,7 @@ PlatformAbstraction::issue_dial(const QString & phone_number)
 /**************************************************************************************************/
 
 void
-PlatformAbstraction::load_morse_code_engine()
-{
-  if (!m_morse_code_engine)
-    m_morse_code_engine = new InternationalMorseCodeEngine();
-}
-
-void
 PlatformAbstraction::perform_lamp_signal(const QString & message, int rate_ms)
 {
-  load_morse_code_engine();
-  QString encoded_message = m_morse_code_engine->encode(message, true, true);
-  qInfo() << "perform_lamp_signal" << message << encoded_message;
-  impl_perform_lamp_signal(encoded_message, rate_ms);
-}
-
-QString
-PlatformAbstraction::encode_morse(const QString & message)
-{
-  load_morse_code_engine();
-  return m_morse_code_engine->encode(message);
-}
-
-QString
-PlatformAbstraction::decode_morse(const QString & encoded_message)
-{
-  load_morse_code_engine();
-  return m_morse_code_engine->decode(encoded_message);
+  qInfo() << "perform_lamp_signal" << message << rate_ms;
 }

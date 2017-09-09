@@ -113,8 +113,8 @@ Widgets.Page {
                     onClicked : {
                         var message = message_textarea.text;
                         if (message) {
-                            // Fixme: why platform_abstraction ?
-                            send_encoded_message.text = platform_abstraction.encode_morse(message);
+                            send_encoded_message.text = application.encode_morse(message, false);
+                            var encoded_message = application.encode_morse(message, true);
                             var rate_ms = rate_ms_spinbox.value;
                             platform_abstraction.perform_lamp_signal(message, rate_ms);
                         }
@@ -131,7 +131,7 @@ Widgets.Page {
             function decode_message() {
                 var message = encoded_message.text;
                 if (message)
-                    decoded_message.text = platform_abstraction.decode_morse(message);
+                    decoded_message.text = application.decode_morse(message);
             }
 
             Column {

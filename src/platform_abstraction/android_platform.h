@@ -50,7 +50,7 @@ public:
   Q_INVOKABLE void issue_call(const QString & phone_number);
   Q_INVOKABLE void issue_dial(const QString & phone_number);
 
-  void impl_perform_lamp_signal(const QString & encoded_message, int rate_ms);
+  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms);
 
 private slots:
   void update_orientation_lock();

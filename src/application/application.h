@@ -43,6 +43,7 @@
 #include "config.h"
 #include "configuration/configuration.h"
 #include "ephemeride/ephemeride.h"
+#include "international_morse_code_engine/international_morse_code_engine.h"
 #include "platform_abstraction/platform_abstraction.h"
 #include "refuge/refuge_schema_manager.h"
 #include "service/client.h"
@@ -68,6 +69,9 @@ public:
 
   bool is_online() const;
   bool wifi_state() const { return m_wifi_state; }
+
+  Q_INVOKABLE QString encode_morse(const QString & message, bool use_bit);
+  Q_INVOKABLE QString decode_morse(const QString & message);
 
 signals:
   void onlineStateChanged(bool is_online);
@@ -114,6 +118,9 @@ public:
 
   QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
+  QString encode_morse(const QString & message, bool use_bit);
+  QString decode_morse(const QString & message);
+
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);
   void load_qml_main();
@@ -126,6 +133,7 @@ private:
   void set_env_variables();
   static void setup_gui_application();
   void write_debug_data() const;
+  void load_morse_code_engine();
 
 protected:
   Application(int & argc, char ** argv);
@@ -142,6 +150,7 @@ private:
 
   PlatformAbstraction * m_platform_abstraction = nullptr; // Fixme: QPointer ?
   QmlApplication m_qml_application;
+  InternationalMorseCodeEngine * m_morse_code_engine = nullptr; // lazy loading
   ThirdPartyLicenseSchemaManager m_third_party_license_schema_manager;
   Ephemeride m_ephemeride;
   RefugeSchemaManager m_refuge_schema_manager;

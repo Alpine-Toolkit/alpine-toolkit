@@ -115,8 +115,8 @@ AndroidPlatform::issue_dial(const QString & phone_number)
 /**************************************************************************************************/
 
 void
-AndroidPlatform::impl_perform_lamp_signal(const QString & encoded_message, int rate_ms)
+AndroidPlatform::perform_lamp_signal(const QString & message, int rate_ms)
 {
-  QAndroidJniObject j_encoded_message = QAndroidJniObject::fromString(encoded_message);
-  QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_encoded_message.object<jstring>(), rate_ms);
+  QAndroidJniObject j_message = QAndroidJniObject::fromString(message);
+  QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_message.object<jstring>(), rate_ms);
 }

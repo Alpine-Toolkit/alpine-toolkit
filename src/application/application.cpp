@@ -138,6 +138,20 @@ QmlApplication::is_online() const
   return m_network_configuration_manager.isOnline();
 }
 
+QString
+QmlApplication::encode_morse(const QString & message, bool use_bit)
+{
+  Application & application = Application::instance();
+  return application.encode_morse(message, use_bit);
+}
+
+QString
+QmlApplication::decode_morse(const QString & message)
+{
+  Application & application = Application::instance();
+  return application.decode_morse(message);
+}
+
 /**************************************************************************************************/
 
 Application * Application::m_instance = nullptr;
@@ -179,6 +193,9 @@ Application::~Application()
 {
   if (m_platform_abstraction)
     delete m_platform_abstraction;
+
+  if (m_morse_code_engine)
+    delete m_morse_code_engine;
 }
 
 void
@@ -305,8 +322,6 @@ Application::register_qml_types()
 
   QmlRegisterUncreatableType(QcMapEventRouter);
 
-  // qmlRegisterType<AndroidActivity >(package, major, minor, "AndroidActivity");
-
   // qmlRegisterSingletonType  <QmlSensorGlobal             >(package, major, minor, "QmlSensors", global_object_50);
   // qmlRegisterUncreatableType<QmlSensorRange              >(package, major, minor, "Range",                QLatin1String("Cannot create Range"));
   // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
@@ -314,6 +329,7 @@ Application::register_qml_types()
   // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
 
   QmlRegisterUncreatableType(QmlApplication);
+  // QmlRegisterUncreatableType(PlatformAbstraction);
 
   QmlRegisterType2(QmlBarometerAltimeterSensor, BarometerAltimeterSensor);
   QmlRegisterUncreatableType2(QmlBarometerAltimeterReading, BarometerAltimeterReading);
@@ -444,4 +460,28 @@ Application::exec()
     return m_application.exec();
   else
     return EXIT_FAILURE;
+}
+
+void
+Application::load_morse_code_engine()
+{
+  if (!m_morse_code_engine)
+    m_morse_code_engine = new InternationalMorseCodeEngine();
+}
+
+QString
+Application::encode_morse(const QString & message, bool use_bit)
+{
+  load_morse_code_engine();
+  if (use_bit)
+    return m_morse_code_engine->encode(message, true, true);
+  else
+    return m_morse_code_engine->encode(message);
+}
+
+QString
+Application::decode_morse(const QString & message)
+{
+  load_morse_code_engine();
+  return m_morse_code_engine->decode(message);
 }
