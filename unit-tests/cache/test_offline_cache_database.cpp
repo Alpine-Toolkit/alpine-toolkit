@@ -26,8 +26,9 @@
 
 /**************************************************************************************************/
 
-#include <QtTest/QtTest>
+#include <QFile>
 #include <QtDebug>
+#include <QtTest/QtTest>
 
 /**************************************************************************************************/
 
@@ -45,7 +46,9 @@ private slots:
 
 void TestQcOfflineCacheDatabase::constructor()
 {
-  QcOfflineCacheDatabase database("offline_cache.sqlite");
+  QString sqlite_path = "offline_cache.sqlite";
+  QFile(sqlite_path).remove();
+  QcOfflineCacheDatabase database(sqlite_path);
 
   QcTileSpec tile_spec("foo", 1, 1, 0, 0);
   QVERIFY(database.has_tile(tile_spec) == 0);
