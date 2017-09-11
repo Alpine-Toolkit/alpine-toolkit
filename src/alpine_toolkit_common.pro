@@ -26,22 +26,29 @@
 
 ####################################################################################################
 
-TEMPLATE = subdirs
+TEMPLATE = lib
+TARGET = alpine_toolkit_common
 
-!include(common.pri) {
-  error( "Couldn't find the common.pri file!" )
+####################################################################################################
+
+!include(../common.pri) {
+error( "Couldn't find the common.pri file!" )
 }
 
-SUBDIRS = \
-  sqlite \
-  service \
-  src/alpine_toolkit_common.pro \
-  src/qtcarto/qtcarto.pro \
-  alpine-toolkit.pro
+defined(BUILD_AS_SHARED, var) {
+CONFIG += shared
+}
+defined(BUILD_AS_STATIC, var) {
+CONFIG += static
+}
 
-qtcarto.depends = alpine_toolkit_common
+QT += core
+QT += network
+QT += widgets
 
-alpine-toolkit.depends = sqlite
-alpine-toolkit.depends = service
-alpine-toolkit.depends = alpine_toolkit_common
-alpine-toolkit.depends = qtcarto
+####################################################################################################
+
+# Fixme: config.h # symlink to cmake build ...
+INCLUDEPATH += $$PWD/..
+
+include(alpine_toolkit_common.pri)

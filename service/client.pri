@@ -1,3 +1,5 @@
+# -*- mode: qmake -*-
+
 ####################################################################################################
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
@@ -25,23 +27,17 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Service Replica
+#
 
-TEMPLATE = subdirs
+# INCLUDEPATH += service
 
-!include(common.pri) {
-  error( "Couldn't find the common.pri file!" )
-}
+HEADERS += \
+  service/definitions.h \
+  service/client.h
 
-SUBDIRS = \
-  sqlite \
-  service \
-  src/alpine_toolkit_common.pro \
-  src/qtcarto/qtcarto.pro \
-  alpine-toolkit.pro
+SOURCES += \
+  service/client.cpp
 
-qtcarto.depends = alpine_toolkit_common
-
-alpine-toolkit.depends = sqlite
-alpine-toolkit.depends = service
-alpine-toolkit.depends = alpine_toolkit_common
-alpine-toolkit.depends = qtcarto
+REPC_REPLICA += service/service.rep

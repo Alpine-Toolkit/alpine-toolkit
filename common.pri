@@ -1,3 +1,5 @@
+# -*- mode:qmake -*-
+
 ####################################################################################################
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
@@ -26,22 +28,37 @@
 
 ####################################################################################################
 
-TEMPLATE = subdirs
+CONFIG += debug
+# CONFIG += release
+# CONFIG += debug_and_release
 
-!include(common.pri) {
-  error( "Couldn't find the common.pri file!" )
+BUILD_AS_SHARED = 1
+# BUILD_AS_STATIC = 1
+
+defined(BUILD_AS_SHARED, var) {
+    message("Build $$TARGET as shared")
+}
+defined(BUILD_AS_STATIC, var) {
+    message("Build $$TARGET as static")
 }
 
-SUBDIRS = \
-  sqlite \
-  service \
-  src/alpine_toolkit_common.pro \
-  src/qtcarto/qtcarto.pro \
-  alpine-toolkit.pro
+####################################################################################################
 
-qtcarto.depends = alpine_toolkit_common
+CONFIG += ordered # process directories in order
 
-alpine-toolkit.depends = sqlite
-alpine-toolkit.depends = service
-alpine-toolkit.depends = alpine_toolkit_common
-alpine-toolkit.depends = qtcarto
+# CONFIG += precompile_header
+
+CONFIG += qt
+
+CONFIG += c++11
+CONFIG += c++14
+
+# For statical linking
+CONFIG += create_prl
+CONFIG += link_prl
+
+debug {
+ CONFIG += console
+}
+
+####################################################################################################

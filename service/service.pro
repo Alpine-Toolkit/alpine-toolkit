@@ -31,8 +31,11 @@ TARGET = service
 
 ####################################################################################################
 
-CONFIG += c++14
-CONFIG += debug console
+!include(../common.pri) {
+error( "Couldn't find the common.pri file!" )
+}
+
+CONFIG += shared # static
 
 QT += core
 QT += remoteobjects
@@ -45,9 +48,6 @@ QT += androidextras
 }
 
 ####################################################################################################
-#
-# Sources
-#
 
 # INCLUDEPATH +=
 

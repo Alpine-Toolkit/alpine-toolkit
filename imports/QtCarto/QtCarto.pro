@@ -1,7 +1,8 @@
-####################################################################################################
-
 TEMPLATE = lib
 TARGET = qmlqtcartoplugin # qml-plugin
+TARGET = $$qtLibraryTarget($$TARGET)
+
+####################################################################################################
 
 !include(../../common.pri) {
   error( "Couldn't find the common.pri file!" )
@@ -9,39 +10,35 @@ TARGET = qmlqtcartoplugin # qml-plugin
 
 CONFIG += plugin
 
-QT += qml quick positioning
-
-TARGET = $$qtLibraryTarget($$TARGET)
+QT += qml quick
+QT += positioning
 
 # Fixme : Private QT API
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtCore/5.7.0/
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtCore/5.7.0/QtCore
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtGui/5.7.0/
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtGui/5.7.0/QtGui
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQml/5.7.0/QtQml
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQuick/5.7.0/
-INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQuick/5.7.0/QtQuick
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtCore/5.7.0/
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtCore/5.7.0/QtCore
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtGui/5.7.0/
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtGui/5.7.0/QtGui
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQml/5.7.0/QtQml
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQuick/5.7.0/
+#!# INCLUDEPATH += /opt/Qt-dev-5.7.0/include/QtQuick/5.7.0/QtQuick
 
-SOURCES += \
-  declarative_map_item.cpp \
-  geo_coordinate_animation.cpp \
-  map_gesture_area.cpp \
-  plugin_data.cpp \
-  qtcarto.cpp # qml-plugin_plugin
+####################################################################################################
 
-HEADERS += \
-  declarative_map_item.h \
-  geo_coordinate_animation.h \
-  map_gesture_area.h \
-  plugin_data.h
+!include(QtCarto.pri) {
+  error( "Couldn't find the QtCarto.pri file!" )
+}
 
 # libqtcarto
 VPATH += $$PWD/../../src
-include($$PWD/../../src/src.pri)
 INCLUDEPATH += $$PWD/../../src
 DEPENDPATH += $$PWD/../../src
+include($$PWD/../../src/src.pri)
+
+####################################################################################################
 
 # unix:!macx: LIBS += -L$$OUT_PWD/../..src/ -lqtcarto
+
+####################################################################################################
 
 # Install to /home/opt/Qt-dev-5.7.0/qml/fr/alpine_toolkit/QtCarto
 #  libqmlqtcartoplugin.so
@@ -68,9 +65,3 @@ unix {
     target.path = $$install_path
     INSTALLS += target qmldir
 }
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

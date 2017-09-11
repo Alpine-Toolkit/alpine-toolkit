@@ -24,24 +24,11 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
-TEMPLATE = subdirs
-
-!include(common.pri) {
-  error( "Couldn't find the common.pri file!" )
-}
-
-SUBDIRS = \
-  sqlite \
-  service \
-  src/alpine_toolkit_common.pro \
-  src/qtcarto/qtcarto.pro \
-  alpine-toolkit.pro
-
-qtcarto.depends = alpine_toolkit_common
-
-alpine-toolkit.depends = sqlite
-alpine-toolkit.depends = service
-alpine-toolkit.depends = alpine_toolkit_common
-alpine-toolkit.depends = qtcarto
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtCore/$$QT_VERSION/
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtCore/$$QT_VERSION/QtCore
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtGui/$$QT_VERSION/
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtGui/$$QT_VERSION/QtGui
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtQml/$$QT_VERSION/
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtQml/$$QT_VERSION/QtQml
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtQuick/$$QT_VERSION/
+INCLUDEPATH += /opt/Qt/$$QT_VERSION/gcc_64/include/QtQuick/$$QT_VERSION/QtQuick
