@@ -7,7 +7,7 @@ build_path=${source_path}/build-cmake
 
 # QT_VERSION=5.7
 # QT_VERSION=5.8
-#QT_VERSION=5.9
+# QT_VERSION=5.9
 QT_VERSION=5.9.1
 # QT_VERSION=5.10.0
 
@@ -32,6 +32,9 @@ if ! [ -e ${build_path} ]; then
   mkdir ${build_path}
 fi
 pushd ${build_path}
+
+rm CMakeCache.txt
+rm compile_commands.json
 
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
