@@ -128,11 +128,11 @@ add_library(qtcarto SHARED ${qtcarto_files})
 target_link_libraries(qtcarto
   alpine_toolkit_common
   Qt5::Core
-  Qt5::Quick
   Qt5::Gui
   Qt5::Network
   Qt5::Positioning
   Qt5::Qml
+  Qt5::Quick
   Qt5::Sql
   ${PROJ4_LIBRARIES}
   ${ZLIB_LIBRARY}

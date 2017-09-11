@@ -116,11 +116,8 @@ set(alpine_toolkit_library_files
   settings/settings_database.cpp
   settings/settings_tree.cpp
   third_party_license/third_party_license_schema.cpp
-  third_party_license/third_party_license_schema.h
   third_party_license/third_party_license_schema_manager.cpp
-  third_party_license/third_party_license_schema_manager.h
   third_party_license/third_party_license_sqlite_database.cpp
-  third_party_license/third_party_license_sqlite_database.h
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit
