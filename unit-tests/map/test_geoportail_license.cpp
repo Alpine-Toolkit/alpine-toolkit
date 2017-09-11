@@ -26,8 +26,9 @@
 
 /**************************************************************************************************/
 
-#include <QtTest/QtTest>
+#include <QDir>
 #include <QtDebug>
+#include <QtTest/QtTest>
 
 /**************************************************************************************************/
 
@@ -45,7 +46,7 @@ private slots:
 
 void TestQcGeoportailWmtsLicense::constructor()
 {
-  QString json_path("geoportail-license.json");
+  QString json_path = QDir::homePath() + "/.local/share/alpine-toolkit/geoportail-license.json";
   QcGeoportailWmtsLicense geoportail_license(json_path);
   qInfo() << geoportail_license.user()
 	  << geoportail_license.password()
