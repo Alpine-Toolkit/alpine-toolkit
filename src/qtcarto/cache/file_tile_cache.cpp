@@ -79,7 +79,9 @@
 /**************************************************************************************************/
 
 QcTileTexture::QcTileTexture()
-  : texture_bound(false)
+  : tile_spec(),
+    image(),
+    texture_bound(false)
 {}
 
 QcTileTexture::~QcTileTexture()
@@ -476,7 +478,7 @@ QcFileTileCache::load_from_memory(const QSharedPointer<QcCachedTileMemory> & til
     handle_error(tile_spec, QLatin1Literal("Problem with tile image"));
 
   // else
- return QSharedPointer<QcTileTexture>(0);
+ return QSharedPointer<QcTileTexture>(nullptr);
 }
 
 void

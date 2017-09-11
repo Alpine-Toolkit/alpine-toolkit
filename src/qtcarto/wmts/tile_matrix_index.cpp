@@ -47,7 +47,7 @@ QcTileMatrixIndex::~QcTileMatrixIndex()
 {}
 
 QcTileMatrixIndex &
-QcTileMatrixIndex::operator=(const QcTileMatrixIndex &other)
+QcTileMatrixIndex::operator=(const QcTileMatrixIndex & other)
 {
   if (this != &other) {
     m_x = other.m_x;
@@ -58,9 +58,9 @@ QcTileMatrixIndex::operator=(const QcTileMatrixIndex &other)
 }
 
 bool
-QcTileMatrixIndex::operator==(const QcTileMatrixIndex &other) const
+QcTileMatrixIndex::operator==(const QcTileMatrixIndex & other) const
 {
-  return (m_x == other.m_x) && (m_y == other.m_y);
+  return m_x == other.m_x and m_y == other.m_y;
 }
 
 #ifndef QT_NO_DEBUG_STREAM

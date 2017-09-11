@@ -105,9 +105,9 @@ bool
 QcTileSpec::operator==(const QcTileSpec & rhs) const
 {
   return (QcTileMatrixIndex::operator==(rhs)
-	  && m_plugin == rhs.m_plugin
-	  && m_map_id == rhs.m_map_id
-	  && m_level == rhs.m_level);
+	  and m_plugin == rhs.m_plugin
+	  and m_map_id == rhs.m_map_id
+	  and m_level == rhs.m_level);
 }
 
 /*
