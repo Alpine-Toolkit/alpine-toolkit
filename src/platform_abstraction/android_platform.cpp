@@ -48,6 +48,50 @@ AndroidPlatform::~AndroidPlatform()
 
 /**************************************************************************************************/
 
+QStringList
+AndroidPlatform::need_explain() const
+{
+  qInfo() << "need_explain";
+
+  QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_explain", "()Ljava/lang/String");
+  QString permissions = j_string.toString();
+
+  return permissions.split(QChar(','));
+}
+
+void
+AndroidPlatform::ask_permission(const QString & permission) const
+{
+  qInfo() << "ask_permission" << permission;
+
+  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
+  QtAndroid::androidActivity().callMethod<void>("ask_permission", "(Ljava/lang/String)V", j_string.object<jstring>());
+}
+
+bool
+AndroidPlatform::is_permission_granted(const QString & permission) const
+{
+  qInfo() << "is_permission_granted" << permission;
+
+  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
+  jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_granted", "(Ljava/lang/String)V", j_string.object<jstring>());
+
+  return rc;
+}
+
+bool
+AndroidPlatform::is_permission_denied(const QString & permission) const
+{
+  qInfo() << "is_permission_denied" << permission;
+
+  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
+  jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_denied", "(Ljava/lang/String)V", j_string.object<jstring>());
+
+  return rc;
+}
+
+/**************************************************************************************************/
+
 void
 AndroidPlatform::update_orientation_lock()
 {
@@ -95,7 +139,7 @@ AndroidPlatform::update_torch()
 /**************************************************************************************************/
 
 void
-AndroidPlatform::issue_call(const QString & phone_number)
+AndroidPlatform::issue_call(const QString & phone_number) const
 {
   qInfo() << "issue_call" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
@@ -104,7 +148,7 @@ AndroidPlatform::issue_call(const QString & phone_number)
 }
 
 void
-AndroidPlatform::issue_dial(const QString & phone_number)
+AndroidPlatform::issue_dial(const QString & phone_number) const
 {
   qInfo() << "issue_dial" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
@@ -115,8 +159,26 @@ AndroidPlatform::issue_dial(const QString & phone_number)
 /**************************************************************************************************/
 
 void
-AndroidPlatform::perform_lamp_signal(const QString & message, int rate_ms)
+AndroidPlatform::perform_lamp_signal(const QString & message, int rate_ms) const
 {
   QAndroidJniObject j_message = QAndroidJniObject::fromString(message);
   QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_message.object<jstring>(), rate_ms);
+}
+
+void
+AndroidPlatform::stop_lamp_signal() const
+{
+  QtAndroid::androidActivity().callMethod<void>("stop_lamp_signal", "()V");
+}
+
+void
+AndroidPlatform::start_lamp_dimmer(int period, int duty_cycle) const
+{
+  QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(I;I)V", period, duty_cycle);
+}
+
+void
+AndroidPlatform::stop_lamp_dimmer() const
+{
+  QtAndroid::androidActivity().callMethod<void>("stop_lamp_dimmer", "()V");
 }

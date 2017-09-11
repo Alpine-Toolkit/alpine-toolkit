@@ -47,10 +47,19 @@ public:
 
   PlatformType platform_type() const { return Linux; }
 
-  Q_INVOKABLE void issue_call(const QString & phone_number);
-  Q_INVOKABLE void issue_dial(const QString & phone_number);
+  Q_INVOKABLE QStringList need_explain() const;
+  Q_INVOKABLE void ask_permission(const QString & permission) const;
+  Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
+  Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
 
-  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms);
+  Q_INVOKABLE void issue_call(const QString & phone_number) const;
+  Q_INVOKABLE void issue_dial(const QString & phone_number) const;
+
+  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250) const;
+  Q_INVOKABLE void stop_lamp_signal() const;
+
+  Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
+  Q_INVOKABLE void stop_lamp_dimmer() const;
 
 private slots:
   void update_orientation_lock();

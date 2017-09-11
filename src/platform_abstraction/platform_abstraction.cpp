@@ -46,6 +46,38 @@ PlatformAbstraction::~PlatformAbstraction()
 
 /**************************************************************************************************/
 
+QStringList
+PlatformAbstraction::need_explain() const
+{
+  qInfo() << "need_explain";
+
+  return QStringList();
+}
+
+void
+PlatformAbstraction::ask_permission(const QString & permission) const
+{
+  qInfo() << "ask_permission" << permission;
+}
+
+bool
+PlatformAbstraction::is_permission_granted(const QString & permission) const
+{
+  qInfo() << "is_permission_granted" << permission;
+
+  return true;
+}
+
+bool
+PlatformAbstraction::is_permission_denied(const QString & permission) const
+{
+  qInfo() << "is_permission_denied" << permission;
+
+  return false;
+}
+
+/**************************************************************************************************/
+
 void
 PlatformAbstraction::set_orientation_lock(bool orientation_lock)
 {
@@ -168,13 +200,13 @@ PlatformAbstraction::update_torch()
 /**************************************************************************************************/
 
 void
-PlatformAbstraction::issue_call(const QString & phone_number)
+PlatformAbstraction::issue_call(const QString & phone_number) const
 {
   qInfo() << "issue_call" << phone_number;
 }
 
 void
-PlatformAbstraction::issue_dial(const QString & phone_number)
+PlatformAbstraction::issue_dial(const QString & phone_number) const
 {
   qInfo() << "issue_dial" << phone_number;
 }
@@ -182,7 +214,25 @@ PlatformAbstraction::issue_dial(const QString & phone_number)
 /**************************************************************************************************/
 
 void
-PlatformAbstraction::perform_lamp_signal(const QString & message, int rate_ms)
+PlatformAbstraction::perform_lamp_signal(const QString & message, int rate_ms) const
 {
   qInfo() << "perform_lamp_signal" << message << rate_ms;
+}
+
+void
+PlatformAbstraction::stop_lamp_signal() const
+{
+  qInfo() << "stop_lamp_signal";
+}
+
+void
+PlatformAbstraction::start_lamp_dimmer(int period, int duty_cycle) const
+{
+  qInfo() << "start_lamp_dimmer" << period << duty_cycle;
+}
+
+void
+PlatformAbstraction::stop_lamp_dimmer() const
+{
+  qInfo() << "stop_lamp_dimmer";
 }

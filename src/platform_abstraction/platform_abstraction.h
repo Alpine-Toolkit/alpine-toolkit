@@ -32,6 +32,8 @@
 #define PLATFORM_ABSTRACTION_H
 
 #include <QObject>
+#include <QString>
+#include <QStringList>
 
 /**************************************************************************************************/
 
@@ -71,6 +73,11 @@ public:
 
   virtual PlatformType platform_type() const = 0;
 
+  Q_INVOKABLE QStringList need_explain() const;
+  Q_INVOKABLE void ask_permission(const QString & permission) const;
+  Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
+  Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
+
   void set_orientation_lock(bool orientation_lock);
   bool orientation_lock() const;
 
@@ -83,10 +90,14 @@ public:
   void set_torch(bool enabled);
   bool torch() const;
 
-  virtual Q_INVOKABLE void issue_call(const QString & phone_number);
-  virtual Q_INVOKABLE void issue_dial(const QString & phone_number);
+  virtual Q_INVOKABLE void issue_call(const QString & phone_number) const;
+  virtual Q_INVOKABLE void issue_dial(const QString & phone_number) const;
 
-  virtual Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250);
+  virtual Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250) const;
+  virtual Q_INVOKABLE void stop_lamp_signal() const;
+
+  virtual Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
+  virtual Q_INVOKABLE void stop_lamp_dimmer() const;
 
   Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
   Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
