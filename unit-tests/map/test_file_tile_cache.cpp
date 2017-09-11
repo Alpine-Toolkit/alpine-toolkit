@@ -50,7 +50,7 @@ void TestQcFileTileCache::constructor()
 
   QcTileSpec tile_spec("geoportail", 1, 16, 33885, 23658);
 
-  QFile file("../wmts.jpg"); // Fixme
+  QFile file("../test-data/wmts.jpg");
   file.open(QIODevice::ReadOnly);
   QByteArray bytes = file.readAll();
   file_tile_cache->insert(tile_spec, bytes, QStringLiteral("jpg"));
@@ -58,7 +58,9 @@ void TestQcFileTileCache::constructor()
   delete file_tile_cache;
   file_tile_cache = new QcFileTileCache();
   QSharedPointer<QcTileTexture> tile_texture = file_tile_cache->get(tile_spec);
-  QVERIFY(tile_texture->tile_spec == tile_spec);
+  QVERIFY(tile_texture.isNull() == false);
+  if (tile_texture)
+    QVERIFY(tile_texture->tile_spec == tile_spec);
 }
 
 /***************************************************************************************************/
