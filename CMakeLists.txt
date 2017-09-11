@@ -138,7 +138,10 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   set(CMAKE_CXX_FLAGS_COMMON  "-Wall -DSystemLinux -fdiagnostics-color=auto")
   # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html#Instrumentation-Options
   # -O0
-  set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_COMMON} -g -Og  -DDEBUG")
+  # -fstack-protector          Add stack protection to functions that have “alloca” or have a (signed or unsigned) char array with size > 8 (SSP_BUFFER_SIZE)
+  # -fstack-protector-strong   To more functions
+  # -fstack-protector-all      To all functions
+  set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_COMMON} -ggdb -Og -DDEBUG")
   # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
   # $ENV{GCC_OPTIMISATION}
   set(CMAKE_CXX_FLAGS_RELEASE   "${CMAKE_CXX_FLAGS_COMMON} -O3 -march=native")
@@ -149,7 +152,7 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 if(CMAKE_BUILD_TYPE MATCHES "DEBUG")
   if(SANITIZE MATCHES "ON")
-    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fsanitize=leak -fsanitize=undefined")
+    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fsanitize=leak -fsanitize=undefined -fstack-protector-all")
     message(STATUS "GCC Sanitize: ${CMAKE_CXX_FLAGS_DEBUG}")
   endif(SANITIZE MATCHES "ON")
 
