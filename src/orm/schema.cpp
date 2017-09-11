@@ -377,12 +377,14 @@ QcSchema::QcSchema(const QcSchema & other)
     m_has_rowid_primary_key(other.m_has_rowid_primary_key),
     m_has_foreign_keys(other.m_has_foreign_keys),
     m_has_sql_value_ctor(other.m_has_sql_value_ctor),
-    m_fields(other.m_fields),
-    m_fields_without_rowid(other.m_fields_without_rowid),
-    m_field_map(other.m_field_map),
-    m_field_names(other.m_field_names),
-    m_field_names_without_rowid(other.m_field_names_without_rowid)
-{}
+    m_fields(),
+    m_fields_without_rowid(),
+    m_field_map(),
+    m_field_names(),
+    m_field_names_without_rowid()
+{
+  copy_fields(other);
+}
 
 QcSchema::~QcSchema()
 {}
@@ -399,11 +401,7 @@ QcSchema::operator=(const QcSchema & other)
     m_has_rowid_primary_key = other.m_has_rowid_primary_key;
     m_has_foreign_keys = other.m_has_foreign_keys;
     m_has_sql_value_ctor = other.m_has_sql_value_ctor;
-    m_fields = other.m_fields;
-    m_fields_without_rowid = other.m_fields_without_rowid;
-    m_field_map = other.m_field_map;
-    m_field_names = other.m_field_names;
-    m_field_names_without_rowid = other.m_field_names_without_rowid;
+    copy_fields(other);
   }
 
   return *this;
@@ -433,6 +431,19 @@ QcSchema::operator<<(const QcSchemaFieldTrait & field)
 {
   add_field(field);
   return *this;
+}
+
+void
+QcSchema::copy_fields(const QcSchema & other)
+{
+  m_fields.clear();
+  m_fields_without_rowid.clear();
+  m_field_map.clear();
+  m_field_names.clear();
+  m_field_names_without_rowid.clear();
+
+  for (const auto & field : other.m_fields)
+    add_field(*field);
 }
 
 QStringList

@@ -360,6 +360,9 @@ public:
   const QcSchemaFieldList & fields_without_row_id() const { return m_fields_without_rowid; }
 
 private:
+  void copy_fields(const QcSchema & other);
+
+private:
   int m_schema_id;
   QString m_name;
   QString m_table_name;
