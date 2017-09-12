@@ -635,6 +635,7 @@ QcMapGestureArea::handle_mouse_release_event(QMouseEvent * event)
 {
   qInfo() << event;
 
+  // Fixme sanitizer: map_gesture_area.cpp:638:7: runtime error: load of value 190, which is not a valid value for type 'bool'
   if (m_was_press_and_hold) {
     m_map->on_press_and_hold_released(event);
     m_was_press_and_hold = false;

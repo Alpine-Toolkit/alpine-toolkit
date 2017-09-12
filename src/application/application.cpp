@@ -419,6 +419,7 @@ Application::set_offline_storage_path()
 void
 Application::load_qml_main()
 {
+  // ASAN: throw new_delete_type_mismatch
   m_engine.load(QUrl("qrc:/qml/main.qml"));
 
   QList<QObject *> root_objects = m_engine.rootObjects();
