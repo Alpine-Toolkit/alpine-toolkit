@@ -39,7 +39,7 @@
 /***************************************************************************************************/
 
 /*
-class QcNetworkRequestManagerHelper : public QObject
+class QaNetworkRequestManagerHelper : public QObject
 {
   Q_OBJECT;
 
@@ -49,7 +49,7 @@ public:
   }
 
 public slots:
-  void on_request_finished(const QcNetworkRequestPtr & request) {
+  void on_request_finished(const QaNetworkRequestPtr & request) {
     QUrl url = request->url();
     qInfo() << "Url finished" << url.url();
     m_finished_request.push_back(url);;
@@ -81,11 +81,11 @@ TestNetwork::test_network_request_manager()
 {
   QSKIP("");
 
-  QcNetworkRequestManager network_request_manager;
+  QaNetworkRequestManager network_request_manager;
 
-  QcNetworkRequestManagerHelper network_request_manager_helper;
-  connect(&network_request_manager, &QcNetworkRequestManager::request_finished,
-  	  &network_request_manager_helper, &QcNetworkRequestManagerHelper::on_request_finished);
+  QaNetworkRequestManagerHelper network_request_manager_helper;
+  connect(&network_request_manager, &QaNetworkRequestManager::request_finished,
+  	  &network_request_manager_helper, &QaNetworkRequestManagerHelper::on_request_finished);
 
   // Fixme:
   QUrl url;
@@ -101,21 +101,21 @@ TestNetwork::test_network_request_manager()
 void
 TestNetwork::test_network_downloader()
 {
-  QcNetworkDownloader network_downloader;
+  QaNetworkDownloader network_downloader;
 
-  // QcNetworkRequestManagerHelper network_request_manager_helper;
+  // QaNetworkRequestManagerHelper network_request_manager_helper;
   // connect(&network_downloader, &NetworkDownloader::finished,
-  // 	  &network_request_manager_helper, &QcNetworkRequestManagerHelper::on_request_finished);
+  // 	  &network_request_manager_helper, &QaNetworkRequestManagerHelper::on_request_finished);
   // connect(&network_downloader, &NetworkDownloader::download_progress,
-  // 	  &network_request_manager_helper, &QcNetworkRequestManagerHelper::download_progress);
+  // 	  &network_request_manager_helper, &QaNetworkRequestManagerHelper::download_progress);
 
   QUrl url;
   url = QStringLiteral("http://127.0.0.1:5000/static/large-file.txt");
   QString target_path = "request1.json";
   // NetworkDownloadRequest request(url, target_path);
-  QcNetworkDownloadRequestPtr request(new QcNetworkDownloadRequest(url, target_path));
+  QaNetworkDownloadRequestPtr request(new QaNetworkDownloadRequest(url, target_path));
   network_downloader.add_request(request);
-  QSignalSpy spy(request.data(), &QcNetworkDownloadRequest::finished);
+  QSignalSpy spy(request.data(), &QaNetworkDownloadRequest::finished);
   QVERIFY(spy.wait(5000)); // ms
   // while (!network_request_manager_helper.has_received(url)) // Fixme:
   //   QTest::qWait(200);

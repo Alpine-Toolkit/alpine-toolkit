@@ -41,10 +41,10 @@
 
 /**************************************************************************************************/
 
-/* The QcNetworkRequest class defines a network ressource request.
+/* The QaNetworkRequest class defines a network ressource request.
  *
  */
-class QcNetworkRequest : public QObject
+class QaNetworkRequest : public QObject
 {
   Q_OBJECT
 
@@ -57,17 +57,17 @@ public:
   };
 
 public:
-  QcNetworkRequest();
-  QcNetworkRequest(const QUrl & url);
-  QcNetworkRequest(const QcNetworkRequest & other);
-  virtual ~QcNetworkRequest();
+  QaNetworkRequest();
+  QaNetworkRequest(const QUrl & url);
+  QaNetworkRequest(const QaNetworkRequest & other);
+  virtual ~QaNetworkRequest();
 
-  QcNetworkRequest & operator=(const QcNetworkRequest & other);
+  QaNetworkRequest & operator=(const QaNetworkRequest & other);
 
   QUrl url() const { return m_url; }
   void set_url(const QUrl & url) { m_url = url; }
 
-  bool operator==(const QcNetworkRequest & rhs) const;
+  bool operator==(const QaNetworkRequest & rhs) const;
 
   virtual RequestType type() const = 0;
 
@@ -81,25 +81,25 @@ private:
   QUrl m_url;
 };
 
-typedef QSharedPointer<QcNetworkRequest> QcNetworkRequestPtr;
+typedef QSharedPointer<QaNetworkRequest> QaNetworkRequestPtr;
 
-QDebug operator<<(QDebug, const QcNetworkRequest & request);
+QDebug operator<<(QDebug, const QaNetworkRequest & request);
 
 /**************************************************************************************************/
 
-class QcGetNetworkRequest : public QcNetworkRequest
+class QaGetNetworkRequest : public QaNetworkRequest
 {
   Q_OBJECT
 
 public:
-  QcGetNetworkRequest();
-  QcGetNetworkRequest(const QUrl & url);
-  QcGetNetworkRequest(const QcGetNetworkRequest & other);
-  ~QcGetNetworkRequest();
+  QaGetNetworkRequest();
+  QaGetNetworkRequest(const QUrl & url);
+  QaGetNetworkRequest(const QaGetNetworkRequest & other);
+  ~QaGetNetworkRequest();
 
-  QcGetNetworkRequest & operator=(const QcGetNetworkRequest & other);
+  QaGetNetworkRequest & operator=(const QaGetNetworkRequest & other);
 
-  bool operator==(const QcGetNetworkRequest & rhs) const;
+  bool operator==(const QaGetNetworkRequest & rhs) const;
 
   RequestType type() const { return RequestType::Get; }
 
@@ -107,24 +107,24 @@ public:
 //   virtual void on_data_received(const QByteArray & data) = 0;
 };
 
-QDebug operator<<(QDebug, const QcGetNetworkRequest & request);
+QDebug operator<<(QDebug, const QaGetNetworkRequest & request);
 
 /**************************************************************************************************/
 
-class QcPostNetworkRequest : public QcNetworkRequest
+class QaPostNetworkRequest : public QaNetworkRequest
 {
   Q_OBJECT
 
 public:
-  QcPostNetworkRequest();
-  QcPostNetworkRequest(const QUrl & url, const QByteArray & data);
-  QcPostNetworkRequest(const QUrl & url, const QJsonDocument & document);
-  QcPostNetworkRequest(const QcPostNetworkRequest & other);
-  ~QcPostNetworkRequest();
+  QaPostNetworkRequest();
+  QaPostNetworkRequest(const QUrl & url, const QByteArray & data);
+  QaPostNetworkRequest(const QUrl & url, const QJsonDocument & document);
+  QaPostNetworkRequest(const QaPostNetworkRequest & other);
+  ~QaPostNetworkRequest();
 
-  QcPostNetworkRequest & operator=(const QcPostNetworkRequest & other);
+  QaPostNetworkRequest & operator=(const QaPostNetworkRequest & other);
 
-  bool operator==(const QcPostNetworkRequest & rhs) const;
+  bool operator==(const QaPostNetworkRequest & rhs) const;
 
   RequestType type() const { return RequestType::Post; }
 
@@ -139,7 +139,7 @@ private:
   QByteArray m_data;
 };
 
-QDebug operator<<(QDebug, const QcPostNetworkRequest & request);
+QDebug operator<<(QDebug, const QaPostNetworkRequest & request);
 
 /**************************************************************************************************/
 

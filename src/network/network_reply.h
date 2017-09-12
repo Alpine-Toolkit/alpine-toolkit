@@ -28,8 +28,10 @@
 
 /**************************************************************************************************/
 
-#ifndef __NETWORK_REPLY_H__
-#define __NETWORK_REPLY_H__
+// Fixme: Qc / Qa clash
+
+#ifndef __QA_NETWORK_REPLY_H__
+#define __QA_NETWORK_REPLY_H__
 
 /**************************************************************************************************/
 
@@ -40,10 +42,10 @@
 
 /**************************************************************************************************/
 
-/* The QcNetworkReply class encapsulates a request and a QQcNetworkReply instance.
+/* The QaNetworkReply class encapsulates a request and a QaNetworkReply instance.
  *
  */
-class QcNetworkReply : public QObject
+class QaNetworkReply : public QObject
 {
   Q_OBJECT
 
@@ -55,12 +57,12 @@ public:
   };
 
 public:
-  explicit QcNetworkReply(const QcNetworkRequestPtr & request, QNetworkReply * reply);
-  // QcNetworkReply(Error error, const QString & error_string); // Fixme: ???
-  Q_DISABLE_COPY(QcNetworkReply);
-  ~QcNetworkReply();
+  explicit QaNetworkReply(const QaNetworkRequestPtr & request, QNetworkReply * reply);
+  // QaNetworkReply(Error error, const QString & error_string); // Fixme: ???
+  Q_DISABLE_COPY(QaNetworkReply);
+  ~QaNetworkReply();
 
-  const QcNetworkRequestPtr & request() const { return m_request; }
+  const QaNetworkRequestPtr & request() const { return m_request; }
   QNetworkReply * network_reply() const { return m_reply; }
 
   void abort();
@@ -95,16 +97,16 @@ private slots:
   void on_reply_error(QNetworkReply::NetworkError error);
 
 private:
-  QcNetworkRequestPtr m_request;
+  QaNetworkRequestPtr m_request;
   QPointer<QNetworkReply> m_reply; // guarded pointer set to nullptr when destroyed
   int m_completion = 0;
   bool m_aborted = false;
   bool m_is_finished = false;
-  Error m_error = QcNetworkReply::NoError;
+  Error m_error = QaNetworkReply::NoError;
   QString m_error_string;
   // QByteArray m_payload;
 };
 
 /**************************************************************************************************/
 
-#endif /* __NETWORK_REPLY_H__ */
+#endif /* __QA_NETWORK_REPLY_H__ */

@@ -32,26 +32,26 @@
 
 /**************************************************************************************************/
 
-QcNetworkDownloadRequest::QcNetworkDownloadRequest()
-  : QcGetNetworkRequest(),
+QaNetworkDownloadRequest::QaNetworkDownloadRequest()
+  : QaGetNetworkRequest(),
     m_target_path()
 {}
 
-QcNetworkDownloadRequest::QcNetworkDownloadRequest(const QUrl & url, const QString & target_path)
-  : QcGetNetworkRequest(url),
+QaNetworkDownloadRequest::QaNetworkDownloadRequest(const QUrl & url, const QString & target_path)
+  : QaGetNetworkRequest(url),
     m_target_path(target_path)
 {}
 
-QcNetworkDownloadRequest::QcNetworkDownloadRequest(const QcNetworkDownloadRequest & other)
-  : QcGetNetworkRequest(other),
+QaNetworkDownloadRequest::QaNetworkDownloadRequest(const QaNetworkDownloadRequest & other)
+  : QaGetNetworkRequest(other),
     m_target_path(other.m_target_path)
 {}
 
-QcNetworkDownloadRequest &
-QcNetworkDownloadRequest::operator=(const QcNetworkDownloadRequest & other)
+QaNetworkDownloadRequest &
+QaNetworkDownloadRequest::operator=(const QaNetworkDownloadRequest & other)
 {
   if (this != &other) {
-    QcGetNetworkRequest::operator=(other);
+    QaGetNetworkRequest::operator=(other);
     m_target_path = other.m_target_path;
   }
 
@@ -59,23 +59,23 @@ QcNetworkDownloadRequest::operator=(const QcNetworkDownloadRequest & other)
 }
 
 bool
-QcNetworkDownloadRequest::operator==(const QcNetworkDownloadRequest & rhs) const
+QaNetworkDownloadRequest::operator==(const QaNetworkDownloadRequest & rhs) const
 {
-  return QcGetNetworkRequest::operator==(rhs) && m_target_path == rhs.m_target_path;
+  return QaGetNetworkRequest::operator==(rhs) && m_target_path == rhs.m_target_path;
 }
 
 void
-QcNetworkDownloadRequest::on_error(const QString & error_string)
+QaNetworkDownloadRequest::on_error(const QString & error_string)
 {
   // Fixme:
-  qInfo() << "QcNetworkDownloadRequest::on_error" << url() << error_string;
+  qInfo() << "QaNetworkDownloadRequest::on_error" << url() << error_string;
   emit error(); // error_string
 }
 
 void
-QcNetworkDownloadRequest::on_data_received(const QByteArray & data)
+QaNetworkDownloadRequest::on_data_received(const QByteArray & data)
 {
-  qInfo() << "QcNetworkDownloadRequest::on_data_received" << url();
+  qInfo() << "QaNetworkDownloadRequest::on_data_received" << url();
   QFile output_file(m_target_path);
   if (!output_file.open(QIODevice::WriteOnly | QIODevice::Text))
     qWarning() << "couldn't write to file";
@@ -84,31 +84,31 @@ QcNetworkDownloadRequest::on_data_received(const QByteArray & data)
 }
 
 QDebug
-operator<<(QDebug debug, const QcNetworkDownloadRequest & request)
+operator<<(QDebug debug, const QaNetworkDownloadRequest & request)
 {
-  debug << "QcNetworkDownloadRequest" << request.url().url() << "->" << request.target_path();
+  debug << "QaNetworkDownloadRequest" << request.url().url() << "->" << request.target_path();
   return debug;
 }
 
 /**************************************************************************************************/
 
-QcNetworkDownloader::QcNetworkDownloader()
-  : QcNetworkRequestManager()
+QaNetworkDownloader::QaNetworkDownloader()
+  : QaNetworkRequestManager()
 {}
 
-QcNetworkDownloader::~QcNetworkDownloader()
+QaNetworkDownloader::~QaNetworkDownloader()
 {}
 
 void
-QcNetworkDownloader::add_request(const QcNetworkDownloadRequestPtr & request)
+QaNetworkDownloader::add_request(const QaNetworkDownloadRequestPtr & request)
 {
-  qInfo() << "QcNetworkDownloader:add_request" << request;
-  QcNetworkRequestManager::add_request(request);
+  qInfo() << "QaNetworkDownloader:add_request" << request;
+  QaNetworkRequestManager::add_request(request);
 }
 
 void
-QcNetworkDownloader::cancel_request(const QcNetworkDownloadRequestPtr & request)
+QaNetworkDownloader::cancel_request(const QaNetworkDownloadRequestPtr & request)
 {
-  qInfo() << "QcNetworkDownloader:cancel_request" << request;
-  QcNetworkRequestManager::cancel_request(request);
+  qInfo() << "QaNetworkDownloader:cancel_request" << request;
+  QaNetworkRequestManager::cancel_request(request);
 }

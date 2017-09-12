@@ -61,7 +61,7 @@ C2cApiRequestMixin::to_json_document(const QByteArray & json_data)
 /**************************************************************************************************/
 
 C2cApiGetRequest::C2cApiGetRequest(const QUrl & url)
-  : QcGetNetworkRequest(url),
+  : QaGetNetworkRequest(url),
     C2cApiRequestMixin()
 {}
 
@@ -88,7 +88,7 @@ C2cApiGetRequest::on_data_received(const QByteArray & json_data)
 /**************************************************************************************************/
 
 C2cApiPostRequest::C2cApiPostRequest(const QUrl & url, const QJsonDocument & document)
-  : QcPostNetworkRequest(url, document),
+  : QaPostNetworkRequest(url, document),
     C2cApiRequestMixin()
 {}
 
@@ -114,7 +114,7 @@ C2cApiPostRequest::on_data_received(const QByteArray & json_data)
 /**************************************************************************************************/
 
 C2cApiMediaRequest::C2cApiMediaRequest(const QUrl & url)
-  : QcGetNetworkRequest(url),
+  : QaGetNetworkRequest(url),
     m_media(url.fileName())
 {}
 
@@ -135,7 +135,7 @@ C2cApiMediaRequest::on_data_received(const QByteArray & data)
 /**************************************************************************************************/
 
 C2cNetworkRequestManager::C2cNetworkRequestManager(C2cClient * client)
-  : QcNetworkRequestManager(),
+  : QaNetworkRequestManager(),
     m_client(client)
 {}
 
@@ -143,10 +143,10 @@ C2cNetworkRequestManager::~C2cNetworkRequestManager()
 {}
 
 QNetworkRequest
-C2cNetworkRequestManager::make_request(const QcNetworkRequestPtr & request_ptr) const
+C2cNetworkRequestManager::make_request(const QaNetworkRequestPtr & request_ptr) const
 {
-  QNetworkRequest request = QcNetworkRequestManager::make_request(request_ptr);
-  if (request_ptr->type() != QcNetworkRequest::RequestType::Get) {
+  QNetworkRequest request = QaNetworkRequestManager::make_request(request_ptr);
+  if (request_ptr->type() != QaNetworkRequest::RequestType::Get) {
     request.setRawHeader("Content-Type", "application/json"); // Fixme: here ?
     if (m_client->is_logged()) {
       QString jwt_token = "JWT token=\"";

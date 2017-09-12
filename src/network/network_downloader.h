@@ -49,23 +49,23 @@
 
 /**************************************************************************************************/
 
-/* The class QcNetworkDownloadRequest defines the URL of the request and the path of the target.
+/* The class QaNetworkDownloadRequest defines the URL of the request and the path of the target.
  *
  */
-class QcNetworkDownloadRequest : public QcGetNetworkRequest
+class QaNetworkDownloadRequest : public QaGetNetworkRequest
 {
   Q_OBJECT
 
 public:
-  QcNetworkDownloadRequest();
-  QcNetworkDownloadRequest(const QUrl & url, const QString & target_path);
-  QcNetworkDownloadRequest(const QcNetworkDownloadRequest & other);
+  QaNetworkDownloadRequest();
+  QaNetworkDownloadRequest(const QUrl & url, const QString & target_path);
+  QaNetworkDownloadRequest(const QaNetworkDownloadRequest & other);
 
-  QcNetworkDownloadRequest & operator=(const QcNetworkDownloadRequest & other);
+  QaNetworkDownloadRequest & operator=(const QaNetworkDownloadRequest & other);
 
   QString target_path() const { return m_target_path; }
 
-  bool operator==(const QcNetworkDownloadRequest & rhs) const;
+  bool operator==(const QaNetworkDownloadRequest & rhs) const;
 
 signals:
   void finished();
@@ -79,25 +79,25 @@ private:
   QString m_target_path;
 };
 
-typedef QSharedPointer<QcNetworkDownloadRequest> QcNetworkDownloadRequestPtr;
+typedef QSharedPointer<QaNetworkDownloadRequest> QaNetworkDownloadRequestPtr;
 
-QDebug operator<<(QDebug debug, const QcNetworkDownloadRequest & request);
+QDebug operator<<(QDebug debug, const QaNetworkDownloadRequest & request);
 
 /**************************************************************************************************/
 
-/* The class QcNetworkDownloader manages asynchronous ressource downloads.
+/* The class QaNetworkDownloader manages asynchronous ressource downloads.
  *
  */
-class QcNetworkDownloader : public QcNetworkRequestManager
+class QaNetworkDownloader : public QaNetworkRequestManager
 {
   Q_OBJECT
 
 public:
-  QcNetworkDownloader(); // QcNetworkRequestManager & network_fetcher
-  ~QcNetworkDownloader();
+  QaNetworkDownloader(); // QaNetworkRequestManager & network_fetcher
+  ~QaNetworkDownloader();
 
-  void add_request(const QcNetworkDownloadRequestPtr & request);
-  void cancel_request(const QcNetworkDownloadRequestPtr & request);
+  void add_request(const QaNetworkDownloadRequestPtr & request);
+  void cancel_request(const QaNetworkDownloadRequestPtr & request);
 };
 
 /**************************************************************************************************/

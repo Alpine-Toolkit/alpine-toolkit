@@ -48,36 +48,36 @@
 
 /**************************************************************************************************/
 
-/* The QcNetworkRequestManager class manages a list of asynchronous requests.
+/* The QaNetworkRequestManager class manages a list of asynchronous requests.
  *
  * Note: QNetworkAccessManager queues the requests it receives. The
  * number of requests executed in parallel is dependent on the
  * protocol. Currently, for the HTTP protocol on desktop platforms, 6
  * requests are executed in parallel for one host/port combination.
  */
-class QcNetworkRequestManager : public QObject
+class QaNetworkRequestManager : public QObject
 {
   Q_OBJECT
 
 public:
-  QcNetworkRequestManager();
-  ~QcNetworkRequestManager();
+  QaNetworkRequestManager();
+  ~QaNetworkRequestManager();
 
   void set_user_agent(const QByteArray & user_agent);
   // void set_connection_identifier();
 
-  virtual QNetworkRequest make_request(const QcNetworkRequestPtr & request) const;
+  virtual QNetworkRequest make_request(const QaNetworkRequestPtr & request) const;
 
 public slots:
-  void add_request(const QcNetworkRequestPtr & request);
-  void cancel_request(const QcNetworkRequestPtr & request);
+  void add_request(const QaNetworkRequestPtr & request);
+  void cancel_request(const QaNetworkRequestPtr & request);
 
 protected:
   void timerEvent(QTimerEvent * event); // Fixme: protected ???
 
 private:
-  QcNetworkReply * make_reply(const QcNetworkRequestPtr & request);
-  void handle_reply(QcNetworkReply * reply);
+  QaNetworkReply * make_reply(const QaNetworkRequestPtr & request);
+  void handle_reply(QaNetworkReply * reply);
 
 private slots:
   void get_next_request();
@@ -90,8 +90,8 @@ private:
   bool m_enabled;
   QBasicTimer m_timer;
   QMutex m_queue_mutex;
-  QList<QcNetworkRequestPtr> m_queue;
-  QHash<QcNetworkRequestPtr, QcNetworkReply *> m_invmap;
+  QList<QaNetworkRequestPtr> m_queue;
+  QHash<QaNetworkRequestPtr, QaNetworkReply *> m_invmap;
 };
 
 /**************************************************************************************************/

@@ -32,28 +32,28 @@
 
 /**************************************************************************************************/
 
-QcNetworkRequest::QcNetworkRequest()
+QaNetworkRequest::QaNetworkRequest()
   : QObject(),
     m_url()
 {}
 
-QcNetworkRequest::QcNetworkRequest(const QUrl & url)
+QaNetworkRequest::QaNetworkRequest(const QUrl & url)
   : QObject(),
     m_url(url)
 {}
 
-QcNetworkRequest::QcNetworkRequest(const QcNetworkRequest & other)
+QaNetworkRequest::QaNetworkRequest(const QaNetworkRequest & other)
   : QObject(),
     m_url(other.m_url)
 {}
 
-QcNetworkRequest::~QcNetworkRequest()
+QaNetworkRequest::~QaNetworkRequest()
 {
-  qInfo() << "~QcNetworkRequest";
+  qInfo() << "~QaNetworkRequest";
 }
 
-QcNetworkRequest &
-QcNetworkRequest::operator=(const QcNetworkRequest & other)
+QaNetworkRequest &
+QaNetworkRequest::operator=(const QaNetworkRequest & other)
 {
   if (this != &other) {
     m_url = other.m_url;
@@ -63,109 +63,109 @@ QcNetworkRequest::operator=(const QcNetworkRequest & other)
 }
 
 bool
-QcNetworkRequest::operator==(const QcNetworkRequest & rhs) const
+QaNetworkRequest::operator==(const QaNetworkRequest & rhs) const
 {
   return m_url == rhs.m_url;
 }
 
 QNetworkRequest
-QcNetworkRequest::network_request() const
+QaNetworkRequest::network_request() const
 {
   return QNetworkRequest(m_url);
 }
 
 /*
 unsigned int
-qHash(const QcNetworkRequest & request)
+qHash(const QaNetworkRequest & request)
 {
   unsigned int result = qHash(request.url());
-  qInfo() << "QcNetworkRequest hash" << result;
+  qInfo() << "QaNetworkRequest hash" << result;
   return result;
 }
 */
 
 QDebug
-operator<<(QDebug debug, const QcNetworkRequest & request)
+operator<<(QDebug debug, const QaNetworkRequest & request)
 {
-  debug << QLatin1String("QcNetworkRequest") << request.url().url();
+  debug << QLatin1String("QaNetworkRequest") << request.url().url();
   return debug;
 }
 
 /**************************************************************************************************/
 
-QcGetNetworkRequest::QcGetNetworkRequest()
-  : QcNetworkRequest()
+QaGetNetworkRequest::QaGetNetworkRequest()
+  : QaNetworkRequest()
 {}
 
-QcGetNetworkRequest::QcGetNetworkRequest(const QUrl & url)
-  : QcNetworkRequest(url)
+QaGetNetworkRequest::QaGetNetworkRequest(const QUrl & url)
+  : QaNetworkRequest(url)
 {}
 
-QcGetNetworkRequest::QcGetNetworkRequest(const QcGetNetworkRequest & other)
-  : QcNetworkRequest(other)
+QaGetNetworkRequest::QaGetNetworkRequest(const QaGetNetworkRequest & other)
+  : QaNetworkRequest(other)
 {}
 
-QcGetNetworkRequest::~QcGetNetworkRequest()
+QaGetNetworkRequest::~QaGetNetworkRequest()
 {
-  qInfo() << "~QcGetNetworkRequest";
+  qInfo() << "~QaGetNetworkRequest";
 }
 
-QcGetNetworkRequest &
-QcGetNetworkRequest::operator=(const QcGetNetworkRequest & other)
+QaGetNetworkRequest &
+QaGetNetworkRequest::operator=(const QaGetNetworkRequest & other)
 {
   if (this != &other) {
-    QcNetworkRequest::operator=(other);
+    QaNetworkRequest::operator=(other);
   }
 
   return *this;
 }
 
 bool
-QcGetNetworkRequest::operator==(const QcGetNetworkRequest & rhs) const
+QaGetNetworkRequest::operator==(const QaGetNetworkRequest & rhs) const
 {
-  return QcNetworkRequest::operator==(rhs);
+  return QaNetworkRequest::operator==(rhs);
 }
 
 QDebug
-operator<<(QDebug debug, const QcGetNetworkRequest & request)
+operator<<(QDebug debug, const QaGetNetworkRequest & request)
 {
-  debug << QLatin1String("QcGetNetworkRequest") << request.url().url();
+  debug << QLatin1String("QaGetNetworkRequest") << request.url().url();
   return debug;
 }
 
 /**************************************************************************************************/
 
-QcPostNetworkRequest::QcPostNetworkRequest()
-  : QcNetworkRequest(),
+QaPostNetworkRequest::QaPostNetworkRequest()
+  : QaNetworkRequest(),
     m_data()
 {}
 
-QcPostNetworkRequest::QcPostNetworkRequest(const QUrl & url, const QByteArray & data)
-  : QcNetworkRequest(url),
+QaPostNetworkRequest::QaPostNetworkRequest(const QUrl & url, const QByteArray & data)
+  : QaNetworkRequest(url),
     m_data(data)
 {}
 
-QcPostNetworkRequest::QcPostNetworkRequest(const QUrl & url, const QJsonDocument & document)
-  : QcNetworkRequest(url)
+QaPostNetworkRequest::QaPostNetworkRequest(const QUrl & url, const QJsonDocument & document)
+  : QaNetworkRequest(url)
 {
   set_data(document);
 }
 
-QcPostNetworkRequest::QcPostNetworkRequest(const QcPostNetworkRequest & other)
-  : QcNetworkRequest(other),
+QaPostNetworkRequest::QaPostNetworkRequest(const QaPostNetworkRequest & other)
+  : QaNetworkRequest(other),
     m_data(other.m_data)
 {}
 
-QcPostNetworkRequest::~QcPostNetworkRequest()
+QaPostNetworkRequest::~QaPostNetworkRequest()
 {
-  qInfo() << "~QcPostNetworkRequest";
+  qInfo() << "~QaPostNetworkRequest";
 }
 
-QcPostNetworkRequest &
-QcPostNetworkRequest::operator=(const QcPostNetworkRequest & other)
+QaPostNetworkRequest &
+QaPostNetworkRequest::operator=(const QaPostNetworkRequest & other)
 {
   if (this != &other) {
-    QcNetworkRequest::operator=(other);
+    QaNetworkRequest::operator=(other);
     m_data = other.m_data;
   }
 
@@ -173,21 +173,21 @@ QcPostNetworkRequest::operator=(const QcPostNetworkRequest & other)
 }
 
 bool
-QcPostNetworkRequest::operator==(const QcPostNetworkRequest & rhs) const
+QaPostNetworkRequest::operator==(const QaPostNetworkRequest & rhs) const
 {
-  return QcNetworkRequest::operator==(rhs) and m_data == rhs.m_data;
+  return QaNetworkRequest::operator==(rhs) and m_data == rhs.m_data;
 }
 
 void
-QcPostNetworkRequest::set_data(const QJsonDocument & document)
+QaPostNetworkRequest::set_data(const QJsonDocument & document)
 {
   // Fixme: set header
   m_data = document.toJson(QJsonDocument::Compact);
 }
 
 QDebug
-operator<<(QDebug debug, const QcPostNetworkRequest & request)
+operator<<(QDebug debug, const QaPostNetworkRequest & request)
 {
-  debug << QLatin1String("QcPostNetworkRequest") << request.url().url();
+  debug << QLatin1String("QaPostNetworkRequest") << request.url().url();
   return debug;
 }

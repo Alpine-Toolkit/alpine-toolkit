@@ -66,7 +66,7 @@ struct C2cApiRequestMixin
 
 /**************************************************************************************************/
 
-class C2cApiGetRequest : public QcGetNetworkRequest, public C2cApiRequestMixin
+class C2cApiGetRequest : public QaGetNetworkRequest, public C2cApiRequestMixin
 {
   Q_OBJECT
 
@@ -86,7 +86,7 @@ typedef QSharedPointer<C2cApiGetRequest> C2cApiGetRequestPtr;
 
 /**************************************************************************************************/
 
-class C2cApiPostRequest : public QcPostNetworkRequest, public C2cApiRequestMixin
+class C2cApiPostRequest : public QaPostNetworkRequest, public C2cApiRequestMixin
 {
   Q_OBJECT
 
@@ -106,7 +106,7 @@ typedef QSharedPointer<C2cApiPostRequest> C2cApiPostRequestPtr;
 
 /**************************************************************************************************/
 
-class C2cApiMediaRequest : public QcGetNetworkRequest
+class C2cApiMediaRequest : public QaGetNetworkRequest
 {
   Q_OBJECT
 
@@ -131,24 +131,24 @@ typedef QSharedPointer<C2cApiMediaRequest> C2cApiMediaRequestPtr;
 
 /**************************************************************************************************/
 
-class C2cNetworkRequestManager : public QcNetworkRequestManager
+class C2cNetworkRequestManager : public QaNetworkRequestManager
 {
 public:
   C2cNetworkRequestManager(C2cClient * client);
   ~C2cNetworkRequestManager();
 
-  QNetworkRequest make_request(const QcNetworkRequestPtr & request) const;
+  QNetworkRequest make_request(const QaNetworkRequestPtr & request) const;
 
   void add_request(C2cApiGetRequest * request) {
-    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+    QaNetworkRequestManager::add_request(QaNetworkRequestPtr(request));
   }
   void add_request(C2cApiPostRequest * request) {
-    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+    QaNetworkRequestManager::add_request(QaNetworkRequestPtr(request));
   }
   void add_request(C2cApiMediaRequest * request) {
-    QcNetworkRequestManager::add_request(QcNetworkRequestPtr(request));
+    QaNetworkRequestManager::add_request(QaNetworkRequestPtr(request));
   }
-  // void cancel_request(const QcNetworkRequestPtr & request);
+  // void cancel_request(const QaNetworkRequestPtr & request);
 
 private:
   C2cClient * m_client;

@@ -34,31 +34,31 @@
 
 /**************************************************************************************************/
 
-QcNetworkRequestManager::QcNetworkRequestManager()
+QaNetworkRequestManager::QaNetworkRequestManager()
   : QObject(),
     m_network_manager(this),
     m_user_agent(""),
     m_enabled(true)
 {
   connect(&m_network_manager, &QNetworkAccessManager::authenticationRequired,
-	  this, &QcNetworkRequestManager::on_authentication_request_slot);
+	  this, &QaNetworkRequestManager::on_authentication_request_slot);
 
   // Signal when a reply has finished
   // connect(m_network_manager, SIGNAL(finished(QNetworkReply*)),
   // 	  this, SLOT(replyFinished(QNetworkReply*)));
 }
 
-QcNetworkRequestManager::~QcNetworkRequestManager()
+QaNetworkRequestManager::~QaNetworkRequestManager()
 {}
 
 void
-QcNetworkRequestManager::set_user_agent(const QByteArray & user_agent)
+QaNetworkRequestManager::set_user_agent(const QByteArray & user_agent)
 {
   m_user_agent = user_agent;
 }
 
 void
-QcNetworkRequestManager::on_authentication_request_slot(QNetworkReply * reply,
+QaNetworkRequestManager::on_authentication_request_slot(QNetworkReply * reply,
                                                         QAuthenticator * authenticator)
 {
   // Fixme: this code do nothing
@@ -69,7 +69,7 @@ QcNetworkRequestManager::on_authentication_request_slot(QNetworkReply * reply,
 }
 
 void
-QcNetworkRequestManager::add_request(const QcNetworkRequestPtr & request)
+QaNetworkRequestManager::add_request(const QaNetworkRequestPtr & request)
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
@@ -82,11 +82,11 @@ QcNetworkRequestManager::add_request(const QcNetworkRequestPtr & request)
 }
 
 void
-QcNetworkRequestManager::cancel_request(const QcNetworkRequestPtr & request)
+QaNetworkRequestManager::cancel_request(const QaNetworkRequestPtr & request)
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  QcNetworkReply * reply = m_invmap.value(request, nullptr);
+  QaNetworkReply * reply = m_invmap.value(request, nullptr);
   if (reply) { // else url wasn't requested
     m_invmap.remove(request);
     reply->abort();
@@ -97,9 +97,9 @@ QcNetworkRequestManager::cancel_request(const QcNetworkRequestPtr & request)
 }
 
 void
-QcNetworkRequestManager::timerEvent(QTimerEvent * event)
+QaNetworkRequestManager::timerEvent(QTimerEvent * event)
 {
-  qInfo() << "QcNetworkRequestManager::timerEvent";
+  qInfo() << "QaNetworkRequestManager::timerEvent";
   if (event->timerId() != m_timer.timerId()) // Fixme: when ???
     QObject::timerEvent(event);
   else if (m_queue.isEmpty())
@@ -109,25 +109,25 @@ QcNetworkRequestManager::timerEvent(QTimerEvent * event)
 }
 
 void
-QcNetworkRequestManager::get_next_request()
+QaNetworkRequestManager::get_next_request()
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
   if (not m_enabled or m_queue.isEmpty())
     return;
 
-  QcNetworkRequestPtr request = m_queue.takeFirst();
+  QaNetworkRequestPtr request = m_queue.takeFirst();
 
-  qInfo() << "QcNetworkRequestManager::get_next_request" << request->url();
-  QcNetworkReply *reply = make_reply(request);
+  qInfo() << "QaNetworkRequestManager::get_next_request" << request->url();
+  QaNetworkReply *reply = make_reply(request);
 
   // If the request is already finished then handle it
   // Else connect the finished signal
   if (reply->is_finished()) {
     handle_reply(reply);
   } else {
-    connect(reply, &QcNetworkReply::finished,
-            this, &QcNetworkRequestManager::on_reply_finished,
+    connect(reply, &QaNetworkReply::finished,
+            this, &QaNetworkRequestManager::on_reply_finished,
             Qt::QueuedConnection);
     m_invmap.insert(request, reply);
   }
@@ -137,7 +137,7 @@ QcNetworkRequestManager::get_next_request()
 }
 
 QNetworkRequest
-QcNetworkRequestManager::make_request(const QcNetworkRequestPtr & request) const
+QaNetworkRequestManager::make_request(const QaNetworkRequestPtr & request) const
 {
   QNetworkRequest network_request = request->network_request();
   network_request.setRawHeader("User-Agent", m_user_agent);
@@ -148,21 +148,21 @@ QcNetworkRequestManager::make_request(const QcNetworkRequestPtr & request) const
   return network_request;
 }
 
-QcNetworkReply *
-QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
+QaNetworkReply *
+QaNetworkRequestManager::make_reply(const QaNetworkRequestPtr & request)
 {
   // Create request
   QNetworkRequest network_request = make_request(request);
 
   // Send request to network manager
   QNetworkReply * network_reply = nullptr;
-  QcNetworkRequest::RequestType request_type = request->type();
-  if (request_type == QcNetworkRequest::RequestType::Get) {
-    qInfo() << "QcNetworkRequestPtr::make_reply GET" << request->url();
+  QaNetworkRequest::RequestType request_type = request->type();
+  if (request_type == QaNetworkRequest::RequestType::Get) {
+    qInfo() << "QaNetworkRequestPtr::make_reply GET" << request->url();
     network_reply = m_network_manager.get(network_request);
-  } else if (request_type == QcNetworkRequest::RequestType::Post) {
-    auto post_request = request.dynamicCast<QcPostNetworkRequest>();
-    qInfo() << "QcNetworkRequestPtr::make_reply POST" << request->url() << "\n" << post_request->data();
+  } else if (request_type == QaNetworkRequest::RequestType::Post) {
+    auto post_request = request.dynamicCast<QaPostNetworkRequest>();
+    qInfo() << "QaNetworkRequestPtr::make_reply POST" << request->url() << "\n" << post_request->data();
     network_reply = m_network_manager.post(network_request, post_request->data());
   }
   // put(const QNetworkRequest &request, const QByteArray &data)
@@ -175,33 +175,33 @@ QcNetworkRequestManager::make_reply(const QcNetworkRequestPtr & request)
   // Fixme: ???
   // network_reply.setOriginatingObject(&request); // request must be an unique instance : a pointer !
 
-  return new QcNetworkReply(request, network_reply); // Fixme: deleted by deleteLater, smart ???
+  return new QaNetworkReply(request, network_reply); // Fixme: deleted by deleteLater, smart ???
 }
 
 void
-QcNetworkRequestManager::on_reply_finished()
+QaNetworkRequestManager::on_reply_finished()
 {
   QMutexLocker mutex_locker(&m_queue_mutex);
 
-  QcNetworkReply * reply = qobject_cast<QcNetworkReply *>(sender());
+  QaNetworkReply * reply = qobject_cast<QaNetworkReply *>(sender());
   if (not reply) { // Fixme: when ???
-    qWarning() << "QcNetworkRequestManager::reply_finished reply is null";
+    qWarning() << "QaNetworkRequestManager::reply_finished reply is null";
     return;
   }
 
-  const QcNetworkRequestPtr & request = reply->request();
-  qInfo() << "QcNetworkRequestManager::on_reply_finished" << request->url();
+  const QaNetworkRequestPtr & request = reply->request();
+  qInfo() << "QaNetworkRequestManager::on_reply_finished" << request->url();
   if (m_invmap.contains(request)) { // else cancelled request
     m_invmap.remove(request);
    handle_reply(reply);
   } else {
-    qWarning() << "QcNetworkRequestManager::reply_finished m_invmap doesn't have url";
+    qWarning() << "QaNetworkRequestManager::reply_finished m_invmap doesn't have url";
     reply->deleteLater(); // Fixme: cancelled ???
   }
 }
 
 void
-QcNetworkRequestManager::handle_reply(QcNetworkReply * reply)
+QaNetworkRequestManager::handle_reply(QaNetworkReply * reply)
 {
   // Could retry the request
 
