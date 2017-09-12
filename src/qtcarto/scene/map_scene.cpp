@@ -42,7 +42,13 @@ QcMapScene::QcMapScene(const QcViewport * viewport,
                        QObject * parent)
   : QObject(parent),
     m_viewport(viewport),
-    m_location_circle_data(location_circle_data)
+    m_layers(),
+    m_layer_map(),
+    m_scene_graph_nodes_to_remove(),
+    m_path(nullptr),
+    m_dirty_path(false),
+    m_location_circle_data(location_circle_data),
+    m_dirty_location_circle(false)
 {
   // connect(&m_location_circle_data, QcLocationCircleData::horizontal_precisionChanged,
   //         this, QcMapScene::set_location_circle_data_dirty);

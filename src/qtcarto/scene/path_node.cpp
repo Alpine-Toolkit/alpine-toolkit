@@ -304,129 +304,129 @@ QcPathNode::set_path_points(PathPoint2D * path_points,
 void
 QcPathNode::update(const QcDecoratedPathDouble * path)
 {
-////  QList<QcVectorDouble> path_vertexes;
-////  // Fixme:
-////  if (path)
-////    for (const auto & vertex : path->vertexes()) {
-////      QcVectorDouble screen_position = m_viewport->coordinate_to_screen(vertex);
-////      // qInfo() << vertex << screen_position;
-////      path_vertexes << screen_position;
-////    }
-////  int number_of_path_vertexes = path_vertexes.size();
-////  int number_of_vertexes = 0;
-////
-////  bool path_closed = number_of_path_vertexes >= 3 and path->closed();
-////
-////  const QColor path_colour(0, 0, 255, 255);
-////  const QColor selected_colour(255, 0, 0, 255);
-////
-////  // Polygon
-////  /*
-////  QSGGeometry * polygon_geometry;
-////  if (path_closed) {
-////    // QcPolygonTriangulation triangulation = path.triangulate();
-////    QcPathDouble screen_path(path_vertexes, path_closed);
-////    QcPolygonTriangulation triangulation(screen_path);
-////    QList<QcTriangleVertex> triangles = triangulation.triangle_vertexes();
-////    number_of_vertexes = triangles.size() * 3;
-////
-////    polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), number_of_vertexes);
-////    QSGGeometry::Point2D * path_points = static_cast<QSGGeometry::Point2D *>(polygon_geometry->vertexData());
-////    int i = 0;
-////    for (const auto & triangle : triangles) {
-////      int j = i*3;
-////      const QcVectorDouble & p1 = triangle.p1;
-////      path_points[j].set(p1.x(), p1.y());
-////      const QcVectorDouble & p2 = triangle.p2;
-////      path_points[j+1].set(p2.x(), p2.y());
-////      const QcVectorDouble & p3 = triangle.p3;
-////      path_points[j+2].set(p3.x(), p3.y());
-////      qInfo() << i << p1 << p2 << p3;
-////      i++;
-////    }
-////  } else
-////    // Fixme: better
-////    polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
-////  polygon_geometry->setDrawingMode(GL_TRIANGLES);
-////  m_polygon_geometry_node->setGeometry(polygon_geometry);
-////  m_polygon_geometry_node->setFlag(QSGNode::OwnsGeometry);
-////  */
-////
-////  // Path
-////  int number_of_segments = (number_of_path_vertexes) ? number_of_path_vertexes -1 : 0;
-////  if (path_closed)
-////    number_of_segments += 1;
-////  number_of_vertexes = number_of_segments * 4;
-////  QSGGeometry * path_geometry = new QSGGeometry(PathPoint2D_AttributeSet, number_of_vertexes);
-////  path_geometry->setDrawingMode(GL_TRIANGLE_STRIP);
-////  m_path_geometry_node->setGeometry(path_geometry);
-////  m_path_geometry_node->setFlag(QSGNode::OwnsGeometry);
-////  if (number_of_segments) {
-////    constexpr double line_width = 10;
-////    constexpr double antialias_diameter = 1.; // Fixme: according shader !
-////    // Fixme: linewidth/2.0 + 1.5*antialias;
-////    double half_width = ceil(1.25*antialias_diameter + line_width) * .5;
-////
-////    PathPoint2D * path_points = static_cast<PathPoint2D *>(path_geometry->vertexData());
-////    int last_i = number_of_path_vertexes -2;
-////    for (int i = 0; i <= last_i; i++) {
-////      QcVectorDouble point1 = path_vertexes[i];
-////      QcVectorDouble point2 = path_vertexes[i+1];
-////      // Fixme: optimise
-////      QcVectorDouble point0 = i > 0      ? path_vertexes[i-1] : point1;
-////      QcVectorDouble point3 = i < last_i ? path_vertexes[i+2] : point2;
-////      // qInfo() << i << point0 << point1 << point2 << point3;
-////      set_path_points(path_points, i, point0, point1, point2, point3, line_width, half_width, path_colour);
-////    }
-////    if (path_closed) {
-////      QcVectorDouble point0 = path_vertexes[last_i];
-////      QcVectorDouble point1 = path_vertexes[last_i +1];
-////      QcVectorDouble point2 = path_vertexes[0];
-////      QcVectorDouble point3 = path_vertexes[1];
-////      set_path_points(path_points, number_of_segments -1, point0, point1, point2, point3, line_width, half_width, path_colour);
-////    }
-////  }
-////
-////  // Points
-////  number_of_vertexes = number_of_path_vertexes * 6;
-////  QSGGeometry * point_geometry = new QSGGeometry(CirclePoint2D_AttributeSet, number_of_vertexes);
-////  point_geometry->setDrawingMode(GL_TRIANGLES);
-////  m_point_geometry_node->setGeometry(point_geometry);
-////  m_point_geometry_node->setFlag(QSGNode::OwnsGeometry);
-////  if (number_of_path_vertexes) {
-////    CirclePoint2D * circle_points = static_cast<CirclePoint2D *>(point_geometry->vertexData());
-////    constexpr float point_radius = 10; // Fixme: setting
-////    constexpr float margin = 10;
-////    int path_vertex_index = 0;
-////    int vertex_index = 0;
-////    for (const auto & vertex : path_vertexes) {
-////      QcDecoratedPathDouble::AttributeType attribute_type = path->attribute_at(path_vertex_index);
-////      QColor colour = test_bit(attribute_type, QcDecoratedPathDouble::AttributeType::Selected) ? selected_colour : path_colour;
-////      float radius = point_radius;
-////      if (test_bit(attribute_type, QcDecoratedPathDouble::AttributeType::Touched))
-////        // Fixme: set larger than a finger 2cm
-////        radius *= 4;
-////      float size = radius + margin;
-////      double x = vertex.x();
-////      double y = vertex.y();
-////      QcVectorDouble point1(x - size, y - size);
-////      QcVectorDouble point2(x - size, y + size);
-////      QcVectorDouble point3(x + size, y - size);
-////      QcVectorDouble point4(x + size, y + size);
-////      QcVectorDouble uv1(-size, -size);
-////      QcVectorDouble uv2(-size,  size);
-////      QcVectorDouble uv3( size, -size);
-////      QcVectorDouble uv4( size,  size);
-////      circle_points[vertex_index    ].set(point1, uv1, radius, colour);
-////      circle_points[vertex_index + 1].set(point2, uv2, radius, colour);
-////      circle_points[vertex_index + 2].set(point3, uv3, radius, colour);
-////      circle_points[vertex_index + 3].set(point2, uv2, radius, colour);
-////      circle_points[vertex_index + 4].set(point4, uv4, radius, colour);
-////      circle_points[vertex_index + 5].set(point3, uv3, radius, colour);
-////      path_vertex_index++;
-////      vertex_index += 6;
-////    }
-////  }
+  QList<QcVectorDouble> path_vertexes;
+  // Fixme:
+  if (path)
+    for (const auto & vertex : path->vertexes()) {
+      QcVectorDouble screen_position = m_viewport->coordinate_to_screen(vertex);
+      // qInfo() << vertex << screen_position;
+      path_vertexes << screen_position;
+    }
+  int number_of_path_vertexes = path_vertexes.size();
+  int number_of_vertexes = 0;
+
+  bool path_closed = number_of_path_vertexes >= 3 and path->closed();
+
+  const QColor path_colour(0, 0, 255, 255);
+  const QColor selected_colour(255, 0, 0, 255);
+
+  // Polygon
+  /*
+    QSGGeometry * polygon_geometry;
+    if (path_closed) {
+    // QcPolygonTriangulation triangulation = path.triangulate();
+    QcPathDouble screen_path(path_vertexes, path_closed);
+    QcPolygonTriangulation triangulation(screen_path);
+    QList<QcTriangleVertex> triangles = triangulation.triangle_vertexes();
+    number_of_vertexes = triangles.size() * 3;
+
+    polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), number_of_vertexes);
+    QSGGeometry::Point2D * path_points = static_cast<QSGGeometry::Point2D *>(polygon_geometry->vertexData());
+    int i = 0;
+    for (const auto & triangle : triangles) {
+    int j = i*3;
+    const QcVectorDouble & p1 = triangle.p1;
+    path_points[j].set(p1.x(), p1.y());
+    const QcVectorDouble & p2 = triangle.p2;
+    path_points[j+1].set(p2.x(), p2.y());
+    const QcVectorDouble & p3 = triangle.p3;
+    path_points[j+2].set(p3.x(), p3.y());
+    qInfo() << i << p1 << p2 << p3;
+    i++;
+    }
+    } else
+    // Fixme: better
+    polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
+    polygon_geometry->setDrawingMode(GL_TRIANGLES);
+    m_polygon_geometry_node->setGeometry(polygon_geometry);
+    m_polygon_geometry_node->setFlag(QSGNode::OwnsGeometry);
+  */
+
+  // Path
+  int number_of_segments = (number_of_path_vertexes) ? number_of_path_vertexes -1 : 0;
+  if (path_closed)
+    number_of_segments += 1;
+  number_of_vertexes = number_of_segments * 4;
+  QSGGeometry * path_geometry = new QSGGeometry(PathPoint2D_AttributeSet, number_of_vertexes);
+  path_geometry->setDrawingMode(GL_TRIANGLE_STRIP);
+  m_path_geometry_node->setGeometry(path_geometry);
+  m_path_geometry_node->setFlag(QSGNode::OwnsGeometry);
+  if (number_of_segments) {
+    constexpr double line_width = 10;
+    constexpr double antialias_diameter = 1.; // Fixme: according shader !
+    // Fixme: linewidth/2.0 + 1.5*antialias;
+    double half_width = ceil(1.25*antialias_diameter + line_width) * .5;
+
+    PathPoint2D * path_points = static_cast<PathPoint2D *>(path_geometry->vertexData());
+    int last_i = number_of_path_vertexes -2;
+    for (int i = 0; i <= last_i; i++) {
+      QcVectorDouble point1 = path_vertexes[i];
+      QcVectorDouble point2 = path_vertexes[i+1];
+      // Fixme: optimise
+      QcVectorDouble point0 = i > 0      ? path_vertexes[i-1] : point1;
+      QcVectorDouble point3 = i < last_i ? path_vertexes[i+2] : point2;
+      // qInfo() << i << point0 << point1 << point2 << point3;
+      set_path_points(path_points, i, point0, point1, point2, point3, line_width, half_width, path_colour);
+    }
+    if (path_closed) {
+      QcVectorDouble point0 = path_vertexes[last_i];
+      QcVectorDouble point1 = path_vertexes[last_i +1];
+      QcVectorDouble point2 = path_vertexes[0];
+      QcVectorDouble point3 = path_vertexes[1];
+      set_path_points(path_points, number_of_segments -1, point0, point1, point2, point3, line_width, half_width, path_colour);
+    }
+  }
+
+  // Points
+  number_of_vertexes = number_of_path_vertexes * 6;
+  QSGGeometry * point_geometry = new QSGGeometry(CirclePoint2D_AttributeSet, number_of_vertexes);
+  point_geometry->setDrawingMode(GL_TRIANGLES);
+  m_point_geometry_node->setGeometry(point_geometry);
+  m_point_geometry_node->setFlag(QSGNode::OwnsGeometry);
+  if (number_of_path_vertexes) {
+    CirclePoint2D * circle_points = static_cast<CirclePoint2D *>(point_geometry->vertexData());
+    constexpr float point_radius = 10; // Fixme: setting
+    constexpr float margin = 10;
+    int path_vertex_index = 0;
+    int vertex_index = 0;
+    for (const auto & vertex : path_vertexes) {
+      QcDecoratedPathDouble::AttributeType attribute_type = path->attribute_at(path_vertex_index);
+      QColor colour = test_bit(attribute_type, QcDecoratedPathDouble::AttributeType::Selected) ? selected_colour : path_colour;
+      float radius = point_radius;
+      if (test_bit(attribute_type, QcDecoratedPathDouble::AttributeType::Touched))
+        // Fixme: set larger than a finger 2cm
+        radius *= 4;
+      float size = radius + margin;
+      double x = vertex.x();
+      double y = vertex.y();
+      QcVectorDouble point1(x - size, y - size);
+      QcVectorDouble point2(x - size, y + size);
+      QcVectorDouble point3(x + size, y - size);
+      QcVectorDouble point4(x + size, y + size);
+      QcVectorDouble uv1(-size, -size);
+      QcVectorDouble uv2(-size,  size);
+      QcVectorDouble uv3( size, -size);
+      QcVectorDouble uv4( size,  size);
+      circle_points[vertex_index    ].set(point1, uv1, radius, colour);
+      circle_points[vertex_index + 1].set(point2, uv2, radius, colour);
+      circle_points[vertex_index + 2].set(point3, uv3, radius, colour);
+      circle_points[vertex_index + 3].set(point2, uv2, radius, colour);
+      circle_points[vertex_index + 4].set(point4, uv4, radius, colour);
+      circle_points[vertex_index + 5].set(point3, uv3, radius, colour);
+      path_vertex_index++;
+      vertex_index += 6;
+    }
+  }
 }
 
 /**************************************************************************************************/

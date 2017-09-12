@@ -545,7 +545,7 @@ QcMapItem::updatePaintNode(QSGNode * old_node, UpdatePaintNodeData *)
     root->setColor(m_color);
   }
 
-  QSGNode * content = root->childCount() ? root->firstChild() : 0;
+  QSGNode * content = root->childCount() ? root->firstChild() : nullptr;
   content = m_map_view->update_scene_graph(content, window());
   if (content and root->childCount() == 0)
     root->appendChildNode(content);
