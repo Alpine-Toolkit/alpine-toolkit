@@ -33,6 +33,7 @@
 
 include_directories(${CMAKE_SOURCE_DIR})
 
+include_directories(${CMAKE_SOURCE_DIR}/qtcarto/)
 include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
 include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
 
