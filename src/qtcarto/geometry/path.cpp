@@ -41,8 +41,11 @@ QcPathDouble::QcPath(const QVector<double> & coordinates, bool closed)
 {
   int number_of_coordinates = coordinates.size();
   int dimension = QcVectorDouble::dimension();
-  if (number_of_coordinates % dimension == 1)
-    throw std::invalid_argument("Odd number of coordinates");
+  if (number_of_coordinates % dimension == 1) {
+    // throw std::invalid_argument("Odd number of coordinates");
+    qCritical() << QLatin1String("Odd number of coordinates");
+    return;
+  }
 
   for (int i = 0; i < number_of_coordinates; i += dimension)
     add_vertex(VertexType(coordinates[i], coordinates[i+1]));
@@ -57,8 +60,11 @@ QcPath3DDouble::QcPath(const QVector<double> & coordinates, bool closed)
 {
   int number_of_coordinates = coordinates.size();
   int dimension = QcVector3DDouble::dimension();
-  if (number_of_coordinates % dimension == 1)
-    throw std::invalid_argument("Odd number of coordinates");
+  if (number_of_coordinates % dimension == 1) {
+    // throw std::invalid_argument("Odd number of coordinates");
+    qCritical() << QLatin1String("Odd number of coordinates");
+    return;
+  }
 
   for (int i = 0; i < number_of_coordinates; i += dimension)
     add_vertex(VertexType(coordinates[i], coordinates[i+1], coordinates[i+2]));

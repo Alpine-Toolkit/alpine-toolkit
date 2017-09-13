@@ -159,10 +159,12 @@ QcRational::to_double() const
     return .0;
   else if (is_one())
     return m_sign;
-  else if (is_infinite())
+  else if (is_infinite()) {
     // return +/- inf
-    throw std::invalid_argument("Denominator is null");
-  else if (is_integer())
+    // throw std::invalid_argument("Denominator is null");
+    qCritical() << QLatin1String("Denominator is null");
+    return 0;
+  } else if (is_integer())
     return m_sign * m_numerator;
   else
     return m_sign * (m_numerator / m_denominator);

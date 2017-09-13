@@ -33,6 +33,7 @@
 #include <QByteArray>
 #include <QFile>
 #include <QJsonDocument>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
@@ -93,8 +94,9 @@ QcGeoportailWmtsLicense::load_json(const QString & json_path)
   QFile json_file(json_path);
 
   if (!json_file.open(QIODevice::ReadOnly)) {
-    QString message =  QStringLiteral("Couldn't open file ") + json_path;
-    throw std::invalid_argument(message.toStdString().c_str());
+    QString message =  QLatin1String("Couldn't open file ") + json_path;
+    // throw std::invalid_argument(message.toStdString().c_str());
+    qWarning() << message;
   }
 
   QByteArray json_data = json_file.readAll();

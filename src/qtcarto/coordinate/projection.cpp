@@ -89,7 +89,8 @@ QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y, do
   int point_offset = 1;
   int error = pj_transform(m_projection, proj2.m_projection, point_count, point_offset, &x, &y, &z);
   if (error != 0)
-    throw; // Fixme: (pj_strerrno(error))
+    qCritical() << QLatin1Literal("pj_transform error:") << pj_strerrno(error);
+    // throw; // Fixme: (pj_strerrno(error))
 }
 
 bool
@@ -358,11 +359,11 @@ QcGeoCoordinate::QcGeoCoordinate(const QcProjection * projection, double x, doub
     set_x(x);
     set_y(y);
   } else {
-    qWarning() << "Invalid coordinate" << projection->srid()
-               << static_cast<int>(x) << m_projection->is_valid_x(x)
-               << static_cast<int>(y) << m_projection->is_valid_y(y);
+    qCritical() << "Invalid coordinate" << projection->srid()
+                << static_cast<int>(x) << m_projection->is_valid_x(x)
+                << static_cast<int>(y) << m_projection->is_valid_y(y);
     // Fixme: nan ?
-    throw std::invalid_argument("Invalid coordinate");
+    // throw std::invalid_argument("Invalid coordinate");
   }
 }
 

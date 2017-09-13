@@ -86,7 +86,7 @@ QcPath<T, Vector>::QcPath(const QVector<T> & coordinates, bool closed)
   int number_of_coordinates = coordinates.size();
   int dimension = Vector<T>::dimension();
   if (number_of_coordinates % dimension == 1)
-    throw std::invalid_argument("Odd number of coordinates");
+    // throw std::invalid_argument("Odd number of coordinates");
 
   for (int i = 0; i < number_of_coordinates; i += dimension)
     add_vertex(VertexType(coordinates[i], coordinates[i+1]));

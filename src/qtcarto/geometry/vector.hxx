@@ -125,8 +125,11 @@ QcVector<T>::operator[](int i)
     return m_x;
   else if (i == 1)
     return m_y;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_x;
+  }
 }
 
 template <typename T>
@@ -137,8 +140,11 @@ QcVector<T>::operator[](int i) const
     return m_x;
   else if (i == 1)
     return m_y;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_x;
+  }
 }
 
 template <typename T>
@@ -303,8 +309,11 @@ QcVector<T>::orientation() const
    * theta | atan | atan + pi | atan | atan - pi |
    */
 
-  if (is_null())
-    throw std::invalid_argument("Null Vector");
+  if (is_null()) {
+    // throw std::invalid_argument("Null Vector");
+    qCritical() << QLatin1String("Null Vector");
+    return 0;
+  }
 
   if (m_x == 0)
     return copysign(90, m_y);
@@ -382,8 +391,11 @@ QcVector<T>::tan() const
 {
   if (m_x != 0)
     return m_y / m_x;
-  else
-    throw std::invalid_argument("x is null");
+  else {
+    // throw std::invalid_argument("x is null");
+    qCritical() << QLatin1String("x is null");
+    return 0;
+  }
 }
 
 // Return the inverse tangent
@@ -393,8 +405,11 @@ QcVector<T>::inverse_tan() const
 {
   if (m_y != 0)
     return m_x / m_y;
-  else
-    throw std::invalid_argument("y is null");
+  else {
+    // throw std::invalid_argument("y is null");
+    qCritical() << QLatin1String("y is null");
+    return 0;
+  }
 }
 
 // Return the dot product of  with other
@@ -577,8 +592,11 @@ QcVector3D<T>::operator[](int i)
     return this->y();
   else if (i == 2)
     return m_z;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_z;
+  }
 }
 
 template <typename T>
@@ -591,8 +609,11 @@ QcVector3D<T>::operator[](int i) const
     return this->y();
   else if (i == 2)
     return m_z;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_z;
+  }
 }
 
 template <typename T>
@@ -784,7 +805,7 @@ QcVector3D<T>::tan() const
   if (m_x != 0)
     return m_y / m_x;
   else
-    throw std::invalid_argument("x is null");
+    // throw std::invalid_argument("x is null");
 }
 
 // Return the inverse tangent
@@ -795,7 +816,7 @@ QcVector3D<T>::inverse_tan() const
   if (m_y != 0)
     return m_x / m_y;
   else
-    throw std::invalid_argument("y is null");
+    // throw std::invalid_argument("y is null");
 }
 */
 
@@ -985,8 +1006,11 @@ QcVector4D<T>::operator[](int i)
     return this->z();
   else if (i == 3)
     return m_t;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_t;
+  }
 }
 
 template <typename T>
@@ -1001,8 +1025,11 @@ QcVector4D<T>::operator[](int i) const
     return this->z();
   else if (i == 3)
     return m_t;
-  else
-    throw std::invalid_argument("invalid index");
+  else {
+    // throw std::invalid_argument("invalid index");
+    qCritical() << QLatin1String("invalid index");
+    return m_t;
+  }
 }
 
 template <typename T>

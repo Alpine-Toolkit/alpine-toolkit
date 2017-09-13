@@ -30,6 +30,8 @@
 
 #include <cmath>
 
+#include <QtDebug>
+
 /**************************************************************************************************/
 
 // QcTileMatrixSetIterator::QcTileMatrixSetIterator (const QcTileMatrixSet * tile_matrix_set, int position)
@@ -136,6 +138,9 @@ QcTileMatrix::_to_matrix_index_check(const QcVectorDouble & mapped_coordinate) c
 
   if (x < m_mosaic_size and y < m_mosaic_size)
     return QcTileMatrixIndex(x, y);
-  else
-    throw std::invalid_argument("Invalid coordinate");
+  else {
+    // throw std::invalid_argument("Invalid coordinate");
+    qCritical() << QLatin1String("Invalid coordinate") << x << y;
+    return QcTileMatrixIndex(0, 0);
+  }
 }

@@ -47,8 +47,8 @@ QcGeoCoordinateTemplate<Projection>::QcGeoCoordinateTemplate(double x, double y)
     set_x(x);
     set_y(y);
   } else {
-    qWarning() << "Invalid coordinate" << cls_projection.srid() << x << y;
-    throw std::invalid_argument("Invalid coordinate");
+    qCritical() << "Invalid coordinate" << cls_projection.srid() << x << y;
+    // throw std::invalid_argument("Invalid coordinate");
   }
 }
 

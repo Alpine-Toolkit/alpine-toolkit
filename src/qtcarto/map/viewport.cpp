@@ -75,7 +75,8 @@ QcMapResolution::set_resolution(double resolution)
   if (resolution > 0)
     m_resolution = resolution;
   else
-    throw std::invalid_argument("Invalid zoom factor must be > 0");
+    // throw std::invalid_argument("Invalid zoom factor must be > 0");
+    qCritical() << QLatin1String("Invalid zoom factor must be > 0");
 }
 
 /**************************************************************************************************/
@@ -185,7 +186,8 @@ QcViewportState::set_bearing(double bearing) {
   if (is_valid_bearing(bearing))
     m_bearing = bearing;
   else
-    throw std::invalid_argument("Invalid bearing");
+    // throw std::invalid_argument("Invalid bearing");
+    qCritical() << QLatin1String("Invalid bearing");
 }
 
 QcViewportState &
