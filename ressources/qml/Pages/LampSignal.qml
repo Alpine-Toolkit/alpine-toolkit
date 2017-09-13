@@ -37,7 +37,7 @@ Widgets.Page {
     id: lamp_signal_pane
 
     property int button_point_size: 30
-    property int button_width: parent.width / 3
+    property int button_width: parent.width / 3 // Fixme: TypeError: Cannot read property of null
 
     SwipeView {
         id: swipe_view
@@ -116,7 +116,7 @@ Widgets.Page {
                             send_encoded_message.text = application.encode_morse(message, false);
                             var encoded_message = application.encode_morse(message, true);
                             var rate_ms = rate_ms_spinbox.value;
-                            platform_abstraction.perform_lamp_signal(message, rate_ms);
+                            platform_abstraction.perform_lamp_signal(encoded_message, rate_ms);
                         }
                     }
                 }
