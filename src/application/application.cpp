@@ -71,6 +71,9 @@
 #include "platform_abstraction/android_platform.h"
 #endif
 
+// to set PROJ4 search path
+#include "proj_api.h"
+
 /**************************************************************************************************/
 
 QmlApplication::QmlApplication()
@@ -176,6 +179,7 @@ Application::Application(int & argc, char ** argv)
     m_engine(),
     m_qml_application()
 {
+  set_env_variables();
   load_translation();
   m_config.init(); // Fixme: ???
   write_debug_data();
@@ -219,7 +223,10 @@ void
 Application::set_env_variables()
 {
   // Set environment variable PROJ_LIB for proj4 so as to find (epsg) date files
-  setenv("PROJ_LIB", m_config.application_user_directory().toStdString().c_str(), 1);
+  const char * proj4_data_path = m_config.application_user_directory().toStdString().c_str();
+  // setenv("PROJ_LIB", proj4_data_path, 1); // must be set before to load the proj4 library
+  const char *paths[] = { proj4_data_path };
+  pj_set_searchpath(1, paths);
 }
 
 void
