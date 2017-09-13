@@ -54,6 +54,14 @@ PlatformAbstraction::need_explain() const
   return QStringList();
 }
 
+QStringList
+PlatformAbstraction::need_grant() const
+{
+  qInfo() << "need_grant";
+
+  return QStringList();
+}
+
 void
 PlatformAbstraction::ask_permission(const QString & permission) const
 {

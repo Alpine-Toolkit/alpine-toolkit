@@ -59,6 +59,19 @@ AndroidPlatform::need_explain() const
   return permissions.split(QChar(','));
 }
 
+QStringList
+AndroidPlatform::need_grant() const
+{
+  // Fixme: duplicated code
+
+  qInfo() << "need_grant";
+
+  QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_grant", "()Ljava/lang/String");
+  QString permissions = j_string.toString();
+
+  return permissions.split(QChar(','));
+}
+
 void
 AndroidPlatform::ask_permission(const QString & permission) const
 {
@@ -161,6 +174,7 @@ AndroidPlatform::issue_dial(const QString & phone_number) const
 void
 AndroidPlatform::perform_lamp_signal(const QString & message, int rate_ms) const
 {
+  qInfo() << "perform_lamp_signal" << message << rate_ms;
   QAndroidJniObject j_message = QAndroidJniObject::fromString(message);
   QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_message.object<jstring>(), rate_ms);
 }

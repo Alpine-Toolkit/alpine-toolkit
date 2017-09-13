@@ -48,6 +48,7 @@ public:
   PlatformType platform_type() const { return Linux; }
 
   Q_INVOKABLE QStringList need_explain() const;
+  Q_INVOKABLE QStringList need_grant() const;
   Q_INVOKABLE void ask_permission(const QString & permission) const;
   Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
   Q_INVOKABLE bool is_permission_denied(const QString & permission) const;

@@ -67,6 +67,7 @@ public class CameraManagerMarshmallow extends CameraManagerBase
     super(activity);
 
     try {
+      // Note: System services not available to Activities before onCreate()
       m_camera_manager = (CameraManager) m_activity.getSystemService(Context.CAMERA_SERVICE);
       String[] camera_ids = m_camera_manager.getCameraIdList();
       for (String camera_id : camera_ids) {

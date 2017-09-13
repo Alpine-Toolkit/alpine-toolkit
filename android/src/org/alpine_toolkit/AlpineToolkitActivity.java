@@ -76,8 +76,6 @@ public class AlpineToolkitActivity extends QtActivity
   public AlpineToolkitActivity()
   {
     m_instance = this;
-
-    _init();
   }
 
   /**********************************************/
@@ -113,7 +111,7 @@ public class AlpineToolkitActivity extends QtActivity
   private void _init_marshmallow()
   {
     Log.i(LOG_TAG, "Init for Marshmallow");
-    m_camera_manager = new CameraManagerMarshmallow(this);
+    m_camera_manager = new CameraManagerMarshmallow(this); // must be called in onCreate
   }
 
   /**********************************************/
@@ -122,6 +120,8 @@ public class AlpineToolkitActivity extends QtActivity
   public void onCreate(Bundle savedInstanceState)
   {
     Log.i(LOG_TAG, ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
+
+    _init();
 
     // Fixme: hardcoded
     set_status_bar_background_color(Color.parseColor(Constants.UI.BACKGROUND_COLOR));
@@ -190,6 +190,11 @@ public class AlpineToolkitActivity extends QtActivity
   public String need_explain()
   {
     return TextUtils.join(",", m_permission_manager.need_explain());
+  }
+
+  public String need_grant()
+  {
+    return TextUtils.join(",", m_permission_manager.need_grant());
   }
 
   public void ask_permission(final String permission)

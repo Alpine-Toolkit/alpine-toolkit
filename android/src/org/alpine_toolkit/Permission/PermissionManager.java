@@ -37,6 +37,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 
 // https://developer.android.com/topic/libraries/support-library/index.html
 // https://developer.android.com/topic/libraries/support-library/packages.html
@@ -60,6 +61,7 @@ public class PermissionManager
   public PermissionManager(AlpineToolkitActivity activity)
   {
     m_activity = activity;
+    m_permissions = new HashMap<String, PermissionStatus>();
   }
 
   /**********************************************/
@@ -68,10 +70,10 @@ public class PermissionManager
   {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // API 21
       for (String permission : permissions)
-        check_permission(permission);
+        _check_permission(permission, false);
   }
 
-  public PermissionStatus check_permission(String permission)
+  private PermissionStatus _check_permission(String permission, Boolean request)
   {
     if (m_permissions.containsKey(permission))
       return m_permissions.get(permission);
@@ -105,6 +107,11 @@ public class PermissionManager
     }
   }
 
+  public PermissionStatus check_permission(String permission)
+  {
+    return _check_permission(permission, true);
+  }
+
   // @Override
   public void onRequestPermissionsResult(int permission_id, String permissions[], int[] grant_results) {
     // If request is cancelled, the result arrays are empty.
@@ -134,7 +141,18 @@ public class PermissionManager
   {
     ArrayList<String> permissions = new ArrayList<String>();
     for (PermissionStatus permission_status : m_permissions.values()) {
-      permissions.add(permission_status.permission());
+      if (permission_status.is_need_explain())
+        permissions.add(permission_status.permission());
+    }
+    return permissions.toArray(new String[0]);
+  }
+
+  public String[] need_grant()
+  {
+    ArrayList<String> permissions = new ArrayList<String>();
+    for (PermissionStatus permission_status : m_permissions.values()) {
+      if (permission_status.is_need_grant())
+        permissions.add(permission_status.permission());
     }
     return permissions.toArray(new String[0]);
   }
