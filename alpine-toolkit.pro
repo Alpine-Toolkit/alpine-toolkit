@@ -78,8 +78,6 @@ include(src/main.pri)
 #
 
 linux:!android {
-DEFINES += ON_LINUX
-
 HEADERS += \
   src/platform_abstraction/linux_platform.h
 
@@ -93,11 +91,6 @@ SOURCES += \
 #
 
 android {
-message("Android arch is $$ANDROID_TARGET_ARCH") # x86 armeabi-v7a
-
-DEFINES += ANDROID
-DEFINES += ON_ANDROID
-
 QT += androidextras
 
 HEADERS += \
@@ -188,9 +181,3 @@ DISTFILES += \
     android/gradlew.bat \
     android/src/org/alpine_toolkit/AlpineToolkitActivity.java \
     android/src/org/alpine_toolkit/AlpineToolkitService.java
-
-# android {
-#     proj4_data.path = /assets/proj4_data
-#     proj4_data.files += $$PWD/../third-parties/proj4/proj.4.git/nad/epsg
-#     INSTALLS += proj4_data
-# }

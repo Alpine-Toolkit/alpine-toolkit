@@ -62,3 +62,16 @@ debug {
 }
 
 ####################################################################################################
+
+linux:!android {
+DEFINES += ON_LINUX
+}
+
+android {
+message("Android arch is $$ANDROID_TARGET_ARCH") # x86 armeabi-v7a
+
+DEFINES += ANDROID
+DEFINES += ON_ANDROID
+}
+
+####################################################################################################
