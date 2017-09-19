@@ -39,6 +39,6 @@ rm compile_commands.json
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-  -DSANITIZE=OFF \
+  -DSANITIZE=ON \
   -DINSTRUMENT_FUNTIONS=OFF \
   ${source_path}
