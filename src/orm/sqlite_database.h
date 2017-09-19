@@ -48,6 +48,8 @@ private:
   void open();
   void init_spatialite();
 
+  virtual bool move_database(const QString & new_path, bool commit = true);
+
 private:
   QString m_sqlite_path;
   bool m_created = false;

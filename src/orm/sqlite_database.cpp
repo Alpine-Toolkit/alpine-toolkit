@@ -76,3 +76,18 @@ QcSqliteDatabase::init_spatialite()
   if (m_created)
     execute_query(QLatin1String("SELECT InitSpatialMetaData(1);"));
 }
+
+bool
+QcSqliteDatabase::move_database(const QString & new_path, bool commit)
+{
+  m_database.commit();
+  m_database.close();
+
+  bool rc = QFile(m_sqlite_path).rename(new_path);
+  if (rc)
+    m_sqlite_path = new_path;
+
+  open();
+
+  return rc;
+}
