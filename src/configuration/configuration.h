@@ -56,15 +56,21 @@ public:
   QcConfig(QcConfig &&) = delete;                  // Move construct
   QcConfig & operator=(QcConfig &&) = delete;      // Move assign
 
-  const QString & application_user_directory() const { return m_application_user_directory; }
-  const QString join_application_user_directory(const QString & path);
+  void init(); // called in application.cpp
 
-  void init();
+  // public directory
+  const QString & application_user_directory() const { return m_application_user_directory; }
+  const QString join_application_user_directory(const QString & path) const;
+
+  // WMTS Data
+  const QString wmts_cache_directory() const;
+  const QString wmts_token_directory() const;
+  const QString geoportail_token_path() const;
 
 private:
   QcConfig();
   ~QcConfig();
-  void create_user_application_directory() const;
+  void create_directory(const QString path, const QString label) const;
 
 private:
   bool m_initialised;

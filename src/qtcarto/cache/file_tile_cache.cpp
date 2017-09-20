@@ -65,6 +65,8 @@
 #include "file_tile_cache.h"
 #include "tile_image.h"
 
+#include "configuration/configuration.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QMetaType>
@@ -201,47 +203,7 @@ QcFileTileCache::~QcFileTileCache()
 QString
 QcFileTileCache::base_cache_directory()
 {
-  // Try the shared cache first and use a specific directory. (e.g. ~/.cache/QtLocation)
-  // If this is not supported by the platform, use the application-specific cache location.
-  // (e.g. ~/.cache/<app_name>/QtLocation)
-
-  // /data/user/11/org.qtproject.example.mapviewer_atk/cache/QtCarto/
-#ifdef ANDROID
-  QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  // qInfo() << "GenericDataLocation:" << generic_data_location_path;
-  QString application_user_directory_path = QDir(generic_data_location_path).filePath("alpine-toolkit");
-  QString directory = application_user_directory_path + QDir::separator() + QLatin1Literal("cache");
-#else
-  QString directory = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
-#endif
-  // qInfo() << "base_cache_directory" << directory;
-
-  // Check we can write on the cache directory
-  if (!directory.isEmpty()) {
-    // The shared cache may not be writable when application isolation is enforced.
-    static bool cache_directory_writable = false; // static for later use
-    static bool cache_directory_writable_checked = false;
-    if (!cache_directory_writable_checked) {
-      cache_directory_writable_checked = true;
-      QDir::root().mkpath(directory);
-      QFile write_test_file(QDir(directory).filePath(QLatin1Literal("qt_cache_check")));
-      cache_directory_writable = write_test_file.open(QIODevice::WriteOnly);
-      if (cache_directory_writable)
-	write_test_file.remove();
-    }
-    if (!cache_directory_writable)
-      directory = QString();
-  }
-
-  if (directory.isEmpty())
-    directory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-
-  if (!directory.endsWith(QLatin1Char('/')))
-    directory += QLatin1Char('/');
-  directory += QLatin1Literal("QtCarto/");
-
-  // qInfo() << "base_cache_directory" << directory;
-  return directory;
+  return QcConfig::instance().wmts_cache_directory();
 }
 
 /*! Clear the cache and remove cached files on disk

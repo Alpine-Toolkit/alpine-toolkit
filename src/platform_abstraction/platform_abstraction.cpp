@@ -28,7 +28,31 @@
 
 #include "platform_abstraction.h"
 
+#ifdef ON_LINUX
+#include "platform_abstraction/linux_platform.h"
+#endif
+#ifdef ON_ANDROID
+#include "platform_abstraction/android_platform.h"
+#endif
+
+#include <QDir>
+#include <QFile>
+#include <QUuid>
 #include <QtDebug>
+
+/**************************************************************************************************/
+
+PlatformAbstraction *
+PlatformAbstraction::instance() {
+  // Thread-safe in C++11
+#ifdef ON_LINUX
+  static PlatformAbstraction * _instance = new LinuxPlatform();
+#endif
+#ifdef ON_ANDROID
+  static PlatformAbstraction * _instance = new AndroidPlatform();
+#endif
+  return _instance;
+}
 
 /**************************************************************************************************/
 
@@ -82,6 +106,34 @@ PlatformAbstraction::is_permission_denied(const QString & permission) const
   qInfo() << "is_permission_denied" << permission;
 
   return false;
+}
+
+/**************************************************************************************************/
+
+bool
+PlatformAbstraction::is_directory_writable(const QString & path) const
+{
+  // The shared cache may not be writable when application isolation is enforced.
+  // static bool cache_directory_writable = false; // static for later use
+  // static bool cache_directory_writable_checked = false;
+  // if (!cache_directory_writable_checked) {
+  //   cache_directory_writable_checked = true;
+  // }
+
+  // Android ???
+  // https://developer.android.com/reference/java/io/File.html  canWrite()
+  // https://stackoverflow.com/questions/23289669/android-read-only-storage-behaves-like-writable
+
+  // Create path and try to write a temporary file
+  if (not QDir::root().mkpath(path))
+    return false;
+  QString filename = QDir(path).filePath(QLatin1Literal(".") + QUuid().toString());
+  QFile tmp_file(filename);
+  bool writable = tmp_file.open(QIODevice::WriteOnly);
+  if (writable)
+    tmp_file.remove();
+
+  return writable;
 }
 
 /**************************************************************************************************/

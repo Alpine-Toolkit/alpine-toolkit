@@ -68,6 +68,9 @@ public:
   Q_ENUMS(ScreenOrientation)
 
 public:
+  static PlatformAbstraction * instance();
+
+public:
   explicit PlatformAbstraction(QObject * parent = nullptr);
   ~PlatformAbstraction();
 
@@ -78,6 +81,8 @@ public:
   Q_INVOKABLE void ask_permission(const QString & permission) const;
   Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
   Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
+
+  bool is_directory_writable(const QString & path) const;
 
   void set_orientation_lock(bool orientation_lock);
   bool orientation_lock() const;

@@ -116,7 +116,7 @@ public:
 
   QSettings & settings() { return m_settings; }
 
-  QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
+  const QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
   QString encode_morse(const QString & message, bool use_bit);
   QString decode_morse(const QString & message);
@@ -145,11 +145,11 @@ private:
   QApplication m_application; // for charts
   QTranslator m_translator;
   QSettings m_settings;
-  QcConfig & m_config; // Fixme: singleton ???
+  PlatformAbstraction * m_platform_abstraction = nullptr; // singleton
+  QcConfig & m_config; // singleton
   QQmlApplicationEngine m_engine;
-
-  PlatformAbstraction * m_platform_abstraction = nullptr; // Fixme: QPointer ?
   QmlApplication m_qml_application;
+
   InternationalMorseCodeEngine * m_morse_code_engine = nullptr; // lazy loading
   ThirdPartyLicenseSchemaManager m_third_party_license_schema_manager;
   Ephemeride m_ephemeride;

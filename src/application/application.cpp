@@ -45,10 +45,11 @@
 // #include <QSurfaceFormat>
 
 // #include "bleaudb/bleau_database.h"
-#include "config.h"
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
 #include "camptocamp/camptocamp_qml.h"
+#include "config.h"
+#include "platform_abstraction/platform_abstraction.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
 #include "tools/debug_data.h"
@@ -63,13 +64,6 @@
 #include "map/map_event_router.h"
 #include "map/map_path_editor.h"
 #include "map/path_property.h"
-
-#ifdef ON_LINUX
-#include "platform_abstraction/linux_platform.h"
-#endif
-#ifdef ON_ANDROID
-#include "platform_abstraction/android_platform.h"
-#endif
 
 /**************************************************************************************************/
 
@@ -172,6 +166,7 @@ Application::Application(int & argc, char ** argv)
   : m_application(argc, argv),
     m_translator(),
     m_settings(),
+    m_platform_abstraction(PlatformAbstraction::instance()),
     m_config(QcConfig::instance()),
     m_engine(),
     m_qml_application()
@@ -181,6 +176,7 @@ Application::Application(int & argc, char ** argv)
   m_config.init(); // Fixme: ???
   write_debug_data();
   register_qml_types();
+  set_offline_storage_path();
   set_context_properties();
   load_qml_main();
 
@@ -206,8 +202,8 @@ Application::setup_gui_application()
   // Must be called before to instanciate Application
 
   // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "Alpine Toolkit "));
-  QGuiApplication::setApplicationName("Alpine Toolkit");
-  QGuiApplication::setOrganizationName("Alpine Toolkit"); // overridden ???
+  QGuiApplication::setApplicationName(APPLICATION_NAME);
+  QGuiApplication::setOrganizationName(APPLICATION_NAME); // overridden ???
   // QGuiApplication::setOrganizationDomain("alpine-toolkit.org")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
@@ -362,23 +358,17 @@ Application::set_context_properties()
 
   context->setContextProperty(QLatin1String("application"), &m_qml_application);
 
-#ifdef ON_LINUX
-  m_platform_abstraction = new LinuxPlatform();
-#endif
-#ifdef ON_ANDROID
-  m_platform_abstraction = new AndroidPlatform();
-#endif
   context->setContextProperty(QLatin1String("platform_abstraction"), m_platform_abstraction);
 
   context->setContextProperty(QLatin1String("service"), &m_service_client);
   context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);
 
   // Lazy loading
-  QString third_party_licenses_json = ":/data/third_party_licenses.json";
+  QString third_party_licenses_json = ":/data/third_party_licenses.json"; // embedded in qrc
   m_third_party_license_schema_manager.set_json_path(third_party_licenses_json);
   context->setContextProperty(QLatin1Literal("third_party_license_schema_manager"), &m_third_party_license_schema_manager);
 
-  QString refuge_json = ":/data/refuges.json";
+  QString refuge_json = ":/data/refuges.json"; // embedded in qrc
   m_refuge_schema_manager.load_json(refuge_json);
   context->setContextProperty(QLatin1Literal("refuge_schema_manager"), &m_refuge_schema_manager);
 
@@ -396,11 +386,11 @@ Application::set_context_properties()
   // context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
 
   // Create Camptocamp client
-  QDir offline_storage_path = QDir(context->engine()->offlineStoragePath()); // same as application_user_directory
-  // ~/.local/share/Alpine Toolkit/Alpine Toolkit/QML/OfflineStorage/
-  QString c2c_api_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
-  QString c2c_media_cache_path = offline_storage_path.absoluteFilePath(QLatin1String("media"));
-  qInfo() << "Camptocamp Cache" << c2c_api_cache_path << c2c_media_cache_path;
+  // QDir c2c_cache_path = m_engine.offlineStoragePath(); // same as application_user_directory
+  QDir c2c_cache_path = application_user_directory();
+  QString c2c_api_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
+  QString c2c_media_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("media"));
+  qInfo() << "Camptocamp Cache Path" << c2c_api_cache_path << c2c_media_cache_path;
   C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
   context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
@@ -410,8 +400,8 @@ Application::set_context_properties()
 void
 Application::set_offline_storage_path()
 {
-  qInfo() << "offlineStoragePath" << m_engine.offlineStoragePath();
-  // /home/fabrice/.local/share/FabriceSalvaire/Alpine Toolkit/QML/OfflineStorage
+  qInfo() << "Default Offline Storage Path is" << m_engine.offlineStoragePath();
+  // ~/.local/share/Alpine Toolkit/Alpine Toolkit/QML/OfflineStorage/
   m_engine.setOfflineStoragePath(m_config.application_user_directory());
 }
 

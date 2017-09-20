@@ -101,11 +101,7 @@ QcWmtsPluginManager::operator[](const QString & name)
 QcWmtsPlugin *
 QcWmtsPluginManager::create_plugin_geoportail()
 {
-  QcConfig & config = QcConfig::instance();
-
-  // Fixme: Hide license
-  QString json_path = QDir(config.application_user_directory()).filePath(QLatin1Literal("geoportail-license.json"));
-  // qInfo() << "Geoportail license json" << json_path;
+  QString json_path = QcConfig::instance().geoportail_token_path();
   QcGeoportailWmtsLicense geoportail_license(json_path);
 
   return new QcGeoportailPlugin(geoportail_license);

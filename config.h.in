@@ -35,11 +35,21 @@
 
 /**************************************************************************************************/
 
-static QVersionNumber ALPINE_TOOLKIT_VERSION(@ALPINE_TOOLKIT_VERSION_MAJOR@,
-                                             @ALPINE_TOOLKIT_VERSION_MINOR@,
-                                             @ALPINE_TOOLKIT_VERSION_PATCH@);
+static const QVersionNumber ALPINE_TOOLKIT_VERSION(@ALPINE_TOOLKIT_VERSION_MAJOR@,
+                                                   @ALPINE_TOOLKIT_VERSION_MINOR@,
+                                                   @ALPINE_TOOLKIT_VERSION_PATCH@);
 
-static QUrl ALPINE_TOOLKIT_URL = QUrl(QLatin1String("https://alpine-toolkit.fabrice-salvaire.fr"));
+static const QUrl ALPINE_TOOLKIT_URL = QUrl(QLatin1String("https://alpine-toolkit.fabrice-salvaire.fr"));
+
+static const QString APPLICATION_NAME = QLatin1String("Alpine Toolkit");
+
+#ifdef ON_LINUX
+static const QString CONFIG_DIRECTORY_NAME = QLatin1String("alpine-toolkit");
+#endif
+
+#ifdef ON_ANDROID
+static const QString ANDROID_PACKAGE_NAME = QLatin1String("org.alpine_toolkit");
+#endif
 
 // #cmakedefine FOO_ENABLE
 // #cmakedefine FOO_STRING "@FOO_STRING@"

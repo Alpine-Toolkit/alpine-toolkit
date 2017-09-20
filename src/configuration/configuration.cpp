@@ -28,6 +28,8 @@
 
 #include "configuration.h"
 
+#include "config.h"
+
 #include <QDir>
 #include <QStandardPaths>
 #include <QtDebug>
@@ -41,17 +43,28 @@
 QcConfig::QcConfig()
   : m_initialised(false)
 {
-  // on Android
-  //   DataLocation = /data/data/org.alpine_toolkit
-  //   GenericDataLocation = <USER> = /storage/emulated/0 = user land root
-  // on Linux
-  //   GenericDataLocation = /home/fabrice/.local/share
-
   QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  qInfo() << "GenericDataLocation:" << generic_data_location_path;
-  // /storage/emulated/0/Android/data/org.xxx/files Alarms Download Notifications cache
+  // qInfo() << "GenericDataLocation:" << generic_data_location_path;
 
-  m_application_user_directory = QDir(generic_data_location_path).filePath(QLatin1Literal("alpine-toolkit"));
+  // Fixme: could use PlatformAbstraction::instance()
+#ifdef ON_LINUX
+  // GenericDataLocation = /home/fabrice/.local/share
+  m_application_user_directory = QDir(generic_data_location_path).filePath(CONFIG_DIRECTORY_NAME);
+#endif
+
+#ifdef ON_ANDROID
+  // DataLocation = /data/data/org.alpine_toolkit
+  // GenericDataLocation = <USER> = /storage/emulated/0 = user land root
+  // /storage/emulated/0/Android/data/org.alpine_toolkit/files
+  // /storage/0060-1F18/Android/data/org.alpine_toolkit/files
+  // Fixme: could use sdcard as well
+
+  // This directory is destroyed when the application is uninstalled
+  // m_application_user_directory = QDir(generic_data_location_path).filePath(QLatin1Literal("Android/data/") + ANDROID_PACKAGE_NAME);
+
+  // Persistent directory, but require permission
+  m_application_user_directory = QDir(generic_data_location_path).filePath(ANDROID_PACKAGE_NAME);
+#endif
 }
 
 QcConfig::~QcConfig()
@@ -63,24 +76,53 @@ QcConfig::init()
   if (m_initialised)
     return;
 
-  create_user_application_directory();
+  create_directory(m_application_user_directory, QLatin1Literal("application user"));
+  create_directory(wmts_cache_directory(), QLatin1Literal("wmts cache"));
+  create_directory(wmts_token_directory(), QLatin1Literal("wmts token"));
 
   m_initialised = true;
 }
 
 void
-QcConfig::create_user_application_directory() const
+QcConfig::create_directory(const QString path, const QString label) const
 {
-  QDir directory = m_application_user_directory;
-  if (! directory.exists())
-    if (!directory.mkpath(directory.absolutePath()))
-      qWarning() << "Cannot create application user directory" << directory;
+  QDir directory = path;
+  if (not directory.exists()) {
+    if (not directory.mkpath(directory.absolutePath()))
+      qWarning() << QLatin1Literal("Cannot create") << label << QLatin1Literal("directory") << path;
+    qInfo() << QLatin1Literal("Created") << label << QLatin1Literal("directory") << path;
+  }
 }
 
 const QString
-QcConfig::join_application_user_directory(const QString & path)
+QcConfig::join_application_user_directory(const QString & path) const
 {
   return QDir(m_application_user_directory).absoluteFilePath(path);
+}
+
+const QString
+QcConfig::wmts_cache_directory() const
+{
+#ifdef ON_LINUX
+  return QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+#endif
+
+#ifdef ON_ANDROID
+  return join_application_user_directory(QLatin1Literal("wmts_cache"));
+#endif
+}
+
+const QString
+QcConfig::wmts_token_directory() const
+{
+  return join_application_user_directory(QLatin1Literal("wmts_token"));
+}
+
+const QString
+QcConfig::geoportail_token_path() const
+{
+  // Fixme: Hide license
+  return QDir(wmts_token_directory()).filePath(QLatin1Literal("geoportail-license.json"));
 }
 
 /**************************************************************************************************/

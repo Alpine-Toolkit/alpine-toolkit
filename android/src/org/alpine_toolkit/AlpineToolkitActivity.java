@@ -161,12 +161,19 @@ public class AlpineToolkitActivity extends QtActivity
     catch (java.lang.InterruptedException e)
     {}
 
-    // Get external SDCard path
-    Log.i(LOG_TAG, "External SDCard: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
+    // Returns the absolute path to the directory on the filesystem where files created with openFileOutput(String, int) are stored.
+    Log.i(LOG_TAG, "Internal Directory: " + getFileDir());
+    // Returns the absolute path to the application specific cache directory on the filesystem.
+    Log.i(LOG_TAG, "Cache Directory: " + getCacheDir());
+    // Returns absolute path to application-specific directory on the primary shared/external storage device where the application can place cache files it owns. 
+    Log.i(LOG_TAG, "External Cache Directory: " + getExternalCacheDir()); // ...Dirs()
+
+    // Get external path
+    Log.i(LOG_TAG, "External Storage Directory: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
     // File[] paths = getExternalMediaDirs(); // API 21
     File[] external_files_dirs = ContextCompat.getExternalFilesDirs(this, null);
     for (File path : external_files_dirs)
-      Log.i(LOG_TAG, "external files dir: " + path);
+      Log.i(LOG_TAG, "External Files Directories: " + path);
 
     // get_display_metrics();
     // get_device_id();
