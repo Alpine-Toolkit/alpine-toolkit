@@ -98,6 +98,7 @@ HEADERS += \
 
 SOURCES += \
   src/platform_abstraction/android_platform.cpp
+  src/platform_abstraction/android_native.cpp
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 }

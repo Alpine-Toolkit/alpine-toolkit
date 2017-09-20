@@ -32,8 +32,6 @@
 #
 
 include_directories(${CMAKE_SOURCE_DIR})
-
-include_directories(${CMAKE_SOURCE_DIR}/qtcarto/)
 include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
 include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
 
@@ -139,8 +137,6 @@ target_link_libraries(alpine_toolkit
 # Application
 #
 
-# android_activity/android_activity.cpp
-
 set(alpine_toolkit_executable_files
   main.cpp
   application/application.cpp
@@ -151,6 +147,7 @@ set(alpine_toolkit_executable_files
   sensors/qmlsensorrange.cpp
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
+
 qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
 qt5_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 # Not available
@@ -163,3 +160,7 @@ target_link_libraries(alpine-toolkit
   Qt5::Sensors
   Qt5::RemoteObjects
   )
+
+if(ANDROID)
+  target_sources(alpine-toolkit PRIVATE platform_abstraction/android_native.cpp)
+endif()

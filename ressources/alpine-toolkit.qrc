@@ -34,6 +34,7 @@
         <!-- file alias="qmldir">qml/Widgets/qmldir</file> -->
 	<file alias="CompassRose.qml">qml/Widgets/CompassRose.qml</file>
         <file alias="About.qml">qml/Widgets/About.qml</file>
+        <file alias="ExplainPermission.qml">qml/Widgets/ExplainPermission.qml</file>
         <file alias="Layers.qml">qml/Widgets/Layers.qml</file>
         <file alias="MapComponent.qml">qml/Widgets/MapComponent.qml</file>
         <file alias="MenuItemIcon.qml">qml/Widgets/MenuItemIcon.qml</file>
@@ -153,13 +154,14 @@
     <file>icons/torch-black.png</file>
     <file>icons/torch-black@3x.png</file>
 
-    <file>js/math.js</file>
-    <file>js/gps.js</file>
-    <file>js/set.js</file>
+    <file>js/android_permission.js</file>
     <file>js/camptocamp_definitions.js</file>
-    <file>js/camptocamp_search_filter_definitions.js</file>
     <file>js/camptocamp_search_filter.js</file>
+    <file>js/camptocamp_search_filter_definitions.js</file>
     <file>js/compass_rose.js</file>
+    <file>js/gps.js</file>
+    <file>js/math.js</file>
+    <file>js/set.js</file>
 
     <file>qml/main.qml</file>
 

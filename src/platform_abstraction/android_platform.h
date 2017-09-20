@@ -62,6 +62,9 @@ public:
   Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
   Q_INVOKABLE void stop_lamp_dimmer() const;
 
+  void on_permission_granted(const QString & permission);
+  void on_permission_denied(const QString & permission);
+
 private slots:
   void update_orientation_lock();
   void update_orientation();

@@ -30,6 +30,7 @@ package org.alpine_toolkit.Permission;
 
 import org.alpine_toolkit.AlpineToolkitActivity;
 import org.alpine_toolkit.Constants;
+import org.alpine_toolkit.NativeFunctions;
 
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -66,73 +67,55 @@ public class PermissionManager
 
   /**********************************************/
 
+  public PermissionStatus check_permission(String permission)
+  {
+    PermissionStatus permission_status = m_permissions.get(permission);
+    if (permission_status != null) {
+      permission_status = new PermissionStatus(permission);
+      m_permissions.put(permission_status.permission(), permission_status);
+    }
+
+    if (ContextCompat.checkSelfPermission(m_activity, permission) == PackageManager.PERMISSION_GRANTED) {
+      Log.i(LOG_TAG, "Permission: " + permission + " is granted");
+      permission_status.set_granted();
+    } else {
+      // Should we show an explanation ?
+      if (ActivityCompat.shouldShowRequestPermissionRationale(m_activity, permission)) {
+        // Show an explanation to the user *asynchronously* -- don't
+        // block this thread waiting for the user's response! After
+        // the user sees the explanation, try again to request the
+        // permission.
+        Log.i(LOG_TAG, "Permission: " + permission + " need explain");
+        if (permission_status.is_explained())
+          permission_status.set_need_grant();
+        else
+          permission_status.set_need_explain();
+      } else {
+        // No explanation needed, we can request the permission.
+        // id is an app-defined int constant. The callback method gets
+        // the result of the request.
+        Log.i(LOG_TAG, "Permission: " + permission + " need grant");
+        permission_status.set_need_grant();
+      }
+    }
+
+    return permission_status;
+  }
+
   public void check_permissions(String[] permissions)
   {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // API 21
       for (String permission : permissions)
-        _check_permission(permission, false);
+        check_permission(permission);
   }
 
-  private PermissionStatus _check_permission(String permission, Boolean request)
+  /**********************************************/
+
+  public void set_as_explained(String permission)
   {
-    if (m_permissions.containsKey(permission))
-      return m_permissions.get(permission);
-    else {
-      PermissionStatus permission_status = new PermissionStatus(permission);
-
-      if (ContextCompat.checkSelfPermission(m_activity, permission) == PackageManager.PERMISSION_GRANTED) {
-        Log.i(LOG_TAG, "Permission: " + permission + " is granted");
-        permission_status.set_granted();
-      } else
-        // Should we show an explanation ?
-        if (ActivityCompat.shouldShowRequestPermissionRationale(m_activity, permission)) {
-          // Show an explanation to the user *asynchronously* -- don't
-          // block this thread waiting for the user's response! After
-          // the user sees the explanation, try again to request the
-          // permission.
-          Log.i(LOG_TAG, "Permission: " + permission + " need explain");
-          permission_status.set_need_explain();
-        } else {
-          // No explanation needed, we can request the permission.
-          // id is an app-defined int constant. The callback method gets
-          // the result of the request.
-          ActivityCompat.requestPermissions(m_activity, new String[]{permission}, permission_status.id());
-          Log.i(LOG_TAG, "Permission: " + permission + " need grant");
-          permission_status.set_need_grant();
-        }
-
-      m_permissions.put(permission, permission_status);
-
-      return permission_status;
-    }
-  }
-
-  public PermissionStatus check_permission(String permission)
-  {
-    return _check_permission(permission, true);
-  }
-
-  // @Override
-  public void onRequestPermissionsResult(int permission_id, String permissions[], int[] grant_results) {
-    // If request is cancelled, the result arrays are empty.
-    for (int i = 0; i < permissions.length; ++i) {
-      String permission = permissions[i];
-      int grant_result = grant_results[i];
-      PermissionStatus permission_status = m_permissions.get(permission);
-      if (permission_status != null) {
-        if (grant_result == PackageManager.PERMISSION_GRANTED) {
-          // permission was granted.
-          Log.i(LOG_TAG, "Permission: " + permission + " granted");
-          permission_status.set_granted();
-        } else {
-          // permission denied
-          Log.i(LOG_TAG, "Permission: " + permission + " denied");
-          permission_status.set_denied();
-        }
-      } else {
-        Log.e(LOG_TAG, "permission error: " + permission);
-      }
-    }
+    PermissionStatus permission_status = m_permissions.get(permission);
+    if (permission_status != null && permission_status.is_need_explain())
+      permission_status.set_as_explained();
   }
 
   /**********************************************/
@@ -157,31 +140,54 @@ public class PermissionManager
     return permissions.toArray(new String[0]);
   }
 
-  public void ask_permission(final String permission)
-  {
-    PermissionStatus permission_status = m_permissions.get(permission);
-    if (permission_status != null) {
-      ActivityCompat.requestPermissions(m_activity, new String[]{permission}, permission_status.id());
-      Log.i(LOG_TAG, "Permission: " + permission + " need grant");
-      permission_status.set_need_grant();
-    }
-  }
+  /**********************************************/
 
   public Boolean is_permission_granted(final String permission)
   {
-    PermissionStatus permission_status = m_permissions.get(permission);
-    if (permission_status != null)
-      return permission_status.is_granted();
-    else
-      return false;
+    // Always recheck permission status
+    PermissionStatus permission_status = check_permission(permission);
+    return permission_status.is_granted();
   }
 
   public Boolean is_permission_denied(final String permission)
   {
-    PermissionStatus permission_status = m_permissions.get(permission);
-    if (permission_status != null)
-      return permission_status.is_denied();
-    else
-      return false;
+    // Always recheck permission status
+    PermissionStatus permission_status = check_permission(permission);
+    return permission_status.is_denied();
+  }
+
+  /**********************************************/
+
+  public void request_permission(String permission)
+  {
+    // Always recheck permission status
+    PermissionStatus permission_status = check_permission(permission);
+    if (permission_status.is_need_grant())
+      ActivityCompat.requestPermissions(m_activity, new String[]{permission}, permission_status.id());
+  }
+
+  // @Override
+  public void onRequestPermissionsResult(int permission_id, String permissions[], int[] grant_results) {
+    // If request is cancelled, the result arrays are empty.
+    for (int i = 0; i < permissions.length; ++i) {
+      String permission = permissions[i];
+      int grant_result = grant_results[i];
+      PermissionStatus permission_status = m_permissions.get(permission);
+      if (permission_status != null) {
+        if (grant_result == PackageManager.PERMISSION_GRANTED) {
+          // permission was granted.
+          Log.i(LOG_TAG, "Permission: " + permission + " granted");
+          permission_status.set_granted();
+          NativeFunctions.on_permission_granted(permission);
+        } else {
+          // permission denied
+          Log.i(LOG_TAG, "Permission: " + permission + " denied");
+          permission_status.set_denied();
+          NativeFunctions.on_permission_denied(permission);
+        }
+      } else {
+        Log.e(LOG_TAG, "permission error: " + permission);
+      }
+    }
   }
 }

@@ -33,6 +33,7 @@ import QtQuick.Controls 2.0
 // import Widgets 1.0 // Fixme: don't work
 import "qrc:Widgets" as Widgets
 import "qrc:Pages" as Pages
+import "qrc:/js/android_permission.js" as AndroidPermission
 
 ApplicationWindow {
     id: application_window
@@ -60,12 +61,21 @@ ApplicationWindow {
         console.info(Screen.height, Screen.width,
                      Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
                      Screen.pixelDensity, Screen.devicePixelRatio);
+
+	if (platform_abstraction.on_android() || platform_abstraction.on_linux()) {
+	    AndroidPermission.create_explain_permission_dialog();
+	}
     }
 
     Widgets.About {
         id: about_dialog
         // must be child of the application window
     }
+
+    // Widgets.ExplainPermission {
+    //     id: explain_permission_dialog
+    //     // must be child of the application window
+    // }
 
     Widgets.OptionsMenu {
         id: options_menu

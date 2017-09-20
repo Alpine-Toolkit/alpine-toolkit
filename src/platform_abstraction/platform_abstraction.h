@@ -76,11 +76,15 @@ public:
 
   virtual PlatformType platform_type() const = 0;
 
+  // Fixme: Android specific
   Q_INVOKABLE QStringList need_explain() const;
   Q_INVOKABLE QStringList need_grant() const;
   Q_INVOKABLE void ask_permission(const QString & permission) const;
   Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
   Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
+  // Mockup
+  Q_INVOKABLE void emit_on_permission_granted(const QString & permission);
+  Q_INVOKABLE void emit_on_permission_denied(const QString & permission);
 
   bool is_directory_writable(const QString & path) const;
 
@@ -112,10 +116,14 @@ public:
   Q_INVOKABLE bool on_ios() const { return platform_type() == IOS; }
 
 signals:
+  // Fixme: _changed ???
   void orientation_lockChanged();
   void orientationChanged();
   void full_wave_lockChanged();
   void torchChanged();
+  // Fixme: Android specific
+  void on_permission_granted(const QString & permission);
+  void on_permission_denied(const QString & permission);
 
 protected:
   bool m_orientation_lock;

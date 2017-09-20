@@ -47,7 +47,7 @@ class ServiceApplication : public QCoreApplication
   Q_OBJECT
 
 public:
-  static Service * service;
+  static Service * service; // Fixme: instance()
 
 public:
   ServiceApplication(int & argc, char ** argv);

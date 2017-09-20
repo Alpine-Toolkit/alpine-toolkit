@@ -108,6 +108,18 @@ PlatformAbstraction::is_permission_denied(const QString & permission) const
   return false;
 }
 
+void
+PlatformAbstraction::emit_on_permission_granted(const QString & permission)
+{
+  emit on_permission_granted(permission);
+}
+
+void
+PlatformAbstraction::emit_on_permission_denied(const QString & permission)
+{
+  emit on_permission_denied(permission);
+}
+
 /**************************************************************************************************/
 
 bool

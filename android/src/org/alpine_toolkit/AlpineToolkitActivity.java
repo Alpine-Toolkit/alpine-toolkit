@@ -162,7 +162,7 @@ public class AlpineToolkitActivity extends QtActivity
     {}
 
     // Returns the absolute path to the directory on the filesystem where files created with openFileOutput(String, int) are stored.
-    Log.i(LOG_TAG, "Internal Directory: " + getFileDir());
+    //api? Log.i(LOG_TAG, "Internal Directory: " + getFileDir());
     // Returns the absolute path to the application specific cache directory on the filesystem.
     Log.i(LOG_TAG, "Cache Directory: " + getCacheDir());
     // Returns absolute path to application-specific directory on the primary shared/external storage device where the application can place cache files it owns. 
@@ -204,11 +204,6 @@ public class AlpineToolkitActivity extends QtActivity
     return TextUtils.join(",", m_permission_manager.need_grant());
   }
 
-  public void ask_permission(final String permission)
-  {
-    m_permission_manager.ask_permission(permission);
-  }
-
   public Boolean is_permission_granted(final String permission)
   {
     return m_permission_manager.is_permission_granted(permission);
@@ -217,6 +212,16 @@ public class AlpineToolkitActivity extends QtActivity
   public Boolean is_permission_denied(final String permission)
   {
     return m_permission_manager.is_permission_denied(permission);
+  }
+
+  public void set_as_explained(String permission)
+  {
+    m_permission_manager.set_as_explained(permission);
+  }
+
+  public void request_permission(String permission)
+  {
+    m_permission_manager.request_permission(permission);
   }
 
   /**********************************************

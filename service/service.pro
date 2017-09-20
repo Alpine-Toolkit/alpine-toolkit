@@ -63,7 +63,3 @@ SOURCES += \
   main.cpp \
   service.cpp \
   service_application.cpp \
-
-android {
-SOURCES += native.cpp
-}
