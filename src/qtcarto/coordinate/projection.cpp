@@ -53,12 +53,23 @@ QcProjection4::QcProjection4(const QString & definition, projCtx context)
     m_projection(nullptr)
 {
   // cf. https://trac.osgeo.org/proj/wiki/ThreadSafety
-  if (!context)
+
+  if (!context) {
+#ifdef ON_ANDROID
+    // Set search path so as to find (epsg) date files
+    const char * proj4_data_path = "file:///android_asset/proj4_data";
+    // setenv("PROJ_LIB", proj4_data_path, 1); // must be set before to load the proj4 library
+    const char *paths[] = { proj4_data_path };
+    pj_set_searchpath(1, paths);
+#endif
+
     context = pj_get_default_ctx();
-  // context = pj_ctx_alloc();
+    // context = pj_ctx_alloc();
+  }
 
   // pj_ctx_set_logger(context, proj4_logger);
 
+  qInfo() << "Proj4 initialisation for" << definition;
   m_projection = pj_init_plus_ctx(context, definition.toStdString().c_str());
   if (!m_projection)
     qWarning() << "Proj4 initialisation failed for" << definition;
