@@ -32,6 +32,8 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
+import QtGraphicalEffects 1.0
+
 import Constants 1.0
 import Widgets 1.0 as Widgets
 
@@ -39,20 +41,37 @@ Widgets.Page {
     id: torch_pane
 
     Column {
+        id: content
         anchors.fill: parent
         anchors.topMargin: 50
         spacing: Style.spacing.huge
 
-        Label {
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 20
-            text: qsTr("Torch Switch")
-        }
-
-        Switch {
+        ToolButton {
             id: torch_switch
             anchors.horizontalCenter: parent.horizontalCenter
-            // text: qsTr("Torch")
+            checkable: true
+            width: content.width / 3
+            height: width
+
+            contentItem: Item {
+		width: torch_switch.size
+		height: torch_switch.width
+
+		Image {
+		    id: light_bulb_icon
+		    source: 'qrc:/icons/light-bulb-white.svg'
+		    sourceSize: Qt.size(parent.width, parent.height)
+		    visible: false
+		}
+
+		// Fixme: don't work with black qtgraphicaleffects/src/effects/shaders/coloroverlay.frag
+		ColorOverlay {
+		    anchors.fill: light_bulb_icon
+		    source: light_bulb_icon
+		    color: torch_switch.checked ? Material.color(Material.Green) : 'black' // '#2bc82b'
+		}
+            }
+
             onCheckedChanged : platform_abstraction.torch = checked
         }
     }
