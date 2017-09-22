@@ -122,6 +122,14 @@ PlatformAbstraction::emit_on_permission_denied(const QString & permission)
 
 /**************************************************************************************************/
 
+QStringList
+PlatformAbstraction::external_storages() const
+{
+  return QStringList();
+}
+
+/**************************************************************************************************/
+
 bool
 PlatformAbstraction::is_directory_writable(const QString & path) const
 {

@@ -28,7 +28,8 @@
 
 #include "android_platform.h"
 
-#include <QtAndroidExtras/QAndroidJniObject>
+#include <QAndroidJniEnvironment>
+#include <QAndroidJniObject>
 #include <QtAndroid>
 #include <QtDebug>
 
@@ -101,6 +102,24 @@ AndroidPlatform::is_permission_denied(const QString & permission) const
   jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_denied", "(Ljava/lang/String)V", j_string.object<jstring>());
 
   return rc;
+}
+
+/**************************************************************************************************/
+
+QStringList
+AndroidPlatform::external_storages() const
+{
+  QAndroidJniObject array = QtAndroid::androidActivity().callObjectMethod("get_external_storages", "()[Ljava/lang/String;");
+
+  QAndroidJniEnvironment jni_env;
+  int length = jni_env->GetArrayLength(array.object<jarray>());
+  QStringList paths;
+  for (int i = 0; i < length; i++) {
+    QAndroidJniObject element = jni_env->GetObjectArrayElement(array.object<jobjectArray>(), i);
+    paths << element.toString();
+  }
+
+  return paths;
 }
 
 /**************************************************************************************************/

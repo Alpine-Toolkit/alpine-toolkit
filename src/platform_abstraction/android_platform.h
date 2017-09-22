@@ -53,6 +53,8 @@ public:
   Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
   Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
 
+  Q_INVOKABLE QStringList external_storages() const;
+
   Q_INVOKABLE void issue_call(const QString & phone_number) const;
   Q_INVOKABLE void issue_dial(const QString & phone_number) const;
 

@@ -70,6 +70,7 @@ public class AlpineToolkitActivity extends QtActivity
   private PermissionManager m_permission_manager = null;
   private PhoneHelper m_phone_helper = null;
   private ServiceHelper m_service_helper = null;
+  private SdCardHelper m_sdcard_helper = null;
 
   /**********************************************/
 
@@ -346,4 +347,23 @@ public class AlpineToolkitActivity extends QtActivity
    * SD Card API
    *
    */
+
+  public String[] get_external_storages()
+  {
+    File[] files = m_sdcard_helper.get_external_storage();
+    String[] paths = new String[files.length];
+    for (int i = 0; i < paths.length; i++)
+      paths[i] = files[i].getPath();
+    return paths;
+  }
+
+  public boolean is_external_storage_writable()
+  {
+     return m_sdcard_helper.is_external_storage_writable();
+  }
+
+  public boolean is_external_storage_readable()
+  {
+    return m_sdcard_helper.is_external_storage_readable();
+  }
 }

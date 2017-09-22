@@ -86,6 +86,8 @@ public:
   Q_INVOKABLE void emit_on_permission_granted(const QString & permission);
   Q_INVOKABLE void emit_on_permission_denied(const QString & permission);
 
+  Q_INVOKABLE QStringList external_storages() const;
+
   bool is_directory_writable(const QString & path) const;
 
   void set_orientation_lock(bool orientation_lock);

@@ -24,6 +24,11 @@
  **
  ***************************************************************************************************/
 
+/*
+ * Note: Android doesn't provide signal when permission change
+ *
+ */
+
 /**************************************************************************************************/
 
 package org.alpine_toolkit.Permission;
@@ -67,6 +72,9 @@ public class PermissionManager
 
   /**********************************************/
 
+  /* Check permission status and register it
+   *
+   */
   public PermissionStatus check_permission(String permission)
   {
     PermissionStatus permission_status = m_permissions.get(permission);
@@ -102,6 +110,9 @@ public class PermissionManager
     return permission_status;
   }
 
+  /* To check permission status at startup
+   *
+   */
   public void check_permissions(String[] permissions)
   {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) // API 21
@@ -158,6 +169,9 @@ public class PermissionManager
 
   /**********************************************/
 
+  /* Request to grant a permission
+   *
+   */
   public void request_permission(String permission)
   {
     // Always recheck permission status
@@ -166,6 +180,10 @@ public class PermissionManager
       ActivityCompat.requestPermissions(m_activity, new String[]{permission}, permission_status.id());
   }
 
+  /*
+   * Permission slot: call native functions
+   *
+   */
   // @Override
   public void onRequestPermissionsResult(int permission_id, String permissions[], int[] grant_results) {
     // If request is cancelled, the result arrays are empty.
