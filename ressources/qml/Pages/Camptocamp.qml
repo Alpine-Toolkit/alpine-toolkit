@@ -30,10 +30,10 @@ import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
 
+import 'qrc:/js/camptocamp_search_filter_definitions.js' as C2cDefinition
+import Constants 1.0
 import Local 1.0
-
-import "qrc:Widgets" as Widgets
-import "qrc:/js/camptocamp_search_filter_definitions.js" as C2cDefinition
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camptocamp_pane
@@ -60,8 +60,9 @@ Widgets.Page {
             busy_indicator.running = false;
             console.info('Received document ' + document_id);
             // console.info('document ' + c2c_client.get_document(document_id))
-            var properties = { 'route': c2c_client.get_document(document_id) };
-            push_page('qrc:/Pages/CamptocampRoute.qml', properties);
+            var page = {source: 'qrc:/qml/Pages/CamptocampRoute.qml'}
+            var properties = {route: c2c_client.get_document(document_id)};
+            push_page(page, properties);
         }
         onReceivedSearch: {
             busy_indicator.running = false;
@@ -87,7 +88,7 @@ Widgets.Page {
 
     Column {
 	anchors.fill: parent
-	spacing: 10
+	spacing: Style.spacing.base
 
 	Column {
 	    id: search_toolbar
@@ -105,7 +106,10 @@ Widgets.Page {
 			verticalAlignment: Image.AlignVCenter
 			source: 'qrc:/icons/cloud-download-black.png'
                     }
-                    onClicked: push_page('qrc:/Pages/CamptocampCache.qml')
+                    onClicked: {
+                        var page = {source: 'qrc:/qml/Pages/CamptocampCache.qml'}
+                        push_page(page)
+                    }
 		}
 
 		ToolButton {
@@ -116,7 +120,10 @@ Widgets.Page {
 			verticalAlignment: Image.AlignVCenter
 			source: c2c_client.logged ? 'qrc:/icons/person-black.png' : 'qrc:/icons/person-outline-black.png'
                     }
-                    onClicked: push_page('qrc:/Pages/CamptocampLogin.qml')
+                    onClicked: {
+                        var page = {source: 'qrc:/qml/Pages/CamptocampLogin.qml'}
+                        push_page(page)
+                    }
 		}
 
                 BusyIndicator {
@@ -163,7 +170,8 @@ Widgets.Page {
                     onClicked: {
 			var properties = { 'search_filters_state': search_filters_state }
 			console.info('clicked ' + JSON.stringify(properties))
-			var item = push_page('qrc:/Pages/CamptocampSearchFilter.qml', properties)
+                        var page = {source: 'qrc:/qml/Pages/CamptocampSearchFilter.qml'}
+			var item = push_page(page, properties)
 			console.info('pushed ' + item)
 		    }
 		}
@@ -173,12 +181,12 @@ Widgets.Page {
 	Column {
 	    width: parent.width
 	    height: parent.height - search_toolbar.height
-	    spacing: 10
+	    spacing: Style.spacing.base
 
 	    Column {
 		id: route_label
 		width: parent.width
-		spacing: 5
+		spacing: Style.spacing.small
 
 		Rectangle {
 		    width: parent.width
@@ -216,7 +224,7 @@ Widgets.Page {
                             Label {
                                 padding: 3
                                 font.family: activities_font.name
-                                font.pointSize: 16
+                                font.pointSize: Style.font_size.large
                                 text: C2cDefinition.activity_dict[activities[0]].glyph
                             }
 
@@ -226,7 +234,7 @@ Widgets.Page {
                             //     model: activities
                             //     Label {
                             //         font.family: activities_font.name
-                            //         font.pointSize: 16
+                            //         font.pointSize: Style.font_size.large
                             //         text: C2cDefinition.activity_dict[modelData].glyph
                             //     }
                             // }
@@ -236,7 +244,7 @@ Widgets.Page {
 		    }
 
                     onClicked: {
-                        console.info("clicked on", title, id);
+                        console.info('clicked on', title, id);
                         busy_indicator.running = true;
                         c2c_client.route(id);
                     }

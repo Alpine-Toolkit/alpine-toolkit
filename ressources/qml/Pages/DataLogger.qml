@@ -32,7 +32,8 @@ import QtQuick.Controls 2.0
 
 // import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: data_logger_pane
@@ -40,21 +41,21 @@ Widgets.Page {
     // Component.onCompleted: {
     // }
 
-    // QQmlExpression: Expression qrc:/Pages/DataLogger.qml:16:18 depends on non-NOTIFYable properties:
+    // QQmlExpression: Expression qrc:/qml/Pages/DataLogger.qml:16:18 depends on non-NOTIFYable properties:
     //   ServiceClient::replica
     // Connections {
     //     target : service.replica
-    //     onPong: console.info("received pong")
+    //     onPong: console.info('received pong')
     // }
 
     Column {
 	anchors.fill: parent
-	spacing: 10
+	spacing: Style.spacing.base
 
         Button {
             id: start_button
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Start"
+            text: 'Start'
             onClicked: {
                 // if (! service.started)
                 service.start_service();
@@ -64,7 +65,7 @@ Widgets.Page {
         Button {
             id: stop_button
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Stop"
+            text: 'Stop'
             onClicked: {
                 // if (service.started)
                 service.stop_service();
@@ -74,9 +75,9 @@ Widgets.Page {
         Button {
             id: ping_button
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Ping"
+            text: 'Ping'
             onClicked: {
-                console.info("service is started", service.started)
+                console.info('service is started', service.started)
                 if (service.started) {
                     service.foo();
                     service.replica.ping()
@@ -87,7 +88,7 @@ Widgets.Page {
         Button {
             id: start_timer_button
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Start Timer"
+            text: 'Start Timer'
             onClicked: {
                 if (service.started)
                     service.replica.start_timer();
@@ -97,7 +98,7 @@ Widgets.Page {
         Button {
             id: stop_timer_button
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Stop Timer"
+            text: 'Stop Timer'
             onClicked:  {
                 if (service.started)
                     service.replica.stop_timer()

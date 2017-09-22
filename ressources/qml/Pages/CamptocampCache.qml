@@ -27,13 +27,13 @@
 import QtQml 2.2
 import QtQuick 2.6
 
-import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.3
 
+import 'qrc:/js/camptocamp_search_filter_definitions.js' as C2cDefinition
+import Constants 1.0
 import Local 1.0
-
-import "qrc:Widgets" as Widgets
-import "qrc:/js/camptocamp_search_filter_definitions.js" as C2cDefinition
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camptocamp_cache_pane
@@ -45,12 +45,12 @@ Widgets.Page {
     Column {
         width: parent.width
 	height: parent.height
-	spacing: 10
+	spacing: Style.spacing.base
 
 	Column {
 	    id: route_label
 	    width: parent.width
-	    spacing: 5
+	    spacing: Style.spacing.small
 
 	    Rectangle {
 		width: parent.width
@@ -79,7 +79,7 @@ Widgets.Page {
 
 		    Label {
 			width: parent.width
-			text: title("fr") // Fixme: highlight search and show language
+			text: title('fr') // Fixme: highlight search and show language
 		    }
 
                     Row {
@@ -88,7 +88,7 @@ Widgets.Page {
                         Label {
                             padding: 3
                             font.family: activities_font.name
-                            font.pointSize: 16
+                            font.pointSize: Style.font_size.large
                             text: C2cDefinition.activity_dict[activities[0]].glyph
                         }
 
@@ -98,7 +98,7 @@ Widgets.Page {
                         //     model: activities
                         //     Label {
                         //         font.family: activities_font.name
-                        //         font.pointSize: 16
+                        //         font.pointSize: Style.font_size.large
                         //         text: C2cDefinition.activity_dict[modelData].glyph
                         //     }
                         // }
@@ -108,9 +108,10 @@ Widgets.Page {
 		}
 
                 onClicked: {
-                    console.info("clicked on", title("fr"), id);
-                    var properties = { 'route': c2c_client.get_document(id) };
-                    push_page('qrc:/Pages/CamptocampRoute.qml', properties);
+                    console.info('clicked on', title('fr'), id);
+                    var page = {source: 'qrc:/qml/Pages/CamptocampRoute.qml'}
+                    var properties = {route: c2c_client.get_document(id)};
+                    push_page(page, properties);
                 }
             }
         }

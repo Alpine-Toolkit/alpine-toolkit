@@ -25,8 +25,11 @@
  **************************************************************************************************/
 
 import QtQuick 2.9
+
 import QtQuick.Controls 2.2
 import QtQuick.Controls.Material 2.2 // Fixme
+
+import Constants 1.0
 
 MenuItem {
     id: control
@@ -34,7 +37,7 @@ MenuItem {
     property string image
 
     contentItem: Row {
-        spacing: 10
+        spacing: Style.spacing.base
 
         leftPadding: control.checkable && !control.mirrored ? control.indicator.width + control.spacing : 0
         rightPadding: control.checkable && control.mirrored ? control.indicator.width + control.spacing : 0

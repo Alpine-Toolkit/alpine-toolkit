@@ -26,20 +26,21 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: illuminance_pane
 
     function format_lux(value) {
-        return value + " lx";
+        return value + ' lx';
     }
 
     LightSensor {
@@ -53,10 +54,10 @@ Widgets.Page {
     }
 
     Component.onCompleted: {
-        console.info(light_sensor.identifier + "/" + light_sensor.description) // 5 // TMG399X RGB Sensor AMS, Inc. v1
+        console.info(light_sensor.identifier + '/' + light_sensor.description) // 5 // TMG399X RGB Sensor AMS, Inc. v1
         var data_rates = light_sensor.availableDataRates;
         for (var i = 0; i < data_rates.length; i += 1) {
-            console.info("rate", data_rates[i]);
+            console.info('rate', data_rates[i]);
         }
     }
 
@@ -65,19 +66,19 @@ Widgets.Page {
     ColumnLayout {
         anchors.fill: parent
         anchors.topMargin: 10
-        spacing: 10
+        spacing: Style.spacing.base
 
         Label {
             id: illuminance_label
             Layout.alignment: Qt.AlignCenter
-            font.pointSize: 32
+            font.pointSize: Style.font_size.huge
             font.bold: true
-            text: qsTr("No value")
+            text: qsTr('No value')
         }
 
         Button {
             Layout.alignment: Qt.AlignCenter
-            text: qsTr("Help")
+            text: qsTr('Help')
             onClicked: illuminance_help.open()
         }
     }
@@ -94,19 +95,19 @@ Widgets.Page {
 
         Column {
             id: about_column
-            spacing: 5
+            spacing: Style.spacing.small
 
             Label {
-                font.pointSize: 20
+                font.pointSize: Style.font_size.huge
                 font.bold: true
-                text: qsTr("Help")
+                text: qsTr('Help')
             }
 
             Label {
                 width: illuminance_help.availableWidth
                 wrapMode: Label.Wrap
-                font.pointSize: 18
-                text: qsTr("Illuminance is a measure of the intensity of illumination on a surface.\n\nThe unit is lux and its symbol lx.\n\nOne lux is equal to one lumen (lm) per square metre.\n\nTypical illumination values are, 500 lx for an office lighting and above 10 000 lx for a full daylight.")
+                font.pointSize: Style.font_size.large
+                text: qsTr('Illuminance is a measure of the intensity of illumination on a surface.\n\nThe unit is lux and its symbol lx.\n\nOne lux is equal to one lumen (lm) per square metre.\n\nTypical illumination values are, 500 lx for an office lighting and above 10 000 lx for a full daylight.')
             }
         }
     }

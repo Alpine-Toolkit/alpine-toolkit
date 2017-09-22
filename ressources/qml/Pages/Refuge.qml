@@ -26,14 +26,15 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: refug_directory_pane
@@ -41,7 +42,7 @@ Widgets.Page {
     property var model: null
 
     // Component.onCompleted: {
-    //     console.info("Refuge Model:", model.name);
+    //     console.info('Refuge Model:', model.name);
     // }
 
     Column {
@@ -52,7 +53,7 @@ Widgets.Page {
             anchors.horizontalCenter: parent.horizontalCenter
             topPadding: 20
             bottomPadding: 30
-            font.pointSize: 32
+            font.pointSize: Style.font_size.huge
             font.bold: true
             text: model.name
             wrapMode: Text.WordWrap
@@ -62,7 +63,7 @@ Widgets.Page {
             anchors.horizontalCenter: parent.horizontalCenter
             topPadding: 20
             bottomPadding: 30
-            font.pointSize: 16
+            font.pointSize: Style.font_size.large
             font.bold: true
             text: model.owner
             wrapMode: Text.WordWrap
@@ -71,15 +72,15 @@ Widgets.Page {
         Label {
             anchors.horizontalCenter: parent.horizontalCenter
             bottomPadding: 10
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             font.bold: true
-            text: model.altitude + " m"
+            text: model.altitude + ' m'
         }
 
         Label {
             anchors.horizontalCenter: parent.horizontalCenter
             bottomPadding: 10
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             font.bold: true
             text: model.region
         }
@@ -87,7 +88,7 @@ Widgets.Page {
         Label {
             anchors.horizontalCenter: parent.horizontalCenter
             bottomPadding: 10
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             font.bold: true
             text: model.guardian
         }
@@ -97,7 +98,7 @@ Widgets.Page {
             // bottomPadding: 10
             Label {
                 Layout.alignment: Qt.AlignVCenter
-                font.pointSize: 12
+                font.pointSize: Style.font_size.base
                 font.bold: true
                 text: model.phone
             }
@@ -107,7 +108,7 @@ Widgets.Page {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: "qrc:/icons/call-black.png"
+                    source: 'qrc:/icons/call-black.png'
                 }
                 onClicked: platform_abstraction.issue_dial(model.phone)
             }
@@ -116,16 +117,16 @@ Widgets.Page {
         Label {
             anchors.horizontalCenter: parent.horizontalCenter
             bottomPadding: 10
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             font.bold: true
-            text: Number(model.coordinate.latitude).toLocaleString(Qt.locale(), "f", 6) + "\n" +
-                Number(model.coordinate.longitude).toLocaleString(Qt.locale(), "f", 6)
+            text: Number(model.coordinate.latitude).toLocaleString(Qt.locale(), 'f', 6) + '\n' +
+                Number(model.coordinate.longitude).toLocaleString(Qt.locale(), 'f', 6)
         }
 
         Label {
             bottomPadding: 10
             width: parent.width
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             wrapMode: Text.WordWrap
             text: model.description
         }

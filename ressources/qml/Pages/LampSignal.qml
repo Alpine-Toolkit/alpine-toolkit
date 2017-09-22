@@ -26,12 +26,13 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: lamp_signal_pane
@@ -56,16 +57,16 @@ Widgets.Page {
                 anchors.topMargin: 10
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
-                spacing: 30
+                spacing: Style.spacing.huge
 
                 Label {
                     id: help_message
                     width: parent.width
                     anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: 12
+                    font.pointSize: Style.font_size.base
                     wrapMode:Text.WordWrap
-                    text: qsTr("<h2><b>Use preferably number and latin alphabet without diacritic.</b></h2>")
-                    // <br>Despite International Morse Code has a larger support."
+                    text: qsTr('<h2><b>Use preferably number and latin alphabet without diacritic.</b></h2>')
+                    // <br>Despite International Morse Code has a larger support.'
                     // Fixme: show morse code table
                 }
 
@@ -74,7 +75,7 @@ Widgets.Page {
                     width: parent.width
                     height: (parent.height - help_message.height - rate_box.height - send_button.height - 4 * parent.spacing) / 2
                     anchors.horizontalCenter: parent.horizontalCenter
-                    placeholderText: qsTr("Enter message")
+                    placeholderText: qsTr('Enter message')
                 }
 
                 Label {
@@ -88,10 +89,10 @@ Widgets.Page {
                 Row {
                     id: rate_box
                     anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 10
+                    spacing: Style.spacing.base
                     Label {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("rate")
+                        text: qsTr('rate')
                     }
                     SpinBox {
                         id: rate_ms_spinbox
@@ -102,14 +103,14 @@ Widgets.Page {
                     }
                     Label {
                         anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr("ms")
+                        text: qsTr('ms')
                     }
                 }
 
                 Button {
                     id: send_button
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr("Send Message")
+                    text: qsTr('Send Message')
                     onClicked : {
                         var message = message_textarea.text;
                         if (message) {
@@ -139,14 +140,14 @@ Widgets.Page {
                 anchors.topMargin: 10
                 anchors.leftMargin: 10
                 anchors.rightMargin: 10
-                spacing: 10
+                spacing: Style.spacing.base
 
                 Label {
                     id: title
                     anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: 24
+                    font.pointSize: Style.font_size.huge
                     // wrapMode:Text.WordWrap
-                    text: qsTr("Morse Code Decoder") // International
+                    text: qsTr('Morse Code Decoder') // International
                 }
 
                 GridLayout {
@@ -161,30 +162,30 @@ Widgets.Page {
                     Button {
                         width: button_width
                         font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr("Dot")
-                        onClicked: encoded_message.text += "."
+                        text: qsTr('Dot')
+                        onClicked: encoded_message.text += '.'
                     }
                     Button {
                         width: button_width
                         font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr("Dash")
-                        onClicked: encoded_message.text += "-"
+                        text: qsTr('Dash')
+                        onClicked: encoded_message.text += '-'
                     }
                     Button {
                         width: button_width
                         font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr("Letter")
+                        text: qsTr('Letter')
                         onClicked: {
-                            encoded_message.text += "/";
+                            encoded_message.text += '/';
                             message_decoder_pane.decode_message();
                         }
                     }
                     Button {
                         width: button_width
                         font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr("Word")
+                        text: qsTr('Word')
                         onClicked: {
-                            encoded_message.text += " ";
+                            encoded_message.text += ' ';
                             message_decoder_pane.decode_message();
                         }
                     }
@@ -195,7 +196,7 @@ Widgets.Page {
                     width: parent.width
                     height: (parent.height - title.height - button_layout.height - delete_button.height - clear_button.height - 5 * parent.spacing) / 2
                     anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: 12
+                    font.pointSize: Style.font_size.base
                 }
 
                 Label {
@@ -203,13 +204,13 @@ Widgets.Page {
                     width: parent.width
                     height: encoded_message.height
                     anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: 12
+                    font.pointSize: Style.font_size.base
                 }
 
                 Button {
                     id: delete_button
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr("Delete")
+                    text: qsTr('Delete')
                     onClicked : {
                         var message = encoded_message.text;
                         if (message) {
@@ -222,10 +223,10 @@ Widgets.Page {
                 Button {
                     id: clear_button
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr("Clear Message")
+                    text: qsTr('Clear Message')
                     onClicked : {
-                        encoded_message.text = ""
-                        decoded_message.text = ""
+                        encoded_message.text = ''
+                        decoded_message.text = ''
                     }
                 }
             }

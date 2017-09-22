@@ -28,7 +28,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
-import "qrc:/C2cFilter" as C2cFilter
+import Constants 1.0
+import C2cFilter 1.0 as C2cFilter
 
 C2cFilter.Filter {
     property var values: null

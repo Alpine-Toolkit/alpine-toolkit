@@ -26,27 +26,29 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
 // import QtWebView 1.1
 
-import "qrc:/Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camptocamp_media_pane
 
     property string media: null
 
-    property string image_url: "image://c2c/" + media
+    property string image_url: 'image://c2c/' + media
 
      // Image {
      //     id: image
      //     anchors.fill: parent
      //     // anchors.centerIn: parent
      //     fillMode: Image.PreserveAspectFit
-     //     source: "image://c2c/" + media
+     //     source: 'image://c2c/' + media
      //     antialiasing: true
      // }
 
@@ -71,7 +73,7 @@ Widgets.Page {
 
                 function fitToScreen() {
                     scale = Math.min(image_flickable.width / width, image_flickable.height / height, 1)
-		    console.info("fitToScreen " + scale, + " " + width + "x" + height)
+		    console.info('fitToScreen ' + scale, + ' ' + width + 'x' + height)
                     pinchArea.min_scale = scale
                     previous_scale = scale
                 }
@@ -94,7 +96,7 @@ Widgets.Page {
                 // NumberAnimation {
                 //     id: loadedAnimation
                 //     target: image_preview
-                //     property: "opacity"
+                //     property: 'opacity'
                 //     duration: 250
                 //     from: 0; to: 1
                 //     easing.type: Easing.InOutQuad
@@ -103,12 +105,12 @@ Widgets.Page {
                 onScaleChanged: {
                     if ((width * scale) > image_flickable.width) {
                         var xoff = (image_flickable.width / 2 + image_flickable.contentX) * scale / previous_scale;
-			console.info("onScaleChanged " + xoff);
+			console.info('onScaleChanged ' + xoff);
                         image_flickable.contentX = xoff - image_flickable.width / 2
                     }
                     if ((height * scale) > image_flickable.height) {
                         var yoff = (image_flickable.height / 2 + image_flickable.contentY) * scale / previous_scale;
-			console.info("onScaleChanged " + xoff);
+			console.info('onScaleChanged ' + xoff);
                         image_flickable.contentY = yoff - image_flickable.height / 2
                     }
                     previous_scale = scale
@@ -135,7 +137,7 @@ Widgets.Page {
             anchors.fill: parent
             enabled: image_preview.status === Image.Ready
             pinch.target: image_preview
-            pinch.minimumScale: min_scale * 0.5 // This is to create "bounce back effect"
+            pinch.minimumScale: min_scale * 0.5 // This is to create 'bounce back effect'
             pinch.maximumScale: max_scale * 1.5 // when over zoomed
 
             onPinchFinished: {
@@ -154,7 +156,7 @@ Widgets.Page {
                 id: bounceBackAnimation
                 target: image_preview
                 duration: 250
-                property: "scale"
+                property: 'scale'
                 from: image_preview.scale
             }
         }

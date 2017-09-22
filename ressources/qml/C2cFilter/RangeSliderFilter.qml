@@ -28,7 +28,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
-import "qrc:/C2cFilter" as C2cFilter
+import Constants 1.0
+import C2cFilter 1.0 as C2cFilter
 
 C2cFilter.Filter {
     property string unit: 'm'
@@ -51,7 +52,7 @@ C2cFilter.Filter {
     }
 
     function format_value(value) {
-	return Number(value).toLocaleString(Qt.locale("fr_FR"), 'f', 0)
+	return Number(value).toLocaleString(Qt.locale('fr_FR'), 'f', 0)
     }
 
     function format_min(value) {

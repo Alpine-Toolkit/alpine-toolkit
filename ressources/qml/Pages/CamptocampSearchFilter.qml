@@ -26,14 +26,15 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import "qrc:/C2cFilter" as C2cFilter
-import "qrc:/Widgets" as Widgets
-import "qrc:/js/camptocamp_search_filter.js" as JsScript
+import Constants 1.0
+import 'qrc:/js/camptocamp_search_filter.js' as JsScript
+import C2cFilter 1.0 as C2cFilter
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camptocamp_search_filter_pane
@@ -45,7 +46,7 @@ Widgets.Page {
 	anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
 	columns: 5
-        spacing: 10
+        spacing: Style.spacing.base
 
 	Component.onCompleted: {
 	    console.info('camptocamp_search_filter_paner completed');
@@ -70,7 +71,7 @@ Widgets.Page {
 	    /* anchors.leftMargin: 10 */
 	    /* anchors.rightMargin: 10 */
 	    width: parent.width - 40 // Fixme
-            spacing: 10
+            spacing: Style.spacing.base
 
 	    // Keep for test purpose
 	    // C2cFilter.CompassRoseFilter {}

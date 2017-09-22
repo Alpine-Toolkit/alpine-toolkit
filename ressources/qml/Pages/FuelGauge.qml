@@ -26,21 +26,22 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 // réchaud: stove, caping stove, portable gaz cooker
 
 Widgets.Page {
     id: fuel_gauge_pane
 
-    // property int font_size: 12
+    // property int font_size: Style.font_size.base
 
     ListModel {
 	id: fuel_model
@@ -50,8 +51,8 @@ Widgets.Page {
 	    total_weight: 630 // measured
 	    net_weight: 450 // specified
 	    // package_weight: 180 // 630 - 450 = 180
-	    url: "https://www.campingaz.com/FR/p-27453-cartouche-cv-470-plus.aspx"
-	    content: "Butane 80 % / Propane 20 %"
+	    url: 'https://www.campingaz.com/FR/p-27453-cartouche-cv-470-plus.aspx'
+	    content: 'Butane 80 % / Propane 20 %'
 	    min_temperature: -5 // °C
 	    diameter: 110 // mm
 	    cap_weight: 115 // g TO BE COMFIRMED
@@ -62,8 +63,8 @@ Widgets.Page {
 	    total_weight: 365 // to be verified (358 g ?)
 	    net_weight: 240 // specified
 	    // package_weight: 150 // 360 - 240 = 120
-	    url: "ttps://www.campingaz.com/FR/p-27452-cartouche-cv-300-plus.aspx"
-	    content: "Butane 80 % / Propane 20 %"
+	    url: 'ttps://www.campingaz.com/FR/p-27452-cartouche-cv-300-plus.aspx'
+	    content: 'Butane 80 % / Propane 20 %'
 	    min_temperature: -5 // °C
 	    diameter: 90 // mm
 	    cap_weight: 50 // g TO BE COMFIRMED
@@ -73,8 +74,8 @@ Widgets.Page {
             name: qsTr('MSR IsoPro (227g net)')
 	    total_weight: 374 // specified
 	    net_weight: 227 // specified
-	    url: "https://www.msrgear.com/fr/stoves/msr-isopro"
-	    content: "IsoButane 80 % / Propane 20 %"
+	    url: 'https://www.msrgear.com/fr/stoves/msr-isopro'
+	    content: 'IsoButane 80 % / Propane 20 %'
 	    min_temperature: -5 // °C // to be verified
 	    diameter: 110 // mm
 	    cap_weight: 125 // g TO BE COMFIRMED
@@ -103,7 +104,7 @@ Widgets.Page {
 	}
 	weight = Math.min(weight, current_fuel.total_weight)
 	var capacity = Math.max((weight - package_weight) / current_fuel.net_weight, 0)
-	capacity_label.text = Number(Math.round(100 * capacity)).toLocaleString() + " %"
+	capacity_label.text = Number(Math.round(100 * capacity)).toLocaleString() + ' %'
     }
 
     function compute_immersion_depth(capacity) {
@@ -113,20 +114,20 @@ Widgets.Page {
 
     Column {
 	anchors.fill: parent
-	spacing: 15
+	spacing: Style.spacing.base_horizontal // 15 ?
 
 	ComboBox {
 	    id: combo_box
 	    width: parent.width
 	    model: fuel_model
-	    textRole: "name"
+	    textRole: 'name'
 	    onCurrentIndexChanged: {
 		current_fuel = fuel_model.get(currentIndex)
-		console.info("onCurrentIndexChanged " + currentIndex + " " + current_fuel)
-		total_weight_label.text = Number(current_fuel.total_weight).toLocaleString() + " g"
-		net_weight_label.text = Number(current_fuel.net_weight).toLocaleString() + " g"
+		console.info('onCurrentIndexChanged ' + currentIndex + ' ' + current_fuel)
+		total_weight_label.text = Number(current_fuel.total_weight).toLocaleString() + ' g'
+		net_weight_label.text = Number(current_fuel.net_weight).toLocaleString() + ' g'
 		content_label.text = current_fuel.content
-		min_temperature_label.text = Number(current_fuel.min_temperature).toLocaleString() + " °C"
+		min_temperature_label.text = Number(current_fuel.min_temperature).toLocaleString() + ' °C'
 		compute_capacity()
 	    }
 	}
@@ -140,65 +141,65 @@ Widgets.Page {
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Total weight")
+                text: qsTr('Total weight')
             }
             Label {
 		id: total_weight_label
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: ""
+                text: ''
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Net weight")
+                text: qsTr('Net weight')
             }
             Label {
 		id: net_weight_label
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: ""
+                text: ''
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Content")
+                text: qsTr('Content')
             }
             Label {
 		id: content_label
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: ""
+                text: ''
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Temperature Min")
+                text: qsTr('Temperature Min')
             }
             Label {
 		id: min_temperature_label
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: ""
+                text: ''
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Actual Weight")
+                text: qsTr('Actual Weight')
             }
 	    TextField {
                 id: weight_text_field
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                placeholderText: "enter weight [g]"
+                placeholderText: 'enter weight [g]'
                 inputMethodHints: Qt.ImhDigitsOnly
                 validator: IntValidator {bottom: 0; top: 1000;}
 		onTextEdited: {
-		    capacity_label.text = ""
-		    immersion_depth_text_field.text = ""
+		    capacity_label.text = ''
+		    immersion_depth_text_field.text = ''
 		}
 		onAccepted: compute_capacity()
             }
@@ -206,17 +207,17 @@ Widgets.Page {
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Immersion Depth")
+                text: qsTr('Immersion Depth')
             }
 	    TextField {
                 id: immersion_depth_text_field
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                placeholderText: "or enter depth [mm]" // immersion
+                placeholderText: 'or enter depth [mm]' // immersion
                 inputMethodHints: Qt.ImhDigitsOnly
                 validator: IntValidator {bottom: 0; top: 1000;}
 		onTextEdited: {
-		    capacity_label.text = ""
-		    weight_text_field.text = ""
+		    capacity_label.text = ''
+		    weight_text_field.text = ''
 		}
 		onAccepted: compute_capacity()
             }
@@ -224,20 +225,20 @@ Widgets.Page {
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: qsTr("Capacity")
+                text: qsTr('Capacity')
             }
             Label {
 		id: capacity_label
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 // font.pointSize: font_size
-                text: ""
+                text: ''
             }
 	}
 
         Label {
 	    id: warning_message
 	    anchors.horizontalCenter: parent.horizontalCenter
-            text: "Warning: immersion computation is not yet accurate"
+            text: 'Warning: immersion computation is not yet accurate'
 	    visible: true // false
         }
 
@@ -249,7 +250,7 @@ Widgets.Page {
 
 	Label {
 	    anchors.horizontalCenter: parent.horizontalCenter
-	    text: "Immersion Gauge"
+	    text: 'Immersion Gauge'
 	}
 	Repeater {
 	    model: [0, 20, 40, 60, 80, 100]
@@ -258,11 +259,11 @@ Widgets.Page {
 		width: parent.width / 2
 		Label {
 		    width: parent.width / 2
-		    text: Number(modelData).toLocaleString() + " %"
+		    text: Number(modelData).toLocaleString() + ' %'
 		}
 		Label {
 		    width: parent.width / 2
-		    text: Number(Math.round(compute_immersion_depth(modelData))).toLocaleString() + " mm"
+		    text: Number(Math.round(compute_immersion_depth(modelData))).toLocaleString() + ' mm'
 		}
 	    }
 	}

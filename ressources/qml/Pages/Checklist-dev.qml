@@ -26,12 +26,13 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.LocalStorage 2.0
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import QtQuick.LocalStorage 2.0
+import Constants 1.0
 
 Pane {
     id: checklist_pane
@@ -40,12 +41,12 @@ Pane {
         id: checklist_model
 
         // ListElement {
-        //     name: "Apple"
+        //     name: 'Apple'
         // }
     }
 
     function open_db() {
-        var db = LocalStorage.openDatabaseSync("CheckListDatabase", "1.0", "Check List Database", 1000);
+        var db = LocalStorage.openDatabaseSync('CheckListDatabase', '1.0', 'Check List Database', 1000);
         db.transaction(
             function(transaction) {
                 // tx.executeSql('CREATE TABLE IF NOT EXISTS Activity(name TEXT)');
@@ -115,7 +116,7 @@ Pane {
                 fillMode: Image.Pad
                 horizontalAlignment: Image.AlignHCenter
                 verticalAlignment: Image.AlignVCenter
-                source: "qrc:/icons/add-black.png"
+                source: 'qrc:/icons/add-black.png'
             }
             onClicked: add_item_popup.open()
         }
@@ -145,36 +146,36 @@ Pane {
         Column {
             id: column
             width: parent.width
-            spacing: 5
+            spacing: Style.spacing.small
 
             Label {
-                font.pointSize: 20
+                font.pointSize: Style.font_size.huge
                 font.bold: true
-                text: qsTr("Add Item")
+                text: qsTr('Add Item')
             }
 
             TextField {
                 id: item_name_text_field
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: 32
-                placeholderText: "enter name"
+                font.pointSize: Style.font_size.huge
+                placeholderText: 'enter name'
             }
 
             Row {
-                spacing: 5
+                spacing: Style.spacing.small
                 anchors.right: parent.right
 
                 Button {
-                    text: "Cancel"
+                    text: 'Cancel'
                     onClicked: calibrate_popup.close()
-                    // label.color: "#42a5f5ff"
+                    // label.color: '#42a5f5ff'
                     background: null
                 }
                 Button {
-                    text: "Ok"
+                    text: 'Ok'
                     onClicked: {
                         if (item_name_text_field.text) {
-                            console.info("define item name", altitude_text_field.text);
+                            console.info('define item name', altitude_text_field.text);
                         }
                         calibrate_popup.close()
                     }

@@ -26,18 +26,19 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
+import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+
 // import Qt.labs.controls.material 1.0
 
 import QtSensors 5.1
 
+import Constants 1.0
+import 'qrc:/js/gps.js' as GpsHelper
 import Local 1.0
-
-import "qrc:Widgets" as Widgets
-import "qrc:/js/gps.js" as GpsHelper
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: gps_pane
@@ -56,7 +57,7 @@ Widgets.Page {
        //     var azimuth = compass.reading.azimuth;
        //     // var calibration_level = compass.reading.calibrationLevel;
        //     azimuth_label.text = azimuth.toFixed(0);
-       //     console.info("Azimuth", azimuth)
+       //     console.info('Azimuth', azimuth)
        //     canvas.requestPaint();
        // }
    }
@@ -77,7 +78,7 @@ Widgets.Page {
     SatelliteModel {
         id: satellite_model
         running: true
-        onErrorFound: errorLabel.text = qsTr("Last Error: %1", "%1=error number").arg(code)
+        onErrorFound: errorLabel.text = qsTr('Last Error: %1', '%1=error number').arg(code)
     }
 
     Timer {
@@ -87,7 +88,7 @@ Widgets.Page {
         onTriggered: {
             for (var i = 0; i < satellite_model.rowCount(); i++) {
                 var index = satellite_model.index(i, 0);
-                console.log("satellite", i,
+                console.log('satellite', i,
                     satellite_model.data(index, SatelliteModel.IdentifierRole),
                     satellite_model.data(index, SatelliteModel.InUseRole),
                     satellite_model.data(index, SatelliteModel.SignalStrengthRole),
@@ -121,40 +122,40 @@ Widgets.Page {
        width: parent.width
        anchors.top: parent.top
        anchors.topMargin: 15
-       spacing: 5
+       spacing: Style.spacing.small
 
        Image {
 	   Layout.alignment: Qt.AlignCenter
            fillMode: Image.Pad
-           source: "qrc:/icons/navigation-black.png"
+           source: 'qrc:/icons/navigation-black.png'
        }
 
        Label {
 	   Layout.alignment: Qt.AlignCenter
-           text: "Azimuth"
+           text: 'Azimuth'
        }
 
        Label {
 	   Layout.alignment: Qt.AlignCenter
            id: azimuth_label
-           text: "unknown"
+           text: 'unknown'
        }
 
        // Label {
-       //     color: "white"
-       //     text: "X Tilt"
+       //     color: 'white'
+       //     text: 'X Tilt'
        // }
        // Label {
-       //     color: "white"
+       //     color: 'white'
        //     id: x_tilt_label
        // }
 
        // Label {
-       //     color: "white"
-       //     text: "Y Tilt"
+       //     color: 'white'
+       //     text: 'Y Tilt'
        // }
        // Label {
-       //     color: "white"
+       //     color: 'white'
        //     id: y_tilt_label
        // }
    }
@@ -183,7 +184,7 @@ Widgets.Page {
        // anchors.margins: rect.myMargin
        // border.width: 3
        // radius: 10
-       // border.color: "black"
+       // border.color: 'black'
 
        Item {
            id: rect
@@ -207,7 +208,7 @@ Widgets.Page {
                            anchors.bottom: parent.bottom
                            width: parent.width
                            height: parent.height * signalStrength / 100
-                           color: isInUse ? "#4caf50" : "#f44336" // green and red colors
+                           color: isInUse ? '#4caf50' : '#f44336' // green and red colors
                        }
                        Label {
                            anchors.horizontalCenter: parent.horizontalCenter

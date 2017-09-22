@@ -26,14 +26,14 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.2
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import QtMultimedia 5.5
-
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: torch_pane
@@ -41,7 +41,7 @@ Widgets.Page {
     Column {
         anchors.fill: parent
         anchors.topMargin: 50
-        spacing: 30
+        spacing: Style.spacing.huge
 
         Label {
             anchors.horizontalCenter: parent.horizontalCenter

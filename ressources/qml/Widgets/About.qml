@@ -29,7 +29,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Popup {
 
@@ -109,7 +110,7 @@ Widgets.Popup {
 
         TextArea.flickable: TextArea {
             id: text_area
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             readOnly: true
             text: about_text
             textFormat: TextEdit.RichText

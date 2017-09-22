@@ -26,14 +26,15 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: refuge_directory_pane
@@ -106,8 +107,9 @@ Widgets.Page {
                 font.pixelSize: 12
                 text: model.name
                 onClicked: {
+                    var page = {source: 'qrc:/qml/Pages/Refuge.qml'}
                     var properties = {'model': list_view.model[model.index]}
-                    application_window.push_page('qrc:/Pages/Refuge.qml', properties)
+                    push_page(page, properties)
                 }
             }
 
@@ -117,10 +119,6 @@ Widgets.Page {
             section.delegate: section_heading
         }
     }
-
-    // Widgets.Popup {
-    //     id: settings_dialog
-    // }
 
     function search() {
         refuge_schema_manager.filter_refuge_list(search_textfield.text)

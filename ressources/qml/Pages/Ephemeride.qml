@@ -26,20 +26,22 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.0
 // import Qt.labs.controls.material 1.0
 
 import QtPositioning 5.5
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: ephemeride_pane
 
-    property int font_size: 20
+    property int font_size: Style.font_size.huge
     property bool has_acquired_position: false
 
     PositionSource {
@@ -53,19 +55,19 @@ Widgets.Page {
             ephemeride.coordinate = coordinate;
             ephemeride.date = date;
 
-            // console.log("Coordinate:", coordinate.longitude, coordinate.latitude);
-            // console.log("Date:", date);
-            // console.log("sunrise:", ephemeride.sunrise);
-            // console.log("noon:", ephemeride.solar_noon);
-            // console.log("sunset:", ephemeride.sunset);
+            // console.log('Coordinate:', coordinate.longitude, coordinate.latitude);
+            // console.log('Date:', date);
+            // console.log('sunrise:', ephemeride.sunrise);
+            // console.log('noon:', ephemeride.solar_noon);
+            // console.log('sunset:', ephemeride.sunset);
 
 	    has_acquired_position = coordinate.isValid
 
-            date_label.text = date.toLocaleString(Qt.locale(), "dd/MM/yyyy");
-            coordinate_label.text = coordinate.longitude + "\n" + coordinate.latitude;
-            sunrise_label.text = ephemeride.sunrise.toLocaleTimeString(Qt.locale(), "hh:mm");
-            noon_label.text = ephemeride.solar_noon.toLocaleTimeString(Qt.locale(), "hh:mm");
-            sunset_label.text = ephemeride.sunset.toLocaleTimeString(Qt.locale(), "hh:mm");
+            date_label.text = date.toLocaleString(Qt.locale(), 'dd/MM/yyyy');
+            coordinate_label.text = coordinate.longitude + '\n' + coordinate.latitude;
+            sunrise_label.text = ephemeride.sunrise.toLocaleTimeString(Qt.locale(), 'hh:mm');
+            noon_label.text = ephemeride.solar_noon.toLocaleTimeString(Qt.locale(), 'hh:mm');
+            sunset_label.text = ephemeride.sunset.toLocaleTimeString(Qt.locale(), 'hh:mm');
 
             position_source.active = false;
         }
@@ -78,13 +80,13 @@ Widgets.Page {
     Column {
         anchors.fill: parent
         anchors.topMargin: 10
-	spacing : 20
+	spacing: Style.spacing.large
 
 	Label {
             anchors.horizontalCenter: parent.horizontalCenter
             font.pointSize: font_size
 	    visible: has_acquired_position == false
-	    text: qsTr("Position is unknown")
+	    text: qsTr('Position is unknown')
 	}
 
         GridLayout {
@@ -96,67 +98,67 @@ Widgets.Page {
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 font.pointSize: font_size
-                text: qsTr("Date")
+                text: qsTr('Date')
             }
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 id: date_label
                 font.pointSize: font_size
-                text: "unknown"
+                text: 'unknown'
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 font.pointSize: font_size
-                text: qsTr("Coordinate")
+                text: qsTr('Coordinate')
             }
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 id: coordinate_label
                 font.pointSize: font_size
-                text: "unknown"
+                text: 'unknown'
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 font.pointSize: font_size
-                text: qsTr("Sunrise")
+                text: qsTr('Sunrise')
             }
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 id: sunrise_label
                 font.pointSize: font_size
-                text: "unknown"
+                text: 'unknown'
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 font.pointSize: font_size
-                text: qsTr("Noon")
+                text: qsTr('Noon')
             }
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 id: noon_label
                 font.pointSize: font_size
-                text: "unknown"
+                text: 'unknown'
             }
 
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 font.pointSize: font_size
-                text: qsTr("Sunset")
+                text: qsTr('Sunset')
             }
             Label {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 id: sunset_label
                 font.pointSize: font_size
-                text: "unknown"
+                text: 'unknown'
             }
         }
 
 	RowLayout {
 	    width: parent.width
-	    spacing: 10
+	    spacing: Style.spacing.base
 
             Image {
 		id: warning_icon
@@ -167,10 +169,10 @@ Widgets.Page {
 		source: 'qrc:/icons/warning-black.png'
             }
             TextArea {
-		font.pointSize: 10
+		font.pointSize: Style.font_size.small
 		Layout.fillWidth: true
 		readOnly: true
-		text: qsTr("<p>The sunrise and sunset results are theoretically accurate to within a minute for locations between +/- 72° latitude, and within 10 minutes outside of those latitudes. <strong>However, due to variations in atmospheric composition, temperature, pressure and conditions, observed values may vary from calculations.</strong></p>")
+		text: qsTr('<p>The sunrise and sunset results are theoretically accurate to within a minute for locations between +/- 72° latitude, and within 10 minutes outside of those latitudes. <strong>However, due to variations in atmospheric composition, temperature, pressure and conditions, observed values may vary from calculations.</strong></p>')
                 // <p>The calculations are based on equations from Astronomical Algorithms, by Jean Meeus.</p>
                 // Sunrise/set are accurately derived from celestial mechanics and the local position, but this computation doesn't predict the twilight period which depend of the atmospheric conditions and other parameters.
 		textFormat: TextEdit.RichText

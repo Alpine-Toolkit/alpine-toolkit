@@ -1,5 +1,13 @@
 module Widgets
+About 1.0 About.qml
 CompassRose 1.0 CompassRose.qml
+ExplainPermission 1.0 ExplainPermission.qml
+Layers 1.0 Layers.qml
+MapComponent 1.0 MapComponent.qml
+MenuItem 1.0 MenuItem.qml
 MenuItemIcon 1.0 MenuItemIcon.qml
 OptionsMenu 1.0 OptionsMenu.qml
+Page 1.0 Page.qml
+Popup 1.0 Popup.qml
+Projections 1.0 Projections.qml
 SplashScreen 1.0 SplashScreen.qml

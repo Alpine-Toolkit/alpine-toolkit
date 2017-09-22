@@ -26,24 +26,25 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtMultimedia 5.5
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camera_pane
 
-    //color: "black"
+    //color: 'black'
 
-    state: "PhotoCapture"
+    state: 'PhotoCapture'
     states: [
         State {
-            name: "PhotoCapture"
+            name: 'PhotoCapture'
             StateChangeScript {
                 script: {
                     camera.captureMode = Camera.CaptureStillImage
@@ -52,10 +53,10 @@ Widgets.Page {
             }
         },
         State {
-            name: "PhotoPreview"
+            name: 'PhotoPreview'
         } //,
         // State {
-        //     name: "VideoCapture"
+        //     name: 'VideoCapture'
         //     StateChangeScript {
         //         script: {
         //             camera.captureMode = Camera.CaptureVideo
@@ -64,7 +65,7 @@ Widgets.Page {
         //     }
         // },
         // State {
-        //     name: "VideoPreview"
+        //     name: 'VideoPreview'
         //     StateChangeScript {
         //         script: {
         //             camera.stop()
@@ -91,17 +92,17 @@ Widgets.Page {
 
             text: {
                 if (camera.lockStatus == Camera.Unlocked) {
-                    "Focus";
+                    'Focus';
                 } else if (camera.lockStatus == Camera.Searching) {
-                    "Focusing"
+                    'Focusing'
                 } else {
-                    "Unlock"
+                    'Unlock'
                 }
             }
         }
 
         Button {
-            text: "Capture"
+            text: 'Capture'
             visible: camera.imageCapture.ready
             onClicked: camera.imageCapture.capture()
         }
@@ -122,12 +123,12 @@ Widgets.Page {
             onImageCaptured: {
                 photo_preview.source = preview // Show the preview in an Image
                 // stillControls.previewAvailable = true
-                camera_pane.state = "PhotoPreview"
+                camera_pane.state = 'PhotoPreview'
             }
         }
 
         videoRecorder {
-           // resolution: "1920x1080"
+           // resolution: '1920x1080'
            frameRate: 30
         }
     }
@@ -140,7 +141,7 @@ Widgets.Page {
         width: parent.width
         height: parent.height - camera_toolbox.height
 
-        visible: camera_pane.state == "PhotoCapture" // || cameraUI.state == "VideoCapture"
+        visible: camera_pane.state == 'PhotoCapture' // || cameraUI.state == 'VideoCapture'
         focus : visible // to receive focus and capture key events when visible
 
         source: camera
@@ -157,13 +158,13 @@ Widgets.Page {
         width: parent.width
         height: parent.height - camera_toolbox.height
 
-        visible: camera_pane.state == "PhotoPreview"
+        visible: camera_pane.state == 'PhotoPreview'
         focus: visible
 
         property alias source : preview.source
         signal closed
 
-        onClosed: camera_pane.state = "PhotoCapture"
+        onClosed: camera_pane.state = 'PhotoCapture'
 
         Image {
             id: preview

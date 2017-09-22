@@ -25,15 +25,14 @@
  **************************************************************************************************/
 
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.0
-
-// import Widgets 1.0 // Fixme: don't work
-import "qrc:Widgets" as Widgets
-import "qrc:Pages" as Pages
-import "qrc:/js/android_permission.js" as AndroidPermission
+import 'qrc:/js/android_permission.js' as AndroidPermission // Fixme: to module ?
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 ApplicationWindow {
     id: application_window
@@ -181,7 +180,7 @@ ApplicationWindow {
                 }
             }
 
-            model: Pages.PageModel {}
+            model: PageModel {}
             ScrollIndicator.vertical: ScrollIndicator {}
         }
     }

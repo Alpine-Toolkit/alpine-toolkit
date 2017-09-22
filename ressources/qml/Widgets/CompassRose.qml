@@ -28,7 +28,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
-import "qrc:/js/compass_rose.js" as CompassRosePainter
+import 'qrc:/js/compass_rose.js' as CompassRosePainter
+import Constants 1.0
 
 Canvas {
     id: canvas

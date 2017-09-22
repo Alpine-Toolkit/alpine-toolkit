@@ -28,9 +28,9 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
-import "qrc:/js/compass_rose.js" as CompassRosePainter
-
-import "qrc:/C2cFilter" as C2cFilter
+import 'qrc:/js/compass_rose.js' as CompassRosePainter
+import C2cFilter 1.0 as C2cFilter
+import Constants 1.0
 
 C2cFilter.Filter {
     function get_state() {

@@ -1,13 +1,13 @@
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 import QtPositioning 5.5
 
-// import QtCarto 1.0 // fr.alpine_toolkit.
+import Constants 1.0
 import Local 1.0
 
 QcMapItem {

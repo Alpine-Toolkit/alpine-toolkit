@@ -26,21 +26,23 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
 // import Qt.labs.controls.material 1.0
 
 import QtPositioning 5.5
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: ephemeride_pane
 
-    property int font_size: 20
-    property string emergency_phone_number: "112"
+    property int font_size: Style.font_size.huge
+    property string emergency_phone_number: '112'
 
     PositionSource {
         id: position_source
@@ -73,21 +75,21 @@ Widgets.Page {
 
                 Label {
                     font.pointSize: font_size
-                    text: qsTr("Latitude")
+                    text: qsTr('Latitude')
                 }
                 Label {
                     id: latitude_label
                     font.pointSize: font_size
-                    text: "unknown"
+                    text: 'unknown'
                 }
                 Label {
                     font.pointSize: font_size
-                    text: qsTr("Longitude")
+                    text: qsTr('Longitude')
                 }
                 Label {
                     id: longitude_label
                     font.pointSize: font_size
-                    text: "unknown"
+                    text: 'unknown'
                 }
             }
         }
@@ -101,12 +103,12 @@ Widgets.Page {
                 width: parent.width
                 anchors.top: parent.top
                 anchors.topMargin: 30
-                spacing: 40
+                spacing: 2*Style.spacing.large
 
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pointSize: font_size
-                    text: qsTr("Phone Number")
+                    text: qsTr('Phone Number')
                 }
 
                 Label {
@@ -117,7 +119,7 @@ Widgets.Page {
 
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr("Emergency Call")
+                    text: qsTr('Emergency Call')
                     onClicked: platform_abstraction.issue_dial(emergency_phone_number); // double confirmation ?
                 }
             }

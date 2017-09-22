@@ -26,17 +26,18 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
+import QtQuick.Window 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+
 // import Qt.labs.controls.material 1.0
 
 import QtSensors 5.1 // .8
 
+import Constants 1.0
 import Local 1.0
-
-import "qrc:Widgets" as Widgets
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: altimeter_pane
@@ -48,7 +49,7 @@ Widgets.Page {
         onReadingChanged: {
             var step_counter = step_counter_sensor.reading.stepCounter;
             step_counter_label.text = step_counter;
-            console.info("Step counter", step_counter);
+            console.info('Step counter', step_counter);
         }
     }
 
@@ -59,14 +60,14 @@ Widgets.Page {
     //     onReadingChanged: {
     //         var heart_rate = heart_rate_sensor.reading.heartRate;
     //         heart_rate_label.text = heart_rate;
-    //         console.info("Heart rate", heart_rate);
+    //         console.info('Heart rate', heart_rate);
     //     }
     // }
 
     ColumnLayout {
         anchors.fill: parent
         anchors.topMargin: 30
-        spacing: 30
+        spacing: Style.spacing.huge
 
         GridLayout {
             width: parent.width
@@ -76,23 +77,23 @@ Widgets.Page {
             rowSpacing : 2
 
             Label {
-                font.pointSize: 20
-                text: qsTr("Step Counter")
+                font.pointSize: Style.font_size.huge
+                text: qsTr('Step Counter')
             }
             Label {
-                font.pointSize: 20
+                font.pointSize: Style.font_size.huge
                 id: step_counter_label
-                text: "unknown"
+                text: 'unknown'
             }
 
             // Label {
-            //     font.pointSize: 20
-            //     text: qsTr("Heart Rate")
+            //     font.pointSize: Style.font_size.huge
+            //     text: qsTr('Heart Rate')
             // }
             // Label {
-            //     font.pointSize: 20
+            //     font.pointSize: Style.font_size.huge
             //     id: heart_rate_label
-            //     text: "unknown"
+            //     text: 'unknown'
             // }
         }
     }

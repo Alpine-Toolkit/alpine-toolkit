@@ -28,13 +28,15 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
+import Constants 1.0
+
 Column {
     property string title: ''
 
     anchors.horizontalCenter: parent.horizontalCenter
     width: parent.width
 
-    spacing: 10
+    spacing: Style.spacing.base
 
     Rectangle {
 	width: parent.width

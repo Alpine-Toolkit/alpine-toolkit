@@ -26,14 +26,16 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
 // import QtWebView 1.1
 
-import "qrc:/Widgets" as Widgets
-import "qrc:/js/camptocamp_definitions.js" as C2cDefinitions
+import Constants 1.0
+import 'qrc:/js/camptocamp_definitions.js' as C2cDefinitions
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: camptocamp_route_pane
@@ -62,17 +64,17 @@ Widgets.Page {
     }
 
     Component.onCompleted: {
-        /* console.info("camptocamp route pane\n" + route.to_json_string()); */
+        /* console.info('camptocamp route pane\n' + route.to_json_string()); */
         compass_rose.set_state(route.orientations);
-        // web_view.loadHtml(route.description("fr"), '');
+        // web_view.loadHtml(route.description('fr'), '');
         /* route.images.forEach(function (image) { */
-        /*     console.info("Image", image.filename); */
+        /*     console.info('Image', image.filename); */
         /* }); */
         var images = route.images
         for (var i = 0; i < images.length; i++) {
 	    var image = images[i];
-            console.info("Load image", image.filename);
-            image_model.append({"filename": image.filename, "loaded": false}); // Fixme:
+            console.info('Load image', image.filename);
+            image_model.append({'filename': image.filename, 'loaded': false}); // Fixme:
             c2c_client.media(image.filename);
         }
     }
@@ -86,7 +88,7 @@ Widgets.Page {
             for (var i = 0; i < image_model.count; i++) {
 	        var image = image_model.get(i);
                 if (image.filename == media) {
-                    image_model.setProperty(i, "loaded", true);
+                    image_model.setProperty(i, 'loaded', true);
                 }
             }
         }
@@ -113,13 +115,13 @@ Widgets.Page {
                     fillMode: Image.Pad
                     horizontalAlignment: Image.AlignHCenter
                     verticalAlignment: Image.AlignVCenter
-                    source: c2c_client.is_document_cached(route.id) ? "qrc:/icons/cloud-done-black.png" : "qrc:/icons/cloud-download-black.png"
+                    source: c2c_client.is_document_cached(route.id) ? 'qrc:/icons/cloud-done-black.png' : 'qrc:/icons/cloud-download-black.png'
                 }
                 // Fixme: cached / update
                 onClicked: {
                     c2c_client.save_document(route.id)
                     // Fixme:
-                    download_icon_image.source = c2c_client.is_document_cached(route.id) ? "qrc:/icons/cloud-done-black.png" : "qrc:/icons/cloud-download-black.png"
+                    download_icon_image.source = c2c_client.is_document_cached(route.id) ? 'qrc:/icons/cloud-done-black.png' : 'qrc:/icons/cloud-download-black.png'
                 }
             }
         }
@@ -127,10 +129,10 @@ Widgets.Page {
         Label {
             id: title
             width: parent.width
-            font.pointSize: 20
+            font.pointSize: Style.font_size.huge
             font.bold: true
             wrapMode: Text.WordWrap
-            text: route.title("fr")
+            text: route.title('fr')
         }
     }
 
@@ -145,7 +147,7 @@ Widgets.Page {
             Label {
                 id: description_label
                 anchors.top: parent.top
-                font.pointSize: 18
+                font.pointSize: Style.font_size.large
                 font.bold: true
                 text: 'Description'
             }
@@ -159,9 +161,9 @@ Widgets.Page {
 
                 TextArea.flickable: TextArea {
                     id: description
-                    font.pointSize: 12
+                    font.pointSize: Style.font_size.base
                     readOnly: true
-                    text: route.description("fr")
+                    text: route.description('fr')
                     textFormat: TextEdit.RichText
                     wrapMode: Text.WordWrap
 
@@ -177,7 +179,7 @@ Widgets.Page {
                 id: information_label
                 anchors.top: parent.top
                 anchors.bottomMargin: 10
-                font.pointSize: 18
+                font.pointSize: Style.font_size.large
                 font.bold: true
                 text: 'Information'
             }
@@ -198,23 +200,23 @@ Widgets.Page {
                     verticalItemAlignment: Grid.AlignVCenter
 
                     Label {
-                        font.pointSize: 16
+                        font.pointSize: Style.font_size.large
                         text: 'General'
                     }
                     Column {
-                        spacing: 5
+                        spacing: Style.spacing.small
 
                         Label {
                             text: 'Route types: ' + route.route_types.join(', ')
                         }
                         Row {
-                            spacing: 10
+                            spacing: Style.spacing.base
                             Label {
                                 text: 'Activities'
                             }
                             Label {
                                 font.family: activities_font.name
-                                font.pointSize: 16
+                                font.pointSize: Style.font_size.large
                                 text: format_activity_list(route.activities)
                             }
                         }
@@ -239,11 +241,11 @@ Widgets.Page {
                     }
 
                     Label {
-                        font.pointSize: 16
+                        font.pointSize: Style.font_size.large
                         text: 'Heights'
                     }
                     Column {
-                        spacing: 5
+                        spacing: Style.spacing.small
 
                         Label {
                             text: 'Elevation min/max : %1 m / %2 m'.arg(route.elevation_min).arg(route.elevation_max)
@@ -257,7 +259,7 @@ Widgets.Page {
                     }
 
                     Label {
-                        font.pointSize: 16
+                        font.pointSize: Style.font_size.large
                         text: 'Rating'
                     }
                     Label {
@@ -266,7 +268,7 @@ Widgets.Page {
                     }
 
                     Label {
-                        font.pointSize: 16
+                        font.pointSize: Style.font_size.large
                         text: 'Orientations'
                     }
                     Widgets.CompassRose {
@@ -275,7 +277,7 @@ Widgets.Page {
                     }
 
                     // Label {
-                    //     font.pointSize: 16
+                    //     font.pointSize: Style.font_size.large
                     //     text: 'License'
                     // }
                     // Label {
@@ -283,7 +285,7 @@ Widgets.Page {
                     // }
 
                     // Label {
-                    //     font.pointSize: 16
+                    //     font.pointSize: Style.font_size.large
                     //     text: 'Maps'
                     // }
                     // Label {
@@ -317,7 +319,7 @@ Widgets.Page {
 
                         Image {
                             visible: loaded
-                            source: loaded ? "image://c2c/" + filename : null
+                            source: loaded ? 'image://c2c/' + filename : null
                             width: parent.width
                             height: parent.height
                             fillMode: Image.PreserveAspectFit
@@ -333,9 +335,10 @@ Widgets.Page {
                     }
 
                     onClicked: {
-                        console.info("clicked on media", filename);
-                        var properties = { 'media': filename };
-                        push_page('qrc:/Pages/CamptocampMedia.qml', properties);
+                        console.info('clicked on media', filename);
+                        var page = {source: 'qrc:/qml/Pages/CamptocampMedia.qml'}
+                        var properties = {media: filename};
+                        push_page(page, properties);
                     }
                 }
                 clip: true

@@ -408,6 +408,8 @@ Application::set_offline_storage_path()
 void
 Application::load_qml_main()
 {
+  m_engine.addImportPath(QLatin1String("qrc:///qml"));
+
   // ASAN: throw new_delete_type_mismatch
   m_engine.load(QUrl("qrc:/qml/main.qml"));
 

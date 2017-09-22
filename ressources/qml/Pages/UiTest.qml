@@ -26,35 +26,22 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: ui_test_pane
 
-    Rectangle {
-        x: 100
-        y: 100
-        color: "black"
-        width: 100
-        height: 100
-    }
+    Widgets.Popup {
+        id: settings_dialog
 
-    Label {
-        x: 100
-        y: 300
-        font.pointSize: 20
-        text: "Axm1"
-    }
-
-    Label {
-        x: 100
-        y: 450
-        font.pixelSize: 40
-        text: "Axm2"
+        Text {
+            text: 'Hello!'
+        }
     }
 }

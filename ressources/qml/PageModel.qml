@@ -32,112 +32,112 @@ ListModel {
     ListElement {
         title: qsTr('Altimeter')
         icon: 'qrc:/icons/altimeter-black.png'
-        source: 'qrc:/Pages/Altimeter.qml' // Pages.Altimeter is not supported
+        source: 'qrc:/qml/Pages/Altimeter.qml' // Pages.Altimeter is not supported
         lock_orientation: false
     }
 
     // ListElement {
     //     title: qsTr('Bleau')
     //     icon: ''
-    //     source: 'qrc:/Pages/Bleau.qml'
+    //     source: 'qrc:/qml/Pages/Bleau.qml'
     //     lock_orientation: false
     // }
 
     ListElement {
         title: qsTr('Camptocamp')
         icon: 'qrc:/icons/camptocamp-black.png'
-        source: 'qrc:/Pages/Camptocamp.qml'
+        source: 'qrc:/qml/Pages/Camptocamp.qml'
         lock_orientation: false
     }
 
     // ListElement {
     //     title: qsTr('Check List')
     //     icon: ''
-    //     source: 'qrc:/Pages/Checklist.qml'
+    //     source: 'qrc:/qml/Pages/Checklist.qml'
     //     lock_orientation: false
     // }
 
     ListElement {
         title: qsTr('Data Logger')
         icon: 'qrc:/icons/data-logger-black.png'
-        source: 'qrc:/Pages/DataLogger.qml'
+        source: 'qrc:/qml/Pages/DataLogger.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Ephemeride')
         icon: 'qrc:/icons/ephemeride-black.png'
-        source: 'qrc:/Pages/Ephemeride.qml'
+        source: 'qrc:/qml/Pages/Ephemeride.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Emergency')
         icon: 'qrc:/icons/helicopter-black.png'
-        source: 'qrc:/Pages/Emergency.qml'
+        source: 'qrc:/qml/Pages/Emergency.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Fuel Gauge')
         icon: 'qrc:/icons/fuel-black.png'
-        source: 'qrc:/Pages/FuelGauge.qml'
+        source: 'qrc:/qml/Pages/FuelGauge.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Inclination')
         icon: 'qrc:/icons/clignometre-black.png'
-        source: 'qrc:/Pages/Inclination.qml'
+        source: 'qrc:/qml/Pages/Inclination.qml'
         lock_orientation: true
     }
 
     ListElement {
         title: qsTr('Illuminance')
         icon: 'qrc:/icons/sun-black.png'
-        source: 'qrc:/Pages/Illuminance.qml'
+        source: 'qrc:/qml/Pages/Illuminance.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('GPS')
         icon: 'qrc:/icons/explore-black.png'
-        source: 'qrc:/Pages/Gps.qml'
+        source: 'qrc:/qml/Pages/Gps.qml'
         lock_orientation: true
     }
 
     ListElement {
         title: qsTr('Lamp Signal')
         icon: 'qrc:/icons/lamp-signal-black.png'
-        source: 'qrc:/Pages/LampSignal.qml'
+        source: 'qrc:/qml/Pages/LampSignal.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Map')
         icon: 'qrc:/icons/map-black.png'
-        source: 'qrc:/Pages/Map.qml'
+        source: 'qrc:/qml/Pages/Map.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Person Counter')
         icon: 'qrc:/icons/people-black.png'
-        source: 'qrc:/Pages/PersonCounter.qml'
+        source: 'qrc:/qml/Pages/PersonCounter.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Refuges')
         icon: 'qrc:/icons/hut-black.png'
-        source: 'qrc:/Pages/RefugeDirectory.qml'
+        source: 'qrc:/qml/Pages/RefugeDirectory.qml'
         lock_orientation: false
     }
 
     ListElement {
         title: qsTr('Torch')
         icon: 'qrc:/icons/torch-black.png'
-        source: 'qrc:/Pages/Torch.qml'
+        source: 'qrc:/qml/Pages/Torch.qml'
         lock_orientation: false
     }
 
@@ -145,25 +145,25 @@ ListModel {
       ListElement {
       title: qsTr('Camera')
       icon: ''
-      source: 'qrc:/Pages/Camera.qml'
+      source: 'qrc:/qml/Pages/Camera.qml'
       lock_orientation: false
       }
       ListElement {
       title: qsTr('Heart Rate')
       icon: ''
-      source: 'qrc:/Pages/HeartRate.qml'
+      source: 'qrc:/qml/Pages/HeartRate.qml'
       lock_orientation: false
       }
       ListElement {
       title: qsTr('Chart')
       icon: ''
-      source: 'qrc:/Pages/Chart.qml'
+      source: 'qrc:/qml/Pages/Chart.qml'
       lock_orientation: false
       }
       ListElement {
       title: qsTr('UI Test')
       icon: ''
-      source: 'qrc:/Pages/UiTest.qml'
+      source: 'qrc:/qml/Pages/UiTest.qml'
       lock_orientation: false
       }
     */

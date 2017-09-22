@@ -24,33 +24,37 @@
  *
  **************************************************************************************************/
 
-import QtQml 2.2
+// cf. http://wiki.qt.io/Qml_Styling
+
+pragma Singleton
 import QtQuick 2.6
 
-import QtQuick.Controls 2.0
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.2
+QtObject {
 
-import QtPositioning 5.5
-
-import Qt.labs.settings 1.0
-
-import Constants 1.0
-import Local 1.0
-import Widgets 1.0 as Widgets
-
-Widgets.Page {
-    id: map_pane
-
-    bottomPadding: 0
-    leftPadding: 0
-    rightPadding: 0
-    topPadding: 0
-
-    Widgets.MapComponent {
-        id: map
-        anchors.fill: parent
-        focus: true
+    property QtObject font_size: QtObject {
+	property int tiny:   8
+	property int small: 10
+	property int base:  12
+	property int large: 18
+	property int huge:  20
     }
-}
 
+    property QtObject spacing: QtObject {
+	property int xs:     1
+	property int small:  5
+	property int base:  10
+	property int large: 20
+	property int huge:  30
+
+	property int xs_horizontal:     1
+	property int small_horizontal:  5
+	property int base_horizontal:  10
+	property int large_horizontal: 20
+
+	property int xs_vertical:       1
+	property int small_vertical:    5
+	property int base_vertical:    10
+	property int large_vertical:   20
+    }
+
+}

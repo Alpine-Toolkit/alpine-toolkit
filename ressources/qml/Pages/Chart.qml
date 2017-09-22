@@ -26,27 +26,28 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtCharts 2.0
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: chart_pane
 
     ChartView {
-        title: "Accurate Historical Data"
+        title: 'Accurate Historical Data'
         anchors.fill: parent
         legend.visible: false
         antialiasing: true
 
         LineSeries {
             axisX: DateTimeAxis {
-                format: "yyyy MMM"
+                format: 'yyyy MMM'
                 tickCount: 5
             }
             axisY: ValueAxis {

@@ -26,14 +26,15 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: person_counter_pane
@@ -95,7 +96,7 @@ Widgets.Page {
         anchors.top: reset_button.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         Layout.fillWidth: true
-        font.pointSize: 20
+        font.pointSize: Style.font_size.huge
         text: Number(count).toLocaleString()
     }
 
@@ -103,7 +104,7 @@ Widgets.Page {
         anchors.top: counter_text.bottom
         anchors.topMargin: 50
         width: parent.width
-        spacing: 30
+        spacing: Style.spacing.huge
 
         // Hack to fix touch box
 	ToolButton {
@@ -120,7 +121,7 @@ Widgets.Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 property int value: modelData
                 contentItem: Row {
-                    spacing: 10
+                    spacing: Style.spacing.base
                     Repeater {
                         model: value
                         delegate: person_image

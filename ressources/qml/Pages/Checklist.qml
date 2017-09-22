@@ -26,12 +26,13 @@
 
 import QtQml 2.2
 import QtQuick 2.6
+
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
-
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: checklist_pane
@@ -40,76 +41,76 @@ Widgets.Page {
         id: checklist_model
 
         ListElement {
-            name: "Piolet"
+            name: 'Piolet'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Crampon"
+            name: 'Crampon'
         }
         ListElement {
-            name: "Fin"
+            name: 'Fin'
         }
     }
 
     // Column {
     //     anchors.fill: parent
-    //     spacing: 5
+    //     spacing: Style.spacing.small
 
     ToolButton {
         id: add_item_button
@@ -119,7 +120,7 @@ Widgets.Page {
             fillMode: Image.Pad
             horizontalAlignment: Image.AlignHCenter
             verticalAlignment: Image.AlignVCenter
-            source: "qrc:/icons/add-black.png"
+            source: 'qrc:/icons/add-black.png'
         }
         onClicked: add_item_popup.open()
     }
@@ -130,17 +131,17 @@ Widgets.Page {
         height: checklist_pane.height - add_item_button.height
         width: parent.width
         model: checklist_model
-        spacing: 5
+        spacing: Style.spacing.small
         delegate: Button {
             width: parent.width
             checkable: true
             background: Rectangle {
-                color: checked ? "green" : "red";
+                color: checked ? 'green' : 'red';
             }
             font.pixelSize: 12
             text: name
             onClicked: {
-                console.log("clicked on " + name)
+                console.log('clicked on ' + name)
             }
         }
     }
@@ -160,36 +161,36 @@ Widgets.Page {
         Column {
             id: column
             width: parent.width
-            spacing: 5
+            spacing: Style.spacing.small
 
             Label {
-                font.pointSize: 20
+                font.pointSize: Style.font_size.huge
                 font.bold: true
-                text: qsTr("Add Item")
+                text: qsTr('Add Item')
             }
 
             TextField {
                 id: item_name_text_field
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: 32
-                placeholderText: "enter name"
+                font.pointSize: Style.font_size.huge
+                placeholderText: 'enter name'
             }
 
             Row {
-                spacing: 5
+                spacing: Style.spacing.small
                 anchors.right: parent.right
 
                 Button {
-                    text: "Cancel"
+                    text: 'Cancel'
                     onClicked: calibrate_popup.close()
-                    // label.color: "#42a5f5ff"
+                    // label.color: '#42a5f5ff'
                     background: null
                 }
                 Button {
-                    text: "Ok"
+                    text: 'Ok'
                     onClicked: {
                         if (item_name_text_field.text) {
-                            console.info("define item name", item_name_text_field.text);
+                            console.info('define item name', item_name_text_field.text);
                         }
                         add_item_popup.close()
                     }

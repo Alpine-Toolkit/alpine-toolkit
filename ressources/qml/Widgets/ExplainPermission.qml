@@ -29,6 +29,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.2
 
+import Constants 1.0
+
 Dialog {
     id: dialog
     modal: true
@@ -40,7 +42,7 @@ Dialog {
     x: (parent.width - width) / 2
     y: (parent.height - height) / 2
 
-    title: qsTr("An Android Permission is Required")
+    title: qsTr('An Android Permission is Required')
     standardButtons: Dialog.Cancel | Dialog.Ok
 
     property string permision_id;
@@ -60,7 +62,7 @@ Dialog {
 
         TextArea.flickable: TextArea {
             id: text_area
-            font.pointSize: 12
+            font.pointSize: Style.font_size.base
             readOnly: true
             text: ''
             textFormat: TextEdit.RichText

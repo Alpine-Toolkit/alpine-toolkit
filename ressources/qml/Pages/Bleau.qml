@@ -26,14 +26,15 @@
 
 import QtQml 2.2
 import QtQuick 2.6
-import QtQuick.Window 2.2
 
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 
 // import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: bleau_pane
@@ -64,17 +65,17 @@ Widgets.Page {
             font.pixelSize: 12
             text: model.name
             onClicked: {
-                application_toolbar.state = "BACK"
+                application_toolbar.state = 'BACK'
                 nav_icon.visible = false
                 back_icon.visible = true
                 var properties = {'model': refuge_model[model.index]}
-                // stack_view.push("qrc:/Pages/BleauMassif.qml", properties, StackView.Transition)
+                // stack_view.push('qrc:/qml/Pages/BleauMassif.qml', properties, StackView.Transition)
             }
         }
 
-        section.property: "name"
+        section.property: 'name'
         section.criteria: ViewSection.FirstCharacter
-        // section.property: "first_letter"
+        // section.property: 'first_letter'
         // section.criteria: ViewSection.FullString
         section.delegate: section_heading
     }

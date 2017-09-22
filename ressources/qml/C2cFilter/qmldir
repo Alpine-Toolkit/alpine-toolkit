@@ -1,0 +1,7 @@
+module C2cFilter
+ActivityFilter 1.0 ActivityFilter.qml
+CheckBoxFilter 1.0 CheckBoxFilter.qml
+CompassRoseFilter 1.0 CompassRoseFilter.qml
+Filter 1.0 Filter.qml
+GradeRangeSliderFilter 1.0 GradeRangeSliderFilter.qml
+RangeSliderFilter 1.0 RangeSliderFilter.qml

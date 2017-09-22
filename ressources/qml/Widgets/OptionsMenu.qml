@@ -28,8 +28,8 @@ import QtQuick 2.6
 
 import QtQuick.Controls 2.0
 
-// import Widgets 1.0 // Fixme: don't work
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Menu {
     id: options_menu
@@ -64,7 +64,7 @@ Menu {
     }
 
     Component.onCompleted: {
-       var component = Qt.createComponent("qrc:Widgets/MenuItemIcon.qml")
+       var component = Qt.createComponent('qrc:/qml/Widgets/MenuItemIcon.qml')
         settings_item = component.createObject(null, {
             text: 'Settings',
             image: 'qrc:/icons/build-black.png',
@@ -73,13 +73,13 @@ Menu {
     }
 
     function enable_settings(status) {
-        console.info("enable_settings " + status)
+        console.info('enable_settings ' + status)
         if (status != has_settings) {
             if (!status) {
-                console.info("Remove settings")
+                console.info('Remove settings')
                 options_menu.removeItem(0)
             } else {
-                console.info("Insert settings")
+                console.info('Insert settings')
                 options_menu.insertItem(0, settings_item)
             }
             has_settings = status

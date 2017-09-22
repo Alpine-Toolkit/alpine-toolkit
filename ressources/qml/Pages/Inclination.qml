@@ -26,16 +26,17 @@
 
 import QtQuick 2.2
 
+import QtQuick.Controls 2.0
 import QtQuick.Extras 1.4
 import QtQuick.Extras.Private 1.0
-
 import QtQuick.Layouts 1.1
-import QtQuick.Controls 2.0
+
 // import Qt.labs.controls.material 1.0
 
 import QtSensors 5.1
 
-import "qrc:Widgets" as Widgets
+import Constants 1.0
+import Widgets 1.0 as Widgets
 
 Widgets.Page {
     id: inclination_pane
@@ -71,11 +72,11 @@ Widgets.Page {
 
        //     background: Canvas {
        //         onPaint: {
-       //             var ctx = getContext("2d");
+       //             var ctx = getContext('2d');
        //             ctx.reset();
 
        //             ctx.beginPath();
-       //             ctx.strokeStyle = "#e34c22";
+       //             ctx.strokeStyle = '#e34c22';
        //             ctx.lineWidth = outerRadius * 0.02;
 
        //             ctx.arc(outerRadius, outerRadius, outerRadius - ctx.lineWidth / 2,
@@ -89,7 +90,7 @@ Widgets.Page {
        //         implicitWidth: outerRadius * 0.02
        //         antialiasing: true
        //         implicitHeight: outerRadius * 0.06
-       //         color: styleData.value >= 80 ? "#e34c22" : "#e5e5e5"
+       //         color: styleData.value >= 80 ? '#e34c22' : '#e5e5e5'
        //     }
 
        //     minorTickmark: Rectangle {
@@ -97,13 +98,13 @@ Widgets.Page {
        //         implicitWidth: outerRadius * 0.01
        //         antialiasing: true
        //         implicitHeight: outerRadius * 0.03
-       //         color: "#e5e5e5"
+       //         color: '#e5e5e5'
        //     }
 
        //     tickmarkLabel: Label {
        //         font.pixelSize: Math.max(6, outerRadius * 0.1)
        //         text: styleData.value
-       //         color: styleData.value >= 80 ? "#e34c22" : "#e5e5e5"
+       //         color: styleData.value >= 80 ? '#e34c22' : '#e5e5e5'
        //         antialiasing: true
        //     }
 
@@ -112,7 +113,7 @@ Widgets.Page {
        //         implicitWidth: outerRadius * 0.03
        //         implicitHeight: outerRadius * 0.9
        //         antialiasing: true
-       //         color: "#e5e5e5"
+       //         color: '#e5e5e5'
        //     }
 
        //     foreground: Item {
@@ -120,7 +121,7 @@ Widgets.Page {
        //             width: outerRadius * 0.2
        //             height: width
        //             radius: width / 2
-       //             color: "#e5e5e5"
+       //             color: '#e5e5e5'
        //             anchors.centerIn: parent
        //         }
        //     }
