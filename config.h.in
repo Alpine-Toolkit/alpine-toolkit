@@ -42,6 +42,7 @@ static const QVersionNumber ALPINE_TOOLKIT_VERSION(@ALPINE_TOOLKIT_VERSION_MAJOR
 static const QUrl ALPINE_TOOLKIT_URL = QUrl(QLatin1String("https://alpine-toolkit.fabrice-salvaire.fr"));
 
 static const QString APPLICATION_NAME = QLatin1String("Alpine Toolkit");
+static const QString ORGANISATION_NAME = QLatin1String("Alpine Toolkit");
 
 #ifdef ON_LINUX
 static const QString CONFIG_DIRECTORY_NAME = QLatin1String("alpine-toolkit");

@@ -40,15 +40,32 @@
 
 /**************************************************************************************************/
 
-QcConfig::QcConfig()
-  : m_initialised(false)
+/*
+ * QSettings file is
+ *  - on Linux
+ *     INI
+ *     $HOME/.config/Alpine Toolkit/Alpine Toolkit.conf
+ *
+ */
+
+/**************************************************************************************************/
+
+QaConfig::QaConfig()
+  : QObject(),
+    m_initialised(false),
+    m_env(QProcessEnvironment::systemEnvironment()),
+    m_settings(ORGANISATION_NAME, APPLICATION_NAME) // To ensure correct values
 {
+  load_settings();
+
+  m_is_mockup_enabled = get_env(QLatin1Literal("MOCKUP")) == QLatin1Literal("TRUE");
+
   QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
   // qInfo() << "GenericDataLocation:" << generic_data_location_path;
 
   // Fixme: could use PlatformAbstraction::instance()
 #ifdef ON_LINUX
-  // GenericDataLocation = /home/fabrice/.local/share
+  // GenericDataLocation = $HOME/.local/share
   m_application_user_directory = QDir(generic_data_location_path).filePath(CONFIG_DIRECTORY_NAME);
 #endif
 
@@ -56,7 +73,7 @@ QcConfig::QcConfig()
   // DataLocation = /data/data/org.alpine_toolkit
   // GenericDataLocation = <USER> = /storage/emulated/0 = user land root
   // /storage/emulated/0/Android/data/org.alpine_toolkit/files
-  // /storage/0060-1F18/Android/data/org.alpine_toolkit/files
+  // /storage/XXXX-XXXX/Android/data/org.alpine_toolkit/files
   // Fixme: could use sdcard as well
 
   // This directory is destroyed when the application is uninstalled
@@ -67,15 +84,26 @@ QcConfig::QcConfig()
 #endif
 }
 
-QcConfig::~QcConfig()
+QaConfig::~QaConfig()
 {}
 
+QString
+QaConfig::get_env(const QString name) const
+{
+  QString env_name = QLatin1Literal("ALPINE_TOOLKIT_") + name;
+  QString value = m_env.value(env_name);
+  qInfo() << "Environment variable: " << env_name << "=" << value;
+
+  return value;
+}
+
 void
-QcConfig::init()
+QaConfig::init()
 {
   if (m_initialised)
     return;
 
+  // Could require Android permission
   create_directory(m_application_user_directory, QLatin1Literal("application user"));
   create_directory(wmts_cache_directory(), QLatin1Literal("wmts cache"));
   create_directory(wmts_token_directory(), QLatin1Literal("wmts token"));
@@ -84,7 +112,17 @@ QcConfig::init()
 }
 
 void
-QcConfig::create_directory(const QString path, const QString label) const
+QaConfig::load_settings()
+{
+  qInfo() << "Settings file path:" << m_settings.fileName() << m_settings.format();
+
+  // Settings file path: "$HOME/.config/Apline Toolkit/Alpine Toolkit.conf" 0
+  // Settings file path: "/data/data/org.alpine_toolkit/files/.config/Apline Toolkit/Alpine Toolkit.conf" 0
+  // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
+}
+
+void
+QaConfig::create_directory(const QString path, const QString label) const
 {
   QDir directory = path;
   if (not directory.exists()) {
@@ -95,13 +133,13 @@ QcConfig::create_directory(const QString path, const QString label) const
 }
 
 const QString
-QcConfig::join_application_user_directory(const QString & path) const
+QaConfig::join_application_user_directory(const QString & path) const
 {
   return QDir(m_application_user_directory).absoluteFilePath(path);
 }
 
 const QString
-QcConfig::wmts_cache_directory() const
+QaConfig::wmts_cache_directory() const
 {
 #ifdef ON_LINUX
   return QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
@@ -113,13 +151,13 @@ QcConfig::wmts_cache_directory() const
 }
 
 const QString
-QcConfig::wmts_token_directory() const
+QaConfig::wmts_token_directory() const
 {
   return join_application_user_directory(QLatin1Literal("wmts_token"));
 }
 
 const QString
-QcConfig::geoportail_token_path() const
+QaConfig::geoportail_token_path() const
 {
   // Fixme: Hide license
   return QDir(wmts_token_directory()).filePath(QLatin1Literal("geoportail-license.json"));

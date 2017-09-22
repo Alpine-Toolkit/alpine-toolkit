@@ -24,25 +24,18 @@
  *
  **************************************************************************************************/
 
-import QtQml 2.2
 import QtQuick 2.6
 
-import QtQuick.Controls 2.1
+ListModel {
+    id: settings_page_model
 
-import Constants 1.0
+    // Fixme: can we move attributes to page ?
 
-Pane {
-    // To enable a settings dialog define a Popup item with a "settings_dialog" id
-    // Widgets.Popup {
-    //     id: settings_dialog
-    // }
-
-    function has_settings_dialog() {
-        return typeof settings_dialog !== 'undefined'
-    }
-
-    function open_settings_dialog() {
-        if (has_settings_dialog())
-            settings_dialog.open()
+    ListElement {
+        group: 'main'
+        title: qsTr('Application Directory')
+        icon: 'qrc:/icons/sd-card-black.png'
+        source: 'qrc:/qml/Settings/ApplicationDirectory.qml'
+        // lock_orientation: false
     }
 }

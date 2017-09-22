@@ -67,8 +67,9 @@
 
 /**************************************************************************************************/
 
-QmlApplication::QmlApplication()
+QmlApplication::QmlApplication(Application * application)
   : QObject(),
+    m_application(application),
     m_network_configuration_manager()
 {
   m_wifi_state = get_wifi_state();
@@ -86,8 +87,7 @@ QmlApplication::~QmlApplication()
 QString
 QmlApplication::version() const
 {
-  const Application & application = Application::instance();
-  return application.version().toString();
+  return m_application->version().toString();
 }
 
 QUrl
@@ -132,18 +132,23 @@ QmlApplication::is_online() const
   return m_network_configuration_manager.isOnline();
 }
 
+QaConfig *
+QmlApplication::config()
+{
+  return &(QaConfig::instance());
+  // return &(m_application->config());
+}
+
 QString
 QmlApplication::encode_morse(const QString & message, bool use_bit)
 {
-  Application & application = Application::instance();
-  return application.encode_morse(message, use_bit);
+  return m_application->encode_morse(message, use_bit);
 }
 
 QString
 QmlApplication::decode_morse(const QString & message)
 {
-  Application & application = Application::instance();
-  return application.decode_morse(message);
+  return m_application->decode_morse(message);
 }
 
 /**************************************************************************************************/
@@ -165,11 +170,10 @@ Application::create(int & argc, char ** argv)
 Application::Application(int & argc, char ** argv)
   : m_application(argc, argv),
     m_translator(),
-    m_settings(),
     m_platform_abstraction(PlatformAbstraction::instance()),
-    m_config(QcConfig::instance()),
+    m_config(QaConfig::instance()),
     m_engine(),
-    m_qml_application()
+    m_qml_application(this)
 {
   set_env_variables();
   load_translation();
@@ -179,9 +183,6 @@ Application::Application(int & argc, char ** argv)
   set_offline_storage_path();
   set_context_properties();
   load_qml_main();
-
-  // Fixme: don't work
-  // m_engine.addImportPath(QLatin1String("qrc:///Widgets"));
 
   run_before_event_loop();
 }
@@ -203,7 +204,7 @@ Application::setup_gui_application()
 
   // QGuiApplication::setApplicationDisplayName(QCoreApplication::translate("main", "Alpine Toolkit "));
   QGuiApplication::setApplicationName(APPLICATION_NAME);
-  QGuiApplication::setOrganizationName(APPLICATION_NAME); // overridden ???
+  QGuiApplication::setOrganizationName(ORGANISATION_NAME); // overridden ???
   // QGuiApplication::setOrganizationDomain("alpine-toolkit.org")
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
@@ -229,16 +230,6 @@ Application::load_translation()
   } else {
     qInfo() << "No translator for locale" << locale.name();
   }
-}
-
-void
-Application::load_settings()
-{
-  qInfo() << "Settings file path:" << m_settings.fileName() << m_settings.format();
-
-  // Settings file path: "/home/fabrice/.config/FabriceSalvaire/Alpine Toolkit.conf" 0
-  // Settings file path: "/data/data/org.alpine_toolkit/files/.config/FabriceSalvaire/Alpine Toolkit.conf" 0
-  // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 }
 
 QString

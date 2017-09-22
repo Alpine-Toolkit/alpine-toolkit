@@ -67,7 +67,7 @@ QcDebugData::to_json() const
   version_object[QLatin1Literal("qt")] = qt_object;
   root_object[QLatin1Literal("version")] = version_object;
 
-  QcConfig & config = QcConfig::instance();
+  QaConfig & config = QaConfig::instance();
   QJsonObject config_object;
   config_object[QLatin1Literal("application_user_directory")] = config.application_user_directory();
   root_object[QLatin1Literal("config")] = config_object;

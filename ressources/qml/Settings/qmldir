@@ -1,0 +1,3 @@
+module Settings
+ApplicationDirectory 1.0 ApplicationDirectory.qml
+SettingsPageModel 1.0 SettingsPageModel.qml

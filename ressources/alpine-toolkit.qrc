@@ -28,6 +28,10 @@
         <file>qml/C2cFilter/GradeRangeSliderFilter.qml</file>
         <file>qml/C2cFilter/RangeSliderFilter.qml</file>
 
+        <file>qml/Settings/qmldir</file>
+        <file>qml/Settings/SettingsPageModel.qml</file>
+        <file>qml/Settings/ApplicationDirectory.qml</file>
+
         <file>qml/PageModel.qml</file>
         <file>qml/Pages/qmldir</file>
         <file>qml/Pages/Altimeter.qml</file>
@@ -54,6 +58,7 @@
         <file>qml/Pages/PersonCounter.qml</file>
         <file>qml/Pages/Refuge.qml</file>
         <file>qml/Pages/RefugeDirectory.qml</file>
+        <file>qml/Pages/Settings.qml</file>
         <file>qml/Pages/Torch.qml</file>
         <file>qml/Pages/UiTest.qml</file>
     </qresource>
@@ -111,6 +116,8 @@
         <file>icons/explore-black@3x.png</file>
         <file>icons/filter-black.png</file>
         <file>icons/filter-black@3x.png</file>
+        <file>icons/folder-black.png</file>
+        <file>icons/folder-black@3x.png</file>
         <file>icons/gps-fixed-black.png</file>
         <file>icons/gps-fixed-black@3x.png</file>
         <file>icons/gps-not-fixed-black.png</file>
@@ -133,8 +140,14 @@
         <file>icons/person-outline-black@3x.png</file>
         <file>icons/remove-black.png</file>
         <file>icons/remove-black@3x.png</file>
+        <file>icons/sd-card-black.png</file>
+        <file>icons/sd-card-black@3x.png</file>
         <file>icons/search-black.png</file>
         <file>icons/search-black@3x.png</file>
+        <file>icons/security-black.png</file>
+        <file>icons/security-black@3x.png</file>
+        <file>icons/settings-black.png</file>
+        <file>icons/settings-black@3x.png</file>
         <file>icons/undo-black.png</file>
         <file>icons/undo-black@3x.png</file>
         <file>icons/warning-black.png</file>
@@ -176,6 +189,8 @@
         <file>icons/polyline-dot-black@3x.png</file>
         <file>icons/ruler-black.png</file>
         <file>icons/ruler-black@3x.png</file>
+        <file>icons/settings-sliders-black.png</file>
+        <file>icons/settings-sliders-black@3x.png</file>
         <file>icons/sun-black.png</file>
         <file>icons/sun-black@3x.png</file>
         <file>icons/torch-black.png</file>

@@ -67,7 +67,7 @@ main(int argc, char *argv[])
   // surface_format.setSamples(4); // max is 8 ?
   QSurfaceFormat::setDefaultFormat(surface_format);
 
-  QcConfig & config = QcConfig::instance();
+  QaConfig & config = QaConfig::instance();
   config.init();
 
   // Set environment variable PROJ_LIB for proj4 so as to find (epsg) date files

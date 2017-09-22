@@ -24,6 +24,7 @@
  *
  **************************************************************************************************/
 
+import QtQml.Models 2.2
 import QtQuick 2.6
 
 import QtQuick.Controls 2.0
@@ -36,13 +37,14 @@ import Widgets 1.0 as Widgets
 
 ApplicationWindow {
     id: application_window
-    objectName: "application_window"
+    objectName: 'application_window'
     title: 'Alpine Toolkit'
     visible: true
 
-    // Overwriting binding on QQuickApplicationWindow_QML_26::stack_view_stack at qrc:/qml/main.qml:169 that was initially bound at qrc:/qml/main.qml:43:36
-    property var stack_view_stack: []
-    property var stack_view_history: []
+    // Overwriting binding on QQuickApplicationWindow_QML_26::_stack_view_stack at qrc:/qml/main.qml:169 that was initially bound at qrc:/qml/main.qml:43:36
+    property string _application_title: 'Alpine Toolkit'
+    property var _stack_view_stack: []
+    property var _stack_view_history: []
 
     // Done by Material theme
     // FontLoader { id: roboto_regular; source: 'qrc:/fonts/Roboto-Regular.ttf' }
@@ -59,10 +61,10 @@ ApplicationWindow {
         // 5.551839464882943*3*25.4 = 423
         console.info(Screen.height, Screen.width,
                      Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
-                     Screen.pixelDensity, Screen.devicePixelRatio);
+                     Screen.pixelDensity, Screen.devicePixelRatio)
 
 	if (platform_abstraction.on_android() || platform_abstraction.on_linux()) {
-	    AndroidPermission.create_explain_permission_dialog();
+	    AndroidPermission.create_explain_permission_dialog()
 	}
     }
 
@@ -91,7 +93,7 @@ ApplicationWindow {
         id: application_toolbar
 
         RowLayout {
-            spacing: 20
+            spacing: Style.spacing.large_horizontal
             anchors.fill: parent
 
             ToolButton {
@@ -117,10 +119,10 @@ ApplicationWindow {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 Layout.fillWidth: true
-                font.pixelSize: 20
+                font.pixelSize: Style.font_size.huge
                 elide: Label.ElideRight
                 color: 'white'
-                text: 'Alpine Toolkit'
+                text: _application_title
             }
 
             ToolButton {
@@ -141,46 +143,72 @@ ApplicationWindow {
         width: Math.min(application_window.width, application_window.height) / 3 * 2
         height: application_window.height
 
-        ListView {
-            id: list_view
-            currentIndex: -1
-            anchors.fill: parent
-	    spacing: 0
+        DelegateModel{
+            id: page_delegate_model
 
             delegate: ItemDelegate {
-		id: control
+	        id: control // item_menu_delegate
                 width: parent.width
-                font.pixelSize: 18
+                font.pixelSize: Style.font_size.large
                 text: model.title
-		// Try to get a smaller spacing
-		topPadding: 0
-		bottomPadding: 0
-		contentItem: Row {
-		    spacing: 10
+	        // Try to get a smaller spacing
+	        topPadding: 0
+	        bottomPadding: 0
+	        contentItem: Row {
+		    spacing: Style.spacing.base_horizontal
  		    Image {
-			// fillMode: Image.Pad
-			// horizontalAlignment: Image.AlignHCenter
-			// verticalAlignment: Image.AlignVCenter
-			anchors.verticalCenter: parent.verticalCenter
-			source: model.icon
+		        // fillMode: Image.Pad
+		        // horizontalAlignment: Image.AlignHCenter
+		        // verticalAlignment: Image.AlignVCenter
+		        anchors.verticalCenter: parent.verticalCenter
+		        source: model.icon
 		    }
 		    Label {
-			text: control.text
-			font: control.font
-			// verticalAlignment: Text.AlignVCenter
-			anchors.verticalCenter: parent.verticalCenter
+		        text: control.text
+		        font: control.font
+		        // verticalAlignment: Text.AlignVCenter
+		        anchors.verticalCenter: parent.verticalCenter
 		    }
-		}
+	        }
                 onClicked: {
-                    if (list_view.currentIndex != index) {
-                        list_view.currentIndex = index
+                    // if (list_view.currentIndex != index) {
+                    //     list_view.currentIndex = index
+                    if (!is_current_page(model))
                         replace_page(model)
-                    }
                     drawer.close()
                 }
             }
 
             model: PageModel {}
+
+            groups: [
+                DelegateModelGroup {
+                    includeByDefault: false
+                    name: 'enabled'
+                }
+            ]
+            filterOnGroup: 'enabled'
+
+            Component.onCompleted: {
+                var row_count = model.count
+                items.remove(0, row_count)
+                for (var i = 0; i < row_count; i++) {
+                    var page = model.get(i)
+                    if (page.group !== undefined)
+                        if ((page.group == 'main') ||
+                            (page.group == 'mockup' && application.config.is_mockup_enabled))
+                            items.insert(page, 'enabled')
+                }
+            }
+        }
+
+        ListView {
+            id: list_view
+            // currentIndex: -1
+            anchors.fill: parent
+	    spacing: 0
+
+            model: page_delegate_model
             ScrollIndicator.vertical: ScrollIndicator {}
         }
     }
@@ -192,33 +220,55 @@ ApplicationWindow {
         initialItem: Widgets.SplashScreen {}
     }
 
-    function replace_page(model) {
-        title_label.text = model.title
-        platform_abstraction.orientation_lock = model.lock_orientation
-        stack_view_stack = []
-        var data = {page: model.source}
-        stack_view_stack.push(data) // {model:model}
-        stack_view_history.push({action: 'replace', data: data})
-        var item = stack_view.replace(model.source)
+    function is_current_page(page) {
+        var stack_size = _stack_view_stack.length
+        return stack_size > 0 && _stack_view_stack[stack_size -1].source == page.source
+    }
+
+    function replace_page(page) {
+        _stack_view_stack = []
+        var data = {source: page.source, title: page.title}
+        _stack_view_stack.push(data) // {page: page}
+
+        data = {source: page.source}
+        _stack_view_history.push({action: 'replace', data: data})
+
+        title_label.text = page.title
+        platform_abstraction.orientation_lock = page.lock_orientation
+        var item = stack_view.replace(page.source)
         update_options_menu(item)
+
         return item
     }
 
-    function push_page(url, properties) {
-	properties = properties !== undefined ? properties : {}
-        var data = {url:url} // , properties:properties
-        stack_view_stack.push(data) // Fixme: contains model data ... ???
-        stack_view_history.push({action: 'push', data: data})
-        var item = stack_view.push(url, properties, StackView.Transition)
+    function push_page(page, properties) {
+        if ('title' in page)
+            title_label.text = page.title
+        var title = title_label.text
+
+        var data = {source: page.source, title: title} // , properties:properties
+        _stack_view_stack.push(data) // Fixme: contains model data ... ???
+        _stack_view_history.push({action: 'push', data: data})
+
+        properties = properties !== undefined ? properties : {}
+        var item = stack_view.push(page.source, properties, StackView.Transition)
         update_options_menu(item)
+
         return item
     }
 
     function pop_page() {
-        stack_view_stack.pop()
-        stack_view_history.push({action: 'pop'})
+        _stack_view_stack.pop()
+        _stack_view_history.push({action: 'pop'})
+
+        var stack_size = _stack_view_stack.length
+        if (stack_size > 0)
+            title_label.text = _stack_view_stack[stack_size -1].title
+        else
+            title_label.text = _application_title
         var item = stack_view.pop(StackView.Transition)
         update_options_menu(item)
+
         return item
     }
 
@@ -226,11 +276,11 @@ ApplicationWindow {
         // Fixme: don't work ???
         // var has_settings = typeof item.settings_dialog !== 'undefined'
         var has_settings = item.has_settings_dialog()
-        options_menu.enable_settings(has_settings)
+        options_menu.enable_settings_menu(has_settings)
     }
 
     onClosing: {
         // Fixme: get item status ?
-        console.info("Close windows\n" + JSON.stringify(stack_view_stack) + "\n " + JSON.stringify(stack_view_history))
+        console.info('Close windows\n' + JSON.stringify(_stack_view_stack) + '\n ' + JSON.stringify(_stack_view_history))
     }
 }

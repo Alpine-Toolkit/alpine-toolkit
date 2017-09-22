@@ -203,7 +203,7 @@ QcFileTileCache::~QcFileTileCache()
 QString
 QcFileTileCache::base_cache_directory()
 {
-  return QcConfig::instance().wmts_cache_directory();
+  return QaConfig::instance().wmts_cache_directory();
 }
 
 /*! Clear the cache and remove cached files on disk

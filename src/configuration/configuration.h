@@ -33,6 +33,8 @@
 
 /**************************************************************************************************/
 
+#include <QProcessEnvironment>
+#include <QSettings>
 #include <QString>
 
 /**************************************************************************************************/
@@ -41,22 +43,29 @@
 
 /**************************************************************************************************/
 
-class QcConfig
+class QaConfig : public QObject
 {
+  Q_OBJECT
+  Q_PROPERTY(bool is_mockup_enabled READ is_mockup_enabled CONSTANT) // Fixme: const ?
+
 public:
-  static QcConfig & instance() {
+  static QaConfig & instance() {
     // Thread-safe in C++11
-    static QcConfig m_instance;
+    static QaConfig m_instance;
     return m_instance;
   }
 
   // Delete copy and move constructors and assign operators
-  QcConfig(QcConfig const &) = delete;             // Copy construct
-  QcConfig & operator=(QcConfig const &) = delete; // Copy assign
-  QcConfig(QcConfig &&) = delete;                  // Move construct
-  QcConfig & operator=(QcConfig &&) = delete;      // Move assign
+  // QaConfig(QaConfig const &) = delete;             // Copy construct
+  // QaConfig & operator=(QaConfig const &) = delete; // Copy assign
+  // QaConfig(QaConfig &&) = delete;                  // Move construct
+  // QaConfig & operator=(QaConfig &&) = delete;      // Move assign
 
   void init(); // called in application.cpp
+
+  QSettings & settings() { return m_settings; }
+
+  bool is_mockup_enabled() const { return m_is_mockup_enabled; }
 
   // public directory
   const QString & application_user_directory() const { return m_application_user_directory; }
@@ -68,12 +77,18 @@ public:
   const QString geoportail_token_path() const;
 
 private:
-  QcConfig();
-  ~QcConfig();
+  QaConfig();
+  ~QaConfig();
+
   void create_directory(const QString path, const QString label) const;
+  void load_settings();
+  QString get_env(const QString name) const;
 
 private:
   bool m_initialised;
+  bool m_is_mockup_enabled;
+  QProcessEnvironment m_env;
+  QSettings m_settings;
   QString m_application_user_directory;
 };
 

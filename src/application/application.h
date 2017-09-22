@@ -36,7 +36,6 @@
 #include <QDir>
 #include <QNetworkConfigurationManager>
 #include <QQmlApplicationEngine>
-#include <QSettings>
 #include <QTranslator>
 // #include <QGuiApplication>
 
@@ -51,24 +50,21 @@
 
 /**************************************************************************************************/
 
+class Application;
+
 // Created after Qt Application
 class QmlApplication : public QObject
 {
   Q_OBJECT
   Q_PROPERTY(QString version READ version CONSTANT)
   Q_PROPERTY(QUrl home_page READ home_page CONSTANT)
+  Q_PROPERTY(QaConfig* config READ config CONSTANT)
   Q_PROPERTY(bool online_state READ is_online NOTIFY onlineStateChanged)
   Q_PROPERTY(bool wifi_state READ wifi_state NOTIFY wifiStateChanged)
 
 public:
-  QmlApplication();
+  QmlApplication(Application * application);
   ~QmlApplication();
-
-  QString version() const;
-  QUrl home_page() const;
-
-  bool is_online() const;
-  bool wifi_state() const { return m_wifi_state; }
 
   Q_INVOKABLE QString encode_morse(const QString & message, bool use_bit);
   Q_INVOKABLE QString decode_morse(const QString & message);
@@ -81,9 +77,15 @@ private slots:
   void network_configuration_changed(const QNetworkConfiguration & config);
 
 private:
+  QString version() const;
+  QUrl home_page() const;
+  QaConfig * config();
+  bool is_online() const;
+  bool wifi_state() const { return m_wifi_state; }
   bool get_wifi_state();
 
 private:
+  Application * m_application;
   QNetworkConfigurationManager m_network_configuration_manager;
   bool m_wifi_state;
 };
@@ -112,9 +114,8 @@ public:
   QmlApplication * qml_application() { return &m_qml_application; }
 
   const QString & application_user_directory() const { return m_config.application_user_directory(); } // Fixme: ???
-  QcConfig & config() { return m_config; }
-
-  QSettings & settings() { return m_settings; }
+  QaConfig & config() { return m_config; }
+  QSettings & settings() { return m_config.settings(); }
 
   const QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
@@ -124,7 +125,6 @@ public:
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);
   void load_qml_main();
-  void load_settings();
   void load_translation();
   void register_qml_types(); // static ???
   void run_before_event_loop();
@@ -144,9 +144,8 @@ private:
   // QGuiApplication m_application;
   QApplication m_application; // for charts
   QTranslator m_translator;
-  QSettings m_settings;
   PlatformAbstraction * m_platform_abstraction = nullptr; // singleton
-  QcConfig & m_config; // singleton
+  QaConfig & m_config; // singleton
   QQmlApplicationEngine m_engine;
   QmlApplication m_qml_application;
 

@@ -34,10 +34,11 @@ import Widgets 1.0 as Widgets
 Menu {
     id: options_menu
 
+    // Define the about dialog
     property QtObject about_dialog;
 
     // private
-    property var has_settings: false;
+    property var is_settings_menu_enabled: false;
     // Overwriting binding on About_QMLTYPE_9::about_text at qrc:Widgets/About.qml:80 that was initially bound at qrc:Widgets/About.qml:36:34
     property QtObject settings_item;
 
@@ -49,8 +50,8 @@ Menu {
 
     // Widgets.MenuItemIcon {
     // // MenuItem {
-    //     // enabled: options_menu.has_settings
-    //     // visible: options_menu.has_settings
+    //     // enabled: options_menu.is_settings_menu_enabled
+    //     // visible: options_menu.is_settings_menu_enabled
     //     text: 'Settings'
     //      image: 'qrc:/icons/build-black.png'
     //     onTriggered: open_settings_dialog()
@@ -58,7 +59,17 @@ Menu {
 
     Widgets.MenuItemIcon {
     // MenuItem {
-        text: 'About'
+        text: qsTr('Gloabl Settings')
+        image: 'qrc:/icons/settings-sliders-black.png'
+        onTriggered: {
+            var page = {source: 'qrc:/qml/Pages/Settings.qml', title: qsTr('Settings')}
+            push_page(page)
+        }
+    }
+
+    Widgets.MenuItemIcon {
+    // MenuItem {
+        text: qsTr('About')
         image: 'qrc:/icons/help-black.png'
         onTriggered: about_dialog.open()
     }
@@ -72,17 +83,13 @@ Menu {
         settings_item.triggered.connect(open_settings_dialog)
     }
 
-    function enable_settings(status) {
-        console.info('enable_settings ' + status)
-        if (status != has_settings) {
-            if (!status) {
-                console.info('Remove settings')
-                options_menu.removeItem(0)
-            } else {
-                console.info('Insert settings')
+    function enable_settings_menu(has_page_settings) {
+        if (has_page_settings != is_settings_menu_enabled) {
+            if (has_page_settings)
                 options_menu.insertItem(0, settings_item)
-            }
-            has_settings = status
+            else
+                options_menu.removeItem(0)
+            is_settings_menu_enabled = has_page_settings
         }
     }
 }
