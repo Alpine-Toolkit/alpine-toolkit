@@ -40,6 +40,21 @@ import Widgets 1.0 as Widgets
 Widgets.Page {
     id: torch_pane
 
+    property int period: 100 // ms
+
+    Component.onCompleted: {
+    }
+
+    function update_toch() {
+        if (dimmer_checkbox.checked) {
+            if (torch_switch.checked)
+                platform_abstraction.start_lamp_dimmer(period, dimmer_slider.value)
+            else
+                platform_abstraction.stop_lamp_dimmer()
+        } else
+            platform_abstraction.torch = torch_switch.checked
+    }
+
     Column {
         id: content
         anchors.fill: parent
@@ -72,7 +87,40 @@ Widgets.Page {
 		}
             }
 
-            onCheckedChanged : platform_abstraction.torch = checked
+            onCheckedChanged: update_toch()
+        }
+
+        GroupBox {
+            id: dimmer_group_box
+            width: content.width * .8
+            anchors.horizontalCenter: parent.horizontalCenter
+            // title: qsTr("Dimmer")
+
+            ColumnLayout {
+                width: parent.width
+
+                CheckBox {
+                    id: dimmer_checkbox
+                    text: qsTr("Dimmer")
+                    checked: false
+                    onCheckedChanged: update_toch()
+                }
+
+	        Slider {
+                    id: dimmer_slider
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.fillWidth: true
+                    enabled: dimmer_checkbox.checked
+
+	            from: 0
+	            to: 100
+		    stepSize: 5
+		    snapMode: Slider.SnapAlways
+	            value: 100
+
+                    onValueChanged: update_toch()
+	        }
+            }
         }
     }
 }
