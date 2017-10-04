@@ -1,0 +1,16 @@
+#! /bin/bash
+
+source $HOME/.bashrc
+
+# qt_version='5_10_0'
+qt_version='5_9_1'
+build_type='Debug'
+qtcarto_path="$HOME/home/developpement/qtcarto-application"
+build_path="${qtcarto_path}/build-alpine-toolkit-all-Desktop_Qt_${qt_version}_GCC_64bit-${build_type}"
+
+append_to_ld_library_path_if_not ${build_path}/src
+append_to_ld_library_path_if_not ${build_path}/src/qtcarto
+append_to_ld_library_path_if_not ${qtcarto_path}/alpine-toolkit/build-cmake/third-parties/snowball
+append_to_ld_library_path_if_not /usr/local/stow/cmark/lib
+
+gdb -ex 'run' ${build_path}/alpine-toolkit

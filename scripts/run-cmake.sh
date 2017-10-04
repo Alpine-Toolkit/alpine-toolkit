@@ -8,8 +8,8 @@ build_path=${source_path}/build-cmake
 # QT_VERSION=5.7
 # QT_VERSION=5.8
 # QT_VERSION=5.9
-QT_VERSION=5.9.1
-# QT_VERSION=5.10.0
+# QT_VERSION=5.9.1
+QT_VERSION=5.10.0
 
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"
@@ -35,6 +35,7 @@ pushd ${build_path}
 
 rm CMakeCache.txt
 rm compile_commands.json
+make clean
 
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
@@ -42,3 +43,5 @@ cmake \
   -DSANITIZE=ON \
   -DINSTRUMENT_FUNTIONS=OFF \
   ${source_path}
+
+make -j4

@@ -1,0 +1,63 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+import os
+import re
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Remove footer')
+
+parser.add_argument('source_file', metavar='source_file',
+                    help='source file')
+args = parser.parse_args()
+
+####################################################################################################
+
+def remove_blank_lines(filename):
+
+    print("Check " + filename)
+
+    source = open(filename, 'r')
+    lines = source.readlines()
+    stop_at = len(lines)
+    # pattern = '*'*20
+    pattern = '#'*20
+    if (pattern in lines[-1] and 'End' in lines[-3] and pattern in lines[-5]
+        and not lines[-6].strip()):
+        stop_at -= 6
+    print("  Found footer {} / {}".format(stop_at, len(lines)))
+
+    if stop_at != len(lines):
+        # print("Fix " + filename)
+        print("  Fixed " + filename)
+        os.rename(filename, filename + '~~')
+        # source = open(filename + '~~', 'r')
+        output = open(filename, 'w')
+        for line_number, line in enumerate(lines):
+            if line_number >= stop_at:
+                break
+            line = line.rstrip() # /!\
+            # if line_number in blank_lines:
+            #     line = '\n'
+            output.write(line + '\n')
+            # output.write('|' + line[:-1] + '|\n')
+
+####################################################################################################
+
+path = args.source_file
+path = os.path.realpath(path)
+
+if os.path.isdir(path):
+    for root, dirs, files in os.walk(path):
+        for filename in files:
+            # if filename.endswith('.cpp') or filename.endswith('.h') or filename.endswith('.java'):
+            if filename == 'CMakeLists.txt':
+                remove_blank_lines(os.path.join(root, filename))
+else:
+    remove_blank_lines(path)
