@@ -148,7 +148,10 @@ QmlApplication::encode_morse(const QString & message, bool use_bit)
 QString
 QmlApplication::decode_morse(const QString & message)
 {
-  return m_application->decode_morse(message);
+  bool succeed = false;
+  QString decoded_message = m_application->decode_morse(message, succeed);
+  decoded_message += succeed ? QLatin1String("@T") : QLatin1String("@F");
+  return decoded_message;
 }
 
 /**************************************************************************************************/
@@ -463,8 +466,8 @@ Application::encode_morse(const QString & message, bool use_bit)
 }
 
 QString
-Application::decode_morse(const QString & message)
+Application::decode_morse(const QString & message, bool & succeed)
 {
   load_morse_code_engine();
-  return m_morse_code_engine->decode(message);
+  return m_morse_code_engine->decode(message, succeed);
 }

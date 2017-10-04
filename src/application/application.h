@@ -120,7 +120,7 @@ public:
   const QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
   QString encode_morse(const QString & message, bool use_bit);
-  QString decode_morse(const QString & message);
+  QString decode_morse(const QString & message, bool & succeed);
 
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);

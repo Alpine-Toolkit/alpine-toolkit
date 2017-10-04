@@ -54,10 +54,11 @@ TestInternationalMorseCodeEngine::test_morse_code_engine()
   qInfo() << message << encoded_message;
   qInfo() << morse_code_engine.encode(message, true);
   qInfo() << morse_code_engine.encode(message, true, true);
-  QString message_back = morse_code_engine.decode(encoded_message);
+  bool succeed = false;
+  QString message_back = morse_code_engine.decode(encoded_message, succeed);
   qInfo() << message_back;
-  qInfo() << morse_code_engine.decode(" // ");
-  qInfo() << morse_code_engine.decode(" // /");
+  qInfo() << morse_code_engine.decode(" // ", succeed);
+  qInfo() << morse_code_engine.decode(" // /", succeed);
 }
 
 /***************************************************************************************************/

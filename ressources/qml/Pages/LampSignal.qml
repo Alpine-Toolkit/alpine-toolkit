@@ -27,7 +27,10 @@
 import QtQml 2.2
 import QtQuick 2.6
 
+import QtGraphicalEffects 1.0
+import QtMultimedia 5.8
 import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 
@@ -37,207 +40,314 @@ import Widgets 1.0 as Widgets
 Widgets.Page {
     id: lamp_signal_pane
 
-    property int button_point_size: 30
-    property int button_width: parent.width / 3 // Fixme: TypeError: Cannot read property of null
+    Audio {
+        id: player;
+        playlist: Playlist {
+            id: playlist
+	    // PlaylistItem { source: "qrc:/tones/long-pulse.ogg"; }
+        }
+    }
+
+    function play_message(encoded_message)
+    {
+	// encoded_message = '...././.-../.-../---'
+	console.info('set_playlist: ' + encoded_message);
+	playlist.clear();
+	for (var i = 0; i < encoded_message.length; i++) {
+	    if (i > 0)
+		playlist.addItem('qrc:/tones/short-pause.ogg');
+	    var c = encoded_message[i];
+	    if (c == '.')
+		playlist.addItem('qrc:/tones/short-pulse.ogg');
+	    else if (c == '-')
+		playlist.addItem('qrc:/tones/long-pulse.ogg');
+	    else if (c == '/')
+		playlist.addItem('qrc:/tones/long-pause.ogg');
+	}
+	player.play();
+    }
 
     SwipeView {
         id: swipe_view
         currentIndex: 0
+        width: parent.width
         anchors.top: parent.top
         anchors.bottom: page_indicator.top
-        width: parent.width
+
+	// SwipeView takes over the geometry management of items added
 
         Pane {
             id: send_message_pane
-            width: swipe_view.width
-            height: swipe_view.height
 
-            Column {
-                anchors.fill: parent
-                anchors.topMargin: 10
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                spacing: Style.spacing.huge
+	    Flickable {
+		anchors.fill: parent
+                anchors.margins: Style.spacing.base
+		contentHeight: send_message_content.height
+		clip: true
 
-                Label {
-                    id: help_message
-                    width: parent.width
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: Style.font_size.base
-                    wrapMode:Text.WordWrap
-                    text: qsTr('<h2><b>Use preferably number and latin alphabet without diacritic.</b></h2>')
-                    // <br>Despite International Morse Code has a larger support.'
-                    // Fixme: show morse code table
-                }
-
-                TextArea {
-                    id: message_textarea
-                    width: parent.width
-                    height: (parent.height - help_message.height - rate_box.height - send_button.height - 4 * parent.spacing) / 2
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    placeholderText: qsTr('Enter message')
-                }
-
-                Label {
-                    id: send_encoded_message
-                    width: parent.width
-                    height: message_textarea.height
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    wrapMode:Text.WordWrap
-                }
-
-                Row {
-                    id: rate_box
-                    anchors.horizontalCenter: parent.horizontalCenter
+		Column {
+		    id: send_message_content
+		    width: parent.width
                     spacing: Style.spacing.base
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr('rate')
-                    }
-                    SpinBox {
-                        id: rate_ms_spinbox
-                        from: 50
-                        to: 1000
-                        stepSize: 50
-                        value: 250
-                    }
-                    Label {
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: qsTr('ms')
-                    }
-                }
 
-                Button {
-                    id: send_button
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr('Send Message')
-                    onClicked : {
-                        var message = message_textarea.text;
-                        if (message) {
-                            send_encoded_message.text = application.encode_morse(message, false);
-                            var encoded_message = application.encode_morse(message, true);
-                            var rate_ms = rate_ms_spinbox.value;
-                            platform_abstraction.perform_lamp_signal(encoded_message, rate_ms);
-                        }
+                    Label {
+			id: help_message
+			width: parent.width
+			wrapMode:Text.WordWrap
+			text: qsTr('<b>Use preferably number and latin alphabet without diacritic.</b>')
+			// <br>Despite International Morse Code has a larger support.'
+			// Fixme: show morse code table
                     }
-                }
+
+		    TextArea {
+		    	id: message_textarea
+		    	width: parent.width
+		    	placeholderText: qsTr('Enter message')
+			wrapMode: Text.WrapAnywhere
+                    }
+
+                    Label {
+		    	id: send_encoded_message
+		    	width: parent.width
+		    	wrapMode: Text.WrapAnywhere
+                    }
+
+		    Row {
+		    	anchors.horizontalCenter: parent.horizontalCenter
+		    	spacing: Style.spacing.base
+
+		    	ToolButton {
+		    	    id: torch_switch
+		    	    checkable: true
+		    	    width: swipe_view.width / 6
+		    	    height: width
+
+		    	    contentItem: Item {
+		    		width: torch_switch.size
+		    		height: torch_switch.width
+
+		    		Image {
+		    		    id: light_bulb_icon
+		    		    source: 'qrc:/icons/light-bulb-white.svg'
+		    		    sourceSize: Qt.size(parent.width, parent.height)
+		    		    visible: false
+		    		}
+
+		    		// Fixme: don't work with black qtgraphicaleffects/src/effects/shaders/coloroverlay.frag
+		    		ColorOverlay {
+		    		    anchors.fill: light_bulb_icon
+		    		    source: light_bulb_icon
+		    		    color: torch_switch.checked ? Material.color(Material.Green) : 'black' // '#2bc82b'
+		    		}
+		    	    }
+		    	}
+
+		    	ToolButton {
+		    	    id: speaker_switch
+		    	    checkable: true
+		    	    width: swipe_view.width / 6
+		    	    height: width
+
+		    	    contentItem: Item {
+		    		width: speaker_switch.size
+		    		height: speaker_switch.width
+
+		    		Image {
+		    		    id: speaker_icon
+		    		    source: 'qrc:/icons/volume-white.svg'
+		    		    sourceSize: Qt.size(parent.width, parent.height)
+		    		    visible: false
+		    		}
+
+		    		// Fixme: don't work with black qtgraphicaleffects/src/effects/shaders/coloroverlay.frag
+		    		ColorOverlay {
+		    		    anchors.fill: speaker_icon
+		    		    source: speaker_icon
+		    		    color: speaker_switch.checked ? Material.color(Material.Green) : 'black' // '#2bc82b'
+		    		}
+		    	    }
+		    	}
+		    }
+
+                    Row {
+		    	id: rate_box
+		    	anchors.horizontalCenter: parent.horizontalCenter
+		    	spacing: Style.spacing.base
+		    	Label {
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: qsTr('rate')
+		    	}
+		    	SpinBox {
+                            id: rate_ms_spinbox
+                            from: 50
+                            to: 1000
+                            stepSize: 50
+                            value: 250
+		    	}
+		    	Label {
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: qsTr('ms')
+		    	}
+                    }
+
+                    Button {
+		    	id: send_button
+		    	anchors.horizontalCenter: parent.horizontalCenter
+		    	text: qsTr('Send Message')
+		    	onClicked : {
+                            var message = message_textarea.text;
+                            if (message) {
+		    		var encoded_message = application.encode_morse(message, false);
+		    		send_encoded_message.text = encoded_message;
+                                if (speaker_switch.checked)
+		    		    play_message(encoded_message);
+                                if (torch_switch.checked) {
+		    		    var encoded_message = application.encode_morse(message, true);
+		    		    var rate_ms = rate_ms_spinbox.value;
+		    		    platform_abstraction.perform_lamp_signal(encoded_message, rate_ms);
+                                }
+                            }
+		    	}
+                    }
+		}
+
+		ScrollBar.vertical: ScrollBar { }
             }
-        }
+	}
 
         Pane {
             id: message_decoder_pane
-            width: swipe_view.width
-            height: swipe_view.height
 
-            function decode_message() {
-                var message = encoded_message.text;
-                if (message)
-                    decoded_message.text = application.decode_morse(message);
+	    function decode_message() {
+		var _encoded_message = encoded_message.text;
+		if (_encoded_message) {
+                    var raw_message = application.decode_morse(_encoded_message);
+                    var message = raw_message.slice(0, raw_message.length - 2);
+                    if (raw_message.endsWith('@F'))
+                        message += ' <span style="color:#F44336">[ERROR]</span>'
+                    decoded_message.text = message
+                }
+	    }
+
+	    Flickable {
+		anchors.fill: parent
+                anchors.margins: Style.spacing.base
+		contentHeight: message_decoder_content.height
+		clip: true
+
+		Column {
+		    id: message_decoder_content
+		    width: parent.width
+                    spacing: Style.spacing.base
+
+                    Label {
+			id: title
+			anchors.horizontalCenter: parent.horizontalCenter
+			// wrapMode:Text.WordWrap
+			text: qsTr('<h1>Morse Code Decoder<h1>') // International
+                    }
+
+                    GridLayout {
+			id: button_layout
+			anchors.horizontalCenter: parent.horizontalCenter
+			Layout.alignment: Qt.AlignCenter
+			columns: 2
+			columnSpacing : Style.spacing.base
+			rowSpacing : Style.spacing.base
+
+			Button {
+                            // Fixme: duplicated code ...
+                            implicitWidth: message_decoder_content.width * .4
+                            padding : 20
+                            font.pointSize: Style.font_size.large
+                            text: qsTr('Dot')
+                            onClicked: encoded_message.text += '.'
+			}
+			Button {
+                            implicitWidth: message_decoder_content.width * .4
+                            padding : 20
+                            font.pointSize: Style.font_size.large
+                            text: qsTr('Dash')
+                            onClicked: encoded_message.text += '-'
+			}
+			Button {
+                            implicitWidth: message_decoder_content.width * .4
+                            padding : 20
+                            font.pointSize: Style.font_size.large
+                            text: qsTr('Letter')
+                            onClicked: {
+				encoded_message.text += '/';
+				message_decoder_pane.decode_message();
+                            }
+			}
+			Button {
+                            implicitWidth: message_decoder_content.width * .4
+                            padding : 20
+                            font.pointSize: Style.font_size.large
+                            text: qsTr('Word')
+                            onClicked: {
+				encoded_message.text += ' ';
+				message_decoder_pane.decode_message();
+                            }
+			}
+                    }
+
+                    Label {
+			id: encoded_message
+			width: parent.width
+                        padding: Style.spacing.base
+                        background: Rectangle {
+                            color: Material.color(Material.Grey, Material.Shade200)
+                        }
+                    }
+
+                    Label {
+			id: decoded_message
+			width: parent.width
+                        padding: Style.spacing.base
+                        textFormat: Text.RichText
+                        background: Rectangle {
+                            color: Material.color(Material.Grey, Material.Shade200)
+                        }
+                    }
+
+                    Button {
+			id: delete_button
+			anchors.horizontalCenter: parent.horizontalCenter
+			text: qsTr('Delete')
+			onClicked : {
+                            var message = encoded_message.text;
+                            if (message) {
+                                var new_message = message.slice(0, message.length -1);
+				encoded_message.text = new_message;
+                                if (new_message.endsWith(' ') || new_message.endsWith('/'))
+				    message_decoder_pane.decode_message();
+                                // Fixme: cursor is not visible
+                            }
+			}
+                    }
+
+                    Button {
+			id: clear_button
+			anchors.horizontalCenter: parent.horizontalCenter
+			text: qsTr('Clear Message')
+			onClicked : {
+                            encoded_message.text = ''
+                            decoded_message.text = ''
+			}
+                    }
+		}
+
+		ScrollBar.vertical: ScrollBar { }
             }
-
-            Column {
-                anchors.fill: parent
-                anchors.topMargin: 10
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                spacing: Style.spacing.base
-
-                Label {
-                    id: title
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: Style.font_size.huge
-                    // wrapMode:Text.WordWrap
-                    text: qsTr('Morse Code Decoder') // International
-                }
-
-                GridLayout {
-                    id: button_layout
-                    // width: parent.width
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    Layout.alignment: Qt.AlignCenter
-                    columns: 2
-                    columnSpacing : 10
-                    rowSpacing : 10
-
-                    Button {
-                        width: button_width
-                        font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr('Dot')
-                        onClicked: encoded_message.text += '.'
-                    }
-                    Button {
-                        width: button_width
-                        font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr('Dash')
-                        onClicked: encoded_message.text += '-'
-                    }
-                    Button {
-                        width: button_width
-                        font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr('Letter')
-                        onClicked: {
-                            encoded_message.text += '/';
-                            message_decoder_pane.decode_message();
-                        }
-                    }
-                    Button {
-                        width: button_width
-                        font.pointSize: message_decoder_pane.button_point_size
-                        text: qsTr('Word')
-                        onClicked: {
-                            encoded_message.text += ' ';
-                            message_decoder_pane.decode_message();
-                        }
-                    }
-                }
-
-                Label {
-                    id: encoded_message
-                    width: parent.width
-                    height: (parent.height - title.height - button_layout.height - delete_button.height - clear_button.height - 5 * parent.spacing) / 2
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: Style.font_size.base
-                }
-
-                Label {
-                    id: decoded_message
-                    width: parent.width
-                    height: encoded_message.height
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pointSize: Style.font_size.base
-                }
-
-                Button {
-                    id: delete_button
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr('Delete')
-                    onClicked : {
-                        var message = encoded_message.text;
-                        if (message) {
-                            encoded_message.text = message.slice(0, message.length -2)
-                            // Fixme: cursor is not visible
-                        }
-                    }
-                }
-
-                Button {
-                    id: clear_button
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: qsTr('Clear Message')
-                    onClicked : {
-                        encoded_message.text = ''
-                        decoded_message.text = ''
-                    }
-                }
-            }
-        }
+	}
     }
 
     PageIndicator {
         id: page_indicator
-        count: swipe_view.count
-        currentIndex: swipe_view.currentIndex
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
+        count: swipe_view.count
+        currentIndex: swipe_view.currentIndex
     }
 }

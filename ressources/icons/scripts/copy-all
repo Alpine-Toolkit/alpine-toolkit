@@ -20,6 +20,8 @@ copy-icon action zoom_in
 copy-icon action zoom_out
 copy-icon alert error
 copy-icon alert warning
+copy-icon av volume_mute
+copy-icon av volume_off
 copy-icon communication call
 copy-icon communication comment
 copy-icon communication email

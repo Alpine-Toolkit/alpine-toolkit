@@ -37,6 +37,9 @@
 
 /**************************************************************************************************/
 
+/* Node of the Morse Code Decoder tree
+ *
+ */
 class MorseCodeDecoderNode
 {
 public:
@@ -73,10 +76,10 @@ public:
   ~InternationalMorseCodeEngine();
 
   QString encode(const QString & message, bool use_bit = false, bool compress_bit = false) const;
-  QString decode(const QString & message) const;
+  QString decode(const QString & message, bool & succeed) const;
 
 private:
-  MorseCodeDecoderNode m_root_node;
+  MorseCodeDecoderNode m_root_node; // root of the tree
 };
 
 /**************************************************************************************************/

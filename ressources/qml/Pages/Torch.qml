@@ -27,12 +27,12 @@
 import QtQml 2.2
 import QtQuick 2.6
 
+import QtGraphicalEffects 1.0
+// import QtMultimedia 5.8
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
-
-import QtGraphicalEffects 1.0
 
 import Constants 1.0
 import Widgets 1.0 as Widgets
@@ -42,8 +42,11 @@ Widgets.Page {
 
     property int period: 100 // ms
 
-    Component.onCompleted: {
-    }
+    // Torch {
+    //   id: torch
+    //   power: 75
+    //   enabled: true
+    // }
 
     function update_toch() {
         if (dimmer_checkbox.checked) {

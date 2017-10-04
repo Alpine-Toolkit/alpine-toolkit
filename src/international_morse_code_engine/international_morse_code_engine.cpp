@@ -34,7 +34,9 @@
 /**************************************************************************************************/
 
 MorseCodeDecoderNode::MorseCodeDecoderNode()
-  : m_dot_branch(nullptr), m_dash_branch(nullptr), m_character('\0')
+  : m_dot_branch(nullptr),
+    m_dash_branch(nullptr),
+    m_character('\0')
 {}
 
 /**************************************************************************************************/
@@ -102,9 +104,8 @@ InternationalMorseCodeEngine::InternationalMorseCodeEngine()
 {
   for (int i = 0; i < 256; i++) {
     QString code(international_morse_codes[i]);
-    if (code.size()) {
+    if (code.size())
       m_root_node.add(code, QChar(i));
-    }
   }
 }
 
@@ -174,17 +175,23 @@ InternationalMorseCodeEngine::encode(const QString & message, bool use_bit, bool
 }
 
 QString
-InternationalMorseCodeEngine::decode(const QString & encoded_message) const
+InternationalMorseCodeEngine::decode(const QString & encoded_message, bool & succeed) const
 {
   QString message;
   const MorseCodeDecoderNode * node = &m_root_node;
   for (QChar part : encoded_message + letter_space) {
     // qInfo() << part << message;
-    if (part == dot)
-      node = node->dot_branch();
-    else if (part == dash)
-      node = node->dash_branch();
-    else {
+    if (part == dot or part == dash) {
+      if (part == dot)
+        node = node->dot_branch();
+      else
+        node = node->dash_branch();
+      if (not node) {
+        qWarning() << "Error node is null";
+        succeed = false;
+        return message;
+      }
+    } else {
       if (node) {
     	QChar character = node->character();
         if (character != QChar('\0'))
@@ -200,5 +207,6 @@ InternationalMorseCodeEngine::decode(const QString & encoded_message) const
     }
   }
 
+  succeed = true;
   return message;
 }

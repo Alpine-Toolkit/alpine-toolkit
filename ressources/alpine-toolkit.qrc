@@ -150,6 +150,8 @@
         <file>icons/settings-black@3x.png</file>
         <file>icons/undo-black.png</file>
         <file>icons/undo-black@3x.png</file>
+        <file>icons/volume-mute-black.png</file>
+        <file>icons/volume-mute-black@3x.png</file>
         <file>icons/warning-black.png</file>
         <file>icons/warning-black@3x.png</file>
         <file>icons/wb-incandescent-black.png</file>
@@ -195,6 +197,14 @@
         <file>icons/sun-black@3x.png</file>
         <file>icons/torch-black.png</file>
         <file>icons/torch-black@3x.png</file>
+        <file>icons/volume-white.svg</file>
+    </qresource>
+
+    <qresource prefix="/">
+	<file>tones/long-pause.ogg</file>
+	<file>tones/long-pulse.ogg</file>
+	<file>tones/short-pause.ogg</file>
+	<file>tones/short-pulse.ogg</file>
     </qresource>
 
     <qresource prefix="/">
