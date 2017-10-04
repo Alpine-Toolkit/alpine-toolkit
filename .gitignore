@@ -269,3 +269,12 @@ third-parties/libspatialindex/cmake.log
 third-parties/libspatialindex/make.log
 #
 unused-java/
+#
+imports/settings/
+#
+qmake-notes.txt
+qml-test.qml
+qml-test.qmlc
+sqlite_database.diff
+src/network/network_reply.diff
+src/platform_abstraction/android_notes.cpp
