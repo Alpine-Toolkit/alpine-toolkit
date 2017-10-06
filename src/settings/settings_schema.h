@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -198,8 +199,8 @@ public:
   ~DirectoryPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete DirectoryPtr of" << *m_ptr;
-    // qInfo() << "--- Delete DirectoryPtr";
+    //// qATInfo() << "--- Delete DirectoryPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete DirectoryPtr";
     // m_ptr.clear();
   }
 
@@ -467,8 +468,8 @@ public:
   ~KeyPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete KeyPtr of" << *m_ptr;
-    // qInfo() << "--- Delete KeyPtr";
+    //// qATInfo() << "--- Delete KeyPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete KeyPtr";
     // m_ptr.clear();
   }
 
@@ -614,3 +615,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __SETTINGS_SCHEMA_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

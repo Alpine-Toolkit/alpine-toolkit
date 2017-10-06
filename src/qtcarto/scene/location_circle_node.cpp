@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "location_circle_node.h"
+#include "qtcarto.h"
 
 #include "location_circle_material_shader.h"
 
@@ -138,7 +139,7 @@ QcLocationCircleNode::update(const QcLocationCircleData & location_circle_data)
     QcVectorDouble screen_coordinate = m_viewport->coordinate_to_screen(location_circle_data.coordinate());
     x = screen_coordinate.x();
     y = screen_coordinate.y();
-    qInfo() << screen_coordinate;
+    qQCInfo() << screen_coordinate;
   } else {
     x = .5 * m_viewport->width(); // Fixme: vector
     y = .5 * m_viewport->height();

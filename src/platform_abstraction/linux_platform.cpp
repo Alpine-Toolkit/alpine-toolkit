@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "linux_platform.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -49,7 +50,7 @@ LinuxPlatform::~LinuxPlatform()
 void
 LinuxPlatform::update_orientation_lock()
 {
-  qInfo() << "update_orientation_lock" << m_orientation_lock;
+  qATInfo() << "update_orientation_lock" << m_orientation_lock;
 }
 
 /**************************************************************************************************/
@@ -57,7 +58,7 @@ LinuxPlatform::update_orientation_lock()
 void
 LinuxPlatform::update_orientation()
 {
-  qInfo() << "update_orientation" << m_orientation;
+  qATInfo() << "update_orientation" << m_orientation;
 }
 
 /**************************************************************************************************/
@@ -65,7 +66,7 @@ LinuxPlatform::update_orientation()
 void
 LinuxPlatform::update_full_wave_lock()
 {
-  qInfo() << "update_full_wave_lock" << m_full_wave_lock;
+  qATInfo() << "update_full_wave_lock" << m_full_wave_lock;
 }
 
 /**************************************************************************************************/
@@ -73,7 +74,7 @@ LinuxPlatform::update_full_wave_lock()
 void
 LinuxPlatform::update_torch()
 {
-  qInfo() << "update_torch" << m_torch_enabled;
+  qATInfo() << "update_torch" << m_torch_enabled;
 }
 
 /**************************************************************************************************/
@@ -81,13 +82,13 @@ LinuxPlatform::update_torch()
 void
 LinuxPlatform::issue_call(const QString & phone_number)
 {
-  qInfo() << "issue_call" << phone_number;
+  qATInfo() << "issue_call" << phone_number;
 }
 
 void
 LinuxPlatform::issue_dial(const QString & phone_number)
 {
-  qInfo() << "issue_dial" << phone_number;
+  qATInfo() << "issue_dial" << phone_number;
 }
 
 /**************************************************************************************************/
@@ -95,5 +96,5 @@ LinuxPlatform::issue_dial(const QString & phone_number)
 void
 LinuxPlatform::impl_perform_lamp_signal(const QString & encoded_message, int rate_ms)
 {
-  qInfo() << "impl_perform_lamp_signal" << encoded_message << rate_ms;
+  qATInfo() << "impl_perform_lamp_signal" << encoded_message << rate_ms;
 }

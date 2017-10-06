@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "offline_cache_database.h"
+#include "qtcarto.h"
 
 #include <QSqlError>
 #include <QtDebug>
@@ -140,7 +141,7 @@ QcOfflineCacheDatabase::load_providers()
     int i = 0;
     int provider_id = record.value(i++).toInt();
     QString name = record.value(i++).toString();
-    qInfo() << "Provider" << provider_id << name;
+    qQCInfo() << "Provider" << provider_id << name;
     m_providers.insert(name, provider_id);
   }
 }
@@ -159,7 +160,7 @@ QcOfflineCacheDatabase::load_map_levels()
     int map_id = record.value(i++).toInt();
     int level = record.value(i++).toInt();
     unsigned int map_level_hash = hash_tile_spec(provider_id, map_id, level);
-    qInfo() << "Map level" << map_level_id << provider_id << map_id << level;
+    qQCInfo() << "Map level" << map_level_id << provider_id << map_id << level;
     m_map_levels.insert(map_level_hash, map_level_id);
   }
 }

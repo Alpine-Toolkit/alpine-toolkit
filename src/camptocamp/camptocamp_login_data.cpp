@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp/camptocamp_login_data.h"
+#include "alpine_toolkit.h"
 
 #include <QJsonObject>
 #include <QtDebug>

@@ -41,21 +41,21 @@ template <typename T>
 QcSimdPair<T>::QcSimdPair()
   : QcSimdPair(0, 0)
 {
-  // qInfo() << "QcSimdPair()" << *this << this;
+  // qQCInfo() << "QcSimdPair()" << *this << this;
 }
 
 template <typename T>
 QcSimdPair<T>::QcSimdPair(T x, T y)
   : m_x(x), m_y(y)
 {
-  // qInfo() << "QcSimdPair(x, y)" << *this << this;
+  // qQCInfo() << "QcSimdPair(x, y)" << *this << this;
 }
 
 template <typename T>
 QcSimdPair<T>::QcSimdPair(const QcSimdPair<T> & other)
   : m_x(other.m_x), m_y(other.m_y)
 {
-  // qInfo() << "QcSimdPair(const QcSimdPair<T> & other)" << *this << &other << this;
+  // qQCInfo() << "QcSimdPair(const QcSimdPair<T> & other)" << *this << &other << this;
 }
 
 template <typename T>
@@ -76,14 +76,14 @@ QcSimdPair<T>::QcSimdPair(const QVector2D & other)
 template <typename T>
 QcSimdPair<T>::~QcSimdPair()
 {
-  // qInfo() << "~QcSimdPair()" << *this << this;
+  // qQCInfo() << "~QcSimdPair()" << *this << this;
 }
 
 template <typename T>
 QcSimdPair<T> &
 QcSimdPair<T>::operator=(const QcSimdPair<T> & other)
 {
-  // qInfo() << "operator=(const QcSimdPair<T> & other)" << *this;
+  // qQCInfo() << "operator=(const QcSimdPair<T> & other)" << *this;
 
   if (this != &other) {
     m_x = other.m_x;
@@ -266,7 +266,7 @@ template <typename T>
 QcSimdTriplet<T>::QcSimdTriplet()
   : QcSimdTriplet(0, 0, 0)
 {
-  // qInfo() << "QcSimdTriplet()" << *this << this;
+  // qQCInfo() << "QcSimdTriplet()" << *this << this;
 }
 
 template <typename T>
@@ -274,7 +274,7 @@ QcSimdTriplet<T>::QcSimdTriplet(T x, T y, T z)
   : QcSimdPair<T>(x, y),
     m_z(z)
 {
-  // qInfo() << "QcSimdTriplet(x, y, z)" << *this << this;
+  // qQCInfo() << "QcSimdTriplet(x, y, z)" << *this << this;
 }
 
 template <typename T>
@@ -282,20 +282,20 @@ QcSimdTriplet<T>::QcSimdTriplet(const QcSimdTriplet<T> & other)
   : QcSimdPair<T>(other),
     m_z(other.m_z)
 {
-  // qInfo() << "QcSimdTriplet(const QcSimdTriplet<T> & other)" << *this << &other << this;
+  // qQCInfo() << "QcSimdTriplet(const QcSimdTriplet<T> & other)" << *this << &other << this;
 }
 
 template <typename T>
 QcSimdTriplet<T>::~QcSimdTriplet()
 {
-  // qInfo() << "~QcSimdTriplet()" << *this << this;
+  // qQCInfo() << "~QcSimdTriplet()" << *this << this;
 }
 
 template <typename T>
 QcSimdTriplet<T> &
 QcSimdTriplet<T>::operator=(const QcSimdTriplet<T> & other)
 {
-  // qInfo() << "operator=(const QcSimdTriplet<T> & other)" << *this;
+  // qQCInfo() << "operator=(const QcSimdTriplet<T> & other)" << *this;
 
   if (this != &other) {
     QcSimdPair<T>::operator=(other);

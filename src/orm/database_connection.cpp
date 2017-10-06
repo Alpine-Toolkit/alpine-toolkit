@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database_connection.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "document.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -242,7 +243,7 @@ Document::Document(const QSqlQuery & query, int offset)
 
 Document::~Document()
 {
-// qInfo() << "--- Delete" << "Document" << *this;
+// qATInfo() << "--- Delete" << "Document" << *this;
 }
 
 // bit array ?
@@ -756,7 +757,7 @@ void
 DocumentCache::on_changed()
 {
   Document * row = qobject_cast<Document *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   DocumentPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -867,9 +868,15 @@ template<>
 void
 DocumentDatabaseSchema::register_row<Document>(DocumentPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_document_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

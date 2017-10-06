@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "token.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -43,7 +44,7 @@ CharTranslator::CharTranslator(const QString & input_chars, const QString & outp
     for (int i = 0; i < input_chars.size(); i++)
       m_map[input_chars[i]] = output_chars[i];
   } else
-    qCritical() << "Translation map mismatch" << input_chars << output_chars;
+    qATCritical() << "Translation map mismatch" << input_chars << output_chars;
 }
 
 CharTranslator::CharTranslator(const QStringList & string_list)

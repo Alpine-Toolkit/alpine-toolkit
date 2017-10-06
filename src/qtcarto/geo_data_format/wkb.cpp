@@ -27,9 +27,9 @@
 /**************************************************************************************************/
 
 #include "wkb.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
-
 #include <QtEndian>
 
 /**************************************************************************************************/
@@ -97,7 +97,7 @@ QcWkbGeometryType::QcWkbGeometryType(quint32 type)
   }
 
   if (m_base_type < 1 or m_base_type > Triangle)
-    qCritical() << QLatin1String("bad type") << m_base_type;
+    qQCCritical() << QLatin1String("bad type") << m_base_type;
   // throw std::invalid_argument("bad type");
 }
 
@@ -122,7 +122,7 @@ QcWkbGeometryType::QcWkbGeometryType(const QString & type_name)
   else if (are_string_equal(type_name, GeometryCollectionLabel))
     m_base_type = GeometryCollection;
   else
-    qCritical() << "bad type" << type_name;
+    qQCCritical() << "bad type" << type_name;
   // throw std::invalid_argument("bad type");
 }
 
@@ -330,14 +330,14 @@ public:
   void
   throw_parser_error(const QString & error_message)
   {
-    qCritical() << m_stream.left(m_location) << '\n' << m_stream.right(m_location_end - m_location);
+    qQCCritical() << m_stream.left(m_location) << '\n' << m_stream.right(m_location_end - m_location);
     // throw std::invalid_argument(error_message.toStdString().c_str());
   }
 
   QcWkbGeometryType
   parse_geometry_type()
   {
-    qDebug() << "parse_header";
+    qQCDebug() << "parse_header";
 
     // Geometry type must be followed by a space or a '('
     int location = find_next_char(QStringLiteral(" ("));
@@ -366,7 +366,7 @@ public:
       }
     } // else '(
 
-    qDebug() << "geometry type is" << type_name << has_z << has_m;
+    qQCDebug() << "geometry type is" << type_name << has_z << has_m;
     // Fixme: srid
     QcWkbGeometryType type(type_name);
     if (has_z)
@@ -380,7 +380,7 @@ public:
   void
   parse_point_generic(int dimension, double point4d[4])
   {
-    qDebug() << "parse_point_generic" << dimension;
+    qQCDebug() << "parse_point_generic" << dimension;
 
     // Start after (
     // a space is mandatory in the grammar in order to separate coordinate components
@@ -420,7 +420,7 @@ public:
   QList<T>
   parse_points()
   {
-      qDebug() << "parse_points";
+      qQCDebug() << "parse_points";
 
       QList<T> points;
       // Start after (
@@ -447,7 +447,7 @@ public:
         skip_space();
       }
 
-      // qDebug() << points;
+      // qQCDebug() << points;
       return points;
   }
 
@@ -455,7 +455,7 @@ public:
   QList<QList<T>>
   parse_list_of_list()
   {
-    qDebug() << "parse_list_of_list";
+    qQCDebug() << "parse_list_of_list";
 
     QList<QList<T>> list;
 
@@ -474,7 +474,7 @@ public:
       skip_space();
     }
 
-    qDebug() << list;
+    qQCDebug() << list;
 
     return list;
   }
@@ -493,7 +493,7 @@ public:
   QList<const QcWkbGeometryObject *>
   parse_geometries()
   {
-    qDebug() << "parse_geometries";
+    qQCDebug() << "parse_geometries";
 
     QList<const QcWkbGeometryObject *> geometries;
 
@@ -518,10 +518,10 @@ public:
   {
     // Must be located on '('
 
-    qDebug() << "parse_geometry_values";
+    qQCDebug() << "parse_geometry_values";
 
     QChar next_char = lookup_current_char();
-    qDebug() << "open" << m_location << next_char;
+    qQCDebug() << "open" << m_location << next_char;
     if (next_char == '(') {
       m_location++; // check
       skip_space();
@@ -533,7 +533,7 @@ public:
 
     skip_space();
     next_char = lookup_current_char();
-    qDebug() << "close" << m_location << next_char;
+    qQCDebug() << "close" << m_location << next_char;
     if (next_char == ')') {
       m_location++;
     } else
@@ -550,7 +550,7 @@ template<>
 QcVectorDouble
 QcWktParser::parse_point<QcVectorDouble>()
 {
-  qDebug() << "parse_point";
+  qQCDebug() << "parse_point";
   double point4d[4];
   parse_point_generic(2, point4d);
   return QcVectorDouble(point4d[0], point4d[1]);
@@ -560,7 +560,7 @@ template<>
 QcVector3DDouble
 QcWktParser::parse_point<QcVector3DDouble>()
 {
-  qDebug() << "parse_point_3d";
+  qQCDebug() << "parse_point_3d";
   double point4d[4];
   parse_point_generic(3, point4d);
   return QcVector3DDouble(point4d[0], point4d[1], point4d[2]);
@@ -570,7 +570,7 @@ template<>
 QcVector4DDouble
 QcWktParser::parse_point<QcVector4DDouble>()
 {
-  qDebug() << "parse_point_4d";
+  qQCDebug() << "parse_point_4d";
   double point4d[4];
   parse_point_generic(4, point4d);
   return QcVector4DDouble(point4d[0], point4d[1], point4d[2], point4d[3]);
@@ -588,7 +588,7 @@ QcWkbGeometryObject::read_byte_order(QDataStream & stream)
   quint8 byte_order;
   stream >> byte_order;
   bool is_big_endian = byte_order == 0; // Fixme: WkbByteOrder::Xdr
-  qDebug() << "is big endian" << is_big_endian;
+  qQCDebug() << "is big endian" << is_big_endian;
   stream.setByteOrder(is_big_endian ? QDataStream::BigEndian : QDataStream::LittleEndian);
   return is_big_endian;
 }
@@ -615,7 +615,7 @@ QcWkbGeometryObject::read_srid(QDataStream & stream)
 {
   quint32 srid;
   stream >> srid;
-  // qDebug() << "SRID" << srid;
+  // qQCDebug() << "SRID" << srid;
 
   return srid;
 }
@@ -632,7 +632,7 @@ QcWkbGeometryObject::write_header(QDataStream & stream, bool use_big_endian, boo
 {
   // Fixme: use_ewkb
   if (use_ewkb and !has_srid())
-    qCritical() << QLatin1String("ewkb require a valid srid");
+    qQCCritical() << QLatin1String("ewkb require a valid srid");
   // throw std::invalid_argument("ewkb require a valid srid");
   write_byte_order(stream, use_big_endian);
   quint32 type = geometry_type().to_wkb();
@@ -664,7 +664,7 @@ QcWkbGeometryObject::init_from_binary(const QByteArray & bytes)
   if (type.has_srid())
     set_srid(read_srid(stream));
   if (type != geometry_type())
-    qCritical() << QLatin1String("wrong type");
+    qQCCritical() << QLatin1String("wrong type");
   // throw std::invalid_argument("wrong type");
   set_from_binary(stream);
 }

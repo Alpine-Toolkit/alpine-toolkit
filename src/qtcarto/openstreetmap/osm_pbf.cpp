@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "osm_pbf.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 
@@ -63,7 +64,7 @@ QcOsmPbfReader::QcOsmPbfReader(const QString & pbf_path)
   m_buffer(nullptr),
   m_unpack_buffer(nullptr)
 {
-  // qDebug() << pbf_path;
+  // qQCDebug() << pbf_path;
 }
 
 QcOsmPbfReader::~QcOsmPbfReader()
@@ -78,8 +79,8 @@ QcOsmPbfReader::zlib_inflate()
   int32_t size = m_blob.zlib_data().size();
 
   // tell about the compressed data
-  qDebug().nospace() << "  contains zlib-compressed data: " << size << " bytes";
-  qDebug().nospace() << "  uncompressed size: " << m_blob.raw_size() << " bytes";
+  qQCDebug().nospace() << "  contains zlib-compressed data: " << size << " bytes";
+  qQCDebug().nospace() << "  uncompressed size: " << m_blob.raw_size() << " bytes";
 
   // zlib information
   z_stream z;
@@ -102,11 +103,11 @@ QcOsmPbfReader::zlib_inflate()
   z.opaque = Z_NULL;
 
   if (inflateInit(&z) != Z_OK)
-    qCritical() << "  failed to init zlib stream";
+    qQCCritical() << "  failed to init zlib stream";
   if (inflate(&z, Z_FINISH) != Z_STREAM_END)
-    qCritical() << "  failed to inflate zlib stream";
+    qQCCritical() << "  failed to inflate zlib stream";
   if (inflateEnd(&z) != Z_OK)
-    qCritical() << "  failed to deinit zlib stream";
+    qQCCritical() << "  failed to deinit zlib stream";
 
   m_buffer_size = z.total_out;
 }
@@ -115,11 +116,11 @@ void
 QcOsmPbfReader::lzma_inflate()
 {
   // tell about the compressed data
-  qDebug().nospace() << "  contains lzma-compressed data: " << m_blob.lzma_data().size() << " bytes";
-  qDebug().nospace() << "  uncompressed size: " << m_blob.raw_size() << " bytes";
+  qQCDebug().nospace() << "  contains lzma-compressed data: " << m_blob.lzma_data().size() << " bytes";
+  qQCDebug().nospace() << "  uncompressed size: " << m_blob.raw_size() << " bytes";
 
   // issue a warning, lzma compression is not yet supported
-  qCritical() << "  lzma-decompression is not supported";
+  qQCCritical() << "  lzma-decompression is not supported";
 }
 
 QcWgsCoordinate
@@ -163,7 +164,7 @@ QcOsmPbfReader::read_file(bool read_nodes, bool read_ways, bool read_relations, 
 
   QFile file(m_pbf_path);
   if (!file.open(QIODevice::ReadOnly)) {
-    qCritical() << "can't open file" << m_pbf_path;
+    qQCCritical() << "can't open file" << m_pbf_path;
     return ;
   }
 
@@ -191,7 +192,7 @@ QcOsmPbfReader::read_file(bool read_nodes, bool read_ways, bool read_relations, 
   // clean up the protobuf lib
   google::protobuf::ShutdownProtobufLibrary();
 
-  qDebug() << "File Statistics\n"
+  qQCDebug() << "File Statistics\n"
            << "Primitive Groups" <<  m_number_of_primitive_groups << "\n"
            << " for Node" <<  m_number_of_node_primitive_groups << "\n"
            << " for Dense Node" <<  m_number_of_dense_node_primitive_groups << "\n"
@@ -212,22 +213,22 @@ QcOsmPbfReader::read_blob_header()
 
   // ensure the blob-header is smaller then MAX_BLOB_HEADER_SIZE
   if (blob_header_size > OSMPBF::max_blob_header_size)
-    qCritical() << "blob-header-size is bigger then allowed (" << blob_header_size << "  > " << OSMPBF::max_blob_header_size << ")";
+    qQCCritical() << "blob-header-size is bigger then allowed (" << blob_header_size << "  > " << OSMPBF::max_blob_header_size << ")";
 
   // read the blob-header from the file
   if (m_data_stream.readRawData(m_buffer, blob_header_size) == -1)
-    qCritical() << "unable to read blob-header from file";
+    qQCCritical() << "unable to read blob-header from file";
 
   // parse the blob-header from the read-buffer
   if (!m_blob_header.ParseFromArray(m_buffer, blob_header_size))
-    qCritical() << "unable to parse blob header";
+    qQCCritical() << "unable to parse blob header";
 
   // tell about the blob-header
-  qDebug().nospace() << "BlobHeader (" << blob_header_size << " bytes)" << " type = " << m_blob_header.type().c_str();
+  qQCDebug().nospace() << "BlobHeader (" << blob_header_size << " bytes)" << " type = " << m_blob_header.type().c_str();
 
   // optional indexdata
   if (m_blob_header.has_indexdata())
-    qDebug().nospace() << "  indexdata = " << m_blob_header.indexdata().size() << "bytes";
+    qQCDebug().nospace() << "  indexdata = " << m_blob_header.indexdata().size() << "bytes";
 }
 
 void
@@ -235,22 +236,22 @@ QcOsmPbfReader::read_blob()
 {
   // size of the following blob
   int32_t data_size = m_blob_header.datasize();
-  qDebug().nospace() << "  datasize = " << data_size;
+  qQCDebug().nospace() << "  datasize = " << data_size;
 
   // ensure the blob is smaller then MAX_BLOB_SIZE
   if (data_size > OSMPBF::max_uncompressed_blob_size)
-    qCritical() << "blob-size is bigger then allowed (" << data_size << " > " << OSMPBF::max_uncompressed_blob_size << ")";
+    qQCCritical() << "blob-size is bigger then allowed (" << data_size << " > " << OSMPBF::max_uncompressed_blob_size << ")";
 
   // read the blob from the file
   if (m_data_stream.readRawData(m_buffer, data_size) == -1)
-    qCritical() << "unable to read blob from file";
+    qQCCritical() << "unable to read blob from file";
 
   // parse the blob from the read-buffer
   if (!m_blob.ParseFromArray(m_buffer, data_size))
-    qCritical() << "unable to parse blob";
+    qQCCritical() << "unable to parse blob";
 
   // tell about the blob-header
-  qDebug().nospace() << "Blob (" << data_size << " bytes)";
+  qQCDebug().nospace() << "Blob (" << data_size << " bytes)";
 
   // set when we find at least one data stream
   bool found_data = false;
@@ -268,7 +269,7 @@ QcOsmPbfReader::read_blob()
       qWarning() << "  reports wrong raw_size: " << m_blob.raw_size() << " bytes";
 
     // tell about the blob-data
-    qDebug().nospace() << "  contains uncompressed data: " << m_buffer_size << " bytes";
+    qQCDebug().nospace() << "  contains uncompressed data: " << m_buffer_size << " bytes";
 
     // copy the uncompressed data over to the unpack_buffer
     memcpy(m_unpack_buffer, m_buffer, m_buffer_size);
@@ -302,7 +303,7 @@ QcOsmPbfReader::read_blob()
 
   // check we have at least one data-stream
   if (!found_data)
-    qCritical() << "  does not contain any known data stream";
+    qQCCritical() << "  does not contain any known data stream";
 
   // switch between different blob-types
   auto blob_type = m_blob_header.type();
@@ -322,16 +323,16 @@ void
 QcOsmPbfReader::read_osm_header()
 {
   // tell about the OSMHeader blob
-  qDebug() << "  OSMHeader";
+  qQCDebug() << "  OSMHeader";
 
   // parse the HeaderBlock from the blob
   if (!m_header_block.ParseFromArray(m_unpack_buffer, m_buffer_size))
-    qCritical() << "unable to parse header block";
+    qQCCritical() << "unable to parse header block";
 
   // tell about the bbox
   if (m_header_block.has_bbox()) {
     OSMPBF::HeaderBBox bbox = m_header_block.bbox();
-    qDebug().nospace() << "    bbox: "
+    qQCDebug().nospace() << "    bbox: "
              << (double) bbox.left() / OSMPBF::lonlat_resolution << ", "
              << (double) bbox.bottom() / OSMPBF::lonlat_resolution << ", "
              << (double) bbox.right() / OSMPBF::lonlat_resolution << ", "
@@ -340,57 +341,57 @@ QcOsmPbfReader::read_osm_header()
 
   // tell about the required features
   for (int i = 0, l = m_header_block.required_features_size(); i < l; i++) {
-    qDebug().nospace() << "    required_feature: " << m_header_block.required_features(i).c_str();
+    qQCDebug().nospace() << "    required_feature: " << m_header_block.required_features(i).c_str();
   }
 
   // tell about the optional features
   for (int i = 0, l = m_header_block.optional_features_size(); i < l; i++) {
-    qDebug().nospace() << "    optional_feature: " << m_header_block.optional_features(i).c_str();
+    qQCDebug().nospace() << "    optional_feature: " << m_header_block.optional_features(i).c_str();
   }
 
   // tell about the writing program
   if (m_header_block.has_writingprogram())
-    qDebug().nospace() << "    writingprogram: " << m_header_block.writingprogram().c_str();
+    qQCDebug().nospace() << "    writingprogram: " << m_header_block.writingprogram().c_str();
 
   // tell about the source
   if (m_header_block.has_source())
-    qDebug().nospace() << "    source: ", m_header_block.source().c_str();
+    qQCDebug().nospace() << "    source: ", m_header_block.source().c_str();
 }
 
 void
 QcOsmPbfReader::read_osm_data()
 {
   // tell about the OSMData blob
-  qDebug() << "  OSMData";
+  qQCDebug() << "  OSMData";
 
   // parse the PrimitiveBlock from the blob
   if (!m_primitive_block.ParseFromArray(m_unpack_buffer, m_buffer_size))
-    qCritical() << "unable to parse primitive block";
+    qQCCritical() << "unable to parse primitive block";
 
   // tell about the block's meta info
   m_granularity = m_primitive_block.granularity(); // default: 100
   m_latitude_offset = m_primitive_block.lat_offset(); // default: 0
   m_longitude_offset = m_primitive_block.lon_offset(); // default: 0
   m_date_granularity = m_primitive_block.date_granularity(); // default: 1000
-  // qDebug().nospace() << "    granularity: " << m_granularity;
-  // qDebug().nospace() << "    lat_offset: " << m_latitude_offset;
-  // qDebug().nospace() << "    lon_offset: "  << m_longitude_offset;
-  // qDebug().nospace() << "    date_granularity: " << m_date_granularity;
+  // qQCDebug().nospace() << "    granularity: " << m_granularity;
+  // qQCDebug().nospace() << "    lat_offset: " << m_latitude_offset;
+  // qQCDebug().nospace() << "    lon_offset: "  << m_longitude_offset;
+  // qQCDebug().nospace() << "    date_granularity: " << m_date_granularity;
 
   // tell about the stringtable
   m_string_table.clear();
   OSMPBF::StringTable string_table = m_primitive_block.stringtable();
-  qDebug().nospace() << "    stringtable: " << string_table.s_size() << " items";
+  qQCDebug().nospace() << "    stringtable: " << string_table.s_size() << " items";
   for (int i = 0; i < string_table.s_size(); i++) {
     QString string = string_table.s(i).c_str();
-    // qDebug().nospace() << "      string[" << i << "] " << string ;
+    // qQCDebug().nospace() << "      string[" << i << "] " << string ;
     m_string_table << string;
   }
 
   // number of PrimitiveGroups
   int number_of_primitive_groups = m_primitive_block.primitivegroup_size();
   m_number_of_primitive_groups += number_of_primitive_groups;
-  qDebug().nospace() << "    primitivegroups: " << number_of_primitive_groups << " groups";
+  qQCDebug().nospace() << "    primitivegroups: " << number_of_primitive_groups << " groups";
 
   // iterate over all PrimitiveGroups
   for (int i = 0, l = number_of_primitive_groups; i < l; i++) {
@@ -411,7 +412,7 @@ QcOsmPbfReader::read_osm_data()
       found_items = true;
       m_number_of_node_primitive_groups++;
       m_number_of_nodes += number_of_nodes;
-      qDebug().nospace() << "      primitive nodes: " << number_of_nodes;
+      qQCDebug().nospace() << "      primitive nodes: " << number_of_nodes;
       if (m_read_nodes)
         read_nodes(primitive_group);
     }
@@ -422,7 +423,7 @@ QcOsmPbfReader::read_osm_data()
       m_number_of_dense_node_primitive_groups++;
       int number_of_nodes = primitive_group.dense().id_size();
       m_number_of_nodes += number_of_nodes;
-      qDebug().nospace() << "      primitive dense nodes: " << number_of_nodes;
+      qQCDebug().nospace() << "      primitive dense nodes: " << number_of_nodes;
       if (m_read_nodes)
         read_dense_nodes(primitive_group);
     }
@@ -433,7 +434,7 @@ QcOsmPbfReader::read_osm_data()
       m_number_of_way_primitive_groups++;
       int number_of_ways = primitive_group.ways_size();
       m_number_of_ways += number_of_ways;
-      qDebug().nospace() << "      primitive ways: " << number_of_ways;
+      qQCDebug().nospace() << "      primitive ways: " << number_of_ways;
       if (m_read_ways)
         read_ways(primitive_group);
     }
@@ -444,7 +445,7 @@ QcOsmPbfReader::read_osm_data()
       m_number_of_relation_primitive_groups++;
       int number_of_relations = primitive_group.relations_size();
       m_number_of_relations += number_of_relations;
-      qDebug().nospace() << "      primitive relations: " << primitive_group.relations_size();
+      qQCDebug().nospace() << "      primitive relations: " << primitive_group.relations_size();
       if (m_read_relations)
         read_relations(primitive_group);
     }
@@ -465,20 +466,20 @@ QcOsmPbfReader::read_nodes(OSMPBF::PrimitiveGroup primitive_group)
     int64_t node_id = node.id();
     int64_t longitude = node.lon();
     int64_t latitude = node.lat();
-    // qDebug() << "        node " << i << node_id << to_wgs(longitude, latitude);
+    // qQCDebug() << "        node " << i << node_id << to_wgs(longitude, latitude);
 
     int number_of_attributes = node.keys_size();
     QVector<KeyValPair> attributes(number_of_attributes);
     for (int i = 0; i < number_of_attributes; i++) {
       int32_t key_id = node.keys(i);
       int32_t val_id = node.vals(i);
-      // qDebug() << "key_val" << node_id << m_string_table[key_id] << m_string_table[val_id];
+      // qQCDebug() << "key_val" << node_id << m_string_table[key_id] << m_string_table[val_id];
     }
 
     yield_node(node_id, longitude, latitude, attributes);
 
     if (m_read_metadatas and node.has_info()) {
-      // qDebug().nospace() << "        with meta-info";
+      // qQCDebug().nospace() << "        with meta-info";
       OSMPBF::Info info = node.info();
       int32_t version = info.version();
       int64_t timestamp = to_timestamp(info.timestamp());
@@ -486,7 +487,7 @@ QcOsmPbfReader::read_nodes(OSMPBF::PrimitiveGroup primitive_group)
       int32_t uid = info.uid();
       int32_t user_sid = info.user_sid();
       // bool visible = info.visible();
-      // qDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
       // yield_node_metadata(node_id, version, timestamp, changeset, uid, user_sid);
     }
   }
@@ -509,7 +510,7 @@ QcOsmPbfReader::read_dense_nodes(OSMPBF::PrimitiveGroup primitive_group)
     node_id.update(dense_node.id(i));
     longitude.update(dense_node.lon(i));
     latitude.update(dense_node.lat(i));
-    // qDebug() << "        dense node" << node_id() << to_wgs(longitude(), latitude());
+    // qQCDebug() << "        dense node" << node_id() << to_wgs(longitude(), latitude());
     yield_node(node_id(), longitude(), latitude());
   }
 
@@ -523,7 +524,7 @@ QcOsmPbfReader::read_dense_nodes(OSMPBF::PrimitiveGroup primitive_group)
       if (is_key)
         key_id = key_val_id;
       else {
-        // qDebug() << "        attr" << node_index << m_string_table[key_id] << "=" << m_string_table[key_val_id];
+        // qQCDebug() << "        attr" << node_index << m_string_table[key_id] << "=" << m_string_table[key_val_id];
         yield_node_attribute(node_index, key_id, key_val_id);
       }
       is_key = not(is_key);
@@ -533,7 +534,7 @@ QcOsmPbfReader::read_dense_nodes(OSMPBF::PrimitiveGroup primitive_group)
   }
 
   if (m_read_metadatas and dense_node.has_denseinfo()) {
-    // qDebug().nospace() << "        with meta-info";
+    // qQCDebug().nospace() << "        with meta-info";
     OSMPBF::DenseInfo dense_info = dense_node.denseinfo();
     DeltaCodedInt64 timestamp;
     DeltaCodedInt64 changeset;
@@ -546,7 +547,7 @@ QcOsmPbfReader::read_dense_nodes(OSMPBF::PrimitiveGroup primitive_group)
       uid.update(dense_info.uid(i));
       user_sid.update(dense_info.user_sid(i));
       // bool visible = dense_info.visible(i);
-      // qDebug() << "Meta information:" << version << timestamp() << changeset() << uid() << user_sid();
+      // qQCDebug() << "Meta information:" << version << timestamp() << changeset() << uid() << user_sid();
       // yield_node_metadata(i, version, timestamp(), changeset(), uid(), user_sid());
     }
   }
@@ -571,21 +572,21 @@ QcOsmPbfReader::read_ways(OSMPBF::PrimitiveGroup primitive_group)
       node_ids[j++] = node_id.update(ref);
     }
 
-    // qDebug().nospace() << "way" << i << way_id << node_ids;
+    // qQCDebug().nospace() << "way" << i << way_id << node_ids;
 
     int number_of_attributes = way.keys_size();
     QVector<KeyValPair> attributes(number_of_attributes);
     for (int i = 0; i < number_of_attributes; i++) {
       int32_t key_id = way.keys(i);
       int32_t val_id = way.vals(i);
-      // qDebug() << "  key_val" << way_id << m_string_table[key_id] << m_string_table[val_id];
+      // qQCDebug() << "  key_val" << way_id << m_string_table[key_id] << m_string_table[val_id];
       attributes[i] = KeyValPair(key_id, val_id);
     }
 
     yield_way(way_id, node_ids, attributes);
 
     if (m_read_metadatas and way.has_info()) {
-      // qDebug().nospace() << "        with meta-info";
+      // qQCDebug().nospace() << "        with meta-info";
       OSMPBF::Info info = way.info();
       int32_t version = info.version();
       int64_t timestamp = to_timestamp(info.timestamp());
@@ -593,7 +594,7 @@ QcOsmPbfReader::read_ways(OSMPBF::PrimitiveGroup primitive_group)
       int32_t uid = info.uid();
       int32_t user_sid = info.user_sid();
       // bool visible = info.visible();
-      // qDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
       // yield_way_metadata(way_id, version, timestamp, changeset, uid, user_sid);
     }
   }
@@ -624,21 +625,21 @@ QcOsmPbfReader::read_relations(OSMPBF::PrimitiveGroup primitive_group)
       // roles << m_string_table[role_sid];
     }
 
-    // qDebug().nospace() << "relation" << i << relation_id << roles_sid << roles << member_ids << types;
+    // qQCDebug().nospace() << "relation" << i << relation_id << roles_sid << roles << member_ids << types;
 
     int number_of_attributes = relation.keys_size();
     QVector<KeyValPair> attributes(number_of_attributes);
     for (int i = 0; i < number_of_attributes; i++) {
       int32_t key_id = relation.keys(i);
       int32_t val_id = relation.vals(i);
-      // qDebug() << "  key_val" << relation_id << m_string_table[key_id] << m_string_table[val_id];
+      // qQCDebug() << "  key_val" << relation_id << m_string_table[key_id] << m_string_table[val_id];
       attributes[i] = KeyValPair(key_id, val_id);
     }
 
     yield_relation(relation_id, roles_sid, member_ids, types, attributes);
 
     if (m_read_metadatas and relation.has_info()) {
-      // qDebug().nospace() << "        with meta-info";
+      // qQCDebug().nospace() << "        with meta-info";
       OSMPBF::Info info = relation.info();
       int32_t version = info.version();
       int64_t timestamp = to_timestamp(info.timestamp());
@@ -646,7 +647,7 @@ QcOsmPbfReader::read_relations(OSMPBF::PrimitiveGroup primitive_group)
       int32_t uid = info.uid();
       int32_t user_sid = info.user_sid();
       // bool visible = info.visible();
-      // qDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
       // yield_relation_metadata(way_id, version, timestamp, changeset, uid, user_sid);
     }
   }

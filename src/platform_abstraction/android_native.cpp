@@ -26,13 +26,15 @@
 
 /**************************************************************************************************/
 
+#include "alpine_toolkit.h"
+
 #include <jni.h>
 
 #include <QtAndroidExtras>
 #include <QMetaObject>
 #include <QtDebug>
 
-#include "service/service_application.h"
+#include "service/service_alpine_toolkit.h"
 #include "platform_abstraction/platform_abstraction.h"
 
 /**************************************************************************************************/
@@ -53,7 +55,7 @@ on_permission_granted(JNIEnv * env, jobject obj, jstring j_permission)
 {
   QAndroidJniObject string = j_permission;
   QString permission = string.toString();
-  qInfo() << "on_permission_granted" << permission;
+  qATInfo() << "on_permission_granted" << permission;
   QMetaObject::invokeMethod(PlatformAbstraction::instance(),
                             "on_permission_granted",
                             Qt::QueuedConnection,
@@ -66,7 +68,7 @@ on_permission_denied(JNIEnv * env, jobject obj, jstring permission)
 {
   QAndroidJniObject string = j_permission;
   QString permission = string.toString();
-  qInfo() << "on_permission_denied" << permission;
+  qATInfo() << "on_permission_denied" << permission;
   QMetaObject::invokeMethod(PlatformAbstraction::instance(),
                             "on_permission_denied",
                             Qt::QueuedConnection,
@@ -77,7 +79,7 @@ on_permission_denied(JNIEnv * env, jobject obj, jstring permission)
 static void
 stop_service(JNIEnv * env, jobject obj)
 {
-  qInfo() << "invoke stop_service";
+  qATInfo() << "invoke stop_service";
   QMetaObject::invokeMethod(ServiceApplication::service,
                             "stop_service",
                             Qt::QueuedConnection

@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "settings_schema.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -148,7 +149,7 @@ Directory::Directory(const QSqlQuery & query, int offset)
 
 Directory::~Directory()
 {
-// qInfo() << "--- Delete" << "Directory" << *this;
+// qATInfo() << "--- Delete" << "Directory" << *this;
 }
 
 // bit array ?
@@ -370,7 +371,7 @@ Directory::can_save() const
 void
 Directory::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   {
     // Load one-to-many relation keys
     Key::PtrList rows = database_schema()->query_by_foreign_key<Key>(
@@ -383,7 +384,7 @@ Directory::load_relations()
 void
 Directory::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_keys) {
     Key * item_ptr = item_weak_ref.data();
     if (not item_ptr->exists_on_database())
@@ -495,7 +496,7 @@ void
 DirectoryCache::on_changed()
 {
   Directory * row = qobject_cast<Directory *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   DirectoryPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -704,7 +705,7 @@ Key::Key(const QSqlQuery & query, int offset)
 
 Key::~Key()
 {
-// qInfo() << "--- Delete" << "Key" << *this;
+// qATInfo() << "--- Delete" << "Key" << *this;
 }
 
 // bit array ?
@@ -961,14 +962,14 @@ Key::can_save() const
 void
 Key::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   directory();
 }
 
 void
 Key::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
 }
 
 DirectoryPtr
@@ -1100,7 +1101,7 @@ void
 KeyCache::on_changed()
 {
   Key * row = qobject_cast<Key *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   KeyPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -1202,16 +1203,22 @@ template<>
 void
 BlogApplicationSchema::register_row<Directory>(DirectoryPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_directory_cache.add(row);
 }
 template<>
 void
 BlogApplicationSchema::register_row<Key>(KeyPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_key_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

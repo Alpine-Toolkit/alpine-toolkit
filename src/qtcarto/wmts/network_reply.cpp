@@ -63,6 +63,7 @@
 /**************************************************************************************************/
 
 #include "network_reply.h"
+#include "qtcarto.h"
 
 #include <QtGlobal>
 #include <QDebug>

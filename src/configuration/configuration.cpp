@@ -27,8 +27,7 @@
 /**************************************************************************************************/
 
 #include "configuration.h"
-
-#include "config.h"
+#include "alpine_toolkit.h"
 
 #include <QDir>
 #include <QStandardPaths>
@@ -61,7 +60,7 @@ QaConfig::QaConfig()
   m_is_mockup_enabled = get_env(QLatin1Literal("MOCKUP")) == QLatin1Literal("TRUE");
 
   QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  // qInfo() << "GenericDataLocation:" << generic_data_location_path;
+  // qATInfo() << "GenericDataLocation:" << generic_data_location_path;
 
   // Fixme: could use PlatformAbstraction::instance()
 #ifdef ON_LINUX
@@ -92,7 +91,7 @@ QaConfig::get_env(const QString name) const
 {
   QString env_name = QLatin1Literal("ALPINE_TOOLKIT_") + name;
   QString value = m_env.value(env_name);
-  qInfo() << "Environment variable: " << env_name << "=" << value;
+  qATInfo() << "Environment variable: " << env_name << "=" << value;
 
   return value;
 }
@@ -114,7 +113,7 @@ QaConfig::init()
 void
 QaConfig::load_settings()
 {
-  qInfo() << "Settings file path:" << m_settings.fileName() << m_settings.format();
+  qATInfo() << "Settings file path:" << m_settings.fileName() << m_settings.format();
 
   // Settings file path: "$HOME/.config/Apline Toolkit/Alpine Toolkit.conf" 0
   // Settings file path: "/data/data/org.alpine_toolkit/files/.config/Apline Toolkit/Alpine Toolkit.conf" 0
@@ -128,7 +127,7 @@ QaConfig::create_directory(const QString path, const QString label) const
   if (not directory.exists()) {
     if (not directory.mkpath(directory.absolutePath()))
       qWarning() << QLatin1Literal("Cannot create") << label << QLatin1Literal("directory") << path;
-    qInfo() << QLatin1Literal("Created") << label << QLatin1Literal("directory") << path;
+    qATInfo() << QLatin1Literal("Created") << label << QLatin1Literal("directory") << path;
   }
 }
 

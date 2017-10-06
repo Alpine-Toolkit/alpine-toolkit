@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "platform_abstraction.h"
+#include "alpine_toolkit.h"
 
 #ifdef ON_LINUX
 #include "platform_abstraction/linux_platform.h"
@@ -73,7 +74,7 @@ PlatformAbstraction::~PlatformAbstraction()
 QStringList
 PlatformAbstraction::need_explain() const
 {
-  qInfo() << "need_explain";
+  qATInfo() << "need_explain";
 
   return QStringList();
 }
@@ -81,7 +82,7 @@ PlatformAbstraction::need_explain() const
 QStringList
 PlatformAbstraction::need_grant() const
 {
-  qInfo() << "need_grant";
+  qATInfo() << "need_grant";
 
   return QStringList();
 }
@@ -89,13 +90,13 @@ PlatformAbstraction::need_grant() const
 void
 PlatformAbstraction::ask_permission(const QString & permission) const
 {
-  qInfo() << "ask_permission" << permission;
+  qATInfo() << "ask_permission" << permission;
 }
 
 bool
 PlatformAbstraction::is_permission_granted(const QString & permission) const
 {
-  qInfo() << "is_permission_granted" << permission;
+  qATInfo() << "is_permission_granted" << permission;
 
   return true;
 }
@@ -103,7 +104,7 @@ PlatformAbstraction::is_permission_granted(const QString & permission) const
 bool
 PlatformAbstraction::is_permission_denied(const QString & permission) const
 {
-  qInfo() << "is_permission_denied" << permission;
+  qATInfo() << "is_permission_denied" << permission;
 
   return false;
 }
@@ -161,7 +162,7 @@ PlatformAbstraction::is_directory_writable(const QString & path) const
 void
 PlatformAbstraction::set_orientation_lock(bool orientation_lock)
 {
-  qInfo() << "set_orientation_lock" << orientation_lock;
+  qATInfo() << "set_orientation_lock" << orientation_lock;
 
   if (m_orientation_lock != orientation_lock) {
      m_orientation_lock = orientation_lock;
@@ -191,7 +192,7 @@ PlatformAbstraction::update_orientation_lock()
 void
 PlatformAbstraction::set_orientation(PlatformAbstraction::ScreenOrientation orientation)
 {
-  qInfo() << "set_orientation" << orientation;
+  qATInfo() << "set_orientation" << orientation;
 
   if (m_orientation != orientation) {
     m_orientation = orientation;
@@ -226,7 +227,7 @@ PlatformAbstraction::update_orientation()
 void
 PlatformAbstraction::set_full_wave_lock(bool full_wave_lock)
 {
-  qInfo() << "set_full_wave_lock" << full_wave_lock;
+  qATInfo() << "set_full_wave_lock" << full_wave_lock;
 
   if (m_full_wave_lock != full_wave_lock) {
     m_full_wave_lock = full_wave_lock;
@@ -256,7 +257,7 @@ PlatformAbstraction::update_full_wave_lock()
 void
 PlatformAbstraction::set_torch(bool enabled)
 {
-  qInfo() << "set_torch" << enabled;
+  qATInfo() << "set_torch" << enabled;
 
   if (m_torch_enabled != enabled) {
     m_torch_enabled = enabled;
@@ -282,13 +283,13 @@ PlatformAbstraction::update_torch()
 void
 PlatformAbstraction::issue_call(const QString & phone_number) const
 {
-  qInfo() << "issue_call" << phone_number;
+  qATInfo() << "issue_call" << phone_number;
 }
 
 void
 PlatformAbstraction::issue_dial(const QString & phone_number) const
 {
-  qInfo() << "issue_dial" << phone_number;
+  qATInfo() << "issue_dial" << phone_number;
 }
 
 /**************************************************************************************************/
@@ -296,23 +297,23 @@ PlatformAbstraction::issue_dial(const QString & phone_number) const
 void
 PlatformAbstraction::perform_lamp_signal(const QString & message, int rate_ms) const
 {
-  qInfo() << "perform_lamp_signal" << message << rate_ms;
+  qATInfo() << "perform_lamp_signal" << message << rate_ms;
 }
 
 void
 PlatformAbstraction::stop_lamp_signal() const
 {
-  qInfo() << "stop_lamp_signal";
+  qATInfo() << "stop_lamp_signal";
 }
 
 void
 PlatformAbstraction::start_lamp_dimmer(int period, int duty_cycle) const
 {
-  qInfo() << "start_lamp_dimmer" << period << duty_cycle;
+  qATInfo() << "start_lamp_dimmer" << period << duty_cycle;
 }
 
 void
 PlatformAbstraction::stop_lamp_dimmer() const
 {
-  qInfo() << "stop_lamp_dimmer";
+  qATInfo() << "stop_lamp_dimmer";
 }

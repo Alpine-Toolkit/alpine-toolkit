@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "third_party_license_schema_manager.h"
+#include "alpine_toolkit.h"
 
 #include "third_party_license_sqlite_database.h"
 
@@ -69,7 +70,7 @@ ThirdPartyLicenseSchemaManager::~ThirdPartyLicenseSchemaManager()
 void
 ThirdPartyLicenseSchemaManager::load_json_document(const QJsonDocument & json_document)
 {
-  // qInfo() << "Load Third Party Licenses JSON";
+  // qATInfo() << "Load Third Party Licenses JSON";
 
   QJsonArray array = json_document.array();
 
@@ -125,10 +126,10 @@ ThirdPartyLicenseSchemaManager::from_sql(const QString & sqlite_path)
   ThirdPartyLicenseSqliteDatabase third_party_license_sqlite_database(sqlite_path);
   ThirdPartyLicenseDatabaseSchema & third_party_license_schema = third_party_license_sqlite_database.schema();
 
-  qInfo() << "Load third_party_licenses";
+  qATInfo() << "Load third_party_licenses";
   ThirdPartyLicense::PtrList third_party_licenses = third_party_license_schema.query<ThirdPartyLicense>(false);
   for (const auto third_party_license : third_party_licenses)
-    qInfo() << third_party_license;
+    qATInfo() << third_party_license;
 }
 */
 
@@ -136,7 +137,7 @@ QQmlListProperty<ThirdPartyLicense>
 ThirdPartyLicenseSchemaManager::third_party_license_list_property()
 {
   // Called at init or when the list change
-  // qInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property";
+  // qATInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property";
   return QQmlListProperty<ThirdPartyLicense>(this,
                                   nullptr, // data
                                   &ThirdPartyLicenseSchemaManager::third_party_license_list_property_count,
@@ -147,7 +148,7 @@ int
 ThirdPartyLicenseSchemaManager::third_party_license_list_property_count(QQmlListProperty<ThirdPartyLicense> * list)
 {
   // Called several times
-  // qInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property_count";
+  // qATInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property_count";
   ThirdPartyLicenseSchemaManager * third_party_license_schema_manager = qobject_cast<ThirdPartyLicenseSchemaManager *>(list->object);
   return third_party_license_schema_manager->m_third_party_licenses.size();
 }
@@ -156,7 +157,7 @@ ThirdPartyLicense *
 ThirdPartyLicenseSchemaManager::third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, int index)
 {
   // Called several times
-  // qInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property_at" << index;
+  // qATInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property_at" << index;
   ThirdPartyLicenseSchemaManager * third_party_license_schema_manager = qobject_cast<ThirdPartyLicenseSchemaManager *>(list->object);
   ThirdPartyLicensePtr & third_party_license = third_party_license_schema_manager->m_third_party_licenses[index];
   return third_party_license.data();

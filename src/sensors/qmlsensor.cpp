@@ -32,6 +32,8 @@
 ****************************************************************************/
 
 #include "qmlsensor.h"
+#include "alpine_toolkit.h"
+
 #include <QtSensors/QSensor>
 #include <QDebug>
 

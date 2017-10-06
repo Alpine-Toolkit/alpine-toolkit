@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "rrd.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -108,7 +109,7 @@ QcRoundRobinDatabase::QcRoundRobinDatabase(const QString & path, const QString &
     m_slot_size(compute_slot_size(slot_format))
 {
   if (m_number_of_reserved_slots >= 1<<16)
-    qCritical() << "QcRoundRobinDatabase" << "Wrong number of slots";
+    qATCritical() << "QcRoundRobinDatabase" << "Wrong number of slots";
   // Fixme:
 
   open();
@@ -202,7 +203,7 @@ QcRoundRobinDatabase::read_header()
   m_number_of_reserved_slots = number_of_reserved_slots;
   m_slot_size = slot_size;
   m_slot_format = slot_format;
-  qInfo() << "QcRoundRobinDatabase::read_header"
+  qATInfo() << "QcRoundRobinDatabase::read_header"
           << QStringLiteral("Header: v%1 %2/%3 @%4/%5").arg(m_version).arg(m_number_of_reserved_slots).arg(m_slot_size).arg(m_position).arg(m_number_of_used_slots)
           << m_slot_format;
 }
@@ -255,7 +256,7 @@ void
 QcRoundRobinDatabase::seek_to(size_t position)
 {
   size_t device_position = m_header_size + position * m_slot_size;
-  // qInfo() << "QcRoundRobinDatabase::seek_to" << device_position;
+  // qATInfo() << "QcRoundRobinDatabase::seek_to" << device_position;
   if (! m_file.seek(device_position)) {
   } // Fixme:
 }
@@ -265,7 +266,7 @@ QcRoundRobinDatabase::write(const QByteArray & data)
 {
   if (static_cast<size_t>(data.size()) == m_slot_size) { // Fixme: use int ?
     seek_to(m_position);
-    qInfo() << "QcRoundRobinDatabase::write @" << m_position; // << data;
+    qATInfo() << "QcRoundRobinDatabase::write @" << m_position; // << data;
      m_buffer.writeRawData(data.data(), m_slot_size);
      if (is_unlimited() || m_number_of_used_slots != m_number_of_reserved_slots)
        m_number_of_used_slots++;
@@ -283,7 +284,7 @@ QcRoundRobinDatabase::read(size_t position, QByteArray & data)
   if (static_cast<size_t>(data.size()) == m_slot_size) { // Fixme: use int ?
     seek_to(position);
     m_buffer.readRawData(data.data(), m_slot_size);
-    // qInfo() << "QcRoundRobinDatabase::read" << data;
+    // qATInfo() << "QcRoundRobinDatabase::read" << data;
   }
   // else
 }

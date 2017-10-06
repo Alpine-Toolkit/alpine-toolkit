@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "network_request_manager.h"
+#include "alpine_toolkit.h"
 
 #include <QDebug>
 #include <QMutexLocker>
@@ -63,7 +64,7 @@ QaNetworkRequestManager::on_authentication_request_slot(QNetworkReply * reply,
 {
   // Fixme: this code do nothing
   Q_UNUSED(reply);
-  qInfo() << "on_authentication_request_slot";
+  qATInfo() << "on_authentication_request_slot";
   authenticator->setUser("");
   authenticator->setPassword("");
 }
@@ -99,7 +100,7 @@ QaNetworkRequestManager::cancel_request(const QaNetworkRequestPtr & request)
 void
 QaNetworkRequestManager::timerEvent(QTimerEvent * event)
 {
-  qInfo() << "QaNetworkRequestManager::timerEvent";
+  qATInfo() << "QaNetworkRequestManager::timerEvent";
   if (event->timerId() != m_timer.timerId()) // Fixme: when ???
     QObject::timerEvent(event);
   else if (m_queue.isEmpty())
@@ -118,7 +119,7 @@ QaNetworkRequestManager::get_next_request()
 
   QaNetworkRequestPtr request = m_queue.takeFirst();
 
-  qInfo() << "QaNetworkRequestManager::get_next_request" << request->url();
+  qATInfo() << "QaNetworkRequestManager::get_next_request" << request->url();
   QaNetworkReply *reply = make_reply(request);
 
   // If the request is already finished then handle it
@@ -158,11 +159,11 @@ QaNetworkRequestManager::make_reply(const QaNetworkRequestPtr & request)
   QNetworkReply * network_reply = nullptr;
   QaNetworkRequest::RequestType request_type = request->type();
   if (request_type == QaNetworkRequest::RequestType::Get) {
-    qInfo() << "QaNetworkRequestPtr::make_reply GET" << request->url();
+    qATInfo() << "QaNetworkRequestPtr::make_reply GET" << request->url();
     network_reply = m_network_manager.get(network_request);
   } else if (request_type == QaNetworkRequest::RequestType::Post) {
     auto post_request = request.dynamicCast<QaPostNetworkRequest>();
-    qInfo() << "QaNetworkRequestPtr::make_reply POST" << request->url() << "\n" << post_request->data();
+    qATInfo() << "QaNetworkRequestPtr::make_reply POST" << request->url() << "\n" << post_request->data();
     network_reply = m_network_manager.post(network_request, post_request->data());
   }
   // put(const QNetworkRequest &request, const QByteArray &data)
@@ -190,7 +191,7 @@ QaNetworkRequestManager::on_reply_finished()
   }
 
   const QaNetworkRequestPtr & request = reply->request();
-  qInfo() << "QaNetworkRequestManager::on_reply_finished" << request->url();
+  qATInfo() << "QaNetworkRequestManager::on_reply_finished" << request->url();
   if (m_invmap.contains(request)) { // else cancelled request
     m_invmap.remove(request);
    handle_reply(reply);

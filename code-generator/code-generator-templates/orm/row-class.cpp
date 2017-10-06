@@ -115,7 +115,7 @@
 {# {{ dtor_impl(class_name) }} #}
 {{class_name}}::~{{class_name}}()
 {
-// qInfo() << "--- Delete" << "{{class_name}}" << *this;
+// qATInfo() << "--- Delete" << "{{class_name}}" << *this;
 }
 
 // bit array ?
@@ -167,7 +167,7 @@ bool
 void
 {{class_name}}::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
 {% for relation in schema.relations %}
 {% if relation.is_many_to_one %}
   {{relation.name}}();
@@ -188,7 +188,7 @@ void
 void
 {{class_name}}::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
 {% for relation in schema.relations %}
 {% if relation.is_one_to_many %}
   for (const auto & item_weak_ref : m_{{relation.name}}) {
@@ -304,7 +304,7 @@ void
 {{class_name_cache}}::on_changed()
 {
   {{class_name}} * row = qobject_cast<{{class_name}} *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   {{class_name_ptr}} row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);

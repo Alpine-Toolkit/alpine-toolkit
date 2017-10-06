@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "refuge_schema_manager.h"
+#include "alpine_toolkit.h"
 
 #include "full_text_search/phonetic_encoder.h"
 
@@ -120,17 +121,17 @@ RefugeSchemaManager::from_sql(const QString & sqlite_path)
   RefugeSqliteDatabase refuge_sqlite_database(sqlite_path);
   RefugeDatabaseSchema & refuge_schema = refuge_sqlite_database.schema();
 
-  qInfo() << "Load refuges";
+  qATInfo() << "Load refuges";
   Refuge::PtrList refuges = refuge_schema.query<Refuge>(false);
   for (const auto refuge : refuges)
-    qInfo() << refuge;
+    qATInfo() << refuge;
 }
 
 QQmlListProperty<Refuge>
 RefugeSchemaManager::refuge_list_property()
 {
   // Called at init or when the list change
-  // qInfo() << "RefugeSchemaManager::refuge_list_property";
+  // qATInfo() << "RefugeSchemaManager::refuge_list_property";
   return QQmlListProperty<Refuge>(this,
                                   nullptr, // data
                                   &RefugeSchemaManager::refuge_list_property_count,
@@ -141,7 +142,7 @@ int
 RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 {
   // Called several times
-  // qInfo() << "RefugeSchemaManager::refuge_list_property_count";
+  // qATInfo() << "RefugeSchemaManager::refuge_list_property_count";
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   return refuge_schema_manager->m_filtered_refuges.size();
 }
@@ -150,7 +151,7 @@ Refuge *
 RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, int index)
 {
   // Called several times
-  // qInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;
+  // qATInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;
   RefugeSchemaManager * refuge_schema_manager = qobject_cast<RefugeSchemaManager *>(list->object);
   RefugePtr & refuge = refuge_schema_manager->m_filtered_refuges[index];
   return refuge.data();
@@ -172,7 +173,7 @@ RefugeSchemaManager::sort()
 void
 RefugeSchemaManager::filter_refuge_list(const QString & query)
 {
-  // qInfo() << "filter_refuge_list" << query;
+  // qATInfo() << "filter_refuge_list" << query;
 
   if (query.isEmpty()) {
     m_filtered_refuges = refuges();
@@ -180,7 +181,7 @@ RefugeSchemaManager::filter_refuge_list(const QString & query)
     m_filtered_refuges.clear();
     auto matches = m_refuge_index.query(TextDocument(QLocale::French, query), true); // use like
     for (const auto & match : matches) {
-      // qInfo() << query << "Matched" << match.pertinence() << match.tokens() << match.document()->short_name();
+      // qATInfo() << query << "Matched" << match.pertinence() << match.tokens() << match.document()->short_name();
       m_filtered_refuges << match.document();
     }
     // m_filtered_refuges = matches.values(); // RefugePtr versus QSharedPointer<Refuge>

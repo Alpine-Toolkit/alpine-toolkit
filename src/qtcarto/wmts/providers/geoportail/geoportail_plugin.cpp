@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "geoportail_plugin.h"
+#include "qtcarto.h"
 
 #include <QString>
 #include <QXmlStreamWriter>
@@ -208,7 +209,7 @@ QcGeoportailPlugin::on_authentication_request_slot(QNetworkReply * reply,
                                                    QAuthenticator * authenticator)
 {
   Q_UNUSED(reply);
-  // qInfo() << "on_authentication_request_slot";
+  // qQCInfo() << "on_authentication_request_slot";
   authenticator->setUser(m_license.user());
   authenticator->setPassword(m_license.password());
 }
@@ -359,7 +360,7 @@ QcGeoportailPlugin::coordinate_elevations(const QVector<QcWgsCoordinate> & coord
     QStringLiteral("lon=") + longitudes.join(QString('|')) +
     QStringLiteral("&lat=") + latitudes.join(QString('|'))
     ;
-  // qInfo() << url;
+  // qQCInfo() << url;
 
   QNetworkReply * reply = get(url);
 

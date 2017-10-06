@@ -28,6 +28,7 @@
 
 #include "international_morse_code_engine.h"
 #include "international_morse_code_engine_table.cpp"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -180,7 +181,7 @@ InternationalMorseCodeEngine::decode(const QString & encoded_message, bool & suc
   QString message;
   const MorseCodeDecoderNode * node = &m_root_node;
   for (QChar part : encoded_message + letter_space) {
-    // qInfo() << part << message;
+    // qATInfo() << part << message;
     if (part == dot or part == dash) {
       if (part == dot)
         node = node->dot_branch();

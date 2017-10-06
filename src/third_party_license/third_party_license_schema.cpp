@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "third_party_license_schema.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -280,7 +281,7 @@ ThirdPartyLicense::ThirdPartyLicense(const QSqlQuery & query, int offset)
 
 ThirdPartyLicense::~ThirdPartyLicense()
 {
-// qInfo() << "--- Delete" << "ThirdPartyLicense" << *this;
+// qATInfo() << "--- Delete" << "ThirdPartyLicense" << *this;
 }
 
 // bit array ?
@@ -871,7 +872,7 @@ void
 ThirdPartyLicenseCache::on_changed()
 {
   ThirdPartyLicense * row = qobject_cast<ThirdPartyLicense *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   ThirdPartyLicensePtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -988,9 +989,15 @@ template<>
 void
 ThirdPartyLicenseDatabaseSchema::register_row<ThirdPartyLicense>(ThirdPartyLicensePtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_third_party_license_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

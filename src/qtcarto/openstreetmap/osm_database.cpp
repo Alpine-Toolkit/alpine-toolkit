@@ -27,6 +27,8 @@
 /**************************************************************************************************/
 
 #include "osm_database.h"
+#include "qtcarto.h"
+
 #include "geo_data_format/wkb.h"
 
 #include <QFile>
@@ -52,7 +54,7 @@ QcOsmDatabase::~QcOsmDatabase()
 void
 QcOsmDatabase::create_tables()
 {
-  qInfo() << "Create OSM planet tables";
+  qQCInfo() << "Create OSM planet tables";
 
   // # https://www.sqlite.org/autoinc.html
   // # Fixme: how to handle auto-increment overflow ?
@@ -60,9 +62,9 @@ QcOsmDatabase::create_tables()
   QList<QString> queries;
 
   if (!create_extension(QStringLiteral("postgis")))
-    qCritical() << "Cannot creat postgis extension";
+    qQCCritical() << "Cannot creat postgis extension";
   if (!create_extension(QStringLiteral("hstore")))
-    qCritical() << "Cannot creat hstore extension";
+    qQCCritical() << "Cannot creat hstore extension";
 
   const QString node_schema =
     "CREATE TABLE planet_osm_point ("
@@ -101,7 +103,7 @@ QcOsmPbfDatabaseImporter::yield_node(int64_t node_index, int64_t longitude, int6
 {
   QcWgsCoordinate coordinate = to_wgs(longitude, latitude);
   QcWkbPoint point(coordinate.longitude(), coordinate.latitude());
-  qDebug() << "node" << node_index << coordinate;
+  qQCDebug() << "node" << node_index << coordinate;
 
   m_transaction_query.addBindValue(static_cast<qint64>(node_index), QSql::In);
   m_transaction_query.addBindValue(point.to_wkb(true), QSql::In); // | QSql::Binary

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp/camptocamp_client.h"
+#include "alpine_toolkit.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -69,14 +70,14 @@ void
 C2cApiGetRequest::on_error(const QString & error_string)
 {
   // Fixme:
-  qInfo() << "C2cApiGetRequest::on_error" << url() << error_string;
+  qATInfo() << "C2cApiGetRequest::on_error" << url() << error_string;
   emit error(nullptr);
 }
 
 void
 C2cApiGetRequest::on_data_received(const QByteArray & json_data)
 {
-  qInfo() << "C2cApiGetRequest::on_data_received" << url() << '\n' << json_data;
+  qATInfo() << "C2cApiGetRequest::on_data_received" << url() << '\n' << json_data;
   // Fixme: this code must be duplicated
   QJsonDocumentPtr json_document = to_json_document(json_data);
   if (check_json_response(json_document))
@@ -96,14 +97,14 @@ void
 C2cApiPostRequest::on_error(const QString & error_string)
 {
   // Fixme:
-  qInfo() << "C2cApiPostRequest::on_error" << url() << error_string;
+  qATInfo() << "C2cApiPostRequest::on_error" << url() << error_string;
   emit error(nullptr);
 }
 
 void
 C2cApiPostRequest::on_data_received(const QByteArray & json_data)
 {
-  qInfo() << "C2cApiPostRequest::on_data_received" << url() << '\n' << json_data;
+  qATInfo() << "C2cApiPostRequest::on_data_received" << url() << '\n' << json_data;
   QJsonDocumentPtr json_document = to_json_document(json_data);
   if (check_json_response(json_document))
     emit finished(json_document);
@@ -122,7 +123,7 @@ void
 C2cApiMediaRequest::on_error(const QString & error_string)
 {
   // Fixme:
-  qInfo() << "C2cApiMediaRequest::on_error" << url() << error_string;
+  qATInfo() << "C2cApiMediaRequest::on_error" << url() << error_string;
   emit error(m_media);
 }
 
@@ -229,7 +230,7 @@ void
 C2cClient::on_login_reply(const QJsonDocumentPtr & json_document)
 {
   m_login_data.from_json(json_document);
-  qInfo() << "Logged successfully" << '\n' << m_login_data;
+  qATInfo() << "Logged successfully" << '\n' << m_login_data;
   // info("Logged successfully, connection will expire at {}".format(self._login_data.expire))
   emit logged();
 }
@@ -246,7 +247,7 @@ void
 C2cClient::update_login()
 {
   if (is_logged() and m_login_data.is_expired()) {
-    qInfo() << "Login expired";
+    qATInfo() << "Login expired";
     login(m_login); // Fixme:
   }
 }
@@ -375,7 +376,7 @@ C2cClient::search(const QString & search_string, const C2cSearchSettings & setti
       string_value = value.toStringList().join(',');
     else
       string_value = value.toString();
-    // qInfo() << key << value << value.toString() << string_value;
+    // qATInfo() << key << value << value.toString() << string_value;
     url_query.addQueryItem(key, string_value);
   }
 

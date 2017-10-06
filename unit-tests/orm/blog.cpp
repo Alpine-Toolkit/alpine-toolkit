@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "blog.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -147,7 +148,7 @@ Author::Author(const QSqlQuery & query, int offset)
 
 Author::~Author()
 {
-// qInfo() << "--- Delete" << "Author" << *this;
+// qATInfo() << "--- Delete" << "Author" << *this;
 }
 
 // bit array ?
@@ -360,7 +361,7 @@ Author::set_insert_id(int id)
 void
 Author::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   {
     // Load one-to-many relation blogs
     Blog::PtrList rows = database_schema()->query_by_foreign_key<Blog>(
@@ -373,7 +374,7 @@ Author::load_relations()
 void
 Author::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_blogs) {
     Blog * item_ptr = item_weak_ref.data();
     if (not item_ptr->exists_on_database())
@@ -486,7 +487,7 @@ void
 AuthorCache::on_changed()
 {
   Author * row = qobject_cast<Author *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   AuthorPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -675,7 +676,7 @@ Category::Category(const QSqlQuery & query, int offset)
 
 Category::~Category()
 {
-// qInfo() << "--- Delete" << "Category" << *this;
+// qATInfo() << "--- Delete" << "Category" << *this;
 }
 
 // bit array ?
@@ -987,7 +988,7 @@ void
 CategoryCache::on_changed()
 {
   Category * row = qobject_cast<Category *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   CategoryPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -1196,7 +1197,7 @@ Blog::Blog(const QSqlQuery & query, int offset)
 
 Blog::~Blog()
 {
-// qInfo() << "--- Delete" << "Blog" << *this;
+// qATInfo() << "--- Delete" << "Blog" << *this;
 }
 
 // bit array ?
@@ -1451,14 +1452,14 @@ Blog::can_save() const
 void
 Blog::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   author();
 }
 
 void
 Blog::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
 }
 
 AuthorPtr
@@ -1590,7 +1591,7 @@ void
 BlogCache::on_changed()
 {
   Blog * row = qobject_cast<Blog *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   BlogPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -1802,7 +1803,7 @@ Comment::Comment(const QSqlQuery & query, int offset)
 
 Comment::~Comment()
 {
-// qInfo() << "--- Delete" << "Comment" << *this;
+// qATInfo() << "--- Delete" << "Comment" << *this;
 }
 
 // bit array ?
@@ -2155,7 +2156,7 @@ void
 CommentCache::on_changed()
 {
   Comment * row = qobject_cast<Comment *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   CommentPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -2263,30 +2264,36 @@ template<>
 void
 BlogApplicationSchema::register_row<Author>(AuthorPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_authors_cache.add(row);
 }
 template<>
 void
 BlogApplicationSchema::register_row<Category>(CategoryPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_categories_cache.add(row);
 }
 template<>
 void
 BlogApplicationSchema::register_row<Blog>(BlogPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_blogs_cache.add(row);
 }
 template<>
 void
 BlogApplicationSchema::register_row<Comment>(CommentPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_comments_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

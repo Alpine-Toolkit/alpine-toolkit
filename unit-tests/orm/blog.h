@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -197,8 +198,8 @@ public:
   ~AuthorPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete AuthorPtr of" << *m_ptr;
-    // qInfo() << "--- Delete AuthorPtr";
+    //// qATInfo() << "--- Delete AuthorPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete AuthorPtr";
     // m_ptr.clear();
   }
 
@@ -450,8 +451,8 @@ public:
   ~CategoryPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete CategoryPtr of" << *m_ptr;
-    // qInfo() << "--- Delete CategoryPtr";
+    //// qATInfo() << "--- Delete CategoryPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete CategoryPtr";
     // m_ptr.clear();
   }
 
@@ -719,8 +720,8 @@ public:
   ~BlogPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BlogPtr of" << *m_ptr;
-    // qInfo() << "--- Delete BlogPtr";
+    //// qATInfo() << "--- Delete BlogPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete BlogPtr";
     // m_ptr.clear();
   }
 
@@ -982,8 +983,8 @@ public:
   ~CommentPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete CommentPtr of" << *m_ptr;
-    // qInfo() << "--- Delete CommentPtr";
+    //// qATInfo() << "--- Delete CommentPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete CommentPtr";
     // m_ptr.clear();
   }
 
@@ -1134,3 +1135,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __BLOG_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

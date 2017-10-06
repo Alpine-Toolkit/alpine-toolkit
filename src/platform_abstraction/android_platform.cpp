@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "android_platform.h"
+#include "alpine_toolkit.h"
 
 #include <QAndroidJniEnvironment>
 #include <QAndroidJniObject>
@@ -52,7 +53,7 @@ AndroidPlatform::~AndroidPlatform()
 QStringList
 AndroidPlatform::need_explain() const
 {
-  qInfo() << "need_explain";
+  qATInfo() << "need_explain";
 
   QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_explain", "()Ljava/lang/String");
   QString permissions = j_string.toString();
@@ -65,7 +66,7 @@ AndroidPlatform::need_grant() const
 {
   // Fixme: duplicated code
 
-  qInfo() << "need_grant";
+  qATInfo() << "need_grant";
 
   QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_grant", "()Ljava/lang/String");
   QString permissions = j_string.toString();
@@ -76,7 +77,7 @@ AndroidPlatform::need_grant() const
 void
 AndroidPlatform::ask_permission(const QString & permission) const
 {
-  qInfo() << "ask_permission" << permission;
+  qATInfo() << "ask_permission" << permission;
 
   QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
   QtAndroid::androidActivity().callMethod<void>("ask_permission", "(Ljava/lang/String)V", j_string.object<jstring>());
@@ -85,7 +86,7 @@ AndroidPlatform::ask_permission(const QString & permission) const
 bool
 AndroidPlatform::is_permission_granted(const QString & permission) const
 {
-  qInfo() << "is_permission_granted" << permission;
+  qATInfo() << "is_permission_granted" << permission;
 
   QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
   jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_granted", "(Ljava/lang/String)V", j_string.object<jstring>());
@@ -96,7 +97,7 @@ AndroidPlatform::is_permission_granted(const QString & permission) const
 bool
 AndroidPlatform::is_permission_denied(const QString & permission) const
 {
-  qInfo() << "is_permission_denied" << permission;
+  qATInfo() << "is_permission_denied" << permission;
 
   QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
   jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_denied", "(Ljava/lang/String)V", j_string.object<jstring>());
@@ -173,7 +174,7 @@ AndroidPlatform::update_torch()
 void
 AndroidPlatform::issue_call(const QString & phone_number) const
 {
-  qInfo() << "issue_call" << phone_number;
+  qATInfo() << "issue_call" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
   // void issue_call(String phone_number)
   QtAndroid::androidActivity().callMethod<void>("issue_call", "(Ljava/lang/String;)V", j_phone_number.object<jstring>());
@@ -182,7 +183,7 @@ AndroidPlatform::issue_call(const QString & phone_number) const
 void
 AndroidPlatform::issue_dial(const QString & phone_number) const
 {
-  qInfo() << "issue_dial" << phone_number;
+  qATInfo() << "issue_dial" << phone_number;
   QAndroidJniObject j_phone_number = QAndroidJniObject::fromString(phone_number);
   // void issue_dial(String phone_number)
   QtAndroid::androidActivity().callMethod<void>("issue_dial", "(Ljava/lang/String;)V", j_phone_number.object<jstring>());
@@ -193,7 +194,7 @@ AndroidPlatform::issue_dial(const QString & phone_number) const
 void
 AndroidPlatform::perform_lamp_signal(const QString & message, int rate_ms) const
 {
-  qInfo() << "perform_lamp_signal" << message << rate_ms;
+  qATInfo() << "perform_lamp_signal" << message << rate_ms;
   QAndroidJniObject j_message = QAndroidJniObject::fromString(message);
   QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(Ljava/lang/String;I)V", j_message.object<jstring>(), rate_ms);
 }

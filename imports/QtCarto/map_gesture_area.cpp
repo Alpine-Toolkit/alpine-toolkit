@@ -37,6 +37,7 @@
 /**************************************************************************************************/
 
 #include "map_gesture_area.h"
+#include "qtcarto.h"
 
 #include "declarative_map_item.h"
 
@@ -329,7 +330,7 @@ copy_mouse_event(const QMouseEvent * event)
 QTouchEvent::TouchPoint *
 create_touch_point_from_mouse_event(const QMouseEvent * event, Qt::TouchPointState state)
 {
-  // qInfo();
+  // qQCInfo();
 
   // this is only partially filled. But since it is only partially used it works
   // more robust would be to store a list of QPointFs rather than TouchPoints
@@ -353,7 +354,7 @@ QcMapGestureArea::QcMapGestureArea(QcMapItem * map)
     m_prevent_stealing(false),
     m_pan_enabled(true)
 {
-  // qInfo();
+  // qQCInfo();
 
   m_flick.m_enabled = true;
   m_flick.m_max_velocity = QML_MAP_FLICK_DEFAULT_MAX_VELOCITY;
@@ -401,7 +402,7 @@ QcMapGestureArea::~QcMapGestureArea()
 
 void QcMapGestureArea::set_prevent_stealing(bool prevent)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (prevent != m_prevent_stealing) {
     m_prevent_stealing = prevent;
@@ -428,7 +429,7 @@ void QcMapGestureArea::set_prevent_stealing(bool prevent)
 void
 QcMapGestureArea::set_accepted_gestures(Accepted_gestures accepted_gestures)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (accepted_gestures != m_accepted_gestures) {
     m_accepted_gestures = accepted_gestures;
@@ -450,7 +451,7 @@ QcMapGestureArea::is_active() const
 void
 QcMapGestureArea::set_enabled(bool enabled)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (enabled != m_enabled) {
     m_enabled = enabled;
@@ -478,7 +479,7 @@ QcMapGestureArea::is_pinch_active() const
 void
 QcMapGestureArea::set_pinch_enabled(bool enabled)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (enabled != m_pinch.m_enabled)
     m_pinch.m_enabled = enabled;
@@ -493,7 +494,7 @@ QcMapGestureArea::is_pan_active() const
 void
 QcMapGestureArea::set_pan_enabled(bool enabled)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (enabled != m_flick.m_enabled) {
     m_pan_enabled = enabled;
@@ -506,7 +507,7 @@ QcMapGestureArea::set_pan_enabled(bool enabled)
 void
 QcMapGestureArea::set_flick_enabled(bool enabled)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (enabled != m_flick.m_enabled) {
     m_flick.m_enabled = enabled;
@@ -526,7 +527,7 @@ QcMapGestureArea::set_flick_enabled(bool enabled)
 void
 QcMapGestureArea::set_zoom_level_interval(const QcIntervalInt interval)
 {
-  // qInfo();
+  // qQCInfo();
 
   m_pinch.m_zoom.m_interval = interval;
 }
@@ -540,7 +541,7 @@ QcMapGestureArea::maximum_zoom_level_change() const
 void
 QcMapGestureArea::set_maximum_zoom_level_change(qreal max_change)
 {
-  // qInfo();
+  // qQCInfo();
 
   // Fixme: !()
   if (max_change == m_pinch.m_zoom.maximum_change or
@@ -554,7 +555,7 @@ QcMapGestureArea::set_maximum_zoom_level_change(qreal max_change)
 void
 QcMapGestureArea::set_flick_deceleration(qreal deceleration)
 {
-  // qInfo();
+  // qQCInfo();
 
   deceleration = qBound(QML_MAP_FLICK_MINIMUM_DECELERATION, deceleration, QML_MAP_FLICK_MAXIMUM_DECELERATION);
   if (deceleration != m_flick.m_deceleration) {
@@ -566,7 +567,7 @@ QcMapGestureArea::set_flick_deceleration(qreal deceleration)
 void
 QcMapGestureArea::clear_touch_data()
 {
-  // qInfo();
+  // qQCInfo();
 
   // Fixme: vectorize
   m_current_position.set_x(0);
@@ -582,7 +583,7 @@ QcMapGestureArea::clear_touch_data()
 void
 QcMapGestureArea::update_velocity_list(const QcVectorDouble & position)
 {
-  // qInfo();
+  // qQCInfo();
 
   // position = m_current_position
 
@@ -605,7 +606,7 @@ QcMapGestureArea::update_velocity_list(const QcVectorDouble & position)
 void
 QcMapGestureArea::handle_mouse_press_event(QMouseEvent * event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
 
   m_mouse_point.reset(create_touch_point_from_mouse_event(event, Qt::TouchPointPressed));
   m_mouse_event.reset(copy_mouse_event(event));
@@ -622,7 +623,7 @@ QcMapGestureArea::handle_mouse_press_event(QMouseEvent * event)
 void
 QcMapGestureArea::handle_mouse_move_event(QMouseEvent * event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
 
   m_mouse_point.reset(create_touch_point_from_mouse_event(event, Qt::TouchPointMoved));
   if (m_touch_points.isEmpty())
@@ -633,7 +634,7 @@ QcMapGestureArea::handle_mouse_move_event(QMouseEvent * event)
 void
 QcMapGestureArea::handle_mouse_release_event(QMouseEvent * event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
 
   // Fixme sanitizer: map_gesture_area.cpp:638:7: runtime error: load of value 190, which is not a valid value for type 'bool'
   if (m_was_press_and_hold) {
@@ -661,7 +662,7 @@ QcMapGestureArea::handle_mouse_release_event(QMouseEvent * event)
 void
 QcMapGestureArea::handle_mouse_ungrab_event()
 {
-  qInfo();
+  qQCInfo();
 
   if (m_touch_points.isEmpty() and !m_mouse_point.isNull()) {
     m_mouse_point.reset();
@@ -673,7 +674,7 @@ QcMapGestureArea::handle_mouse_ungrab_event()
 void
 QcMapGestureArea::handle_touch_ungrab_event()
 {
-  // qInfo();
+  // qQCInfo();
 
   m_touch_points.clear();
   // this is needed since in some cases mouse release is not delivered
@@ -685,7 +686,7 @@ QcMapGestureArea::handle_touch_ungrab_event()
 void
 QcMapGestureArea::handle_touch_event(QTouchEvent * event)
 {
-  // qInfo();
+  // qQCInfo();
 
   m_touch_points.clear();
   m_touch_points.append(event->touchPoints());
@@ -700,7 +701,7 @@ QcMapGestureArea::handle_touch_event(QTouchEvent * event)
 void
 QcMapGestureArea::handle_wheel_event(QWheelEvent * event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
 
   if (m_map)
     m_map->on_wheel_event(event);
@@ -712,7 +713,7 @@ QcMapGestureArea::handle_wheel_event(QWheelEvent * event)
 void
 QcMapGestureArea::update()
 {
-  qInfo() << "enter" << m_touch_point_state << m_flick_state << m_pinch_state;
+  qQCInfo() << "enter" << m_touch_point_state << m_flick_state << m_pinch_state;
 
   // if (!m_map)
   //   return;
@@ -740,7 +741,7 @@ QcMapGestureArea::update()
   if (is_pan_active() or (m_enabled and m_flick.m_enabled and (m_accepted_gestures & (PanGesture | FlickGesture))))
     pan_state_machine();
 
-  qInfo() << "leave" << m_touch_point_state << m_flick_state << m_pinch_state;
+  qQCInfo() << "leave" << m_touch_point_state << m_flick_state << m_pinch_state;
 }
 
 /**************************************************************************************************/
@@ -748,7 +749,7 @@ QcMapGestureArea::update()
 void
 QcMapGestureArea::handle_press_timer_timeout()
 {
-  qInfo();
+  qQCInfo();
   if (is_press_and_hold()) {
     m_map->on_press_and_hold(m_mouse_event.data());
     m_was_press_and_hold = true;
@@ -759,7 +760,7 @@ QcMapGestureArea::handle_press_timer_timeout()
 bool
 QcMapGestureArea::is_press_and_hold()
 {
-  qInfo();
+  qQCInfo();
 
   // if (!m_map)
   //   return false;
@@ -798,7 +799,7 @@ QcMapGestureArea::is_double_click()
 void
 QcMapGestureArea::touch_point_state_machine()
 {
-  qInfo() << "enter" << m_touch_point_state;
+  qQCInfo() << "enter" << m_touch_point_state;
 
   int number_of_points = m_all_points.count();
 
@@ -849,13 +850,13 @@ QcMapGestureArea::touch_point_state_machine()
     break;
   }
 
-  qInfo() << "leave" << m_touch_point_state;
+  qQCInfo() << "leave" << m_touch_point_state;
 }
 
 void
 QcMapGestureArea::start_one_touch_point()
 {
-  qInfo();
+  qQCInfo();
 
   m_start_position1 = first_point().pos();
   m_last_position_for_velocity = m_start_position1;
@@ -870,7 +871,7 @@ QcMapGestureArea::start_one_touch_point()
 void
 QcMapGestureArea::update_one_touch_point()
 {
-  qInfo();
+  qQCInfo();
 
   m_current_position = first_point().pos();
   update_velocity_list(m_current_position);
@@ -879,7 +880,7 @@ QcMapGestureArea::update_one_touch_point()
 void
 QcMapGestureArea::start_two_touch_points()
 {
-  // qInfo();
+  // qQCInfo();
 
   m_start_position1 = first_point().pos();
   m_start_position2 = second_point().pos();
@@ -895,7 +896,7 @@ QcMapGestureArea::start_two_touch_points()
 void
 QcMapGestureArea::update_two_touch_points()
 {
-  // qInfo();
+  // qQCInfo();
 
   QcVectorDouble p1 = first_point().pos();
   QcVectorDouble p2 = second_point().pos();
@@ -915,7 +916,7 @@ QcMapGestureArea::update_two_touch_points()
 void
 QcMapGestureArea::pinch_state_machine()
 {
-  // qInfo();
+  // qQCInfo();
 
   int number_of_points = m_all_points.count();
 
@@ -980,7 +981,7 @@ QcMapGestureArea::pinch_state_machine()
 bool
 QcMapGestureArea::can_start_pinch()
 {
-  // qInfo();
+  // qQCInfo();
 
   int number_of_points = m_all_points.count();
   const int start_drag_distance = qApp->styleHints()->startDragDistance();
@@ -1009,7 +1010,7 @@ QcMapGestureArea::can_start_pinch()
 void
 QcMapGestureArea::start_pinch()
 {
-  // qInfo();
+  // qQCInfo();
 
   m_pinch.m_last_angle = m_two_touch_angle;
   m_pinch.m_last_point1 = first_point().pos();
@@ -1022,7 +1023,7 @@ QcMapGestureArea::start_pinch()
 void
 QcMapGestureArea::update_pinch()
 {
-  // qInfo();
+  // qQCInfo();
 
   // Calculate the new zoom level if we have distance (>= 2 touchpoints), otherwise stick with old.
   qreal new_zoom_level = m_pinch.m_zoom.m_previous;
@@ -1070,7 +1071,7 @@ QcMapGestureArea::update_pinch()
 void
 QcMapGestureArea::end_pinch()
 {
-  // qInfo();
+  // qQCInfo();
 
   QcVectorDouble p1 = m_pinch.m_last_point1;
   QcVectorDouble p2 = m_pinch.m_last_point2;
@@ -1091,7 +1092,7 @@ QcMapGestureArea::end_pinch()
 void
 QcMapGestureArea::pan_state_machine()
 {
-  qInfo();
+  qQCInfo();
 
   int number_of_points = m_all_points.count();
   FlickState last_state = m_flick_state;
@@ -1100,7 +1101,7 @@ QcMapGestureArea::pan_state_machine()
   switch (m_flick_state) {
   case FlickInactive:
     if (can_start_pan()) {
-      qInfo() << "can_start_pan";
+      qQCInfo() << "can_start_pan";
       // Update start_coordinate to ensure smooth start for panning when going over startDragDistance
       // Mouse pointer slides on the map until it goes over startDragDistance
       m_start_coordinate = m_map->to_coordinate(m_current_position, false);
@@ -1159,7 +1160,7 @@ QcMapGestureArea::pan_state_machine()
 bool
 QcMapGestureArea::can_start_pan()
 {
-  qInfo() << first_point().pos() << m_start_position1;
+  qQCInfo() << first_point().pos() << m_start_position1;
 
   if (m_all_points.count() == 0 or (m_accepted_gestures & PanGesture) == 0) // Fixme: to func ?
     return false;
@@ -1176,7 +1177,7 @@ QcMapGestureArea::can_start_pan()
 void
 QcMapGestureArea::update_pan()
 {
-  qInfo();
+  qQCInfo();
 
   // Not used by animation/flick
   // Map follows the mouse pointer: move the map center according to delta px
@@ -1198,7 +1199,7 @@ QcMapGestureArea::update_pan()
 bool
 QcMapGestureArea::try_start_flick()
 {
-  qInfo();
+  qQCInfo();
 
   if ((m_accepted_gestures & FlickGesture) == 0)
     return false;
@@ -1245,7 +1246,7 @@ QcMapGestureArea::try_start_flick()
 void
 QcMapGestureArea::start_flick(int dx, int dy, int time_ms)
 {
-  qInfo();
+  qQCInfo();
 
   if (!m_flick.m_animation)
     return;
@@ -1265,7 +1266,7 @@ QcMapGestureArea::start_flick(int dx, int dy, int time_ms)
 
   // Fixme: must be done according to projection (and viewport ?)
   // keep animation in correct bounds
-  qInfo() << longitude << latitude;
+  qQCInfo() << longitude << latitude;
   if (latitude > 85.05113)
     latitude = 85.05113;
   else if (latitude < -85.05113)
@@ -1276,7 +1277,7 @@ QcMapGestureArea::start_flick(int dx, int dy, int time_ms)
     longitude = longitude + 360;
 
   QcWgsCoordinate animation_end_coordinate(longitude, latitude);
-  // qInfo() << animation_start_coordinate << animation_end_coordinate << dx;
+  // qQCInfo() << animation_start_coordinate << animation_end_coordinate << dx;
 
   m_flick.m_animation->setFrom(animation_start_coordinate);
   m_flick.m_animation->setTo(animation_end_coordinate);
@@ -1289,7 +1290,7 @@ QcMapGestureArea::start_flick(int dx, int dy, int time_ms)
 void
 QcMapGestureArea::stop_pan()
 {
-  qInfo();
+  qQCInfo();
 
   if (m_flick_state == FlickActive)
     stop_flick();
@@ -1307,7 +1308,7 @@ QcMapGestureArea::stop_pan()
 void
 QcMapGestureArea::stop_flick()
 {
-  qInfo();
+  qQCInfo();
 
   if (!m_flick.m_animation)
     return;
@@ -1324,7 +1325,7 @@ QcMapGestureArea::stop_flick()
 void
 QcMapGestureArea::handle_flick_animation_stopped()
 {
-  qInfo();
+  qQCInfo();
 
   m_map->setKeepMouseGrab(m_prevent_stealing);
   if (m_flick_state == FlickActive) {

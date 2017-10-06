@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp/camptocamp_login.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

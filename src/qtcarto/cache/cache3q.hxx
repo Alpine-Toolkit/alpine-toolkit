@@ -66,6 +66,12 @@
 
 // QC_BEGIN_NAMESPACE
 
+/**************************************************************************************************/
+
+#include "qtcarto.h"
+
+/**************************************************************************************************/
+
 template <class Key, class T>
 void QcCache3QDefaultEvictionPolicy<Key, T>::about_to_be_evicted(const Key & key, QSharedPointer<T> obj)
 {
@@ -85,16 +91,16 @@ void QcCache3QDefaultEvictionPolicy<Key, T>::about_to_be_removed(const Key & key
 template <class Key, class T, class EvictionPolicy>
 void
 QcCache3Q<Key, T, EvictionPolicy>::print_stats()
-{ // qDebug
-  qInfo("\n=== cache %p ===", this);
-  qInfo("hits: %d (%.2f%%)\tmisses: %d\tfill: %.2f%%", m_hit_count,
+{ // qQCDebug
+  qQCInfof("\n=== cache %p ===", this);
+  qQCInfof("hits: %d (%.2f%%)\tmisses: %d\tfill: %.2f%%", m_hit_count,
 	 100.0 * float(m_hit_count) / (float(m_hit_count + m_miss_count)),
 	 m_miss_count,
 	 100.0 * float(total_cost()) / float(max_cost()));
-  qInfo("q1g: size=%d, pop=%llu", m_q1_evicted->size, m_q1_evicted->pop);
-  qInfo("q1:  cost=%d, size=%d, pop=%llu", m_q1->cost, m_q1->size, m_q1->pop);
-  qInfo("q2:  cost=%d, size=%d, pop=%llu", m_q2->cost, m_q2->size, m_q2->pop);
-  qInfo("q3:  cost=%d, size=%d, pop=%llu", m_q3->cost, m_q3->size, m_q3->pop);
+  qQCInfof("q1g: size=%d, pop=%llu", m_q1_evicted->size, m_q1_evicted->pop);
+  qQCInfof("q1:  cost=%d, size=%d, pop=%llu", m_q1->cost, m_q1->size, m_q1->pop);
+  qQCInfof("q2:  cost=%d, size=%d, pop=%llu", m_q2->cost, m_q2->size, m_q2->pop);
+  qQCInfof("q3:  cost=%d, size=%d, pop=%llu", m_q3->cost, m_q3->size, m_q3->pop);
 }
 
 template <class Key, class T, class EvictionPolicy>

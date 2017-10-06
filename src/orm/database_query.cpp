@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database_query.h"
+#include "alpine_toolkit.h"
 
 #include "database_table.h"
 
@@ -756,7 +757,7 @@ QcSqlQuery::insert_values(const SqlFlavour & flavour) const
       if (m_value_expressions.contains(field)) {
         const QcSqlExpressionPtr & ctor = m_value_expressions[field];
         if (ctor.isNull())
-          qCritical() << QLatin1String("SQL value ctor is null for") << field->to_sql();
+          qATCritical() << QLatin1String("SQL value ctor is null for") << field->to_sql();
         else
           query += ctor->to_sql(flavour); // Fixme: ? is implicit
       } else

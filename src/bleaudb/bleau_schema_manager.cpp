@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "bleau_schema_manager.h"
+#include "alpine_toolkit.h"
 
 #include "bleau_sqlite_database.h"
 
@@ -118,7 +119,7 @@ BleauSchemaManager::load_json_document(const QJsonDocument & json_document)
   QJsonArray json_massifs = root[QLatin1String("massifs")].toArray();
   for (const auto & json_value : json_massifs) {
     BleauMassifPtr massif(json_value.toObject());
-    // qInfo() << massif;
+    // qATInfo() << massif;
     add_massif(massif);
   }
 
@@ -135,12 +136,12 @@ BleauSchemaManager::load_json_document(const QJsonDocument & json_document)
     for (const auto & json_value : json_boulders) {
       BleauBoulderPtr boulder(json_value.toObject());
       boulder.set_circuit(circuit);
-      // qInfo() << boulder;
+      // qATInfo() << boulder;
       // Fixme: boulder is detroyed, weak ref !!!
       m_boulders << boulder;
     }
 
-    // qInfo() << circuit;
+    // qATInfo() << circuit;
     add_circuit(circuit);
   }
 }

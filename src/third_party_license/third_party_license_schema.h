@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -244,8 +245,8 @@ public:
   ~ThirdPartyLicensePtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete ThirdPartyLicensePtr of" << *m_ptr;
-    // qInfo() << "--- Delete ThirdPartyLicensePtr";
+    //// qATInfo() << "--- Delete ThirdPartyLicensePtr of" << *m_ptr;
+    // qATInfo() << "--- Delete ThirdPartyLicensePtr";
     // m_ptr.clear();
   }
 
@@ -393,3 +394,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __THIRD_PARTY_LICENSE_SCHEMA_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

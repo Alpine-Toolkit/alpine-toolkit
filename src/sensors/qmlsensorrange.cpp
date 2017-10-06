@@ -32,6 +32,7 @@
 ****************************************************************************/
 
 #include "qmlsensorrange.h"
+#include "alpine_toolkit.h"
 
 QTQmlSensorRange::QTQmlSensorRange(QObject *parent)
     : QObject(parent),

@@ -40,6 +40,7 @@
 /**************************************************************************************************/
 
 #include "geo_coordinate_animation.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 
@@ -136,7 +137,7 @@ coordinate_shortest_interpolator(const QcWgsCoordinate & _from, const QcWgsCoord
   double y = from_y + delta_y * progress;
 
   QcWgsCoordinate coordinate = QcNormalisedWebMercatorCoordinate(x, y).wgs84();
-  // qInfo() << progress << coordinate;
+  // qQCInfo() << progress << coordinate;
   return QVariant::fromValue(coordinate);
 }
 
@@ -281,7 +282,7 @@ QcGeoCoordinateAnimation::direction() const
 void
 QcGeoCoordinateAnimation::setDirection(QcGeoCoordinateAnimation::Direction direction)
 {
-  // qInfo() << direction;
+  // qQCInfo() << direction;
   Q_D(QcGeoCoordinateAnimation);
   if (d->m_direction == direction)
     return;

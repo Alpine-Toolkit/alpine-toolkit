@@ -26,9 +26,10 @@
 
 /**************************************************************************************************/
 
-#include <stdexcept>
-
 #include "geoportail_license.h"
+#include "qtcarto.h"
+
+#include <stdexcept>
 
 #include <QByteArray>
 #include <QFile>

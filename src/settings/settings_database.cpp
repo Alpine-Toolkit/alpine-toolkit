@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "settings_database.h"
+#include "alpine_toolkit.h"
 
 #include "orm/sql_record_wrapper.h"
 
@@ -149,7 +150,7 @@ SettingsDatabase::add_directory(const QString & directory, int parent)
 {
   QSqlQuery query = m_directory_table->insert(directory_kwargs(directory, parent));
   int rowid = query.lastInsertId().toInt();
-  // qInfo() << "added directory" << directory << parent << rowid;
+  // qATInfo() << "added directory" << directory << parent << rowid;
   return rowid;
 }
 
@@ -202,7 +203,7 @@ int
 SettingsDatabase::parent_of(const QString & key, bool create)
 {
   QString directory = directory_part(key);
-  // qInfo() << "parent_of" << key << directory;
+  // qATInfo() << "parent_of" << key << directory;
   return lookup_path(directory, create);
 }
 
@@ -248,14 +249,14 @@ SettingsDatabase::set_value(const QString & key, const QVariant & value)
   // Fixme: can use contains
   if (m_key_value_table->count(kwargs)) {
     QVariantHash kwargs_update;
-    // qInfo() << "value is of type" << value.typeName();
+    // qATInfo() << "value is of type" << value.typeName();
     kwargs_update[VALUE] = value;
     m_key_value_table->update(kwargs_update, kwargs);
-    // qInfo() << "updated key" << rowid << key << value;
+    // qATInfo() << "updated key" << rowid << key << value;
   } else {
     kwargs[VALUE] = value;
     QSqlQuery query = m_key_value_table->insert(kwargs);
-    // qInfo() << "added key" << key << value;
+    // qATInfo() << "added key" << key << value;
   }
 
   m_key_cache[key] = value;

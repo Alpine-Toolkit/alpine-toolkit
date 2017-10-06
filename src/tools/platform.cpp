@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "platform.h"
+#include "alpine_toolkit.h"
 
 #include <QApplication>
 #include <QScreen>

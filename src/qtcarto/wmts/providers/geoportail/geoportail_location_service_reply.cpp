@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "geoportail_location_service_reply.h"
+#include "qtcarto.h"
 
 /**************************************************************************************************/
 
@@ -42,7 +43,7 @@ QcGeoportailLocationServiceReply::~QcGeoportailLocationServiceReply()
 void
 QcGeoportailLocationServiceReply::process_payload()
 {
-  qInfo() << network_reply()->readAll();
+  qQCInfo() << network_reply()->readAll();
 }
 
 /**************************************************************************************************/
@@ -59,7 +60,7 @@ QcGeoportailLocationServiceReverseReply::~QcGeoportailLocationServiceReverseRepl
 void
 QcGeoportailLocationServiceReverseReply::process_payload()
 {
-  qInfo() << network_reply()->readAll();
+  qQCInfo() << network_reply()->readAll();
 }
 
 /**************************************************************************************************/

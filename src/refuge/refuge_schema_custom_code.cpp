@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "refuge_schema.h"
+#include "alpine_toolkit.h"
 
 #include<QtDebug>
 
@@ -43,7 +44,7 @@ Refuge::post_init()
 bool
 Refuge::operator<(const Refuge & other) const
 {
-  // qInfo() << m_short_name << other.m_short_name;
+  // qATInfo() << m_short_name << other.m_short_name;
 
   // Fixme: segfault
   // return m_short_name.localeAwareCompare(other.m_short_name);

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "json_adaptator.h"
+#include "alpine_toolkit.h"
 
 /**************************************************************************************************/
 
@@ -42,16 +43,16 @@ QcJsonSchemaTraits::load_json(const QString & json_path)
   QFile json_file(json_path);
 
   if (json_file.open(QIODevice::ReadOnly)) {
-    qInfo() << "Load" << json_path;
+    qATInfo() << "Load" << json_path;
     QByteArray json_data = json_file.readAll();
     QJsonParseError parse_error;
     QJsonDocument json_document = QJsonDocument::fromJson(json_data, &parse_error);
     if (parse_error.error == QJsonParseError::NoError)
       load_json_document(json_document);
     else
-      qCritical() << parse_error.errorString();
+      qATCritical() << parse_error.errorString();
   } else {
-    qCritical() << QStringLiteral("Couldn't open file") << json_path;
+    qATCritical() << QStringLiteral("Couldn't open file") << json_path;
     // throw std::invalid_argument("Couldn't open file."); // Fixme: ???
   }
 }
@@ -62,11 +63,11 @@ QcJsonSchemaTraits::to_json(const QString & json_path) // const
   QFile json_file(json_path);
 
   if (json_file.open(QIODevice::WriteOnly)) {
-    qInfo() << "Write" << json_path;
+    qATInfo() << "Write" << json_path;
     QJsonDocument json_document = to_json_document();
     json_file.write(json_document.toJson());
   } else {
-    qCritical() << QStringLiteral("Couldn't open file") << json_path;
+    qATCritical() << QStringLiteral("Couldn't open file") << json_path;
     // throw std::invalid_argument("Couldn't open file."); // Fixme: ???
   }
 }

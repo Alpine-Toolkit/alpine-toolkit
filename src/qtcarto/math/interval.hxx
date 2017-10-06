@@ -33,6 +33,8 @@
 
 /**************************************************************************************************/
 
+#include "qtcarto.h"
+
 #include <QString>
 #include <QtDebug>
 
@@ -56,7 +58,7 @@ QcInterval<T>::QcInterval(T inf, T sup)
     m_sup = sup;
   }
   else {
-    qCritical() << QLatin1Literal("inf > sup") << inf << sup;
+    qQCCritical() << QLatin1Literal("inf > sup") << inf << sup;
     // throw std::invalid_argument("inf > sup");
   }
 }

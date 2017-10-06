@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "mercator.h"
+#include "qtcarto.h"
 
 #include "wgs84.h"
 
@@ -45,7 +46,7 @@ QcWebMercatorCoordinate::QcWebMercatorCoordinate(double x, double y)
   set_x(cls_projection.x_projected_interval().wrap(x));
   set_y(cls_projection.y_projected_interval().truncate(y));
 
-  // qInfo() << "x adjust" << static_cast<int>(x) << "->" << static_cast<int>(x());
+  // qQCInfo() << "x adjust" << static_cast<int>(x) << "->" << static_cast<int>(x());
 }
 
 QcWebMercatorCoordinate::QcWebMercatorCoordinate()

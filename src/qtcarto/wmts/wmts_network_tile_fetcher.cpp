@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "wmts/wmts_network_tile_fetcher.h"
+#include "qtcarto.h"
 
 #include "wmts/wmts_network_reply.h"
 #include "wmts/wmts_plugin.h"
@@ -52,7 +53,7 @@ QcWmtsNetworkTileFetcher::get_tile_image(const QcTileSpec & tile_spec)
 {
   const QcWmtsPluginLayer * layer = m_plugin->layer(tile_spec);
   QUrl url = layer->url(tile_spec);
-  qInfo() << url.toEncoded();
+  qQCInfo() << url.toEncoded();
 
   QNetworkReply *reply = m_plugin->get(url);
 

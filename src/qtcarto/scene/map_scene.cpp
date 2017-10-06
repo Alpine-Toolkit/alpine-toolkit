@@ -28,6 +28,7 @@
 
 #include "map_scene.h"
 #include "map_scene_private.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 
@@ -102,19 +103,19 @@ QcMapScene::set_dirty_path()
 void
 QcMapScene::set_location_circle_data_dirty()
 {
-  qInfo();
+  qQCInfo();
   m_dirty_location_circle = true;
 }
 
 QSGNode *
 QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
 {
-  // qInfo() << old_node;
+  // qQCInfo() << old_node;
 
   // QSize viewport_size = m_viewport->viewport_size();
   float width = m_viewport->width();
   float height = m_viewport->height();
-  // qInfo() << "viewport size" << viewport_size;
+  // qQCInfo() << "viewport size" << viewport_size;
   // Check viewport has a rectangular shape
   if (width <= 0 || height <= 0) {
     delete old_node;
@@ -123,7 +124,7 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
 
   QcMapRootNode * map_root_node = static_cast<QcMapRootNode *>(old_node);
   if (!map_root_node) {
-    // qInfo() << "map_root_node is null";
+    // qQCInfo() << "map_root_node is null";
     map_root_node = new QcMapRootNode(m_viewport);
   }
 
@@ -138,7 +139,7 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
   qreal device_pixel_ratio_inverse = 1.; // / window->devicePixelRatio();
   // item_space_matrix.scale(device_pixel_ratio_inverse, device_pixel_ratio_inverse);
   map_root_node->root->setMatrix(item_space_matrix);
-  // qInfo() << "item_space_matrix" << item_space_matrix;
+  // qQCInfo() << "item_space_matrix" << item_space_matrix;
 
   // Remove disabled layers
   for (auto * node : m_scene_graph_nodes_to_remove)
@@ -165,7 +166,7 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
   }
 
   if (m_dirty_location_circle) {
-    // qInfo() << "Location circle is dirty";
+    // qQCInfo() << "Location circle is dirty";
     map_root_node->location_circle_node->update(m_location_circle_data);
     m_dirty_location_circle = false;
   }
@@ -184,7 +185,7 @@ QcMapRootNode::QcMapRootNode(const QcViewport * viewport)
     location_circle_node(new QcLocationCircleNode(viewport)),
     path_node(new QcPathNode(viewport))
 {
-  // qInfo();
+  // qQCInfo();
   setIsRectangular(true);
   setGeometry(&geometry);
   appendChildNode(root);
@@ -202,7 +203,7 @@ QcMapRootNode::update_clip_rect()
   int width = m_viewport->width();
   int height = m_viewport->height();
   QRect rect = QRect(0, 0, width, height);
-  // qInfo() << "clip rect" << rect;
+  // qQCInfo() << "clip rect" << rect;
   if (rect != m_clip_rect) {
     QSGGeometry::updateRectGeometry(&geometry, rect);
     QSGClipNode::setClipRect(rect);

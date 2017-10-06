@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "offline_cache.h"
+#include "qtcarto.h"
 
 // #include "file_tile_cache.h"
 #include "tile_image.h"
@@ -105,26 +106,26 @@ QcOfflineTileCache::load_tiles()
   for (int level = 0; level < 20; level++) {
     QDir directory(m_directory + QDir::separator() + QString::number(level));
     QStringList files = directory.entryList(formats, QDir::Files);
-    // qInfo() << "level" << level << "Number of tiles" << files.size();
+    // qQCInfo() << "level" << level << "Number of tiles" << files.size();
 
     for (const auto & relative_filename : files) {
       QcTileSpec tile_spec = filename_to_tile_spec(relative_filename);
       if (tile_spec.level() == -1)
         continue;
       QString filename = directory.filePath(relative_filename); // Fixme: use memory!
-      // qInfo() << filename;
+      // qQCInfo() << filename;
       add_to_disk_cache(tile_spec, filename);
     }
   }
 
   // for (const auto & key : m_offline_cache.keys())
-  //   qInfo() << "key" << key;
+  //   qQCInfo() << "key" << key;
 }
 
 bool
 QcOfflineTileCache::contains(const QcTileSpec & tile_spec) const
 {
-  qInfo() << tile_spec;
+  qQCInfo() << tile_spec;
 
   return m_database->has_tile(tile_spec) > 0;
 
@@ -153,7 +154,7 @@ QcOfflineTileCache::get(const QcTileSpec & tile_spec)
   if (m_offline_cache.contains(tile_spec)) {
     return m_offline_cache.value(tile_spec);
   } else {
-    qInfo() << "Missing tile" << tile_spec;
+    qQCInfo() << "Missing tile" << tile_spec;
     return QSharedPointer<QcOfflineCachedTileDisk>(nullptr);
   }
   */

@@ -56,7 +56,7 @@ Application::run_before_event_loop()
     qWarning() << "couldn't read file";
   while (!input_file.atEnd()) {
     QByteArray line = input_file.readLine();
-    qInfo() << line;
+    qATInfo() << line;
   }
   */
 
@@ -67,7 +67,7 @@ Application::run_before_event_loop()
   if (input_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     while (!input_file.atEnd()) {
       QByteArray line = input_file.readLine();
-      qInfo() << line;
+      qATInfo() << line;
     }
     input_file.close();
   } else
@@ -81,7 +81,7 @@ Application::run_before_event_loop()
   */
 
   /*
-  qInfo() << "SQLite Plugin Test";
+  qATInfo() << "SQLite Plugin Test";
   QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE-AT");
   // QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
   QString sqlite_path = application_user_directory.filePath("spatialite-test.sqlite");
@@ -100,7 +100,7 @@ Application::run_before_event_loop()
   query = db.exec("SELECT spatialite_version()");
   query.first();
   qWarning() << query.size() << db.lastError();
-  qInfo() << query.value(0).toString();
+  qATInfo() << query.value(0).toString();
 
   query = db.exec("SELECT InitSpatialMetaData(1);");
   qWarning() << query.size() << db.lastError();
@@ -118,14 +118,14 @@ Application::run_before_event_loop()
   qWarning() << query.size() << db.lastError();
   while (query.next()) {
     // QVariant(QByteArray,
-    qInfo() << query.value(0).toString() << query.value(1);
+    qATInfo() << query.value(0).toString() << query.value(1);
   }
 
   query = db.exec("SELECT name, AsText(geometry) FROM places");
   qWarning() << query.size() << db.lastError();
   while (query.next()) {
     // QVariant(QByteArray,
-    qInfo() << query.value(0).toString() << query.value(1);
+    qATInfo() << query.value(0).toString() << query.value(1);
   }
   */
 }

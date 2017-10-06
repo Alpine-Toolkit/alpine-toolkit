@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp_api_cache.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 
@@ -146,13 +147,13 @@ C2cApiCache::save_document(const C2cDocumentPtr & document)
     QVariantHash kwargs_update;
     kwargs_update[DATA] = document->to_json();
     m_document_table->update(kwargs_update, kwargs_where);
-    qInfo() << "Updated document " << document_id << " in cache";
+    qATInfo() << "Updated document " << document_id << " in cache";
   } else  {
     QVariantHash kwargs;
     kwargs[ID] = document_id;
     kwargs[DATA] = document->to_json();
     m_document_table->insert(kwargs);
-    qInfo() << "Inserted document " << document_id << " in cache";
+    qATInfo() << "Inserted document " << document_id << " in cache";
   }
 }
 

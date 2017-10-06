@@ -33,14 +33,24 @@
 
 /**************************************************************************************************/
 
-#include <QString>
+#include <QLoggingCategory>
 #include <QMessageLogContext>
+#include <QString>
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
 
-void message_handler(QtMsgType type, const QMessageLogContext & context, const QString & message);
+/**************************************************************************************************/
+
+Q_DECLARE_LOGGING_CATEGORY(at_logger)
+
+#define qATCritical() qCCritical(at_logger)
+#define qATDebug()    qCDebug(at_logger)
+#define qATInfo()     qCInfo(at_logger)
+#define qATWarning()  qCWarning(at_logger)
+
+/**************************************************************************************************/
 
 // QC_END_NAMESPACE
 

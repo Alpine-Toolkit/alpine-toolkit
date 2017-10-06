@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "projection.h"
+#include "qtcarto.h"
 
 #include "laea.h"
 #include "mercator.h"
@@ -69,7 +70,7 @@ QcProjection4::QcProjection4(const QString & definition, projCtx context)
 
   // pj_ctx_set_logger(context, proj4_logger);
 
-  qInfo() << "Proj4 initialisation for" << definition;
+  qQCInfo() << "Proj4 initialisation for" << definition;
   m_projection = pj_init_plus_ctx(context, definition.toStdString().c_str());
   if (!m_projection)
     qWarning() << "Proj4 initialisation failed for" << definition;
@@ -77,7 +78,7 @@ QcProjection4::QcProjection4(const QString & definition, projCtx context)
 
 QcProjection4::~QcProjection4()
 {
-  qInfo() << m_definition;
+  qQCInfo() << m_definition;
   // Fixme: segfault
   // if (m_projection)
   //   pj_free(m_projection);
@@ -100,7 +101,7 @@ QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y, do
   int point_offset = 1;
   int error = pj_transform(m_projection, proj2.m_projection, point_count, point_offset, &x, &y, &z);
   if (error != 0)
-    qCritical() << QLatin1Literal("pj_transform error:") << pj_strerrno(error);
+    qQCCritical() << QLatin1Literal("pj_transform error:") << pj_strerrno(error);
     // throw; // Fixme: (pj_strerrno(error))
 }
 
@@ -178,14 +179,14 @@ QcProjection::QcProjection(const QString & srid,
 {
   if (proj4_support) {
     const QString & definition = proj4_definition();
-    // qInfo() << definition << m_projection4_instances;
+    // qQCInfo() << definition << m_projection4_instances;
     // if (! m_projection4_instances.contains(definition))
     //   m_projection4_instances.insert(definition, new QcProjection4(definition));
     // m_projection4 = m_projection4_instances.value(definition);
     m_projection4 = new QcProjection4(definition);
   }
 
-  // qInfo() << "Build " + srid + " projection";
+  // qQCInfo() << "Build " + srid + " projection";
 }
 
 QcProjection::QcProjection(const QcProjection & other)
@@ -370,7 +371,7 @@ QcGeoCoordinate::QcGeoCoordinate(const QcProjection * projection, double x, doub
     set_x(x);
     set_y(y);
   } else {
-    qCritical() << "Invalid coordinate" << projection->srid()
+    qQCCritical() << "Invalid coordinate" << projection->srid()
                 << static_cast<int>(x) << m_projection->is_valid_x(x)
                 << static_cast<int>(y) << m_projection->is_valid_y(y);
     // Fixme: nan ?

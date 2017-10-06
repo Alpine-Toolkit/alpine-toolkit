@@ -208,8 +208,8 @@ public:
   ~{{class_name_ptr}}() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete {{class_name_ptr}} of" << *m_ptr;
-    // qInfo() << "--- Delete {{class_name_ptr}}";
+    //// qATInfo() << "--- Delete {{class_name_ptr}} of" << *m_ptr;
+    // qATInfo() << "--- Delete {{class_name_ptr}}";
     // m_ptr.clear();
   }
 

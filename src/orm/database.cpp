@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database.h"
+#include "alpine_toolkit.h"
 
 #include "database_query.h"
 
@@ -93,7 +94,7 @@ QcDatabase::prepare_query(const QcSqlQuery & sql_query)
 void
 QcDatabase::log_query_error_message(const QSqlQuery & query)
 {
-  qCritical().noquote()
+  qATCritical().noquote()
     << QLatin1String("SQL error on") << query.lastQuery()
     << QLatin1String(": ") << query.lastError().text();
 }
@@ -101,7 +102,7 @@ QcDatabase::log_query_error_message(const QSqlQuery & query)
 bool
 QcDatabase::exec_and_check_prepared_query(QSqlQuery & query)
 {
-  qInfo().noquote() << "Exec SQL Query:" << query.lastQuery();
+  qATInfo().noquote() << "Exec SQL Query:" << query.lastQuery();
   if (!query.exec()) {
     log_query_error_message(query);
     return false;
@@ -112,7 +113,7 @@ QcDatabase::exec_and_check_prepared_query(QSqlQuery & query)
 bool
 QcDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
 {
-  qInfo().noquote() << "Exec SQL Query:" << sql_query;
+  qATInfo().noquote() << "Exec SQL Query:" << sql_query;
   if (!query.exec(sql_query)) {
     log_query_error_message(query);
     return false;

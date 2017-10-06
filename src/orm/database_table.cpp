@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database_table.h"
+#include "alpine_toolkit.h"
 
 #include "database.h"
 #include "database_query.h"
@@ -133,7 +134,7 @@ QcDatabaseTable::QcDatabaseTable(const QcDatabaseTable & other)
 
 QcDatabaseTable::~QcDatabaseTable()
 {
-  qInfo() << "--- Delete QcDatabaseTable";
+  qATInfo() << "--- Delete QcDatabaseTable";
 }
 
 QcDatabaseTable &
@@ -211,7 +212,7 @@ QcDatabaseTable::prepare_complete_insert()
       _sql_query.add_column(sql_field);
   }
   _sql_query.insert();
-  qInfo() << "prepare_complete_insert" << _sql_query.to_sql();
+  qATInfo() << "prepare_complete_insert" << _sql_query.to_sql();
   query.prepare(_sql_query.to_sql());
 
   return query;
@@ -253,7 +254,7 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
     query = prepare_complete_insert(m_schema.field_names_witout_rowid());
   else
     query = prepare_complete_insert(variants.size());
-  qInfo() << query.lastQuery() << variants;
+  qATInfo() << query.lastQuery() << variants;
 
   for (const auto & value : variants)
     query.addBindValue(value);
@@ -311,7 +312,7 @@ QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
 void
 QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool _commit)
 {
-  // qInfo() << "Bind on" << query.lastQuery() << kwargs;
+  // qATInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
     query.addBindValue(value);
@@ -336,7 +337,7 @@ QSqlQuery
 QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
 {
   QSqlQuery query = prepare_insert(kwargs.keys());
-  qInfo() << query.lastQuery() << kwargs;
+  qATInfo() << query.lastQuery() << kwargs;
   bind_and_exec(query, kwargs, commit);
 
   return query;
@@ -358,7 +359,7 @@ QcDatabaseTable::select_all() // const // Fixme: sql_query() is not const due to
       _sql_query.add_column(sql_field);
   }
   _sql_query.all();
-  qInfo() << _sql_query.to_sql();
+  qATInfo() << _sql_query.to_sql();
 
   QcDatabase::exec_and_check(query, _sql_query);
 
@@ -375,7 +376,7 @@ QcDatabaseTable::select(const QStringList & fields, const QString & where) const
   QString sql_query = QLatin1String("SELECT ") + comma_join(fields) + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;
-  qInfo() << sql_query << fields;
+  qATInfo() << sql_query << fields;
   QcDatabase::exec_and_check(query, sql_query);
 
   return query;

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "map_event_router.h"
+#include "qtcarto.h"
 
 #include<QtDebug>
 
@@ -162,7 +163,7 @@ QcMapEventRouter::handle_mouse_wheel_event(const QcMapEvent & event)
 void
 QcMapEventRouter::handle_mouse_press_and_hold_event(const QcMapEvent & event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
   if (!m_current_client.isNull())
     m_current_client->handle_mouse_press_and_hold_event(event);
 }
@@ -170,7 +171,7 @@ QcMapEventRouter::handle_mouse_press_and_hold_event(const QcMapEvent & event)
 void
 QcMapEventRouter::handle_mouse_press_and_hold_released_event(const QcMapEvent & event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
   if (!m_current_client.isNull())
     m_current_client->handle_mouse_press_and_hold_released_event(event);
 }
@@ -206,7 +207,7 @@ void
 QcMapEventRouter::push_client(const QString & name)
 {
   if (m_clients.contains(name)) {
-    qInfo() << "push" << name;
+    qQCInfo() << "push" << name;
     m_current_client = m_clients.value(name);
     // m_current_client.data()
     // m_client_stack.insert());
@@ -219,7 +220,7 @@ QcMapEventRouter::pop_client()
 {
   if (m_client_stack.size()) {
     m_client_stack.removeLast();
-    // qInfo() << "pop" << name;
+    // qQCInfo() << "pop" << name;
     if (m_client_stack.size())
       m_current_client = m_client_stack.last();
     else

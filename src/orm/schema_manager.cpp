@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "schema_manager.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

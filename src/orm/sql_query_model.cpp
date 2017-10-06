@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "sql_query_model.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 #include <QSqlRecord>
@@ -77,7 +78,7 @@ SqlQueryModel::data(const QModelIndex & index, int role) const
     QModelIndex model_index = this->index(index.row(), column);
     value = QSqlQueryModel::data(model_index, Qt::DisplayRole);
   }
-  qInfo() << index << role << value;
+  qATInfo() << index << role << value;
 
   return value;
 }

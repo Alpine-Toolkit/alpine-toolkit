@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "pooled_string.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 
@@ -70,7 +71,7 @@ QcPooledString::QcPooledString(const QString & string)
     m_data = new QcPooledStringData(id, string);
     m_id_map.insert(id, m_data);
     m_string_map.insert(string, m_data);
-    qDebug() << "Added" << string << m_id_map.keys() << m_string_map.keys();
+    qQCDebug() << "Added" << string << m_id_map.keys() << m_string_map.keys();
   }
   m_mutex.unlock();
 }
@@ -86,7 +87,7 @@ QcPooledString::QcPooledString(const QcPooledString & other)
 
 QcPooledString::~QcPooledString()
 {
-  qDebug() << "Delete" << id();
+  qQCDebug() << "Delete" << id();
   if (is_defined()) {
     m_mutex.lock();
     uint counter = reference_counter();
@@ -95,7 +96,7 @@ QcPooledString::~QcPooledString()
     else {
       m_id_map.remove(id());
       m_string_map.remove(string());
-      qDebug() << "Remove string" << string() << m_id_map.keys() << m_string_map.keys();
+      qQCDebug() << "Remove string" << string() << m_id_map.keys() << m_string_map.keys();
       delete m_data;
     }
     m_mutex.unlock();

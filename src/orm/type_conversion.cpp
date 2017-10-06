@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "orm/type_conversion.h"
+#include "alpine_toolkit.h"
 
 #include "geo_data_format/wkb.h"
 

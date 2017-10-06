@@ -28,6 +28,7 @@
 
 #include "map_scene.h"
 #include "map_scene_private.h"
+#include "qtcarto.h"
 
 /**************************************************************************************************/
 
@@ -53,7 +54,7 @@ QcMapLayerRootNode::QcMapLayerRootNode(const QcTileMatrixSet & tile_matrix_set, 
     central_map_node(new QcMapSideNode()),
     east_map_node(new QcMapSideNode())
 {
-  // qInfo();
+  // qQCInfo();
 
   setOpacity(1.);
 
@@ -74,14 +75,14 @@ QcMapLayerRootNode::update_central_maps()
   int number_of_full_maps = m_viewport->number_of_full_maps();
   int number_of_clones = qMax(number_of_full_maps - 1, 0);
   while (number_of_clones < central_map_nodes.size()) {
-    qInfo() << "remove clone";
+    qQCInfo() << "remove clone";
     auto * node = central_map_nodes.takeLast();
     removeChildNode(node);
   }
   if (number_of_clones) {
     while (central_map_nodes.size() < number_of_clones) {
     // for (int i = 0; i < (number_of_clones - central_map_nodes.size()); i++) {
-      qInfo() << "add clone";
+      qQCInfo() << "add clone";
       auto * node = new QcMapSideNode();
       central_map_nodes << node;
       appendChildNode(node);
@@ -106,13 +107,13 @@ QcMapLayerRootNode::update_tiles(QcMapLayerScene * map_scene,
   double y_offset = screen_interval.y().inf();
   space_matrix.translate(x_offset, y_offset);
   map_side_node->setMatrix(space_matrix);
-  // qInfo() << "map side space matrix" << space_matrix;
+  // qQCInfo() << "map side space matrix" << space_matrix;
 
   QcTileSpecSet tiles_in_scene = QcTileSpecSet::fromList(map_side_node->texture_nodes.keys()); // Fixme: cf. textured_tiles
   QcTileSpecSet to_remove = tiles_in_scene - visible_tiles;
   QcTileSpecSet to_add = visible_tiles - tiles_in_scene;
 
-  // qInfo() << "Offset" << x_offset
+  // qQCInfo() << "Offset" << x_offset
   //         << "tiles_in_scene" << tiles_in_scene
   //         << "\nvisible_tiles" << visible_tiles
   //         << "\nto_remove" << to_remove
@@ -127,7 +128,7 @@ QcMapLayerRootNode::update_tiles(QcMapLayerScene * map_scene,
        it != map_side_node->texture_nodes.end(); ) {
     const QcTileSpec & tile_spec = it.key();
     QSGSimpleTextureNode * texture_node = it.value();
-    // qInfo() << "texture nodes loop" << tile_spec;
+    // qQCInfo() << "texture nodes loop" << tile_spec;
 
     // Compute new geometry
     QSGGeometry visual_geometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
@@ -142,7 +143,7 @@ QcMapLayerRootNode::update_tiles(QcMapLayerScene * map_scene,
         ok = false;
       } else {
         // void *memcpy(void *dest, const void *src, int n);
-        // qInfo() << "update geometry" << tile_spec;
+        // qQCInfo() << "update geometry" << tile_spec;
         memcpy(texture_node->geometry()->vertexData(), vertexes, 4 * sizeof(QSGGeometry::TexturedPoint2D));
         dirty_bits |= QSGNode::DirtyGeometry;
       }
@@ -161,9 +162,9 @@ QcMapLayerRootNode::update_tiles(QcMapLayerScene * map_scene,
   for (const auto & tile_spec : to_add) {
     // Fixme: code !!!
     QcTileTexture * tile_texture = map_scene->m_tile_textures.value(tile_spec).data(); // Fixme: m_tile_textures public
-    // qInfo() << "texture to add" << tile_spec << tile_texture;
+    // qQCInfo() << "texture to add" << tile_spec << tile_texture;
     if (tile_texture && !tile_texture->image.isNull()) {
-      // qInfo() << "create texture" << tile_spec;
+      // qQCInfo() << "create texture" << tile_spec;
       QSGSimpleTextureNode * tile_node = new QSGSimpleTextureNode();
       // note: setTexture will update coordinates so do it here, before we buildGeometry
       tile_node->setTexture(textures.value(tile_spec));
@@ -187,7 +188,7 @@ QcMapLayerScene::QcMapLayerScene(const QcWmtsPluginLayer * plugin_layer, const Q
     m_opacity(1.),
     m_scene_graph_node(nullptr)
 {
-  // qInfo();
+  // qQCInfo();
 }
 
 QcMapLayerScene::~QcMapLayerScene()
@@ -198,10 +199,10 @@ QcMapLayerScene::add_tile(const QcTileSpec & tile_spec, QSharedPointer<QcTileTex
 {
   if (m_visible_tiles.contains(tile_spec)) { // Don't add the geometry if it isn't visible
     m_tile_textures.insert(tile_spec, texture);
-    // qInfo() << "add_tile" << tile_spec << "inserted";
+    // qQCInfo() << "add_tile" << tile_spec << "inserted";
   }
   // else
-  //   qInfo() << "add_tile" << tile_spec << "already there";
+  //   qQCInfo() << "add_tile" << tile_spec << "already there";
 }
 
 void
@@ -223,7 +224,7 @@ QcMapLayerScene::set_visible_tiles(const QcTileSpecSet & tile_specs,
 void
 QcMapLayerScene::remove_tiles(const QcTileSpecSet & old_tiles)
 {
-  // qInfo() << old_tiles;
+  // qQCInfo() << old_tiles;
   for (auto tile_spec : old_tiles)
     m_tile_textures.remove(tile_spec);
 }
@@ -264,7 +265,7 @@ QcMapLayerScene::build_geometry(const QcTileSpec & tile_spec, QSGGeometry::Textu
   vertices[2].set(x2, y1, 1, 0);
   vertices[3].set(x2, y2, 1, 1);
 
-  // qInfo() << "geometry" << tile_spec << "x" << x1 << x2 << "  y" << y1 << y2;
+  // qQCInfo() << "geometry" << tile_spec << "x" << x1 << x2 << "  y" << y1 << y2;
 
   return true;
 }
@@ -292,7 +293,7 @@ QcMapLayerScene::transform_polygon(const QcPolygon & polygon) const
 void
 QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWindow * window)
 {
-  // qInfo();
+  // qQCInfo();
 
   if (map_root_node->opacity() != m_opacity)
     map_root_node->setOpacity(m_opacity);
@@ -302,7 +303,7 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
   QcTileSpecSet textures_in_scene = QcTileSpecSet::fromList(map_root_node->textures.keys()); // cf. textured_tiles
   QcTileSpecSet to_remove = textures_in_scene - m_visible_tiles;
   QcTileSpecSet to_add = m_visible_tiles - textures_in_scene;
-  // qInfo() << "textures in scene" << textures_in_scene
+  // qQCInfo() << "textures in scene" << textures_in_scene
   //         << "to remove:" << to_remove
   //         << "to add" << to_add;
   for (const auto & tile_spec : to_remove)
@@ -310,7 +311,7 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
   for (const auto & tile_spec : to_add) {
     QcTileTexture * tile_texture = m_tile_textures.value(tile_spec).data();
     if (tile_texture && !tile_texture->image.isNull()) {
-      // qInfo() << "create texture from image" << tile_spec;
+      // qQCInfo() << "create texture from image" << tile_spec;
       QSGTexture * texture = window->createTextureFromImage(tile_texture->image);
       map_root_node->textures.insert(tile_spec, texture);
     }
@@ -330,7 +331,7 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
 
   const QcViewportPart & central_part = m_viewport->central_part();
   QcPolygon transformed_central_polygon = transform_polygon(central_part.polygon());
-  // qInfo() << "central" << central_offset;
+  // qQCInfo() << "central" << central_offset;
   map_root_node->update_tiles(this,
                               map_root_node->central_map_node,
                               m_central_visible_tiles,
@@ -340,7 +341,7 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
   int clone_index = 0;
   const QList<QcViewportPart> & clone_parts = m_viewport->central_part_clones();
   for (auto * node : map_root_node->central_map_nodes) {
-    // qInfo() << "clone" << east_offset;
+    // qQCInfo() << "clone" << east_offset;
     map_root_node->update_tiles(this,
                                 node,
                                 m_central_visible_tiles,
@@ -348,7 +349,7 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
                                 clone_parts[clone_index++]);
   }
 
-  // qInfo() << "east" << east_offset;
+  // qQCInfo() << "east" << east_offset;
   const QcViewportPart & east_part = m_viewport->east_part();
   map_root_node->update_tiles(this,
                               map_root_node->east_map_node,

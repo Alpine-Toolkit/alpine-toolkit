@@ -27,9 +27,9 @@
 /**************************************************************************************************/
 
 #include "wmts_plugin_manager.h"
+#include "qtcarto.h"
 
 #include "configuration/configuration.h"
-
 #include "providers/artic_web_map/artic_web_map_plugin.h"
 #include "providers/austria/austria_plugin.h"
 #include "providers/esri/esri_plugin.h"

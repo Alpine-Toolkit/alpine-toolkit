@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "network_downloader.h"
+#include "alpine_toolkit.h"
 
 #include <QFile>
 
@@ -68,14 +69,14 @@ void
 QaNetworkDownloadRequest::on_error(const QString & error_string)
 {
   // Fixme:
-  qInfo() << "QaNetworkDownloadRequest::on_error" << url() << error_string;
+  qATInfo() << "QaNetworkDownloadRequest::on_error" << url() << error_string;
   emit error(); // error_string
 }
 
 void
 QaNetworkDownloadRequest::on_data_received(const QByteArray & data)
 {
-  qInfo() << "QaNetworkDownloadRequest::on_data_received" << url();
+  qATInfo() << "QaNetworkDownloadRequest::on_data_received" << url();
   QFile output_file(m_target_path);
   if (!output_file.open(QIODevice::WriteOnly | QIODevice::Text))
     qWarning() << "couldn't write to file";
@@ -102,13 +103,13 @@ QaNetworkDownloader::~QaNetworkDownloader()
 void
 QaNetworkDownloader::add_request(const QaNetworkDownloadRequestPtr & request)
 {
-  qInfo() << "QaNetworkDownloader:add_request" << request;
+  qATInfo() << "QaNetworkDownloader:add_request" << request;
   QaNetworkRequestManager::add_request(request);
 }
 
 void
 QaNetworkDownloader::cancel_request(const QaNetworkDownloadRequestPtr & request)
 {
-  qInfo() << "QaNetworkDownloader:cancel_request" << request;
+  qATInfo() << "QaNetworkDownloader:cancel_request" << request;
   QaNetworkRequestManager::cancel_request(request);
 }

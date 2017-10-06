@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "sqlite_database.h"
+#include "alpine_toolkit.h"
 
 #include <QFile>
 #include <QSqlError>
@@ -53,7 +54,7 @@ QcSqliteDatabase::open()
   // Set the connection name to sqlite_path
   m_sql_flavour = SqlFlavour::SQLite;
   QString plugin = m_use_spatialite ? QLatin1String("QSQLITE-AT") : QLatin1String("QSQLITE");
-  qInfo() << "Open SQLite" << m_sqlite_path << plugin;
+  qATInfo() << "Open SQLite" << m_sqlite_path << plugin;
   m_database = QSqlDatabase::addDatabase(plugin, m_sqlite_path);
   m_database.setDatabaseName(m_sqlite_path);
   if (not m_database.open())
@@ -71,7 +72,7 @@ QcSqliteDatabase::init_spatialite()
   QSqlQuery query = new_query();
   exec_and_check(query, QLatin1String("SELECT spatialite_version()"));
   query.first();
-  qInfo() << "Spatialite Version" << query.value(0).toString();
+  qATInfo() << "Spatialite Version" << query.value(0).toString();
 
   if (m_created)
     execute_query(QLatin1String("SELECT InitSpatialMetaData(1);"));

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "network_reply.h"
+#include "alpine_toolkit.h"
 
 /**************************************************************************************************/
 
@@ -48,7 +49,7 @@ QaNetworkReply::QaNetworkReply(const QaNetworkRequestPtr & request, QNetworkRepl
 
 QaNetworkReply::~QaNetworkReply()
 {
-  qInfo() << "~QaNetworkReply";
+  qATInfo() << "~QaNetworkReply";
   if (m_reply) {
     m_reply->deleteLater();
     m_reply = nullptr; // dtor ???
@@ -143,7 +144,7 @@ void
 QaNetworkReply::on_download_progress(qint64 bytes_received, qint64 bytes_total)
 {
   set_completion(bytes_received, bytes_total);
-  qInfo() << "on_download_progress" << m_completion << "\%";
+  qATInfo() << "on_download_progress" << m_completion << "\%";
   // emit download_progress(m_request, download_progress);
 }
 
@@ -151,7 +152,7 @@ void
 QaNetworkReply::on_upload_progress(qint64 bytes_sent, qint64 bytes_total)
 {
   set_completion(bytes_sent, bytes_total);
-  qInfo() << "on_upload_progress" << m_completion << "\%";
+  qATInfo() << "on_upload_progress" << m_completion << "\%";
   // emit upload_progress(m_request, upload_progress);
 }
 

@@ -32,5 +32,6 @@
 #define QTCARTO_H
 
 #include "qtcarto_global.h"
+#include "logging/logger.h"
 
 #endif // QTCARTO_H

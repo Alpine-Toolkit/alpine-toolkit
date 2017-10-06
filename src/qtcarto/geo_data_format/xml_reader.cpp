@@ -26,7 +26,8 @@
 
 /**************************************************************************************************/
 
-#include "geo_data_format/xml_reader.h"
+#include "xml_reader.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 

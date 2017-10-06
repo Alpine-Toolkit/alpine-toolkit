@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "tile_matrix_set.h"
+#include "qtcarto.h"
 
 #include <cmath>
 
@@ -140,7 +141,7 @@ QcTileMatrix::_to_matrix_index_check(const QcVectorDouble & mapped_coordinate) c
     return QcTileMatrixIndex(x, y);
   else {
     // throw std::invalid_argument("Invalid coordinate");
-    qCritical() << QLatin1String("Invalid coordinate") << x << y;
+    qQCCritical() << QLatin1String("Invalid coordinate") << x << y;
     return QcTileMatrixIndex(0, 0);
   }
 }

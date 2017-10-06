@@ -27,6 +27,8 @@
 /**************************************************************************************************/
 
 #include "gpx.h"
+#include "qtcarto.h"
+
 #include "waypoint.h"
 
 #include <QFile>
@@ -163,7 +165,7 @@ QcGpxReader::~QcGpxReader()
 QcGpx
 QcGpxReader::read(const QString & gpx_path)
 {
-  qInfo();
+  qQCInfo();
 
   QcGpx gpx;
 
@@ -205,7 +207,7 @@ QcGpxReader::read(const QString & gpx_path)
 void
 QcGpxReader::read_metadata(QcGpx & gpx)
 {
-  qInfo();
+  qQCInfo();
 
   while (! m_reader.read_match_end_element(METADATA_ELEMENT))
     if (m_reader.isStartElement()) {
@@ -236,7 +238,7 @@ QcGpxReader::read_metadata(QcGpx & gpx)
 void
 QcGpxReader::read_bounds(QcGpx & gpx)
 {
-  qInfo();
+  qQCInfo();
   double latitude_inf = m_reader.get_double_attribute(MIN_LATITUDE_ATTRIBUTE);
   double longitude_inf = m_reader.get_double_attribute(MIN_LONGITUDE_ATTRIBUTE);
   double latitude_sup = m_reader.get_double_attribute(MAX_LATITUDE_ATTRIBUTE);
@@ -247,7 +249,7 @@ QcGpxReader::read_bounds(QcGpx & gpx)
 QcWayPoint
 QcGpxReader::read_waypoint(const QString & element)
 {
-  qInfo() << element;
+  qQCInfo() << element;
 
   QcWayPoint waypoint;
 
@@ -307,7 +309,7 @@ QcGpxReader::read_waypoint(const QString & element)
 bool
 QcGpxReader::read_route_metadata(QcRouteMetaData & route, const QStringRef & ename)
 {
-  qInfo();
+  qQCInfo();
 
   if (ename == NAME_ELEMENT)
     route.set_name(m_reader.readElementText());
@@ -334,7 +336,7 @@ QcGpxReader::read_route_metadata(QcRouteMetaData & route, const QStringRef & ena
 QcRoute
 QcGpxReader::read_route()
 {
-  qInfo();
+  qQCInfo();
 
   QcRoute route;
 
@@ -353,7 +355,7 @@ QcGpxReader::read_route()
 QcTrack
 QcGpxReader::read_track()
 {
-  qInfo();
+  qQCInfo();
 
   QcTrack track;
 
@@ -372,7 +374,7 @@ QcGpxReader::read_track()
 QcWayPointList
 QcGpxReader::read_track_segment()
 {
-  qInfo();
+  qQCInfo();
 
   QcWayPointList segment;
 
@@ -400,7 +402,7 @@ QcGpxWriter::~QcGpxWriter()
 void
 QcGpxWriter::write(const QcGpx & gpx, const QString & gpx_path)
 {
-  qInfo();
+  qQCInfo();
 
   QFile file(gpx_path);
   if (!file.open(QIODevice::WriteOnly))

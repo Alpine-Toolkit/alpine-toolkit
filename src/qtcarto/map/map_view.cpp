@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "map_view.h"
+#include "qtcarto.h"
 
 #include "wmts/tile_spec.h"
 
@@ -67,7 +68,7 @@ QcMapViewLayer::set_opacity(float opacity)
 void
 QcMapViewLayer::update_tile(const QcTileSpec & tile_spec)
 {
-  // qInfo() << tile_spec;
+  // qQCInfo() << tile_spec;
   if (m_visible_tiles.contains(tile_spec)) {
     QSharedPointer<QcTileTexture> texture = m_request_manager->tile_texture(tile_spec);
     if (!texture.isNull()) {
@@ -108,7 +109,7 @@ QcMapViewLayer::intersec_polygon_with_grid(const QcPolygon & polygon, double til
   for (const QcTiledPolygonRun & run: tiled_polygon.runs()) {
     QcIntervalInt run_interval = run.interval(); // const &
     int y = run.y();
-    // qInfo() << "Run " << run.y() << " [" << run_interval.inf() << ", " << run_interval.sup() << "]";
+    // qQCInfo() << "Run " << run.y() << " [" << run_interval.inf() << ", " << run_interval.sup() << "]";
     if (!valid_interval.contains(y)) {
       // It arises at large zoom, when the item eight is larger than the map.
       // qWarning() << "Tile columns is out of range" << y;
@@ -130,7 +131,7 @@ QcMapViewLayer::intersec_polygon_with_grid(const QcPolygon & polygon, double til
 void
 QcMapViewLayer::update_scene()
 {
-  // qInfo();
+  // qQCInfo();
 
   // Fixme: if layers share the same tile matrix ?
 
@@ -158,7 +159,7 @@ QcMapViewLayer::update_scene()
       m_east_visible_tiles = intersec_polygon_with_grid(m_viewport->east_part().polygon(), tile_length_m, zoom_level);
 
     QcTileSpecSet visible_tiles = m_east_visible_tiles + m_central_visible_tiles + m_west_visible_tiles;
-    // qInfo() << "visible west tiles: " << m_west_visible_tiles << '\n'
+    // qQCInfo() << "visible west tiles: " << m_west_visible_tiles << '\n'
     //         << "visible central tiles: " << m_central_visible_tiles << '\n'
     //         << "visible east tiles: " << m_east_visible_tiles << '\n'
     //         << "visible tiles: " << visible_tiles << '\n'
@@ -329,7 +330,7 @@ QcMapView::set_opacity(const QcWmtsPluginLayer * plugin_layer, float opacity)
 void
 QcMapView::update_scene()
 {
-  // qInfo();
+  // qQCInfo();
   for (auto * layer : m_layers)
     layer->update_scene();
   m_map_scene->set_dirty_path(); // viewport changed thus update vertexes

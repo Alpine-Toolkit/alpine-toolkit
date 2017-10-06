@@ -127,7 +127,7 @@ QcVector<T>::operator[](int i)
     return m_y;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_x;
   }
 }
@@ -142,7 +142,7 @@ QcVector<T>::operator[](int i) const
     return m_y;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_x;
   }
 }
@@ -311,7 +311,7 @@ QcVector<T>::orientation() const
 
   if (is_null()) {
     // throw std::invalid_argument("Null Vector");
-    qCritical() << QLatin1String("Null Vector");
+    qQCCritical() << QLatin1String("Null Vector");
     return 0;
   }
 
@@ -393,7 +393,7 @@ QcVector<T>::tan() const
     return m_y / m_x;
   else {
     // throw std::invalid_argument("x is null");
-    qCritical() << QLatin1String("x is null");
+    qQCCritical() << QLatin1String("x is null");
     return 0;
   }
 }
@@ -407,7 +407,7 @@ QcVector<T>::inverse_tan() const
     return m_x / m_y;
   else {
     // throw std::invalid_argument("y is null");
-    qCritical() << QLatin1String("y is null");
+    qQCCritical() << QLatin1String("y is null");
     return 0;
   }
 }
@@ -594,7 +594,7 @@ QcVector3D<T>::operator[](int i)
     return m_z;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_z;
   }
 }
@@ -611,7 +611,7 @@ QcVector3D<T>::operator[](int i) const
     return m_z;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_z;
   }
 }
@@ -1008,7 +1008,7 @@ QcVector4D<T>::operator[](int i)
     return m_t;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_t;
   }
 }
@@ -1027,7 +1027,7 @@ QcVector4D<T>::operator[](int i) const
     return m_t;
   else {
     // throw std::invalid_argument("invalid index");
-    qCritical() << QLatin1String("invalid index");
+    qQCCritical() << QLatin1String("invalid index");
     return m_t;
   }
 }

@@ -63,8 +63,9 @@
 /**************************************************************************************************/
 
 #include "file_tile_cache.h"
-#include "tile_image.h"
+#include "qtcarto.h"
 
+#include "tile_image.h"
 #include "configuration/configuration.h"
 
 #include <QDebug>
@@ -171,7 +172,7 @@ QcFileTileCache::QcFileTileCache(const QString & directory)
 
 QcFileTileCache::~QcFileTileCache()
 {
-  // qInfo() << "Serialize cache queue";
+  // qQCInfo() << "Serialize cache queue";
 
   // For each disk cache queue write the list of filenames to a file
   QDir directory(m_directory);
@@ -257,7 +258,7 @@ QcFileTileCache::load_tiles()
       if (directory.exists(filename)){
 	files.removeOne(filename);
 	QcTileSpec tile_spec = filename_to_tile_spec(filename);
-	// qInfo() << "Load" << tile_spec;
+	// qQCInfo() << "Load" << tile_spec;
 	if (tile_spec.level() == -1) // Fixme: when ?
 	  continue;
 	QSharedPointer<QcCachedTileDisk> tile_disk(new QcCachedTileDisk);
@@ -391,7 +392,7 @@ QcFileTileCache::get(const QcTileSpec & tile_spec)
   // if (offline_tile) {
   if (m_offline_cache->contains(tile_spec)) {
     QcOfflineCachedTileDisk offline_tile = m_offline_cache->get(tile_spec);
-    // qInfo() << "In offline cache" << tile_spec;
+    // qQCInfo() << "In offline cache" << tile_spec;
     // return load_from_disk(offline_tile->tile_spec, offline_tile->filename);
     return load_from_disk(offline_tile.tile_spec, offline_tile.filename);
   }

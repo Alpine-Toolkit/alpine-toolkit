@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -205,8 +206,8 @@ public:
   ~BleauPlacePtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BleauPlacePtr of" << *m_ptr;
-    // qInfo() << "--- Delete BleauPlacePtr";
+    //// qATInfo() << "--- Delete BleauPlacePtr of" << *m_ptr;
+    // qATInfo() << "--- Delete BleauPlacePtr";
     // m_ptr.clear();
   }
 
@@ -533,8 +534,8 @@ public:
   ~BleauMassifPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BleauMassifPtr of" << *m_ptr;
-    // qInfo() << "--- Delete BleauMassifPtr";
+    //// qATInfo() << "--- Delete BleauMassifPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete BleauMassifPtr";
     // m_ptr.clear();
   }
 
@@ -895,8 +896,8 @@ public:
   ~BleauCircuitPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BleauCircuitPtr of" << *m_ptr;
-    // qInfo() << "--- Delete BleauCircuitPtr";
+    //// qATInfo() << "--- Delete BleauCircuitPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete BleauCircuitPtr";
     // m_ptr.clear();
   }
 
@@ -1200,8 +1201,8 @@ public:
   ~BleauBoulderPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete BleauBoulderPtr of" << *m_ptr;
-    // qInfo() << "--- Delete BleauBoulderPtr";
+    //// qATInfo() << "--- Delete BleauBoulderPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete BleauBoulderPtr";
     // m_ptr.clear();
   }
 
@@ -1356,3 +1357,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __BLEAU_SCHEMA_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

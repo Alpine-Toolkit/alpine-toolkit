@@ -31,6 +31,8 @@
 
 /**************************************************************************************************/
 
+#include "qtcarto.h"
+
 #include "declarative_map_item.h"
 #include "map_gesture_area.h"
 
@@ -99,7 +101,7 @@ class QtCartoDeclarativeModule : public QQmlExtensionPlugin
 
       // registrations below are version independent
     } else {
-      qDebug() << "Unsupported URI given to load location QML plugin: " << QLatin1String(uri);
+      qQCDebug() << "Unsupported URI given to load location QML plugin: " << QLatin1String(uri);
     }
   }
 };

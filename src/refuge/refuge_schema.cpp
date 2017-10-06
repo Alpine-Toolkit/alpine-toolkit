@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "refuge_schema.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -352,7 +353,7 @@ Refuge::Refuge(const QSqlQuery & query, int offset)
 
 Refuge::~Refuge()
 {
-// qInfo() << "--- Delete" << "Refuge" << *this;
+// qATInfo() << "--- Delete" << "Refuge" << *this;
 }
 
 // bit array ?
@@ -1067,7 +1068,7 @@ void
 RefugeCache::on_changed()
 {
   Refuge * row = qobject_cast<Refuge *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   RefugePtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -1196,9 +1197,15 @@ template<>
 void
 RefugeDatabaseSchema::register_row<Refuge>(RefugePtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_refuge_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

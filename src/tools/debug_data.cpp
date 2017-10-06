@@ -27,8 +27,8 @@
 /**************************************************************************************************/
 
 #include "debug_data.h"
+#include "alpine_toolkit.h"
 
-#include "config.h"
 #include "configuration/configuration.h"
 #include "tools/platform.h"
 

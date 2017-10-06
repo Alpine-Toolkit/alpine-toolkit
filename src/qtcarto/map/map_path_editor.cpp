@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "map_path_editor.h"
+#include "qtcarto.h"
 
 #include <QtDebug>
 
@@ -68,7 +69,7 @@ QcMapPathEditor::update_path()
 void
 QcMapPathEditor::handle_mouse_move_event(const QcMapEvent & event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
 }
 
 void
@@ -82,7 +83,7 @@ QcMapPathEditor::handle_mouse_press_and_hold_event(const QcMapEvent & event)
     constexpr double distance_px_max = 20; // Fixme: hidpi
     bool on_point = distance_px <= distance_px_max;
     bool selected_point = m_selected_vertex_index != -1;
-    qInfo() << "closest point" << position << m_path.vertex_at(vertex_index) << distance << distance_px << on_point << selected_point;
+    qQCInfo() << "closest point" << position << m_path.vertex_at(vertex_index) << distance << distance_px << on_point << selected_point;
     if (on_point) {
       if (selected_point)
         m_path.set_attribute_at(m_selected_vertex_index, QcDecoratedPathDouble::AttributeType::Normal);
@@ -93,7 +94,7 @@ QcMapPathEditor::handle_mouse_press_and_hold_event(const QcMapEvent & event)
         m_selected_vertex_index = -1;
       update_path();
     } else if (selected_point) {
-      qInfo() << "update point" << m_selected_vertex_index;
+      qQCInfo() << "update point" << m_selected_vertex_index;
       QcDecoratedPathDouble::VertexListType vertexes = m_path.vertexes();
       vertexes[m_selected_vertex_index] = position;
       m_path = QcDecoratedPathDouble(vertexes, m_path.closed());
@@ -112,7 +113,7 @@ QcMapPathEditor::handle_mouse_press_and_hold_event(const QcMapEvent & event)
 void
 QcMapPathEditor::handle_mouse_press_and_hold_released_event(const QcMapEvent & event)
 {
-  qInfo() << event;
+  qQCInfo() << event;
   if (m_selected_vertex_index != -1)
     m_path.set_attribute_at(m_selected_vertex_index, QcDecoratedPathDouble::AttributeType::Selected);
   else

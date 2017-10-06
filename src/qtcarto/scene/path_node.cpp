@@ -27,6 +27,8 @@
 /**************************************************************************************************/
 
 #include "path_node.h"
+#include "qtcarto.h"
+
 #include "path_material_shader.h"
 #include "point_material_shader.h"
 
@@ -252,24 +254,24 @@ QcPathNode::set_path_points(PathPoint2D * path_points,
     point1 -= tangential_offset1;
 
     vertex = point1 - normal_offset1;
-    // qInfo() << "1   0 == 1" << vertex;
+    // qQCInfo() << "1   0 == 1" << vertex;
     // path_points[j].set(vertex.x(), vertex.y());
     path_points[j].set(vertex, QcVectorDouble(-half_width, -half_width), segment_length, line_width, cap1, colour);
     vertex = point1 + normal_offset1;
-    // qInfo() << "2   0 == 1" << vertex;
+    // qQCInfo() << "2   0 == 1" << vertex;
     path_points[j+1].set(vertex, QcVectorDouble(-half_width, half_width), segment_length, line_width, cap1, colour);
   } else {
     QcVectorDouble dir0 = point1 - point0;
     dir0.normalise();
     double u1;
     QcVectorDouble offset1 = compute_offsets(dir0, dir1, half_width, u1);
-    // qInfo() << "offset1" << offset1;
+    // qQCInfo() << "offset1" << offset1;
 
     vertex = point1 - offset1;
-    // qInfo() << "1" << vertex;
+    // qQCInfo() << "1" << vertex;
     path_points[j].set(vertex, QcVectorDouble(-u1, -half_width), segment_length, line_width, cap1, colour);
     vertex = point1 + offset1;
-    // qInfo() << "2" << vertex;
+    // qQCInfo() << "2" << vertex;
     path_points[j+1].set(vertex, QcVectorDouble(u1, half_width), segment_length, line_width, cap1, colour);
   }
 
@@ -280,23 +282,23 @@ QcPathNode::set_path_points(PathPoint2D * path_points,
     double u = segment_length + half_width;
 
     vertex = point2 - normal_offset1;
-    // qInfo() << "3   2 == 3" << vertex;
+    // qQCInfo() << "3   2 == 3" << vertex;
     path_points[j+2].set(vertex, QcVectorDouble(u, -half_width), segment_length, line_width, cap2, colour);
     vertex = point2 + normal_offset1;
-    // qInfo() << "4   2 == 3"  << vertex;
+    // qQCInfo() << "4   2 == 3"  << vertex;
     path_points[j+3].set(vertex, QcVectorDouble(u, half_width), segment_length, line_width, cap2, colour);
   } else {
     QcVectorDouble dir2 = point3 - point2;
     dir2.normalise();
     double u2;
     QcVectorDouble offset2 = compute_offsets(dir1, dir2, half_width, u2);
-    // qInfo() << "offset2" << offset2;
+    // qQCInfo() << "offset2" << offset2;
 
     vertex = point2 - offset2;
-    // qInfo() << "3" << vertex;
+    // qQCInfo() << "3" << vertex;
     path_points[j+2].set(vertex, QcVectorDouble(segment_length + u2, -half_width), segment_length, line_width, cap2, colour);
     vertex = point2 + offset2;
-    // qInfo() << "4" << vertex;
+    // qQCInfo() << "4" << vertex;
     path_points[j+3].set(vertex, QcVectorDouble(segment_length - u2,  half_width), segment_length, line_width, cap2, colour);
   }
 }
@@ -309,7 +311,7 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
   if (path)
     for (const auto & vertex : path->vertexes()) {
       QcVectorDouble screen_position = m_viewport->coordinate_to_screen(vertex);
-      // qInfo() << vertex << screen_position;
+      // qQCInfo() << vertex << screen_position;
       path_vertexes << screen_position;
     }
   int number_of_path_vertexes = path_vertexes.size();
@@ -341,7 +343,7 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
     path_points[j+1].set(p2.x(), p2.y());
     const QcVectorDouble & p3 = triangle.p3;
     path_points[j+2].set(p3.x(), p3.y());
-    qInfo() << i << p1 << p2 << p3;
+    qQCInfo() << i << p1 << p2 << p3;
     i++;
     }
     } else
@@ -375,7 +377,7 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
       // Fixme: optimise
       QcVectorDouble point0 = i > 0      ? path_vertexes[i-1] : point1;
       QcVectorDouble point3 = i < last_i ? path_vertexes[i+2] : point2;
-      // qInfo() << i << point0 << point1 << point2 << point3;
+      // qQCInfo() << i << point0 << point1 << point2 << point3;
       set_path_points(path_points, i, point0, point1, point2, point3, line_width, half_width, path_colour);
     }
     if (path_closed) {

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "service.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -38,7 +39,7 @@ Service::Service(QObject * parent)
   : ServiceSource(parent),
     m_timer(this)
 {
-  qInfo() << "Alpine Toolkit Service is started";
+  qATInfo() << "Alpine Toolkit Service is started";
 
   connect(&m_timer, &QTimer::timeout, this, &Service::timer_slot);
   m_timer.setInterval(1000);
@@ -46,40 +47,40 @@ Service::Service(QObject * parent)
 
 Service::~Service()
 {
-  qInfo() << "Alpine Toolkit Service: ~Service";
+  qATInfo() << "Alpine Toolkit Service: ~Service";
 }
 
 void
 Service::ping()
 {
-  qInfo() << "Alpine Toolkit Service: received ping";
+  qATInfo() << "Alpine Toolkit Service: received ping";
   emit pong();
 }
 
 void
 Service::start_timer()
 {
-  qInfo() << "Alpine Toolkit Service: start_timer";
+  qATInfo() << "Alpine Toolkit Service: start_timer";
   m_timer.start();
 }
 
 void
 Service::stop_timer()
 {
-  qInfo() << "Alpine Toolkit Service: stop_timer";
+  qATInfo() << "Alpine Toolkit Service: stop_timer";
   m_timer.stop();
 }
 
 void
 Service::timer_slot()
 {
-  qInfo() << "Alpine Toolkit Service: timer slot";
+  qATInfo() << "Alpine Toolkit Service: timer slot";
 }
 
 void
 Service::stop_service()
 {
-  qInfo() << "Alpine Toolkit Service: stop_service";
+  qATInfo() << "Alpine Toolkit Service: stop_service";
 }
 
 // QC_END_NAMESPACE

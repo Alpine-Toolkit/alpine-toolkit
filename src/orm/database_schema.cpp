@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database_schema.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

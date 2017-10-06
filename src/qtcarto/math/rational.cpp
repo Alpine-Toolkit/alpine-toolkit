@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "rational.h"
+#include "qtcarto.h"
 
 /**************************************************************************************************/
 
@@ -162,7 +163,7 @@ QcRational::to_double() const
   else if (is_infinite()) {
     // return +/- inf
     // throw std::invalid_argument("Denominator is null");
-    qCritical() << QLatin1String("Denominator is null");
+    qQCCritical() << QLatin1String("Denominator is null");
     return 0;
   } else if (is_integer())
     return m_sign * m_numerator;

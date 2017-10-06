@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -286,8 +287,8 @@ public:
   ~RefugePtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete RefugePtr of" << *m_ptr;
-    // qInfo() << "--- Delete RefugePtr";
+    //// qATInfo() << "--- Delete RefugePtr of" << *m_ptr;
+    // qATInfo() << "--- Delete RefugePtr";
     // m_ptr.clear();
   }
 
@@ -439,3 +440,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __REFUGE_SCHEMA_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

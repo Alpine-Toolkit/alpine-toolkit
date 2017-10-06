@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "polygon.h"
+#include "qtcarto.h"
 
 #include <algorithm>
 #include <exception>
@@ -423,7 +424,7 @@ QcTiledPolygon::diff(const QcTiledPolygon & old_tiled_polygon)
     for (const QcTiledPolygonRun & old_run : old_runs) {
       if (new_run.cut(old_run, intersection, left, right, exchanged)) {
 	int y = new_run.y();
-	qInfo() << y << intersection << left << right << exchanged;
+	qQCInfo() << y << intersection << left << right << exchanged;
 	has_intersection = true;
 	intersection_count[i] += 1;
 

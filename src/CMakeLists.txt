@@ -42,8 +42,9 @@ include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
 
 set(alpine_toolkit_common_library_files
   configuration/configuration.cpp
+  logging/handler.cpp
+  logging/logger.cpp
   tools/debug_data.cpp
-  tools/logger.cpp
   tools/platform.cpp
   )
 add_library(alpine_toolkit_common SHARED ${alpine_toolkit_common_library_files})

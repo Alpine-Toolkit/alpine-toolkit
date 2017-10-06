@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "qml_barimeter_altimeter_sensor.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 #include <QtGlobal>
@@ -154,7 +155,7 @@ QmlBarometerAltimeterReading::pressure_to_altitude(qreal pressure) const
 void
 QmlBarometerAltimeterReading::set_altitude_offset(qreal offset)
 {
-  qInfo() << "set_altitude_offset" << offset;
+  qATInfo() << "set_altitude_offset" << offset;
   qreal old_altitude_offset = m_altitude_offset;
   m_altitude_offset = offset;
   Q_EMIT altitudeOffsetChanged();
@@ -165,9 +166,9 @@ QmlBarometerAltimeterReading::set_altitude_offset(qreal offset)
 void
 QmlBarometerAltimeterReading::set_sea_level_pressure(qreal sea_level_pressure)
 {
-  qInfo() << "set_sea_level_pressure" << sea_level_pressure << m_sea_level_pressure;
+  qATInfo() << "set_sea_level_pressure" << sea_level_pressure << m_sea_level_pressure;
   if (!qFuzzyCompare(sea_level_pressure, m_sea_level_pressure)) {
-    qInfo() << "set_sea_level_pressure yes";
+    qATInfo() << "set_sea_level_pressure yes";
     m_sea_level_pressure = sea_level_pressure;
     Q_EMIT pressureSeaLevelChanged();
     m_altitude = pressure_to_altitude(m_pressure);
@@ -179,10 +180,10 @@ void
 QmlBarometerAltimeterReading::calibrate(qreal altitude)
 {
   if (!qFuzzyCompare(altitude, m_altitude)) {
-    qInfo() << "calibrate" << altitude;
+    qATInfo() << "calibrate" << altitude;
     altitude -= m_altitude_offset;
     m_sea_level_pressure = m_pressure / qPow(1 - ALPHA*altitude, BETA);
-    qInfo() << "sea_level_pressure" << m_sea_level_pressure;
+    qATInfo() << "sea_level_pressure" << m_sea_level_pressure;
     Q_EMIT pressureSeaLevelChanged();
     m_altitude = altitude;
     Q_EMIT altitudeChanged(); // versus readingUpdate ?

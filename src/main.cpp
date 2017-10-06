@@ -27,7 +27,8 @@
 /**************************************************************************************************/
 
 #include "application/application.h"
-#include "tools/logger.h"
+#include "logging/handler.h"
+#include "alpine_toolkit.h"
 
 #include <QDate>
 
@@ -48,7 +49,7 @@ main(int argc, char *argv[])
   if (QDate::currentDate() < QDate(2017, 9, 1))
     return application.exec();
   else {
-    qInfo() << "Out of date";
+    qATInfo() << "Out of date";
     return -1;
   }
   */

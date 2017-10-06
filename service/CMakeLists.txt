@@ -31,6 +31,8 @@
 # Include directories
 #
 
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 # include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 ####################################################################################################
@@ -42,6 +44,7 @@ set(alpine_toolkit_service_files
   main.cpp
   service.cpp
   service_application.cpp
+  ${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
   )
 
 qt5_generate_repc(alpine_toolkit_service_files service.rep SOURCE)

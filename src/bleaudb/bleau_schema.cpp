@@ -29,6 +29,7 @@
 /**************************************************************************************************/
 
 #include "bleau_schema.h"
+#include "alpine_toolkit.h"
 
 #include "orm/database_query.h"
 #include "orm/type_conversion.h"
@@ -188,7 +189,7 @@ BleauPlace::BleauPlace(const QSqlQuery & query, int offset)
 
 BleauPlace::~BleauPlace()
 {
-// qInfo() << "--- Delete" << "BleauPlace" << *this;
+// qATInfo() << "--- Delete" << "BleauPlace" << *this;
 }
 
 // bit array ?
@@ -578,7 +579,7 @@ void
 BleauPlaceCache::on_changed()
 {
   BleauPlace * row = qobject_cast<BleauPlace *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   BleauPlacePtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -928,7 +929,7 @@ BleauMassif::BleauMassif(const QSqlQuery & query, int offset)
 
 BleauMassif::~BleauMassif()
 {
-// qInfo() << "--- Delete" << "BleauMassif" << *this;
+// qATInfo() << "--- Delete" << "BleauMassif" << *this;
 }
 
 // bit array ?
@@ -1418,7 +1419,7 @@ BleauMassif::set_insert_id(int id)
 void
 BleauMassif::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   {
     // Load one-to-many relation circuits
     BleauCircuit::PtrList rows = database_schema()->query_by_foreign_key<BleauCircuit>(
@@ -1431,7 +1432,7 @@ BleauMassif::load_relations()
 void
 BleauMassif::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_circuits) {
     BleauCircuit * item_ptr = item_weak_ref.data();
     if (not item_ptr->exists_on_database())
@@ -1584,7 +1585,7 @@ void
 BleauMassifCache::on_changed()
 {
   BleauMassif * row = qobject_cast<BleauMassif *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   BleauMassifPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -2010,7 +2011,7 @@ BleauCircuit::BleauCircuit(const QSqlQuery & query, int offset)
 
 BleauCircuit::~BleauCircuit()
 {
-// qInfo() << "--- Delete" << "BleauCircuit" << *this;
+// qATInfo() << "--- Delete" << "BleauCircuit" << *this;
 }
 
 // bit array ?
@@ -2611,7 +2612,7 @@ BleauCircuit::can_save() const
 void
 BleauCircuit::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   {
     // Load one-to-many relation boulders
     BleauBoulder::PtrList rows = database_schema()->query_by_foreign_key<BleauBoulder>(
@@ -2625,7 +2626,7 @@ BleauCircuit::load_relations()
 void
 BleauCircuit::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_boulders) {
     BleauBoulder * item_ptr = item_weak_ref.data();
     if (not item_ptr->exists_on_database())
@@ -2813,7 +2814,7 @@ void
 BleauCircuitCache::on_changed()
 {
   BleauCircuit * row = qobject_cast<BleauCircuit *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   BleauCircuitPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -3115,7 +3116,7 @@ BleauBoulder::BleauBoulder(const QSqlQuery & query, int offset)
 
 BleauBoulder::~BleauBoulder()
 {
-// qInfo() << "--- Delete" << "BleauBoulder" << *this;
+// qATInfo() << "--- Delete" << "BleauBoulder" << *this;
 }
 
 // bit array ?
@@ -3469,14 +3470,14 @@ BleauBoulder::can_save() const
 void
 BleauBoulder::load_relations()
 {
-  qInfo() << "Load relations of" << *this;
+  qATInfo() << "Load relations of" << *this;
   circuit();
 }
 
 void
 BleauBoulder::save_relations()
 {
-  qInfo() << "Save relations of" << *this;
+  qATInfo() << "Save relations of" << *this;
 }
 
 BleauCircuitPtr
@@ -3623,7 +3624,7 @@ void
 BleauBoulderCache::on_changed()
 {
   BleauBoulder * row = qobject_cast<BleauBoulder *>(QObject::sender());
-  qInfo() << "On changed" << row;
+  qATInfo() << "On changed" << row;
   BleauBoulderPtr row_ptr = m_loaded_instances[row];
   if (row_ptr)
     m_modified_instances.insert(row, row_ptr);
@@ -3740,30 +3741,36 @@ template<>
 void
 BleauSchema::register_row<BleauPlace>(BleauPlacePtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_place_cache.add(row);
 }
 template<>
 void
 BleauSchema::register_row<BleauMassif>(BleauMassifPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_massif_cache.add(row);
 }
 template<>
 void
 BleauSchema::register_row<BleauCircuit>(BleauCircuitPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_circuit_cache.add(row);
 }
 template<>
 void
 BleauSchema::register_row<BleauBoulder>(BleauBoulderPtr & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_boulder_cache.add(row);
 }
 
 /**************************************************************************************************/
 // QC_END_NAMESPACE
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

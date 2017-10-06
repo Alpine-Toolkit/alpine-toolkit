@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "geoportail_elevation_service_reply.h"
+#include "qtcarto.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -49,7 +50,7 @@ QcGeoportailElevationServiceReply::process_payload()
   QString ELEVATIONS = "elevations";
   QByteArray json_data = network_reply()->readAll();
   // { "elevations": [ { "lon": 0.23, "lat": 48.05, "z": 112.73, "acc": 2.5}, ... ] }
-  // qInfo() << json_data;
+  // qQCInfo() << json_data;
   QJsonDocument json_document(QJsonDocument::fromJson(json_data));
   const QJsonObject & json_root_object = json_document.object();
   if (json_root_object.contains(ELEVATIONS)) {
@@ -63,7 +64,7 @@ QcGeoportailElevationServiceReply::process_payload()
       elevations() << QcWgsElevationCoordinate(longitude, latitude, elevation);
     }
   }
-  qInfo() << elevations();
+  qQCInfo() << elevations();
 }
 
 /**************************************************************************************************/

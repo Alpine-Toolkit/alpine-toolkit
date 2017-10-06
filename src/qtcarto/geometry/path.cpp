@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "path.h"
+#include "qtcarto.h"
 
 #include "polygon_seidler_triangulation.h"
 
@@ -43,7 +44,7 @@ QcPathDouble::QcPath(const QVector<double> & coordinates, bool closed)
   int dimension = QcVectorDouble::dimension();
   if (number_of_coordinates % dimension == 1) {
     // throw std::invalid_argument("Odd number of coordinates");
-    qCritical() << QLatin1String("Odd number of coordinates");
+    qQCCritical() << QLatin1String("Odd number of coordinates");
     return;
   }
 
@@ -62,7 +63,7 @@ QcPath3DDouble::QcPath(const QVector<double> & coordinates, bool closed)
   int dimension = QcVector3DDouble::dimension();
   if (number_of_coordinates % dimension == 1) {
     // throw std::invalid_argument("Odd number of coordinates");
-    qCritical() << QLatin1String("Odd number of coordinates");
+    qQCCritical() << QLatin1String("Odd number of coordinates");
     return;
   }
 
@@ -120,7 +121,7 @@ QcPolygonTriangulation::QcPolygonTriangulation(const QcPathDouble & path)
   double vertexes[number_of_vertexes][2];
   int i = 0;
   for (const auto & vertex : path.vertexes()) {
-    qInfo() << vertex;
+    qQCInfo() << vertex;
     vertexes[i][0] = vertex.x();
     vertexes[i][1] = vertex.y();
     i++;
@@ -135,7 +136,7 @@ QcPolygonTriangulation::QcPolygonTriangulation(const QcPathDouble & path)
   QcSeidlerPolygonTriangulation triangulation(number_of_vertexes, vertexes, triangles);
 
   for (int i = 0; i < number_of_segments; i++) {
-    qInfo() << triangles[i][0] << triangles[i][1] << triangles[i][2];
+    qQCInfo() << triangles[i][0] << triangles[i][1] << triangles[i][2];
     m_triangles << QcTriangleIndex(triangles[i][0] -1,
                                    triangles[i][1] -1,
                                    triangles[i][2] -1);
@@ -147,10 +148,10 @@ QcPolygonTriangulation::triangle_vertexes() const
 {
   QList<QcTriangleVertex> triangle_vertexes;
   for (const auto & triangle: m_triangles) {
-    qInfo() << triangle.p1 << triangle.p2 << triangle.p3;
-    qInfo() << m_path.vertex_at(triangle.p1);
-    qInfo() << m_path.vertex_at(triangle.p2);
-    qInfo() << m_path.vertex_at(triangle.p3);
+    qQCInfo() << triangle.p1 << triangle.p2 << triangle.p3;
+    qQCInfo() << m_path.vertex_at(triangle.p1);
+    qQCInfo() << m_path.vertex_at(triangle.p2);
+    qQCInfo() << m_path.vertex_at(triangle.p3);
     triangle_vertexes << QcTriangleVertex(m_path.vertex_at(triangle.p1),
                                           m_path.vertex_at(triangle.p2),
                                           m_path.vertex_at(triangle.p3));

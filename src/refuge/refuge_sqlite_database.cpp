@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "refuge_sqlite_database.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

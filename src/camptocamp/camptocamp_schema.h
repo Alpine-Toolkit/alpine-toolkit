@@ -36,6 +36,7 @@
 
 #define QT_SHAREDPOINTER_TRACK_POINTERS // For dubug purpose
 
+#include "alpine_toolkit.h"
 #include "orm/database_row.h"
 #include "orm/database_row_list.h"
 #include "orm/database_schema.h"
@@ -183,8 +184,8 @@ public:
   ~C2cAreaAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cAreaAssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cAreaAssociationsPtr";
+    //// qATInfo() << "--- Delete C2cAreaAssociationsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cAreaAssociationsPtr";
     // m_ptr.clear();
   }
 
@@ -427,8 +428,8 @@ public:
   ~C2cAreasPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cAreasPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cAreasPtr";
+    //// qATInfo() << "--- Delete C2cAreasPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cAreasPtr";
     // m_ptr.clear();
   }
 
@@ -687,8 +688,8 @@ public:
   ~C2cArticlesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cArticlesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cArticlesPtr";
+    //// qATInfo() << "--- Delete C2cArticlesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cArticlesPtr";
     // m_ptr.clear();
   }
 
@@ -949,8 +950,8 @@ public:
   ~C2cAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cAssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cAssociationsPtr";
+    //// qATInfo() << "--- Delete C2cAssociationsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cAssociationsPtr";
     // m_ptr.clear();
   }
 
@@ -1259,8 +1260,8 @@ public:
   ~C2cBooksPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cBooksPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cBooksPtr";
+    //// qATInfo() << "--- Delete C2cBooksPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cBooksPtr";
     // m_ptr.clear();
   }
 
@@ -1543,8 +1544,8 @@ public:
   ~C2cDocumentsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cDocumentsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cDocumentsPtr";
+    //// qATInfo() << "--- Delete C2cDocumentsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cDocumentsPtr";
     // m_ptr.clear();
   }
 
@@ -1807,8 +1808,8 @@ public:
   ~C2cDocumentsGeometriesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cDocumentsGeometriesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cDocumentsGeometriesPtr";
+    //// qATInfo() << "--- Delete C2cDocumentsGeometriesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cDocumentsGeometriesPtr";
     // m_ptr.clear();
   }
 
@@ -2101,8 +2102,8 @@ public:
   ~C2cDocumentsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cDocumentsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cDocumentsLocalesPtr";
+    //// qATInfo() << "--- Delete C2cDocumentsLocalesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cDocumentsLocalesPtr";
     // m_ptr.clear();
   }
 
@@ -2351,8 +2352,8 @@ public:
   ~C2cDocumentsTopicsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cDocumentsTopicsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cDocumentsTopicsPtr";
+    //// qATInfo() << "--- Delete C2cDocumentsTopicsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cDocumentsTopicsPtr";
     // m_ptr.clear();
   }
 
@@ -2635,8 +2636,8 @@ public:
   ~C2cDocumentsVersionsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cDocumentsVersionsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cDocumentsVersionsPtr";
+    //// qATInfo() << "--- Delete C2cDocumentsVersionsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cDocumentsVersionsPtr";
     // m_ptr.clear();
   }
 
@@ -2996,8 +2997,8 @@ public:
   ~C2cImagesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cImagesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cImagesPtr";
+    //// qATInfo() << "--- Delete C2cImagesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cImagesPtr";
     // m_ptr.clear();
   }
 
@@ -3254,8 +3255,8 @@ public:
   ~C2cMapAssociationsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cMapAssociationsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cMapAssociationsPtr";
+    //// qATInfo() << "--- Delete C2cMapAssociationsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cMapAssociationsPtr";
     // m_ptr.clear();
   }
 
@@ -3514,8 +3515,8 @@ public:
   ~C2cMapsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cMapsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cMapsPtr";
+    //// qATInfo() << "--- Delete C2cMapsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cMapsPtr";
     // m_ptr.clear();
   }
 
@@ -3944,8 +3945,8 @@ public:
   ~C2cOutingsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cOutingsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cOutingsPtr";
+    //// qATInfo() << "--- Delete C2cOutingsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cOutingsPtr";
     // m_ptr.clear();
   }
 
@@ -4275,8 +4276,8 @@ public:
   ~C2cOutingsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cOutingsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cOutingsLocalesPtr";
+    //// qATInfo() << "--- Delete C2cOutingsLocalesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cOutingsLocalesPtr";
     // m_ptr.clear();
   }
 
@@ -4863,8 +4864,8 @@ public:
   ~C2cRoutesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cRoutesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cRoutesPtr";
+    //// qATInfo() << "--- Delete C2cRoutesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cRoutesPtr";
     // m_ptr.clear();
   }
 
@@ -5205,8 +5206,8 @@ public:
   ~C2cRoutesLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cRoutesLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cRoutesLocalesPtr";
+    //// qATInfo() << "--- Delete C2cRoutesLocalesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cRoutesLocalesPtr";
     // m_ptr.clear();
   }
 
@@ -5576,8 +5577,8 @@ public:
   ~C2cUserPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cUserPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cUserPtr";
+    //// qATInfo() << "--- Delete C2cUserPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cUserPtr";
     // m_ptr.clear();
   }
 
@@ -5843,8 +5844,8 @@ public:
   ~C2cUserProfilesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cUserProfilesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cUserProfilesPtr";
+    //// qATInfo() << "--- Delete C2cUserProfilesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cUserProfilesPtr";
     // m_ptr.clear();
   }
 
@@ -6456,8 +6457,8 @@ public:
   ~C2cWaypointsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cWaypointsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cWaypointsPtr";
+    //// qATInfo() << "--- Delete C2cWaypointsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cWaypointsPtr";
     // m_ptr.clear();
   }
 
@@ -6754,8 +6755,8 @@ public:
   ~C2cWaypointsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cWaypointsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cWaypointsLocalesPtr";
+    //// qATInfo() << "--- Delete C2cWaypointsLocalesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cWaypointsLocalesPtr";
     // m_ptr.clear();
   }
 
@@ -7135,8 +7136,8 @@ public:
   ~C2cXreportsPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cXreportsPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cXreportsPtr";
+    //// qATInfo() << "--- Delete C2cXreportsPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cXreportsPtr";
     // m_ptr.clear();
   }
 
@@ -7492,8 +7493,8 @@ public:
   ~C2cXreportsLocalesPtr() {
     // Fixme: *this return bool ???
     // Fixme: signal ???
-    //// qInfo() << "--- Delete C2cXreportsLocalesPtr of" << *m_ptr;
-    // qInfo() << "--- Delete C2cXreportsLocalesPtr";
+    //// qATInfo() << "--- Delete C2cXreportsLocalesPtr of" << *m_ptr;
+    // qATInfo() << "--- Delete C2cXreportsLocalesPtr";
     // m_ptr.clear();
   }
 
@@ -7711,3 +7712,9 @@ private:
 
 /**************************************************************************************************/
 #endif /* __CAMPTOCAMP_SCHEMA_H__ */
+
+/***************************************************************************************************
+ *
+ * End
+ *
+ **************************************************************************************************/

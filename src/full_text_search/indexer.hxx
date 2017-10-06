@@ -275,7 +275,7 @@ DocumentIndexer<T>::query(const TokenizedTextDocument & tokenized_document) cons
 
   for (const auto & token : tokenized_document) {
     for (const auto & document : query(token)) {
-      // qInfo() << "Query token" << token << document;
+      // qATInfo() << "Query token" << token << document;
       DocumentMatchType match(document, token);
       matches << match;
     }

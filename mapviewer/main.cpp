@@ -39,8 +39,8 @@
 /**************************************************************************************************/
 
 #include "configuration/configuration.h"
+#include "logging/handler.h"
 #include "tools/debug_data.h"
-#include "tools/logger.h"
 #include "tools/platform.h"
 
 /**************************************************************************************************/

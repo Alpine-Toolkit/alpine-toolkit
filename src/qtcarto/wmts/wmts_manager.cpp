@@ -63,6 +63,8 @@
 /**************************************************************************************************/
 
 #include "wmts_manager.h"
+#include "qtcarto.h"
+
 #include "map/map_view.h" // circular
 
 #include <QDir>
@@ -219,21 +221,21 @@ QcWmtsManager::update_tile_requests(QcMapViewLayer * map_view_layer,
   canceled_tiles -= requested_tiles;
 
   // async call
-  // qInfo() << "async call update_tile_requests +" << requested_tiles << "-" << canceled_tiles;
+  // qQCInfo() << "async call update_tile_requests +" << requested_tiles << "-" << canceled_tiles;
   QMetaObject::invokeMethod(m_tile_fetcher, "update_tile_requests",
 			    Qt::DirectConnection,
 			    // Fixme: segfault requested_tiles ???
   			    // Qt::QueuedConnection,
   			    Q_ARG(QSet<QcTileSpec>, requested_tiles), // QcTileSpecSet
   			    Q_ARG(QSet<QcTileSpec>, canceled_tiles));
-  // qInfo() << "end of";
+  // qQCInfo() << "end of";
 }
 
 // Fixme: name
 void
 QcWmtsManager::fetcher_tile_finished(const QcTileSpec & tile_spec, const QByteArray & bytes, const QString & format)
 {
-  // qInfo();
+  // qQCInfo();
   // Is tile requested by a map view ?
   if (m_tile_hash.contains(tile_spec)) {
     QcMapViewLayerPointerSet map_view_layers = m_tile_hash.value(tile_spec);
@@ -243,13 +245,13 @@ QcWmtsManager::fetcher_tile_finished(const QcTileSpec & tile_spec, const QByteAr
       map_view_layer->request_manager()->tile_fetched(tile_spec);
   }
   // else
-  //   qInfo() << "any client" << tile_spec;
+  //   qQCInfo() << "any client" << tile_spec;
 }
 
 void
 QcWmtsManager::fetcher_tile_error(const QcTileSpec & tile_spec, const QString & error_string)
 {
-  // qInfo();
+  // qQCInfo();
   QcMapViewLayerPointerSet map_view_layers = m_tile_hash.value(tile_spec);
   remove_tile_spec(tile_spec);
 
@@ -268,11 +270,11 @@ QcWmtsManager::get_tile_texture(const QcTileSpec & tile_spec)
 void
 QcWmtsManager::dump() const
 {
-  qInfo() << "Dump";
+  qQCInfo() << "Dump";
   for (auto & tile_spec : m_tile_hash.keys())
-    qInfo() << tile_spec << "--->" << m_tile_hash[tile_spec];
+    qQCInfo() << tile_spec << "--->" << m_tile_hash[tile_spec];
   for (auto & map_view_layer : m_map_view_layer_hash.keys())
-    qInfo() << map_view_layer << "--->" << m_map_view_layer_hash[map_view_layer];
+    qQCInfo() << map_view_layer << "--->" << m_map_view_layer_hash[map_view_layer];
 }
 
 /**************************************************************************************************/

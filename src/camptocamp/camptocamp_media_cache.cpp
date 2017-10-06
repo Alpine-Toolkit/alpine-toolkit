@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp_media_cache.h"
+#include "alpine_toolkit.h"
 
 #include <QFile>
 #include <QtDebug>
@@ -59,7 +60,7 @@ C2cMediaCache::save_media(const QString & media, const QByteArray & data) const
   if (!media_file.open(QIODevice::WriteOnly))
     qWarning() << "couldn't write to file" << media;
   media_file.write(data);
-  qInfo() << "Saved media" << media_file.fileName();
+  qATInfo() << "Saved media" << media_file.fileName();
 }
 
 bool

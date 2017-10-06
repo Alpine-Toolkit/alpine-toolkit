@@ -28,6 +28,7 @@
 /**************************************************************************************************/
 
 #include "database_schema.h" // for checker
+#include "alpine_toolkit.h"
 
 /**************************************************************************************************/
 
@@ -53,7 +54,7 @@ QcDatabaseSchema::add(T & row, bool save_relations, bool commit)
   row.set_database_schema(this);
 
   if (save_relations) {
-    qInfo() << "Save relations of" << row;
+    qATInfo() << "Save relations of" << row;
     row.save_relations();
   }
 }
@@ -203,7 +204,7 @@ QcDatabaseSchema::update(T & row, bool save_relations)
   table.update(kwargs, where_kwargs);
 
   // if (save_relations) {
-  //   qInfo() << "Save relations of" << row;
+  //   qATInfo() << "Save relations of" << row;
   //   row.save_relations();
   // }
 }

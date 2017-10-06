@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp/camptocamp_qml.h"
+#include "alpine_toolkit.h"
 
 #include <QColor>
 #include <QPixmap>
@@ -211,7 +212,7 @@ C2cQmlClient::on_received_document(const QJsonDocumentPtr & json_document)
   C2cDocumentPtr casted_document = document.cast();
   unsigned int document_id = document.id();
   m_documents.insert(document_id, casted_document);
-  qInfo() << "C2cQmlClient::on_received_document" << *casted_document;
+  qATInfo() << "C2cQmlClient::on_received_document" << *casted_document;
   emit receivedDocument(document_id);
 }
 
@@ -229,7 +230,7 @@ C2cQmlClient::get_document(unsigned int document_id, bool use_cache)
   if (use_cache) {
     C2cDocumentPtr document = m_api_cache.get_document(document_id);
     if (not document.isNull()) {
-      qInfo() << "Found document" << document_id << "in cache";
+      qATInfo() << "Found document" << document_id << "in cache";
       m_documents.insert(document_id, document);
       return document.data();
     }
@@ -257,7 +258,7 @@ C2cQmlClient::search(const QString & search_string, const C2cSearchSettings & se
 void
 C2cQmlClient::on_received_search(const QJsonDocumentPtr & json_document)
 {
-  qInfo() << "C2cQmlClient::on_received_search";
+  qATInfo() << "C2cQmlClient::on_received_search";
   m_search_result.update(json_document);
   emit receivedSearch();
 }
@@ -268,7 +269,7 @@ void
 C2cQmlClient::media(const QString & media, bool use_cache)
 {
   if (use_cache and m_media_cache.has_media(media)) {
-    qInfo() << "Found media " << media << " in cache";
+    qATInfo() << "Found media " << media << " in cache";
     QByteArray data = m_media_cache.get_media(media);
     on_received_media(media, data);
   } else
@@ -278,7 +279,7 @@ C2cQmlClient::media(const QString & media, bool use_cache)
 void
 C2cQmlClient::on_received_media(const QString & media, QByteArray data)
 {
-  qInfo() << "C2cQmlClient::on_received_media" << media;
+  qATInfo() << "C2cQmlClient::on_received_media" << media;
   m_medias.insert(media, QSharedPointer<QByteArray>(new QByteArray(data)));
   emit receivedMedia(media);
 }
@@ -310,10 +311,10 @@ void
 C2cQmlClient::load_document_on_cache()
 {
   m_document_on_cache.clear(); // Fixme: useless
-  qInfo() << m_api_cache.number_of_documents() << "on cache";
+  qATInfo() << m_api_cache.number_of_documents() << "on cache";
   m_document_on_cache = m_api_cache.get_documents();
   for (const auto & document : m_document_on_cache) {
-    qInfo() << document->id();
+    qATInfo() << document->id();
   }
   emit documentOnCacheChanged();
 }
@@ -322,7 +323,7 @@ QQmlListProperty<C2cDocument>
 C2cQmlClient::document_on_cache_list_property()
 {
   // Called at init or when the list change
-  // qInfo() << "C2cQmlClient::document_on_cache_list_property";
+  // qATInfo() << "C2cQmlClient::document_on_cache_list_property";
   return QQmlListProperty<C2cDocument>(this,
                                        nullptr, // data
                                        &C2cQmlClient::document_on_cache_list_property_count,
@@ -333,7 +334,7 @@ int
 C2cQmlClient::document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list)
 {
   // Called several times
-  // qInfo() << "C2cQmlClient::document_on_cache_list_property_count";
+  // qATInfo() << "C2cQmlClient::document_on_cache_list_property_count";
   C2cQmlClient * client = qobject_cast<C2cQmlClient *>(list->object);
   return client->m_document_on_cache.size();
 }
@@ -342,7 +343,7 @@ C2cDocument *
 C2cQmlClient::document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, int index)
 {
   // Called several times
-  // qInfo() << "C2cQmlClient::document_on_cache_list_property_at" << index;
+  // qATInfo() << "C2cQmlClient::document_on_cache_list_property_at" << index;
   C2cQmlClient * client = qobject_cast<C2cQmlClient *>(list->object);
   C2cDocumentPtr & document = client->m_document_on_cache[index];
   return document.data();
@@ -358,7 +359,7 @@ C2cImageProvider::C2cImageProvider(C2cQmlClient * client)
 QPixmap
 C2cImageProvider::requestPixmap(const QString & id, QSize * size, const QSize & requested_size)
 {
-  qInfo() << "C2C request pixmap" << id << size << requested_size;
+  qATInfo() << "C2C request pixmap" << id << size << requested_size;
 
   QPixmap pixmap;
   QSharedPointer<QByteArray> data = m_client->get_media(id);

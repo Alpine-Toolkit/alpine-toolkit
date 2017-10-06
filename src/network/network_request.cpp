@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "network_request.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -49,7 +50,7 @@ QaNetworkRequest::QaNetworkRequest(const QaNetworkRequest & other)
 
 QaNetworkRequest::~QaNetworkRequest()
 {
-  qInfo() << "~QaNetworkRequest";
+  qATInfo() << "~QaNetworkRequest";
 }
 
 QaNetworkRequest &
@@ -79,7 +80,7 @@ unsigned int
 qHash(const QaNetworkRequest & request)
 {
   unsigned int result = qHash(request.url());
-  qInfo() << "QaNetworkRequest hash" << result;
+  qATInfo() << "QaNetworkRequest hash" << result;
   return result;
 }
 */
@@ -107,7 +108,7 @@ QaGetNetworkRequest::QaGetNetworkRequest(const QaGetNetworkRequest & other)
 
 QaGetNetworkRequest::~QaGetNetworkRequest()
 {
-  qInfo() << "~QaGetNetworkRequest";
+  qATInfo() << "~QaGetNetworkRequest";
 }
 
 QaGetNetworkRequest &
@@ -158,7 +159,7 @@ QaPostNetworkRequest::QaPostNetworkRequest(const QaPostNetworkRequest & other)
 
 QaPostNetworkRequest::~QaPostNetworkRequest()
 {
-  qInfo() << "~QaPostNetworkRequest";
+  qATInfo() << "~QaPostNetworkRequest";
 }
 
 QaPostNetworkRequest &

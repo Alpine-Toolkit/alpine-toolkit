@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "grid_node.h"
+#include "qtcarto.h"
 
 /**************************************************************************************************/
 
@@ -57,7 +58,7 @@ QcGridNode::update()
   const QcTileMatrix & tile_matrix = m_tile_matrix_set[m_viewport->zoom_level()];
   double tile_length_m = tile_matrix.tile_length_m();
   double resolution = tile_matrix.resolution(); // [m/px]
-  qInfo() << "tile_matrix" << m_viewport->zoom_level() << tile_length_m << resolution;
+  qQCInfo() << "tile_matrix" << m_viewport->zoom_level() << tile_length_m << resolution;
 
   const QcPolygon & polygon = m_viewport->middle_polygon(); // Fixme: when cross date line
   const QcInterval2DDouble & interval = polygon.interval();

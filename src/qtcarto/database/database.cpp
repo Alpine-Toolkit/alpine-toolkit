@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "database.h"
+#include "qtcarto.h"
 
 #include <QFile>
 #include <QSqlError>
@@ -132,7 +133,7 @@ QcDatabase::insert(const QString & table, const KeyValuePair & kwargs, bool comm
     sql_query += '?';
   }
   sql_query += ')';
-  qInfo() << sql_query << kwargs;
+  qQCInfo() << sql_query << kwargs;
   query.prepare(sql_query);
 
   for (const auto & value : kwargs.values())
@@ -154,7 +155,7 @@ QcDatabase::select(const QString & table, const QStringList & fields, const QStr
   QString sql_query = QStringLiteral("SELECT ") + fields.join(',') + QStringLiteral(" FROM ") + table;
   if (!where.isEmpty())
     sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query << fields;
+  qQCInfo() << sql_query << fields;
 
   if (!query.exec(sql_query))
     qWarning() << query.lastError().text();
@@ -185,7 +186,7 @@ QcDatabase::update(const QString & table, const KeyValuePair & kwargs, const QSt
   QString sql_query = QStringLiteral("UPDATE ") + table + QStringLiteral(" SET ") + format_kwarg(kwargs);
   if (!where.isEmpty())
     sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query << kwargs;
+  qQCInfo() << sql_query << kwargs;
 
   if (!query.exec(sql_query))
     qWarning() << query.lastError().text();
@@ -200,7 +201,7 @@ QcDatabase::delete_row(const QString & table, const QString & where)
   QString sql_query = QStringLiteral("DELETE FROM ") + table;
   if (!where.isEmpty())
     sql_query += QStringLiteral(" WHERE ") + where;
-  qInfo() << sql_query;
+  qQCInfo() << sql_query;
 
   if (!query.exec(sql_query))
     qWarning() << query.lastError().text();
@@ -229,7 +230,7 @@ QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
     qWarning() << m_database.lastError().text();
 
   QStringList tables = m_database.tables();
-  // qInfo() << "Tables" << tables;
+  // qQCInfo() << "Tables" << tables;
   if (tables.empty())
     create_tables();
 }

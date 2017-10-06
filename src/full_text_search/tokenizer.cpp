@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "tokenizer.h"
+#include "alpine_toolkit.h"
 
 #include <QFile>
 #include <QJsonArray>
@@ -203,7 +204,7 @@ LanguageFilter::process(const TokenizedTextDocument & document) const
   const LanguageCode language = document.language();
   if (m_filters.contains(language)) {
     FilterPtr filter = m_filters[language];
-    // qInfo() << "LanguageFilter for " << language;
+    // qATInfo() << "LanguageFilter for " << language;
     return filter->process(document);
   } else
     return document;
@@ -362,7 +363,7 @@ FrenchFilter::strip_elision(const QString & word) const
   int position1 = word.lastIndexOf(form1);
   int position2 = word.lastIndexOf(form2);
   int position = qMax(position1, position2);
-  // qInfo() << "FrenchFilter elision" << word << position;
+  // qATInfo() << "FrenchFilter elision" << word << position;
   if (position != -1)
     return word.mid(position);
   else
@@ -405,9 +406,9 @@ LocalizedStopWordFilter::LocalizedStopWordFilter(const QString & json_path)
       }
     }
     else
-      qCritical() << parse_error.errorString();
+      qATCritical() << parse_error.errorString();
   } else {
-    qCritical() << QStringLiteral("Couldn't open file") << json_path;
+    qATCritical() << QStringLiteral("Couldn't open file") << json_path;
     // throw std::invalid_argument("Couldn't open file."); // Fixme: ???
   }
 }
@@ -422,7 +423,7 @@ Token
 StemmerFilter::process(const Token & token) const
 {
   QString output = m_stemmer.process(token.value());
-  // qInfo() << token << "->" << output;
+  // qATInfo() << token << "->" << output;
   return Token(output);
 }
 
@@ -432,7 +433,7 @@ LocalizedStemmerFilter::LocalizedStemmerFilter()
   : LanguageFilter()
 {
   for (const auto & language : Stemmer::available_languages()) {
-    // qInfo() << "Add stemmer filter for" << language;
+    // qATInfo() << "Add stemmer filter for" << language;
     add_language_filter(language, new StemmerFilter(language));
   }
 }
@@ -448,7 +449,7 @@ PhoneticFilter::process(const Token & token) const
 {
   PhoneticEncoder & phonetic_encoder = PhoneticEncoder::instance();
   QString output = phonetic_encoder.soundex(m_language, token);
-  // qInfo() << token << "->" << output;
+  // qATInfo() << token << "->" << output;
   return Token(output);
 }
 

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "camptocamp/camptocamp_document.h"
+#include "alpine_toolkit.h"
 
 #include "camptocamp/camptocamp_constant.h"
 using namespace c2c;
@@ -50,7 +51,7 @@ markdown_to_html(const QString & markdown)
                                          CMARK_OPT_DEFAULT);
   QString html(html_c);
   free(html_c);
-  // qInfo() << "markdown_to_html" << '\n' << markdown_fixed << '\n' << html;
+  // qATInfo() << "markdown_to_html" << '\n' << markdown_fixed << '\n' << html;
   return html;
 }
 
@@ -647,7 +648,7 @@ C2cSearchResult::C2cSearchResult(const C2cSearchResult & other)
 C2cSearchResult &
 C2cSearchResult::operator=(const C2cSearchResult & other)
 {
-  qInfo() << "C2cSearchResult::operator=";
+  qATInfo() << "C2cSearchResult::operator=";
 
   if (this != &other) {
     m_routes = other.m_routes;
@@ -666,17 +667,17 @@ C2cSearchResult::update(const QJsonDocumentPtr & json_document)
 
   QJsonObject root = json_document->object();
   // for (const auto & key : root.keys())
-  //   qInfo() << key;
+  //   qATInfo() << key;
 
   QJsonObject root_for_routes = root[ROUTES].toObject();
-  // qInfo() << "Number of routes:" << root_for_routes["total"].toInt();
+  // qATInfo() << "Number of routes:" << root_for_routes["total"].toInt();
   QJsonArray routes = root_for_routes[DOCUMENTS].toArray();
   for (const auto & ref : routes) {
     QJsonObject json_obj = ref.toObject();
     m_routes << C2cShortRoute(json_obj);
   }
 
-  qInfo() << "C2cShortRoute::update " << m_routes.size();
+  qATInfo() << "C2cShortRoute::update " << m_routes.size();
 }
 
 QQmlListProperty<C2cShortRoute>

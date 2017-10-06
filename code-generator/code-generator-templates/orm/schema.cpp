@@ -50,7 +50,7 @@ template<>
 void
 {{class_name}}::register_row<{{schema.cls_name}}>({{schema.ptr_cls_name}} & row)
 {
-  qInfo() << "Register in cache" << row;
+  qATInfo() << "Register in cache" << row;
   m_{{schema.table_name}}_cache.add(row);
 }
 {% endfor %}

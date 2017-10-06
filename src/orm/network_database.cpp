@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "network_database.h"
+#include "alpine_toolkit.h"
 
 #include <QSqlError>
 #include <QtDebug>

@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "document/document_manager.h"
+#include "alpine_toolkit.h"
 
 #include <QJsonArray>
 #include <QJsonObject>
@@ -77,7 +78,7 @@ QJsonDocument *
 DocumentServerRequest::reply_to_json() const
 {
   QByteArray json_data = network_reply()->readAll();
-  qInfo() << "Json reply" << url() << '\n' << json_data;
+  qATInfo() << "Json reply" << url() << '\n' << json_data;
   return new QJsonDocument(QJsonDocument::fromJson(json_data)); // Fixme: delete
 }
 
@@ -90,7 +91,7 @@ DocumentServerRequest::handle_reply(const QJsonDocument * json_document)
 void
 DocumentServerRequest::handle_network_error()
 {
-  qInfo() << "Network Error";
+  qATInfo() << "Network Error";
 };
 
 /**************************************************************************************************/
@@ -132,7 +133,7 @@ void
 DocumentManager::get(DocumentServerRequest * request)
 {
   // Fixme: if DocumentManager is friend, then we can move this code in C2cApiRequest
-  qInfo() << "Get" << request->url();
+  qATInfo() << "Get" << request->url();
   QNetworkReply * network_reply = m_network_manager.get(request->request());
   request->set_reply(this, network_reply);
 }

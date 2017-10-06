@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "phonetic_encoder.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 
@@ -35,7 +36,7 @@
 QString
 PhoneticEncoder::zero_padding(const QString & string, const int encoded_length)
 {
-  // qInfo() << "zero_padding" << string;
+  // qATInfo() << "zero_padding" << string;
 
   QString output(string);
   int length = output.size();

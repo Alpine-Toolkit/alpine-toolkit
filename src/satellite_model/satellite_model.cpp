@@ -39,6 +39,8 @@
 ****************************************************************************/
 
 #include "satellite_model.h"
+#include "alpine_toolkit.h"
+
 #include <QTimer>
 #include <QDebug>
 
@@ -75,7 +77,7 @@ SatelliteModel::rowCount(const QModelIndex & parent) const
 QVariant
 SatelliteModel::data(const QModelIndex & index, int role) const
 {
-  // qInfo() << index << role;
+  // qATInfo() << index << role;
 
   if (!source)
     return QVariant();

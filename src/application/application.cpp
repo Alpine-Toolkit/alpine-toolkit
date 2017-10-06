@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "application.h"
+#include "alpine_toolkit.h"
 
 #include <algorithm>
 #include <cstdlib>
@@ -48,7 +49,6 @@
 #include "camptocamp/camptocamp_client.h"
 #include "camptocamp/camptocamp_document.h"
 #include "camptocamp/camptocamp_qml.h"
-#include "config.h"
 #include "platform_abstraction/platform_abstraction.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
@@ -99,7 +99,7 @@ QmlApplication::home_page() const
 void
 QmlApplication::network_configuration_changed(const QNetworkConfiguration & config)
 {
-  qInfo() << "Network Configuration Changed";
+  qATInfo() << "Network Configuration Changed";
   bool wifi_state = get_wifi_state();
   if (wifi_state != m_wifi_state) {
     m_wifi_state = wifi_state;
@@ -112,17 +112,17 @@ QmlApplication::get_wifi_state()
 {
   QList<QNetworkConfiguration> network_configurations = m_network_configuration_manager.allConfigurations(QNetworkConfiguration::Active);
   for (const auto & network_configuration : network_configurations) {
-    qInfo() << "Network Configuration" << network_configuration.name() << network_configuration.bearerType() << network_configuration.state();
+    qATInfo() << "Network Configuration" << network_configuration.name() << network_configuration.bearerType() << network_configuration.state();
     auto bearer_type = network_configuration.bearerType();
     if (bearer_type == QNetworkConfiguration::BearerWLAN or
         bearer_type == QNetworkConfiguration::BearerEthernet) {
-      qInfo() << "Wifi is Up";
+      qATInfo() << "Wifi is Up";
       return true;
     }
   }
 
 
-  qInfo() << "Wifi is Down";
+  qATInfo() << "Wifi is Down";
   return false;
 }
 
@@ -228,10 +228,10 @@ Application::load_translation()
 
   if (m_translator.load(locale, "alpine-toolkit", ".", ":/translations", ".qm")) {
     // :/translations/alpine-toolkit.fr_FR.qml
-    qInfo() << "Install translator for locale" << locale.name();
+    qATInfo() << "Install translator for locale" << locale.name();
     m_application.installTranslator(&m_translator);
   } else {
-    qInfo() << "No translator for locale" << locale.name();
+    qATInfo() << "No translator for locale" << locale.name();
   }
 }
 
@@ -244,16 +244,16 @@ Application::copy_file_from_asset(const QDir & destination, const QString & file
   QFileInfo file_info(relative_source_path);
   QString source_path = file_info.absoluteFilePath();
   if (!file_info.exists())
-    qCritical() << "File" << filename << "not found in asset";
+    qATCritical() << "File" << filename << "not found in asset";
 
   QString destination_path = destination.filePath(filename);
 
   bool copy_success = QFile::copy(source_path, destination_path);
   if (copy_success) {
-    qInfo() << "Copy" << source_path << "to" << destination_path;
+    qATInfo() << "Copy" << source_path << "to" << destination_path;
     return destination_path;
   } else {
-    qCritical() << "Failed to copy" << source_path << "to" << destination_path;
+    qATCritical() << "Failed to copy" << source_path << "to" << destination_path;
     return QString();
   }
 }
@@ -263,7 +263,7 @@ Application::write_debug_data() const
 {
   QcDebugData debug_data;
   debug_data.write_json(m_config.join_application_user_directory(QLatin1Literal("debug_data.json")));
-  qInfo() << debug_data.to_json();
+  qATInfo() << debug_data.to_json();
 }
 
 void
@@ -384,7 +384,7 @@ Application::set_context_properties()
   QDir c2c_cache_path = application_user_directory();
   QString c2c_api_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
   QString c2c_media_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("media"));
-  qInfo() << "Camptocamp Cache Path" << c2c_api_cache_path << c2c_media_cache_path;
+  qATInfo() << "Camptocamp Cache Path" << c2c_api_cache_path << c2c_media_cache_path;
   C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
   context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
@@ -394,7 +394,7 @@ Application::set_context_properties()
 void
 Application::set_offline_storage_path()
 {
-  qInfo() << "Default Offline Storage Path is" << m_engine.offlineStoragePath();
+  qATInfo() << "Default Offline Storage Path is" << m_engine.offlineStoragePath();
   // ~/.local/share/Alpine Toolkit/Alpine Toolkit/QML/OfflineStorage/
   m_engine.setOfflineStoragePath(m_config.application_user_directory());
 }
@@ -416,7 +416,7 @@ Application::load_qml_main()
   //   QQuickWindow * window = qobject_cast<QQuickWindow *>(obj);
   //   if (window != NULL) {
   //     QSurfaceFormat format = window->format();
-  //     qInfo() << "QQuickWindow found" << format;
+  //     qATInfo() << "QQuickWindow found" << format;
   //     // QQuickWindow found QSurfaceFormat(version 2.0, options QFlags(),
   //     // depthBufferSize 24,
   //     // redBufferSize 8, greenBufferSize 8, blueBufferSize 8, alphaBufferSize 0,

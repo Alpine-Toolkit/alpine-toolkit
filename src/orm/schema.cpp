@@ -26,7 +26,8 @@
 
 /**************************************************************************************************/
 
-#include "orm/schema.h"
+#include "schema.h"
+#include "alpine_toolkit.h"
 
 #include<utility>
 
@@ -92,7 +93,7 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(const QcSchemaFieldTrait & other)
 
 QcSchemaFieldTrait::~QcSchemaFieldTrait()
 {
-  // qInfo() << "~QcSchemaFieldTrait" << m_name;
+  // qATInfo() << "~QcSchemaFieldTrait" << m_name;
 }
 
 QcSchemaFieldTrait &

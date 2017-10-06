@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "document_database.h"
+#include "alpine_toolkit.h"
 
 #include <QtDebug>
 

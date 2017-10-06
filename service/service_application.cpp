@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "service_application.h"
+#include "alpine_toolkit.h"
 
 #include "definitions.h"
 
@@ -40,7 +41,7 @@ ServiceApplication::ServiceApplication(int & argc, char ** argv)
   : QCoreApplication(argc, argv),
     host_node(QUrl(QStringLiteral(SERVICE_URL)))
 {
-  qInfo() << "Start Apline Tookit Service";
+  qATInfo() << "Start Apline Tookit Service";
 
   service = new Service();
   host_node.enableRemoting(service);

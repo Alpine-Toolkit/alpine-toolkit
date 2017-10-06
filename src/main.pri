@@ -3,7 +3,7 @@
 ####################################################################################################
 
 HEADERS += \
-  src/application/application.h \
+  src/application/alpine_toolkit.h \
   src/satellite_model/satellite_model.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
   src/sensors/qmlsensor.h \

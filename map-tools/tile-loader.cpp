@@ -38,7 +38,7 @@
 #include "coordinate/wgs84.h"
 #include "geometry/polygon.h"
 #include "geometry/vector.h"
-#include "tools/logger.h"
+#include "logging/handler.h"
 #include "wmts/wmts_plugin_manager.h"
 
 // #include "map/tile_loader.h"

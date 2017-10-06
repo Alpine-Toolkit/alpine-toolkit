@@ -26,11 +26,17 @@
 
 /**************************************************************************************************/
 
-#include "logger.h"
+#include "handler.h"
 
 #include <QDateTime>
 
 // QC_BEGIN_NAMESPACE
+
+/**************************************************************************************************/
+
+// see also
+// http://doc.qt.io/qt-5/qtglobal.html#qSetMessagePattern
+// qSetMessagePattern("%{category} %{message}");
 
 /**************************************************************************************************/
 
@@ -104,9 +110,10 @@ QString
 format_log_with_ansi(const QString & message_type, const QMessageLogContext & context, const QString & message)
 {
   QString date = QDateTime::currentDateTime().toString(QLatin1Literal("yyyy-MM-dd HH:mm:ss.zzz")); // Qt::ISODate
-  QString full_message = QString("%1   %2   %3\n")
+  QString full_message = QString("%1   %2   %3   %4\n")
     .arg(ANSI_BOLD + ANSI_RED + message_type + ANSI_RESET)
     .arg(ANSI_BOLD + ANSI_BLUE + date + ANSI_RESET)
+    .arg(ANSI_BOLD + ANSI_MAGENTA + context.category + ANSI_RESET)
     .arg(ANSI_BOLD + ANSI_MAGENTA + context.function + ANSI_RESET);
   // .arg(context.file)
   // .arg(context.line)

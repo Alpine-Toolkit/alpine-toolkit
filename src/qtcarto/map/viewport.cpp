@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "map/viewport.h"
+#include "qtcarto.h"
 
 #include "coordinate/mercator.h"
 #include "coordinate/debug_tools.h"
@@ -71,12 +72,12 @@ QcMapResolution::operator=(const QcMapResolution & other)
 void
 QcMapResolution::set_resolution(double resolution)
 {
-  // qInfo() << "set_resolution" << resolution;
+  // qQCInfo() << "set_resolution" << resolution;
   if (resolution > 0)
     m_resolution = resolution;
   else
     // throw std::invalid_argument("Invalid zoom factor must be > 0");
-    qCritical() << QLatin1String("Invalid zoom factor must be > 0");
+    qQCCritical() << QLatin1String("Invalid zoom factor must be > 0");
 }
 
 /**************************************************************************************************/
@@ -132,7 +133,7 @@ QcTiledZoomLevel::set_zoom_level(unsigned int zoom_level)
   m_zoom_level = zoom_level;
   double resolution = QcTileMatrixSet::resolution_for_level(m_map_size, m_tile_size, zoom_level); // unit is m/px
   set_resolution(resolution);
-  // qInfo() << "set_zoom_level" << zoom_level << map_size_px;
+  // qQCInfo() << "set_zoom_level" << zoom_level << map_size_px;
 }
 
 /**************************************************************************************************/
@@ -187,7 +188,7 @@ QcViewportState::set_bearing(double bearing) {
     m_bearing = bearing;
   else
     // throw std::invalid_argument("Invalid bearing");
-    qCritical() << QLatin1String("Invalid bearing");
+    qQCCritical() << QLatin1String("Invalid bearing");
 }
 
 QcViewportState &
@@ -318,11 +319,11 @@ QcViewport::update_area_size()
 void
 QcViewport::update_zoom_level_interval()
 {
-  // qInfo();
+  // qQCInfo();
   if (m_smallest_tile_size != -1) {
     // int smallest_power_of_two_x = smallest_power_of_two(width() / m_smallest_tile_size);
     int smallest_power_of_two_y = smallest_power_of_two(height() / m_smallest_tile_size);
-    // qInfo() << "viewport size" << m_viewport_size << m_map_zoom_level_interval << smallest_power_of_two_x << smallest_power_of_two_y;
+    // qQCInfo() << "viewport size" << m_viewport_size << m_map_zoom_level_interval << smallest_power_of_two_x << smallest_power_of_two_y;
     m_zoom_level_interval = QcIntervalInt(smallest_power_of_two_y, m_map_zoom_level_interval.sup());
   } else {
     m_zoom_level_interval = QcIntervalInt(-1, -1);
@@ -341,7 +342,7 @@ void
 QcViewport::set_viewport_size(const QSize & size, float device_pixel_ratio)
 {
   Q_UNUSED(device_pixel_ratio);
-  // qInfo() << "viewport size" << size << device_pixel_ratio;
+  // qQCInfo() << "viewport size" << size << device_pixel_ratio;
   m_viewport_size = size; // * device_pixel_ratio;
   m_device_pixel_ratio = 1; // device_pixel_ratio;
 
@@ -409,7 +410,7 @@ QcViewport::end_state_transaction()
 void
 QcViewport::set_center(const QcWgsCoordinate & coordinate)
 {
-  // qInfo() << coordinate;
+  // qQCInfo() << coordinate;
   if (coordinate != m_state.coordinate()) {
     begin_state_transaction();
     m_state.set_coordinate(coordinate);
@@ -454,7 +455,7 @@ QcViewport::set_resolution(double resolution)
 void
 QcViewport::zoom_at(const QcWgsCoordinate & coordinate, unsigned int zoom_level)
 {
-  // qInfo() << coordinate << zoom_level;
+  // qQCInfo() << coordinate << zoom_level;
   if (zoom_level != m_state.zoom_level() and m_zoom_level_interval.contains(zoom_level)) {
     begin_state_transaction();
     m_state.set_zoom_level(zoom_level);
@@ -466,7 +467,7 @@ QcViewport::zoom_at(const QcWgsCoordinate & coordinate, unsigned int zoom_level)
 void
 QcViewport::stable_zoom(const QcVectorDouble & screen_position, unsigned int zoom_level)
 {
-  // qInfo() << screen_position << zoom_level;
+  // qQCInfo() << screen_position << zoom_level;
 
   // Fixme: (from map_gesture_area) event position == pre_zoom_point ???
 
@@ -487,7 +488,7 @@ QcViewport::stable_zoom(const QcVectorDouble & screen_position, unsigned int zoo
   if (!isnan(post_zoom_point.x()))
     qWarning() << "post is undefined";
 
-  // qInfo() << coordinate << screen_position << '\n' << pre_zoom_point << '\n' << post_zoom_point;
+  // qQCInfo() << coordinate << screen_position << '\n' << pre_zoom_point << '\n' << post_zoom_point;
   if (!isnan(pre_zoom_point.x()) and !isnan(post_zoom_point.x()) and pre_zoom_point != post_zoom_point) {
     // Keep location under pointer
     QcVectorDouble delta_px = post_zoom_point - pre_zoom_point;
@@ -544,7 +545,7 @@ void
 QcViewport::adjust_center()
 {
   QcPolygon polygon = compute_polygon();
-  // qInfo() << polygon.interval();
+  // qQCInfo() << polygon.interval();
 
   // const QcIntervalDouble & x_projected_interval = m_projection->x_projected_interval();
   const QcIntervalDouble & y_projected_interval = m_projection->y_projected_interval();
@@ -556,7 +557,7 @@ QcViewport::adjust_center()
   // Adjust y to fit in the projection domain
   m_center_map_vertically = false;
   if (!y_viewport_interval.is_included_in(y_projected_interval)) {
-    // qInfo() << "Adjust y";
+    // qQCInfo() << "Adjust y";
     QcVectorDouble projected_center = projected_center_coordinate();
     // Item height is larger than the map, map is centered
     if (y_projected_interval.length() < y_viewport_interval.length()) {
@@ -578,7 +579,7 @@ QcViewport::adjust_center()
     }
   }
 
-  // qInfo() << "final" << polygon.interval();
+  // qQCInfo() << "final" << polygon.interval();
 
   // global polygon
   m_viewport_polygon = polygon;
@@ -602,7 +603,7 @@ QcViewport::update_area()
   const QcIntervalDouble & x_viewport_interval = viewport_interval.x();
   const QcIntervalDouble & y_viewport_interval = viewport_interval.y();
 
-  // qInfo() << width() << height() << viewport_interval;
+  // qQCInfo() << width() << height() << viewport_interval;
 
   // Center map ?
   if (m_center_map_vertically) {
@@ -618,7 +619,7 @@ QcViewport::update_area()
   m_east_part.clear();
 
   m_cross_boundaries = !x_viewport_interval.is_included_in(x_projected_interval);
-  // qInfo() << "Cross boudaries" << m_cross_boundaries;
+  // qQCInfo() << "Cross boudaries" << m_cross_boundaries;
   if (m_cross_boundaries) {
     // double _bearing = bearing();
     // if (_bearing) {
@@ -631,7 +632,7 @@ QcViewport::update_area()
     double x_sup = x_viewport_interval.sup();
     m_cross_west_line = x_inf < projected_x_inf;
     m_cross_east_line = projected_x_sup < x_sup;
-    // qInfo() << "west / est" << m_cross_west_line << m_cross_east_line;
+    // qQCInfo() << "west / est" << m_cross_west_line << m_cross_east_line;
     QcInterval2DDouble west_interval;
     QcInterval2DDouble central_interval;
     QcInterval2DDouble east_interval;
@@ -656,7 +657,7 @@ QcViewport::update_area()
       x_cut = next_x_cut;
       cut_count++;
     }
-    qInfo() << sub_intervals;
+    qQCInfo() << sub_intervals;
     */
 
     int part_position = 0;
@@ -727,7 +728,7 @@ QcViewport::update_area()
                                     m_viewport_polygon);
   }
 
-  // qInfo() << "West part" << m_west_part << '\n'
+  // qQCInfo() << "West part" << m_west_part << '\n'
   //         << "Central part" << m_central_part << '\n'
   //         << "East part" << m_east_part << '\n'
   //         << "Number of full maps" << m_number_of_full_maps;
@@ -762,7 +763,7 @@ QcViewport::find_part(const QcVectorDouble & projected_coordinate) const
 QcVectorDouble
 QcViewport::screen_to_projected_coordinate(const QcVectorDouble & screen_position, bool clip_to_viewport) const
 {
-  // qInfo() << screen_position << clip_to_viewport;
+  // qQCInfo() << screen_position << clip_to_viewport;
 
   // Fixme: purpose ?
   if (clip_to_viewport) {
@@ -809,7 +810,7 @@ QcViewport::screen_to_coordinate(const QcVectorDouble & screen_position, bool cl
 QcVectorDouble
 QcViewport::coordinate_to_screen(const QcVectorDouble & projected_coordinate, bool clip_to_viewport) const
 {
-  // qInfo() << coordinate << clip_to_viewport
+  // qQCInfo() << coordinate << clip_to_viewport
   //         << (int)projected_coordinate.x() << (int)projected_coordinate.y();
 
   const QcViewportPart * part = find_part(projected_coordinate);
@@ -830,7 +831,7 @@ QcViewport::coordinate_to_screen(const QcVectorDouble & projected_coordinate, bo
       return QcVectorDouble(qQNaN(), qQNaN());
   }
 
-  // qInfo() << screen_position;
+  // qQCInfo() << screen_position;
 
   return screen_position;
 }
@@ -865,7 +866,7 @@ QcViewport::make_scale(unsigned int max_length_px)
   double power_10 = pow(10., number_of_digits);
   double normalised_max_length = max_length / power_10;
   double digit = find_scale_digit(normalised_max_length);
-  // qInfo() << max_length_px << max_length << number_of_digits << normalised_max_length << digit;
+  // qQCInfo() << max_length_px << max_length << number_of_digits << normalised_max_length << digit;
   double length = digit * power_10;
 
   return QcMapScale(length, ceil(to_px(length) / m_device_pixel_ratio));

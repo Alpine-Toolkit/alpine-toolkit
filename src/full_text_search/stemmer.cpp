@@ -27,6 +27,7 @@
 /**************************************************************************************************/
 
 #include "stemmer.h"
+#include "alpine_toolkit.h"
 
 #include <QHash>
 #include <QtDebug>
@@ -68,7 +69,7 @@ Stemmer::Stemmer(const LanguageCode & language)
   const char * c_language_name = language_name.toLatin1().data();
   m_stemmer = sb_stemmer_new(c_language_name, NULL); // "UTF_8"
   if (not m_stemmer)
-    qCritical() << QLatin1String("Stemmer is not available for") << language_name;
+    qATCritical() << QLatin1String("Stemmer is not available for") << language_name;
 }
 
 Stemmer::~Stemmer()
@@ -89,7 +90,7 @@ Stemmer::process(const QString & word) const
     (const char *) sb_stemmer_stem(m_stemmer,
                                    (const sb_symbol *) utf8_word.data(), utf8_word.size());
   if (stemmed == NULL) {
-    qCritical() << QLatin1String("Out of memory");
+    qATCritical() << QLatin1String("Out of memory");
     return QString();
   } else {
     // sb_stemmer_length(stemmer)
