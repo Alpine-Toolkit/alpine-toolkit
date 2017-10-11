@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __TILE_LOADER_H__
-#define __TILE_LOADER_H__
+#ifndef __QC_TILE_LOADER_H__
+#define __QC_TILE_LOADER_H__
 
 /**************************************************************************************************/
 
@@ -45,4 +45,4 @@ public:
 
 // QC_END_NAMESPACE
 
-#endif /* __TILE_LOADER_H__ */
+#endif /* __QC_TILE_LOADER_H__ */

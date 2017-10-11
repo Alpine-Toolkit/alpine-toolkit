@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __SEXAGESIMAL_ANGLE_H__
-#define __SEXAGESIMAL_ANGLE_H__
+#ifndef __QC_SEXAGESIMAL_ANGLE_H__
+#define __QC_SEXAGESIMAL_ANGLE_H__
 
 /**************************************************************************************************/
 
@@ -99,4 +99,4 @@ class QC_EXPORT QcGeoSexagesimalAngle
 
 /**************************************************************************************************/
 
-#endif /* __SEXAGESIMAL_ANGLE_H__ */
+#endif /* __QC_SEXAGESIMAL_ANGLE_H__ */

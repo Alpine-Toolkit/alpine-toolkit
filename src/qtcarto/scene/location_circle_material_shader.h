@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __LOCATION_CIRCLE_MATERIAL_SHADER_H__
-#define __LOCATION_CIRCLE_MATERIAL_SHADER_H__
+#ifndef __QC_LOCATION_CIRCLE_MATERIAL_SHADER_H__
+#define __QC_LOCATION_CIRCLE_MATERIAL_SHADER_H__
 
 /**************************************************************************************************/
 
@@ -61,4 +61,4 @@ public:
 
 // QC_END_NAMESPACE
 
-#endif /* __LOCATION_CIRCLE_MATERIAL_SHADER_H__ */
+#endif /* __QC_LOCATION_CIRCLE_MATERIAL_SHADER_H__ */

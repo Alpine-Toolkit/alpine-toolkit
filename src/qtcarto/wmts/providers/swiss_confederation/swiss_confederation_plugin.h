@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __SWISS_CONFEDERATION_PLUGIN_H__
-#define __SWISS_CONFEDERATION_PLUGIN_H__
+#ifndef __QC_SWISS_CONFEDERATION_PLUGIN_H__
+#define __QC_SWISS_CONFEDERATION_PLUGIN_H__
 
 /**************************************************************************************************/
 
@@ -79,4 +79,4 @@ public:
 
 /**************************************************************************************************/
 
-#endif /* __SWISS_CONFEDERATION_PLUGIN_H__ */
+#endif /* __QC_SWISS_CONFEDERATION_PLUGIN_H__ */

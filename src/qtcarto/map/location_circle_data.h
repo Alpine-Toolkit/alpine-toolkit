@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __LOCATION_CIRCLE_DATA_H__
-#define __LOCATION_CIRCLE_DATA_H__
+#ifndef __QC_LOCATION_CIRCLE_DATA_H__
+#define __QC_LOCATION_CIRCLE_DATA_H__
 
 /**************************************************************************************************/
 
@@ -89,4 +89,4 @@ Q_DECLARE_METATYPE(QcLocationCircleData)
 
 /**************************************************************************************************/
 
-#endif /* __LOCATION_CIRCLE_DATA_H__ */
+#endif /* __QC_LOCATION_CIRCLE_DATA_H__ */

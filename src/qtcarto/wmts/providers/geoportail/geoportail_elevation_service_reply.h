@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __GEOPORTAIL_ELEVATION_REPLY_H__
-#define __GEOPORTAIL_ELEVATION_REPLY_H__
+#ifndef __QC_GEOPORTAIL_ELEVATION_REPLY_H__
+#define __QC_GEOPORTAIL_ELEVATION_REPLY_H__
 
 /**************************************************************************************************/
 
@@ -55,4 +55,4 @@ public:
 
 /**************************************************************************************************/
 
-#endif /* __GEOPORTAIL_ELEVATION_REPLY_H__ */
+#endif /* __QC_GEOPORTAIL_ELEVATION_REPLY_H__ */

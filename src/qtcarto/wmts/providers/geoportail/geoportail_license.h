@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __GEOPORTAIL_LICENSE_H__
-#define __GEOPORTAIL_LICENSE_H__
+#ifndef __QC_GEOPORTAIL_LICENSE_H__
+#define __QC_GEOPORTAIL_LICENSE_H__
 
 /**************************************************************************************************/
 
@@ -78,4 +78,4 @@ class QC_EXPORT QcGeoportailWmtsLicense
 
 /**************************************************************************************************/
 
-#endif /* __GEOPORTAIL_LICENSE_H__ */
+#endif /* __QC_GEOPORTAIL_LICENSE_H__ */

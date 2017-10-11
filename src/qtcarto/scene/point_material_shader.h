@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __POINT_MATERIAL_SHADER_H__
-#define __POINT_MATERIAL_SHADER_H__
+#ifndef __QC_POINT_MATERIAL_SHADER_H__
+#define __QC_POINT_MATERIAL_SHADER_H__
 
 /**************************************************************************************************/
 
@@ -60,4 +60,4 @@ public:
 
 // QC_END_NAMESPACE
 
-#endif /* __POINT_MATERIAL_SHADER_H__ */
+#endif /* __QC_POINT_MATERIAL_SHADER_H__ */

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __TILE_SPEC_H__
-#define __TILE_SPEC_H__
+#ifndef __QC_TILE_SPEC_H__
+#define __QC_TILE_SPEC_H__
 
 /**************************************************************************************************/
 
@@ -95,4 +95,4 @@ typedef QSet<QcTileSpec> QcTileSpecSet;
 Q_DECLARE_METATYPE(QcTileSpec)
 // Q_DECLARE_METATYPE(QcTileSpecSet)
 
-#endif /* __TILE_SPEC_H__ */
+#endif /* __QC_TILE_SPEC_H__ */

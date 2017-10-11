@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __ELEVATION_SERVICE_REPLY_H__
-#define __ELEVATION_SERVICE_REPLY_H__
+#ifndef __QC_ELEVATION_SERVICE_REPLY_H__
+#define __QC_ELEVATION_SERVICE_REPLY_H__
 
 /**************************************************************************************************/
 
@@ -63,4 +63,4 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __ELEVATION_SERVICE_REPLY_H__ */
+#endif /* __QC_ELEVATION_SERVICE_REPLY_H__ */

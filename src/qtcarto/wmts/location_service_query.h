@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __LOCATION_SERVICE_QUERY_H__
-#define __LOCATION_SERVICE_QUERY_H__
+#ifndef __QC_LOCATION_SERVICE_QUERY_H__
+#define __QC_LOCATION_SERVICE_QUERY_H__
 
 /**************************************************************************************************/
 
@@ -159,4 +159,4 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __LOCATION_SERVICE_QUERY_H__ */
+#endif /* __QC_LOCATION_SERVICE_QUERY_H__ */

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __OFFLINE_CACHE_DATABASE_H__
-#define __OFFLINE_CACHE_DATABASE_H__
+#ifndef __QC_OFFLINE_CACHE_DATABASE_H__
+#define __QC_OFFLINE_CACHE_DATABASE_H__
 
 /**************************************************************************************************/
 
@@ -77,4 +77,4 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __OFFLINE_CACHE_DATABASE_H__ */
+#endif /* __QC_OFFLINE_CACHE_DATABASE_H__ */

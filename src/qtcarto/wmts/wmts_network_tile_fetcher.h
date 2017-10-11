@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __WMTS_NETWORK_TILE_FETCHER_H__
-#define __WMTS_NETWORK_TILE_FETCHER_H__
+#ifndef __QC_WMTS_NETWORK_TILE_FETCHER_H__
+#define __QC_WMTS_NETWORK_TILE_FETCHER_H__
 
 /**************************************************************************************************/
 
@@ -66,4 +66,4 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __WMTS_NETWORK_TILE_FETCHER_H__ */
+#endif /* __QC_WMTS_NETWORK_TILE_FETCHER_H__ */

@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __POLYGON_SEIDLER_TRIANGULATION_H__
-#define __POLYGON_SEIDLER_TRIANGULATION_H__
+#ifndef __QC_POLYGON_SEIDLER_TRIANGULATION_H__
+#define __QC_POLYGON_SEIDLER_TRIANGULATION_H__
 
 /**************************************************************************************************/
 
@@ -165,4 +165,4 @@ private:
 
 /**************************************************************************************************/
 
-#endif /* __POLYGON_SEIDLER_TRIANGULATION_H__ */
+#endif /* __QC_POLYGON_SEIDLER_TRIANGULATION_H__ */

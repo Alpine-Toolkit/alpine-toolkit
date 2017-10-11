@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __MERCATOR_H__
-#define __MERCATOR_H__
+#ifndef __QC_MERCATOR_H__
+#define __QC_MERCATOR_H__
 
 /**************************************************************************************************/
 
@@ -232,4 +232,4 @@ class QC_EXPORT QcNormalisedWebMercatorCoordinate : public QcGeoCoordinateTempla
 
 /**************************************************************************************************/
 
-#endif /* __MERCATOR_H__ */
+#endif /* __QC_MERCATOR_H__ */

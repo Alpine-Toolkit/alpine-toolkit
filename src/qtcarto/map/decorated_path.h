@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __DECORATED_PATH_H__
-#define __DECORATED_PATH_H__
+#ifndef __QC_DECORATED_PATH_H__
+#define __QC_DECORATED_PATH_H__
 
 /**************************************************************************************************/
 
@@ -90,4 +90,4 @@ ENUM_FLAGS(QcDecoratedPathDouble::AttributeType, unsigned int)
 
 /**************************************************************************************************/
 
-#endif /* __DECORATED_PATH_H__ */
+#endif /* __QC_DECORATED_PATH_H__ */

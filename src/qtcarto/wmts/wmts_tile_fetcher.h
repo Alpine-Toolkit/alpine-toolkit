@@ -64,8 +64,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __WMTS_TILE_FETCHER_H__
-#define __WMTS_TILE_FETCHER_H__
+#ifndef __QC_WMTS_TILE_FETCHER_H__
+#define __QC_WMTS_TILE_FETCHER_H__
 
 /**************************************************************************************************/
 
@@ -141,4 +141,4 @@ class QC_EXPORT QcWmtsTileFetcher : public QObject
 
 /**************************************************************************************************/
 
-#endif /* __WMTS_TILE_FETCHER_H__ */
+#endif /* __QC_WMTS_TILE_FETCHER_H__ */

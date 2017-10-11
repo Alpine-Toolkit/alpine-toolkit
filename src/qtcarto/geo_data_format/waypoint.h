@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __WAYPOINT_H__
-#define __WAYPOINT_H__
+#ifndef __QC_WAYPOINT_H__
+#define __QC_WAYPOINT_H__
 
 /**************************************************************************************************/
 
@@ -199,4 +199,4 @@ class QC_EXPORT QcWayPoint
 
 // QC_END_NAMESPACE
 
-#endif /* __WAYPOINT_H__ */
+#endif /* __QC_WAYPOINT_H__ */

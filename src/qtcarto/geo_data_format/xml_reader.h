@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __QcXmlStreamReader_H__
-#define __QcXmlStreamReader_H__
+#ifndef __QC_QcXmlStreamReader_H__
+#define __QC_QcXmlStreamReader_H__
 
 /**************************************************************************************************/
 
@@ -67,4 +67,4 @@ public:
 
 // QC_END_NAMESPACE
 
-#endif /* __QcXmlStreamReader_H__ */
+#endif /* __QC_QcXmlStreamReader_H__ */

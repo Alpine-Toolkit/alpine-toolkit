@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __DEBUG_TOOLS_H__
-#define __DEBUG_TOOLS_H__
+#ifndef __QC_DEBUG_TOOLS_H__
+#define __QC_DEBUG_TOOLS_H__
 
 /**************************************************************************************************/
 
@@ -52,4 +52,4 @@ QString format_interval(const QcInterval2DDouble & interval, const QcProjection 
 
 /**************************************************************************************************/
 
-#endif /* __DEBUG_TOOLS_H__ */
+#endif /* __QC_DEBUG_TOOLS_H__ */

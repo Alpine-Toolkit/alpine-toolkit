@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __OFFLINE_CACHE_H__
-#define __OFFLINE_CACHE_H__
+#ifndef __QC_OFFLINE_CACHE_H__
+#define __QC_OFFLINE_CACHE_H__
 
 /**************************************************************************************************/
 
@@ -97,4 +97,4 @@ class QC_EXPORT QcOfflineTileCache // : public QObject
 
 // QC_END_NAMESPACE
 
-#endif /* __OFFLINE_CACHE_H__ */
+#endif /* __QC_OFFLINE_CACHE_H__ */

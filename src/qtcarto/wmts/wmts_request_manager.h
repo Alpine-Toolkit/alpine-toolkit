@@ -64,8 +64,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __WMTS_REQUEST_MANAGER_H__
-#define __WMTS_REQUEST_MANAGER_H__
+#ifndef __QC_WMTS_REQUEST_MANAGER_H__
+#define __QC_WMTS_REQUEST_MANAGER_H__
 
 /**************************************************************************************************/
 
@@ -141,4 +141,4 @@ class QcWmtsRequestManager : public QObject
 
 /**************************************************************************************************/
 
-#endif /* __WMTS_REQUEST_MANAGER_H__ */
+#endif /* __QC_WMTS_REQUEST_MANAGER_H__ */

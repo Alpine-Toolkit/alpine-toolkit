@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef __TILE_MATRIX_SET_H__
-#define __TILE_MATRIX_SET_H__
+#ifndef __QC_TILE_MATRIX_SET_H__
+#define __QC_TILE_MATRIX_SET_H__
 
 /**************************************************************************************************/
 
@@ -209,4 +209,4 @@ class QC_EXPORT QcMercatorTileMatrixSet : public QcTileMatrixSet
 
 /**************************************************************************************************/
 
-#endif // __TILE_MATRIX_SET_H__
+#endif // __QC_TILE_MATRIX_SET_H__
