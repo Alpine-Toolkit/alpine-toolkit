@@ -43,4 +43,4 @@ class JsonGeoCoordinate(GeoCoordinate):
     )
     __sql_column_ctor__ = "SELECT AddGeometryColumn('{0.table_name}', '{0.name}', 4326, 'POINT', 'XY');"
     __sql_value_ctor__ = 'ST_GeomFromWKB()'
-    __sql_value_getter__ = 'ST_AsBinary(QcSqlField((QLatin1String("{0.sql_name}"))))' # Fixme
+    __sql_value_getter__ = 'ST_AsBinary(QoSqlField((QLatin1String("{0.sql_name}"))))' # Fixme

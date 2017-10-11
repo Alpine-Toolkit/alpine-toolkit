@@ -53,7 +53,7 @@ last_insert_id(const QSqlQuery & query)
 /**************************************************************************************************/
 
 QString
-QcDatabaseTable::format_prepare(int number_of_fields)
+QoDatabaseTable::format_prepare(int number_of_fields)
 {
   QString string;
   for (int i = 0; i < number_of_fields; i++) {
@@ -65,7 +65,7 @@ QcDatabaseTable::format_prepare(int number_of_fields)
 }
 
 QString
-QcDatabaseTable::format_prepare_update(const QStringList & fields)
+QoDatabaseTable::format_prepare_update(const QStringList & fields)
 {
   // QStringList string_list;
   // for (const auto & field : fields)
@@ -82,7 +82,7 @@ QcDatabaseTable::format_prepare_update(const QStringList & fields)
 }
 
 QString
-QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separator)
+QoDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separator)
 {
   QString kwarg_string;
   int i = 0;
@@ -103,42 +103,42 @@ QcDatabaseTable::format_kwarg(const QVariantHash & kwargs, const QString & separ
 }
 
 QString
-QcDatabaseTable::format_simple_where(const QVariantHash & kwargs)
+QoDatabaseTable::format_simple_where(const QVariantHash & kwargs)
 {
   return format_kwarg(kwargs, QLatin1String(" AND "));
 }
 
-QcDatabaseTable::QcDatabaseTable()
+QoDatabaseTable::QoDatabaseTable()
   : m_database(nullptr),
     m_schema(),
     m_name()
 {}
 
-QcDatabaseTable::QcDatabaseTable(QcDatabase * database, const QString & name)
+QoDatabaseTable::QoDatabaseTable(QoDatabase * database, const QString & name)
   : m_database(database),
     m_schema(name, name),
     m_name(name)
 {}
 
-QcDatabaseTable::QcDatabaseTable(QcDatabase * database, const QcSchema & schema)
+QoDatabaseTable::QoDatabaseTable(QoDatabase * database, const QoSchema & schema)
   : m_database(database),
     m_schema(schema),
     m_name(schema.table_name())
 {}
 
-QcDatabaseTable::QcDatabaseTable(const QcDatabaseTable & other)
+QoDatabaseTable::QoDatabaseTable(const QoDatabaseTable & other)
   : m_database(other.m_database),
     m_schema(other.m_schema),
     m_name(other.m_name)
 {}
 
-QcDatabaseTable::~QcDatabaseTable()
+QoDatabaseTable::~QoDatabaseTable()
 {
-  qATInfo() << "--- Delete QcDatabaseTable";
+  qATInfo() << "--- Delete QoDatabaseTable";
 }
 
-QcDatabaseTable &
-QcDatabaseTable::operator=(const QcDatabaseTable & other)
+QoDatabaseTable &
+QoDatabaseTable::operator=(const QoDatabaseTable & other)
 {
   if (this != &other) {
     m_database = other.m_database;
@@ -150,61 +150,61 @@ QcDatabaseTable::operator=(const QcDatabaseTable & other)
 }
 
 SqlFlavour
-QcDatabaseTable::sql_flavour() const
+QoDatabaseTable::sql_flavour() const
 {
   return m_database->sql_flavour();
 }
 
 void
-QcDatabaseTable::commit()
+QoDatabaseTable::commit()
 {
    m_database->commit();
 }
 
 bool
-QcDatabaseTable::exists() const
+QoDatabaseTable::exists() const
 {
   QStringList tables = m_database->database().tables(QSql::Tables);
   return tables.contains(m_name);
 }
 
 bool
-QcDatabaseTable::create()
+QoDatabaseTable::create()
 {
   return m_database->execute_queries(m_schema.to_sql_definition());
 }
 
-QcSqlQuery
-QcDatabaseTable::sql_query()
+QoSqlQuery
+QoDatabaseTable::sql_query()
 {
-  return QcSqlQuery(this);
+  return QoSqlQuery(this);
 }
 
 QSqlQuery
-QcDatabaseTable::exec(const QcSqlQuery & sql_query)
+QoDatabaseTable::exec(const QoSqlQuery & sql_query)
 {
   // Fixme: why pass QSqlQuery, could return it ???
   QSqlQuery query = m_database->new_query();
-  QcDatabase::exec_and_check(query, sql_query);
+  QoDatabase::exec_and_check(query, sql_query);
 
   return query;
 }
 
 bool
-QcDatabaseTable::drop()
+QoDatabaseTable::drop()
 {
   QString sql_query = QLatin1String("DROP TABLE ") + m_name;
   return m_database->execute_query(sql_query);
 }
 
 QSqlQuery
-QcDatabaseTable::prepare_complete_insert()
+QoDatabaseTable::prepare_complete_insert()
 {
   QSqlQuery query = m_database->new_query();
-  QcSqlQuery _sql_query = sql_query(); // Fixme: name clash
+  QoSqlQuery _sql_query = sql_query(); // Fixme: name clash
   for (const auto & field : m_schema.fields_without_row_id()) {
-    // QcSqlField sql_field = field->to_sql_field()
-    // need a QcSqlFieldPtr alive
+    // QoSqlField sql_field = field->to_sql_field()
+    // need a QoSqlFieldPtr alive
     QString sql_field = field->name();
     if (field->has_sql_column_ctor())
       _sql_query.add_column(sql_field, field->sql_value_ctor());
@@ -219,7 +219,7 @@ QcDatabaseTable::prepare_complete_insert()
 }
 
 QSqlQuery
-QcDatabaseTable::prepare_complete_insert(int number_of_fields)
+QoDatabaseTable::prepare_complete_insert(int number_of_fields)
 {
   QSqlQuery query = m_database->new_query();
   QString sql_query =
@@ -230,20 +230,20 @@ QcDatabaseTable::prepare_complete_insert(int number_of_fields)
 }
 
 QSqlQuery
-QcDatabaseTable::prepare_complete_insert(const QStringList & fields)
+QoDatabaseTable::prepare_complete_insert(const QStringList & fields)
 {
   QSqlQuery query = m_database->new_query();
   // QString sql_query =
   //   QLatin1String("INSERT INTO ") + m_name +
   //   QLatin1String(" (") + comma_join(fields) + QLatin1String(") VALUES (") + format_prepare(fields.size()) + ')';
-  QcSqlQuery _sql_query = sql_query().add_columns(fields).insert(); // Fixme: name clash
+  QoSqlQuery _sql_query = sql_query().add_columns(fields).insert(); // Fixme: name clash
   query.prepare(_sql_query.to_sql());
 
   return query;
 }
 
 QSqlQuery
-QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
+QoDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
 {
   QSqlQuery query;
   if (m_schema.has_sql_value_ctor())
@@ -260,14 +260,14 @@ QcDatabaseTable::complete_insert(const QVariantList & variants, bool _commit)
     query.addBindValue(value);
 
   // Fixme: namesapce ???
-  if (_commit and QcDatabase::exec_and_check_prepared_query(query))
+  if (_commit and QoDatabase::exec_and_check_prepared_query(query))
     commit();
 
   return query;
 }
 
 void
-QcDatabaseTable::add(QcRowTraits & row, bool commit)
+QoDatabaseTable::add(QoRowTraits & row, bool commit)
 {
   // if (not row.can_save()) {
   //   qWarning() << "Cannot save" << row; // Fixme: cannot log !
@@ -280,12 +280,12 @@ QcDatabaseTable::add(QcRowTraits & row, bool commit)
   QSqlQuery query = complete_insert(row.to_variant_list_sql(), commit); // duplicate = false
   int rowid = last_insert_id(query);
   // To only set rowid for such table, we must know the type at run time
-  //   e.g. dynamic_cast<QcRowWithId *>(row);
+  //   e.g. dynamic_cast<QoRowWithId *>(row);
   row.set_insert_id(rowid);
 }
 
 void
-QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
+QoDatabaseTable::add(const QList<QoRowTraits *> & rows, bool _commit)
 {
   QSqlQuery query;
   if (m_schema.has_sql_value_ctor())
@@ -301,7 +301,7 @@ QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
     int i = 0;
     for (const auto & value : row->to_variant_list_sql())
       query.bindValue(i++, value);
-    if (QcDatabase::exec_and_check_prepared_query(query))
+    if (QoDatabase::exec_and_check_prepared_query(query))
       row->set_insert_id(last_insert_id(query));
   }
 
@@ -310,19 +310,19 @@ QcDatabaseTable::add(const QList<QcRowTraits *> & rows, bool _commit)
 }
 
 void
-QcDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool _commit)
+QoDatabaseTable::bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool _commit)
 {
   // qATInfo() << "Bind on" << query.lastQuery() << kwargs;
 
   for (const auto & value : kwargs.values())
     query.addBindValue(value);
 
-  if (_commit and QcDatabase::exec_and_check_prepared_query(query))
+  if (_commit and QoDatabase::exec_and_check_prepared_query(query))
     commit();
 }
 
 QSqlQuery
-QcDatabaseTable::prepare_insert(const QStringList & fields)
+QoDatabaseTable::prepare_insert(const QStringList & fields)
 {
   QSqlQuery query = m_database->new_query();
   QString sql_query =
@@ -334,7 +334,7 @@ QcDatabaseTable::prepare_insert(const QStringList & fields)
 }
 
 QSqlQuery
-QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
+QoDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
 {
   QSqlQuery query = prepare_insert(kwargs.keys());
   qATInfo() << query.lastQuery() << kwargs;
@@ -344,14 +344,14 @@ QcDatabaseTable::insert(const QVariantHash & kwargs, bool commit)
 }
 
 QSqlQuery
-QcDatabaseTable::select_all() // const // Fixme: sql_query() is not const due to QcSqlQuery::exec
+QoDatabaseTable::select_all() // const // Fixme: sql_query() is not const due to QoSqlQuery::exec
 {
   QSqlQuery query = m_database->new_query();
 
-  QcSqlQuery _sql_query = sql_query(); // Fixme: name clash
+  QoSqlQuery _sql_query = sql_query(); // Fixme: name clash
   for (const auto & field : m_schema) {
-    // QcSqlField sql_field = field->to_sql_field()
-    // need a QcSqlFieldPtr alive
+    // QoSqlField sql_field = field->to_sql_field()
+    // need a QoSqlFieldPtr alive
     QString sql_field = field->name();
     if (field->has_sql_value_getter())
       _sql_query.add_column(field->sql_value_getter()); // Fixme: pass field ?
@@ -361,29 +361,29 @@ QcDatabaseTable::select_all() // const // Fixme: sql_query() is not const due to
   _sql_query.all();
   qATInfo() << _sql_query.to_sql();
 
-  QcDatabase::exec_and_check(query, _sql_query);
+  QoDatabase::exec_and_check(query, _sql_query);
 
   return query;
 }
 
 QSqlQuery
-QcDatabaseTable::select(const QStringList & fields, const QString & where) const
+QoDatabaseTable::select(const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = m_database->new_query();
   // Fixme: use query api ?
   //   but only strings : basic
-  //   modify ORM to use QcSqlField instead
+  //   modify ORM to use QoSqlField instead
   QString sql_query = QLatin1String("SELECT ") + comma_join(fields) + QLatin1String(" FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;
   qATInfo() << sql_query << fields;
-  QcDatabase::exec_and_check(query, sql_query);
+  QoDatabase::exec_and_check(query, sql_query);
 
   return query;
 }
 
 QSqlRecord
-QcDatabaseTable::select_one(const QStringList & fields, const QString & where) const
+QoDatabaseTable::select_one(const QStringList & fields, const QString & where) const
 {
   QSqlQuery query = select(fields, where);
   QSqlRecord record;
@@ -398,7 +398,7 @@ QcDatabaseTable::select_one(const QStringList & fields, const QString & where) c
 }
 
 QSqlRecord
-QcDatabaseTable::select_one_where(const QString & where) const
+QoDatabaseTable::select_one_where(const QString & where) const
 {
   QStringList fields(QLatin1String("*"));
   // if (m_schema.has_rowid_primary_key())
@@ -407,7 +407,7 @@ QcDatabaseTable::select_one_where(const QString & where) const
 }
 
 int
-QcDatabaseTable::count(const QString & where) const
+QoDatabaseTable::count(const QString & where) const
 {
   QSqlQuery query = select(QLatin1String("COUNT()"), where);
   if (query.next()) // only one row is returned
@@ -417,7 +417,7 @@ QcDatabaseTable::count(const QString & where) const
 }
 
 int
-QcDatabaseTable::rowid(const QString & where) const
+QoDatabaseTable::rowid(const QString & where) const
 {
   QSqlQuery query = select(QLatin1String("rowid"), where);
   int rowid = -1;
@@ -433,7 +433,7 @@ QcDatabaseTable::rowid(const QString & where) const
 }
 
 QSqlQuery
-QcDatabaseTable::join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const
+QoDatabaseTable::join(JoinType join_type, const QoDatabaseTable & table2, const QString & where) const
 {
   QSqlQuery query = m_database->new_query();
 
@@ -448,8 +448,8 @@ QcDatabaseTable::join(JoinType join_type, const QcDatabaseTable & table2, const 
 
   const QString & name1 = m_name;
   const QString & name2 = table2.m_name;
-  const QcSchema & schema1 = m_schema;
-  const QcSchema & schema2 = table2.m_schema;
+  const QoSchema & schema1 = m_schema;
+  const QoSchema & schema2 = table2.m_schema;
   QStringList fields1 = schema1.prefixed_field_names();
   QStringList fields2 = schema2.prefixed_field_names();
   QStringList fields = fields1 + fields2;
@@ -457,13 +457,13 @@ QcDatabaseTable::join(JoinType join_type, const QcDatabaseTable & table2, const 
   QString sql_query = QLatin1String("SELECT ") + comma_join(fields) +
     QLatin1String(" FROM ") + name1 + join_string + QLatin1String(" JOIN ") + name2 +
     QLatin1String(" WHERE ") + where;
-  QcDatabase::exec_and_check(query, sql_query);
+  QoDatabase::exec_and_check(query, sql_query);
 
   return query;
 }
 
 QSqlQuery
-QcDatabaseTable::prepare_update(const QStringList & fields, const QString & where)
+QoDatabaseTable::prepare_update(const QStringList & fields, const QString & where)
 {
   QSqlQuery query = m_database->new_query();
   QString sql_query = QLatin1String("UPDATE ") + m_name + QLatin1String(" SET ") + format_prepare_update(fields);
@@ -475,7 +475,7 @@ QcDatabaseTable::prepare_update(const QStringList & fields, const QString & wher
 }
 
 QSqlQuery
-QcDatabaseTable::update(const QVariantHash & kwargs, const QString & where)
+QoDatabaseTable::update(const QVariantHash & kwargs, const QString & where)
 {
   QSqlQuery query = prepare_update(kwargs.keys(), where);
   bind_and_exec(query, kwargs, true);
@@ -485,14 +485,14 @@ QcDatabaseTable::update(const QVariantHash & kwargs, const QString & where)
 }
 
 QSqlQuery
-QcDatabaseTable::delete_row(const QString & where)
+QoDatabaseTable::delete_row(const QString & where)
 {
   QSqlQuery query = m_database->new_query();
   QString sql_query = QLatin1String("DELETE FROM ") + m_name;
   if (!where.isEmpty())
     sql_query += QLatin1String(" WHERE ") + where;
   // Fixme: execute_query ?
-  QcDatabase::exec_and_check(query, sql_query);
+  QoDatabase::exec_and_check(query, sql_query);
 
   return query;
 }

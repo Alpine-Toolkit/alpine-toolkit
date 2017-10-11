@@ -46,12 +46,12 @@
 
 /**************************************************************************************************/
 
-class QcDatabase;
-class QcSqlQuery;
+class QoDatabase;
+class QoSqlQuery;
 
 /**************************************************************************************************/
 
-class QcDatabaseTable
+class QoDatabaseTable
 {
 public:
   static QString format_prepare(int number_of_fields);
@@ -68,25 +68,25 @@ public:
   };
 
 public:
-  QcDatabaseTable();
-  QcDatabaseTable(QcDatabase * database, const QString & name);
-  QcDatabaseTable(QcDatabase * database, const QcSchema & schema);
-  QcDatabaseTable(const QcDatabaseTable & other);
-  ~QcDatabaseTable();
+  QoDatabaseTable();
+  QoDatabaseTable(QoDatabase * database, const QString & name);
+  QoDatabaseTable(QoDatabase * database, const QoSchema & schema);
+  QoDatabaseTable(const QoDatabaseTable & other);
+  ~QoDatabaseTable();
 
-  QcDatabaseTable & operator=(const QcDatabaseTable & other);
+  QoDatabaseTable & operator=(const QoDatabaseTable & other);
 
-  QcDatabase * database() { return m_database; }
-  SqlFlavour sql_flavour() const; // QcDatabase is incomplete
-  const QcSchema & schema() { return m_schema; }
+  QoDatabase * database() { return m_database; }
+  SqlFlavour sql_flavour() const; // QoDatabase is incomplete
+  const QoSchema & schema() { return m_schema; }
   const QString & name() { return m_name; } // m_schema.name()
 
   bool exists() const;
   bool create();
   bool drop();
 
-  QcSqlQuery sql_query();
-  QSqlQuery exec(const QcSqlQuery & query); // Fixme: execute_query
+  QoSqlQuery sql_query();
+  QSqlQuery exec(const QoSqlQuery & query); // Fixme: execute_query
 
   QSqlQuery select_all(); // const
   QSqlQuery select(const QStringList & fields, const QString & where = QString()) const;
@@ -123,7 +123,7 @@ public:
   QSqlRecord select_by_id(int rowid) const  {
     return select_one_where(kwarg_for_id(rowid));
   }
-  // select_one(const QList<QcSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
+  // select_one(const QList<QoSchemaField> & fields, const QVariantHash & kwargs) // -> success/error callback, return QList<QVariant> ?
 
   int count(const QString & where = QString()) const;
   int count(const QVariantHash & kwargs) const {
@@ -134,13 +134,13 @@ public:
     return rowid(format_simple_where(kwargs));
   }
 
-  QSqlQuery join(JoinType join_type, const QcDatabaseTable & table2, const QString & where) const;
+  QSqlQuery join(JoinType join_type, const QoDatabaseTable & table2, const QString & where) const;
 
   // Add a complete row
   QSqlQuery complete_insert(const QVariantList & variants, bool commit = true);
   // Add a row or rows
-  void add(QcRowTraits & row, bool commit = true);
-  void add(const QList<QcRowTraits *> & rows, bool commit = true);
+  void add(QoRowTraits & row, bool commit = true);
+  void add(const QList<QoRowTraits *> & rows, bool commit = true);
 
   QSqlQuery insert(const QVariantHash & kwargs, bool commit = true);
 
@@ -171,8 +171,8 @@ private:
   void bind_and_exec(QSqlQuery & query, const QVariantHash & kwargs, bool commit);
 
 private:
-  QcDatabase * m_database = nullptr; // ptr for default ctor
-  QcSchema m_schema;
+  QoDatabase * m_database = nullptr; // ptr for default ctor
+  QoSchema m_schema;
   QString m_name;
 };
 

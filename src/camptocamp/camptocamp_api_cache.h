@@ -42,7 +42,7 @@
 
 /**************************************************************************************************/
 
-class C2cApiCache : public QcSqliteDatabase, public QcDatabaseSchema
+class C2cApiCache : public QoSqliteDatabase, public QoDatabaseSchema
 {
 public:
   C2cApiCache(const QString & sqlite_path);
@@ -65,8 +65,8 @@ private:
   void update_metadata(const QString & key, const QString & value);
 
 private:
-  QcDatabaseTable * m_metadata_table;
-  QcDatabaseTable * m_document_table;
+  QoDatabaseTable * m_metadata_table;
+  QoDatabaseTable * m_document_table;
 };
 
 /**************************************************************************************************/

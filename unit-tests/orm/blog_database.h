@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-class BlogDatabase : public QcSqliteDatabase
+class BlogDatabase : public QoSqliteDatabase
 {
 public:
   typedef BlogApplicationSchema DatabaseSchema;

@@ -42,10 +42,10 @@
 
 
 DirectorySchema::DirectorySchema()
-: QcSchema(QLatin1String("Directory"), QLatin1String("directory"))
+: QoSchema(QLatin1String("Directory"), QLatin1String("directory"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ DirectorySchema::DirectorySchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -70,7 +70,7 @@ DirectorySchema::DirectorySchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("parent"),
       QLatin1String("directory.id"),
       QLatin1String("int"),
@@ -91,7 +91,7 @@ DirectorySchema::~DirectorySchema()
 
 Directory::Directory()
   : QObject(),
-    QcRow<DirectorySchema>(),
+    QoRow<DirectorySchema>(),
     m_id(),
     m_name(),
     m_parent()
@@ -100,7 +100,7 @@ Directory::Directory()
 
 Directory::Directory(const Directory & other)
   : QObject(),
-    QcRow<DirectorySchema>(other),
+    QoRow<DirectorySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_parent(other.m_parent)
@@ -132,7 +132,7 @@ Directory::Directory(const QVariantList & variants)
 }
 
 Directory::Directory(const QSqlRecord & record)
- : QcRow<DirectorySchema>(record)
+ : QoRow<DirectorySchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -140,7 +140,7 @@ Directory::Directory(const QSqlRecord & record)
 }
 
 Directory::Directory(const QSqlQuery & query, int offset)
- : QcRow<DirectorySchema>(query)
+ : QoRow<DirectorySchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -157,7 +157,7 @@ Directory &
 Directory::operator=(const Directory & other)
 {
   if (this != &other) {
-    QcRow<DirectorySchema>::operator=(other);
+    QoRow<DirectorySchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_parent = other.m_parent;
@@ -170,7 +170,7 @@ Directory::operator=(const Directory & other)
 bool
 Directory::operator==(const Directory & other) const
 {
-  if (not QcRow<DirectorySchema>::operator==(other))
+  if (not QoRow<DirectorySchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -579,10 +579,10 @@ DirectoryModel::set_items(const ItemList & items)
 }
 
 KeySchema::KeySchema()
-: QcSchema(QLatin1String("Key"), QLatin1String("key"))
+: QoSchema(QLatin1String("Key"), QLatin1String("key"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -595,7 +595,7 @@ KeySchema::KeySchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -607,7 +607,7 @@ KeySchema::KeySchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("directory_id"),
       QLatin1String("directory.id"),
       QLatin1String("int"),
@@ -620,7 +620,7 @@ KeySchema::KeySchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("value"),
       QLatin1String("QVariant"),
       QLatin1String("blob"),
@@ -640,7 +640,7 @@ KeySchema::~KeySchema()
 
 Key::Key()
   : QObject(),
-    QcRow<KeySchema>(),
+    QoRow<KeySchema>(),
     m_id(),
     m_name(),
     m_directory_id(),
@@ -650,7 +650,7 @@ Key::Key()
 
 Key::Key(const Key & other)
   : QObject(),
-    QcRow<KeySchema>(other),
+    QoRow<KeySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_directory_id(other.m_directory_id),
@@ -686,7 +686,7 @@ Key::Key(const QVariantList & variants)
 }
 
 Key::Key(const QSqlRecord & record)
- : QcRow<KeySchema>(record)
+ : QoRow<KeySchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -695,7 +695,7 @@ Key::Key(const QSqlRecord & record)
 }
 
 Key::Key(const QSqlQuery & query, int offset)
- : QcRow<KeySchema>(query)
+ : QoRow<KeySchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -713,7 +713,7 @@ Key &
 Key::operator=(const Key & other)
 {
   if (this != &other) {
-    QcRow<KeySchema>::operator=(other);
+    QoRow<KeySchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_directory_id = other.m_directory_id;
@@ -727,7 +727,7 @@ Key::operator=(const Key & other)
 bool
 Key::operator==(const Key & other) const
 {
-  if (not QcRow<KeySchema>::operator==(other))
+  if (not QoRow<KeySchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -976,7 +976,7 @@ DirectoryPtr
 Key::directory()
 {
   if (m_directory.isNull())
-    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
+    // Fixme: query_by_id must be defined in QoDatabaseSchema but we cannot call register_row
     m_directory = database_schema()->query_by_id<Directory>(m_directory_id);
   return m_directory;
 }
@@ -1185,8 +1185,8 @@ KeyModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+BlogApplicationSchema::BlogApplicationSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_directory(nullptr),
     m_key(nullptr),
     m_directory_cache(),

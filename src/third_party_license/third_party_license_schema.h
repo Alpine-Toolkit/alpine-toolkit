@@ -62,7 +62,7 @@ class ThirdPartyLicensePtr;
 
 /**************************************************************************************************/
 
-class ThirdPartyLicenseSchema : public QcSchema
+class ThirdPartyLicenseSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -99,7 +99,7 @@ protected:
 
 /**************************************************************************************************/
 
-class ThirdPartyLicense : public QObject, public QcRow<ThirdPartyLicenseSchema>
+class ThirdPartyLicense : public QObject, public QoRow<ThirdPartyLicenseSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -256,7 +256,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   ThirdPartyLicensePtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   ThirdPartyLicensePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   ThirdPartyLicensePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -373,22 +373,22 @@ private:
 
 /**************************************************************************************************/
 
-class ThirdPartyLicenseDatabaseSchema : public QcDatabaseSchema
+class ThirdPartyLicenseDatabaseSchema : public QoDatabaseSchema
 {
 public:
-  ThirdPartyLicenseDatabaseSchema(QcDatabase & database);
+  ThirdPartyLicenseDatabaseSchema(QoDatabase & database);
   ThirdPartyLicenseDatabaseSchema(const ThirdPartyLicenseDatabaseSchema & other) = delete;
   ~ThirdPartyLicenseDatabaseSchema();
 
   ThirdPartyLicenseDatabaseSchema & operator=(const ThirdPartyLicenseDatabaseSchema & other) = delete;
 
-  QcDatabaseTable & third_party_license() { return *m_third_party_license; }
+  QoDatabaseTable & third_party_license() { return *m_third_party_license; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_third_party_license;
+  QoDatabaseTable * m_third_party_license;
   ThirdPartyLicenseCache m_third_party_license_cache;
 };
 

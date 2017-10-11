@@ -80,16 +80,16 @@
 
 /**************************************************************************************************/
 
-class QcDatabaseTable;
+class QoDatabaseTable;
 
 /**************************************************************************************************/
 
-class QcSqlExpressionTrait;
+class QoSqlExpressionTrait;
 
-typedef QSharedPointer<QcSqlExpressionTrait> QcSqlExpressionPtr;
+typedef QSharedPointer<QoSqlExpressionTrait> QcSqlExpressionPtr;
 typedef QList<QcSqlExpressionPtr> QcSqlExpressionList;
 
-class QcSqlExpressionTrait
+class QoSqlExpressionTrait
 {
 public:
   static QString quote_sql_identifier(const QString & name, SqlFlavour flavour);
@@ -112,7 +112,7 @@ public:
 
 // Curiously Recurring Template Pattern
 template <typename Derived>
-class QcSqlExpressionTraitCrtp : public QcSqlExpressionTrait
+class QoSqlExpressionTraitCrtp : public QoSqlExpressionTrait
 {
 public:
   virtual QcSqlExpressionPtr clone() const {
@@ -128,13 +128,13 @@ public:
 
 /**************************************************************************************************/
 
-class QcSqlAsExpression : public QcSqlExpressionTraitCrtp<QcSqlAsExpression>
+class QoSqlAsExpression : public QoSqlExpressionTraitCrtp<QoSqlAsExpression>
 {
 public:
-  QcSqlAsExpression(const QcSqlExpressionPtr & expression, const QString & label);
-  virtual ~QcSqlAsExpression() {}
+  QoSqlAsExpression(const QcSqlExpressionPtr & expression, const QString & label);
+  virtual ~QoSqlAsExpression() {}
 
-  operator QcSqlExpressionPtr () const { return QcSqlExpressionPtr(new QcSqlAsExpression(*this)); }
+  operator QcSqlExpressionPtr () const { return QcSqlExpressionPtr(new QoSqlAsExpression(*this)); }
 
   const QcSqlExpressionPtr & expression() const { return m_expression; }
   const QString & label() const { return m_label; }
@@ -148,16 +148,16 @@ private:
 
 /**************************************************************************************************/
 
-class QcSqlField : public QcSqlExpressionTraitCrtp<QcSqlField>
+class QoSqlField : public QoSqlExpressionTraitCrtp<QoSqlField>
 {
 public:
-  // QcSqlField();
-  QcSqlField(const QString & name);
-  QcSqlField(const QString & name, const QString & table_name);
-  QcSqlField(const QcSqlField & other);
-  virtual ~QcSqlField();
+  // QoSqlField();
+  QoSqlField(const QString & name);
+  QoSqlField(const QString & name, const QString & table_name);
+  QoSqlField(const QoSqlField & other);
+  virtual ~QoSqlField();
 
-  QcSqlField & operator=(const QcSqlField & other);
+  QoSqlField & operator=(const QoSqlField & other);
 
   const QString & name() const { return m_name; }
   void set_name(const QString & name) { m_name = name; }
@@ -167,7 +167,7 @@ public:
 
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 
-  // Fixme: cf. QcSqlAsExpression
+  // Fixme: cf. QoSqlAsExpression
   QString as(const QString & name, SqlFlavour flavour = SqlFlavour::ANSI) const;
   QString as(SqlFlavour flavour = SqlFlavour::ANSI) const; // concat tabl_name
 
@@ -195,20 +195,20 @@ public:
   QString m_table_name;
 };
 
-typedef QSharedPointer<QcSqlField> QcSqlFieldPtr;
-typedef QList<QcSqlField> QcFieldList;
+typedef QSharedPointer<QoSqlField> QoSqlFieldPtr;
+typedef QList<QoSqlField> QcFieldList;
 
 /**************************************************************************************************/
 
-class QcSqlPrepareValue : public QcSqlExpressionTraitCrtp<QcSqlPrepareValue>
+class QoSqlPrepareValue : public QoSqlExpressionTraitCrtp<QoSqlPrepareValue>
 {
 public:
-  // QcSqlPrepareValue();
-  QcSqlPrepareValue();
-  QcSqlPrepareValue(const QcSqlPrepareValue & other);
-  virtual ~QcSqlPrepareValue();
+  // QoSqlPrepareValue();
+  QoSqlPrepareValue();
+  QoSqlPrepareValue(const QoSqlPrepareValue & other);
+  virtual ~QoSqlPrepareValue();
 
-  QcSqlPrepareValue & operator=(const QcSqlPrepareValue & other);
+  QoSqlPrepareValue & operator=(const QoSqlPrepareValue & other);
 
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 };
@@ -219,31 +219,31 @@ public:
  * e.g. field operator value
  */
 template<const char * Symbol>
-class QcSqlFieldExpression : public QcSqlExpressionTraitCrtp<QcSqlFieldExpression<Symbol>>
+class QoSqlFieldExpression : public QoSqlExpressionTraitCrtp<QoSqlFieldExpression<Symbol>>
 {
 public:
-  QcSqlFieldExpression(const QcSqlField & field, const QVariant & value);
-  virtual ~QcSqlFieldExpression() {}
+  QoSqlFieldExpression(const QoSqlField & field, const QVariant & value);
+  virtual ~QoSqlFieldExpression() {}
 
-  const QcSqlField & field() const { return m_field; }
+  const QoSqlField & field() const { return m_field; }
   const QVariant & value() const { return m_value; }
 
   QString symbol() const { return Symbol; }
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 
 private:
-  QcSqlField m_field; // Ptr ?
+  QoSqlField m_field; // Ptr ?
   QVariant m_value;
 };
 
 /**************************************************************************************************/
 
 template<const char * Symbol>
-class QcSqlFunctionExpression : public QcSqlExpressionTraitCrtp<QcSqlFunctionExpression<Symbol>>
+class QoSqlFunctionExpression : public QoSqlExpressionTraitCrtp<QoSqlFunctionExpression<Symbol>>
 {
 public:
-  QcSqlFunctionExpression(const QcSqlExpressionPtr & expression);
-  virtual ~QcSqlFunctionExpression() {}
+  QoSqlFunctionExpression(const QcSqlExpressionPtr & expression);
+  virtual ~QoSqlFunctionExpression() {}
 
   const QcSqlExpressionPtr & expression() const { return m_expression; }
 
@@ -256,60 +256,60 @@ private:
 
 /**************************************************************************************************/
 
-class QcSqlFieldExpressionTwoValue : public QcSqlExpressionTrait // Crtp<QcSqlFieldExpressionTwoValue>
+class QoSqlFieldExpressionTwoValue : public QoSqlExpressionTrait // Crtp<QoSqlFieldExpressionTwoValue>
 {
 public:
-  QcSqlFieldExpressionTwoValue(const QcSqlField & field, const QVariant & value1, const QVariant & value2);
-  virtual ~QcSqlFieldExpressionTwoValue() {}
+  QoSqlFieldExpressionTwoValue(const QoSqlField & field, const QVariant & value1, const QVariant & value2);
+  virtual ~QoSqlFieldExpressionTwoValue() {}
 
-  const QcSqlField & field() const { return m_field; }
+  const QoSqlField & field() const { return m_field; }
   const QVariant & value1() const { return m_value1; }
   const QVariant & value2() const { return m_value2; }
 
 protected:
-  QcSqlField m_field; // Ptr ?
+  QoSqlField m_field; // Ptr ?
   QVariant m_value1;
   QVariant m_value2;
 };
 
 /**************************************************************************************************/
 
-class QcSqlBetweenExpression : public QcSqlFieldExpressionTwoValue
+class QoSqlBetweenExpression : public QoSqlFieldExpressionTwoValue
 {
 public:
-  using QcSqlFieldExpressionTwoValue::QcSqlFieldExpressionTwoValue;
+  using QoSqlFieldExpressionTwoValue::QoSqlFieldExpressionTwoValue;
 
-  CloneableExpression(QcSqlBetweenExpression);
+  CloneableExpression(QoSqlBetweenExpression);
 
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 };
 
 /**************************************************************************************************/
 
-class QcSqlFieldExpressionValueList : public QcSqlExpressionTrait // Crtp<QcSqlFieldExpressionValueList>
+class QoSqlFieldExpressionValueList : public QoSqlExpressionTrait // Crtp<QoSqlFieldExpressionValueList>
 {
 public:
-  QcSqlFieldExpressionValueList(const QcSqlField & field, const QVariantList & values);
-  virtual ~QcSqlFieldExpressionValueList() {}
+  QoSqlFieldExpressionValueList(const QoSqlField & field, const QVariantList & values);
+  virtual ~QoSqlFieldExpressionValueList() {}
 
-  const QcSqlField & field() const { return m_field; }
+  const QoSqlField & field() const { return m_field; }
   const QVariantList & values() const { return m_values; }
 
   QStringList string_values() const;
 
 protected:
-  QcSqlField m_field; // Ptr ?
+  QoSqlField m_field; // Ptr ?
   QVariantList m_values;
 };
 
 /**************************************************************************************************/
 
-class QcSqlInExpression : public QcSqlFieldExpressionValueList
+class QoSqlInExpression : public QoSqlFieldExpressionValueList
 {
 public:
-  using QcSqlFieldExpressionValueList::QcSqlFieldExpressionValueList;
+  using QoSqlFieldExpressionValueList::QoSqlFieldExpressionValueList;
 
-  CloneableExpression(QcSqlInExpression);
+  CloneableExpression(QoSqlInExpression);
 
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 };
@@ -320,19 +320,19 @@ public:
  * e.g. field IS NULL
  */
 template<const char * Suffix>
-class QcSqlFieldSuffixExpression : public QcSqlExpressionTraitCrtp<QcSqlFieldSuffixExpression<Suffix>>
+class QoSqlFieldSuffixExpression : public QoSqlExpressionTraitCrtp<QoSqlFieldSuffixExpression<Suffix>>
 {
 public:
-  QcSqlFieldSuffixExpression(const QcSqlField & field);
-  virtual ~QcSqlFieldSuffixExpression() {}
+  QoSqlFieldSuffixExpression(const QoSqlField & field);
+  virtual ~QoSqlFieldSuffixExpression() {}
 
-  const QcSqlField & field() const { return m_field; }
+  const QoSqlField & field() const { return m_field; }
 
   QString suffix() const { return Suffix; }
   QString to_sql(SqlFlavour flavour = SqlFlavour::ANSI) const;
 
 private:
-  QcSqlField m_field; // Ptr ?
+  QoSqlField m_field; // Ptr ?
 };
 
 /**************************************************************************************************/
@@ -342,11 +342,11 @@ private:
  * e.g. NOT field like "%foo%"
  */
 template<const char * Symbol>
-class QcSqlUnaryExpression : public QcSqlExpressionTraitCrtp<QcSqlUnaryExpression<Symbol>>
+class QoSqlUnaryExpression : public QoSqlExpressionTraitCrtp<QoSqlUnaryExpression<Symbol>>
 {
 public:
-  QcSqlUnaryExpression(const QcSqlExpressionPtr & expression);
-  virtual ~QcSqlUnaryExpression() {}
+  QoSqlUnaryExpression(const QcSqlExpressionPtr & expression);
+  virtual ~QoSqlUnaryExpression() {}
 
   const QcSqlExpressionPtr & expression() const { return m_expression; }
 
@@ -364,12 +364,12 @@ private:
  *  e.g. field1 = 1 AND filed2 = 2
  */
 template<const char * Symbol>
-class QcSqlBinaryExpression : public QcSqlExpressionTraitCrtp<QcSqlBinaryExpression<Symbol>>
+class QoSqlBinaryExpression : public QoSqlExpressionTraitCrtp<QoSqlBinaryExpression<Symbol>>
 {
 public:
-  QcSqlBinaryExpression(const QcSqlExpressionPtr & expression1,
+  QoSqlBinaryExpression(const QcSqlExpressionPtr & expression1,
                         const QcSqlExpressionPtr & expression2);
-  virtual ~QcSqlBinaryExpression() {}
+  virtual ~QoSqlBinaryExpression() {}
 
   const QcSqlExpressionPtr & expression1() const { return m_expression1; }
   const QcSqlExpressionPtr & expression2() const { return m_expression2; }
@@ -410,11 +410,11 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
  */
 
 template<const char * Symbol>
-class QcSqlSpatialFunctionExpression : public QcSqlExpressionTraitCrtp<QcSqlFunctionExpression<Symbol>>
+class QoSqlSpatialFunctionExpression : public QoSqlExpressionTraitCrtp<QoSqlFunctionExpression<Symbol>>
 {
 public:
-  QcSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid = 4326);
-  virtual ~QcSqlSpatialFunctionExpression() {}
+  QoSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid = 4326);
+  virtual ~QoSqlSpatialFunctionExpression() {}
 
   const QcSqlExpressionPtr & expression() const { return m_expression; }
 
@@ -437,15 +437,15 @@ QcSqlExpressionPtr ST_AsBinary(const QcSqlExpressionPtr & expression);
 
 /**************************************************************************************************/
 
-// Fixme: QcSqlQuery vs QSqlQuery ???
+// Fixme: QoSqlQuery vs QSqlQuery ???
 // If we split table / string version
 // then we must return this and not *this and we have to deal with -> instead of .
-// else we have to use QcDatabaseTable(nullptr, name) and build a fake schema !
+// else we have to use QoDatabaseTable(nullptr, name) and build a fake schema !
 
-class QcSqlQuery
+class QoSqlQuery
 {
 public:
-  typedef QList<QcSqlQuery> QueryList;
+  typedef QList<QoSqlQuery> QueryList;
 
 private:
   enum class QueryType {
@@ -470,12 +470,12 @@ private:
   };
 
 public:
-  QcSqlQuery();
-  QcSqlQuery(QcDatabaseTable * table);
-  QcSqlQuery(const QcSqlQuery & other);
-  ~QcSqlQuery();
+  QoSqlQuery();
+  QoSqlQuery(QoDatabaseTable * table);
+  QoSqlQuery(const QoSqlQuery & other);
+  ~QoSqlQuery();
 
-  QcSqlQuery & operator=(const QcSqlQuery & other);
+  QoSqlQuery & operator=(const QoSqlQuery & other);
 
   const QString & table_name() const;
   SqlFlavour sql_flavour() const;
@@ -484,61 +484,61 @@ public:
   SelectType select_type() const { return m_select_type; }
 
   // session.query(func.count(distinct(User.name)))
-  QcSqlQuery & distinct();
+  QoSqlQuery & distinct();
 
-  QcSqlQuery & count();
-  QcSqlQuery & exists();
+  QoSqlQuery & count();
+  QoSqlQuery & exists();
 
-  QcSqlQuery & add_column(const QcSqlExpressionPtr & expression);
-  QcSqlQuery & add_column(const QString & name) {
-    return add_column(QcSqlField(name)); // Fixme: , table_name()
+  QoSqlQuery & add_column(const QcSqlExpressionPtr & expression);
+  QoSqlQuery & add_column(const QString & name) {
+    return add_column(QoSqlField(name)); // Fixme: , table_name()
   }
-  QcSqlQuery & add_columns(const QStringList & names);
-  QcSqlQuery & add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression);
-  QcSqlQuery & add_column(const QString & name, const QcSqlExpressionPtr & value_expression) {
-    return add_column(QcSqlField(name), value_expression);
+  QoSqlQuery & add_columns(const QStringList & names);
+  QoSqlQuery & add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression);
+  QoSqlQuery & add_column(const QString & name, const QcSqlExpressionPtr & value_expression) {
+    return add_column(QoSqlField(name), value_expression);
   }
 
-  QcSqlQuery & filter(const QcSqlExpressionPtr & expression);
-  QcSqlQuery & filter_by(const QcSqlField & field, const QVariant & value) {
+  QoSqlQuery & filter(const QcSqlExpressionPtr & expression);
+  QoSqlQuery & filter_by(const QoSqlField & field, const QVariant & value) {
     return filter(field == value);
   }
 
-  QcSqlQuery & group_by(const QcSqlField & field);
-  QcSqlQuery & group_by(const QString & name) {
-    return group_by(QcSqlField(name));
+  QoSqlQuery & group_by(const QoSqlField & field);
+  QoSqlQuery & group_by(const QString & name) {
+    return group_by(QoSqlField(name));
   }
 
-  QcSqlQuery & order_by(const QcSqlExpressionPtr & expression);
-  QcSqlQuery & order_by(const QcSqlField & field) {
-    return order_by(QcSqlExpressionPtr(new QcSqlField(field)));
+  QoSqlQuery & order_by(const QcSqlExpressionPtr & expression);
+  QoSqlQuery & order_by(const QoSqlField & field) {
+    return order_by(QcSqlExpressionPtr(new QoSqlField(field)));
   }
 
-  QcSqlQuery & having(const QcSqlExpressionPtr & expression);
+  QoSqlQuery & having(const QcSqlExpressionPtr & expression);
 
   int get_limit() const { return m_limit; } // versus limit !
   bool unlimited() const { return m_limit == -1; }
 
-  QcSqlQuery & limit(int value); // not set_limit !
-  QcSqlQuery & all() { return limit(-1); }
-  QcSqlQuery & first() { return limit(1); }
-  QcSqlQuery & offset(int value); // not set_offset !
-  QcSqlQuery & slice(int start, int stop);
+  QoSqlQuery & limit(int value); // not set_limit !
+  QoSqlQuery & all() { return limit(-1); }
+  QoSqlQuery & first() { return limit(1); }
+  QoSqlQuery & offset(int value); // not set_offset !
+  QoSqlQuery & slice(int start, int stop);
 
-  QcSqlQuery & one(); // Fixme: ???
+  QoSqlQuery & one(); // Fixme: ???
 
-  // QcSqlQuery & union_(const QcSqlQuery & query); // union is keyword
+  // QoSqlQuery & union_(const QoSqlQuery & query); // union is keyword
   // SELECT * FROM (SELECT * FROM (SELECT * FROM X UNION SELECT * FROM y) UNION SELECT * FROM Z)
-  // QcSqlQuery & union_(const QueryList & query);
+  // QoSqlQuery & union_(const QueryList & query);
   // SELECT * FROM (SELECT * FROM X UNION SELECT * FROM y UNION SELECT * FROM Z)
-  // QcSqlQuery & union_all(const QcSqlQuery & query); // UNION ALL
-  // QcSqlQuery & union_all(const QueryList & query);
+  // QoSqlQuery & union_all(const QoSqlQuery & query); // UNION ALL
+  // QoSqlQuery & union_all(const QueryList & query);
 
-  QcSqlQuery & insert();
-  QcSqlQuery & update();
+  QoSqlQuery & insert();
+  QoSqlQuery & update();
 
-  QcSqlQuery & delete_(); // delete is a key word
-  // QcSqlQuery & update(const QcSqlField & field, const QVariant & value);
+  QoSqlQuery & delete_(); // delete is a key word
+  // QoSqlQuery & update(const QoSqlField & field, const QVariant & value);
 
   QString to_sql() const;
   operator QString() const { return to_sql(); }
@@ -554,14 +554,14 @@ private:
   QStringList fields_for_update() const;
   QString table_name_as(const QString & name) const;
   QString quote_sql_identifier(const QString & name) const {
-    return QcSqlExpressionTrait::quote_sql_identifier(name, sql_flavour());
+    return QoSqlExpressionTrait::quote_sql_identifier(name, sql_flavour());
   }
   QString insert_values(const SqlFlavour & flavour) const;
 
   // virtual QString quote_sql_identifier(const QString & name) const;
 
 private:
-  QcDatabaseTable * m_table;
+  QoDatabaseTable * m_table;
   QueryType m_query_type = QueryType::None;
   SelectType m_select_type = SelectType::None;
   QBitArray m_flags;

@@ -34,7 +34,7 @@
 /**************************************************************************************************/
 
 BleauSqliteDatabase::BleauSqliteDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(sqlite_path),
+  : QoSqliteDatabase(sqlite_path),
     m_schema(nullptr)
 {
   m_schema = new BleauSchema(*this);

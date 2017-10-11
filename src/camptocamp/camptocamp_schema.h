@@ -65,7 +65,7 @@ class C2cAreaAssociationsPtr;
 
 /**************************************************************************************************/
 
-class C2cAreaAssociationsSchema : public QcSchema
+class C2cAreaAssociationsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -94,7 +94,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cAreaAssociations : public QObject, public QcRow<C2cAreaAssociationsSchema>
+class C2cAreaAssociations : public QObject, public QoRow<C2cAreaAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int area_id READ area_id WRITE set_area_id NOTIFY area_idChanged)
@@ -195,7 +195,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cAreaAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cAreaAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cAreaAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -309,7 +309,7 @@ class C2cAreasPtr;
 
 /**************************************************************************************************/
 
-class C2cAreasSchema : public QcSchema
+class C2cAreasSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -338,7 +338,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cAreas : public QObject, public QcRow<C2cAreasSchema>
+class C2cAreas : public QObject, public QoRow<C2cAreasSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -439,7 +439,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cAreasPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cAreasPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cAreasPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -553,7 +553,7 @@ class C2cArticlesPtr;
 
 /**************************************************************************************************/
 
-class C2cArticlesSchema : public QcSchema
+class C2cArticlesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -584,7 +584,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cArticles : public QObject, public QcRow<C2cArticlesSchema>
+class C2cArticles : public QObject, public QoRow<C2cArticlesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -699,7 +699,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cArticlesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cArticlesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cArticlesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -815,7 +815,7 @@ class C2cAssociationsPtr;
 
 /**************************************************************************************************/
 
-class C2cAssociationsSchema : public QcSchema
+class C2cAssociationsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -846,7 +846,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cAssociations : public QObject, public QcRow<C2cAssociationsSchema>
+class C2cAssociations : public QObject, public QoRow<C2cAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int child_document_id READ child_document_id WRITE set_child_document_id NOTIFY child_document_idChanged)
@@ -961,7 +961,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1077,7 +1077,7 @@ class C2cBooksPtr;
 
 /**************************************************************************************************/
 
-class C2cBooksSchema : public QcSchema
+class C2cBooksSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -1114,7 +1114,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cBooks : public QObject, public QcRow<C2cBooksSchema>
+class C2cBooks : public QObject, public QoRow<C2cBooksSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1271,7 +1271,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cBooksPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cBooksPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cBooksPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1393,7 +1393,7 @@ class C2cDocumentsPtr;
 
 /**************************************************************************************************/
 
-class C2cDocumentsSchema : public QcSchema
+class C2cDocumentsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -1426,7 +1426,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cDocuments : public QObject, public QcRow<C2cDocumentsSchema>
+class C2cDocuments : public QObject, public QoRow<C2cDocumentsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1555,7 +1555,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cDocumentsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cDocumentsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cDocumentsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1673,7 +1673,7 @@ class C2cDocumentsGeometriesPtr;
 
 /**************************************************************************************************/
 
-class C2cDocumentsGeometriesSchema : public QcSchema
+class C2cDocumentsGeometriesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -1704,7 +1704,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cDocumentsGeometries : public QObject, public QcRow<C2cDocumentsGeometriesSchema>
+class C2cDocumentsGeometries : public QObject, public QoRow<C2cDocumentsGeometriesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -1819,7 +1819,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cDocumentsGeometriesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cDocumentsGeometriesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cDocumentsGeometriesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1935,7 +1935,7 @@ class C2cDocumentsLocalesPtr;
 
 /**************************************************************************************************/
 
-class C2cDocumentsLocalesSchema : public QcSchema
+class C2cDocumentsLocalesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -1970,7 +1970,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cDocumentsLocales : public QObject, public QcRow<C2cDocumentsLocalesSchema>
+class C2cDocumentsLocales : public QObject, public QoRow<C2cDocumentsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -2113,7 +2113,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cDocumentsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cDocumentsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cDocumentsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -2233,7 +2233,7 @@ class C2cDocumentsTopicsPtr;
 
 /**************************************************************************************************/
 
-class C2cDocumentsTopicsSchema : public QcSchema
+class C2cDocumentsTopicsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -2262,7 +2262,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cDocumentsTopics : public QObject, public QcRow<C2cDocumentsTopicsSchema>
+class C2cDocumentsTopics : public QObject, public QoRow<C2cDocumentsTopicsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_locale_id READ document_locale_id WRITE set_document_locale_id NOTIFY document_locale_idChanged)
@@ -2363,7 +2363,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cDocumentsTopicsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cDocumentsTopicsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cDocumentsTopicsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -2477,7 +2477,7 @@ class C2cDocumentsVersionsPtr;
 
 /**************************************************************************************************/
 
-class C2cDocumentsVersionsSchema : public QcSchema
+class C2cDocumentsVersionsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -2511,7 +2511,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cDocumentsVersions : public QObject, public QcRow<C2cDocumentsVersionsSchema>
+class C2cDocumentsVersions : public QObject, public QoRow<C2cDocumentsVersionsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -2647,7 +2647,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cDocumentsVersionsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cDocumentsVersionsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cDocumentsVersionsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -2766,7 +2766,7 @@ class C2cImagesPtr;
 
 /**************************************************************************************************/
 
-class C2cImagesSchema : public QcSchema
+class C2cImagesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -2809,7 +2809,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cImages : public QObject, public QcRow<C2cImagesSchema>
+class C2cImages : public QObject, public QoRow<C2cImagesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3008,7 +3008,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cImagesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cImagesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cImagesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -3136,7 +3136,7 @@ class C2cMapAssociationsPtr;
 
 /**************************************************************************************************/
 
-class C2cMapAssociationsSchema : public QcSchema
+class C2cMapAssociationsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -3165,7 +3165,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cMapAssociations : public QObject, public QcRow<C2cMapAssociationsSchema>
+class C2cMapAssociations : public QObject, public QoRow<C2cMapAssociationsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3266,7 +3266,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cMapAssociationsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cMapAssociationsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cMapAssociationsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -3380,7 +3380,7 @@ class C2cMapsPtr;
 
 /**************************************************************************************************/
 
-class C2cMapsSchema : public QcSchema
+class C2cMapsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -3411,7 +3411,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cMaps : public QObject, public QcRow<C2cMapsSchema>
+class C2cMaps : public QObject, public QoRow<C2cMapsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3526,7 +3526,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cMapsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cMapsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cMapsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -3642,7 +3642,7 @@ class C2cOutingsPtr;
 
 /**************************************************************************************************/
 
-class C2cOutingsSchema : public QcSchema
+class C2cOutingsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -3694,7 +3694,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cOutings : public QObject, public QcRow<C2cOutingsSchema>
+class C2cOutings : public QObject, public QoRow<C2cOutingsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -3956,7 +3956,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cOutingsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cOutingsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cOutingsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -4093,7 +4093,7 @@ class C2cOutingsLocalesPtr;
 
 /**************************************************************************************************/
 
-class C2cOutingsLocalesSchema : public QcSchema
+class C2cOutingsLocalesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -4130,7 +4130,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cOutingsLocales : public QObject, public QcRow<C2cOutingsLocalesSchema>
+class C2cOutingsLocales : public QObject, public QoRow<C2cOutingsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -4287,7 +4287,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cOutingsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cOutingsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cOutingsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -4409,7 +4409,7 @@ class C2cRoutesPtr;
 
 /**************************************************************************************************/
 
-class C2cRoutesSchema : public QcSchema
+class C2cRoutesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -4480,7 +4480,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cRoutes : public QObject, public QcRow<C2cRoutesSchema>
+class C2cRoutes : public QObject, public QoRow<C2cRoutesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -4875,7 +4875,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cRoutesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cRoutesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cRoutesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -5031,7 +5031,7 @@ class C2cRoutesLocalesPtr;
 
 /**************************************************************************************************/
 
-class C2cRoutesLocalesSchema : public QcSchema
+class C2cRoutesLocalesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -5067,7 +5067,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cRoutesLocales : public QObject, public QcRow<C2cRoutesLocalesSchema>
+class C2cRoutesLocales : public QObject, public QoRow<C2cRoutesLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -5217,7 +5217,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cRoutesLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cRoutesLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cRoutesLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -5338,7 +5338,7 @@ class C2cUserPtr;
 
 /**************************************************************************************************/
 
-class C2cUserSchema : public QcSchema
+class C2cUserSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -5382,7 +5382,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cUser : public QObject, public QcRow<C2cUserSchema>
+class C2cUser : public QObject, public QoRow<C2cUserSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -5588,7 +5588,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cUserPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cUserPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cUserPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -5717,7 +5717,7 @@ class C2cUserProfilesPtr;
 
 /**************************************************************************************************/
 
-class C2cUserProfilesSchema : public QcSchema
+class C2cUserProfilesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -5747,7 +5747,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cUserProfiles : public QObject, public QcRow<C2cUserProfilesSchema>
+class C2cUserProfiles : public QObject, public QoRow<C2cUserProfilesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -5855,7 +5855,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cUserProfilesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cUserProfilesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cUserProfilesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -5970,7 +5970,7 @@ class C2cWaypointsPtr;
 
 /**************************************************************************************************/
 
-class C2cWaypointsSchema : public QcSchema
+class C2cWaypointsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -6045,7 +6045,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cWaypoints : public QObject, public QcRow<C2cWaypointsSchema>
+class C2cWaypoints : public QObject, public QoRow<C2cWaypointsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -6468,7 +6468,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cWaypointsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cWaypointsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cWaypointsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -6628,7 +6628,7 @@ class C2cWaypointsLocalesPtr;
 
 /**************************************************************************************************/
 
-class C2cWaypointsLocalesSchema : public QcSchema
+class C2cWaypointsLocalesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -6658,7 +6658,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cWaypointsLocales : public QObject, public QcRow<C2cWaypointsLocalesSchema>
+class C2cWaypointsLocales : public QObject, public QoRow<C2cWaypointsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -6766,7 +6766,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cWaypointsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cWaypointsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cWaypointsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -6881,7 +6881,7 @@ class C2cXreportsPtr;
 
 /**************************************************************************************************/
 
-class C2cXreportsSchema : public QcSchema
+class C2cXreportsSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -6927,7 +6927,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cXreports : public QObject, public QcRow<C2cXreportsSchema>
+class C2cXreports : public QObject, public QoRow<C2cXreportsSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int document_id READ document_id WRITE set_document_id NOTIFY document_idChanged)
@@ -7147,7 +7147,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cXreportsPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cXreportsPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cXreportsPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -7278,7 +7278,7 @@ class C2cXreportsLocalesPtr;
 
 /**************************************************************************************************/
 
-class C2cXreportsLocalesSchema : public QcSchema
+class C2cXreportsLocalesSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -7319,7 +7319,7 @@ protected:
 
 /**************************************************************************************************/
 
-class C2cXreportsLocales : public QObject, public QcRow<C2cXreportsLocalesSchema>
+class C2cXreportsLocales : public QObject, public QoRow<C2cXreportsLocalesSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -7504,7 +7504,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   C2cXreportsLocalesPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   C2cXreportsLocalesPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   C2cXreportsLocalesPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -7625,66 +7625,66 @@ private:
 
 /**************************************************************************************************/
 
-class C2c : public QcDatabaseSchema
+class C2c : public QoDatabaseSchema
 {
 public:
-  C2c(QcDatabase & database);
+  C2c(QoDatabase & database);
   C2c(const C2c & other) = delete;
   ~C2c();
 
   C2c & operator=(const C2c & other) = delete;
 
-  QcDatabaseTable & c2c_area_associations() { return *m_c2c_area_associations; }
-  QcDatabaseTable & c2c_areas() { return *m_c2c_areas; }
-  QcDatabaseTable & c2c_articles() { return *m_c2c_articles; }
-  QcDatabaseTable & c2c_associations() { return *m_c2c_associations; }
-  QcDatabaseTable & c2c_books() { return *m_c2c_books; }
-  QcDatabaseTable & c2c_documents() { return *m_c2c_documents; }
-  QcDatabaseTable & c2c_documents_geometries() { return *m_c2c_documents_geometries; }
-  QcDatabaseTable & c2c_documents_locales() { return *m_c2c_documents_locales; }
-  QcDatabaseTable & c2c_documents_topics() { return *m_c2c_documents_topics; }
-  QcDatabaseTable & c2c_documents_versions() { return *m_c2c_documents_versions; }
-  QcDatabaseTable & c2c_images() { return *m_c2c_images; }
-  QcDatabaseTable & c2c_map_associations() { return *m_c2c_map_associations; }
-  QcDatabaseTable & c2c_maps() { return *m_c2c_maps; }
-  QcDatabaseTable & c2c_outings() { return *m_c2c_outings; }
-  QcDatabaseTable & c2c_outings_locales() { return *m_c2c_outings_locales; }
-  QcDatabaseTable & c2c_routes() { return *m_c2c_routes; }
-  QcDatabaseTable & c2c_routes_locales() { return *m_c2c_routes_locales; }
-  QcDatabaseTable & c2c_user() { return *m_c2c_user; }
-  QcDatabaseTable & c2c_user_profiles() { return *m_c2c_user_profiles; }
-  QcDatabaseTable & c2c_waypoints() { return *m_c2c_waypoints; }
-  QcDatabaseTable & c2c_waypoints_locales() { return *m_c2c_waypoints_locales; }
-  QcDatabaseTable & c2c_xreports() { return *m_c2c_xreports; }
-  QcDatabaseTable & c2c_xreports_locales() { return *m_c2c_xreports_locales; }
+  QoDatabaseTable & c2c_area_associations() { return *m_c2c_area_associations; }
+  QoDatabaseTable & c2c_areas() { return *m_c2c_areas; }
+  QoDatabaseTable & c2c_articles() { return *m_c2c_articles; }
+  QoDatabaseTable & c2c_associations() { return *m_c2c_associations; }
+  QoDatabaseTable & c2c_books() { return *m_c2c_books; }
+  QoDatabaseTable & c2c_documents() { return *m_c2c_documents; }
+  QoDatabaseTable & c2c_documents_geometries() { return *m_c2c_documents_geometries; }
+  QoDatabaseTable & c2c_documents_locales() { return *m_c2c_documents_locales; }
+  QoDatabaseTable & c2c_documents_topics() { return *m_c2c_documents_topics; }
+  QoDatabaseTable & c2c_documents_versions() { return *m_c2c_documents_versions; }
+  QoDatabaseTable & c2c_images() { return *m_c2c_images; }
+  QoDatabaseTable & c2c_map_associations() { return *m_c2c_map_associations; }
+  QoDatabaseTable & c2c_maps() { return *m_c2c_maps; }
+  QoDatabaseTable & c2c_outings() { return *m_c2c_outings; }
+  QoDatabaseTable & c2c_outings_locales() { return *m_c2c_outings_locales; }
+  QoDatabaseTable & c2c_routes() { return *m_c2c_routes; }
+  QoDatabaseTable & c2c_routes_locales() { return *m_c2c_routes_locales; }
+  QoDatabaseTable & c2c_user() { return *m_c2c_user; }
+  QoDatabaseTable & c2c_user_profiles() { return *m_c2c_user_profiles; }
+  QoDatabaseTable & c2c_waypoints() { return *m_c2c_waypoints; }
+  QoDatabaseTable & c2c_waypoints_locales() { return *m_c2c_waypoints_locales; }
+  QoDatabaseTable & c2c_xreports() { return *m_c2c_xreports; }
+  QoDatabaseTable & c2c_xreports_locales() { return *m_c2c_xreports_locales; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_c2c_area_associations;
-  QcDatabaseTable * m_c2c_areas;
-  QcDatabaseTable * m_c2c_articles;
-  QcDatabaseTable * m_c2c_associations;
-  QcDatabaseTable * m_c2c_books;
-  QcDatabaseTable * m_c2c_documents;
-  QcDatabaseTable * m_c2c_documents_geometries;
-  QcDatabaseTable * m_c2c_documents_locales;
-  QcDatabaseTable * m_c2c_documents_topics;
-  QcDatabaseTable * m_c2c_documents_versions;
-  QcDatabaseTable * m_c2c_images;
-  QcDatabaseTable * m_c2c_map_associations;
-  QcDatabaseTable * m_c2c_maps;
-  QcDatabaseTable * m_c2c_outings;
-  QcDatabaseTable * m_c2c_outings_locales;
-  QcDatabaseTable * m_c2c_routes;
-  QcDatabaseTable * m_c2c_routes_locales;
-  QcDatabaseTable * m_c2c_user;
-  QcDatabaseTable * m_c2c_user_profiles;
-  QcDatabaseTable * m_c2c_waypoints;
-  QcDatabaseTable * m_c2c_waypoints_locales;
-  QcDatabaseTable * m_c2c_xreports;
-  QcDatabaseTable * m_c2c_xreports_locales;
+  QoDatabaseTable * m_c2c_area_associations;
+  QoDatabaseTable * m_c2c_areas;
+  QoDatabaseTable * m_c2c_articles;
+  QoDatabaseTable * m_c2c_associations;
+  QoDatabaseTable * m_c2c_books;
+  QoDatabaseTable * m_c2c_documents;
+  QoDatabaseTable * m_c2c_documents_geometries;
+  QoDatabaseTable * m_c2c_documents_locales;
+  QoDatabaseTable * m_c2c_documents_topics;
+  QoDatabaseTable * m_c2c_documents_versions;
+  QoDatabaseTable * m_c2c_images;
+  QoDatabaseTable * m_c2c_map_associations;
+  QoDatabaseTable * m_c2c_maps;
+  QoDatabaseTable * m_c2c_outings;
+  QoDatabaseTable * m_c2c_outings_locales;
+  QoDatabaseTable * m_c2c_routes;
+  QoDatabaseTable * m_c2c_routes_locales;
+  QoDatabaseTable * m_c2c_user;
+  QoDatabaseTable * m_c2c_user_profiles;
+  QoDatabaseTable * m_c2c_waypoints;
+  QoDatabaseTable * m_c2c_waypoints_locales;
+  QoDatabaseTable * m_c2c_xreports;
+  QoDatabaseTable * m_c2c_xreports_locales;
   C2cAreaAssociationsCache m_c2c_area_associations_cache;
   C2cAreasCache m_c2c_areas_cache;
   C2cArticlesCache m_c2c_articles_cache;

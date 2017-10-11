@@ -47,24 +47,24 @@
 
 /**************************************************************************************************/
 
-class QcSqlQuery;
+class QoSqlQuery;
 
 /**************************************************************************************************/
 
-class QcDatabase
+class QoDatabase
 {
 public:
   // Fixme: why pass QSqlQuery ???
   static bool exec_and_check_prepared_query(QSqlQuery & query);
   static bool exec_and_check(QSqlQuery & query, const QString & sql_query);
-  static bool exec_and_check(QSqlQuery & query, const QcSqlQuery & sql_query);
+  static bool exec_and_check(QSqlQuery & query, const QoSqlQuery & sql_query);
 
 private:
   static void log_query_error_message(const QSqlQuery & query);
 
 public:
-  QcDatabase();
-  virtual ~QcDatabase();
+  QoDatabase();
+  virtual ~QoDatabase();
 
   QSqlDatabase & database () { return m_database; }
 
@@ -77,10 +77,10 @@ public:
   // QSqlQuery new_query(const QString & sql_query) const; { return QSqlQuery(sql_query, m_database); } // exec query
 
   QSqlQuery prepare_query(const QString & sql_query);
-  QSqlQuery prepare_query(const QcSqlQuery & sql_query);
+  QSqlQuery prepare_query(const QoSqlQuery & sql_query);
 
   bool execute_query(const QString & sql_query);
-  bool execute_query(const QcSqlQuery & sql_query);
+  bool execute_query(const QoSqlQuery & sql_query);
   bool execute_queries(const QStringList & sql_queries, bool commit = true);
 
 protected:

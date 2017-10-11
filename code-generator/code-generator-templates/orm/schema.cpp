@@ -28,8 +28,8 @@
 
 {% with class_name = database_schema.name -%}
 
-{{class_name}}::{{class_name}}(QcDatabase & database)
-  : QcDatabaseSchema(database),
+{{class_name}}::{{class_name}}(QoDatabase & database)
+  : QoDatabaseSchema(database),
 {% for schema in database_schema %}
     m_{{schema.table_name}}(nullptr),
 {% endfor %}

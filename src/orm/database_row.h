@@ -43,17 +43,17 @@
 
 /**************************************************************************************************/
 
-class QcDatabaseSchema;
+class QoDatabaseSchema;
 
 /**************************************************************************************************/
 
-// Trait class to be used as generic row (QcRowTraits *) since QcRow is a template class
+// Trait class to be used as generic row (QoRowTraits *) since QoRow is a template class
 
-class QcRowTraits
+class QoRowTraits
 {
 public:
-  QcRowTraits() {};
-  // ~QcRowTraits();
+  QoRowTraits() {};
+  // ~QoRowTraits();
 
   // Followings methods define the Row API
 
@@ -71,15 +71,15 @@ public:
   virtual QVariantList to_variant_list_sql(bool duplicate = false) const = 0;
 
   // Query for update
-  // virtual bool is_modified() const = 0; // implemented in QcRow
+  // virtual bool is_modified() const = 0; // implemented in QoRow
 
   // Field accessor by position
   virtual QVariant field(int position) const = 0;
   virtual void set_field(int position, const QVariant & value) = 0;
 
   // Fixme: implement has mixin ?
-  QcDatabaseSchema * database_schema() const { return m_database_schema; }
-  void set_database_schema(QcDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
+  QoDatabaseSchema * database_schema() const { return m_database_schema; }
+  void set_database_schema(QoDatabaseSchema * database_schema)  { m_database_schema = database_schema; }
 
   // To set id when the row was inserted
   virtual void set_insert_id(int id) { Q_UNUSED(id); };
@@ -95,7 +95,7 @@ public:
   virtual QVariantHash rowid_kwargs() const = 0;
 
 private:
-  QcDatabaseSchema * m_database_schema = nullptr; // use memory !
+  QoDatabaseSchema * m_database_schema = nullptr; // use memory !
 };
 
 /**************************************************************************************************/
@@ -103,7 +103,7 @@ private:
 // Row template parametrised by its schema
 
 template<class S>
-class QcRow : public QcRowTraits
+class QoRow : public QoRowTraits
 {
 public:
   typedef S Schema;
@@ -114,18 +114,18 @@ public:
   static int number_of_fields() { return Schema::NUMBER_OF_FIELDS; } // Fixme: faster ?
 
 public:
-  QcRow();
-  QcRow(const QcRow & other);
-  QcRow(const QJsonObject & json_object) : QcRow() { Q_UNUSED(json_object); } // JSON deserializer
-  QcRow(const QVariantHash & variant_hash) : QcRow() { Q_UNUSED(variant_hash); }
-  QcRow(const QVariantList & variants) : QcRow() { Q_UNUSED(variants); }
-  QcRow(const QSqlRecord & record) : QcRow() { Q_UNUSED(record); } // SQL deserializer
-  QcRow(const QSqlQuery & query, int offset = 0) : QcRow() { Q_UNUSED(query); Q_UNUSED(offset); } // SQL deserializer
-  ~QcRow() {}
+  QoRow();
+  QoRow(const QoRow & other);
+  QoRow(const QJsonObject & json_object) : QoRow() { Q_UNUSED(json_object); } // JSON deserializer
+  QoRow(const QVariantHash & variant_hash) : QoRow() { Q_UNUSED(variant_hash); }
+  QoRow(const QVariantList & variants) : QoRow() { Q_UNUSED(variants); }
+  QoRow(const QSqlRecord & record) : QoRow() { Q_UNUSED(record); } // SQL deserializer
+  QoRow(const QSqlQuery & query, int offset = 0) : QoRow() { Q_UNUSED(query); Q_UNUSED(offset); } // SQL deserializer
+  ~QoRow() {}
 
-  QcRow & operator=(const QcRow & other) { Q_UNUSED(other); return *this; } // Fixme: m_bits ?
+  QoRow & operator=(const QoRow & other) { Q_UNUSED(other); return *this; } // Fixme: m_bits ?
 
-  bool operator==(const QcRow & other) const { Q_UNUSED(other); return true; } // Fixme: m_bits ?
+  bool operator==(const QoRow & other) const { Q_UNUSED(other); return true; } // Fixme: m_bits ?
 
   bool is_modified() const {
     return m_bits.count(true);
@@ -146,24 +146,24 @@ private:
 
 /*
 template<class S>
-class QcRowWithId : public QcRow<S>
+class QoRowWithId : public QoRow<S>
 {
 public:
   const int INVALID_ID = -1;
 
 public:
-  QcRowWithId();
-  QcRowWithId(const QcRowWithId & other);
-  QcRowWithId(const QJsonObject & json_object); // JSON deserializer
-  QcRowWithId(const QVariantHash & variant_hash);
-  QcRowWithId(const QVariantList & variants); // , bool with_id = false
-  QcRowWithId(const QSqlRecord & record); // SQL deserializer
-  QcRowWithId(const QSqlQuery & query); // SQL deserializer
-  ~QcRowWithId();
+  QoRowWithId();
+  QoRowWithId(const QoRowWithId & other);
+  QoRowWithId(const QJsonObject & json_object); // JSON deserializer
+  QoRowWithId(const QVariantHash & variant_hash);
+  QoRowWithId(const QVariantList & variants); // , bool with_id = false
+  QoRowWithId(const QSqlRecord & record); // SQL deserializer
+  QoRowWithId(const QSqlQuery & query); // SQL deserializer
+  ~QoRowWithId();
 
-  QcRowWithId & operator=(const QcRowWithId & other);
+  QoRowWithId & operator=(const QoRowWithId & other);
 
-  bool operator==(const QcRowWithId & other);
+  bool operator==(const QoRowWithId & other);
 
   int id() const { return m_id; }
   void set_id(int value) { m_id = value; }

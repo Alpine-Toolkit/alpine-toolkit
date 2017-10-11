@@ -39,7 +39,7 @@
 
 // Fixme: to_json cannot be const if e.g. it modifies internal cache ...
 
-class QcJsonSchemaTraits
+class QoJsonSchemaTraits
 {
 public:
   void load_json(const QString & json_path); // Fixme: throw ???

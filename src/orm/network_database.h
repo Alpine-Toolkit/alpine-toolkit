@@ -37,13 +37,13 @@
 
 /**************************************************************************************************/
 
-class QcNetworkDatabase : public QcDatabase
+class QoNetworkDatabase : public QoDatabase
 {
 public:
-  QcNetworkDatabase();
-  virtual ~QcNetworkDatabase();
+  QoNetworkDatabase();
+  virtual ~QoNetworkDatabase();
 
-  void open(const QcDatabaseConnectionData & connection_data);
+  void open(const QoDatabaseConnectionData & connection_data);
 
   bool create_extension(const QString & extension);
 

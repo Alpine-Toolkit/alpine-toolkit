@@ -54,7 +54,7 @@ void TestDocumentDatabase::constructor()
   if (file.exists())
     file.remove();
   DocumentDatabase document_database(sqlite_path);
-  QcDatabaseTable & table = document_database.schema().document();
+  QoDatabaseTable & table = document_database.schema().document();
 
   QVariantHash variant_hash;
   variant_hash["id"] = "1"; // Should be read-only !
@@ -66,7 +66,7 @@ void TestDocumentDatabase::constructor()
   variant_hash["url"] = "filer_public/ef/c7/efc713f4-e797-458c-9844-9bc3ae8fe3eb/ffcam-refuges.json";
   variant_hash["size"] = 74840;
 
-  QcSchema document_schema = DocumentSchema::instance();
+  QoSchema document_schema = DocumentSchema::instance();
 
   Document document(variant_hash);
   table.complete_insert(document.to_variant_list_sql());

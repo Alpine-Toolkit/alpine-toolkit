@@ -37,14 +37,14 @@
 /**************************************************************************************************/
 
 template<class S>
-QcRow<S>::QcRow()
-  : QcRowTraits(),
+QoRow<S>::QoRow()
+  : QoRowTraits(),
     m_bits(number_of_fields())
 {}
 
 template<class S>
-QcRow<S>::QcRow(const QcRow & other)
-  : QcRow()
+QoRow<S>::QoRow(const QoRow & other)
+  : QoRow()
     // m_bits(other.m_bits) // Fixme: ???
 {
     Q_UNUSED(other);
@@ -54,56 +54,56 @@ QcRow<S>::QcRow(const QcRow & other)
 
 /*
 template<class S>
-QcRowWithId<S>::QcRowWithId()
-  : QcRow<S>()
+QoRowWithId<S>::QoRowWithId()
+  : QoRow<S>()
 {}
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QcRowWithId & other)
-  : QcRow<S>(static_cast<const QcRow<S> &>(other)),
+QoRowWithId<S>::QoRowWithId(const QoRowWithId & other)
+  : QoRow<S>(static_cast<const QoRow<S> &>(other)),
     m_id(other.m_id)
 {}
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QJsonObject & json_object)
- : QcRowWithId()
+QoRowWithId<S>::QoRowWithId(const QJsonObject & json_object)
+ : QoRowWithId()
 {}
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QVariantHash & variant_hash)
- : QcRowWithId()
+QoRowWithId<S>::QoRowWithId(const QVariantHash & variant_hash)
+ : QoRowWithId()
 {
   m_id = variant_hash[QLatin1String("id")].toInt();
 }
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QVariantList & variants)
- : QcRowWithId()
+QoRowWithId<S>::QoRowWithId(const QVariantList & variants)
+ : QoRowWithId()
 {
   m_id = variants[0].toInt();
 }
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QSqlRecord & record)
- : QcRowWithId()
+QoRowWithId<S>::QoRowWithId(const QSqlRecord & record)
+ : QoRowWithId()
 {
   m_id = record.value(0).toInt();
 }
 
 template<class S>
-QcRowWithId<S>::QcRowWithId(const QSqlQuery & query)
- : QcRowWithId()
+QoRowWithId<S>::QoRowWithId(const QSqlQuery & query)
+ : QoRowWithId()
 {
   m_id = query.value(0).toInt();
 }
 
 template<class S>
-QcRowWithId<S>::~QcRowWithId()
+QoRowWithId<S>::~QoRowWithId()
 {}
 
 template<class S>
-QcRowWithId<S> &
-QcRowWithId<S>::operator=(const QcRowWithId & other)
+QoRowWithId<S> &
+QoRowWithId<S>::operator=(const QoRowWithId & other)
 {
   if (this != &other) {
     m_id = other.m_id;
@@ -114,24 +114,24 @@ QcRowWithId<S>::operator=(const QcRowWithId & other)
 
 template<class S>
 bool
-QcRowWithId<S>::operator==(const QcRowWithId & other)
+QoRowWithId<S>::operator==(const QoRowWithId & other)
 {
   return m_id == other.m_id;
 }
 
 template<class S>
 void
-QcRowWithId<S>::detach()
+QoRowWithId<S>::detach()
 {
   m_id = INVALID_ID;
-  QcRowTraits::set_database_schema(nullptr);
+  QoRowTraits::set_database_schema(nullptr);
 }
 */
 
 /*
 template<class S>
 void
-QcRowWithId<S>::set_id(int value)
+QoRowWithId<S>::set_id(int value)
 {
   if (m_id != value) {
     m_id = value;

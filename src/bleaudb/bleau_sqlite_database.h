@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-class BleauSqliteDatabase : public QcSqliteDatabase
+class BleauSqliteDatabase : public QoSqliteDatabase
 {
 public:
   BleauSqliteDatabase(const QString & sqlite_path);

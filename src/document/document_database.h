@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-class DocumentDatabase : public QcSqliteDatabase
+class DocumentDatabase : public QoSqliteDatabase
 {
 public:
   DocumentDatabase(const QString & sqlite_path);

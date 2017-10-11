@@ -33,14 +33,14 @@
 
 /**************************************************************************************************/
 
-QcDatabaseSchema::QcDatabaseSchema(QcDatabase & database)
+QoDatabaseSchema::QoDatabaseSchema(QoDatabase & database)
   : m_database(database),
     m_tables(),
     m_table_name_map(),
     m_schema_map()
 {}
 
-QcDatabaseSchema::~QcDatabaseSchema()
+QoDatabaseSchema::~QoDatabaseSchema()
 {
   for (auto * table_ptr : m_tables)
     delete table_ptr;
@@ -48,34 +48,34 @@ QcDatabaseSchema::~QcDatabaseSchema()
 
 // Database must be opened before to create table !
 /*
-QcDatabase::QcDatabase(const QList<QcSchema> & schemas)
-  : QcDatabase()
+QoDatabase::QoDatabase(const QList<QoSchema> & schemas)
+  : QoDatabase()
 {
   for (const auto & schema : schemas)
     register_table(schema);
 }
 */
 
-QcDatabaseTable &
-QcDatabaseSchema::register_table(QcDatabaseTable * table_ptr)
+QoDatabaseTable &
+QoDatabaseSchema::register_table(QoDatabaseTable * table_ptr)
 {
-  // m_tables << std::unique_ptr<QcDatabaseTable>(table_ptr);
+  // m_tables << std::unique_ptr<QoDatabaseTable>(table_ptr);
   m_tables << table_ptr; // Fixme:
   m_table_name_map[table_ptr->name()] = table_ptr;
   m_schema_map[table_ptr->schema().schema_id()] = table_ptr;
   return *table_ptr;
 }
 
-QcDatabaseTable &
-QcDatabaseSchema::register_table(const QString & name)
+QoDatabaseTable &
+QoDatabaseSchema::register_table(const QString & name)
 {
-  return register_table(new QcDatabaseTable(&m_database, name));
+  return register_table(new QoDatabaseTable(&m_database, name));
 }
 
-QcDatabaseTable &
-QcDatabaseSchema::register_table(const QcSchema & schema)
+QoDatabaseTable &
+QoDatabaseSchema::register_table(const QoSchema & schema)
 {
-  QcDatabaseTable & table = register_table(new QcDatabaseTable(&m_database, schema));
+  QoDatabaseTable & table = register_table(new QoDatabaseTable(&m_database, schema));
   if (not table.exists()) {
     table.create();
     m_database.commit();

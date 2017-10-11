@@ -64,7 +64,7 @@ class KeyPtr;
 
 /**************************************************************************************************/
 
-class DirectorySchema : public QcSchema
+class DirectorySchema : public QoSchema
 {
 public:
   enum Fields {
@@ -94,7 +94,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Directory : public QObject, public QcRow<DirectorySchema>
+class Directory : public QObject, public QoRow<DirectorySchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -159,7 +159,7 @@ public:
   void load_relations();
   void save_relations();
 
-  QcRowList<Key, KeyPtr> & keys() { return m_keys; }
+  QoRowList<Key, KeyPtr> & keys() { return m_keys; }
 
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
@@ -174,7 +174,7 @@ private:
   int m_id;
   QString m_name;
   int m_parent;
-  QcRowList<Key, KeyPtr> m_keys;
+  QoRowList<Key, KeyPtr> m_keys;
 
 };
 
@@ -210,7 +210,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   DirectoryPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   DirectoryPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   DirectoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -325,7 +325,7 @@ class KeyPtr;
 
 /**************************************************************************************************/
 
-class KeySchema : public QcSchema
+class KeySchema : public QoSchema
 {
 public:
   enum Fields {
@@ -356,7 +356,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Key : public QObject, public QcRow<KeySchema>
+class Key : public QObject, public QoRow<KeySchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -479,7 +479,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   KeyPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   KeyPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   KeyPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -591,24 +591,24 @@ private:
 
 /**************************************************************************************************/
 
-class BlogApplicationSchema : public QcDatabaseSchema
+class BlogApplicationSchema : public QoDatabaseSchema
 {
 public:
-  BlogApplicationSchema(QcDatabase & database);
+  BlogApplicationSchema(QoDatabase & database);
   BlogApplicationSchema(const BlogApplicationSchema & other) = delete;
   ~BlogApplicationSchema();
 
   BlogApplicationSchema & operator=(const BlogApplicationSchema & other) = delete;
 
-  QcDatabaseTable & directory() { return *m_directory; }
-  QcDatabaseTable & key() { return *m_key; }
+  QoDatabaseTable & directory() { return *m_directory; }
+  QoDatabaseTable & key() { return *m_key; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_directory;
-  QcDatabaseTable * m_key;
+  QoDatabaseTable * m_directory;
+  QoDatabaseTable * m_key;
   DirectoryCache m_directory_cache;
   KeyCache m_key_cache;
 };

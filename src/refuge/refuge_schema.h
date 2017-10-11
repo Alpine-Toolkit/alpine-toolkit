@@ -62,7 +62,7 @@ class RefugePtr;
 
 /**************************************************************************************************/
 
-class RefugeSchema : public QcSchema
+class RefugeSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -102,7 +102,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Refuge : public QObject, public QcRow<RefugeSchema>
+class Refuge : public QObject, public QoRow<RefugeSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -298,7 +298,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   RefugePtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   RefugePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   RefugePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -419,22 +419,22 @@ private:
 
 /**************************************************************************************************/
 
-class RefugeDatabaseSchema : public QcDatabaseSchema
+class RefugeDatabaseSchema : public QoDatabaseSchema
 {
 public:
-  RefugeDatabaseSchema(QcDatabase & database);
+  RefugeDatabaseSchema(QoDatabase & database);
   RefugeDatabaseSchema(const RefugeDatabaseSchema & other) = delete;
   ~RefugeDatabaseSchema();
 
   RefugeDatabaseSchema & operator=(const RefugeDatabaseSchema & other) = delete;
 
-  QcDatabaseTable & refuge() { return *m_refuge; }
+  QoDatabaseTable & refuge() { return *m_refuge; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_refuge;
+  QoDatabaseTable * m_refuge;
   RefugeCache m_refuge_cache;
 };
 

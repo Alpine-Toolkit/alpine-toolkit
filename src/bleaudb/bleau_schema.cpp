@@ -42,10 +42,10 @@
 
 
 BleauPlaceSchema::BleauPlaceSchema()
-: QcSchema(QLatin1String("BleauPlace"), QLatin1String("place"))
+: QoSchema(QLatin1String("BleauPlace"), QLatin1String("place"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ BleauPlaceSchema::BleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -69,11 +69,11 @@ BleauPlaceSchema::BleauPlaceSchema()
     // Optional parameters
     field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('place', 'coordinate', 4326, 'POINT', 'XY');"));
     field.set_sql_value_ctor(ST_GeomFromWKB());
-    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
+    field.set_sql_value_getter(ST_AsBinary(QoSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -85,7 +85,7 @@ BleauPlaceSchema::BleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("category"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -97,7 +97,7 @@ BleauPlaceSchema::BleauPlaceSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -117,7 +117,7 @@ BleauPlaceSchema::~BleauPlaceSchema()
 
 BleauPlace::BleauPlace()
   : QObject(),
-    QcRow<BleauPlaceSchema>(),
+    QoRow<BleauPlaceSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -128,7 +128,7 @@ BleauPlace::BleauPlace()
 
 BleauPlace::BleauPlace(const BleauPlace & other)
   : QObject(),
-    QcRow<BleauPlaceSchema>(other),
+    QoRow<BleauPlaceSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -168,7 +168,7 @@ BleauPlace::BleauPlace(const QVariantList & variants)
 }
 
 BleauPlace::BleauPlace(const QSqlRecord & record)
- : QcRow<BleauPlaceSchema>(record)
+ : QoRow<BleauPlaceSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
@@ -178,7 +178,7 @@ BleauPlace::BleauPlace(const QSqlRecord & record)
 }
 
 BleauPlace::BleauPlace(const QSqlQuery & query, int offset)
- : QcRow<BleauPlaceSchema>(query)
+ : QoRow<BleauPlaceSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
@@ -197,7 +197,7 @@ BleauPlace &
 BleauPlace::operator=(const BleauPlace & other)
 {
   if (this != &other) {
-    QcRow<BleauPlaceSchema>::operator=(other);
+    QoRow<BleauPlaceSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -212,7 +212,7 @@ BleauPlace::operator=(const BleauPlace & other)
 bool
 BleauPlace::operator==(const BleauPlace & other) const
 {
-  if (not QcRow<BleauPlaceSchema>::operator==(other))
+  if (not QoRow<BleauPlaceSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -668,10 +668,10 @@ BleauPlaceModel::set_items(const ItemList & items)
 }
 
 BleauMassifSchema::BleauMassifSchema()
-: QcSchema(QLatin1String("BleauMassif"), QLatin1String("massif"))
+: QoSchema(QLatin1String("BleauMassif"), QLatin1String("massif"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -684,7 +684,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -695,11 +695,11 @@ BleauMassifSchema::BleauMassifSchema()
     // Optional parameters
     field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('massif', 'coordinate', 4326, 'POINT', 'XY');"));
     field.set_sql_value_ctor(ST_GeomFromWKB());
-    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
+    field.set_sql_value_getter(ST_AsBinary(QoSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -711,7 +711,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -723,7 +723,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("alternative_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -735,7 +735,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("chaos_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -747,7 +747,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -759,7 +759,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("parcelles"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -771,7 +771,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rdv"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -783,7 +783,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("secteur"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -795,7 +795,7 @@ BleauMassifSchema::BleauMassifSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("velo"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -815,7 +815,7 @@ BleauMassifSchema::~BleauMassifSchema()
 
 BleauMassif::BleauMassif()
   : QObject(),
-    QcRow<BleauMassifSchema>(),
+    QoRow<BleauMassifSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -832,7 +832,7 @@ BleauMassif::BleauMassif()
 
 BleauMassif::BleauMassif(const BleauMassif & other)
   : QObject(),
-    QcRow<BleauMassifSchema>(other),
+    QoRow<BleauMassifSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -896,7 +896,7 @@ BleauMassif::BleauMassif(const QVariantList & variants)
 }
 
 BleauMassif::BleauMassif(const QSqlRecord & record)
- : QcRow<BleauMassifSchema>(record)
+ : QoRow<BleauMassifSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
@@ -912,7 +912,7 @@ BleauMassif::BleauMassif(const QSqlRecord & record)
 }
 
 BleauMassif::BleauMassif(const QSqlQuery & query, int offset)
- : QcRow<BleauMassifSchema>(query)
+ : QoRow<BleauMassifSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
@@ -937,7 +937,7 @@ BleauMassif &
 BleauMassif::operator=(const BleauMassif & other)
 {
   if (this != &other) {
-    QcRow<BleauMassifSchema>::operator=(other);
+    QoRow<BleauMassifSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -958,7 +958,7 @@ BleauMassif::operator=(const BleauMassif & other)
 bool
 BleauMassif::operator==(const BleauMassif & other) const
 {
-  if (not QcRow<BleauMassifSchema>::operator==(other))
+  if (not QoRow<BleauMassifSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -1692,10 +1692,10 @@ BleauMassifModel::set_items(const ItemList & items)
 }
 
 BleauCircuitSchema::BleauCircuitSchema()
-: QcSchema(QLatin1String("BleauCircuit"), QLatin1String("circuit"))
+: QoSchema(QLatin1String("BleauCircuit"), QLatin1String("circuit"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1708,7 +1708,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -1719,11 +1719,11 @@ BleauCircuitSchema::BleauCircuitSchema()
     // Optional parameters
     field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('circuit', 'coordinate', 4326, 'POINT', 'XY');"));
     field.set_sql_value_ctor(ST_GeomFromWKB());
-    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
+    field.set_sql_value_getter(ST_AsBinary(QoSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("colour"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1735,7 +1735,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("creation_date"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1747,7 +1747,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("gestion"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1759,7 +1759,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("grade"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1771,7 +1771,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("massif_id"),
       QLatin1String("massif.id"),
       QLatin1String("int"),
@@ -1784,7 +1784,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1796,7 +1796,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("number"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1808,7 +1808,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("opener"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1820,7 +1820,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("refection_date"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1832,7 +1832,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("refection_note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1844,7 +1844,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("status"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1856,7 +1856,7 @@ BleauCircuitSchema::BleauCircuitSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("topos"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -1876,7 +1876,7 @@ BleauCircuitSchema::~BleauCircuitSchema()
 
 BleauCircuit::BleauCircuit()
   : QObject(),
-    QcRow<BleauCircuitSchema>(),
+    QoRow<BleauCircuitSchema>(),
     m_id(),
     m_coordinate(),
     m_colour(),
@@ -1896,7 +1896,7 @@ BleauCircuit::BleauCircuit()
 
 BleauCircuit::BleauCircuit(const BleauCircuit & other)
   : QObject(),
-    QcRow<BleauCircuitSchema>(other),
+    QoRow<BleauCircuitSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_colour(other.m_colour),
@@ -1972,7 +1972,7 @@ BleauCircuit::BleauCircuit(const QVariantList & variants)
 }
 
 BleauCircuit::BleauCircuit(const QSqlRecord & record)
- : QcRow<BleauCircuitSchema>(record)
+ : QoRow<BleauCircuitSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
@@ -1991,7 +1991,7 @@ BleauCircuit::BleauCircuit(const QSqlRecord & record)
 }
 
 BleauCircuit::BleauCircuit(const QSqlQuery & query, int offset)
- : QcRow<BleauCircuitSchema>(query)
+ : QoRow<BleauCircuitSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
@@ -2019,7 +2019,7 @@ BleauCircuit &
 BleauCircuit::operator=(const BleauCircuit & other)
 {
   if (this != &other) {
-    QcRow<BleauCircuitSchema>::operator=(other);
+    QoRow<BleauCircuitSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_colour = other.m_colour;
@@ -2043,7 +2043,7 @@ BleauCircuit::operator=(const BleauCircuit & other)
 bool
 BleauCircuit::operator==(const BleauCircuit & other) const
 {
-  if (not QcRow<BleauCircuitSchema>::operator==(other))
+  if (not QoRow<BleauCircuitSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -2638,7 +2638,7 @@ BleauMassifPtr
 BleauCircuit::massif()
 {
   if (m_massif.isNull())
-    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
+    // Fixme: query_by_id must be defined in QoDatabaseSchema but we cannot call register_row
     m_massif = database_schema()->query_by_id<BleauMassif>(m_massif_id);
   return m_massif;
 }
@@ -2930,10 +2930,10 @@ BleauCircuitModel::set_items(const ItemList & items)
 }
 
 BleauBoulderSchema::BleauBoulderSchema()
-: QcSchema(QLatin1String("BleauBoulder"), QLatin1String("boulder"))
+: QoSchema(QLatin1String("BleauBoulder"), QLatin1String("boulder"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -2946,7 +2946,7 @@ BleauBoulderSchema::BleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -2957,11 +2957,11 @@ BleauBoulderSchema::BleauBoulderSchema()
     // Optional parameters
     field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('boulder', 'coordinate', 4326, 'POINT', 'XY');"));
     field.set_sql_value_ctor(ST_GeomFromWKB());
-    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
+    field.set_sql_value_getter(ST_AsBinary(QoSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2973,7 +2973,7 @@ BleauBoulderSchema::BleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("comment"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2985,7 +2985,7 @@ BleauBoulderSchema::BleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("grade"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2997,7 +2997,7 @@ BleauBoulderSchema::BleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("number"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -3009,7 +3009,7 @@ BleauBoulderSchema::BleauBoulderSchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("circuit_id"),
       QLatin1String("circuit.id"),
       QLatin1String("int"),
@@ -3030,7 +3030,7 @@ BleauBoulderSchema::~BleauBoulderSchema()
 
 BleauBoulder::BleauBoulder()
   : QObject(),
-    QcRow<BleauBoulderSchema>(),
+    QoRow<BleauBoulderSchema>(),
     m_id(),
     m_coordinate(),
     m_name(),
@@ -3043,7 +3043,7 @@ BleauBoulder::BleauBoulder()
 
 BleauBoulder::BleauBoulder(const BleauBoulder & other)
   : QObject(),
-    QcRow<BleauBoulderSchema>(other),
+    QoRow<BleauBoulderSchema>(other),
     m_id(other.m_id),
     m_coordinate(other.m_coordinate),
     m_name(other.m_name),
@@ -3091,7 +3091,7 @@ BleauBoulder::BleauBoulder(const QVariantList & variants)
 }
 
 BleauBoulder::BleauBoulder(const QSqlRecord & record)
- : QcRow<BleauBoulderSchema>(record)
+ : QoRow<BleauBoulderSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(record.value(1));
@@ -3103,7 +3103,7 @@ BleauBoulder::BleauBoulder(const QSqlRecord & record)
 }
 
 BleauBoulder::BleauBoulder(const QSqlQuery & query, int offset)
- : QcRow<BleauBoulderSchema>(query)
+ : QoRow<BleauBoulderSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_coordinate = orm_type_conversion::load_wkb_point(query.value(offset++));
@@ -3124,7 +3124,7 @@ BleauBoulder &
 BleauBoulder::operator=(const BleauBoulder & other)
 {
   if (this != &other) {
-    QcRow<BleauBoulderSchema>::operator=(other);
+    QoRow<BleauBoulderSchema>::operator=(other);
     m_id = other.m_id;
     m_coordinate = other.m_coordinate;
     m_name = other.m_name;
@@ -3141,7 +3141,7 @@ BleauBoulder::operator=(const BleauBoulder & other)
 bool
 BleauBoulder::operator==(const BleauBoulder & other) const
 {
-  if (not QcRow<BleauBoulderSchema>::operator==(other))
+  if (not QoRow<BleauBoulderSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -3484,7 +3484,7 @@ BleauCircuitPtr
 BleauBoulder::circuit()
 {
   if (m_circuit.isNull())
-    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
+    // Fixme: query_by_id must be defined in QoDatabaseSchema but we cannot call register_row
     m_circuit = database_schema()->query_by_id<BleauCircuit>(m_circuit_id);
   return m_circuit;
 }
@@ -3717,8 +3717,8 @@ BleauBoulderModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-BleauSchema::BleauSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+BleauSchema::BleauSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_place(nullptr),
     m_massif(nullptr),
     m_circuit(nullptr),

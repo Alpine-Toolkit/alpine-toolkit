@@ -35,7 +35,7 @@
 
 /**************************************************************************************************/
 
-QcSqliteDatabase::QcSqliteDatabase(const QString & sqlite_path, bool use_spatialite)
+QoSqliteDatabase::QoSqliteDatabase(const QString & sqlite_path, bool use_spatialite)
   : m_sqlite_path(sqlite_path),
     m_created(false),
     m_use_spatialite(use_spatialite)
@@ -43,11 +43,11 @@ QcSqliteDatabase::QcSqliteDatabase(const QString & sqlite_path, bool use_spatial
   open();
 }
 
-QcSqliteDatabase::~QcSqliteDatabase()
+QoSqliteDatabase::~QoSqliteDatabase()
 {}
 
 void
-QcSqliteDatabase::open()
+QoSqliteDatabase::open()
 {
   m_created = not QFile(m_sqlite_path).exists();
 
@@ -65,7 +65,7 @@ QcSqliteDatabase::open()
 }
 
 void
-QcSqliteDatabase::init_spatialite()
+QoSqliteDatabase::init_spatialite()
 {
   execute_query(QLatin1String("SELECT load_extension('mod_spatialite')"));
 
@@ -79,7 +79,7 @@ QcSqliteDatabase::init_spatialite()
 }
 
 bool
-QcSqliteDatabase::move_database(const QString & new_path, bool commit)
+QoSqliteDatabase::move_database(const QString & new_path, bool commit)
 {
   m_database.commit();
   m_database.close();

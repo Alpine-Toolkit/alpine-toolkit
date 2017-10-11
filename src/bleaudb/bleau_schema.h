@@ -63,7 +63,7 @@ class BleauPlacePtr;
 
 /**************************************************************************************************/
 
-class BleauPlaceSchema : public QcSchema
+class BleauPlaceSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -95,7 +95,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BleauPlace : public QObject, public QcRow<BleauPlaceSchema>
+class BleauPlace : public QObject, public QoRow<BleauPlaceSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -217,7 +217,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   BleauPlacePtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauPlacePtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauPlacePtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -337,7 +337,7 @@ class BleauCircuitPtr;
 
 /**************************************************************************************************/
 
-class BleauMassifSchema : public QcSchema
+class BleauMassifSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -375,7 +375,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BleauMassif : public QObject, public QcRow<BleauMassifSchema>
+class BleauMassif : public QObject, public QoRow<BleauMassifSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -478,7 +478,7 @@ public:
   void load_relations();
   void save_relations();
 
-  QcRowList<BleauCircuit, BleauCircuitPtr> & circuits() { return m_circuits; }
+  QoRowList<BleauCircuit, BleauCircuitPtr> & circuits() { return m_circuits; }
 
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
@@ -509,7 +509,7 @@ private:
   QString m_rdv;
   QString m_secteur;
   QString m_velo;
-  QcRowList<BleauCircuit, BleauCircuitPtr> m_circuits;
+  QoRowList<BleauCircuit, BleauCircuitPtr> m_circuits;
 
 };
 
@@ -545,7 +545,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   BleauMassifPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauMassifPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauMassifPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -671,7 +671,7 @@ class BleauBoulderPtr;
 
 /**************************************************************************************************/
 
-class BleauCircuitSchema : public QcSchema
+class BleauCircuitSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -712,7 +712,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BleauCircuit : public QObject, public QcRow<BleauCircuitSchema>
+class BleauCircuit : public QObject, public QoRow<BleauCircuitSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -832,7 +832,7 @@ public:
   void load_relations();
   void save_relations();
 
-  QcRowList<BleauBoulder, BleauBoulderPtr> & boulders() { return m_boulders; }
+  QoRowList<BleauBoulder, BleauBoulderPtr> & boulders() { return m_boulders; }
   BleauMassifPtr massif();
 
   bool can_update() const; // To update row
@@ -870,7 +870,7 @@ private:
   QString m_refection_note;
   QString m_status;
   QStringList m_topos;
-  QcRowList<BleauBoulder, BleauBoulderPtr> m_boulders;
+  QoRowList<BleauBoulder, BleauBoulderPtr> m_boulders;
   BleauMassifPtr m_massif;
 
 };
@@ -907,7 +907,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   BleauCircuitPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauCircuitPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauCircuitPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1034,7 +1034,7 @@ class BleauBoulderPtr;
 
 /**************************************************************************************************/
 
-class BleauBoulderSchema : public QcSchema
+class BleauBoulderSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -1068,7 +1068,7 @@ protected:
 
 /**************************************************************************************************/
 
-class BleauBoulder : public QObject, public QcRow<BleauBoulderSchema>
+class BleauBoulder : public QObject, public QoRow<BleauBoulderSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -1212,7 +1212,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   BleauBoulderPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BleauBoulderPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BleauBoulderPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1327,28 +1327,28 @@ private:
 
 /**************************************************************************************************/
 
-class BleauSchema : public QcDatabaseSchema
+class BleauSchema : public QoDatabaseSchema
 {
 public:
-  BleauSchema(QcDatabase & database);
+  BleauSchema(QoDatabase & database);
   BleauSchema(const BleauSchema & other) = delete;
   ~BleauSchema();
 
   BleauSchema & operator=(const BleauSchema & other) = delete;
 
-  QcDatabaseTable & place() { return *m_place; }
-  QcDatabaseTable & massif() { return *m_massif; }
-  QcDatabaseTable & circuit() { return *m_circuit; }
-  QcDatabaseTable & boulder() { return *m_boulder; }
+  QoDatabaseTable & place() { return *m_place; }
+  QoDatabaseTable & massif() { return *m_massif; }
+  QoDatabaseTable & circuit() { return *m_circuit; }
+  QoDatabaseTable & boulder() { return *m_boulder; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_place;
-  QcDatabaseTable * m_massif;
-  QcDatabaseTable * m_circuit;
-  QcDatabaseTable * m_boulder;
+  QoDatabaseTable * m_place;
+  QoDatabaseTable * m_massif;
+  QoDatabaseTable * m_circuit;
+  QoDatabaseTable * m_boulder;
   BleauPlaceCache m_place_cache;
   BleauMassifCache m_massif_cache;
   BleauCircuitCache m_circuit_cache;

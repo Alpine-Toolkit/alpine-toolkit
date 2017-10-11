@@ -42,10 +42,10 @@
 
 
 C2cAreaAssociationsSchema::C2cAreaAssociationsSchema()
-: QcSchema(QLatin1String("C2cAreaAssociations"), QLatin1String("c2c_area_associations"))
+: QoSchema(QLatin1String("C2cAreaAssociations"), QLatin1String("c2c_area_associations"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("area_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ C2cAreaAssociationsSchema::C2cAreaAssociationsSchema()
     add_field(field);
   }
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -79,7 +79,7 @@ C2cAreaAssociationsSchema::~C2cAreaAssociationsSchema()
 
 C2cAreaAssociations::C2cAreaAssociations()
   : QObject(),
-    QcRow<C2cAreaAssociationsSchema>(),
+    QoRow<C2cAreaAssociationsSchema>(),
     m_area_id(),
     m_document_id()
 {
@@ -87,7 +87,7 @@ C2cAreaAssociations::C2cAreaAssociations()
 
 C2cAreaAssociations::C2cAreaAssociations(const C2cAreaAssociations & other)
   : QObject(),
-    QcRow<C2cAreaAssociationsSchema>(other),
+    QoRow<C2cAreaAssociationsSchema>(other),
     m_area_id(other.m_area_id),
     m_document_id(other.m_document_id)
 {
@@ -115,14 +115,14 @@ C2cAreaAssociations::C2cAreaAssociations(const QVariantList & variants)
 }
 
 C2cAreaAssociations::C2cAreaAssociations(const QSqlRecord & record)
- : QcRow<C2cAreaAssociationsSchema>(record)
+ : QoRow<C2cAreaAssociationsSchema>(record)
 {
   m_area_id = record.value(0).toInt();
   m_document_id = record.value(1).toInt();
 }
 
 C2cAreaAssociations::C2cAreaAssociations(const QSqlQuery & query, int offset)
- : QcRow<C2cAreaAssociationsSchema>(query)
+ : QoRow<C2cAreaAssociationsSchema>(query)
 {
   m_area_id = query.value(offset++).toInt();
   m_document_id = query.value(offset).toInt();
@@ -138,7 +138,7 @@ C2cAreaAssociations &
 C2cAreaAssociations::operator=(const C2cAreaAssociations & other)
 {
   if (this != &other) {
-    QcRow<C2cAreaAssociationsSchema>::operator=(other);
+    QoRow<C2cAreaAssociationsSchema>::operator=(other);
     m_area_id = other.m_area_id;
     m_document_id = other.m_document_id;
   }
@@ -150,7 +150,7 @@ C2cAreaAssociations::operator=(const C2cAreaAssociations & other)
 bool
 C2cAreaAssociations::operator==(const C2cAreaAssociations & other) const
 {
-  if (not QcRow<C2cAreaAssociationsSchema>::operator==(other))
+  if (not QoRow<C2cAreaAssociationsSchema>::operator==(other))
     return false;
   if (m_area_id != other.m_area_id)
     return false;
@@ -482,10 +482,10 @@ C2cAreaAssociationsModel::set_items(const ItemList & items)
 }
 
 C2cAreasSchema::C2cAreasSchema()
-: QcSchema(QLatin1String("C2cAreas"), QLatin1String("c2c_areas"))
+: QoSchema(QLatin1String("C2cAreas"), QLatin1String("c2c_areas"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -498,7 +498,7 @@ C2cAreasSchema::C2cAreasSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("area_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -518,7 +518,7 @@ C2cAreasSchema::~C2cAreasSchema()
 
 C2cAreas::C2cAreas()
   : QObject(),
-    QcRow<C2cAreasSchema>(),
+    QoRow<C2cAreasSchema>(),
     m_document_id(),
     m_area_type()
 {
@@ -526,7 +526,7 @@ C2cAreas::C2cAreas()
 
 C2cAreas::C2cAreas(const C2cAreas & other)
   : QObject(),
-    QcRow<C2cAreasSchema>(other),
+    QoRow<C2cAreasSchema>(other),
     m_document_id(other.m_document_id),
     m_area_type(other.m_area_type)
 {
@@ -554,14 +554,14 @@ C2cAreas::C2cAreas(const QVariantList & variants)
 }
 
 C2cAreas::C2cAreas(const QSqlRecord & record)
- : QcRow<C2cAreasSchema>(record)
+ : QoRow<C2cAreasSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_area_type = record.value(1).toString();
 }
 
 C2cAreas::C2cAreas(const QSqlQuery & query, int offset)
- : QcRow<C2cAreasSchema>(query)
+ : QoRow<C2cAreasSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_area_type = query.value(offset).toString();
@@ -577,7 +577,7 @@ C2cAreas &
 C2cAreas::operator=(const C2cAreas & other)
 {
   if (this != &other) {
-    QcRow<C2cAreasSchema>::operator=(other);
+    QoRow<C2cAreasSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_area_type = other.m_area_type;
   }
@@ -589,7 +589,7 @@ C2cAreas::operator=(const C2cAreas & other)
 bool
 C2cAreas::operator==(const C2cAreas & other) const
 {
-  if (not QcRow<C2cAreasSchema>::operator==(other))
+  if (not QoRow<C2cAreasSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -921,10 +921,10 @@ C2cAreasModel::set_items(const ItemList & items)
 }
 
 C2cArticlesSchema::C2cArticlesSchema()
-: QcSchema(QLatin1String("C2cArticles"), QLatin1String("c2c_articles"))
+: QoSchema(QLatin1String("C2cArticles"), QLatin1String("c2c_articles"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -937,7 +937,7 @@ C2cArticlesSchema::C2cArticlesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -949,7 +949,7 @@ C2cArticlesSchema::C2cArticlesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("article_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -961,7 +961,7 @@ C2cArticlesSchema::C2cArticlesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("categories"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -981,7 +981,7 @@ C2cArticlesSchema::~C2cArticlesSchema()
 
 C2cArticles::C2cArticles()
   : QObject(),
-    QcRow<C2cArticlesSchema>(),
+    QoRow<C2cArticlesSchema>(),
     m_document_id(),
     m_activities(),
     m_article_type(),
@@ -991,7 +991,7 @@ C2cArticles::C2cArticles()
 
 C2cArticles::C2cArticles(const C2cArticles & other)
   : QObject(),
-    QcRow<C2cArticlesSchema>(other),
+    QoRow<C2cArticlesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_article_type(other.m_article_type),
@@ -1027,7 +1027,7 @@ C2cArticles::C2cArticles(const QVariantList & variants)
 }
 
 C2cArticles::C2cArticles(const QSqlRecord & record)
- : QcRow<C2cArticlesSchema>(record)
+ : QoRow<C2cArticlesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -1036,7 +1036,7 @@ C2cArticles::C2cArticles(const QSqlRecord & record)
 }
 
 C2cArticles::C2cArticles(const QSqlQuery & query, int offset)
- : QcRow<C2cArticlesSchema>(query)
+ : QoRow<C2cArticlesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -1054,7 +1054,7 @@ C2cArticles &
 C2cArticles::operator=(const C2cArticles & other)
 {
   if (this != &other) {
-    QcRow<C2cArticlesSchema>::operator=(other);
+    QoRow<C2cArticlesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_article_type = other.m_article_type;
@@ -1068,7 +1068,7 @@ C2cArticles::operator=(const C2cArticles & other)
 bool
 C2cArticles::operator==(const C2cArticles & other) const
 {
-  if (not QcRow<C2cArticlesSchema>::operator==(other))
+  if (not QoRow<C2cArticlesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -1485,10 +1485,10 @@ C2cArticlesModel::set_items(const ItemList & items)
 }
 
 C2cAssociationsSchema::C2cAssociationsSchema()
-: QcSchema(QLatin1String("C2cAssociations"), QLatin1String("c2c_associations"))
+: QoSchema(QLatin1String("C2cAssociations"), QLatin1String("c2c_associations"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("child_document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1501,7 +1501,7 @@ C2cAssociationsSchema::C2cAssociationsSchema()
     add_field(field);
   }
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("parent_document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1514,7 +1514,7 @@ C2cAssociationsSchema::C2cAssociationsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("child_document_type"),
       QLatin1String("QChar"),
       QLatin1String("text"),
@@ -1527,7 +1527,7 @@ C2cAssociationsSchema::C2cAssociationsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("parent_document_type"),
       QLatin1String("QChar"),
       QLatin1String("text"),
@@ -1548,7 +1548,7 @@ C2cAssociationsSchema::~C2cAssociationsSchema()
 
 C2cAssociations::C2cAssociations()
   : QObject(),
-    QcRow<C2cAssociationsSchema>(),
+    QoRow<C2cAssociationsSchema>(),
     m_child_document_id(),
     m_parent_document_id(),
     m_child_document_type(),
@@ -1558,7 +1558,7 @@ C2cAssociations::C2cAssociations()
 
 C2cAssociations::C2cAssociations(const C2cAssociations & other)
   : QObject(),
-    QcRow<C2cAssociationsSchema>(other),
+    QoRow<C2cAssociationsSchema>(other),
     m_child_document_id(other.m_child_document_id),
     m_parent_document_id(other.m_parent_document_id),
     m_child_document_type(other.m_child_document_type),
@@ -1594,7 +1594,7 @@ C2cAssociations::C2cAssociations(const QVariantList & variants)
 }
 
 C2cAssociations::C2cAssociations(const QSqlRecord & record)
- : QcRow<C2cAssociationsSchema>(record)
+ : QoRow<C2cAssociationsSchema>(record)
 {
   m_child_document_id = record.value(0).toInt();
   m_parent_document_id = record.value(1).toInt();
@@ -1603,7 +1603,7 @@ C2cAssociations::C2cAssociations(const QSqlRecord & record)
 }
 
 C2cAssociations::C2cAssociations(const QSqlQuery & query, int offset)
- : QcRow<C2cAssociationsSchema>(query)
+ : QoRow<C2cAssociationsSchema>(query)
 {
   m_child_document_id = query.value(offset++).toInt();
   m_parent_document_id = query.value(offset++).toInt();
@@ -1621,7 +1621,7 @@ C2cAssociations &
 C2cAssociations::operator=(const C2cAssociations & other)
 {
   if (this != &other) {
-    QcRow<C2cAssociationsSchema>::operator=(other);
+    QoRow<C2cAssociationsSchema>::operator=(other);
     m_child_document_id = other.m_child_document_id;
     m_parent_document_id = other.m_parent_document_id;
     m_child_document_type = other.m_child_document_type;
@@ -1635,7 +1635,7 @@ C2cAssociations::operator=(const C2cAssociations & other)
 bool
 C2cAssociations::operator==(const C2cAssociations & other) const
 {
-  if (not QcRow<C2cAssociationsSchema>::operator==(other))
+  if (not QoRow<C2cAssociationsSchema>::operator==(other))
     return false;
   if (m_child_document_id != other.m_child_document_id)
     return false;
@@ -2052,10 +2052,10 @@ C2cAssociationsModel::set_items(const ItemList & items)
 }
 
 C2cBooksSchema::C2cBooksSchema()
-: QcSchema(QLatin1String("C2cBooks"), QLatin1String("c2c_books"))
+: QoSchema(QLatin1String("C2cBooks"), QLatin1String("c2c_books"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -2068,7 +2068,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -2080,7 +2080,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("author"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2092,7 +2092,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("book_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -2104,7 +2104,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("editor"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2116,7 +2116,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("isbn"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2128,7 +2128,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("langs"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -2140,7 +2140,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("nb_pages"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -2152,7 +2152,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("publication_date"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2164,7 +2164,7 @@ C2cBooksSchema::C2cBooksSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("url"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -2184,7 +2184,7 @@ C2cBooksSchema::~C2cBooksSchema()
 
 C2cBooks::C2cBooks()
   : QObject(),
-    QcRow<C2cBooksSchema>(),
+    QoRow<C2cBooksSchema>(),
     m_document_id(),
     m_activities(),
     m_author(),
@@ -2200,7 +2200,7 @@ C2cBooks::C2cBooks()
 
 C2cBooks::C2cBooks(const C2cBooks & other)
   : QObject(),
-    QcRow<C2cBooksSchema>(other),
+    QoRow<C2cBooksSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_author(other.m_author),
@@ -2260,7 +2260,7 @@ C2cBooks::C2cBooks(const QVariantList & variants)
 }
 
 C2cBooks::C2cBooks(const QSqlRecord & record)
- : QcRow<C2cBooksSchema>(record)
+ : QoRow<C2cBooksSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -2275,7 +2275,7 @@ C2cBooks::C2cBooks(const QSqlRecord & record)
 }
 
 C2cBooks::C2cBooks(const QSqlQuery & query, int offset)
- : QcRow<C2cBooksSchema>(query)
+ : QoRow<C2cBooksSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -2299,7 +2299,7 @@ C2cBooks &
 C2cBooks::operator=(const C2cBooks & other)
 {
   if (this != &other) {
-    QcRow<C2cBooksSchema>::operator=(other);
+    QoRow<C2cBooksSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_author = other.m_author;
@@ -2319,7 +2319,7 @@ C2cBooks::operator=(const C2cBooks & other)
 bool
 C2cBooks::operator==(const C2cBooks & other) const
 {
-  if (not QcRow<C2cBooksSchema>::operator==(other))
+  if (not QoRow<C2cBooksSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -2988,10 +2988,10 @@ C2cBooksModel::set_items(const ItemList & items)
 }
 
 C2cDocumentsSchema::C2cDocumentsSchema()
-: QcSchema(QLatin1String("C2cDocuments"), QLatin1String("c2c_documents"))
+: QoSchema(QLatin1String("C2cDocuments"), QLatin1String("c2c_documents"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -3004,7 +3004,7 @@ C2cDocumentsSchema::C2cDocumentsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("protected_flag"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -3017,7 +3017,7 @@ C2cDocumentsSchema::C2cDocumentsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("quality"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -3030,7 +3030,7 @@ C2cDocumentsSchema::C2cDocumentsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("redirects_to"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -3042,7 +3042,7 @@ C2cDocumentsSchema::C2cDocumentsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("type"),
       QLatin1String("QChar"),
       QLatin1String("text"),
@@ -3054,7 +3054,7 @@ C2cDocumentsSchema::C2cDocumentsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("version"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -3075,7 +3075,7 @@ C2cDocumentsSchema::~C2cDocumentsSchema()
 
 C2cDocuments::C2cDocuments()
   : QObject(),
-    QcRow<C2cDocumentsSchema>(),
+    QoRow<C2cDocumentsSchema>(),
     m_document_id(),
     m_protected_flag(),
     m_quality(),
@@ -3087,7 +3087,7 @@ C2cDocuments::C2cDocuments()
 
 C2cDocuments::C2cDocuments(const C2cDocuments & other)
   : QObject(),
-    QcRow<C2cDocumentsSchema>(other),
+    QoRow<C2cDocumentsSchema>(other),
     m_document_id(other.m_document_id),
     m_protected_flag(other.m_protected_flag),
     m_quality(other.m_quality),
@@ -3131,7 +3131,7 @@ C2cDocuments::C2cDocuments(const QVariantList & variants)
 }
 
 C2cDocuments::C2cDocuments(const QSqlRecord & record)
- : QcRow<C2cDocumentsSchema>(record)
+ : QoRow<C2cDocumentsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_protected_flag = record.value(1).toBool();
@@ -3142,7 +3142,7 @@ C2cDocuments::C2cDocuments(const QSqlRecord & record)
 }
 
 C2cDocuments::C2cDocuments(const QSqlQuery & query, int offset)
- : QcRow<C2cDocumentsSchema>(query)
+ : QoRow<C2cDocumentsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_protected_flag = query.value(offset++).toBool();
@@ -3162,7 +3162,7 @@ C2cDocuments &
 C2cDocuments::operator=(const C2cDocuments & other)
 {
   if (this != &other) {
-    QcRow<C2cDocumentsSchema>::operator=(other);
+    QoRow<C2cDocumentsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_protected_flag = other.m_protected_flag;
     m_quality = other.m_quality;
@@ -3178,7 +3178,7 @@ C2cDocuments::operator=(const C2cDocuments & other)
 bool
 C2cDocuments::operator==(const C2cDocuments & other) const
 {
-  if (not QcRow<C2cDocumentsSchema>::operator==(other))
+  if (not QoRow<C2cDocumentsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -3680,10 +3680,10 @@ C2cDocumentsModel::set_items(const ItemList & items)
 }
 
 C2cDocumentsGeometriesSchema::C2cDocumentsGeometriesSchema()
-: QcSchema(QLatin1String("C2cDocumentsGeometries"), QLatin1String("c2c_documents_geometries"))
+: QoSchema(QLatin1String("C2cDocumentsGeometries"), QLatin1String("c2c_documents_geometries"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -3696,7 +3696,7 @@ C2cDocumentsGeometriesSchema::C2cDocumentsGeometriesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("geom"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -3708,7 +3708,7 @@ C2cDocumentsGeometriesSchema::C2cDocumentsGeometriesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("geom_detail"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -3720,7 +3720,7 @@ C2cDocumentsGeometriesSchema::C2cDocumentsGeometriesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("version"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -3741,7 +3741,7 @@ C2cDocumentsGeometriesSchema::~C2cDocumentsGeometriesSchema()
 
 C2cDocumentsGeometries::C2cDocumentsGeometries()
   : QObject(),
-    QcRow<C2cDocumentsGeometriesSchema>(),
+    QoRow<C2cDocumentsGeometriesSchema>(),
     m_document_id(),
     m_geom(),
     m_geom_detail(),
@@ -3751,7 +3751,7 @@ C2cDocumentsGeometries::C2cDocumentsGeometries()
 
 C2cDocumentsGeometries::C2cDocumentsGeometries(const C2cDocumentsGeometries & other)
   : QObject(),
-    QcRow<C2cDocumentsGeometriesSchema>(other),
+    QoRow<C2cDocumentsGeometriesSchema>(other),
     m_document_id(other.m_document_id),
     m_geom(other.m_geom),
     m_geom_detail(other.m_geom_detail),
@@ -3787,7 +3787,7 @@ C2cDocumentsGeometries::C2cDocumentsGeometries(const QVariantList & variants)
 }
 
 C2cDocumentsGeometries::C2cDocumentsGeometries(const QSqlRecord & record)
- : QcRow<C2cDocumentsGeometriesSchema>(record)
+ : QoRow<C2cDocumentsGeometriesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_geom = record.value(1).toString();
@@ -3796,7 +3796,7 @@ C2cDocumentsGeometries::C2cDocumentsGeometries(const QSqlRecord & record)
 }
 
 C2cDocumentsGeometries::C2cDocumentsGeometries(const QSqlQuery & query, int offset)
- : QcRow<C2cDocumentsGeometriesSchema>(query)
+ : QoRow<C2cDocumentsGeometriesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_geom = query.value(offset++).toString();
@@ -3814,7 +3814,7 @@ C2cDocumentsGeometries &
 C2cDocumentsGeometries::operator=(const C2cDocumentsGeometries & other)
 {
   if (this != &other) {
-    QcRow<C2cDocumentsGeometriesSchema>::operator=(other);
+    QoRow<C2cDocumentsGeometriesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_geom = other.m_geom;
     m_geom_detail = other.m_geom_detail;
@@ -3828,7 +3828,7 @@ C2cDocumentsGeometries::operator=(const C2cDocumentsGeometries & other)
 bool
 C2cDocumentsGeometries::operator==(const C2cDocumentsGeometries & other) const
 {
-  if (not QcRow<C2cDocumentsGeometriesSchema>::operator==(other))
+  if (not QoRow<C2cDocumentsGeometriesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -4244,10 +4244,10 @@ C2cDocumentsGeometriesModel::set_items(const ItemList & items)
 }
 
 C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
-: QcSchema(QLatin1String("C2cDocumentsLocales"), QLatin1String("c2c_documents_locales"))
+: QoSchema(QLatin1String("C2cDocumentsLocales"), QLatin1String("c2c_documents_locales"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -4260,7 +4260,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -4272,7 +4272,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -4285,7 +4285,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lang"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -4298,7 +4298,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("summary"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -4310,7 +4310,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("title"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -4323,7 +4323,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("type"),
       QLatin1String("QChar"),
       QLatin1String("text"),
@@ -4335,7 +4335,7 @@ C2cDocumentsLocalesSchema::C2cDocumentsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("version"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -4356,7 +4356,7 @@ C2cDocumentsLocalesSchema::~C2cDocumentsLocalesSchema()
 
 C2cDocumentsLocales::C2cDocumentsLocales()
   : QObject(),
-    QcRow<C2cDocumentsLocalesSchema>(),
+    QoRow<C2cDocumentsLocalesSchema>(),
     m_id(),
     m_description(),
     m_document_id(),
@@ -4370,7 +4370,7 @@ C2cDocumentsLocales::C2cDocumentsLocales()
 
 C2cDocumentsLocales::C2cDocumentsLocales(const C2cDocumentsLocales & other)
   : QObject(),
-    QcRow<C2cDocumentsLocalesSchema>(other),
+    QoRow<C2cDocumentsLocalesSchema>(other),
     m_id(other.m_id),
     m_description(other.m_description),
     m_document_id(other.m_document_id),
@@ -4422,7 +4422,7 @@ C2cDocumentsLocales::C2cDocumentsLocales(const QVariantList & variants)
 }
 
 C2cDocumentsLocales::C2cDocumentsLocales(const QSqlRecord & record)
- : QcRow<C2cDocumentsLocalesSchema>(record)
+ : QoRow<C2cDocumentsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_description = record.value(1).toString();
@@ -4435,7 +4435,7 @@ C2cDocumentsLocales::C2cDocumentsLocales(const QSqlRecord & record)
 }
 
 C2cDocumentsLocales::C2cDocumentsLocales(const QSqlQuery & query, int offset)
- : QcRow<C2cDocumentsLocalesSchema>(query)
+ : QoRow<C2cDocumentsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_description = query.value(offset++).toString();
@@ -4457,7 +4457,7 @@ C2cDocumentsLocales &
 C2cDocumentsLocales::operator=(const C2cDocumentsLocales & other)
 {
   if (this != &other) {
-    QcRow<C2cDocumentsLocalesSchema>::operator=(other);
+    QoRow<C2cDocumentsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_description = other.m_description;
     m_document_id = other.m_document_id;
@@ -4475,7 +4475,7 @@ C2cDocumentsLocales::operator=(const C2cDocumentsLocales & other)
 bool
 C2cDocumentsLocales::operator==(const C2cDocumentsLocales & other) const
 {
-  if (not QcRow<C2cDocumentsLocalesSchema>::operator==(other))
+  if (not QoRow<C2cDocumentsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -5060,10 +5060,10 @@ C2cDocumentsLocalesModel::set_items(const ItemList & items)
 }
 
 C2cDocumentsTopicsSchema::C2cDocumentsTopicsSchema()
-: QcSchema(QLatin1String("C2cDocumentsTopics"), QLatin1String("c2c_documents_topics"))
+: QoSchema(QLatin1String("C2cDocumentsTopics"), QLatin1String("c2c_documents_topics"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_locale_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5076,7 +5076,7 @@ C2cDocumentsTopicsSchema::C2cDocumentsTopicsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("topic_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5097,7 +5097,7 @@ C2cDocumentsTopicsSchema::~C2cDocumentsTopicsSchema()
 
 C2cDocumentsTopics::C2cDocumentsTopics()
   : QObject(),
-    QcRow<C2cDocumentsTopicsSchema>(),
+    QoRow<C2cDocumentsTopicsSchema>(),
     m_document_locale_id(),
     m_topic_id()
 {
@@ -5105,7 +5105,7 @@ C2cDocumentsTopics::C2cDocumentsTopics()
 
 C2cDocumentsTopics::C2cDocumentsTopics(const C2cDocumentsTopics & other)
   : QObject(),
-    QcRow<C2cDocumentsTopicsSchema>(other),
+    QoRow<C2cDocumentsTopicsSchema>(other),
     m_document_locale_id(other.m_document_locale_id),
     m_topic_id(other.m_topic_id)
 {
@@ -5133,14 +5133,14 @@ C2cDocumentsTopics::C2cDocumentsTopics(const QVariantList & variants)
 }
 
 C2cDocumentsTopics::C2cDocumentsTopics(const QSqlRecord & record)
- : QcRow<C2cDocumentsTopicsSchema>(record)
+ : QoRow<C2cDocumentsTopicsSchema>(record)
 {
   m_document_locale_id = record.value(0).toInt();
   m_topic_id = record.value(1).toInt();
 }
 
 C2cDocumentsTopics::C2cDocumentsTopics(const QSqlQuery & query, int offset)
- : QcRow<C2cDocumentsTopicsSchema>(query)
+ : QoRow<C2cDocumentsTopicsSchema>(query)
 {
   m_document_locale_id = query.value(offset++).toInt();
   m_topic_id = query.value(offset).toInt();
@@ -5156,7 +5156,7 @@ C2cDocumentsTopics &
 C2cDocumentsTopics::operator=(const C2cDocumentsTopics & other)
 {
   if (this != &other) {
-    QcRow<C2cDocumentsTopicsSchema>::operator=(other);
+    QoRow<C2cDocumentsTopicsSchema>::operator=(other);
     m_document_locale_id = other.m_document_locale_id;
     m_topic_id = other.m_topic_id;
   }
@@ -5168,7 +5168,7 @@ C2cDocumentsTopics::operator=(const C2cDocumentsTopics & other)
 bool
 C2cDocumentsTopics::operator==(const C2cDocumentsTopics & other) const
 {
-  if (not QcRow<C2cDocumentsTopicsSchema>::operator==(other))
+  if (not QoRow<C2cDocumentsTopicsSchema>::operator==(other))
     return false;
   if (m_document_locale_id != other.m_document_locale_id)
     return false;
@@ -5499,10 +5499,10 @@ C2cDocumentsTopicsModel::set_items(const ItemList & items)
 }
 
 C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
-: QcSchema(QLatin1String("C2cDocumentsVersions"), QLatin1String("c2c_documents_versions"))
+: QoSchema(QLatin1String("C2cDocumentsVersions"), QLatin1String("c2c_documents_versions"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5515,7 +5515,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("document_archive_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5528,7 +5528,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("document_geometry_archive_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5540,7 +5540,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5553,7 +5553,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("document_locales_archive_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5566,7 +5566,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("history_metadata_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -5579,7 +5579,7 @@ C2cDocumentsVersionsSchema::C2cDocumentsVersionsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lang"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -5600,7 +5600,7 @@ C2cDocumentsVersionsSchema::~C2cDocumentsVersionsSchema()
 
 C2cDocumentsVersions::C2cDocumentsVersions()
   : QObject(),
-    QcRow<C2cDocumentsVersionsSchema>(),
+    QoRow<C2cDocumentsVersionsSchema>(),
     m_id(),
     m_document_archive_id(),
     m_document_geometry_archive_id(),
@@ -5613,7 +5613,7 @@ C2cDocumentsVersions::C2cDocumentsVersions()
 
 C2cDocumentsVersions::C2cDocumentsVersions(const C2cDocumentsVersions & other)
   : QObject(),
-    QcRow<C2cDocumentsVersionsSchema>(other),
+    QoRow<C2cDocumentsVersionsSchema>(other),
     m_id(other.m_id),
     m_document_archive_id(other.m_document_archive_id),
     m_document_geometry_archive_id(other.m_document_geometry_archive_id),
@@ -5661,7 +5661,7 @@ C2cDocumentsVersions::C2cDocumentsVersions(const QVariantList & variants)
 }
 
 C2cDocumentsVersions::C2cDocumentsVersions(const QSqlRecord & record)
- : QcRow<C2cDocumentsVersionsSchema>(record)
+ : QoRow<C2cDocumentsVersionsSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_document_archive_id = record.value(1).toInt();
@@ -5673,7 +5673,7 @@ C2cDocumentsVersions::C2cDocumentsVersions(const QSqlRecord & record)
 }
 
 C2cDocumentsVersions::C2cDocumentsVersions(const QSqlQuery & query, int offset)
- : QcRow<C2cDocumentsVersionsSchema>(query)
+ : QoRow<C2cDocumentsVersionsSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_document_archive_id = query.value(offset++).toInt();
@@ -5694,7 +5694,7 @@ C2cDocumentsVersions &
 C2cDocumentsVersions::operator=(const C2cDocumentsVersions & other)
 {
   if (this != &other) {
-    QcRow<C2cDocumentsVersionsSchema>::operator=(other);
+    QoRow<C2cDocumentsVersionsSchema>::operator=(other);
     m_id = other.m_id;
     m_document_archive_id = other.m_document_archive_id;
     m_document_geometry_archive_id = other.m_document_geometry_archive_id;
@@ -5711,7 +5711,7 @@ C2cDocumentsVersions::operator=(const C2cDocumentsVersions & other)
 bool
 C2cDocumentsVersions::operator==(const C2cDocumentsVersions & other) const
 {
-  if (not QcRow<C2cDocumentsVersionsSchema>::operator==(other))
+  if (not QoRow<C2cDocumentsVersionsSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -6253,10 +6253,10 @@ C2cDocumentsVersionsModel::set_items(const ItemList & items)
 }
 
 C2cImagesSchema::C2cImagesSchema()
-: QcSchema(QLatin1String("C2cImages"), QLatin1String("c2c_images"))
+: QoSchema(QLatin1String("C2cImages"), QLatin1String("c2c_images"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6269,7 +6269,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -6281,7 +6281,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("author"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -6293,7 +6293,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("camera_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -6305,7 +6305,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("categories"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -6317,7 +6317,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date_time"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -6329,7 +6329,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6341,7 +6341,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("exposure_time"),
       QLatin1String("qreal"),
       QLatin1String("real"),
@@ -6353,7 +6353,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("file_size"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6365,7 +6365,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("filename"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -6378,7 +6378,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("fnumber"),
       QLatin1String("qreal"),
       QLatin1String("real"),
@@ -6390,7 +6390,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("focal_length"),
       QLatin1String("qreal"),
       QLatin1String("real"),
@@ -6402,7 +6402,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6414,7 +6414,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("image_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -6426,7 +6426,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("iso_speed"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6438,7 +6438,7 @@ C2cImagesSchema::C2cImagesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("width"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -6458,7 +6458,7 @@ C2cImagesSchema::~C2cImagesSchema()
 
 C2cImages::C2cImages()
   : QObject(),
-    QcRow<C2cImagesSchema>(),
+    QoRow<C2cImagesSchema>(),
     m_document_id(),
     m_activities(),
     m_author(),
@@ -6480,7 +6480,7 @@ C2cImages::C2cImages()
 
 C2cImages::C2cImages(const C2cImages & other)
   : QObject(),
-    QcRow<C2cImagesSchema>(other),
+    QoRow<C2cImagesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_author(other.m_author),
@@ -6564,7 +6564,7 @@ C2cImages::C2cImages(const QVariantList & variants)
 }
 
 C2cImages::C2cImages(const QSqlRecord & record)
- : QcRow<C2cImagesSchema>(record)
+ : QoRow<C2cImagesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -6585,7 +6585,7 @@ C2cImages::C2cImages(const QSqlRecord & record)
 }
 
 C2cImages::C2cImages(const QSqlQuery & query, int offset)
- : QcRow<C2cImagesSchema>(query)
+ : QoRow<C2cImagesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -6615,7 +6615,7 @@ C2cImages &
 C2cImages::operator=(const C2cImages & other)
 {
   if (this != &other) {
-    QcRow<C2cImagesSchema>::operator=(other);
+    QoRow<C2cImagesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_author = other.m_author;
@@ -6641,7 +6641,7 @@ C2cImages::operator=(const C2cImages & other)
 bool
 C2cImages::operator==(const C2cImages & other) const
 {
-  if (not QcRow<C2cImagesSchema>::operator==(other))
+  if (not QoRow<C2cImagesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -7564,10 +7564,10 @@ C2cImagesModel::set_items(const ItemList & items)
 }
 
 C2cMapAssociationsSchema::C2cMapAssociationsSchema()
-: QcSchema(QLatin1String("C2cMapAssociations"), QLatin1String("c2c_map_associations"))
+: QoSchema(QLatin1String("C2cMapAssociations"), QLatin1String("c2c_map_associations"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -7580,7 +7580,7 @@ C2cMapAssociationsSchema::C2cMapAssociationsSchema()
     add_field(field);
   }
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("topo_map_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -7601,7 +7601,7 @@ C2cMapAssociationsSchema::~C2cMapAssociationsSchema()
 
 C2cMapAssociations::C2cMapAssociations()
   : QObject(),
-    QcRow<C2cMapAssociationsSchema>(),
+    QoRow<C2cMapAssociationsSchema>(),
     m_document_id(),
     m_topo_map_id()
 {
@@ -7609,7 +7609,7 @@ C2cMapAssociations::C2cMapAssociations()
 
 C2cMapAssociations::C2cMapAssociations(const C2cMapAssociations & other)
   : QObject(),
-    QcRow<C2cMapAssociationsSchema>(other),
+    QoRow<C2cMapAssociationsSchema>(other),
     m_document_id(other.m_document_id),
     m_topo_map_id(other.m_topo_map_id)
 {
@@ -7637,14 +7637,14 @@ C2cMapAssociations::C2cMapAssociations(const QVariantList & variants)
 }
 
 C2cMapAssociations::C2cMapAssociations(const QSqlRecord & record)
- : QcRow<C2cMapAssociationsSchema>(record)
+ : QoRow<C2cMapAssociationsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_topo_map_id = record.value(1).toInt();
 }
 
 C2cMapAssociations::C2cMapAssociations(const QSqlQuery & query, int offset)
- : QcRow<C2cMapAssociationsSchema>(query)
+ : QoRow<C2cMapAssociationsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_topo_map_id = query.value(offset).toInt();
@@ -7660,7 +7660,7 @@ C2cMapAssociations &
 C2cMapAssociations::operator=(const C2cMapAssociations & other)
 {
   if (this != &other) {
-    QcRow<C2cMapAssociationsSchema>::operator=(other);
+    QoRow<C2cMapAssociationsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_topo_map_id = other.m_topo_map_id;
   }
@@ -7672,7 +7672,7 @@ C2cMapAssociations::operator=(const C2cMapAssociations & other)
 bool
 C2cMapAssociations::operator==(const C2cMapAssociations & other) const
 {
-  if (not QcRow<C2cMapAssociationsSchema>::operator==(other))
+  if (not QoRow<C2cMapAssociationsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -8004,10 +8004,10 @@ C2cMapAssociationsModel::set_items(const ItemList & items)
 }
 
 C2cMapsSchema::C2cMapsSchema()
-: QcSchema(QLatin1String("C2cMaps"), QLatin1String("c2c_maps"))
+: QoSchema(QLatin1String("C2cMaps"), QLatin1String("c2c_maps"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8020,7 +8020,7 @@ C2cMapsSchema::C2cMapsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("code"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8032,7 +8032,7 @@ C2cMapsSchema::C2cMapsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("editor"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8044,7 +8044,7 @@ C2cMapsSchema::C2cMapsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("scale"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8064,7 +8064,7 @@ C2cMapsSchema::~C2cMapsSchema()
 
 C2cMaps::C2cMaps()
   : QObject(),
-    QcRow<C2cMapsSchema>(),
+    QoRow<C2cMapsSchema>(),
     m_document_id(),
     m_code(),
     m_editor(),
@@ -8074,7 +8074,7 @@ C2cMaps::C2cMaps()
 
 C2cMaps::C2cMaps(const C2cMaps & other)
   : QObject(),
-    QcRow<C2cMapsSchema>(other),
+    QoRow<C2cMapsSchema>(other),
     m_document_id(other.m_document_id),
     m_code(other.m_code),
     m_editor(other.m_editor),
@@ -8110,7 +8110,7 @@ C2cMaps::C2cMaps(const QVariantList & variants)
 }
 
 C2cMaps::C2cMaps(const QSqlRecord & record)
- : QcRow<C2cMapsSchema>(record)
+ : QoRow<C2cMapsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_code = record.value(1).toString();
@@ -8119,7 +8119,7 @@ C2cMaps::C2cMaps(const QSqlRecord & record)
 }
 
 C2cMaps::C2cMaps(const QSqlQuery & query, int offset)
- : QcRow<C2cMapsSchema>(query)
+ : QoRow<C2cMapsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_code = query.value(offset++).toString();
@@ -8137,7 +8137,7 @@ C2cMaps &
 C2cMaps::operator=(const C2cMaps & other)
 {
   if (this != &other) {
-    QcRow<C2cMapsSchema>::operator=(other);
+    QoRow<C2cMapsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_code = other.m_code;
     m_editor = other.m_editor;
@@ -8151,7 +8151,7 @@ C2cMaps::operator=(const C2cMaps & other)
 bool
 C2cMaps::operator==(const C2cMaps & other) const
 {
-  if (not QcRow<C2cMapsSchema>::operator==(other))
+  if (not QoRow<C2cMapsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -8567,10 +8567,10 @@ C2cMapsModel::set_items(const ItemList & items)
 }
 
 C2cOutingsSchema::C2cOutingsSchema()
-: QcSchema(QLatin1String("C2cOutings"), QLatin1String("c2c_outings"))
+: QoSchema(QLatin1String("C2cOutings"), QLatin1String("c2c_outings"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8583,7 +8583,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access_condition"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8595,7 +8595,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -8608,7 +8608,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("avalanche_signs"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -8620,7 +8620,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("condition_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8632,7 +8632,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date_end"),
       QLatin1String("QDate"),
       QLatin1String("text"),
@@ -8645,7 +8645,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date_start"),
       QLatin1String("QDate"),
       QLatin1String("text"),
@@ -8658,7 +8658,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("disable_comments"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -8670,7 +8670,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_access"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8682,7 +8682,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_down_snow"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8694,7 +8694,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_max"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8706,7 +8706,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_min"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8718,7 +8718,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_up_snow"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8730,7 +8730,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("frequentation"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8742,7 +8742,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("glacier_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8754,7 +8754,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_down"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8766,7 +8766,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_up"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8778,7 +8778,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("hut_status"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8790,7 +8790,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("length_total"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8802,7 +8802,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lift_status"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8814,7 +8814,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("partial_trip"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -8826,7 +8826,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("participant_count"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -8838,7 +8838,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("public_transport"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -8850,7 +8850,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("snow_quality"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8862,7 +8862,7 @@ C2cOutingsSchema::C2cOutingsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("snow_quantity"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -8882,7 +8882,7 @@ C2cOutingsSchema::~C2cOutingsSchema()
 
 C2cOutings::C2cOutings()
   : QObject(),
-    QcRow<C2cOutingsSchema>(),
+    QoRow<C2cOutingsSchema>(),
     m_document_id(),
     m_access_condition(),
     m_activities(),
@@ -8913,7 +8913,7 @@ C2cOutings::C2cOutings()
 
 C2cOutings::C2cOutings(const C2cOutings & other)
   : QObject(),
-    QcRow<C2cOutingsSchema>(other),
+    QoRow<C2cOutingsSchema>(other),
     m_document_id(other.m_document_id),
     m_access_condition(other.m_access_condition),
     m_activities(other.m_activities),
@@ -9033,7 +9033,7 @@ C2cOutings::C2cOutings(const QVariantList & variants)
 }
 
 C2cOutings::C2cOutings(const QSqlRecord & record)
- : QcRow<C2cOutingsSchema>(record)
+ : QoRow<C2cOutingsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_access_condition = record.value(1).toString();
@@ -9063,7 +9063,7 @@ C2cOutings::C2cOutings(const QSqlRecord & record)
 }
 
 C2cOutings::C2cOutings(const QSqlQuery & query, int offset)
- : QcRow<C2cOutingsSchema>(query)
+ : QoRow<C2cOutingsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_access_condition = query.value(offset++).toString();
@@ -9102,7 +9102,7 @@ C2cOutings &
 C2cOutings::operator=(const C2cOutings & other)
 {
   if (this != &other) {
-    QcRow<C2cOutingsSchema>::operator=(other);
+    QoRow<C2cOutingsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_access_condition = other.m_access_condition;
     m_activities = other.m_activities;
@@ -9137,7 +9137,7 @@ C2cOutings::operator=(const C2cOutings & other)
 bool
 C2cOutings::operator==(const C2cOutings & other) const
 {
-  if (not QcRow<C2cOutingsSchema>::operator==(other))
+  if (not QoRow<C2cOutingsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -10438,10 +10438,10 @@ C2cOutingsModel::set_items(const ItemList & items)
 }
 
 C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
-: QcSchema(QLatin1String("C2cOutingsLocales"), QLatin1String("c2c_outings_locales"))
+: QoSchema(QLatin1String("C2cOutingsLocales"), QLatin1String("c2c_outings_locales"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -10454,7 +10454,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access_comment"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10466,7 +10466,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("avalanches"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10478,7 +10478,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("conditions"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10490,7 +10490,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("conditions_levels"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10502,7 +10502,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("hut_comment"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10514,7 +10514,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("participants"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10526,7 +10526,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("route_description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10538,7 +10538,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("timing"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10550,7 +10550,7 @@ C2cOutingsLocalesSchema::C2cOutingsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("weather"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -10570,7 +10570,7 @@ C2cOutingsLocalesSchema::~C2cOutingsLocalesSchema()
 
 C2cOutingsLocales::C2cOutingsLocales()
   : QObject(),
-    QcRow<C2cOutingsLocalesSchema>(),
+    QoRow<C2cOutingsLocalesSchema>(),
     m_id(),
     m_access_comment(),
     m_avalanches(),
@@ -10586,7 +10586,7 @@ C2cOutingsLocales::C2cOutingsLocales()
 
 C2cOutingsLocales::C2cOutingsLocales(const C2cOutingsLocales & other)
   : QObject(),
-    QcRow<C2cOutingsLocalesSchema>(other),
+    QoRow<C2cOutingsLocalesSchema>(other),
     m_id(other.m_id),
     m_access_comment(other.m_access_comment),
     m_avalanches(other.m_avalanches),
@@ -10646,7 +10646,7 @@ C2cOutingsLocales::C2cOutingsLocales(const QVariantList & variants)
 }
 
 C2cOutingsLocales::C2cOutingsLocales(const QSqlRecord & record)
- : QcRow<C2cOutingsLocalesSchema>(record)
+ : QoRow<C2cOutingsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_access_comment = record.value(1).toString();
@@ -10661,7 +10661,7 @@ C2cOutingsLocales::C2cOutingsLocales(const QSqlRecord & record)
 }
 
 C2cOutingsLocales::C2cOutingsLocales(const QSqlQuery & query, int offset)
- : QcRow<C2cOutingsLocalesSchema>(query)
+ : QoRow<C2cOutingsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_access_comment = query.value(offset++).toString();
@@ -10685,7 +10685,7 @@ C2cOutingsLocales &
 C2cOutingsLocales::operator=(const C2cOutingsLocales & other)
 {
   if (this != &other) {
-    QcRow<C2cOutingsLocalesSchema>::operator=(other);
+    QoRow<C2cOutingsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_access_comment = other.m_access_comment;
     m_avalanches = other.m_avalanches;
@@ -10705,7 +10705,7 @@ C2cOutingsLocales::operator=(const C2cOutingsLocales & other)
 bool
 C2cOutingsLocales::operator==(const C2cOutingsLocales & other) const
 {
-  if (not QcRow<C2cOutingsLocalesSchema>::operator==(other))
+  if (not QoRow<C2cOutingsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -11373,10 +11373,10 @@ C2cOutingsLocalesModel::set_items(const ItemList & items)
 }
 
 C2cRoutesSchema::C2cRoutesSchema()
-: QcSchema(QLatin1String("C2cRoutes"), QLatin1String("c2c_routes"))
+: QoSchema(QLatin1String("C2cRoutes"), QLatin1String("c2c_routes"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11389,7 +11389,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11402,7 +11402,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("aid_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11414,7 +11414,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_outdoor_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11426,7 +11426,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("configuration"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11438,7 +11438,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("difficulties_height"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11450,7 +11450,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("durations"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11462,7 +11462,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_max"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11474,7 +11474,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_min"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11486,7 +11486,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("engagement_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11498,7 +11498,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("equipment_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11510,7 +11510,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("exposition_rock_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11522,7 +11522,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("glacier_gear"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11535,7 +11535,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("global_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11547,7 +11547,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_access"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11559,7 +11559,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_difficulties"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11571,7 +11571,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_down"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11583,7 +11583,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_diff_up"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11595,7 +11595,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("hiking_mtb_exposition"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11607,7 +11607,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("hiking_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11619,7 +11619,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("ice_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11631,7 +11631,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("labande_global_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11643,7 +11643,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("labande_ski_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11655,7 +11655,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lift_access"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -11667,7 +11667,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("main_waypoint_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11679,7 +11679,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mixed_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11691,7 +11691,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mtb_down_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11703,7 +11703,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mtb_height_diff_portages"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11715,7 +11715,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mtb_length_asphalt"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11727,7 +11727,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mtb_length_trail"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11739,7 +11739,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("mtb_up_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11751,7 +11751,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("orientations"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11763,7 +11763,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("risk_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11775,7 +11775,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rock_free_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11787,7 +11787,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rock_required_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11799,7 +11799,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rock_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11811,7 +11811,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("route_length"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11823,7 +11823,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("route_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -11835,7 +11835,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("ski_exposition"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11847,7 +11847,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("ski_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11859,7 +11859,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_height"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -11871,7 +11871,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11883,7 +11883,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("snowshoe_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11895,7 +11895,7 @@ C2cRoutesSchema::C2cRoutesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("via_ferrata_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -11915,7 +11915,7 @@ C2cRoutesSchema::~C2cRoutesSchema()
 
 C2cRoutes::C2cRoutes()
   : QObject(),
-    QcRow<C2cRoutesSchema>(),
+    QoRow<C2cRoutesSchema>(),
     m_document_id(),
     m_activities(),
     m_aid_rating(),
@@ -11965,7 +11965,7 @@ C2cRoutes::C2cRoutes()
 
 C2cRoutes::C2cRoutes(const C2cRoutes & other)
   : QObject(),
-    QcRow<C2cRoutesSchema>(other),
+    QoRow<C2cRoutesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_aid_rating(other.m_aid_rating),
@@ -12161,7 +12161,7 @@ C2cRoutes::C2cRoutes(const QVariantList & variants)
 }
 
 C2cRoutes::C2cRoutes(const QSqlRecord & record)
- : QcRow<C2cRoutesSchema>(record)
+ : QoRow<C2cRoutesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -12210,7 +12210,7 @@ C2cRoutes::C2cRoutes(const QSqlRecord & record)
 }
 
 C2cRoutes::C2cRoutes(const QSqlQuery & query, int offset)
- : QcRow<C2cRoutesSchema>(query)
+ : QoRow<C2cRoutesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -12268,7 +12268,7 @@ C2cRoutes &
 C2cRoutes::operator=(const C2cRoutes & other)
 {
   if (this != &other) {
-    QcRow<C2cRoutesSchema>::operator=(other);
+    QoRow<C2cRoutesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_aid_rating = other.m_aid_rating;
@@ -12322,7 +12322,7 @@ C2cRoutes::operator=(const C2cRoutes & other)
 bool
 C2cRoutes::operator==(const C2cRoutes & other) const
 {
-  if (not QcRow<C2cRoutesSchema>::operator==(other))
+  if (not QoRow<C2cRoutesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -14420,10 +14420,10 @@ C2cRoutesModel::set_items(const ItemList & items)
 }
 
 C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
-: QcSchema(QLatin1String("C2cRoutesLocales"), QLatin1String("c2c_routes_locales"))
+: QoSchema(QLatin1String("C2cRoutesLocales"), QLatin1String("c2c_routes_locales"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -14436,7 +14436,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("external_resources"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14448,7 +14448,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("gear"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14460,7 +14460,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("remarks"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14472,7 +14472,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("route_history"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14484,7 +14484,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_anchor1"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14496,7 +14496,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_anchor2"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14508,7 +14508,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slope"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14520,7 +14520,7 @@ C2cRoutesLocalesSchema::C2cRoutesLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("title_prefix"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -14540,7 +14540,7 @@ C2cRoutesLocalesSchema::~C2cRoutesLocalesSchema()
 
 C2cRoutesLocales::C2cRoutesLocales()
   : QObject(),
-    QcRow<C2cRoutesLocalesSchema>(),
+    QoRow<C2cRoutesLocalesSchema>(),
     m_id(),
     m_external_resources(),
     m_gear(),
@@ -14555,7 +14555,7 @@ C2cRoutesLocales::C2cRoutesLocales()
 
 C2cRoutesLocales::C2cRoutesLocales(const C2cRoutesLocales & other)
   : QObject(),
-    QcRow<C2cRoutesLocalesSchema>(other),
+    QoRow<C2cRoutesLocalesSchema>(other),
     m_id(other.m_id),
     m_external_resources(other.m_external_resources),
     m_gear(other.m_gear),
@@ -14611,7 +14611,7 @@ C2cRoutesLocales::C2cRoutesLocales(const QVariantList & variants)
 }
 
 C2cRoutesLocales::C2cRoutesLocales(const QSqlRecord & record)
- : QcRow<C2cRoutesLocalesSchema>(record)
+ : QoRow<C2cRoutesLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_external_resources = record.value(1).toString();
@@ -14625,7 +14625,7 @@ C2cRoutesLocales::C2cRoutesLocales(const QSqlRecord & record)
 }
 
 C2cRoutesLocales::C2cRoutesLocales(const QSqlQuery & query, int offset)
- : QcRow<C2cRoutesLocalesSchema>(query)
+ : QoRow<C2cRoutesLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_external_resources = query.value(offset++).toString();
@@ -14648,7 +14648,7 @@ C2cRoutesLocales &
 C2cRoutesLocales::operator=(const C2cRoutesLocales & other)
 {
   if (this != &other) {
-    QcRow<C2cRoutesLocalesSchema>::operator=(other);
+    QoRow<C2cRoutesLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_external_resources = other.m_external_resources;
     m_gear = other.m_gear;
@@ -14667,7 +14667,7 @@ C2cRoutesLocales::operator=(const C2cRoutesLocales & other)
 bool
 C2cRoutesLocales::operator==(const C2cRoutesLocales & other) const
 {
-  if (not QcRow<C2cRoutesLocalesSchema>::operator==(other))
+  if (not QoRow<C2cRoutesLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -15293,10 +15293,10 @@ C2cRoutesLocalesModel::set_items(const ItemList & items)
 }
 
 C2cUserSchema::C2cUserSchema()
-: QcSchema(QLatin1String("C2cUser"), QLatin1String("c2c_user"))
+: QoSchema(QLatin1String("C2cUser"), QLatin1String("c2c_user"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -15309,7 +15309,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("blocked"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -15322,7 +15322,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("email"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15335,7 +15335,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("email_to_validate"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15347,7 +15347,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("email_validated"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -15360,7 +15360,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("feed_filter_activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -15373,7 +15373,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("feed_followed_only"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -15386,7 +15386,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("forum_username"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15399,7 +15399,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("is_profile_public"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -15412,7 +15412,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lang"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15425,7 +15425,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("last_modified"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -15438,7 +15438,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("moderator"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -15451,7 +15451,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15464,7 +15464,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("password"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15477,7 +15477,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("username"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15490,7 +15490,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("validation_nonce"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -15502,7 +15502,7 @@ C2cUserSchema::C2cUserSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("validation_nonce_expire"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -15522,7 +15522,7 @@ C2cUserSchema::~C2cUserSchema()
 
 C2cUser::C2cUser()
   : QObject(),
-    QcRow<C2cUserSchema>(),
+    QoRow<C2cUserSchema>(),
     m_id(),
     m_blocked(),
     m_email(),
@@ -15545,7 +15545,7 @@ C2cUser::C2cUser()
 
 C2cUser::C2cUser(const C2cUser & other)
   : QObject(),
-    QcRow<C2cUserSchema>(other),
+    QoRow<C2cUserSchema>(other),
     m_id(other.m_id),
     m_blocked(other.m_blocked),
     m_email(other.m_email),
@@ -15633,7 +15633,7 @@ C2cUser::C2cUser(const QVariantList & variants)
 }
 
 C2cUser::C2cUser(const QSqlRecord & record)
- : QcRow<C2cUserSchema>(record)
+ : QoRow<C2cUserSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_blocked = record.value(1).toBool();
@@ -15655,7 +15655,7 @@ C2cUser::C2cUser(const QSqlRecord & record)
 }
 
 C2cUser::C2cUser(const QSqlQuery & query, int offset)
- : QcRow<C2cUserSchema>(query)
+ : QoRow<C2cUserSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_blocked = query.value(offset++).toBool();
@@ -15686,7 +15686,7 @@ C2cUser &
 C2cUser::operator=(const C2cUser & other)
 {
   if (this != &other) {
-    QcRow<C2cUserSchema>::operator=(other);
+    QoRow<C2cUserSchema>::operator=(other);
     m_id = other.m_id;
     m_blocked = other.m_blocked;
     m_email = other.m_email;
@@ -15713,7 +15713,7 @@ C2cUser::operator=(const C2cUser & other)
 bool
 C2cUser::operator==(const C2cUser & other) const
 {
-  if (not QcRow<C2cUserSchema>::operator==(other))
+  if (not QoRow<C2cUserSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -16678,10 +16678,10 @@ C2cUserModel::set_items(const ItemList & items)
 }
 
 C2cUserProfilesSchema::C2cUserProfilesSchema()
-: QcSchema(QLatin1String("C2cUserProfiles"), QLatin1String("c2c_user_profiles"))
+: QoSchema(QLatin1String("C2cUserProfiles"), QLatin1String("c2c_user_profiles"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -16694,7 +16694,7 @@ C2cUserProfilesSchema::C2cUserProfilesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -16706,7 +16706,7 @@ C2cUserProfilesSchema::C2cUserProfilesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("categories"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -16726,7 +16726,7 @@ C2cUserProfilesSchema::~C2cUserProfilesSchema()
 
 C2cUserProfiles::C2cUserProfiles()
   : QObject(),
-    QcRow<C2cUserProfilesSchema>(),
+    QoRow<C2cUserProfilesSchema>(),
     m_document_id(),
     m_activities(),
     m_categories()
@@ -16735,7 +16735,7 @@ C2cUserProfiles::C2cUserProfiles()
 
 C2cUserProfiles::C2cUserProfiles(const C2cUserProfiles & other)
   : QObject(),
-    QcRow<C2cUserProfilesSchema>(other),
+    QoRow<C2cUserProfilesSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_categories(other.m_categories)
@@ -16767,7 +16767,7 @@ C2cUserProfiles::C2cUserProfiles(const QVariantList & variants)
 }
 
 C2cUserProfiles::C2cUserProfiles(const QSqlRecord & record)
- : QcRow<C2cUserProfilesSchema>(record)
+ : QoRow<C2cUserProfilesSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -16775,7 +16775,7 @@ C2cUserProfiles::C2cUserProfiles(const QSqlRecord & record)
 }
 
 C2cUserProfiles::C2cUserProfiles(const QSqlQuery & query, int offset)
- : QcRow<C2cUserProfilesSchema>(query)
+ : QoRow<C2cUserProfilesSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -16792,7 +16792,7 @@ C2cUserProfiles &
 C2cUserProfiles::operator=(const C2cUserProfiles & other)
 {
   if (this != &other) {
-    QcRow<C2cUserProfilesSchema>::operator=(other);
+    QoRow<C2cUserProfilesSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_categories = other.m_categories;
@@ -16805,7 +16805,7 @@ C2cUserProfiles::operator=(const C2cUserProfiles & other)
 bool
 C2cUserProfiles::operator==(const C2cUserProfiles & other) const
 {
-  if (not QcRow<C2cUserProfilesSchema>::operator==(other))
+  if (not QoRow<C2cUserProfilesSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -17179,10 +17179,10 @@ C2cUserProfilesModel::set_items(const ItemList & items)
 }
 
 C2cWaypointsSchema::C2cWaypointsSchema()
-: QcSchema(QLatin1String("C2cWaypoints"), QLatin1String("c2c_waypoints"))
+: QoSchema(QLatin1String("C2cWaypoints"), QLatin1String("c2c_waypoints"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17195,7 +17195,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access_time"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17207,7 +17207,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("best_periods"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17219,7 +17219,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("blanket_unstaffed"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -17231,7 +17231,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("capacity"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17243,7 +17243,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("capacity_staffed"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17255,7 +17255,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("children_proof"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17267,7 +17267,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_indoor_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17279,7 +17279,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_outdoor_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17291,7 +17291,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_rating_max"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17303,7 +17303,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_rating_median"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17315,7 +17315,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_rating_min"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17327,7 +17327,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("climbing_styles"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17339,7 +17339,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("custodianship"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17351,7 +17351,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17363,7 +17363,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation_min"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17375,7 +17375,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("equipment_ratings"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17387,7 +17387,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("exposition_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17399,7 +17399,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("gas_unstaffed"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -17411,7 +17411,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("ground_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17423,7 +17423,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("heating_unstaffed"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -17435,7 +17435,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_max"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17447,7 +17447,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_median"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17459,7 +17459,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("height_min"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17471,7 +17471,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("length"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17483,7 +17483,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("lift_access"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -17495,7 +17495,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("maps_info"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17507,7 +17507,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("matress_unstaffed"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -17519,7 +17519,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("orientations"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17531,7 +17531,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("paragliding_rating"),
       QLatin1String("QChar"),
       QLatin1String("text"),
@@ -17543,7 +17543,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("parking_fee"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17555,7 +17555,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("phone"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17567,7 +17567,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("phone_custodian"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17579,7 +17579,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("product_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17591,7 +17591,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("prominence"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17603,7 +17603,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("public_transportation_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17615,7 +17615,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("public_transportation_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17627,7 +17627,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rain_proof"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17639,7 +17639,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rock_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17651,7 +17651,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("routes_quantity"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17663,7 +17663,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_length_max"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17675,7 +17675,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_length_min"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17687,7 +17687,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slackline_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17699,7 +17699,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("slope"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -17711,7 +17711,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("snow_clearance_rating"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17723,7 +17723,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("url"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17735,7 +17735,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("waypoint_type"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -17748,7 +17748,7 @@ C2cWaypointsSchema::C2cWaypointsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("weather_station_types"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -17768,7 +17768,7 @@ C2cWaypointsSchema::~C2cWaypointsSchema()
 
 C2cWaypoints::C2cWaypoints()
   : QObject(),
-    QcRow<C2cWaypointsSchema>(),
+    QoRow<C2cWaypointsSchema>(),
     m_document_id(),
     m_access_time(),
     m_best_periods(),
@@ -17822,7 +17822,7 @@ C2cWaypoints::C2cWaypoints()
 
 C2cWaypoints::C2cWaypoints(const C2cWaypoints & other)
   : QObject(),
-    QcRow<C2cWaypointsSchema>(other),
+    QoRow<C2cWaypointsSchema>(other),
     m_document_id(other.m_document_id),
     m_access_time(other.m_access_time),
     m_best_periods(other.m_best_periods),
@@ -18034,7 +18034,7 @@ C2cWaypoints::C2cWaypoints(const QVariantList & variants)
 }
 
 C2cWaypoints::C2cWaypoints(const QSqlRecord & record)
- : QcRow<C2cWaypointsSchema>(record)
+ : QoRow<C2cWaypointsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_access_time = record.value(1).toString();
@@ -18087,7 +18087,7 @@ C2cWaypoints::C2cWaypoints(const QSqlRecord & record)
 }
 
 C2cWaypoints::C2cWaypoints(const QSqlQuery & query, int offset)
- : QcRow<C2cWaypointsSchema>(query)
+ : QoRow<C2cWaypointsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_access_time = query.value(offset++).toString();
@@ -18149,7 +18149,7 @@ C2cWaypoints &
 C2cWaypoints::operator=(const C2cWaypoints & other)
 {
   if (this != &other) {
-    QcRow<C2cWaypointsSchema>::operator=(other);
+    QoRow<C2cWaypointsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_access_time = other.m_access_time;
     m_best_periods = other.m_best_periods;
@@ -18207,7 +18207,7 @@ C2cWaypoints::operator=(const C2cWaypoints & other)
 bool
 C2cWaypoints::operator==(const C2cWaypoints & other) const
 {
-  if (not QcRow<C2cWaypointsSchema>::operator==(other))
+  if (not QoRow<C2cWaypointsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -20474,10 +20474,10 @@ C2cWaypointsModel::set_items(const ItemList & items)
 }
 
 C2cWaypointsLocalesSchema::C2cWaypointsLocalesSchema()
-: QcSchema(QLatin1String("C2cWaypointsLocales"), QLatin1String("c2c_waypoints_locales"))
+: QoSchema(QLatin1String("C2cWaypointsLocales"), QLatin1String("c2c_waypoints_locales"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -20490,7 +20490,7 @@ C2cWaypointsLocalesSchema::C2cWaypointsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -20502,7 +20502,7 @@ C2cWaypointsLocalesSchema::C2cWaypointsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("access_period"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -20522,7 +20522,7 @@ C2cWaypointsLocalesSchema::~C2cWaypointsLocalesSchema()
 
 C2cWaypointsLocales::C2cWaypointsLocales()
   : QObject(),
-    QcRow<C2cWaypointsLocalesSchema>(),
+    QoRow<C2cWaypointsLocalesSchema>(),
     m_id(),
     m_access(),
     m_access_period()
@@ -20531,7 +20531,7 @@ C2cWaypointsLocales::C2cWaypointsLocales()
 
 C2cWaypointsLocales::C2cWaypointsLocales(const C2cWaypointsLocales & other)
   : QObject(),
-    QcRow<C2cWaypointsLocalesSchema>(other),
+    QoRow<C2cWaypointsLocalesSchema>(other),
     m_id(other.m_id),
     m_access(other.m_access),
     m_access_period(other.m_access_period)
@@ -20563,7 +20563,7 @@ C2cWaypointsLocales::C2cWaypointsLocales(const QVariantList & variants)
 }
 
 C2cWaypointsLocales::C2cWaypointsLocales(const QSqlRecord & record)
- : QcRow<C2cWaypointsLocalesSchema>(record)
+ : QoRow<C2cWaypointsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_access = record.value(1).toString();
@@ -20571,7 +20571,7 @@ C2cWaypointsLocales::C2cWaypointsLocales(const QSqlRecord & record)
 }
 
 C2cWaypointsLocales::C2cWaypointsLocales(const QSqlQuery & query, int offset)
- : QcRow<C2cWaypointsLocalesSchema>(query)
+ : QoRow<C2cWaypointsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_access = query.value(offset++).toString();
@@ -20588,7 +20588,7 @@ C2cWaypointsLocales &
 C2cWaypointsLocales::operator=(const C2cWaypointsLocales & other)
 {
   if (this != &other) {
-    QcRow<C2cWaypointsLocalesSchema>::operator=(other);
+    QoRow<C2cWaypointsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_access = other.m_access;
     m_access_period = other.m_access_period;
@@ -20601,7 +20601,7 @@ C2cWaypointsLocales::operator=(const C2cWaypointsLocales & other)
 bool
 C2cWaypointsLocales::operator==(const C2cWaypointsLocales & other) const
 {
-  if (not QcRow<C2cWaypointsLocalesSchema>::operator==(other))
+  if (not QoRow<C2cWaypointsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -20975,10 +20975,10 @@ C2cWaypointsLocalesModel::set_items(const ItemList & items)
 }
 
 C2cXreportsSchema::C2cXreportsSchema()
-: QcSchema(QLatin1String("C2cXreports"), QLatin1String("c2c_xreports"))
+: QoSchema(QLatin1String("C2cXreports"), QLatin1String("c2c_xreports"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("document_id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -20991,7 +20991,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activities"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -21004,7 +21004,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("activity_rate"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21016,7 +21016,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("age"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -21028,7 +21028,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("author_status"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21040,7 +21040,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("autonomy"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21052,7 +21052,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("avalanche_level"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21064,7 +21064,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("avalanche_slope"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21076,7 +21076,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date"),
       QLatin1String("QDate"),
       QLatin1String("text"),
@@ -21088,7 +21088,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("disable_comments"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -21100,7 +21100,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("elevation"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -21112,7 +21112,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("event_type"),
       QLatin1String("QStringList"),
       QLatin1String("text"),
@@ -21124,7 +21124,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("gender"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21136,7 +21136,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("nb_impacted"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -21148,7 +21148,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("nb_outings"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21160,7 +21160,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("nb_participants"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -21172,7 +21172,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("previous_injuries"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21184,7 +21184,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("rescue"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -21196,7 +21196,7 @@ C2cXreportsSchema::C2cXreportsSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("severity"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -21216,7 +21216,7 @@ C2cXreportsSchema::~C2cXreportsSchema()
 
 C2cXreports::C2cXreports()
   : QObject(),
-    QcRow<C2cXreportsSchema>(),
+    QoRow<C2cXreportsSchema>(),
     m_document_id(),
     m_activities(),
     m_activity_rate(),
@@ -21241,7 +21241,7 @@ C2cXreports::C2cXreports()
 
 C2cXreports::C2cXreports(const C2cXreports & other)
   : QObject(),
-    QcRow<C2cXreportsSchema>(other),
+    QoRow<C2cXreportsSchema>(other),
     m_document_id(other.m_document_id),
     m_activities(other.m_activities),
     m_activity_rate(other.m_activity_rate),
@@ -21337,7 +21337,7 @@ C2cXreports::C2cXreports(const QVariantList & variants)
 }
 
 C2cXreports::C2cXreports(const QSqlRecord & record)
- : QcRow<C2cXreportsSchema>(record)
+ : QoRow<C2cXreportsSchema>(record)
 {
   m_document_id = record.value(0).toInt();
   m_activities = record.value(1).toStringList();
@@ -21361,7 +21361,7 @@ C2cXreports::C2cXreports(const QSqlRecord & record)
 }
 
 C2cXreports::C2cXreports(const QSqlQuery & query, int offset)
- : QcRow<C2cXreportsSchema>(query)
+ : QoRow<C2cXreportsSchema>(query)
 {
   m_document_id = query.value(offset++).toInt();
   m_activities = query.value(offset++).toStringList();
@@ -21394,7 +21394,7 @@ C2cXreports &
 C2cXreports::operator=(const C2cXreports & other)
 {
   if (this != &other) {
-    QcRow<C2cXreportsSchema>::operator=(other);
+    QoRow<C2cXreportsSchema>::operator=(other);
     m_document_id = other.m_document_id;
     m_activities = other.m_activities;
     m_activity_rate = other.m_activity_rate;
@@ -21423,7 +21423,7 @@ C2cXreports::operator=(const C2cXreports & other)
 bool
 C2cXreports::operator==(const C2cXreports & other) const
 {
-  if (not QcRow<C2cXreportsSchema>::operator==(other))
+  if (not QoRow<C2cXreportsSchema>::operator==(other))
     return false;
   if (m_document_id != other.m_document_id)
     return false;
@@ -22472,10 +22472,10 @@ C2cXreportsModel::set_items(const ItemList & items)
 }
 
 C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
-: QcSchema(QLatin1String("C2cXreportsLocales"), QLatin1String("c2c_xreports_locales"))
+: QoSchema(QLatin1String("C2cXreportsLocales"), QLatin1String("c2c_xreports_locales"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -22488,7 +22488,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("conditions"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22500,7 +22500,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("group_management"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22512,7 +22512,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("increase_impact"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22524,7 +22524,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("modifications"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22536,7 +22536,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("motivations"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22548,7 +22548,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("other_comments"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22560,7 +22560,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("place"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22572,7 +22572,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("reduce_impact"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22584,7 +22584,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("risk"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22596,7 +22596,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("route_study"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22608,7 +22608,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("safety"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22620,7 +22620,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("time_management"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22632,7 +22632,7 @@ C2cXreportsLocalesSchema::C2cXreportsLocalesSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("training"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -22652,7 +22652,7 @@ C2cXreportsLocalesSchema::~C2cXreportsLocalesSchema()
 
 C2cXreportsLocales::C2cXreportsLocales()
   : QObject(),
-    QcRow<C2cXreportsLocalesSchema>(),
+    QoRow<C2cXreportsLocalesSchema>(),
     m_id(),
     m_conditions(),
     m_group_management(),
@@ -22672,7 +22672,7 @@ C2cXreportsLocales::C2cXreportsLocales()
 
 C2cXreportsLocales::C2cXreportsLocales(const C2cXreportsLocales & other)
   : QObject(),
-    QcRow<C2cXreportsLocalesSchema>(other),
+    QoRow<C2cXreportsLocalesSchema>(other),
     m_id(other.m_id),
     m_conditions(other.m_conditions),
     m_group_management(other.m_group_management),
@@ -22748,7 +22748,7 @@ C2cXreportsLocales::C2cXreportsLocales(const QVariantList & variants)
 }
 
 C2cXreportsLocales::C2cXreportsLocales(const QSqlRecord & record)
- : QcRow<C2cXreportsLocalesSchema>(record)
+ : QoRow<C2cXreportsLocalesSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_conditions = record.value(1).toString();
@@ -22767,7 +22767,7 @@ C2cXreportsLocales::C2cXreportsLocales(const QSqlRecord & record)
 }
 
 C2cXreportsLocales::C2cXreportsLocales(const QSqlQuery & query, int offset)
- : QcRow<C2cXreportsLocalesSchema>(query)
+ : QoRow<C2cXreportsLocalesSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_conditions = query.value(offset++).toString();
@@ -22795,7 +22795,7 @@ C2cXreportsLocales &
 C2cXreportsLocales::operator=(const C2cXreportsLocales & other)
 {
   if (this != &other) {
-    QcRow<C2cXreportsLocalesSchema>::operator=(other);
+    QoRow<C2cXreportsLocalesSchema>::operator=(other);
     m_id = other.m_id;
     m_conditions = other.m_conditions;
     m_group_management = other.m_group_management;
@@ -22819,7 +22819,7 @@ C2cXreportsLocales::operator=(const C2cXreportsLocales & other)
 bool
 C2cXreportsLocales::operator==(const C2cXreportsLocales & other) const
 {
-  if (not QcRow<C2cXreportsLocalesSchema>::operator==(other))
+  if (not QoRow<C2cXreportsLocalesSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -23653,8 +23653,8 @@ C2cXreportsLocalesModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-C2c::C2c(QcDatabase & database)
-  : QcDatabaseSchema(database),
+C2c::C2c(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_c2c_area_associations(nullptr),
     m_c2c_areas(nullptr),
     m_c2c_articles(nullptr),

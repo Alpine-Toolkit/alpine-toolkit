@@ -42,10 +42,10 @@
 
 
 DocumentSchema::DocumentSchema()
-: QcSchema(QLatin1String("Document"), QLatin1String("document"))
+: QoSchema(QLatin1String("Document"), QLatin1String("document"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -70,7 +70,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("author"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -82,7 +82,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("version"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -94,7 +94,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date"),
       QLatin1String("QDateTime"),
       QLatin1String("integer"),
@@ -106,7 +106,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -118,7 +118,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("url"),
       QLatin1String("QUrl"),
       QLatin1String("text"),
@@ -130,7 +130,7 @@ DocumentSchema::DocumentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("size"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -150,7 +150,7 @@ DocumentSchema::~DocumentSchema()
 
 Document::Document()
   : QObject(),
-    QcRow<DocumentSchema>(),
+    QoRow<DocumentSchema>(),
     m_id(),
     m_name(),
     m_author(),
@@ -164,7 +164,7 @@ Document::Document()
 
 Document::Document(const Document & other)
   : QObject(),
-    QcRow<DocumentSchema>(other),
+    QoRow<DocumentSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_author(other.m_author),
@@ -216,7 +216,7 @@ Document::Document(const QVariantList & variants)
 }
 
 Document::Document(const QSqlRecord & record)
- : QcRow<DocumentSchema>(record)
+ : QoRow<DocumentSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -229,7 +229,7 @@ Document::Document(const QSqlRecord & record)
 }
 
 Document::Document(const QSqlQuery & query, int offset)
- : QcRow<DocumentSchema>(query)
+ : QoRow<DocumentSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -251,7 +251,7 @@ Document &
 Document::operator=(const Document & other)
 {
   if (this != &other) {
-    QcRow<DocumentSchema>::operator=(other);
+    QoRow<DocumentSchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_author = other.m_author;
@@ -269,7 +269,7 @@ Document::operator=(const Document & other)
 bool
 Document::operator==(const Document & other) const
 {
-  if (not QcRow<DocumentSchema>::operator==(other))
+  if (not QoRow<DocumentSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -853,8 +853,8 @@ DocumentModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-DocumentDatabaseSchema::DocumentDatabaseSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+DocumentDatabaseSchema::DocumentDatabaseSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_document(nullptr),
     m_document_cache()
 {

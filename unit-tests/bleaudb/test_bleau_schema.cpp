@@ -50,10 +50,10 @@ private slots:
 void TestBleauSchema::constructor()
 {
   {
-    QcSchema & place_schema = BleauPlaceSchema::instance();
+    QoSchema & place_schema = BleauPlaceSchema::instance();
   }
   {
-    QcSchema & place_schema = BleauPlace::schema();
+    QoSchema & place_schema = BleauPlace::schema();
   }
 
   QString sqlite_path("bleau.sqlite"); // Fixme:
@@ -62,10 +62,10 @@ void TestBleauSchema::constructor()
     file.remove();
   BleauSqliteDatabase bleau_sqlite_database(sqlite_path);
   BleauSchema & bleau_schema = bleau_sqlite_database.schema();
-  QcDatabaseTable & place_table = bleau_schema.place();
-  QcDatabaseTable & boulder_table = bleau_schema.boulder();
-  QcDatabaseTable & circuit_table = bleau_schema.circuit();
-  QcDatabaseTable & massif_table = bleau_schema.massif();
+  QoDatabaseTable & place_table = bleau_schema.place();
+  QoDatabaseTable & boulder_table = bleau_schema.boulder();
+  QoDatabaseTable & circuit_table = bleau_schema.circuit();
+  QoDatabaseTable & massif_table = bleau_schema.massif();
 
   QVariantHash place_variant_hash;
   place_variant_hash["category"] = "point d'eau";

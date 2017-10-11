@@ -68,7 +68,7 @@ constexpr const char __ST_AsBinary__[] = "ST_AsBinary";
 
 /**************************************************************************************************/
 
-typedef QcSqlExpressionTrait ExpTrait;
+typedef QoSqlExpressionTrait ExpTrait;
 
 /**************************************************************************************************/
 
@@ -83,7 +83,7 @@ _is_alpha_string(const QString & name)
 }
 
 QString
-QcSqlExpressionTrait::quote_sql_identifier(const QString & name, SqlFlavour flavour)
+QoSqlExpressionTrait::quote_sql_identifier(const QString & name, SqlFlavour flavour)
 {
   /*
    * 'keyword'		A keyword in single quotes is a string literal.
@@ -109,13 +109,13 @@ QcSqlExpressionTrait::quote_sql_identifier(const QString & name, SqlFlavour flav
 }
 
 QcSqlExpressionPtr
-QcSqlExpressionTrait::as(const QString & label) const
+QoSqlExpressionTrait::as(const QString & label) const
 {
-  return QcSqlExpressionPtr(new QcSqlAsExpression(clone(), label));
+  return QcSqlExpressionPtr(new QoSqlAsExpression(clone(), label));
 }
 
 QString
-QcSqlExpressionTrait::to_sql(const QVariant & value)
+QoSqlExpressionTrait::to_sql(const QVariant & value)
 {
   if (value.type() == QVariant::String)
     return QLatin1String("'") + value.toString() + QLatin1String("'");
@@ -124,13 +124,13 @@ QcSqlExpressionTrait::to_sql(const QVariant & value)
 }
 
 QString
-QcSqlExpressionTrait::comma_join(const QStringList & strings)
+QoSqlExpressionTrait::comma_join(const QStringList & strings)
 {
   return strings.join(QLatin1String(", "));
 }
 
 QString
-QcSqlExpressionTrait::comma_join(const QcSqlExpressionList & expressions, SqlFlavour flavour)
+QoSqlExpressionTrait::comma_join(const QcSqlExpressionList & expressions, SqlFlavour flavour)
 {
   QStringList strings;
 
@@ -142,7 +142,7 @@ QcSqlExpressionTrait::comma_join(const QcSqlExpressionList & expressions, SqlFla
 
 /**************************************************************************************************/
 
-QcSqlAsExpression::QcSqlAsExpression(const QcSqlExpressionPtr & expression,
+QoSqlAsExpression::QoSqlAsExpression(const QcSqlExpressionPtr & expression,
                                      const QString & label)
   : m_expression(expression),
     m_label(label)
@@ -150,30 +150,30 @@ QcSqlAsExpression::QcSqlAsExpression(const QcSqlExpressionPtr & expression,
 }
 
 QString
-QcSqlAsExpression::to_sql(SqlFlavour flavour) const
+QoSqlAsExpression::to_sql(SqlFlavour flavour) const
 {
   return m_expression->to_sql(flavour) + QLatin1String(" AS ") + m_label;
 }
 
 /**************************************************************************************************/
 
-QcSqlField::QcSqlField(const QString & name)
+QoSqlField::QoSqlField(const QString & name)
   : m_name(name),
     m_table_name()
 {}
 
-QcSqlField::QcSqlField(const QString & name, const QString & table_name)
+QoSqlField::QoSqlField(const QString & name, const QString & table_name)
   : m_name(name),
     m_table_name(table_name)
 {}
 
-QcSqlField::QcSqlField(const QcSqlField & other)
+QoSqlField::QoSqlField(const QoSqlField & other)
   : m_name(other.m_name),
     m_table_name(other.m_table_name)
 {}
 
-QcSqlField &
-QcSqlField::operator=(const QcSqlField & other)
+QoSqlField &
+QoSqlField::operator=(const QoSqlField & other)
 {
   if (this != &other) {
     m_name = other.m_name;
@@ -183,24 +183,24 @@ QcSqlField::operator=(const QcSqlField & other)
   return *this;
 }
 
-QcSqlField::~QcSqlField()
+QoSqlField::~QoSqlField()
 {}
 
 QString
-QcSqlField::to_sql(SqlFlavour flavour) const
+QoSqlField::to_sql(SqlFlavour flavour) const
 {
   QString name = m_table_name.isEmpty() ? m_name : m_table_name + '.' + m_name;
   return quote_sql_identifier(name, flavour);
 }
 
 QString
-QcSqlField::as(const QString & name, SqlFlavour flavour) const
+QoSqlField::as(const QString & name, SqlFlavour flavour) const
 {
   return to_sql(flavour) + QLatin1String(" AS ") + name;
 }
 
 QString
-QcSqlField::as(SqlFlavour flavour) const
+QoSqlField::as(SqlFlavour flavour) const
 {
   QString name = m_table_name + '_' + m_name;
   return as(name, flavour);
@@ -208,34 +208,34 @@ QcSqlField::as(SqlFlavour flavour) const
 
 /**************************************************************************************************/
 
-QcSqlPrepareValue::QcSqlPrepareValue()
+QoSqlPrepareValue::QoSqlPrepareValue()
 {}
 
-QcSqlPrepareValue::QcSqlPrepareValue(const QcSqlPrepareValue & other)
-  : QcSqlPrepareValue()
+QoSqlPrepareValue::QoSqlPrepareValue(const QoSqlPrepareValue & other)
+  : QoSqlPrepareValue()
 {
   Q_UNUSED(other);
 }
 
-QcSqlPrepareValue &
-QcSqlPrepareValue::operator=(const QcSqlPrepareValue & other)
+QoSqlPrepareValue &
+QoSqlPrepareValue::operator=(const QoSqlPrepareValue & other)
 {
   Q_UNUSED(other);
   return *this;
 }
 
-QcSqlPrepareValue::~QcSqlPrepareValue()
+QoSqlPrepareValue::~QoSqlPrepareValue()
 {}
 
 QString
-QcSqlPrepareValue::to_sql(SqlFlavour flavour) const
+QoSqlPrepareValue::to_sql(SqlFlavour flavour) const
 {
   return QLatin1String("?");
 }
 
 /**************************************************************************************************/
 
-QcSqlFieldExpressionTwoValue::QcSqlFieldExpressionTwoValue(const QcSqlField & field,
+QoSqlFieldExpressionTwoValue::QoSqlFieldExpressionTwoValue(const QoSqlField & field,
                                                            const QVariant & value1,
                                                            const QVariant & value2)
   : m_field(field),
@@ -245,14 +245,14 @@ QcSqlFieldExpressionTwoValue::QcSqlFieldExpressionTwoValue(const QcSqlField & fi
 
 /**************************************************************************************************/
 
-QcSqlFieldExpressionValueList::QcSqlFieldExpressionValueList(const QcSqlField & field,
+QoSqlFieldExpressionValueList::QoSqlFieldExpressionValueList(const QoSqlField & field,
                                                              const QVariantList & values)
   : m_field(field),
     m_values(values)
 {}
 
 QStringList
-QcSqlFieldExpressionValueList::string_values() const
+QoSqlFieldExpressionValueList::string_values() const
 {
   QStringList strings;
   for (const auto & value : m_values)
@@ -264,7 +264,7 @@ QcSqlFieldExpressionValueList::string_values() const
 /**************************************************************************************************/
 
 QString
-QcSqlInExpression::to_sql(SqlFlavour flavour) const
+QoSqlInExpression::to_sql(SqlFlavour flavour) const
 {
   return m_field.to_sql(flavour) +
     QLatin1String(" IN (") + comma_join(string_values()) + + ')';
@@ -273,7 +273,7 @@ QcSqlInExpression::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 QString
-QcSqlBetweenExpression::to_sql(SqlFlavour flavour) const
+QoSqlBetweenExpression::to_sql(SqlFlavour flavour) const
 {
   return m_field.to_sql(flavour) + QLatin1String(" BETWEEN ") +
     ExpTrait::to_sql(m_value1) + QLatin1String(" AND ") + ExpTrait::to_sql(m_value2);
@@ -282,81 +282,81 @@ QcSqlBetweenExpression::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 QcSqlExpressionPtr
-QcSqlField::operator==(const QVariant & value) const
+QoSqlField::operator==(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<EQUAL>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<EQUAL>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::operator!=(const QVariant & value) const
+QoSqlField::operator!=(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<NOT_EQUAL>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<NOT_EQUAL>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::operator>(const QVariant & value) const
+QoSqlField::operator>(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<GREATHER_THAN>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<GREATHER_THAN>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::operator<(const QVariant & value) const
+QoSqlField::operator<(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<LESS_THAN>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<LESS_THAN>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::operator>=(const QVariant & value) const
+QoSqlField::operator>=(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<GREATHER_EQUAL_THAN>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<GREATHER_EQUAL_THAN>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::operator<=(const QVariant & value) const
+QoSqlField::operator<=(const QVariant & value) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<LESS_EQUAL_THAN>(*this, value));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<LESS_EQUAL_THAN>(*this, value));
 }
 
 QcSqlExpressionPtr
-QcSqlField::in(const QVariantList & values) const
+QoSqlField::in(const QVariantList & values) const
 {
-  return QcSqlExpressionPtr(new QcSqlInExpression(*this, values));
+  return QcSqlExpressionPtr(new QoSqlInExpression(*this, values));
 }
 
 QcSqlExpressionPtr
-QcSqlField::between(const QVariant & value_min, const QVariant & value_max) const
+QoSqlField::between(const QVariant & value_min, const QVariant & value_max) const
 {
-  return QcSqlExpressionPtr(new QcSqlBetweenExpression(*this, value_min, value_max));
+  return QcSqlExpressionPtr(new QoSqlBetweenExpression(*this, value_min, value_max));
 }
 
 QcSqlExpressionPtr
-QcSqlField::like(const QString & pattern) const
+QoSqlField::like(const QString & pattern) const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldExpression<LIKE>(*this, pattern));
+  return QcSqlExpressionPtr(new QoSqlFieldExpression<LIKE>(*this, pattern));
 }
 
 QcSqlExpressionPtr
-QcSqlField::is_null() const
+QoSqlField::is_null() const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldSuffixExpression<IS_NULL>(*this));
+  return QcSqlExpressionPtr(new QoSqlFieldSuffixExpression<IS_NULL>(*this));
 }
 
 QcSqlExpressionPtr
-QcSqlField::is_not_null() const
+QoSqlField::is_not_null() const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldSuffixExpression<IS_NOT_NULL>(*this));
+  return QcSqlExpressionPtr(new QoSqlFieldSuffixExpression<IS_NOT_NULL>(*this));
 }
 
 QcSqlExpressionPtr
-QcSqlField::desc() const
+QoSqlField::desc() const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldSuffixExpression<DESC>(*this));
+  return QcSqlExpressionPtr(new QoSqlFieldSuffixExpression<DESC>(*this));
 }
 
 QcSqlExpressionPtr
-QcSqlField::asc() const
+QoSqlField::asc() const
 {
-  return QcSqlExpressionPtr(new QcSqlFieldSuffixExpression<ASC>(*this));
+  return QcSqlExpressionPtr(new QoSqlFieldSuffixExpression<ASC>(*this));
 }
 
 /**************************************************************************************************/
@@ -365,7 +365,7 @@ QcSqlField::asc() const
 QcSqlExpressionPtr
 operator!(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<NOT>(expression));
+  return QcSqlExpressionPtr(new QoSqlUnaryExpression<NOT>(expression));
 }
 */
 
@@ -374,37 +374,37 @@ operator!(const QcSqlExpressionPtr & expression)
 QcSqlExpressionPtr
 Not(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlUnaryExpression<NOT>(expression));
+  return QcSqlExpressionPtr(new QoSqlUnaryExpression<NOT>(expression));
 }
 
 QcSqlExpressionPtr
 Count(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<COUNT>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<COUNT>(expression));
 }
 
 QcSqlExpressionPtr
 Min(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MIN>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<MIN>(expression));
 }
 
 QcSqlExpressionPtr
 Max(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<MAX>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<MAX>(expression));
 }
 
 QcSqlExpressionPtr
 Avg(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<AVG>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<AVG>(expression));
 }
 
 QcSqlExpressionPtr
 Sum(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<SUM>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<SUM>(expression));
 }
 
 /**************************************************************************************************/
@@ -412,13 +412,13 @@ Sum(const QcSqlExpressionPtr & expression)
 QcSqlExpressionPtr operator&&(const QcSqlExpressionPtr & expression1,
                               const QcSqlExpressionPtr & expression2)
 {
-  return QcSqlExpressionPtr(new QcSqlBinaryExpression<AND>(expression1, expression2));
+  return QcSqlExpressionPtr(new QoSqlBinaryExpression<AND>(expression1, expression2));
 }
 
 QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
                               const QcSqlExpressionPtr & expression2)
 {
-  return QcSqlExpressionPtr(new QcSqlBinaryExpression<OR>(expression1, expression2));
+  return QcSqlExpressionPtr(new QoSqlBinaryExpression<OR>(expression1, expression2));
 }
 
 /**************************************************************************************************/
@@ -426,42 +426,42 @@ QcSqlExpressionPtr operator||(const QcSqlExpressionPtr & expression1,
 QcSqlExpressionPtr
 ST_GeomFromText()
 {
-  return ST_GeomFromText(QcSqlPrepareValue());
+  return ST_GeomFromText(QoSqlPrepareValue());
 }
 
 QcSqlExpressionPtr
 ST_GeomFromText(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlSpatialFunctionExpression<__ST_GeomFromText__>(expression));
+  return QcSqlExpressionPtr(new QoSqlSpatialFunctionExpression<__ST_GeomFromText__>(expression));
 }
 
 QcSqlExpressionPtr
 ST_AsText(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_AsText__>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<__ST_AsText__>(expression));
 }
 
 QcSqlExpressionPtr
 ST_GeomFromWKB()
 {
-  return ST_GeomFromWKB(QcSqlPrepareValue());
+  return ST_GeomFromWKB(QoSqlPrepareValue());
 }
 
 QcSqlExpressionPtr
 ST_GeomFromWKB(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlSpatialFunctionExpression<__ST_GeomFromWKB__>(expression));
+  return QcSqlExpressionPtr(new QoSqlSpatialFunctionExpression<__ST_GeomFromWKB__>(expression));
 }
 
 QcSqlExpressionPtr
 ST_AsBinary(const QcSqlExpressionPtr & expression)
 {
-  return QcSqlExpressionPtr(new QcSqlFunctionExpression<__ST_AsBinary__>(expression));
+  return QcSqlExpressionPtr(new QoSqlFunctionExpression<__ST_AsBinary__>(expression));
 }
 
 /**************************************************************************************************/
 
-QcSqlQuery::QcSqlQuery()
+QoSqlQuery::QoSqlQuery()
   : m_table(nullptr),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
@@ -471,7 +471,7 @@ QcSqlQuery::QcSqlQuery()
     m_order_by()
 {}
 
-QcSqlQuery::QcSqlQuery(QcDatabaseTable * table)
+QoSqlQuery::QoSqlQuery(QoDatabaseTable * table)
   : m_table(table),
     m_flags(static_cast<int>(Flags::NumberOfFlags)),
     m_fields(),
@@ -482,12 +482,12 @@ QcSqlQuery::QcSqlQuery(QcDatabaseTable * table)
 {}
 
 /*
-QcSqlQuery::QcSqlQuery(const QcSqlTable & table)
+QoSqlQuery::QoSqlQuery(const QcSqlTable & table)
   : m_table_name(table.table_name())
 {}
 */
 
-QcSqlQuery::QcSqlQuery(const QcSqlQuery & other)
+QoSqlQuery::QoSqlQuery(const QoSqlQuery & other)
   : m_table(other.m_table),
     m_query_type(other.m_query_type),
     m_select_type(other.m_select_type),
@@ -501,11 +501,11 @@ QcSqlQuery::QcSqlQuery(const QcSqlQuery & other)
     m_offset(other.m_offset)
 {}
 
-QcSqlQuery::~QcSqlQuery()
+QoSqlQuery::~QoSqlQuery()
 {}
 
-QcSqlQuery &
-QcSqlQuery::operator=(const QcSqlQuery & other)
+QoSqlQuery &
+QoSqlQuery::operator=(const QoSqlQuery & other)
 {
   if (this != &other) {
     m_table = other.m_table;
@@ -525,19 +525,19 @@ QcSqlQuery::operator=(const QcSqlQuery & other)
 }
 
 const QString &
-QcSqlQuery::table_name() const
+QoSqlQuery::table_name() const
 {
   return m_table->name();
 }
 
 SqlFlavour
-QcSqlQuery::sql_flavour() const
+QoSqlQuery::sql_flavour() const
 {
   return m_table->sql_flavour();
 }
 
-QcSqlQuery &
-QcSqlQuery::distinct()
+QoSqlQuery &
+QoSqlQuery::distinct()
 {
   m_query_type = QueryType::Select;
   set_flags(Flags::SelectDistinct);
@@ -545,8 +545,8 @@ QcSqlQuery::distinct()
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::count()
+QoSqlQuery &
+QoSqlQuery::count()
 {
   m_query_type = QueryType::Select;
   set_flags(Flags::SelectCount);
@@ -554,8 +554,8 @@ QcSqlQuery::count()
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::exists()
+QoSqlQuery &
+QoSqlQuery::exists()
 {
   m_query_type = QueryType::Select;
   set_flags(Flags::SelectExists);
@@ -563,49 +563,49 @@ QcSqlQuery::exists()
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::insert()
+QoSqlQuery &
+QoSqlQuery::insert()
 {
   m_query_type = QueryType::Insert;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::update()
+QoSqlQuery &
+QoSqlQuery::update()
 {
   m_query_type = QueryType::Update;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::delete_()
+QoSqlQuery &
+QoSqlQuery::delete_()
 {
   m_query_type = QueryType::Delete;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::add_column(const QcSqlExpressionPtr & expression)
+QoSqlQuery &
+QoSqlQuery::add_column(const QcSqlExpressionPtr & expression)
 {
   m_fields << expression;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::add_columns(const QStringList & names)
+QoSqlQuery &
+QoSqlQuery::add_columns(const QStringList & names)
 {
   for (const auto & name : names)
-    m_fields << QcSqlField(name); // Fixme: table_name()
+    m_fields << QoSqlField(name); // Fixme: table_name()
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression)
+QoSqlQuery &
+QoSqlQuery::add_column(const QcSqlExpressionPtr & expression, const QcSqlExpressionPtr & value_expression)
 {
   m_fields << expression;
 
@@ -615,8 +615,8 @@ QcSqlQuery::add_column(const QcSqlExpressionPtr & expression, const QcSqlExpress
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::filter(const QcSqlExpressionPtr & expression)
+QoSqlQuery &
+QoSqlQuery::filter(const QcSqlExpressionPtr & expression)
 {
   if (m_where.isNull())
     m_where = expression;
@@ -626,32 +626,32 @@ QcSqlQuery::filter(const QcSqlExpressionPtr & expression)
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::group_by(const QcSqlField & field)
+QoSqlQuery &
+QoSqlQuery::group_by(const QoSqlField & field)
 {
   m_group_by << field;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::having(const QcSqlExpressionPtr & expression)
+QoSqlQuery &
+QoSqlQuery::having(const QcSqlExpressionPtr & expression)
 {
   m_having = expression;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::order_by(const QcSqlExpressionPtr & expression)
+QoSqlQuery &
+QoSqlQuery::order_by(const QcSqlExpressionPtr & expression)
 {
   m_order_by << expression;
 
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::limit(int value)
+QoSqlQuery &
+QoSqlQuery::limit(int value)
 {
   m_limit = value;
   m_query_type = QueryType::Select;
@@ -660,8 +660,8 @@ QcSqlQuery::limit(int value)
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::offset(int value)
+QoSqlQuery &
+QoSqlQuery::offset(int value)
 {
   m_offset = value;
   m_query_type = QueryType::Select;
@@ -670,8 +670,8 @@ QcSqlQuery::offset(int value)
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::slice(int start, int stop)
+QoSqlQuery &
+QoSqlQuery::slice(int start, int stop)
 {
   m_offset = start;
   m_limit = stop - start;
@@ -682,8 +682,8 @@ QcSqlQuery::slice(int start, int stop)
   return *this;
 }
 
-QcSqlQuery &
-QcSqlQuery::one()
+QoSqlQuery &
+QoSqlQuery::one()
 {
   m_limit = 1;
   m_select_type = SelectType::SelectOne;
@@ -692,7 +692,7 @@ QcSqlQuery::one()
 }
 
 QStringList
-QcSqlQuery::field_names(const QcSqlExpressionList & fields) const
+QoSqlQuery::field_names(const QcSqlExpressionList & fields) const
 {
   SqlFlavour flavour = sql_flavour();
   QStringList field_names;
@@ -704,7 +704,7 @@ QcSqlQuery::field_names(const QcSqlExpressionList & fields) const
 }
 
 QStringList
-QcSqlQuery::field_names(const QcFieldList & fields) const
+QoSqlQuery::field_names(const QcFieldList & fields) const
 {
   // Fixme: cf. infra
 
@@ -718,7 +718,7 @@ QcSqlQuery::field_names(const QcFieldList & fields) const
 }
 
 QStringList
-QcSqlQuery::fields_for_update() const
+QoSqlQuery::fields_for_update() const
 {
   SqlFlavour flavour = sql_flavour();
   QStringList field_names;
@@ -730,7 +730,7 @@ QcSqlQuery::fields_for_update() const
 }
 
 QString
-QcSqlQuery::comma_interrogation_list(int count)
+QoSqlQuery::comma_interrogation_list(int count)
 {
   QString query;
 
@@ -744,7 +744,7 @@ QcSqlQuery::comma_interrogation_list(int count)
 }
 
 QString
-QcSqlQuery::insert_values(const SqlFlavour & flavour) const
+QoSqlQuery::insert_values(const SqlFlavour & flavour) const
 {
   // Fixme: API ???
   if (m_value_expressions.isEmpty())
@@ -768,13 +768,13 @@ QcSqlQuery::insert_values(const SqlFlavour & flavour) const
 }
 
 QString
-QcSqlQuery::table_name_as(const QString & name) const
+QoSqlQuery::table_name_as(const QString & name) const
 {
   return quote_sql_identifier(table_name()) + QLatin1String(" AS ") + name;
 }
 
 QString
-QcSqlQuery::to_sql() const
+QoSqlQuery::to_sql() const
 {
   /*
    * SELECT *
@@ -894,7 +894,7 @@ QcSqlQuery::to_sql() const
 }
 
 QSqlQuery
-QcSqlQuery::exec()
+QoSqlQuery::exec()
 {
   return m_table->exec(*this);
 }
@@ -903,13 +903,13 @@ QcSqlQuery::exec()
 
 /*
 QString
-QcMySqlQuery::quote_sql_identifier(const QString & name) const
+QoMySqlQuery::quote_sql_identifier(const QString & name) const
 {
   return '`' + name + '`';
 }
 
 QString
-QcSqlServerQuery::quote_sql_identifier(const QString & name) const
+QoSqlServerQuery::quote_sql_identifier(const QString & name) const
 {
   return '[' + name + ']';
 }

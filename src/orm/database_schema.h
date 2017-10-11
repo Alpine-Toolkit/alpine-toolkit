@@ -45,48 +45,48 @@
 /**************************************************************************************************/
 
 /*
-class QcDatabaseSchemaCache : public QObject
+class QoDatabaseSchemaCache : public QObject
 {
   Q_OBJECT
 
 public:
-  QcDatabaseSchemaCache();
-  ~QcDatabaseSchemaCache();
+  QoDatabaseSchemaCache();
+  ~QoDatabaseSchemaCache();
 
-   void add(QcRowTraits * ptr);
-   void remove(QcRowTraits * ptr);
+   void add(QoRowTraits * ptr);
+   void remove(QoRowTraits * ptr);
 
 public slots:
   void on_changed();
 
 private:
-  QMap<QcRowTraits *, QcRowTraits *> m_loaded_instances;
-  QMap<QcRowTraits *, QcRowTraits *> m_modified_instances;
+  QMap<QoRowTraits *, QoRowTraits *> m_loaded_instances;
+  QMap<QoRowTraits *, QoRowTraits *> m_modified_instances;
 };
 */
 
 /**************************************************************************************************/
 
-class QcDatabaseSchema // : QObject
+class QoDatabaseSchema // : QObject
 {
 public:
-  QcDatabaseSchema(QcDatabase & database); // register tables in subclass
-  // T(const QList<QcSchema> & schemas);
-  ~QcDatabaseSchema();
+  QoDatabaseSchema(QoDatabase & database); // register tables in subclass
+  // T(const QList<QoSchema> & schemas);
+  ~QoDatabaseSchema();
 
-  QcDatabaseTable & register_table(const QString & name);
-  QcDatabaseTable & register_table(const QcSchema & schema);
+  QoDatabaseTable & register_table(const QString & name);
+  QoDatabaseTable & register_table(const QoSchema & schema);
 
-  QcDatabaseTable & get_table_by_name(const QString & name) { return *m_table_name_map[name]; }
-  QcDatabaseTable & get_table_by_schema_id(int schema_id) { return *m_schema_map[schema_id]; }
-  QcDatabaseTable & get_table_by_schema(const QcSchema & schema) { return get_table_by_schema_id(schema.schema_id()); }
+  QoDatabaseTable & get_table_by_name(const QString & name) { return *m_table_name_map[name]; }
+  QoDatabaseTable & get_table_by_schema_id(int schema_id) { return *m_schema_map[schema_id]; }
+  QoDatabaseTable & get_table_by_schema(const QoSchema & schema) { return get_table_by_schema_id(schema.schema_id()); }
 
-  QcDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
+  QoDatabaseTable & operator[](const QString & name) { return get_table_by_name(name); }
 
   // Add a row
   template<class T> void add(T & row, bool save_relations = true, bool commit = true);
   template<class T> void add_ptr(T & row_ptr, bool save_relations = true, bool commit = true);
-  template<class T> QcDatabaseSchema & operator<<(QcRowTraits & row); // Fixme: save_relations, commit
+  template<class T> QoDatabaseSchema & operator<<(QoRowTraits & row); // Fixme: save_relations, commit
 
   // Add rows
   template<class T> void add_row_ptrs(QList<T> & row_ptrs, bool commit = true); // , bool save_relations = true // Fixme: const ?
@@ -97,7 +97,7 @@ public:
   template<class T> typename T::Ptr query_by_id(int rowid, bool lazy_load = true);
 
   // template<class T> void register_row(typename T::Ptr & row) {}
-  // virtual void register_row(QcRowTraits * row) = 0;
+  // virtual void register_row(QoRowTraits * row) = 0;
 
   template<class T>
   typename T::PtrList query_by_foreign_key(const QString & foreign_key, const QVariant & value, bool lazy_load = true);
@@ -108,18 +108,18 @@ public:
   template<class T> void delete_by_id(int rowid);
 
   // Derivative can implement:
-  // QcDatabaseTable * table() { return m_table; }
+  // QoDatabaseTable * table() { return m_table; }
 
 private:
-  QcDatabaseTable & register_table(QcDatabaseTable * table_ptr);
+  QoDatabaseTable & register_table(QoDatabaseTable * table_ptr);
 
 private:
-  QcDatabase & m_database;
-  // QList<std::unique_ptr<QcDatabaseTable>> m_tables;
-  QList<QcDatabaseTable *> m_tables;
-  QHash<QString, QcDatabaseTable *> m_table_name_map;
-  QHash<int, QcDatabaseTable *> m_schema_map;
-  // QcDatabaseTable * m_table;
+  QoDatabase & m_database;
+  // QList<std::unique_ptr<QoDatabaseTable>> m_tables;
+  QList<QoDatabaseTable *> m_tables;
+  QHash<QString, QoDatabaseTable *> m_table_name_map;
+  QHash<int, QoDatabaseTable *> m_schema_map;
+  // QoDatabaseTable * m_table;
 };
 
 /**************************************************************************************************/

@@ -41,18 +41,18 @@
 
 /**************************************************************************************************/
 
-QcDatabase::QcDatabase()
+QoDatabase::QoDatabase()
   : m_database()
 {}
 
-QcDatabase::~QcDatabase()
+QoDatabase::~QoDatabase()
 {
   if (m_database.isValid())
     m_database.close();
 }
 
 void
-QcDatabase::set_sql_flavour()
+QoDatabase::set_sql_flavour()
 {
   QSqlDriver * driver = m_database.driver();
 
@@ -77,7 +77,7 @@ QcDatabase::set_sql_flavour()
 }
 
 QSqlQuery
-QcDatabase::prepare_query(const QString & sql_query)
+QoDatabase::prepare_query(const QString & sql_query)
 {
   transaction();
   QSqlQuery query = new_query();
@@ -86,13 +86,13 @@ QcDatabase::prepare_query(const QString & sql_query)
 }
 
 QSqlQuery
-QcDatabase::prepare_query(const QcSqlQuery & sql_query)
+QoDatabase::prepare_query(const QoSqlQuery & sql_query)
 {
   return prepare_query(sql_query.to_sql()); // Fixme: QString cast ?
 }
 
 void
-QcDatabase::log_query_error_message(const QSqlQuery & query)
+QoDatabase::log_query_error_message(const QSqlQuery & query)
 {
   qATCritical().noquote()
     << QLatin1String("SQL error on") << query.lastQuery()
@@ -100,7 +100,7 @@ QcDatabase::log_query_error_message(const QSqlQuery & query)
 }
 
 bool
-QcDatabase::exec_and_check_prepared_query(QSqlQuery & query)
+QoDatabase::exec_and_check_prepared_query(QSqlQuery & query)
 {
   qATInfo().noquote() << "Exec SQL Query:" << query.lastQuery();
   if (!query.exec()) {
@@ -111,7 +111,7 @@ QcDatabase::exec_and_check_prepared_query(QSqlQuery & query)
 }
 
 bool
-QcDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
+QoDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
 {
   qATInfo().noquote() << "Exec SQL Query:" << sql_query;
   if (!query.exec(sql_query)) {
@@ -122,13 +122,13 @@ QcDatabase::exec_and_check(QSqlQuery & query, const QString & sql_query)
 }
 
 bool
-QcDatabase::exec_and_check(QSqlQuery & query, const QcSqlQuery & sql_query)
+QoDatabase::exec_and_check(QSqlQuery & query, const QoSqlQuery & sql_query)
 {
   return exec_and_check(query, sql_query.to_sql());
 }
 
 bool
-QcDatabase::execute_query(const QString & sql_query)
+QoDatabase::execute_query(const QString & sql_query)
 {
   // QSqlQuery query = QSqlQuery(sql_query, m_database);
   // if (query.lastError().type() == QSqlError::NoError)
@@ -142,13 +142,13 @@ QcDatabase::execute_query(const QString & sql_query)
 }
 
 bool
-QcDatabase::execute_query(const QcSqlQuery & sql_query)
+QoDatabase::execute_query(const QoSqlQuery & sql_query)
 {
   return execute_query(sql_query.to_sql());
 }
 
 bool
-QcDatabase::execute_queries(const QStringList & sql_queries, bool commit_request)
+QoDatabase::execute_queries(const QStringList & sql_queries, bool commit_request)
 {
   // Fixme: ok ?
   if (commit_request)

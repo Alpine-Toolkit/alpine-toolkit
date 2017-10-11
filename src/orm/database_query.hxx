@@ -37,13 +37,13 @@
 /**************************************************************************************************/
 
 template<const char * Symbol>
-QcSqlFunctionExpression<Symbol>::QcSqlFunctionExpression(const QcSqlExpressionPtr & expression)
+QoSqlFunctionExpression<Symbol>::QoSqlFunctionExpression(const QcSqlExpressionPtr & expression)
   : m_expression(expression)
 {}
 
 template<const char * Symbol>
 QString
-QcSqlFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
+QoSqlFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
   return Symbol + QString('(') + m_expression->to_sql(flavour) + ')';
 };
@@ -51,7 +51,7 @@ QcSqlFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 template<const char * Symbol>
-QcSqlFieldExpression<Symbol>::QcSqlFieldExpression(const QcSqlField & field,
+QoSqlFieldExpression<Symbol>::QoSqlFieldExpression(const QoSqlField & field,
                                                    const QVariant & value)
   : m_field(field),
     m_value(value)
@@ -59,21 +59,21 @@ QcSqlFieldExpression<Symbol>::QcSqlFieldExpression(const QcSqlField & field,
 
 template<const char * Symbol>
 QString
-QcSqlFieldExpression<Symbol>::to_sql(SqlFlavour flavour) const
+QoSqlFieldExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
-  return m_field.to_sql(flavour) + ' ' + Symbol + ' ' + QcSqlExpressionTrait::to_sql(m_value);
+  return m_field.to_sql(flavour) + ' ' + Symbol + ' ' + QoSqlExpressionTrait::to_sql(m_value);
 };
 
 /**************************************************************************************************/
 
 template<const char * Suffix>
-QcSqlFieldSuffixExpression<Suffix>::QcSqlFieldSuffixExpression(const QcSqlField & field)
+QoSqlFieldSuffixExpression<Suffix>::QoSqlFieldSuffixExpression(const QoSqlField & field)
   : m_field(field)
 {}
 
 template<const char * Suffix>
 QString
-QcSqlFieldSuffixExpression<Suffix>::to_sql(SqlFlavour flavour) const
+QoSqlFieldSuffixExpression<Suffix>::to_sql(SqlFlavour flavour) const
 {
   return m_field.to_sql(flavour) + ' ' + Suffix;
 };
@@ -81,13 +81,13 @@ QcSqlFieldSuffixExpression<Suffix>::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 template<const char * Symbol>
-QcSqlUnaryExpression<Symbol>::QcSqlUnaryExpression(const QcSqlExpressionPtr & expression)
+QoSqlUnaryExpression<Symbol>::QoSqlUnaryExpression(const QcSqlExpressionPtr & expression)
   : m_expression(expression)
 {}
 
 template<const char * Symbol>
 QString
-QcSqlUnaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
+QoSqlUnaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
   return QString('(') + Symbol + ' ' + m_expression->to_sql(flavour) + ')';
 };
@@ -95,7 +95,7 @@ QcSqlUnaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 template<const char * Symbol>
-QcSqlBinaryExpression<Symbol>::QcSqlBinaryExpression(const QcSqlExpressionPtr & expression1,
+QoSqlBinaryExpression<Symbol>::QoSqlBinaryExpression(const QcSqlExpressionPtr & expression1,
                                                      const QcSqlExpressionPtr & expression2)
   : m_expression1(expression1),
     m_expression2(expression2)
@@ -103,7 +103,7 @@ QcSqlBinaryExpression<Symbol>::QcSqlBinaryExpression(const QcSqlExpressionPtr & 
 
 template<const char * Symbol>
 QString
-QcSqlBinaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
+QoSqlBinaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
   // QLatin1String(") ")
   // QLatin1String(" (")
@@ -113,14 +113,14 @@ QcSqlBinaryExpression<Symbol>::to_sql(SqlFlavour flavour) const
 /**************************************************************************************************/
 
 template<const char * Symbol>
-QcSqlSpatialFunctionExpression<Symbol>::QcSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid)
+QoSqlSpatialFunctionExpression<Symbol>::QoSqlSpatialFunctionExpression(const QcSqlExpressionPtr & expression, int srid)
   : m_expression(expression),
     m_srid(srid)
 {}
 
 template<const char * Symbol>
 QString
-QcSqlSpatialFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
+QoSqlSpatialFunctionExpression<Symbol>::to_sql(SqlFlavour flavour) const
 {
   return Symbol + QString('(') + m_expression->to_sql(flavour) +
     QLatin1String(", ") + QString::number(m_srid) + ')';

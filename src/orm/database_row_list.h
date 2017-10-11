@@ -40,7 +40,7 @@
 
 // Row::Ptr is not yet defined
 template<class Row, class RowPtr>
-class QcRowList
+class QoRowList
 {
  public:
   typedef QWeakPointer<Row> RowWeakPtr;
@@ -48,20 +48,20 @@ class QcRowList
   typedef QList<RowWeakPtr> RowWeakPtrList; // Fixme QLinkedList ?
 
 public:
-  QcRowList();
-  QcRowList(const QcRowList & other);
-  // QcRowList(const QcRowList && other);
-  // QcRowList(std::initializer_list<T> args);
-  ~QcRowList();
+  QoRowList();
+  QoRowList(const QoRowList & other);
+  // QoRowList(const QoRowList && other);
+  // QoRowList(std::initializer_list<T> args);
+  ~QoRowList();
 
-  QcRowList & operator=(const QcRowList & other);
-  QcRowList & operator=(const RowPtrList & rows);
+  QoRowList & operator=(const QoRowList & other);
+  QoRowList & operator=(const RowPtrList & rows);
 
-  bool operator==(const QcRowList & other);
+  bool operator==(const QoRowList & other);
 
   void append(const RowPtr & row);
-  QcRowList & operator<<(const RowPtr & row);
-  // QcRowList & operator<<(const RowWeakPtrList & rows);
+  QoRowList & operator<<(const RowPtr & row);
+  // QoRowList & operator<<(const RowWeakPtrList & rows);
 
   void remove(const RowPtr & row);
 

@@ -40,7 +40,7 @@
 // QC_BEGIN_NAMESPACE
 
 /*
-struct QcDatabaseConnectionData
+struct QoDatabaseConnectionData
 {
   QString host;
   int port;
@@ -50,16 +50,16 @@ struct QcDatabaseConnectionData
 };
 */
 
-class QcDatabaseConnectionData
+class QoDatabaseConnectionData
 {
 public:
-  QcDatabaseConnectionData();
-  QcDatabaseConnectionData(const QcDatabaseConnectionData & other);
-  ~QcDatabaseConnectionData();
+  QoDatabaseConnectionData();
+  QoDatabaseConnectionData(const QoDatabaseConnectionData & other);
+  ~QoDatabaseConnectionData();
 
-  QcDatabaseConnectionData & operator=(const QcDatabaseConnectionData & other);
+  QoDatabaseConnectionData & operator=(const QoDatabaseConnectionData & other);
 
-  bool operator==(const QcDatabaseConnectionData & other);
+  bool operator==(const QoDatabaseConnectionData & other);
 
   // Getter/Setter
 
@@ -87,7 +87,7 @@ private:
 };
 
 #ifndef QT_NO_DEBUG_STREAM
-QDebug operator<<(QDebug debug, const QcDatabaseConnectionData & obj);
+QDebug operator<<(QDebug debug, const QoDatabaseConnectionData & obj);
 #endif
 
 // QC_END_NAMESPACE

@@ -36,11 +36,11 @@
 
 /**************************************************************************************************/
 
-class QcSqliteDatabase : public QcDatabase
+class QoSqliteDatabase : public QoDatabase
 {
 public:
-  QcSqliteDatabase(const QString & sqlite_path, bool use_spatialite = false);
-  virtual ~QcSqliteDatabase();
+  QoSqliteDatabase(const QString & sqlite_path, bool use_spatialite = false);
+  virtual ~QoSqliteDatabase();
 
   bool created() { return m_created; }
 

@@ -39,7 +39,7 @@
 
 /**************************************************************************************************/
 
-QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type)
+QoSchemaFieldTrait::QoSchemaFieldTrait(FieldType field_type)
   : m_field_type(field_type),
     // m_external_creation(false),
     m_name(),
@@ -51,7 +51,7 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type)
     m_description()
 {}
 
-QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type,
+QoSchemaFieldTrait::QoSchemaFieldTrait(FieldType field_type,
                                        const QString & name,
                                        const QString & qt_type,
                                        const QString & sql_type,
@@ -74,7 +74,7 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(FieldType field_type,
   m_json_name = json_name.isEmpty() ? name : json_name;
 }
 
-QcSchemaFieldTrait::QcSchemaFieldTrait(const QcSchemaFieldTrait & other)
+QoSchemaFieldTrait::QoSchemaFieldTrait(const QoSchemaFieldTrait & other)
   : m_schema(other.m_schema),
     m_field_type(other.m_field_type),
     m_position(other.m_position),
@@ -91,13 +91,13 @@ QcSchemaFieldTrait::QcSchemaFieldTrait(const QcSchemaFieldTrait & other)
     m_sql_value_getter(other.m_sql_value_getter)
 {}
 
-QcSchemaFieldTrait::~QcSchemaFieldTrait()
+QoSchemaFieldTrait::~QoSchemaFieldTrait()
 {
-  // qATInfo() << "~QcSchemaFieldTrait" << m_name;
+  // qATInfo() << "~QoSchemaFieldTrait" << m_name;
 }
 
-QcSchemaFieldTrait &
-QcSchemaFieldTrait::operator=(const QcSchemaFieldTrait & other)
+QoSchemaFieldTrait &
+QoSchemaFieldTrait::operator=(const QoSchemaFieldTrait & other)
 {
   if (this != &other) {
     m_schema = other.m_schema;
@@ -120,31 +120,31 @@ QcSchemaFieldTrait::operator=(const QcSchemaFieldTrait & other)
 }
 
 void
-QcSchemaFieldTrait::set_position(QcSchema * schema, int value)
+QoSchemaFieldTrait::set_position(QoSchema * schema, int value)
 {
   m_schema = schema;
   m_position = value;
 }
 
 bool
-QcSchemaFieldTrait::is_rowid() const
+QoSchemaFieldTrait::is_rowid() const
 {
   return is_primary_key()
     and m_position == 0
     and m_sql_type == QLatin1String("integer");
 }
 
-QcSqlField
-QcSchemaFieldTrait::to_sql_field() const
+QoSqlField
+QoSchemaFieldTrait::to_sql_field() const
 {
   if (m_schema)
-    return QcSqlField(m_schema->name(), m_name);
+    return QoSqlField(m_schema->name(), m_name);
   else
-    return QcSqlField(QString(), m_name);
+    return QoSqlField(QString(), m_name);
 }
 
 QString
-QcSchemaFieldTrait::to_sql_definition(const QStringList & parts) const
+QoSchemaFieldTrait::to_sql_definition(const QStringList & parts) const
 {
   QStringList _parts;
   _parts << m_sql_name << m_sql_type;
@@ -156,11 +156,11 @@ QcSchemaFieldTrait::to_sql_definition(const QStringList & parts) const
 
 /**************************************************************************************************/
 
-QcSchemaField::QcSchemaField()
-  : QcSchemaFieldTrait()
+QoSchemaField::QoSchemaField()
+  : QoSchemaFieldTrait()
 {}
 
-QcSchemaField::QcSchemaField(const QString & name,
+QoSchemaField::QoSchemaField(const QString & name,
                              const QString & qt_type,
                              const QString & sql_type,
                              const QString & sql_name,
@@ -168,7 +168,7 @@ QcSchemaField::QcSchemaField(const QString & name,
                              const QString & title,
                              const QString & description
                              )
-  : QcSchemaFieldTrait(FieldType::Normal,
+  : QoSchemaFieldTrait(FieldType::Normal,
                        name,
                        qt_type,
                        sql_type,
@@ -178,19 +178,19 @@ QcSchemaField::QcSchemaField(const QString & name,
                        description)
 {}
 
-QcSchemaField::QcSchemaField(const QcSchemaField & other)
-  : QcSchemaFieldTrait(other),
+QoSchemaField::QoSchemaField(const QoSchemaField & other)
+  : QoSchemaFieldTrait(other),
     m_default(other.m_default)
 {}
 
-QcSchemaField::~QcSchemaField()
+QoSchemaField::~QoSchemaField()
 {}
 
-QcSchemaField &
-QcSchemaField::operator=(const QcSchemaField & other)
+QoSchemaField &
+QoSchemaField::operator=(const QoSchemaField & other)
 {
   if (this != &other) {
-    QcSchemaFieldTrait::operator=(other);
+    QoSchemaFieldTrait::operator=(other);
     m_default = other.m_default;
   }
 
@@ -198,21 +198,21 @@ QcSchemaField::operator=(const QcSchemaField & other)
 }
 
 QString
-QcSchemaField::to_sql_definition() const
+QoSchemaField::to_sql_definition() const
 {
   QStringList parts;
   if (m_default.isValid())
     parts << m_default.toString(); // Fixme: could fail !
-  return QcSchemaFieldTrait::to_sql_definition(parts);
+  return QoSchemaFieldTrait::to_sql_definition(parts);
 }
 
 /**************************************************************************************************/
 
-QcSchemaPrimaryKey::QcSchemaPrimaryKey()
-  : QcSchemaFieldTrait(FieldType::PrimaryKey)
+QoSchemaPrimaryKey::QoSchemaPrimaryKey()
+  : QoSchemaFieldTrait(FieldType::PrimaryKey)
 {}
 
-QcSchemaPrimaryKey::QcSchemaPrimaryKey(const QString & name,
+QoSchemaPrimaryKey::QoSchemaPrimaryKey(const QString & name,
                                        const QString & qt_type,
                                        const QString & sql_type,
                                        const QString & sql_name,
@@ -220,7 +220,7 @@ QcSchemaPrimaryKey::QcSchemaPrimaryKey(const QString & name,
                                        const QString & title,
                                        const QString & description
                                        )
-  : QcSchemaFieldTrait(FieldType::PrimaryKey,
+  : QoSchemaFieldTrait(FieldType::PrimaryKey,
                        name,
                        qt_type,
                        sql_type,
@@ -230,20 +230,20 @@ QcSchemaPrimaryKey::QcSchemaPrimaryKey(const QString & name,
                        description)
 {}
 
-QcSchemaPrimaryKey::QcSchemaPrimaryKey(const QcSchemaPrimaryKey & other)
-  : QcSchemaFieldTrait(other),
+QoSchemaPrimaryKey::QoSchemaPrimaryKey(const QoSchemaPrimaryKey & other)
+  : QoSchemaFieldTrait(other),
     m_autoincrement(other.m_autoincrement),
     m_unique(other.m_unique)
 {}
 
-QcSchemaPrimaryKey::~QcSchemaPrimaryKey()
+QoSchemaPrimaryKey::~QoSchemaPrimaryKey()
 {}
 
-QcSchemaPrimaryKey &
-QcSchemaPrimaryKey::operator=(const QcSchemaPrimaryKey & other)
+QoSchemaPrimaryKey &
+QoSchemaPrimaryKey::operator=(const QoSchemaPrimaryKey & other)
 {
   if (this != &other) {
-    QcSchemaFieldTrait::operator=(other);
+    QoSchemaFieldTrait::operator=(other);
     m_autoincrement = other.m_autoincrement;
     m_unique = other.m_unique;
   }
@@ -252,7 +252,7 @@ QcSchemaPrimaryKey::operator=(const QcSchemaPrimaryKey & other)
 }
 
 QString
-QcSchemaPrimaryKey::to_sql_definition() const
+QoSchemaPrimaryKey::to_sql_definition() const
 {
   QStringList parts;
   // parts << QLatin1String("PRIMARY KEY");
@@ -260,13 +260,13 @@ QcSchemaPrimaryKey::to_sql_definition() const
     parts << QLatin1String("AUTOINCREMENT");
   if (m_unique)
     parts << QLatin1String("UNIQUE");
-  return QcSchemaFieldTrait::to_sql_definition(parts);
+  return QoSchemaFieldTrait::to_sql_definition(parts);
 }
 
 /**************************************************************************************************/
 
-QcSchemaForeignKey::QcSchemaForeignKey()
-  : QcSchemaField(),
+QoSchemaForeignKey::QoSchemaForeignKey()
+  : QoSchemaField(),
     m_referenced_table(),
     m_referenced_field_name(),
     m_referenced_schema()
@@ -274,7 +274,7 @@ QcSchemaForeignKey::QcSchemaForeignKey()
   set_field_type(FieldType::ForeignKey); // Fixme: overwrite Normal, ok ?
 }
 
-QcSchemaForeignKey::QcSchemaForeignKey(const QString & name,
+QoSchemaForeignKey::QoSchemaForeignKey(const QString & name,
                                        const QString & reference,
                                        const QString & qt_type,
                                        const QString & sql_type,
@@ -283,7 +283,7 @@ QcSchemaForeignKey::QcSchemaForeignKey(const QString & name,
                                        const QString & title,
                                        const QString & description
                                        )
-  : QcSchemaField(name,
+  : QoSchemaField(name,
                   qt_type,
                   sql_type,
                   sql_name,
@@ -303,21 +303,21 @@ QcSchemaForeignKey::QcSchemaForeignKey(const QString & name,
   }
 }
 
-QcSchemaForeignKey::QcSchemaForeignKey(const QcSchemaForeignKey & other)
-  : QcSchemaField(other),
+QoSchemaForeignKey::QoSchemaForeignKey(const QoSchemaForeignKey & other)
+  : QoSchemaField(other),
     m_referenced_table(other.m_referenced_table),
     m_referenced_field_name(other.m_referenced_field_name),
     m_referenced_schema(other.m_referenced_schema)
 {}
 
-QcSchemaForeignKey::~QcSchemaForeignKey()
+QoSchemaForeignKey::~QoSchemaForeignKey()
 {}
 
-QcSchemaForeignKey &
-QcSchemaForeignKey::operator=(const QcSchemaForeignKey & other)
+QoSchemaForeignKey &
+QoSchemaForeignKey::operator=(const QoSchemaForeignKey & other)
 {
   if (this != &other) {
-    QcSchemaField::operator=(other);
+    QoSchemaField::operator=(other);
     m_referenced_table = other.m_referenced_table;
     m_referenced_field_name = other.m_referenced_field_name;
     m_referenced_schema = other.m_referenced_schema;
@@ -326,8 +326,8 @@ QcSchemaForeignKey::operator=(const QcSchemaForeignKey & other)
   return *this;
 }
 
-QSharedPointer<const QcSchemaFieldTrait>
-QcSchemaForeignKey::referenced_field() const
+QSharedPointer<const QoSchemaFieldTrait>
+QoSchemaForeignKey::referenced_field() const
 {
   if (m_referenced_schema.isNull())
     return nullptr;
@@ -337,9 +337,9 @@ QcSchemaForeignKey::referenced_field() const
 
 /**************************************************************************************************/
 
-std::atomic<int> QcSchema::m_last_schema_id(0);
+std::atomic<int> QoSchema::m_last_schema_id(0);
 
-QcSchema::QcSchema()
+QoSchema::QoSchema()
   : m_schema_id(new_schema_id()),
     m_name(),
     m_table_name(),
@@ -350,7 +350,7 @@ QcSchema::QcSchema()
     m_field_names_without_rowid()
 {}
 
-QcSchema::QcSchema(const QString & name,
+QoSchema::QoSchema(const QString & name,
                    const QString & table_name,
                    bool without_rowid
                    //const QString & sql_table_option
@@ -369,7 +369,7 @@ QcSchema::QcSchema(const QString & name,
     m_table_name = m_name;
 }
 
-QcSchema::QcSchema(const QcSchema & other)
+QoSchema::QoSchema(const QoSchema & other)
   : m_schema_id(other.m_schema_id),
     m_name(other.m_name),
     m_table_name(other.m_table_name),
@@ -387,11 +387,11 @@ QcSchema::QcSchema(const QcSchema & other)
   copy_fields(other);
 }
 
-QcSchema::~QcSchema()
+QoSchema::~QoSchema()
 {}
 
-QcSchema &
-QcSchema::operator=(const QcSchema & other)
+QoSchema &
+QoSchema::operator=(const QoSchema & other)
 {
   if (this != &other) {
     m_schema_id = other.m_schema_id;
@@ -409,10 +409,10 @@ QcSchema::operator=(const QcSchema & other)
 }
 
 void
-QcSchema::add_field(const QcSchemaFieldTrait & field)
+QoSchema::add_field(const QoSchemaFieldTrait & field)
 {
-  m_fields << QcSchemaFieldPtr(field.clone());
-  QcSchemaFieldPtr owned_field = m_fields.last();
+  m_fields << QoSchemaFieldPtr(field.clone());
+  QoSchemaFieldPtr owned_field = m_fields.last();
   owned_field->set_position(this, m_fields.size() -1);
   m_field_map.insert(owned_field->name(), owned_field);
   const QString & name = owned_field->sql_name();
@@ -427,15 +427,15 @@ QcSchema::add_field(const QcSchemaFieldTrait & field)
     m_has_sql_value_ctor = true;
 }
 
-QcSchema &
-QcSchema::operator<<(const QcSchemaFieldTrait & field)
+QoSchema &
+QoSchema::operator<<(const QoSchemaFieldTrait & field)
 {
   add_field(field);
   return *this;
 }
 
 void
-QcSchema::copy_fields(const QcSchema & other)
+QoSchema::copy_fields(const QoSchema & other)
 {
   m_fields.clear();
   m_fields_without_rowid.clear();
@@ -448,7 +448,7 @@ QcSchema::copy_fields(const QcSchema & other)
 }
 
 QStringList
-QcSchema::prefixed_field_names() const
+QoSchema::prefixed_field_names() const
 {
   QStringList string_list;
 
@@ -459,7 +459,7 @@ QcSchema::prefixed_field_names() const
 }
 
 QStringList
-QcSchema::to_sql_definition() const
+QoSchema::to_sql_definition() const
 {
   QStringList sql_queries;
 
@@ -470,14 +470,14 @@ QcSchema::to_sql_definition() const
 
   QStringList sql_fields;
   QStringList primary_keys;
-  QList<QcSchemaForeignKey *> foreign_keys;
+  QList<QoSchemaForeignKey *> foreign_keys;
   for (const auto & field : m_fields) {
     if (not field->has_sql_column_ctor())
       sql_fields << field->to_sql_definition();
     if (field->is_primary_key())
       primary_keys << field->name();
     else if (field->is_foreign_key())
-      foreign_keys << dynamic_cast<QcSchemaForeignKey *>(field.data());
+      foreign_keys << dynamic_cast<QoSchemaForeignKey *>(field.data());
   }
   sql_query += sql_fields.join(QLatin1String(",\n  "));
 

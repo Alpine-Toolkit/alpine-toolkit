@@ -42,10 +42,10 @@
 
 
 AuthorSchema::AuthorSchema()
-: QcSchema(QLatin1String("Author"), QLatin1String("authors"))
+: QoSchema(QLatin1String("Author"), QLatin1String("authors"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ AuthorSchema::AuthorSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -70,7 +70,7 @@ AuthorSchema::AuthorSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("birthdate"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -90,7 +90,7 @@ AuthorSchema::~AuthorSchema()
 
 Author::Author()
   : QObject(),
-    QcRow<AuthorSchema>(),
+    QoRow<AuthorSchema>(),
     m_id(),
     m_name(),
     m_birthdate()
@@ -99,7 +99,7 @@ Author::Author()
 
 Author::Author(const Author & other)
   : QObject(),
-    QcRow<AuthorSchema>(other),
+    QoRow<AuthorSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_birthdate(other.m_birthdate)
@@ -131,7 +131,7 @@ Author::Author(const QVariantList & variants)
 }
 
 Author::Author(const QSqlRecord & record)
- : QcRow<AuthorSchema>(record)
+ : QoRow<AuthorSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -139,7 +139,7 @@ Author::Author(const QSqlRecord & record)
 }
 
 Author::Author(const QSqlQuery & query, int offset)
- : QcRow<AuthorSchema>(query)
+ : QoRow<AuthorSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -156,7 +156,7 @@ Author &
 Author::operator=(const Author & other)
 {
   if (this != &other) {
-    QcRow<AuthorSchema>::operator=(other);
+    QoRow<AuthorSchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_birthdate = other.m_birthdate;
@@ -169,7 +169,7 @@ Author::operator=(const Author & other)
 bool
 Author::operator==(const Author & other) const
 {
-  if (not QcRow<AuthorSchema>::operator==(other))
+  if (not QoRow<AuthorSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -570,10 +570,10 @@ AuthorModel::set_items(const ItemList & items)
 }
 
 CategorySchema::CategorySchema()
-: QcSchema(QLatin1String("Category"), QLatin1String("categories"))
+: QoSchema(QLatin1String("Category"), QLatin1String("categories"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -586,7 +586,7 @@ CategorySchema::CategorySchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -598,7 +598,7 @@ CategorySchema::CategorySchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -618,7 +618,7 @@ CategorySchema::~CategorySchema()
 
 Category::Category()
   : QObject(),
-    QcRow<CategorySchema>(),
+    QoRow<CategorySchema>(),
     m_id(),
     m_name(),
     m_description()
@@ -627,7 +627,7 @@ Category::Category()
 
 Category::Category(const Category & other)
   : QObject(),
-    QcRow<CategorySchema>(other),
+    QoRow<CategorySchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_description(other.m_description)
@@ -659,7 +659,7 @@ Category::Category(const QVariantList & variants)
 }
 
 Category::Category(const QSqlRecord & record)
- : QcRow<CategorySchema>(record)
+ : QoRow<CategorySchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -667,7 +667,7 @@ Category::Category(const QSqlRecord & record)
 }
 
 Category::Category(const QSqlQuery & query, int offset)
- : QcRow<CategorySchema>(query)
+ : QoRow<CategorySchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -684,7 +684,7 @@ Category &
 Category::operator=(const Category & other)
 {
   if (this != &other) {
-    QcRow<CategorySchema>::operator=(other);
+    QoRow<CategorySchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_description = other.m_description;
@@ -697,7 +697,7 @@ Category::operator=(const Category & other)
 bool
 Category::operator==(const Category & other) const
 {
-  if (not QcRow<CategorySchema>::operator==(other))
+  if (not QoRow<CategorySchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -1071,10 +1071,10 @@ CategoryModel::set_items(const ItemList & items)
 }
 
 BlogSchema::BlogSchema()
-: QcSchema(QLatin1String("Blog"), QLatin1String("blogs"))
+: QoSchema(QLatin1String("Blog"), QLatin1String("blogs"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1087,7 +1087,7 @@ BlogSchema::BlogSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("text"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1099,7 +1099,7 @@ BlogSchema::BlogSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -1111,7 +1111,7 @@ BlogSchema::BlogSchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("author_id"),
       QLatin1String("authors.id"),
       QLatin1String("int"),
@@ -1132,7 +1132,7 @@ BlogSchema::~BlogSchema()
 
 Blog::Blog()
   : QObject(),
-    QcRow<BlogSchema>(),
+    QoRow<BlogSchema>(),
     m_id(),
     m_text(),
     m_date(),
@@ -1142,7 +1142,7 @@ Blog::Blog()
 
 Blog::Blog(const Blog & other)
   : QObject(),
-    QcRow<BlogSchema>(other),
+    QoRow<BlogSchema>(other),
     m_id(other.m_id),
     m_text(other.m_text),
     m_date(other.m_date),
@@ -1178,7 +1178,7 @@ Blog::Blog(const QVariantList & variants)
 }
 
 Blog::Blog(const QSqlRecord & record)
- : QcRow<BlogSchema>(record)
+ : QoRow<BlogSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_text = record.value(1).toString();
@@ -1187,7 +1187,7 @@ Blog::Blog(const QSqlRecord & record)
 }
 
 Blog::Blog(const QSqlQuery & query, int offset)
- : QcRow<BlogSchema>(query)
+ : QoRow<BlogSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_text = query.value(offset++).toString();
@@ -1205,7 +1205,7 @@ Blog &
 Blog::operator=(const Blog & other)
 {
   if (this != &other) {
-    QcRow<BlogSchema>::operator=(other);
+    QoRow<BlogSchema>::operator=(other);
     m_id = other.m_id;
     m_text = other.m_text;
     m_date = other.m_date;
@@ -1219,7 +1219,7 @@ Blog::operator=(const Blog & other)
 bool
 Blog::operator==(const Blog & other) const
 {
-  if (not QcRow<BlogSchema>::operator==(other))
+  if (not QoRow<BlogSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -1466,7 +1466,7 @@ AuthorPtr
 Blog::author()
 {
   if (m_author.isNull())
-    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
+    // Fixme: query_by_id must be defined in QoDatabaseSchema but we cannot call register_row
     m_author = database_schema()->query_by_id<Author>(m_author_id);
   return m_author;
 }
@@ -1677,10 +1677,10 @@ BlogModel::set_items(const ItemList & items)
 }
 
 CommentSchema::CommentSchema()
-: QcSchema(QLatin1String("Comment"), QLatin1String("comments"))
+: QoSchema(QLatin1String("Comment"), QLatin1String("comments"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -1693,7 +1693,7 @@ CommentSchema::CommentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("text"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -1705,7 +1705,7 @@ CommentSchema::CommentSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("date"),
       QLatin1String("QDateTime"),
       QLatin1String("text"),
@@ -1717,7 +1717,7 @@ CommentSchema::CommentSchema()
     add_field(field);
   }
   {
-    QcSchemaForeignKey field(
+    QoSchemaForeignKey field(
       QLatin1String("blog_id"),
       QLatin1String("blogs.id"),
       QLatin1String("int"),
@@ -1738,7 +1738,7 @@ CommentSchema::~CommentSchema()
 
 Comment::Comment()
   : QObject(),
-    QcRow<CommentSchema>(),
+    QoRow<CommentSchema>(),
     m_id(),
     m_text(),
     m_date(),
@@ -1748,7 +1748,7 @@ Comment::Comment()
 
 Comment::Comment(const Comment & other)
   : QObject(),
-    QcRow<CommentSchema>(other),
+    QoRow<CommentSchema>(other),
     m_id(other.m_id),
     m_text(other.m_text),
     m_date(other.m_date),
@@ -1784,7 +1784,7 @@ Comment::Comment(const QVariantList & variants)
 }
 
 Comment::Comment(const QSqlRecord & record)
- : QcRow<CommentSchema>(record)
+ : QoRow<CommentSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_text = record.value(1).toString();
@@ -1793,7 +1793,7 @@ Comment::Comment(const QSqlRecord & record)
 }
 
 Comment::Comment(const QSqlQuery & query, int offset)
- : QcRow<CommentSchema>(query)
+ : QoRow<CommentSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_text = query.value(offset++).toString();
@@ -1811,7 +1811,7 @@ Comment &
 Comment::operator=(const Comment & other)
 {
   if (this != &other) {
-    QcRow<CommentSchema>::operator=(other);
+    QoRow<CommentSchema>::operator=(other);
     m_id = other.m_id;
     m_text = other.m_text;
     m_date = other.m_date;
@@ -1825,7 +1825,7 @@ Comment::operator=(const Comment & other)
 bool
 Comment::operator==(const Comment & other) const
 {
-  if (not QcRow<CommentSchema>::operator==(other))
+  if (not QoRow<CommentSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -2240,8 +2240,8 @@ CommentModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-BlogApplicationSchema::BlogApplicationSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+BlogApplicationSchema::BlogApplicationSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_authors(nullptr),
     m_categories(nullptr),
     m_blogs(nullptr),

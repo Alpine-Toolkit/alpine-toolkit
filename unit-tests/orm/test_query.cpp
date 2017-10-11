@@ -43,7 +43,7 @@ class TestQuery: public QObject
 private slots:
   void constructor();
   void check_sql(const QcSqlExpressionPtr & expression, const QString & sql_query);
-  void check_sql(const QcSqlQuery & query, const QString & sql_query);
+  void check_sql(const QoSqlQuery & query, const QString & sql_query);
 };
 
 void
@@ -55,7 +55,7 @@ TestQuery::check_sql(const QcSqlExpressionPtr & expression, const QString & sql_
 }
 
 void
-TestQuery::check_sql(const QcSqlQuery & query, const QString & sql_query_truth)
+TestQuery::check_sql(const QoSqlQuery & query, const QString & sql_query_truth)
 {
   QString sql_query = query.to_sql();
   if (sql_query_truth.isEmpty())
@@ -68,9 +68,9 @@ TestQuery::check_sql(const QcSqlQuery & query, const QString & sql_query_truth)
 
 void TestQuery::constructor()
 {
-  QcSqlField field1("field1");
-  QcSqlField field2("field2");
-  QcSqlField field3("field3");
+  QoSqlField field1("field1");
+  QoSqlField field2("field2");
+  QoSqlField field3("field3");
 
   check_sql(field1 == 1, "field1 = 1");
   check_sql(field1 != 1, "field1 != 1");
@@ -86,8 +86,8 @@ void TestQuery::constructor()
   check_sql((field1 == 1 and field2 == 2) or field3 == 3,
             "((field1 = 1 AND field2 = 2) OR field3 = 3)");
 
-  QcDatabase database; // Flavour is ANSI
-  QcDatabaseTable table(&database, "table");
+  QoDatabase database; // Flavour is ANSI
+  QoDatabaseTable table(&database, "table");
 
   check_sql(table.sql_query(), "");
 

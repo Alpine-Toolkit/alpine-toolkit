@@ -173,11 +173,11 @@ class Field:
     def shema_field_ctor(self):
 
         if self.is_primary_key:
-            return 'QcSchemaPrimaryKey'
+            return 'QoSchemaPrimaryKey'
         elif self.is_foreign_key:
-            return 'QcSchemaForeignKey'
+            return 'QoSchemaForeignKey'
         else:
-            return 'QcSchemaField'
+            return 'QoSchemaField'
 
     @property
     def sql_column_ctor(self):
@@ -664,8 +664,8 @@ class Schema:
 
     @property
     def base_class(self):
-        return 'QcRow'
-        # return 'QcRowWithId' if self._has_rowid_primary_key else 'QcRow'
+        return 'QoRow'
+        # return 'QoRowWithId' if self._has_rowid_primary_key else 'QoRow'
 
     ##############################################
 

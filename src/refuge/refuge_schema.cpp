@@ -42,10 +42,10 @@
 
 
 RefugeSchema::RefugeSchema()
-: QcSchema(QLatin1String("Refuge"), QLatin1String("refuge"))
+: QoSchema(QLatin1String("Refuge"), QLatin1String("refuge"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -70,7 +70,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("short_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -82,7 +82,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("altitude"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -94,7 +94,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("description"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -106,7 +106,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("owner"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -118,7 +118,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("guardian"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -130,7 +130,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("picture_path"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -142,7 +142,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("coordinate"),
       QLatin1String("QGeoCoordinate"),
       QLatin1String("text"),
@@ -153,11 +153,11 @@ RefugeSchema::RefugeSchema()
     // Optional parameters
     field.set_sql_column_ctor(QLatin1String("SELECT AddGeometryColumn('refuge', 'coordinate', 4326, 'POINT', 'XY');"));
     field.set_sql_value_ctor(ST_GeomFromWKB());
-    field.set_sql_value_getter(ST_AsBinary(QcSqlField((QLatin1String("coordinate")))));
+    field.set_sql_value_getter(ST_AsBinary(QoSqlField((QLatin1String("coordinate")))));
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("number_of_places"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -169,7 +169,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("region"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -181,7 +181,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("url"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -193,7 +193,7 @@ RefugeSchema::RefugeSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("phone"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -213,7 +213,7 @@ RefugeSchema::~RefugeSchema()
 
 Refuge::Refuge()
   : QObject(),
-    QcRow<RefugeSchema>(),
+    QoRow<RefugeSchema>(),
     m_id(),
     m_name(),
     m_short_name(),
@@ -233,7 +233,7 @@ Refuge::Refuge()
 
 Refuge::Refuge(const Refuge & other)
   : QObject(),
-    QcRow<RefugeSchema>(other),
+    QoRow<RefugeSchema>(other),
     m_id(other.m_id),
     m_name(other.m_name),
     m_short_name(other.m_short_name),
@@ -312,7 +312,7 @@ Refuge::Refuge(const QVariantList & variants)
 }
 
 Refuge::Refuge(const QSqlRecord & record)
- : QcRow<RefugeSchema>(record)
+ : QoRow<RefugeSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_name = record.value(1).toString();
@@ -332,7 +332,7 @@ Refuge::Refuge(const QSqlRecord & record)
 }
 
 Refuge::Refuge(const QSqlQuery & query, int offset)
- : QcRow<RefugeSchema>(query)
+ : QoRow<RefugeSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_name = query.value(offset++).toString();
@@ -361,7 +361,7 @@ Refuge &
 Refuge::operator=(const Refuge & other)
 {
   if (this != &other) {
-    QcRow<RefugeSchema>::operator=(other);
+    QoRow<RefugeSchema>::operator=(other);
     m_id = other.m_id;
     m_name = other.m_name;
     m_short_name = other.m_short_name;
@@ -386,7 +386,7 @@ Refuge::operator=(const Refuge & other)
 bool
 Refuge::operator==(const Refuge & other) const
 {
-  if (not QcRow<RefugeSchema>::operator==(other))
+  if (not QoRow<RefugeSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -1182,8 +1182,8 @@ RefugeModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-RefugeDatabaseSchema::RefugeDatabaseSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+RefugeDatabaseSchema::RefugeDatabaseSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_refuge(nullptr),
     m_refuge_cache()
 {

@@ -38,7 +38,7 @@
 /**************************************************************************************************/
 
 void
-QcJsonSchemaTraits::load_json(const QString & json_path)
+QoJsonSchemaTraits::load_json(const QString & json_path)
 {
   QFile json_file(json_path);
 
@@ -58,7 +58,7 @@ QcJsonSchemaTraits::load_json(const QString & json_path)
 }
 
 void
-QcJsonSchemaTraits::to_json(const QString & json_path) // const
+QoJsonSchemaTraits::to_json(const QString & json_path) // const
 {
   QFile json_file(json_path);
 

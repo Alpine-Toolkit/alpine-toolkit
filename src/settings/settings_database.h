@@ -45,7 +45,7 @@
 
 /**************************************************************************************************/
 
-class SettingsDatabase : public QcDatabaseSchema, public QcJsonSchemaTraits
+class SettingsDatabase : public QoDatabaseSchema, public QoJsonSchemaTraits
 {
 public:
   typedef QHash<QString, QVariant> KeyValueMap;
@@ -54,7 +54,7 @@ private:
   typedef QHash<int, QString> PathCache;
 
 public:
-  SettingsDatabase(QcDatabase & database);
+  SettingsDatabase(QoDatabase & database);
   ~SettingsDatabase();
 
   void register_tables();
@@ -97,8 +97,8 @@ private:
   void save_directory(const SettingsDatabaseDirectory & directory);
 
 private:
-  QcDatabaseTable * m_directory_table;
-  QcDatabaseTable * m_key_value_table;
+  QoDatabaseTable * m_directory_table;
+  QoDatabaseTable * m_key_value_table;
 
   // Fixme: implement as a tree ?
   QHash<int, QString> m_rowid_path_cache;
@@ -110,7 +110,7 @@ private:
 
 /**************************************************************************************************/
 
-class SqliteSettingsDatabase : public QcSqliteDatabase // , public SettingsDatabase
+class SqliteSettingsDatabase : public QoSqliteDatabase // , public SettingsDatabase
 {
 public:
   SqliteSettingsDatabase(const QString & sqlite_path);

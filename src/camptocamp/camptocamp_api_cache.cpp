@@ -53,27 +53,27 @@ static const QString VALUE = "value";
 static const QString VERSION = "version";
 
 C2cApiCache::C2cApiCache(const QString & sqlite_path)
-  : QcSqliteDatabase(sqlite_path),
-    QcDatabaseSchema(*((QcSqliteDatabase *) this)), // Fixme: ???
+  : QoSqliteDatabase(sqlite_path),
+    QoDatabaseSchema(*((QoSqliteDatabase *) this)), // Fixme: ???
     m_metadata_table(nullptr),
     m_document_table(nullptr)
 {
   // Fixme: migrate table using VERSION
 
-  QcSchema metadata_schema(METADATA);
-  QcSchemaField key_field(KEY, QLatin1String("QString"), QLatin1String("TEXT"));
+  QoSchema metadata_schema(METADATA);
+  QoSchemaField key_field(KEY, QLatin1String("QString"), QLatin1String("TEXT"));
   key_field.set_nullable(false);
   metadata_schema << key_field;
-  metadata_schema << QcSchemaField(VALUE, QLatin1String("QString"), QLatin1String("TEXT"));
+  metadata_schema << QoSchemaField(VALUE, QLatin1String("QString"), QLatin1String("TEXT"));
   m_metadata_table = &register_table(metadata_schema);
 
-  QcSchema document_schema(DOCUMENT);
+  QoSchema document_schema(DOCUMENT);
   // # https://www.sqlite.org/autoinc.html
   // # Fixme: how to handle auto-increment overflow ?
-  QcSchemaField id_field(ID, QLatin1String("int"), QLatin1String("INTEGER"));
+  QoSchemaField id_field(ID, QLatin1String("int"), QLatin1String("INTEGER"));
   id_field.set_nullable(false);
   document_schema << id_field;
-  document_schema << QcSchemaField(DATA, QLatin1String("QByteArray"), QLatin1String("BLOB")); // JSON HIDDEN
+  document_schema << QoSchemaField(DATA, QLatin1String("QByteArray"), QLatin1String("BLOB")); // JSON HIDDEN
   m_document_table = &register_table(document_schema);
 }
 

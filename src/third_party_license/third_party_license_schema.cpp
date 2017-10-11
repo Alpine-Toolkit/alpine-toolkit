@@ -42,10 +42,10 @@
 
 
 ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
-: QcSchema(QLatin1String("ThirdPartyLicense"), QLatin1String("third_party_license"))
+: QoSchema(QLatin1String("ThirdPartyLicense"), QLatin1String("third_party_license"))
 {
   {
-    QcSchemaPrimaryKey field(
+    QoSchemaPrimaryKey field(
       QLatin1String("id"),
       QLatin1String("int"),
       QLatin1String("integer"),
@@ -58,7 +58,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("used"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -70,7 +70,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("show"),
       QLatin1String("bool"),
       QLatin1String("integer"),
@@ -82,7 +82,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("third_party_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -94,7 +94,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("third_party_url"),
       QLatin1String("QUrl"),
       QLatin1String("text"),
@@ -106,7 +106,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("third_party_version"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -118,7 +118,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("license_name"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -130,7 +130,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("license_url"),
       QLatin1String("QUrl"),
       QLatin1String("text"),
@@ -142,7 +142,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("license_text"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -154,7 +154,7 @@ ThirdPartyLicenseSchema::ThirdPartyLicenseSchema()
     add_field(field);
   }
   {
-    QcSchemaField field(
+    QoSchemaField field(
       QLatin1String("license_note"),
       QLatin1String("QString"),
       QLatin1String("text"),
@@ -174,7 +174,7 @@ ThirdPartyLicenseSchema::~ThirdPartyLicenseSchema()
 
 ThirdPartyLicense::ThirdPartyLicense()
   : QObject(),
-    QcRow<ThirdPartyLicenseSchema>(),
+    QoRow<ThirdPartyLicenseSchema>(),
     m_id(),
     m_used(),
     m_show(),
@@ -190,7 +190,7 @@ ThirdPartyLicense::ThirdPartyLicense()
 
 ThirdPartyLicense::ThirdPartyLicense(const ThirdPartyLicense & other)
   : QObject(),
-    QcRow<ThirdPartyLicenseSchema>(other),
+    QoRow<ThirdPartyLicenseSchema>(other),
     m_id(other.m_id),
     m_used(other.m_used),
     m_show(other.m_show),
@@ -250,7 +250,7 @@ ThirdPartyLicense::ThirdPartyLicense(const QVariantList & variants)
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QSqlRecord & record)
- : QcRow<ThirdPartyLicenseSchema>(record)
+ : QoRow<ThirdPartyLicenseSchema>(record)
 {
   m_id = record.value(0).toInt();
   m_used = record.value(1).toBool();
@@ -265,7 +265,7 @@ ThirdPartyLicense::ThirdPartyLicense(const QSqlRecord & record)
 }
 
 ThirdPartyLicense::ThirdPartyLicense(const QSqlQuery & query, int offset)
- : QcRow<ThirdPartyLicenseSchema>(query)
+ : QoRow<ThirdPartyLicenseSchema>(query)
 {
   m_id = query.value(offset++).toInt();
   m_used = query.value(offset++).toBool();
@@ -289,7 +289,7 @@ ThirdPartyLicense &
 ThirdPartyLicense::operator=(const ThirdPartyLicense & other)
 {
   if (this != &other) {
-    QcRow<ThirdPartyLicenseSchema>::operator=(other);
+    QoRow<ThirdPartyLicenseSchema>::operator=(other);
     m_id = other.m_id;
     m_used = other.m_used;
     m_show = other.m_show;
@@ -309,7 +309,7 @@ ThirdPartyLicense::operator=(const ThirdPartyLicense & other)
 bool
 ThirdPartyLicense::operator==(const ThirdPartyLicense & other) const
 {
-  if (not QcRow<ThirdPartyLicenseSchema>::operator==(other))
+  if (not QoRow<ThirdPartyLicenseSchema>::operator==(other))
     return false;
   if (m_id != other.m_id)
     return false;
@@ -974,8 +974,8 @@ ThirdPartyLicenseModel::set_items(const ItemList & items)
   m_items = items;
   endResetModel();
 }
-ThirdPartyLicenseDatabaseSchema::ThirdPartyLicenseDatabaseSchema(QcDatabase & database)
-  : QcDatabaseSchema(database),
+ThirdPartyLicenseDatabaseSchema::ThirdPartyLicenseDatabaseSchema(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_third_party_license(nullptr),
     m_third_party_license_cache()
 {

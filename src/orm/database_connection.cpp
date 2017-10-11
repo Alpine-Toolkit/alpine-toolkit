@@ -35,7 +35,7 @@
 
 // QC_BEGIN_NAMESPACE
 
-QcDatabaseConnectionData::QcDatabaseConnectionData()
+QoDatabaseConnectionData::QoDatabaseConnectionData()
   : m_host(),
     m_port(),
     m_database(),
@@ -43,7 +43,7 @@ QcDatabaseConnectionData::QcDatabaseConnectionData()
     m_password()
 {}
 
-QcDatabaseConnectionData::QcDatabaseConnectionData(const QcDatabaseConnectionData & other)
+QoDatabaseConnectionData::QoDatabaseConnectionData(const QoDatabaseConnectionData & other)
   : m_host(other.m_host),
     m_port(other.m_port),
     m_database(other.m_database),
@@ -51,11 +51,11 @@ QcDatabaseConnectionData::QcDatabaseConnectionData(const QcDatabaseConnectionDat
     m_password(other.m_password)
 {}
 
-QcDatabaseConnectionData::~QcDatabaseConnectionData()
+QoDatabaseConnectionData::~QoDatabaseConnectionData()
 {}
 
-QcDatabaseConnectionData &
-QcDatabaseConnectionData::operator=(const QcDatabaseConnectionData & other)
+QoDatabaseConnectionData &
+QoDatabaseConnectionData::operator=(const QoDatabaseConnectionData & other)
 {
   if (this != &other) {
     m_host = other.m_host;
@@ -69,7 +69,7 @@ QcDatabaseConnectionData::operator=(const QcDatabaseConnectionData & other)
 }
 
 bool
-QcDatabaseConnectionData::operator==(const QcDatabaseConnectionData & other)
+QoDatabaseConnectionData::operator==(const QoDatabaseConnectionData & other)
 {
   if (m_host != other.m_host)
     return false;
@@ -87,11 +87,11 @@ QcDatabaseConnectionData::operator==(const QcDatabaseConnectionData & other)
 
 #ifndef QT_NO_DEBUG_STREAM
 QDebug
-operator<<(QDebug debug, const QcDatabaseConnectionData & obj)
+operator<<(QDebug debug, const QoDatabaseConnectionData & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcDatabaseConnectionData(");
+  debug.nospace() << QLatin1Literal("QoDatabaseConnectionData(");
   debug << obj.host();
   debug << QLatin1Literal(", ");
   debug << obj.port();

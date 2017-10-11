@@ -72,8 +72,8 @@ constexpr auto to_underlying(E e) noexcept
 }
 */
 
-SettingsDatabase::SettingsDatabase(QcDatabase & database)
-  : QcDatabaseSchema(database),
+SettingsDatabase::SettingsDatabase(QoDatabase & database)
+  : QoDatabaseSchema(database),
     m_directory_table(nullptr),
     m_key_value_table(nullptr)
 {}
@@ -84,29 +84,29 @@ SettingsDatabase::~SettingsDatabase()
 void
 SettingsDatabase::register_tables()
 {
-  QcSchemaPrimaryKey rowid(QLatin1String("id"), QLatin1String("int"), QLatin1String("INTEGER"));
+  QoSchemaPrimaryKey rowid(QLatin1String("id"), QLatin1String("int"), QLatin1String("INTEGER"));
   rowid.set_nullable(false);
 
-  QcSchemaField name_field(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
+  QoSchemaField name_field(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
   name_field.set_nullable(false);
 
   // Fixme: copy ???
-  QcSchemaPrimaryKey name_field_pk(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
+  QoSchemaPrimaryKey name_field_pk(NAME, QLatin1String("QString"), QLatin1String("TEXT"));
   name_field_pk.set_nullable(false);
 
-  QcSchema directory_schema(QLatin1String("directory"));
+  QoSchema directory_schema(QLatin1String("directory"));
   directory_schema << rowid;
   directory_schema << name_field;
-  directory_schema << QcSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // Foreign key to self.rowid
+  directory_schema << QoSchemaField(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // Foreign key to self.rowid
   m_directory_table = &register_table(directory_schema);
 
   // Fixme: primary key (name, parent) but parent is foreign key or null
   //   define root ?
-  QcSchema key_value_schema(QLatin1String("key"));
+  QoSchema key_value_schema(QLatin1String("key"));
   key_value_schema << name_field_pk;
-  // key_value_schema << QcSchemaForeignKey(PARENT, QLatin1String("directory.id"), QLatin1String("int"), QLatin1String("INTEGER"));
-  key_value_schema << QcSchemaPrimaryKey(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // can be null !
-  key_value_schema << QcSchemaField(VALUE, QLatin1String("QVariant"), QLatin1String("BLOB"));
+  // key_value_schema << QoSchemaForeignKey(PARENT, QLatin1String("directory.id"), QLatin1String("int"), QLatin1String("INTEGER"));
+  key_value_schema << QoSchemaPrimaryKey(PARENT, QLatin1String("int"), QLatin1String("INTEGER")); // can be null !
+  key_value_schema << QoSchemaField(VALUE, QLatin1String("QVariant"), QLatin1String("BLOB"));
   m_key_value_table = &register_table(key_value_schema);
 }
 
@@ -304,7 +304,7 @@ QString
 SettingsDatabase::parent_to_path(int path_parent)
 {
   if (path_parent > 0) {
-    QcSqlRecordWrapper record = m_directory_table->select_by_id(path_parent);
+    QoSqlRecordWrapper record = m_directory_table->select_by_id(path_parent);
     int parent = record.toInt(Int(DirectoryField::Parent));
     QString path;
     if (parent > 0)
@@ -319,7 +319,7 @@ SettingsDatabase::parent_to_path(int path_parent)
 void
 SettingsDatabase::load()
 {
-  QcSqlQueryWrapper query = m_key_value_table->select_where();
+  QoSqlQueryWrapper query = m_key_value_table->select_where();
   while (query.next()) {
     QString name = query.toString(Int(KeyField::Name));
     int parent = query.toInt(Int(KeyField::Parent));
@@ -348,9 +348,9 @@ SettingsDatabase::load_directory()
 
   {
     // Fixme: table -> schema -> int cast
-    QcSqlField parent_field = m_directory_table->schema().sql_field(Int(DirectoryField::Parent));
-    QcSqlQuery sql_query = m_directory_table->sql_query().order_by(parent_field).all();
-    QcSqlQueryWrapper query = sql_query.exec();
+    QoSqlField parent_field = m_directory_table->schema().sql_field(Int(DirectoryField::Parent));
+    QoSqlQuery sql_query = m_directory_table->sql_query().order_by(parent_field).all();
+    QoSqlQueryWrapper query = sql_query.exec();
     while (query.next()) {
       int id = query.toInt(Int(DirectoryField::Id));
       QString name = query.toString(Int(DirectoryField::Name));
@@ -362,7 +362,7 @@ SettingsDatabase::load_directory()
   }
 
   {
-    QcSqlQueryWrapper query = m_key_value_table->select_where();
+    QoSqlQueryWrapper query = m_key_value_table->select_where();
     while (query.next()) {
       QString name = query.toString(Int(KeyField::Name));
       int parent = query.toInt(Int(KeyField::Parent));
@@ -405,7 +405,7 @@ SettingsDatabase::to_json_document() // const
 /**************************************************************************************************/
 
 SqliteSettingsDatabase::SqliteSettingsDatabase(const QString & sqlite_path)
-  : QcSqliteDatabase(sqlite_path),
+  : QoSqliteDatabase(sqlite_path),
     m_settings_database(*this)
     // SettingsDatabase(*this)
 {

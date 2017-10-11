@@ -63,7 +63,7 @@ class DocumentPtr;
 
 /**************************************************************************************************/
 
-class DocumentSchema : public QcSchema
+class DocumentSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -98,7 +98,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Document : public QObject, public QcRow<DocumentSchema>
+class Document : public QObject, public QoRow<DocumentSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -241,7 +241,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   DocumentPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   DocumentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   DocumentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -356,22 +356,22 @@ private:
 
 /**************************************************************************************************/
 
-class DocumentDatabaseSchema : public QcDatabaseSchema
+class DocumentDatabaseSchema : public QoDatabaseSchema
 {
 public:
-  DocumentDatabaseSchema(QcDatabase & database);
+  DocumentDatabaseSchema(QoDatabase & database);
   DocumentDatabaseSchema(const DocumentDatabaseSchema & other) = delete;
   ~DocumentDatabaseSchema();
 
   DocumentDatabaseSchema & operator=(const DocumentDatabaseSchema & other) = delete;
 
-  QcDatabaseTable & document() { return *m_document; }
+  QoDatabaseTable & document() { return *m_document; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_document;
+  QoDatabaseTable * m_document;
   DocumentCache m_document_cache;
 };
 

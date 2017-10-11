@@ -53,7 +53,7 @@ class {{relation.ptr_cls_name}};
 
 /**************************************************************************************************/
 
-class {{class_name_schema}} : public QcSchema
+class {{class_name_schema}} : public QoSchema
 {
 public:
   enum Fields {
@@ -148,7 +148,7 @@ public:
   {{relation.ptr_cls_name}} {{relation.name}}();
 {% endif %}
 {% if relation.is_one_to_many %}
-  QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
+  QoRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> & {{relation.name}}() { return m_{{relation.name}}; }
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -180,7 +180,7 @@ private:
   {{relation.ptr_cls_name}} m_{{relation.name}};
 {% endif %}
 {% if relation.is_one_to_many %}
-  QcRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> m_{{relation.name}};
+  QoRowList<{{relation.cls_name}}, {{relation.ptr_cls_name}}> m_{{relation.name}};
 {% endif %}
 {% endfor %}
 
@@ -219,7 +219,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   {{class_name_ptr}}(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   {{class_name_ptr}}(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   {{class_name_ptr}}(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}

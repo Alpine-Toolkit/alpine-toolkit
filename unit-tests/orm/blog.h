@@ -65,7 +65,7 @@ class BlogPtr;
 
 /**************************************************************************************************/
 
-class AuthorSchema : public QcSchema
+class AuthorSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -95,7 +95,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Author : public QObject, public QcRow<AuthorSchema>
+class Author : public QObject, public QoRow<AuthorSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -158,7 +158,7 @@ public:
   void load_relations();
   void save_relations();
 
-  QcRowList<Blog, BlogPtr> & blogs() { return m_blogs; }
+  QoRowList<Blog, BlogPtr> & blogs() { return m_blogs; }
 
   bool can_update() const; // To update row
   QVariantHash rowid_kwargs() const;
@@ -173,7 +173,7 @@ private:
   int m_id;
   QString m_name;
   QDateTime m_birthdate;
-  QcRowList<Blog, BlogPtr> m_blogs;
+  QoRowList<Blog, BlogPtr> m_blogs;
 
 };
 
@@ -209,7 +209,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   AuthorPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   AuthorPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   AuthorPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -324,7 +324,7 @@ class CategoryPtr;
 
 /**************************************************************************************************/
 
-class CategorySchema : public QcSchema
+class CategorySchema : public QoSchema
 {
 public:
   enum Fields {
@@ -354,7 +354,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Category : public QObject, public QcRow<CategorySchema>
+class Category : public QObject, public QoRow<CategorySchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -462,7 +462,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   CategoryPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   CategoryPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   CategoryPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -577,7 +577,7 @@ class BlogPtr;
 
 /**************************************************************************************************/
 
-class BlogSchema : public QcSchema
+class BlogSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -608,7 +608,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Blog : public QObject, public QcRow<BlogSchema>
+class Blog : public QObject, public QoRow<BlogSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -731,7 +731,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   BlogPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   BlogPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   BlogPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -848,7 +848,7 @@ class CommentPtr;
 
 /**************************************************************************************************/
 
-class CommentSchema : public QcSchema
+class CommentSchema : public QoSchema
 {
 public:
   enum Fields {
@@ -879,7 +879,7 @@ protected:
 
 /**************************************************************************************************/
 
-class Comment : public QObject, public QcRow<CommentSchema>
+class Comment : public QObject, public QoRow<CommentSchema>
 {
   Q_OBJECT
   Q_PROPERTY(int id READ id WRITE set_id NOTIFY idChanged)
@@ -994,7 +994,7 @@ public:
     return *this;
    }
 
-  // QcRowTraits ctor
+  // QoRowTraits ctor
   CommentPtr(const QSharedPointer<Class> & ptr) : m_ptr(ptr) {}
   CommentPtr(const Class & other) : m_ptr(new Class(other)) {} // Fixme: clone ?
   CommentPtr(const QJsonObject & json_object) : m_ptr(new Class(json_object)) {}
@@ -1105,28 +1105,28 @@ private:
 
 /**************************************************************************************************/
 
-class BlogApplicationSchema : public QcDatabaseSchema
+class BlogApplicationSchema : public QoDatabaseSchema
 {
 public:
-  BlogApplicationSchema(QcDatabase & database);
+  BlogApplicationSchema(QoDatabase & database);
   BlogApplicationSchema(const BlogApplicationSchema & other) = delete;
   ~BlogApplicationSchema();
 
   BlogApplicationSchema & operator=(const BlogApplicationSchema & other) = delete;
 
-  QcDatabaseTable & authors() { return *m_authors; }
-  QcDatabaseTable & categories() { return *m_categories; }
-  QcDatabaseTable & blogs() { return *m_blogs; }
-  QcDatabaseTable & comments() { return *m_comments; }
+  QoDatabaseTable & authors() { return *m_authors; }
+  QoDatabaseTable & categories() { return *m_categories; }
+  QoDatabaseTable & blogs() { return *m_blogs; }
+  QoDatabaseTable & comments() { return *m_comments; }
 
 private:
   template<class T> void register_row(typename T::Ptr & row);
 
 private:
-  QcDatabaseTable * m_authors;
-  QcDatabaseTable * m_categories;
-  QcDatabaseTable * m_blogs;
-  QcDatabaseTable * m_comments;
+  QoDatabaseTable * m_authors;
+  QoDatabaseTable * m_categories;
+  QoDatabaseTable * m_blogs;
+  QoDatabaseTable * m_comments;
   AuthorCache m_authors_cache;
   CategoryCache m_categories_cache;
   BlogCache m_blogs_cache;

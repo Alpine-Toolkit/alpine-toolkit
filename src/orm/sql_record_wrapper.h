@@ -66,19 +66,19 @@
  * Note: QSqlRecord use implicit sharing
  *
  */
-class QcSqlRecordWrapper
+class QoSqlRecordWrapper
 {
 public:
   /*
-  QcSqlRecordWrapper(const QSqlRecord record)
+  QoSqlRecordWrapper(const QSqlRecord record)
     : m_record(record)
   {}
   */
-  QcSqlRecordWrapper(const QSqlRecord & record)
+  QoSqlRecordWrapper(const QSqlRecord & record)
     : m_record(record) // Fixme: simpler ?
   {}
 
-  QcSqlRecordWrapper &
+  QoSqlRecordWrapper &
   operator=(const QSqlRecord record)
   {
     m_record = record;
@@ -86,7 +86,7 @@ public:
     return *this;
   }
 
-  QcSqlRecordWrapper &
+  QoSqlRecordWrapper &
   operator=(const QSqlRecord & record)
   {
     m_record = record;
@@ -94,8 +94,8 @@ public:
     return *this;
   }
 
-  QcSqlRecordWrapper &
-  operator=(const QcSqlRecordWrapper & other)
+  QoSqlRecordWrapper &
+  operator=(const QoSqlRecordWrapper & other)
   {
     if (this != &other) {
       m_record = other.m_record;
@@ -275,17 +275,17 @@ private:
 
 /**************************************************************************************************/
 
-class QcSqlQueryWrapper
+class QoSqlQueryWrapper
 {
 public:
-  QcSqlQueryWrapper(QSqlQuery query)
+  QoSqlQueryWrapper(QSqlQuery query)
     : m_query(query)
   {}
-  QcSqlQueryWrapper(QSqlQuery & query)
+  QoSqlQueryWrapper(QSqlQuery & query)
     : m_query(query)
   {}
 
-  QcSqlQueryWrapper &
+  QoSqlQueryWrapper &
   operator=(const QSqlQuery query)
   {
     m_query = query;
@@ -293,7 +293,7 @@ public:
     return *this;
   }
 
-  QcSqlQueryWrapper &
+  QoSqlQueryWrapper &
   operator=(const QSqlQuery & query)
   {
     m_query = query;
@@ -301,8 +301,8 @@ public:
     return *this;
   }
 
-  QcSqlQueryWrapper &
-  operator=(const QcSqlQueryWrapper & other)
+  QoSqlQueryWrapper &
+  operator=(const QoSqlQueryWrapper & other)
   {
     if (this != &other) {
       m_query = other.m_query;

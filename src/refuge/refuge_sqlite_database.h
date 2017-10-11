@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-class RefugeSqliteDatabase : public QcSqliteDatabase
+class RefugeSqliteDatabase : public QoSqliteDatabase
 {
 public:
   RefugeSqliteDatabase(const QString & sqlite_path);

@@ -49,7 +49,7 @@
 {% endif %}
 
 {{class_name_schema}}::{{class_name_schema}}()
-: QcSchema(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
+: QoSchema(QLatin1String("{{class_name}}"), QLatin1String("{{schema.table_name}}"))
 {
 {% for field in schema %}
   {
@@ -206,7 +206,7 @@ void
 {{class_name}}::{{relation.name}}()
 {
   if (m_{{relation.name}}.isNull())
-    // Fixme: query_by_id must be defined in QcDatabaseSchema but we cannot call register_row
+    // Fixme: query_by_id must be defined in QoDatabaseSchema but we cannot call register_row
     m_{{relation.name}} = database_schema()->query_by_id<{{relation.cls_name}}>(m_{{relation.foreign_key_name}});
   return m_{{relation.name}};
 }

@@ -37,7 +37,7 @@
 
 /**************************************************************************************************/
 
-class ThirdPartyLicenseSqliteDatabase : public QcSqliteDatabase
+class ThirdPartyLicenseSqliteDatabase : public QoSqliteDatabase
 {
 public:
   ThirdPartyLicenseSqliteDatabase(const QString & sqlite_path);

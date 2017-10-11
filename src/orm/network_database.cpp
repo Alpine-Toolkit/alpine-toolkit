@@ -34,14 +34,14 @@
 
 /**************************************************************************************************/
 
-QcNetworkDatabase::QcNetworkDatabase()
+QoNetworkDatabase::QoNetworkDatabase()
 {}
 
-QcNetworkDatabase::~QcNetworkDatabase()
+QoNetworkDatabase::~QoNetworkDatabase()
 {}
 
 void
-QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
+QoNetworkDatabase::open(const QoDatabaseConnectionData & connection_data)
 {
   m_database = QSqlDatabase::addDatabase(driver_name());
   m_database.setHostName(connection_data.host());
@@ -56,7 +56,7 @@ QcNetworkDatabase::open(const QcDatabaseConnectionData & connection_data)
 }
 
 bool
-QcNetworkDatabase::create_extension(const QString & extension)
+QoNetworkDatabase::create_extension(const QString & extension)
 {
   // Fixme: PostresSQL
   QString sql_query = "CREATE EXTENSION IF NOT EXISTS " + extension + " WITH SCHEMA public;";

@@ -38,7 +38,7 @@
 
 /**************************************************************************************************/
 
-class SchemaManager : public QObject, public QcJsonSchemaTraits
+class SchemaManager : public QObject, public QoJsonSchemaTraits
 {
   Q_OBJECT
 
