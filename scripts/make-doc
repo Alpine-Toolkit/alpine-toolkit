@@ -1,7 +1,9 @@
 #! /usr/bin/bash
 
-source /opt/python-virtual-env/py35/bin/activate
+doxygen doc/doxygen/Doxyfile
+firefox doc/doxygen/build/html/index.html
 
+source /opt/python-virtual-env/py36/bin/activate
 pushd doc/sphinx
 make html
 popd

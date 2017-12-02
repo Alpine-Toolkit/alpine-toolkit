@@ -2,7 +2,7 @@
 
 ####################################################################################################
 
-source_path=/home/fabrice/home/developpement/qtcarto-application/alpine-toolkit
+source_path=/home/fabrice/home/developpement/qt/qtcarto-application/alpine-toolkit
 build_path=${source_path}/build-cmake
 
 # QT_VERSION=5.7
@@ -33,9 +33,11 @@ if ! [ -e ${build_path} ]; then
 fi
 pushd ${build_path}
 
-rm CMakeCache.txt
-rm compile_commands.json
-make clean
+rm -f CMakeCache.txt
+rm -f compile_commands.json
+if [ -e Makefile ]; then
+  make clean
+fi
 
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
@@ -45,3 +47,9 @@ cmake \
   ${source_path}
 
 make -j4
+
+if [ -e run-asan ]; then
+  ln -sf ../scripts/run-asan.sh
+fi
+
+# source run-asan.sh
