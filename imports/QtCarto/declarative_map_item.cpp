@@ -328,7 +328,7 @@ QcMapItem::send_touch_event(QTouchEvent * event)
 
   auto touch_point_grabber_item = [touch_device, window_private](const QTouchEvent::TouchPoint & point) -> QQuickItem * {
     if (QQuickEventPoint * event_pointer = window_private->pointerEventInstance(touch_device)->pointById(point.id()))
-      return event_pointer->grabber();
+      return event_pointer->grabberItem(); // Fixme: fix Qt 5.10
     return nullptr;
   };
 
