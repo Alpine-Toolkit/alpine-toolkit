@@ -4,12 +4,14 @@
 
 HEADERS += \
   configuration/configuration.h \
+  logging/handler.h \
+  logging/logger.h \
   tools/debug_data.h \
-  tools/logger.h \
   tools/platform.h
 
 SOURCES += \
   configuration/configuration.cpp \
+  logging/handler.cpp \
+  logging/logger.cpp \
   tools/debug_data.cpp \
-  tools/logger.cpp \
   tools/platform.cpp

@@ -34,12 +34,13 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
   sqlite \
-  service \
   src/alpine_toolkit_common.pro \
+  service \
   src/qtcarto/qtcarto.pro \
   alpine-toolkit.pro
 
 qtcarto.depends = alpine_toolkit_common
+service.depends = alpine_toolkit_common
 
 alpine-toolkit.depends = sqlite
 alpine-toolkit.depends = service

@@ -49,7 +49,8 @@ QT += androidextras
 
 ####################################################################################################
 
-# INCLUDEPATH +=
+INCLUDEPATH += ../src # alpine-toolkit.h
+INCLUDEPATH += .. # for config.h
 
 # Place before sources
 REPC_SOURCE += service.rep
@@ -63,3 +64,7 @@ SOURCES += \
   main.cpp \
   service.cpp \
   service_application.cpp \
+
+defined(BUILD_AS_SHARED, var) {
+LIBS += -L$$OUT_PWD/../src -lalpine_toolkit_common
+}

@@ -65,6 +65,7 @@ debug {
 
 linux:!android {
 DEFINES += ON_LINUX
+CONFIG += sanitizer sanitize_address
 }
 
 android {

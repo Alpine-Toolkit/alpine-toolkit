@@ -3,11 +3,12 @@
 ####################################################################################################
 
 HEADERS += \
-  src/application/alpine_toolkit.h \
+  src/application/application.h \
   src/satellite_model/satellite_model.h \
   src/sensors/qml_barimeter_altimeter_sensor.h \
   src/sensors/qmlsensor.h \
-  src/sensors/qmlsensorrange.h
+  src/sensors/qmlsensorrange.h \
+  src/application/alpine_toolkit.h
 
 SOURCES += \
   src/main.cpp \

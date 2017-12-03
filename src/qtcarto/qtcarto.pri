@@ -31,6 +31,9 @@ HEADERS += \
   geometry/polygon.h \
   geometry/vector.h
 
+SOURCES += \
+  logging/logger.h
+
 HEADERS += \
   map/location_circle_data.h \
   map/map_event_router.h \
@@ -115,6 +118,9 @@ SOURCES += \
   geometry/polygon.cpp \
   geometry/polygon_seidler_triangulation.cpp \
   geometry/vector.cpp
+
+SOURCES += \
+  logging/logger.cpp
 
 SOURCES += \
   map/decorated_path.cpp \
