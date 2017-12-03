@@ -58,7 +58,7 @@ QoDatabase::set_sql_flavour()
 
   switch(driver->dbmsType()) {
   case QSqlDriver::SQLite:
-    m_sql_flavour = SqlFlavour::ANSI;
+    m_sql_flavour = SqlFlavour::ANSI; // Fixme: -Wimplicit-fallthrough
   case QSqlDriver::PostgreSQL:
     m_sql_flavour = SqlFlavour::PostgreSQL;
   case QSqlDriver::MySqlServer:

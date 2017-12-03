@@ -228,7 +228,7 @@ QoSqlPrepareValue::~QoSqlPrepareValue()
 {}
 
 QString
-QoSqlPrepareValue::to_sql(SqlFlavour flavour) const
+QoSqlPrepareValue::to_sql(SqlFlavour flavour) const // unused
 {
   return QLatin1String("?");
 }

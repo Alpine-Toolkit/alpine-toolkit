@@ -238,7 +238,7 @@ QcMapItem::childMouseEventFilter(QQuickItem * item, QEvent * event)
       // let the synthesized mouse event grab the mouse,
       // note there is no mouse grabber at this point since
       // touch event comes first (see Qt::AA_SynthesizeMouseForUnhandledTouchEvents)
-      return send_touch_event(touch_event);
+      return send_touch_event(touch_event); // Fixme: -Wimplicit-fallthrough
   }
 
   case QEvent::UngrabMouse: {
@@ -441,6 +441,7 @@ QcMapItem::set_zoom_level(unsigned int new_zoom_level)
 
   // Fixme: check range
   // Fixme: int
+  //   new_zoom_level < 0 is WRONG
   if (new_zoom_level < 0 or new_zoom_level > 18)
     return;
 
@@ -502,6 +503,7 @@ QcMapItem::stable_zoom(QPointF position_px, unsigned int new_zoom_level)
 
   // Fixme: check range
   // Fixme: int
+  //  new_zoom_level < 0 is WRONG
   if (new_zoom_level < 0 or new_zoom_level > 18)
     return;
 

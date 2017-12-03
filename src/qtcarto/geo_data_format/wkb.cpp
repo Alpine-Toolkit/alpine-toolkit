@@ -328,7 +328,7 @@ public:
   }
 
   void
-  throw_parser_error(const QString & error_message)
+  throw_parser_error(const QString & error_message) // unsued parameter
   {
     qQCCritical() << m_stream.left(m_location) << '\n' << m_stream.right(m_location_end - m_location);
     // throw std::invalid_argument(error_message.toStdString().c_str());

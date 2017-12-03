@@ -57,7 +57,7 @@ QcPointMaterialShader::attributes() const
 
 void
 QcPointMaterialShader::updateState(const QcPointMaterialShaderState * state,
-                                            const QcPointMaterialShaderState *)
+                                            const QcPointMaterialShaderState *) // unused
 {
   // program()->setUniformValue("colour", state->r, state->g, state->b, state->a);
 }

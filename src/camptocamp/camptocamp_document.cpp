@@ -203,8 +203,7 @@ C2cDocument::type() const
     return Type::XReport;
   case 'w':
     return Type::Waypoint;
-    // Fixme:
-    // default:
+  // Fixme: default:
   }
 }
 
@@ -232,8 +231,7 @@ C2cDocument::type_string() const
     return "XReport";
   case Type::Waypoint:
     return "Waypoint";
-    // Fixme:
-    // default:
+  // Fixme: default:
   }
 }
 
@@ -261,8 +259,7 @@ C2cDocument::cast() const
     return C2cDocumentPtr();
   case Type::Waypoint:
     return C2cDocumentPtr();
-    // Fixme:
-    // default:
+  // Fixme: default:
   }
 }
 

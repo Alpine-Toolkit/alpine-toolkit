@@ -423,7 +423,7 @@ QcSeidlerPolygonTriangulation::is_left_of(int segment_number, point_t * v)
 }
 
 int
-QcSeidlerPolygonTriangulation::is_collinear(int segment_number, point_t * v, int is_swapped)
+QcSeidlerPolygonTriangulation::is_collinear(int segment_number, point_t * v, int is_swapped) // unused parameter
 {
   int n;
 
@@ -556,9 +556,9 @@ QcSeidlerPolygonTriangulation::add_segment(int segment_number)
   int tu, tl, sk, tfirst, tlast, tnext;
   int tfirstr, tlastr, tfirstl, tlastl;
   int i1, i2, t, tn;
-  point_t vper;
+  point_t vper; // unused ???
   point_t tpt;
-  int tritop = 0;
+  int tritop = 0; // unused ???
   int tribot = 0, is_swapped = 0;
   int tmp_trim_segment;
 
@@ -1036,7 +1036,7 @@ int
 QcSeidlerPolygonTriangulation::find_new_roots(int segment_number)
 {
   segment_t *s = &m_segment[segment_number];
-  point_t vper;
+  point_t vper; // unused ???
 
   if (s->is_inserted)
     return 0;
@@ -1248,7 +1248,7 @@ QcSeidlerPolygonTriangulation::traverse_polygon(int mcur, int trnum, int from, i
   int mnew;
   int v0, v1;
   int retval = 0;
-  int do_switch = false;
+  int do_switch = false; // unused
 
   if ((trnum <= 0) || m_visited[trnum])
     return 0;

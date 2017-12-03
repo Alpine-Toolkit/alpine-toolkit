@@ -63,7 +63,7 @@ QcPathMaterialShader::attributes() const
 
 void
 QcPathMaterialShader::updateState(const QcPathMaterialShaderState * state,
-                                  const QcPathMaterialShaderState *)
+                                  const QcPathMaterialShaderState *) // unused
 {
   // program()->setUniformValue("colour", state->r, state->g, state->b, state->a);
   // program()->setUniformValue("cap_type", state->cap_type);

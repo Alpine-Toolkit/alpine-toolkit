@@ -79,7 +79,7 @@ QoSqliteDatabase::init_spatialite()
 }
 
 bool
-QoSqliteDatabase::move_database(const QString & new_path, bool commit)
+QoSqliteDatabase::move_database(const QString & new_path, bool commit) // unused
 {
   m_database.commit();
   m_database.close();

@@ -97,7 +97,7 @@ QmlApplication::home_page() const
 }
 
 void
-QmlApplication::network_configuration_changed(const QNetworkConfiguration & config)
+QmlApplication::network_configuration_changed(const QNetworkConfiguration & config) // unused
 {
   qATInfo() << "Network Configuration Changed";
   bool wifi_state = get_wifi_state();

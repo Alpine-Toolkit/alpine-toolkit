@@ -68,6 +68,7 @@ QcPlatform::os_name() const
   case OsxOS:
     return QLatin1Literal("osx");
   }
+  // -Wreturn-type
 }
 
 QString
@@ -83,6 +84,7 @@ QcPlatform::architecture_name() const
   case ARM_64:
     return QLatin1Literal("arm_64");
   }
+  // -Wreturn-type
 }
 
 QJsonObject

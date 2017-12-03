@@ -469,7 +469,7 @@ QcFileTileCache::insert(const QcTileSpec & tile_spec, const QByteArray & bytes, 
 }
 
 void
-QcFileTileCache::evict_from_disk_cache(QcCachedTileDisk * tile_directory)
+QcFileTileCache::evict_from_disk_cache(QcCachedTileDisk * tile_directory) // unused parameter
 {
   qWarning() << "evict_from_disk_cache disabled";
   // QFile::remove(tile_directory->filename);
