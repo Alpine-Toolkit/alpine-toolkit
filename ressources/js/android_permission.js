@@ -24,7 +24,7 @@
  *
  **************************************************************************************************/
 
-var explain_permission_dialog_component = Qt.createComponent('qrc:Widgets/ExplainPermission.qml');
+var explain_permission_dialog_component = Qt.createComponent('qrc:qml/Widgets/ExplainPermission.qml');
 var explain_permission_dialog = null;
 
 var explain_texts = {
@@ -38,13 +38,18 @@ var explain_texts = {
         '<p>If you need more space on your device, you can later move this directory to an external sdcard.</p>'
 };
 
+/**************************************************************************************************/
+
 function create_explain_permission_dialog()
 {
     console.info("create_explain_permission_dialog");
-    if (explain_permission_dialog_component.status == Component.Ready)
+    var status = explain_permission_dialog_component.status;
+    if (status == Component.Ready)
 	finish_explain_permission_dialog();
-    else
+    else if (status == Component.Ready) // usually here
 	explain_permission_dialog_component.statusChanged.connect(finish_explain_permission_dialog);
+    else
+	console.error("create_explain_permission_dialog", explain_permission_dialog_component.errorString());
 }
 
 function finish_explain_permission_dialog()
@@ -55,27 +60,32 @@ function finish_explain_permission_dialog()
 	    id: 'explain_permission_dialog'
 	}
 	explain_permission_dialog = explain_permission_dialog_component.createObject(application_window, properties);
+	// dialog signals -> js slots
 	explain_permission_dialog.accepted_permission.connect(on_accepted_explain_permission)
         explain_permission_dialog.rejected_permission.connect(on_rejected_explain_permission)
+	// platform abstraction signals -> js slots
         platform_abstraction.on_permission_granted.connect(on_permission_granted)
         platform_abstraction.on_permission_denied.connect(on_permission_denied)
 	if (platform_abstraction.on_android()) {
-            AndroidPermission.check_permissions();
+            AndroidPermission.check_permissions(); // Fixme: AndroidPermission. ???
 	} else if (platform_abstraction.on_linux()) {
-            AndroidPermission.check_permissions_mockup();
+	    console.info("Check permission mockup");
+            check_permissions_mockup();
         }
     } else {
 	// Fixme: 
     }
 }
 
+/**************************************************************************************************/
+
 function check_permissions()
 {
     var need_grant = platform_abstraction.need_grant();
-    var i;
-    for (i = 0; i < need_grant.length; i++) {
-	// platform_abstraction.(need_grant[i]);
-    }
+    // var i;
+    // for (i = 0; i < need_grant.length; i++) {
+    // 	platform_abstraction.(need_grant[i]);
+    // }
 
     var need_explain = platform_abstraction.need_explain();
     open_explain_permission(need_explain[0]);
@@ -93,20 +103,31 @@ function open_explain_permission(permission_id)
     explain_permission_dialog.ask(permission_id, explain_text);
 }
 
+/***************************************************************************************************
+ *
+ * dialog signals -> js slots
+ *
+ */
+
 function on_accepted_explain_permission(permission)
 {
     console.info("on_accepted_explain_permission " + permission);
-    if (platform_abstraction.on_android()) {
+    if (platform_abstraction.on_android())
         platform_abstraction.require_permission(permission);
-    } else if (platform_abstraction.on_linux()) {
+    else if (platform_abstraction.on_linux())
         platform_abstraction.emit_on_permission_granted(permission);
-    }
 }
 
 function on_rejected_explain_permission(permission)
 {
     console.info("on_rejected_explain_permission " + permission);
 }
+
+/***************************************************************************************************
+ *
+ * platform abstraction signals -> js slots
+ *
+ */
 
 function on_permission_granted(permission)
 {

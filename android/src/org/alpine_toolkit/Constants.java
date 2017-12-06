@@ -41,13 +41,13 @@ public class Constants {
   }
 
   public static final String[] PERMISSIONS = {
-    "android.permission.ACCESS_FINE_LOCATION",
-    "android.permission.ACCESS_NETWORK_STATE",
-    "android.permission.CAMERA",
-    "android.permission.FLASHLIGHT", // granted
-    "android.permission.INTERNET",
-    "android.permission.READ_EXTERNAL_STORAGE",
-    "android.permission.WRITE_EXTERNAL_STORAGE",
+    "android.permission.ACCESS_FINE_LOCATION", // need grant
+    "android.permission.ACCESS_NETWORK_STATE", // is granted
+    "android.permission.CAMERA", // need grant
+    "android.permission.FLASHLIGHT", // is granted
+    "android.permission.INTERNET", // is granted
+    "android.permission.READ_EXTERNAL_STORAGE", // need grant
+    "android.permission.WRITE_EXTERNAL_STORAGE", // need grant
     // "android.permission.BODY_SENSORS",
     // "android.permission.READ_PHONE_STATE",
   };

@@ -40,15 +40,14 @@
 /**************************************************************************************************/
 
 /*
+ * These are the functions that Java part will call directly from Android UI thread.
+ *
  * JNIEnv*: reference to JNI environment, which lets you access all the JNI fucntions.
  * jobject: reference to "this" Java object.
  *
+ * native functions are declared static
+ *
  */
-
-// Define our native static functions
-// these are the functions that Java part will call directly from Android UI thread
-
-/**************************************************************************************************/
 
 static void
 on_permission_granted(JNIEnv * env, jobject obj, jstring j_permission)
@@ -94,6 +93,8 @@ static JNINativeMethod methods[] = {
   {"on_permission_denied", "(Ljava/lang/String)V", (void *) on_permission_denied},
   {"stop_service", "()V", (void *) stop_service},
 };
+
+/**************************************************************************************************/
 
 // this method is called automatically by Java after the .so file is loaded
 JNIEXPORT jint
