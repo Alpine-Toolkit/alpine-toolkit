@@ -121,8 +121,6 @@ LIBS += -L$$PWD/build-cmake/third-parties/snowball -lsnowball
 LIBS += -lproj
 }
 
-
-# contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
 android {
 ANDROID_EXTRA_PLUGINS += $$OUT_PWD/plugins
 
@@ -136,8 +134,11 @@ ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-part
 ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/snowball/libsnowball.so
 ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/sqlite/libsqlite.so
 ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/proj4/libqtcarto_proj4.so
+
+contains(ANDROID_TARGET_ARCH, armeabi-v7a) {
 ANDROID_EXTRA_LIBS += $$PWD/third-parties/openssl-1.0.2h/libcrypto.so
 ANDROID_EXTRA_LIBS += $$PWD/third-parties/openssl-1.0.2h/libssl.so
+}
 
 #! ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/geos/libgeos.so
 #! ANDROID_EXTRA_LIBS += $$PWD/build-cmake-android-$$ANDROID_TARGET_ARCH/third-parties/spatialite/libspatialite.so
@@ -168,7 +169,7 @@ TRANSLATIONS = ressources/translations/alpine-toolkit.fr_FR.ts
 
 ####################################################################################################
 #
-# Dist
+# Dist Target
 #
 
 # Fixme: Complete
