@@ -28,6 +28,7 @@
 
 #include "projection.h"
 #include "qtcarto.h"
+#include "config.h" // for PROJ4_DATA_PATH
 
 #include "laea.h"
 #include "mercator.h"
@@ -58,9 +59,8 @@ QcProjection4::QcProjection4(const QString & definition, projCtx context)
   if (!context) {
 #ifdef ON_ANDROID
     // Set search path so as to find (epsg) date files
-    const char * proj4_data_path = "file:///android_asset/proj4_data";
     // setenv("PROJ_LIB", proj4_data_path, 1); // must be set before to load the proj4 library
-    const char *paths[] = { proj4_data_path };
+    const char *paths[] = { PROJ4_DATA_PATH };
     pj_set_searchpath(1, paths);
 #endif
 

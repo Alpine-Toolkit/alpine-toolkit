@@ -50,6 +50,9 @@ static const QString CONFIG_DIRECTORY_NAME = QLatin1String("alpine-toolkit");
 
 #ifdef ON_ANDROID
 static const QString ANDROID_PACKAGE_NAME = QLatin1String("org.alpine_toolkit");
+
+// Set search path so as to find (epsg) date files
+static const char * PROJ4_DATA_PATH = "/data/user/0/org.alpine_toolkit/files/assets/proj4_data";
 #endif
 
 // #cmakedefine FOO_ENABLE

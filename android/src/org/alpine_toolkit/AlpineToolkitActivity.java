@@ -50,12 +50,14 @@ import android.support.v4.content.ContextCompat;
 
 /**************************************************************************************************/
 
-// class LampSignalRunnable implements Runnable {
-//   @Override
-//   public void run() {
-//     android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-//   }
-// }
+/*
+class LampSignalRunnable implements Runnable {
+  @Override
+  public void run() {
+    android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+  }
+}
+*/
 
 /**************************************************************************************************/
 
@@ -117,12 +119,26 @@ public class AlpineToolkitActivity extends QtActivity
 
   /**********************************************/
 
+  private void _copy_assets()
+  {
+    // Copy some assets in a readable place
+    // proj4_data/epsg file is required when qtcarto library is loaded
+    // Files are copied to /data/user/0/org.alpine_toolkit/files/assets/
+
+    AssetHelper asset_helper = new AssetHelper(this);
+    String asset_path = getFilesDir() + "/assets" ;
+    asset_helper.copy_assets(asset_path, false);
+  }
+
+  /**********************************************/
+
   @Override
   public void onCreate(Bundle savedInstanceState)
   {
     Log.i(LOG_TAG, ">>>>>>>>>> AlpineToolkitActivity.onCreate <<<<<<<<<<");
 
     _init();
+    _copy_assets();
 
     // Fixme: hardcoded
     set_status_bar_background_color(Color.parseColor(Constants.UI.BACKGROUND_COLOR));
@@ -132,7 +148,8 @@ public class AlpineToolkitActivity extends QtActivity
     m_permission_manager.check_permissions(Constants.PERMISSIONS);
 
     Log.i(LOG_TAG, "Is service running? " + m_service_helper.is_service_running());
-    _debug_log();
+    // _log_directories();
+    // _debug_log();
   }
 
   @Override
@@ -144,8 +161,38 @@ public class AlpineToolkitActivity extends QtActivity
 
   /**********************************************/
 
+  private void _log_directories()
+  {
+    // Returns the absolute path to the directory on the filesystem where files created with openFileOutput(String, int) are stored.
+    Log.i(LOG_TAG, "Internal Directory: " + getFilesDir());
+    // Returns the absolute path to the application specific cache directory on the filesystem.
+    Log.i(LOG_TAG, "Cache Directory: " + getCacheDir());
+
+    // I AlpineToolkitActivity: Internal Directory: /data/user/0/org.alpine_toolkit/files
+    // I AlpineToolkitActivity: Cache Directory:    /data/user/0/org.alpine_toolkit/cache
+
+    // Get external path
+    Log.i(LOG_TAG, "External Storage Directory: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
+    // Returns absolute path to application-specific directory on the primary shared/external storage device where the application can place cache files it owns. 
+    Log.i(LOG_TAG, "External Cache Directory: " + getExternalCacheDir()); // ...Dirs()
+
+    // File[] paths = getExternalMediaDirs(); // API 21
+    // cf. SdCardHelper.get_external_storages()
+    File[] external_files_dirs = ContextCompat.getExternalFilesDirs(this, null);
+    for (File path : external_files_dirs)
+      Log.i(LOG_TAG, "External Files Directories: " + path);
+
+    // I AlpineToolkitActivity: External Storage Directory: /storage/emulated/0
+    // I AlpineToolkitActivity: External Cache Directory:   /storage/emulated/0/Android/data/org.alpine_toolkit/cache
+    // I AlpineToolkitActivity: External Files Directories: /storage/emulated/0/Android/data/org.alpine_toolkit/files
+    // I AlpineToolkitActivity: External Files Directories: /storage/18F1-3803/Android/data/org.alpine_toolkit/files
+  }
+
+  /**********************************************/
+
   private void _debug_log()
   {
+    /*
     try {
       Process process = Runtime.getRuntime().exec("mount");
       process.waitFor();
@@ -161,20 +208,7 @@ public class AlpineToolkitActivity extends QtActivity
     {}
     catch (java.lang.InterruptedException e)
     {}
-
-    // Returns the absolute path to the directory on the filesystem where files created with openFileOutput(String, int) are stored.
-    //api? Log.i(LOG_TAG, "Internal Directory: " + getFileDir());
-    // Returns the absolute path to the application specific cache directory on the filesystem.
-    Log.i(LOG_TAG, "Cache Directory: " + getCacheDir());
-    // Returns absolute path to application-specific directory on the primary shared/external storage device where the application can place cache files it owns. 
-    Log.i(LOG_TAG, "External Cache Directory: " + getExternalCacheDir()); // ...Dirs()
-
-    // Get external path
-    Log.i(LOG_TAG, "External Storage Directory: " + Environment.getExternalStorageDirectory()); // /storage/emulated/0
-    // File[] paths = getExternalMediaDirs(); // API 21
-    File[] external_files_dirs = ContextCompat.getExternalFilesDirs(this, null);
-    for (File path : external_files_dirs)
-      Log.i(LOG_TAG, "External Files Directories: " + path);
+    */
 
     // get_display_metrics();
     // get_device_id();

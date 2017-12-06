@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <integer name="asset_version">1</integer>
+    <string-array name="assets_to_move">
+        <item>proj4_data/epsg</item>
+     </string-array>
+</resources>
