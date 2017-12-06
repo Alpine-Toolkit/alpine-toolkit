@@ -77,6 +77,9 @@ SOURCES += \
 
 ####################################################################################################
 
+# for config.h
+INCLUDEPATH += $$PWD/../..
+
 defined(BUILD_AS_SHARED, var) {
 # Link to alpine_toolkit_common for configuration/configuration.h
 INCLUDEPATH += $$PWD/..
