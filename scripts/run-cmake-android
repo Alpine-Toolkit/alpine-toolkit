@@ -1,0 +1,50 @@
+#! /bin/bash
+
+####################################################################################################
+
+source_path=/home/fabrice/home/developpement/qt/qtcarto-application/alpine-toolkit
+build_path=${source_path}/build-cmake-android-armeabi-v7a
+
+# QT_VERSION=5.9
+QT_VERSION=5.10
+
+#BUILD_TYPE=Release
+BUILD_TYPE=Debug
+
+API=19 # Android 4.4
+# API=21 # Android 5.0
+
+# -DANDROID_ABI="armeabi-v7a with NEON"
+# arm64-v8a
+
+####################################################################################################
+
+source $HOME/.bashrc
+
+append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
+append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
+
+if ! [ -e ${build_path} ]; then
+  mkdir ${build_path}
+fi
+pushd ${build_path}
+
+rm -f CMakeCache.txt
+if [ -e Makefile ]; then
+  make clean
+fi
+
+cmake \
+  -DCMAKE_SYSTEM_NAME=Android \
+  -DCMAKE_SYSTEM_VERSION=${API} \
+  -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a \
+  -DCMAKE_ANDROID_NDK=/opt/android-ndk-r10e \
+  -DCMAKE_ANDROID_STL_TYPE=gnustl_static \
+  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+  -DCMAKE_C_FLAGS="-o3" \
+  -DCMAKE_CXX_FLAGS="-o3" \
+  ${source_path}
+
+# cmake --build .
+
+make -j4
