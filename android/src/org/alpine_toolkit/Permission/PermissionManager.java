@@ -78,7 +78,7 @@ public class PermissionManager
   public PermissionStatus check_permission(String permission)
   {
     PermissionStatus permission_status = m_permissions.get(permission);
-    if (permission_status != null) {
+    if (permission_status == null) {
       permission_status = new PermissionStatus(permission);
       m_permissions.put(permission_status.permission(), permission_status);
     }
