@@ -45,7 +45,7 @@ public:
   explicit AndroidPlatform(QObject * parent = nullptr);
   ~AndroidPlatform();
 
-  PlatformType platform_type() const { return Linux; }
+  PlatformType platform_type() const { return Android; }
 
   Q_INVOKABLE QStringList need_explain() const;
   Q_INVOKABLE QStringList need_grant() const;

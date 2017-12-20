@@ -111,11 +111,11 @@ public:
   virtual Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
   virtual Q_INVOKABLE void stop_lamp_dimmer() const;
 
-  Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
-  Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
-  Q_INVOKABLE bool on_osx() const { return platform_type() == OSX; }
   Q_INVOKABLE bool on_android() const { return platform_type() == Android; }
   Q_INVOKABLE bool on_ios() const { return platform_type() == IOS; }
+  Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
+  Q_INVOKABLE bool on_osx() const { return platform_type() == OSX; }
+  Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
 
 signals:
   // Fixme: _changed ???
