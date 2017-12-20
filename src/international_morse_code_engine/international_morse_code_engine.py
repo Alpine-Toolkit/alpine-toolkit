@@ -53,8 +53,8 @@ codes = {
     '.': '.-.-.-',
     ',': '--..--',
     '?': '..--..',
-    "'": '.----.', # di-dah-di-di-dah-dit
-    '!': '-.-.--', # ---. di-dah-dah-dah-dah-dit
+    "'": '.----.', # di-dah-di-di-dah-di
+    '!': '-.-.--', # ---. di-dah-dah-dah-dah-di
     '/': '-..-.',
     '(': '-.--.', # brackets (parentheses) dah-di-dah-dah-di-dah
     ')': '-.--.-',
@@ -101,12 +101,12 @@ abbreviations = {
     'wait': '.-...',
 }
 
-# End of message di-dah-di-dah-dit .-.-.
+# End of message di-dah-di-dah-di .-.-.
 # Break dah-di-di-di-dah-di-dah -...-.-
-# Going off the air ("clear") dah-di-dah-di-di-dah-di-dit -.-..-..
+# Going off the air ("clear") dah-di-dah-di-di-dah-di-di -.-..-..
 # Start copying dah-di-dah-di-dah -.-.-
 # Change to wabun code dah-di-di-dah-dah-dah -..---
-# Invite a specific station to transmit dah-di-dah-dah-dit -.--.
+# Invite a specific station to transmit dah-di-dah-dah-di -.--.
 
 # .-...-. Mauvaise signalisation, réglez vos feux ! (si transmission lumineuse)
 # .-...-. Lumière plus forte ! (transmission lumineuse)
@@ -188,9 +188,3 @@ root_node = Node()
 for character, code in codes.items():
     root_node.add(code, character)
 root_node.dump()
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
