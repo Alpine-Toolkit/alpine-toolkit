@@ -51,7 +51,7 @@ static const QString CONFIG_DIRECTORY_NAME = QLatin1String("alpine-toolkit");
 #ifdef ON_ANDROID
 static const QString ANDROID_PACKAGE_NAME = QLatin1String("org.alpine_toolkit");
 
-// Set search path so as to find (epsg) date files
+// Set search path so as to find (epsg) date files when carto is loaded
 static const char * PROJ4_DATA_PATH = "/data/user/0/org.alpine_toolkit/files/assets/proj4_data";
 #endif
 
@@ -61,9 +61,3 @@ static const char * PROJ4_DATA_PATH = "/data/user/0/org.alpine_toolkit/files/ass
 /**************************************************************************************************/
 
 #endif // __CONFIG_H__
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/

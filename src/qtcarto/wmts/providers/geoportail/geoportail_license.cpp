@@ -104,11 +104,3 @@ QcGeoportailWmtsLicense::load_json(const QString & json_path)
   QJsonDocument json_document(QJsonDocument::fromJson(json_data));
   read_json(json_document.object());
 }
-
-/***************************************************************************************************
- *
- * End
- *
- **************************************************************************************************/
-
-
