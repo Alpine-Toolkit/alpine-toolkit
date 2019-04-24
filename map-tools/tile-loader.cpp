@@ -105,41 +105,47 @@ Application::main_task()
   // QcTileLoader tile_loader(geoportail_plugin);
 
   // Annecy
-  // double longitude = 6.311331853277862;
-  // double latitude = 45.956298260767284;
+  // double longitude =  6.311331853277862;
+  // double latitude  = 45.956298260767284;
 
   // Bezons
-  // double longitude = 2.206142;
-  // double latitude = 48.924482;
+  // double longitude =  2.206142;
+  // double latitude  = 48.924482;
 
   // Bérarde
-  // double longitude = 6.2914;
-  // double latitude = 44.9328;
+  // double longitude =  6.2914;
+  // double latitude  = 44.9328;
 
   // Vallouise
-  // double longitude = 6.4895;
-  // double latitude = 44.8461;
+  // double longitude =  6.4895;
+  // double latitude  = 44.8461;
 
   // Centre
-  // double longitude = 3;
-  // double latitude = 46.5;
+  double longitude = 3;
+  double latitude = 46.5;
 
   // Freissinieres
-  // double longitude = 6.5383;
-  // double latitude = 44.7523;
+  // double longitude =  6.5383;
+  // double latitude  = 44.7523;
 
   // Mont-dore
-  // double longitude = 2.816;
+  // double longitude =  2.816;
   //  double latitude = 45.54;
 
   // Mont-Blanc
-  double longitude = 6.86;
-  double latitude = 45.83;
+  // double longitude =  6.86;
+  // double latitude  = 45.83;
+
+  // Valmeinier
+  // http://www.refuge-terre-rouge.fr/fr/il4-refuge,ete_p7-situation-et-acces.aspx
+  // GPS Valmeinier La sausse (emplacement du refuge) : 45°07'50.3'' N / 6°30'44.5'' E
+  // double longitude =  6.51;
+  // double latitude  = 45.13;
 
   QcWgsCoordinate center_wsg84(longitude, latitude);
   QcPseudoWebMercatorCoordinate center_mercator = center_wsg84.pseudo_web_mercator();
   QcVectorDouble center = center_mercator.vector();;
-  double radius_m = 28 * 1000;
+  double radius_m = 500 * 1000;
   QcVectorDouble half_diagonal_m(radius_m, radius_m);
 
   QcVectorDouble point1 = center + half_diagonal_m;
@@ -174,7 +180,7 @@ Application::main_task()
   QSet<QcTileSpec> tiles_removed;
 
   // Fixme: level <= 10 : any tiles
-  for (int level = 0; level <= 16; level++) {
+  for (int level = 0; level <= 10; level++) {
     double tile_length_m = tile_matrix_set[level].tile_length_m();
     QcTiledPolygon tiled_polygon = polygon.intersec_with_grid(tile_length_m);
     for (const QcTiledPolygonRun & run:  tiled_polygon.runs()) {
