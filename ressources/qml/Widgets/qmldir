@@ -1,6 +1,7 @@
 module Widgets
 About 1.0 About.qml
 CompassRose 1.0 CompassRose.qml
+Dialog 1.0 Dialog.qml
 ExplainPermission 1.0 ExplainPermission.qml
 Layers 1.0 Layers.qml
 MapComponent 1.0 MapComponent.qml

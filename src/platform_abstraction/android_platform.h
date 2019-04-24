@@ -45,33 +45,27 @@ public:
   explicit AndroidPlatform(QObject * parent = nullptr);
   ~AndroidPlatform();
 
-  PlatformType platform_type() const { return Android; }
+  PlatformType platform_type() const override { return Android; }
 
-  Q_INVOKABLE QStringList need_explain() const;
-  Q_INVOKABLE QStringList need_grant() const;
-  Q_INVOKABLE void ask_permission(const QString & permission) const;
-  Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
-  Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
+  Q_INVOKABLE QStringList external_storages() const override;
 
-  Q_INVOKABLE QStringList external_storages() const;
+  Q_INVOKABLE void issue_call(const QString & phone_number) const override;
+  Q_INVOKABLE void issue_dial(const QString & phone_number) const override;
 
-  Q_INVOKABLE void issue_call(const QString & phone_number) const;
-  Q_INVOKABLE void issue_dial(const QString & phone_number) const;
+  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250) const override;
+  Q_INVOKABLE void stop_lamp_signal() const override;
 
-  Q_INVOKABLE void perform_lamp_signal(const QString & message, int rate_ms = 250) const;
-  Q_INVOKABLE void stop_lamp_signal() const;
-
-  Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
-  Q_INVOKABLE void stop_lamp_dimmer() const;
+  Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const override;
+  Q_INVOKABLE void stop_lamp_dimmer() const override;
 
   void on_permission_granted(const QString & permission);
   void on_permission_denied(const QString & permission);
 
-private slots:
-  void update_orientation_lock();
-  void update_orientation();
-  void update_full_wave_lock();
-  void update_torch();
+public slots:
+  virtual void update_orientation_lock() override;
+  virtual void update_orientation() override;
+  virtual void update_full_wave_lock() override;
+  virtual void update_torch() override;
 };
 
 /**************************************************************************************************/

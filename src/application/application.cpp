@@ -135,8 +135,8 @@ QmlApplication::is_online() const
 QaConfig *
 QmlApplication::config()
 {
-  return &(QaConfig::instance());
-  // return &(m_application->config());
+  // return QaConfig::instance();
+  return m_application->config();
 }
 
 QString
@@ -171,23 +171,27 @@ Application::create(int & argc, char ** argv)
 /**************************************************************************************************/
 
 Application::Application(int & argc, char ** argv)
-  : m_application(argc, argv),
+  : QObject(),
+    m_application(argc, argv),
     m_translator(),
     m_platform_abstraction(PlatformAbstraction::instance()),
     m_config(QaConfig::instance()),
     m_engine(),
     m_qml_application(this)
 {
+  qATInfo() << "Create Application for Platform" << m_platform_abstraction->platform_name();
+
   set_env_variables();
   load_translation();
-  m_config.init(); // Fixme: ???
-  write_debug_data();
   register_qml_types();
-  set_offline_storage_path();
   set_context_properties();
   load_qml_main();
 
   run_before_event_loop();
+
+  m_startup_timer = new QTimer(this);
+  connect(m_startup_timer, &QTimer::timeout, this, &Application::post_init);
+  m_startup_timer->start();
 }
 
 Application::~Application()
@@ -262,7 +266,7 @@ void
 Application::write_debug_data() const
 {
   QcDebugData debug_data;
-  debug_data.write_json(m_config.join_application_user_directory(QLatin1Literal("debug_data.json")));
+  debug_data.write_json(m_config->join_application_user_directory(QLatin1Literal("debug_data.json")));
   qATInfo() << debug_data.to_json();
 }
 
@@ -380,23 +384,22 @@ Application::set_context_properties()
   // context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
 
   // Create Camptocamp client
-  // QDir c2c_cache_path = m_engine.offlineStoragePath(); // same as application_user_directory
-  QDir c2c_cache_path = application_user_directory();
-  QString c2c_api_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
-  QString c2c_media_cache_path = c2c_cache_path.absoluteFilePath(QLatin1String("media"));
-  qATInfo() << "Camptocamp Cache Path" << c2c_api_cache_path << c2c_media_cache_path;
-  C2cQmlClient * c2c_client = new C2cQmlClient(c2c_api_cache_path, c2c_media_cache_path);
-  context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
+  // qATInfo() << "Camptocamp Cache Path" << m_config->c2c_api_cache_path() << m_config->c2c_media_cache_path();
+  // C2cQmlClient * c2c_client = new C2cQmlClient(m_config->c2c_api_cache_path(), m_config->c2c_media_cache_path());
+  // context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
-  m_engine.addImageProvider(QLatin1String("c2c"), new C2cImageProvider(c2c_client));
+  // m_engine.addImageProvider(QLatin1String("c2c"), new C2cImageProvider(c2c_client));
 }
 
 void
 Application::set_offline_storage_path()
 {
+  // Require user directory
+
   qATInfo() << "Default Offline Storage Path is" << m_engine.offlineStoragePath();
   // ~/.local/share/Alpine Toolkit/Alpine Toolkit/QML/OfflineStorage/
-  m_engine.setOfflineStoragePath(m_config.application_user_directory());
+
+  m_engine.setOfflineStoragePath(m_config->application_user_directory());
 }
 
 void
@@ -470,4 +473,64 @@ Application::decode_morse(const QString & message, bool & succeed)
 {
   load_morse_code_engine();
   return m_morse_code_engine->decode(message, succeed);
+}
+
+/**************************************************************************************************/
+
+void
+Application::post_init()
+{
+  // Qt loop is running now
+
+  qATInfo() << "Post Init";
+
+  // Cleanup startup timer
+  delete m_startup_timer;
+  m_startup_timer = nullptr;
+
+  // connect(m_platform_abstraction, SIGNAL(on_permission_granted(const QString &)),
+  //         this, SLOT(on_permission_granted(const QString &)));
+  // connect(m_platform_abstraction, SIGNAL(on_permission_denied(const QString &)),
+  //         this, SLOT(on_permission_denied(const QString &)));
+
+  setup_user_directory();
+}
+
+void
+Application::setup_user_directory()
+{
+  QString user_directory = m_config->application_user_directory();
+  qATInfo() << "Setup user directory" << user_directory;
+
+  PermissionManager * permission_manager = m_platform_abstraction->permission_manager();
+  if (permission_manager) {
+    if (permission_manager->require_write_permission(user_directory)) {
+      PermissionManager::PermissionCallback callback = [this](const QString & permission, bool granted) {
+        if (granted) {
+          qATInfo() << "Write permission granted";
+          setup_user_directory_finish();
+        } else {
+          qATInfo() << "Write permission denied";
+          setup_user_directory_finish(true);
+        }
+      };
+      // async call
+      permission_manager->check_permission(QLatin1String("WRITE_EXTERNAL_STORAGE"), callback);
+      return;
+    }
+  } else {
+    setup_user_directory_finish();
+  }
+}
+
+void
+Application::setup_user_directory_finish(bool fallback_mode)
+{
+  QString user_directory = m_config->application_user_directory();
+  qATInfo() << "Setup user directory" << user_directory;
+
+  m_config->create_application_user_directory();
+
+  write_debug_data();
+  set_offline_storage_path(); // Fixme: ok here ???
 }

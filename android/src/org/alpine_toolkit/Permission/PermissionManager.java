@@ -196,12 +196,12 @@ public class PermissionManager
           // permission was granted.
           Log.i(LOG_TAG, "Permission: " + permission + " granted");
           permission_status.set_granted();
-          NativeFunctions.on_permission_granted(permission);
+          //! NativeFunctions.on_permission_granted(permission);
         } else {
           // permission denied
           Log.i(LOG_TAG, "Permission: " + permission + " denied");
           permission_status.set_denied();
-          NativeFunctions.on_permission_denied(permission);
+          //! NativeFunctions.on_permission_denied(permission);
         }
       } else {
         Log.e(LOG_TAG, "permission error: " + permission);

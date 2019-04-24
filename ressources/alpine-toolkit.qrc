@@ -10,6 +10,7 @@
         <file>qml/Widgets/qmldir</file>
         <file>qml/Widgets/About.qml</file>
         <file>qml/Widgets/CompassRose.qml</file>
+        <file>qml/Widgets/Dialog.qml</file>
         <file>qml/Widgets/ExplainPermission.qml</file>
         <file>qml/Widgets/Layers.qml</file>
         <file>qml/Widgets/MapComponent.qml</file>

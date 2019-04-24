@@ -29,6 +29,8 @@
 #include "android_platform.h"
 #include "alpine_toolkit.h"
 
+#include "android_permission_manager.h"
+
 #include <QAndroidJniEnvironment>
 #include <QAndroidJniObject>
 #include <QtAndroid>
@@ -39,71 +41,11 @@
 AndroidPlatform::AndroidPlatform(QObject * parent)
   : PlatformAbstraction(parent)
 {
-  connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
-  connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
-  connect(this, SIGNAL(full_wave_lockChanged()), this, SLOT(update_full_wave_lock()));
-  connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
+  m_permission_manager = new AndroidPermissionManager();
 }
 
 AndroidPlatform::~AndroidPlatform()
 {}
-
-/**************************************************************************************************/
-
-QStringList
-AndroidPlatform::need_explain() const
-{
-  qATInfo() << "need_explain";
-
-  QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_explain", "()Ljava/lang/String");
-  QString permissions = j_string.toString();
-
-  return permissions.split(QChar(','));
-}
-
-QStringList
-AndroidPlatform::need_grant() const
-{
-  // Fixme: duplicated code
-
-  qATInfo() << "need_grant";
-
-  QAndroidJniObject j_string = QtAndroid::androidActivity().callObjectMethod("need_grant", "()Ljava/lang/String");
-  QString permissions = j_string.toString();
-
-  return permissions.split(QChar(','));
-}
-
-void
-AndroidPlatform::ask_permission(const QString & permission) const
-{
-  qATInfo() << "ask_permission" << permission;
-
-  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
-  QtAndroid::androidActivity().callMethod<void>("ask_permission", "(Ljava/lang/String)V", j_string.object<jstring>());
-}
-
-bool
-AndroidPlatform::is_permission_granted(const QString & permission) const
-{
-  qATInfo() << "is_permission_granted" << permission;
-
-  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
-  jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_granted", "(Ljava/lang/String)V", j_string.object<jstring>());
-
-  return rc;
-}
-
-bool
-AndroidPlatform::is_permission_denied(const QString & permission) const
-{
-  qATInfo() << "is_permission_denied" << permission;
-
-  QAndroidJniObject j_string = QAndroidJniObject::fromString(permission);
-  jboolean rc = QtAndroid::androidActivity().callMethod<jboolean>("is_permission_denied", "(Ljava/lang/String)V", j_string.object<jstring>());
-
-  return rc;
-}
 
 /**************************************************************************************************/
 

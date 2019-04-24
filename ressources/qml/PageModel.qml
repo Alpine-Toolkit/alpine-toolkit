@@ -69,6 +69,7 @@ ListModel {
         icon: 'qrc:/icons/camptocamp-black.png'
         source: 'qrc:/qml/Pages/Camptocamp.qml'
         lock_orientation: false
+        require_storage: true
     }
 
     // ListElement {
@@ -149,6 +150,7 @@ ListModel {
         icon: 'qrc:/icons/map-black.png'
         source: 'qrc:/qml/Pages/Map.qml'
         lock_orientation: false
+        require_storage: true
     }
 
     ListElement {

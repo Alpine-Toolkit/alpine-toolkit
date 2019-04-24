@@ -28,26 +28,46 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef ANDROID_PERMISSION_MANAGER_H
+#define ANDROID_PERMISSION_MANAGER_H
+
+#include <QtAndroid>
+
+#include "platform_abstraction/permission_manager.h"
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
-
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
+class AndroidPermissionManager : public PermissionManager
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
+  AndroidPermissionManager();
+  ~AndroidPermissionManager();
 
-  PlatformType platform_type() const override { return Linux; }
+  Q_INVOKABLE bool require_write_permission(const QString & path) const override;
+
+// public:
+//   void on_permission_granted(const QString & permission);
+//   void on_permission_denied(const QString & permission);
+
+private:
+  bool need_explain(const QString & permission);
+
+  bool is_permission_granted(const QString & permission) const;
+  bool is_permission_denied(const QString & permission) const;
+
+  void request_permission(const QString & permission);
+
+  void permission_callback(const QtAndroid::PermissionResultMap & map);
+
+  QString to_android_permission(const QString & permission) const;
+  QString from_android_permission(const QString & permission) const;
+
+private:
+  QHash<QString, bool> m_need_explain_cache;
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // ANDROID_PERMISSION_MANAGER_H

@@ -31,6 +31,8 @@
 #ifndef PLATFORM_ABSTRACTION_H
 #define PLATFORM_ABSTRACTION_H
 
+#include "platform_abstraction/permission_manager.h"
+
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -45,15 +47,17 @@ class PlatformAbstraction : public QObject
   Q_PROPERTY(ScreenOrientation orientation READ orientation WRITE set_orientation NOTIFY orientationChanged)
   Q_PROPERTY(bool full_wave_lock READ full_wave_lock WRITE set_full_wave_lock NOTIFY full_wave_lockChanged)
   Q_PROPERTY(bool torch READ torch WRITE set_torch NOTIFY torchChanged)
+  Q_PROPERTY(PermissionManager* permission_manager READ permission_manager)
 
 public:
   // Fixme: versus tools/platform.h
   enum PlatformType {
-    Linux = Qt::UserRole + 1,
-    Windows,
-    OSX,
-    Android,
-    IOS,
+    Linux = Qt::UserRole, // 256 = 0x0100
+    Windows,              // 257
+    OSX,                  // 258
+    Android,              // 259
+    AndroidFake,          // 260
+    IOS,                  // 261
   };
   typedef PlatformType PlatformType;
   Q_ENUMS(PlatformType)
@@ -75,18 +79,18 @@ public:
   ~PlatformAbstraction();
 
   virtual PlatformType platform_type() const = 0;
+  QString platform_name() const;
+  Q_INVOKABLE bool on_android() const { return platform_type() == Android; }
+  Q_INVOKABLE bool on_android_fake() const { return platform_type() == AndroidFake; }
+  Q_INVOKABLE bool on_ios() const { return platform_type() == IOS; }
+  Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
+  Q_INVOKABLE bool on_osx() const { return platform_type() == OSX; }
+  Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
 
-  // Fixme: Android specific
-  Q_INVOKABLE QStringList need_explain() const;
-  Q_INVOKABLE QStringList need_grant() const;
-  Q_INVOKABLE void ask_permission(const QString & permission) const;
-  Q_INVOKABLE bool is_permission_granted(const QString & permission) const;
-  Q_INVOKABLE bool is_permission_denied(const QString & permission) const;
-  // Mockup
-  Q_INVOKABLE void emit_on_permission_granted(const QString & permission);
-  Q_INVOKABLE void emit_on_permission_denied(const QString & permission);
+  PermissionManager * permission_manager() { return m_permission_manager; }
 
-  Q_INVOKABLE QStringList external_storages() const;
+  Q_INVOKABLE bool has_external_storages() const { return external_storages().size(); }
+  Q_INVOKABLE virtual QStringList external_storages() const { return QStringList(); }
 
   bool is_directory_writable(const QString & path) const;
 
@@ -111,11 +115,11 @@ public:
   virtual Q_INVOKABLE void start_lamp_dimmer(int period, int duty_cycle) const;
   virtual Q_INVOKABLE void stop_lamp_dimmer() const;
 
-  Q_INVOKABLE bool on_android() const { return platform_type() == Android; }
-  Q_INVOKABLE bool on_ios() const { return platform_type() == IOS; }
-  Q_INVOKABLE bool on_linux() const { return platform_type() == Linux; }
-  Q_INVOKABLE bool on_osx() const { return platform_type() == OSX; }
-  Q_INVOKABLE bool on_windows() const { return platform_type() == Windows; }
+protected slots:
+  virtual void update_orientation_lock();
+  virtual void update_orientation();
+  virtual void update_full_wave_lock();
+  virtual void update_torch();
 
 signals:
   // Fixme: _changed ???
@@ -123,11 +127,9 @@ signals:
   void orientationChanged();
   void full_wave_lockChanged();
   void torchChanged();
-  // Fixme: Android specific
-  void on_permission_granted(const QString & permission);
-  void on_permission_denied(const QString & permission);
 
 protected:
+  PermissionManager * m_permission_manager = nullptr;
   bool m_orientation_lock;
   ScreenOrientation m_orientation;
   bool m_full_wave_lock;

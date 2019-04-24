@@ -31,27 +31,41 @@
 
 #ifdef ON_LINUX
 #include "platform_abstraction/linux_platform.h"
+#include "platform_abstraction/android_fake_platform.h"
 #endif
+
 #ifdef ON_ANDROID
 #include "platform_abstraction/android_platform.h"
 #endif
 
 #include <QDir>
 #include <QFile>
+#include <QProcessEnvironment>
 #include <QUuid>
 #include <QtDebug>
 
 /**************************************************************************************************/
 
 PlatformAbstraction *
-PlatformAbstraction::instance() {
-  // Thread-safe in C++11
+PlatformAbstraction::instance()
+{
+  static PlatformAbstraction * _instance = nullptr;
+
+  if (!_instance) {
 #ifdef ON_LINUX
-  static PlatformAbstraction * _instance = new LinuxPlatform();
+    QProcessEnvironment m_env = QProcessEnvironment::systemEnvironment();
+    QString value = m_env.value(QLatin1Literal("ALPINE_TOOLKIT_FAKE_ANDROID"));
+    if (value == QLatin1Literal("TRUE"))
+      _instance = new AndroidFakePlatform();
+    else
+      _instance = new LinuxPlatform();
 #endif
+
 #ifdef ON_ANDROID
-  static PlatformAbstraction * _instance = new AndroidPlatform();
+    _instance = new AndroidPlatform();
 #endif
+  }
+
   return _instance;
 }
 
@@ -64,6 +78,10 @@ PlatformAbstraction::PlatformAbstraction(QObject * parent)
     m_full_wave_lock(false),
     m_torch_enabled(false)
 {
+  connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
+  connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
+  connect(this, SIGNAL(full_wave_lockChanged()), this, SLOT(update_full_wave_lock()));
+  connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
 }
 
 PlatformAbstraction::~PlatformAbstraction()
@@ -71,62 +89,23 @@ PlatformAbstraction::~PlatformAbstraction()
 
 /**************************************************************************************************/
 
-QStringList
-PlatformAbstraction::need_explain() const
+QString
+PlatformAbstraction::platform_name() const
 {
-  qATInfo() << "need_explain";
-
-  return QStringList();
-}
-
-QStringList
-PlatformAbstraction::need_grant() const
-{
-  qATInfo() << "need_grant";
-
-  return QStringList();
-}
-
-void
-PlatformAbstraction::ask_permission(const QString & permission) const
-{
-  qATInfo() << "ask_permission" << permission;
-}
-
-bool
-PlatformAbstraction::is_permission_granted(const QString & permission) const
-{
-  qATInfo() << "is_permission_granted" << permission;
-
-  return true;
-}
-
-bool
-PlatformAbstraction::is_permission_denied(const QString & permission) const
-{
-  qATInfo() << "is_permission_denied" << permission;
-
-  return false;
-}
-
-void
-PlatformAbstraction::emit_on_permission_granted(const QString & permission)
-{
-  emit on_permission_granted(permission);
-}
-
-void
-PlatformAbstraction::emit_on_permission_denied(const QString & permission)
-{
-  emit on_permission_denied(permission);
-}
-
-/**************************************************************************************************/
-
-QStringList
-PlatformAbstraction::external_storages() const
-{
-  return QStringList();
+  switch (platform_type()) {
+  case Linux:
+    return QLatin1Literal("Linux");
+  case Windows:
+    return QLatin1Literal("Windows");
+  case OSX:
+    return QLatin1Literal("OSX");
+  case Android:
+    return QLatin1Literal("Android");
+  case AndroidFake:
+    return QLatin1Literal("FakeAndroid");
+  case IOS:
+    return QLatin1Literal("IOS");
+  };
 }
 
 /**************************************************************************************************/
@@ -176,16 +155,18 @@ PlatformAbstraction::orientation_lock() const
   return m_orientation_lock;
 }
 
-/*
 void
 PlatformAbstraction::update_orientation_lock()
 {
-  if (m_orientation_lock)
+  qATInfo() << "update_orientation_lock" << m_orientation_lock;
+
+  /*
+    if (m_orientation_lock)
     ;
-  else
+    else
     ;
+  */
 }
-*/
 
 /**************************************************************************************************/
 
@@ -206,10 +187,12 @@ PlatformAbstraction::orientation() const
   return m_orientation;
 }
 
-/*
 void
 PlatformAbstraction::update_orientation()
 {
+  qATInfo() << "update_orientation" << m_orientation;
+
+  /*
   switch (m_orientation) {
   case Portrait:
     ;
@@ -219,8 +202,8 @@ PlatformAbstraction::update_orientation()
   default:
     ;
   }
+  */
 }
-*/
 
 /**************************************************************************************************/
 
@@ -241,16 +224,18 @@ PlatformAbstraction::full_wave_lock() const
   return m_full_wave_lock;
 }
 
-/*
 void
 PlatformAbstraction::update_full_wave_lock()
 {
+  qATInfo() << "update_full_wave_lock" << m_full_wave_lock;
+
+  /*
   if (m_full_wave_lock)
     ;
   else
     ;
+  */
 }
-*/
 
 /**************************************************************************************************/
 
@@ -271,12 +256,11 @@ PlatformAbstraction::torch() const
   return m_torch_enabled;
 }
 
-/*
 void
 PlatformAbstraction::update_torch()
 {
+  qATInfo() << "update_torch" << m_torch_enabled;
 }
-*/
 
 /**************************************************************************************************/
 

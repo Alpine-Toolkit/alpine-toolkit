@@ -26,28 +26,24 @@
  *
  **************************************************************************************************/
 
-/**************************************************************************************************/
-
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef LINUX_CONFIGURATION_H
+#define LINUX_CONFIGURATION_H
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
+#include "configuration/configuration.h"
 
 /**************************************************************************************************/
 
-class LinuxPlatform : public PlatformAbstraction
+class QaLinuxConfig : public QaConfig
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
-
-  PlatformType platform_type() const override { return Linux; }
+  QaLinuxConfig();  // Fixme: can't be private
+  ~QaLinuxConfig();
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // LINUX_CONFIGURATION_H

@@ -101,7 +101,7 @@ QcWmtsPluginManager::operator[](const QString & name)
 QcWmtsPlugin *
 QcWmtsPluginManager::create_plugin_geoportail()
 {
-  QString json_path = QaConfig::instance().geoportail_token_path();
+  QString json_path = QaConfig::instance()->geoportail_token_path();
   QcGeoportailWmtsLicense geoportail_license(json_path);
 
   return new QcGeoportailPlugin(geoportail_license);

@@ -34,7 +34,7 @@
 #include <QMetaObject>
 #include <QtDebug>
 
-#include "service/service_alpine_toolkit.h"
+#include "service/service.h"
 #include "platform_abstraction/platform_abstraction.h"
 
 /**************************************************************************************************/
@@ -55,34 +55,38 @@ on_permission_granted(JNIEnv * env, jobject obj, jstring j_permission)
   QAndroidJniObject string = j_permission;
   QString permission = string.toString();
   qATInfo() << "on_permission_granted" << permission;
-  QMetaObject::invokeMethod(PlatformAbstraction::instance(),
-                            "on_permission_granted",
-                            Qt::QueuedConnection,
-                            permission
-                            );
+  PermissionManager * permission_manager = PlatformAbstraction::instance()->permission_manager();
+  // Fixme: cast AndroidPermissionmanager
+  // QMetaObject::invokeMethod(permission_manager,
+  //                           "on_permission_granted",
+  //                           Qt::QueuedConnection,
+  //                           permission
+  //                           );
 }
 
 static void
-on_permission_denied(JNIEnv * env, jobject obj, jstring permission)
+on_permission_denied(JNIEnv * env, jobject obj, jstring j_permission)
 {
   QAndroidJniObject string = j_permission;
   QString permission = string.toString();
   qATInfo() << "on_permission_denied" << permission;
-  QMetaObject::invokeMethod(PlatformAbstraction::instance(),
-                            "on_permission_denied",
-                            Qt::QueuedConnection,
-                            permission
-                            );
+  PermissionManager * permission_manager = PlatformAbstraction::instance()->permission_manager();
+  // QMetaObject::invokeMethod(permission_manager,
+  //                           "on_permission_denied",
+  //                           Qt::QueuedConnection,
+  //                           permission
+  //                           );
 }
 
 static void
 stop_service(JNIEnv * env, jobject obj)
 {
   qATInfo() << "invoke stop_service";
-  QMetaObject::invokeMethod(ServiceApplication::service,
-                            "stop_service",
-                            Qt::QueuedConnection
-                            );
+  // Fixme: ???
+  // QMetaObject::invokeMethod(Service::service,
+  //                           "stop_service",
+  //                           Qt::QueuedConnection
+  //                           );
 }
 
 /**************************************************************************************************/

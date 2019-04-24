@@ -93,12 +93,18 @@ SOURCES += \
 android {
 QT += androidextras
 
+# for rep_service_source.h
+INCLUDEPATH += $$OUT_PWD/service
+
 HEADERS += \
-  src/platform_abstraction/android_platform.h
+  src/platform_abstraction/android_platform.h \
+  src/platform_abstraction/android_permission_manager.h
 
 SOURCES += \
-  src/platform_abstraction/android_platform.cpp
-  src/platform_abstraction/android_native.cpp
+  src/platform_abstraction/android_platform.cpp \
+  src/platform_abstraction/android_permission_manager.cpp
+
+#  src/platform_abstraction/android_native.cpp \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 }

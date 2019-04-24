@@ -35,66 +35,7 @@
 
 LinuxPlatform::LinuxPlatform(QObject * parent)
   : PlatformAbstraction(parent)
-{
-  connect(this, SIGNAL(orientation_lockChanged()), this, SLOT(update_orientation_lock()));
-  connect(this, SIGNAL(orientationChanged()), this, SLOT(update_orientation()));
-  connect(this, SIGNAL(full_wave_lockChanged()), this, SLOT(update_full_wave_lock()));
-  connect(this, SIGNAL(torchChanged()), this, SLOT(update_torch()));
-}
+{}
 
 LinuxPlatform::~LinuxPlatform()
 {}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::update_orientation_lock()
-{
-  qATInfo() << "update_orientation_lock" << m_orientation_lock;
-}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::update_orientation()
-{
-  qATInfo() << "update_orientation" << m_orientation;
-}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::update_full_wave_lock()
-{
-  qATInfo() << "update_full_wave_lock" << m_full_wave_lock;
-}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::update_torch()
-{
-  qATInfo() << "update_torch" << m_torch_enabled;
-}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::issue_call(const QString & phone_number)
-{
-  qATInfo() << "issue_call" << phone_number;
-}
-
-void
-LinuxPlatform::issue_dial(const QString & phone_number)
-{
-  qATInfo() << "issue_dial" << phone_number;
-}
-
-/**************************************************************************************************/
-
-void
-LinuxPlatform::impl_perform_lamp_signal(const QString & encoded_message, int rate_ms)
-{
-  qATInfo() << "impl_perform_lamp_signal" << encoded_message << rate_ms;
-}

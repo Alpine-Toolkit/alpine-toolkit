@@ -28,8 +28,8 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef ANDROID_FAKE_PLATFORM_H
+#define ANDROID_FAKE_PLATFORM_H
 
 /**************************************************************************************************/
 
@@ -37,17 +37,17 @@
 
 /**************************************************************************************************/
 
-class LinuxPlatform : public PlatformAbstraction
+class AndroidFakePlatform : public PlatformAbstraction
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
+  explicit AndroidFakePlatform(QObject * parent = nullptr);
+  ~AndroidFakePlatform();
 
-  PlatformType platform_type() const override { return Linux; }
+  PlatformType platform_type() const override { return AndroidFake; }
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // ANDROID_FAKE_PLATFORM_H

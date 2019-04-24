@@ -133,7 +133,7 @@ public class AlpineToolkitService extends QtService
   {
     Log.i(LOG_TAG, "stop_foreground_service");
     stopForeground(true);
-    NativeFunctions.stop_service();
+    //! NativeFunctions.stop_service();
     // stopSelf();
   }
 

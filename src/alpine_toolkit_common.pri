@@ -3,6 +3,7 @@
 ####################################################################################################
 
 HEADERS += \
+  configuration/android_configuration.h \
   configuration/configuration.h \
   logging/handler.h \
   logging/logger.h \
@@ -10,6 +11,7 @@ HEADERS += \
   tools/platform.h
 
 SOURCES += \
+  configuration/android_configuration.cpp \
   configuration/configuration.cpp \
   logging/handler.cpp \
   logging/logger.cpp \

@@ -1,10 +1,8 @@
-// -*- mode: c++ -*-
-
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2017 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
  * This file is part of the Alpine Toolkit software.
@@ -28,26 +26,59 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#include "android_fake_permission_manager.h"
+#include "alpine_toolkit.h"
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
-
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
+AndroidFakePermissionManager::AndroidFakePermissionManager()
+  : PermissionManager(),
+    m_permission_status()
 {
-  Q_OBJECT
+  m_permission_status[QLatin1String("WRITE_EXTERNAL_STORAGE")] = false;
+}
 
-public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
-
-  PlatformType platform_type() const override { return Linux; }
-};
+AndroidFakePermissionManager::~AndroidFakePermissionManager()
+{}
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+bool
+AndroidFakePermissionManager::require_write_permission(const QString & path) const
+{
+  bool rc = true;
+  qATInfo() << "require_write_permission" << path << rc;
+  return rc;
+}
+
+/**************************************************************************************************/
+
+bool
+AndroidFakePermissionManager::need_explain(const QString & permission)
+{
+  bool rc = permission == QLatin1String("WRITE_EXTERNAL_STORAGE");
+  qATInfo() << "need_explain" << permission << rc;
+  return rc;
+}
+
+/**************************************************************************************************/
+
+bool
+AndroidFakePermissionManager::is_permission_granted(const QString & permission) const
+{
+  bool rc = m_permission_status[permission];
+  qATInfo() << "is_permission_granted" << permission << rc;
+  return rc;
+}
+
+/**************************************************************************************************/
+
+void
+AndroidFakePermissionManager::request_permission(const QString & permission)
+{
+  qATInfo() << "ask_permission" << permission;
+
+  // Could be false
+  m_permission_status[permission] = true;
+  call_callback(permission, true);
+}

@@ -28,26 +28,34 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef ANDROID_FAKE_PERMISSION_MANAGER_H
+#define ANDROID_FAKE_PERMISSION_MANAGER_H
+
+#include "platform_abstraction/permission_manager.h"
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
-
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
+class AndroidFakePermissionManager : public PermissionManager
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
+  AndroidFakePermissionManager();
+  ~AndroidFakePermissionManager();
 
-  PlatformType platform_type() const override { return Linux; }
+  // Q_INVOKABLE QStringList external_storages() const override { return QStringList(); }
+
+  Q_INVOKABLE bool require_write_permission(const QString & path) const override;
+
+private:
+  bool need_explain(const QString & permission);
+  bool is_permission_granted(const QString & permission) const;
+  void request_permission(const QString & permission);
+
+private:
+  QHash<QString, bool> m_permission_status;
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // ANDROID_FAKE_PERMISSION_MANAGER_H

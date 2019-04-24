@@ -28,26 +28,56 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef PERMISSION_MANAGER_H
+#define PERMISSION_MANAGER_H
+
+#include <functional>
+
+#include <QHash>
+#include <QList>
+#include <QObject>
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
-
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
+class PermissionManager : public QObject
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
+  typedef std::function<void(const QString & permission, bool granted)> PermissionCallback;
+  typedef QList<PermissionCallback> PermissionCallbackList;
 
-  PlatformType platform_type() const override { return Linux; }
+public:
+  PermissionManager();
+  ~PermissionManager();
+
+  virtual Q_INVOKABLE bool require_write_permission(const QString & path) const; // Fixme: Q_INVOKABLE ???
+
+   // async
+  void check_permission(const QString & permission, const PermissionCallback & callback);
+
+signals:
+  void open_explain_permission(const QString & permission, const QString & explanation);
+
+public slots:
+  void on_accepted_explain_permission(const QString & permission);
+  void on_rejected_explain_permission(const QString & permission);
+
+protected:
+  virtual bool need_explain(const QString & permission) = 0;
+  QString permission_explanation(const QString & permission) const;
+
+  virtual bool is_permission_granted(const QString & permission) const = 0;
+
+  virtual void request_permission(const QString & permission) = 0;
+
+  void register_callback(const QString & permission, const PermissionCallback & callback);
+  void call_callback(const QString & permission, bool granted);
+
+private:
+  QHash<QString, PermissionCallbackList> m_callbacks;
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // PERMISSION_MANAGER_H

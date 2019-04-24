@@ -26,7 +26,8 @@
 
 /**************************************************************************************************/
 
-#include "configuration.h"
+#include "android_configuration.h"
+#include "linux_configuration.h"
 #include "alpine_toolkit.h"
 
 #include <QDir>
@@ -47,40 +48,39 @@
  *
  */
 
+/***********************************************************************************
+***************/
+
+QaConfig *
+QaConfig::instance()
+{
+  // Thread-safe in C++11
+
+#ifdef ON_LINUX
+  static QaLinuxConfig _instance;
+#endif
+
+#ifdef ON_ANDROID
+  static QaAndroidConfig _instance;
+#endif
+
+  return &_instance;
+}
+
 /**************************************************************************************************/
 
 QaConfig::QaConfig()
   : QObject(),
-    m_initialised(false),
+    m_is_storage_enabled(false),
     m_env(QProcessEnvironment::systemEnvironment()),
-    m_settings(ORGANISATION_NAME, APPLICATION_NAME) // To ensure correct values
+    m_settings(ORGANISATION_NAME, APPLICATION_NAME), // To ensure correct values
+    m_application_user_directory()
 {
   load_settings();
 
   m_is_mockup_enabled = get_env(QLatin1Literal("MOCKUP")) == QLatin1Literal("TRUE");
 
-  QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  // qATInfo() << "GenericDataLocation:" << generic_data_location_path;
-
-  // Fixme: could use PlatformAbstraction::instance()
-#ifdef ON_LINUX
-  // GenericDataLocation = $HOME/.local/share
-  m_application_user_directory = QDir(generic_data_location_path).filePath(CONFIG_DIRECTORY_NAME);
-#endif
-
-#ifdef ON_ANDROID
-  // DataLocation = /data/data/org.alpine_toolkit
-  // GenericDataLocation = <USER> = /storage/emulated/0 = user land root
-  // /storage/emulated/0/Android/data/org.alpine_toolkit/files
-  // /storage/XXXX-XXXX/Android/data/org.alpine_toolkit/files
-  // Fixme: could use sdcard as well
-
-  // This directory is destroyed when the application is uninstalled
-  // m_application_user_directory = QDir(generic_data_location_path).filePath(QLatin1Literal("Android/data/") + ANDROID_PACKAGE_NAME);
-
-  // Persistent directory, but require permission
-  m_application_user_directory = QDir(generic_data_location_path).filePath(ANDROID_PACKAGE_NAME);
-#endif
+  // m_is_storage_enabled = QDir(m_application_user_directory).exists();
 }
 
 QaConfig::~QaConfig()
@@ -97,26 +97,23 @@ QaConfig::get_env(const QString name) const
 }
 
 void
-QaConfig::init()
+QaConfig::create_application_user_directory()
 {
-  if (m_initialised)
-    return;
-
   // Could require Android permission
   create_directory(m_application_user_directory, QLatin1Literal("application user"));
-  create_directory(wmts_cache_directory(), QLatin1Literal("wmts cache"));
   create_directory(wmts_token_directory(), QLatin1Literal("wmts token"));
 
-  m_initialised = true;
+  m_is_storage_enabled = true;
 }
 
 void
 QaConfig::load_settings()
 {
+  // on Linux $HOME/.config/Apline Toolkit/Alpine Toolkit.conf
+  // on Android "/data/data/org.alpine_toolkit/files/.config/Apline Toolkit/Alpine Toolkit.conf"
+
   qATInfo() << "Settings file path:" << m_settings.fileName() << m_settings.format();
 
-  // Settings file path: "$HOME/.config/Apline Toolkit/Alpine Toolkit.conf" 0
-  // Settings file path: "/data/data/org.alpine_toolkit/files/.config/Apline Toolkit/Alpine Toolkit.conf" 0
   // qputenv("QT_LABS_CONTROLS_STYLE", settings.value("style").toByteArray());
 }
 
@@ -134,6 +131,7 @@ QaConfig::create_directory(const QString path, const QString label) const
 const QString
 QaConfig::join_application_user_directory(const QString & path) const
 {
+  // Fixme: absoluteFilePath vs filePath ???
   return QDir(m_application_user_directory).absoluteFilePath(path);
 }
 
@@ -141,25 +139,59 @@ const QString
 QaConfig::wmts_cache_directory() const
 {
 #ifdef ON_LINUX
-  return QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+  QString cache_path = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
+  QString path = QDir(cache_path).absoluteFilePath(QLatin1Literal("QtCarto"));
 #endif
 
 #ifdef ON_ANDROID
-  return join_application_user_directory(QLatin1Literal("wmts_cache"));
+  QString path = join_application_user_directory(QLatin1Literal("wmts_cache"));
 #endif
+
+  qATInfo() << "wmts_cache_directory" << path;
+
+  return path;
 }
 
 const QString
 QaConfig::wmts_token_directory() const
 {
-  return join_application_user_directory(QLatin1Literal("wmts_token"));
+  QString path = join_application_user_directory(QLatin1Literal("wmts_token"));
+  qATInfo() << "wmts_token_directory" << path;
+  return path;
 }
 
 const QString
 QaConfig::geoportail_token_path() const
 {
   // Fixme: Hide license
-  return QDir(wmts_token_directory()).filePath(QLatin1Literal("geoportail-license.json"));
+  QString path = QDir(wmts_token_directory()).absoluteFilePath(QLatin1Literal("geoportail-license.json"));
+  qATInfo() << "geoportail_token_path";
+  return path;
+}
+
+const QString
+QaConfig::c2c_cache_path() const
+{
+  qATInfo() << "c2c_cache_path";
+
+  // QDir c2c_cache_path = m_engine.offlineStoragePath(); // same as application_user_directory
+  return m_application_user_directory;
+}
+
+const QString
+QaConfig::c2c_api_cache_path() const
+{
+  qATInfo() << "c2c_api_cache_path";
+
+  return QDir(c2c_cache_path()).absoluteFilePath(QLatin1String("c2c-cache.sqlite"));
+}
+
+const QString
+QaConfig::c2c_media_cache_path() const
+{
+  qATInfo() << "c2c_media_cache_path";
+
+  return QDir(c2c_cache_path()).absoluteFilePath(QLatin1String("media"));
 }
 
 /**************************************************************************************************/

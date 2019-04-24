@@ -42,6 +42,7 @@ include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
 
 set(alpine_toolkit_common_library_files
   configuration/configuration.cpp
+  configuration/linux_configuration.cpp
   logging/handler.cpp
   logging/logger.cpp
   tools/debug_data.cpp
@@ -106,8 +107,11 @@ set(alpine_toolkit_library_files
   orm/sql_query_model.cpp
   orm/sqlite_database.cpp
   orm/type_conversion.cpp
-  platform_abstraction/platform_abstraction.cpp
+  platform_abstraction/android_fake_permission_manager.cpp
+  platform_abstraction/android_fake_platform.cpp
   platform_abstraction/linux_platform.cpp
+  platform_abstraction/permission_manager.cpp
+  platform_abstraction/platform_abstraction.cpp
   refuge/refuge_schema.cpp
   refuge/refuge_schema_custom_code.cpp
   refuge/refuge_schema_manager.cpp

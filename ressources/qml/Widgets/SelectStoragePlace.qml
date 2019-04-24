@@ -30,12 +30,19 @@ import QtQuick 2.6
 import QtQuick.Controls 2.2
 
 import Constants 1.0
-import Widgets 1.0 as Widgets
 
 // Fixme: qrc:qml/Widgets/ExplainPermission.qml:34:1: QML ExplainPermission: Binding loop detected for property "implicitWidth"
 
-Widgets.Dialog {
+Dialog {
     id: dialog
+    modal: true
+
+    // cf. Popup.qml
+    property real factor: .9
+    width: parent.width * factor
+    height: parent.height * factor
+    x: (parent.width - width) / 2
+    y: (parent.height - height) / 2
 
     title: qsTr('An Android Permission is Required')
     standardButtons: Dialog.Cancel | Dialog.Ok

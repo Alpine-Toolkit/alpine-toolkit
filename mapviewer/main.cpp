@@ -67,14 +67,14 @@ main(int argc, char *argv[])
   // surface_format.setSamples(4); // max is 8 ?
   QSurfaceFormat::setDefaultFormat(surface_format);
 
-  QaConfig & config = QaConfig::instance();
-  config.init();
+  QaConfig * config = QaConfig::instance();
+  //! config.init();
 
   // Set environment variable PROJ_LIB for proj4 so as to find (epsg) date files
-  setenv("PROJ_LIB", config.application_user_directory().toStdString().c_str(), 1);
+  setenv("PROJ_LIB", config->application_user_directory().toStdString().c_str(), 1);
 
   QcDebugData debug_data;
-  debug_data.write_json(config.join_application_user_directory(QLatin1Literal("debug_data.json")));
+  debug_data.write_json(config->join_application_user_directory(QLatin1Literal("debug_data.json")));
   qInfo() << debug_data.to_json();
 
   QUrl main_page("qrc:/pages/main.qml");

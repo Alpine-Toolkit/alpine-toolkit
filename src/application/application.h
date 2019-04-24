@@ -36,6 +36,7 @@
 #include <QDir>
 #include <QNetworkConfigurationManager>
 #include <QQmlApplicationEngine>
+#include <QTimer>
 #include <QTranslator>
 // #include <QGuiApplication>
 
@@ -92,8 +93,10 @@ private:
 
 /**************************************************************************************************/
 
-class Application
+class Application : public QObject
 {
+  Q_OBJECT
+
 private:
   static Application * m_instance;
 
@@ -113,14 +116,19 @@ public:
 
   QmlApplication * qml_application() { return &m_qml_application; }
 
-  const QString & application_user_directory() const { return m_config.application_user_directory(); } // Fixme: ???
-  QaConfig & config() { return m_config; }
-  QSettings & settings() { return m_config.settings(); }
+  const QString & application_user_directory() const { return m_config->application_user_directory(); } // Fixme: ???
+  QaConfig * config() { return m_config; }
+  QSettings & settings() { return m_config->settings(); }
 
   const QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
 
   QString encode_morse(const QString & message, bool use_bit);
   QString decode_morse(const QString & message, bool & succeed);
+
+  QString tr(const char * message) const { return m_application.tr(message); }
+
+private slots:
+  void post_init();
 
 private:
   QString copy_file_from_asset(const QDir & destination, const QString & filename);
@@ -134,6 +142,8 @@ private:
   static void setup_gui_application();
   void write_debug_data() const;
   void load_morse_code_engine();
+  void setup_user_directory();
+  void setup_user_directory_finish(bool fallback_mode = false);
 
 protected:
   Application(int & argc, char ** argv);
@@ -145,9 +155,10 @@ private:
   QApplication m_application; // for charts
   QTranslator m_translator;
   PlatformAbstraction * m_platform_abstraction = nullptr; // singleton
-  QaConfig & m_config; // singleton
+  QaConfig * m_config; // singleton
   QQmlApplicationEngine m_engine;
   QmlApplication m_qml_application;
+  QTimer * m_startup_timer = nullptr;
 
   InternationalMorseCodeEngine * m_morse_code_engine = nullptr; // lazy loading
   ThirdPartyLicenseSchemaManager m_third_party_license_schema_manager;

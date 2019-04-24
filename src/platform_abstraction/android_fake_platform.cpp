@@ -1,5 +1,3 @@
-// -*- mode: c++ -*-
-
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
@@ -28,26 +26,20 @@
 
 /**************************************************************************************************/
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#include "android_fake_platform.h"
+// #include "alpine_toolkit.h"
+
+#include "android_fake_permission_manager.h"
+
+#include <QtDebug>
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
-
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
+AndroidFakePlatform::AndroidFakePlatform(QObject * parent)
+  : PlatformAbstraction(parent)
 {
-  Q_OBJECT
+  m_permission_manager = new AndroidFakePermissionManager();
+}
 
-public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
-
-  PlatformType platform_type() const override { return Linux; }
-};
-
-/**************************************************************************************************/
-
-#endif // LINUX_PLATFORM_H
+AndroidFakePlatform::~AndroidFakePlatform()
+{}

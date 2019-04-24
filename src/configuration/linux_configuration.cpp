@@ -26,19 +26,32 @@
 
 /**************************************************************************************************/
 
-package org.alpine_toolkit;
+#include "linux_configuration.h"
+#include "alpine_toolkit.h"
+
+#include <QDir>
+#include <QStandardPaths>
+#include <QtDebug>
 
 /**************************************************************************************************/
 
-// C code is defined in src/platform_abstraction/native.cpp
+// QC_BEGIN_NAMESPACE
 
-public class NativeFunctions {
-  // Define the native function
-  // these functions are called by the BroadcastReceiver object
-  // when it receives a new notification
+/**************************************************************************************************/
 
-  // public static native void on_permission_granted(String permisssion);
-  // public static native void on_permission_denied(String permisssion);
+QaLinuxConfig::QaLinuxConfig()
+  : QaConfig()
+{
+  QString generic_data_location_path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+  // qATInfo() << "GenericDataLocation:" << generic_data_location_path;
+  // GenericDataLocation = $HOME/.local/share
 
-  // public static native void stop_service();
+  application_user_directory(QDir(generic_data_location_path).filePath(CONFIG_DIRECTORY_NAME));
 }
+
+QaLinuxConfig::~QaLinuxConfig()
+{}
+
+/**************************************************************************************************/
+
+// QC_END_NAMESPACE

@@ -1,13 +1,11 @@
-// -*- mode: c++ -*-
-
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
  *
- * Copyright (C) 2017 Fabrice Salvaire.
+ * Copyright (C) 2017 Fabrice Salvaire
  * Contact: http://www.fabrice-salvaire.fr
  *
- * This file is part of the Alpine Toolkit software.
+ * This file is part of the Alpine ToolKit software.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,28 +24,20 @@
  *
  **************************************************************************************************/
 
-/**************************************************************************************************/
+import QtQml 2.2
+import QtQuick 2.6
 
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+import QtQuick.Controls 2.1
 
-/**************************************************************************************************/
+import Constants 1.0
 
-#include "platform_abstraction/platform_abstraction.h"
+Dialog {
+    modal: true
 
-/**************************************************************************************************/
-
-class LinuxPlatform : public PlatformAbstraction
-{
-  Q_OBJECT
-
-public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
-
-  PlatformType platform_type() const override { return Linux; }
-};
-
-/**************************************************************************************************/
-
-#endif // LINUX_PLATFORM_H
+    // cf. Popup.qml
+    property real factor: .9
+    width: parent.width * factor
+    height: parent.height * factor
+    x: (parent.width - width) / 2
+    y: (parent.height - height) / 2
+}

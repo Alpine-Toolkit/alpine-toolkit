@@ -63,7 +63,7 @@ ApplicationWindow {
                      Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
                      Screen.pixelDensity, Screen.devicePixelRatio)
 
-	if (platform_abstraction.on_android() || platform_abstraction.on_linux()) {
+	if (platform_abstraction.on_android() || platform_abstraction.on_android_fake()) {
 	    AndroidPermission.create_explain_permission_dialog()
 	}
     }
@@ -173,8 +173,12 @@ ApplicationWindow {
                 onClicked: {
                     // if (list_view.currentIndex != index) {
                     //     list_view.currentIndex = index
-                    if (!is_current_page(model))
-                        replace_page(model)
+                    if (!is_current_page(model)) {
+                        if (model.require_storage === true && !application.config.is_storage_enabled)
+                            XXX_show_dialog()
+                        else
+                            replace_page(model)
+                    }
                     drawer.close()
                 }
             }

@@ -1,5 +1,6 @@
 // -*- mode: c++ -*-
 
+
 /***************************************************************************************************
  *
  * $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
@@ -26,28 +27,27 @@
  *
  **************************************************************************************************/
 
-/**************************************************************************************************/
-
-#ifndef LINUX_PLATFORM_H
-#define LINUX_PLATFORM_H
+#ifndef ANDROID_CONFIGURATION_H
+#define ANDROID_CONFIGURATION_H
 
 /**************************************************************************************************/
 
-#include "platform_abstraction/platform_abstraction.h"
+#include "configuration/configuration.h"
 
 /**************************************************************************************************/
 
-class LinuxPlatform : public PlatformAbstraction
+class QaAndroidConfig : public QaConfig
 {
   Q_OBJECT
 
 public:
-  explicit LinuxPlatform(QObject * parent = nullptr);
-  ~LinuxPlatform();
+  QaAndroidConfig(); // Fixme: can't be private
+  ~QaAndroidConfig();
 
-  PlatformType platform_type() const override { return Linux; }
+  QString generic_data_location() const;
+  QString make_application_user_directory_path(const QString & root_path, bool public_path) const;
 };
 
 /**************************************************************************************************/
 
-#endif // LINUX_PLATFORM_H
+#endif // ANDROID_CONFIGURATION_H

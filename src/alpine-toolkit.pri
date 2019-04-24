@@ -58,7 +58,8 @@ HEADERS += \
   src/orm/type_conversion.h
 
 HEADERS += \
-  src/platform_abstraction/platform_abstraction.h
+  src/platform_abstraction/platform_abstraction.h \
+  src/platform_abstraction/permission_manager.h
 
 HEADERS += \
   src/refuge/refuge_schema.h \
@@ -136,7 +137,8 @@ SOURCES += \
   src/orm/type_conversion.cpp
 
 SOURCES += \
-  src/platform_abstraction/platform_abstraction.cpp
+  src/platform_abstraction/platform_abstraction.cpp \
+  src/platform_abstraction/permission_manager.cpp
 
 SOURCES += \
   src/refuge/refuge_schema.cpp \
