@@ -110,7 +110,7 @@ QcGeoportailLayer::url(const QcTileSpec & tile_spec) const
 
   QString api_key = static_cast<QcGeoportailPlugin *>(plugin())->license().api_key();
 
-  return QUrl(QStringLiteral("https://wxs.ign.fr/") +
+  return QUrl(QStringLiteral("http://wxs.ign.fr/") + // https
               api_key +
               QStringLiteral("/geoportail/wmts?") +
               parameters.join(QString('&')));
