@@ -65,7 +65,9 @@ QcMapItem::QcMapItem(QQuickItem * parent)
     m_map_view(nullptr),
     m_viewport(nullptr)
 {
-  // qQCInfo();
+  // Created when the map page is loaded (click on map item in the application menu)
+  qQCInfo() << "Create QcMapItem";
+
   setAcceptHoverEvents(false);
   setAcceptedMouseButtons(Qt::LeftButton);
   setFlags(QQuickItem::ItemHasContents | QQuickItem::ItemClipsChildrenToShape);
