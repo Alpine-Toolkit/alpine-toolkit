@@ -3,11 +3,17 @@
 #STYLE=Default
 STYLE=Material
 
-QT_VERSION=5.10.0
+QT_VERSION=5.11.0
+
+SOURCE_PATH=`realpath $0`
+SOURCE_PATH=`dirname ${SOURCE_PATH}`
+SOURCE_PATH=`dirname ${SOURCE_PATH}`
+echo $SOURCE_PATH
 
 QT_QUICK_CONTROLS_STYLE=$STYLE \
  /opt/Qt/${QT_VERSION}/gcc_64/bin/qmlscene \
- -I /home/fabrice/home/developpement/qtcarto-application/alpine-toolkit/ressources/qml \
- qml-test.qml
+ -I ${SOURCE_PATH}/ressources/qml \
+ $1
 
+#  qml-test.qml
 # /opt/Qt/5.10.0/gcc_64/bin/qmlscene qml-test.qml

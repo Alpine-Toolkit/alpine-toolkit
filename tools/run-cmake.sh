@@ -5,11 +5,8 @@
 source_path=/home/fabrice/home/developpement/qt/qtcarto-application/alpine-toolkit
 build_path=${source_path}/build-cmake
 
-# QT_VERSION=5.7
-# QT_VERSION=5.8
-# QT_VERSION=5.9
-# QT_VERSION=5.9.1
-QT_VERSION=5.10.0
+# QT_VERSION=5.10.1
+QT_VERSION=5.11.0
 
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"
