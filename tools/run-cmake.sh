@@ -1,12 +1,19 @@
 #! /bin/bash
 
 ####################################################################################################
+#
+# Build Apline Toolkit on X86
+#
+####################################################################################################
 
-source_path=/home/fabrice/home/developpement/qt/qtcarto-application/alpine-toolkit
+####################################################################################################
+
+source_path=`realpath $0`
+source_path=`dirname ${source_path}`
+source_path=`dirname ${source_path}`
 build_path=${source_path}/build-cmake
 
-# QT_VERSION=5.10.1
-QT_VERSION=5.11.0
+QT_VERSION=5.13.0
 
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"
@@ -36,17 +43,20 @@ if [ -e Makefile ]; then
   make clean
 fi
 
+# /etc/security/limits.d/00-user.conf
+# -DSANITIZE=O
+
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-  -DSANITIZE=ON \
+  -DSANITIZE=OFF \
   -DINSTRUMENT_FUNTIONS=OFF \
   ${source_path}
 
 make -j4
 
 if [ -e run-asan ]; then
-  ln -sf ../scripts/run-asan.sh
+  ln -sf ../tools/run-asan.sh
 fi
 
 # source run-asan.sh

@@ -1,18 +1,24 @@
 #! /bin/bash
 
 ####################################################################################################
+#
+# Build Apline Toolkit on Android Arm
+#
+####################################################################################################
 
-source_path=/home/fabrice/home/developpement/qt/qtcarto-application/alpine-toolkit
+####################################################################################################
+
+source_path=`realpath $0`
+source_path=`dirname ${source_path}`
+source_path=`dirname ${source_path}`
 build_path=${source_path}/build-cmake-android-armeabi-v7a
 
-# QT_VERSION=5.9
-QT_VERSION=5.10
+QT_VERSION=5.13
 
 #BUILD_TYPE=Release
 BUILD_TYPE=Debug
 
-API=19 # Android 4.4
-# API=21 # Android 5.0
+API=21 # Android 5.0
 
 # -DANDROID_ABI="armeabi-v7a with NEON"
 # arm64-v8a
@@ -24,10 +30,14 @@ source $HOME/.bashrc
 append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
 append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
 
+####################################################################################################
+
 if ! [ -e ${build_path} ]; then
   mkdir ${build_path}
 fi
 pushd ${build_path}
+
+####################################################################################################
 
 rm -f CMakeCache.txt
 if [ -e Makefile ]; then
