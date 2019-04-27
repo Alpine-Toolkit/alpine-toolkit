@@ -52,12 +52,12 @@ public:
 //   void on_permission_denied(const QString & permission);
 
 private:
-  bool need_explain(const QString & permission);
+  bool need_explain(const QString & permission) override;
 
-  bool is_permission_granted(const QString & permission) const;
+  bool is_permission_granted(const QString & permission) const override;
   bool is_permission_denied(const QString & permission) const;
 
-  void request_permission(const QString & permission);
+  void request_permission(const QString & permission) override;
 
   void permission_callback(const QtAndroid::PermissionResultMap & map);
 

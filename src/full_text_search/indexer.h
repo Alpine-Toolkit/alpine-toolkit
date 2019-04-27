@@ -69,7 +69,7 @@ public:
 
   int pertinence() const { return m_tokens.size(); }
 
-  bool operator<(const DocumentMatch & other) { return pertinence() < other.pertinence(); }
+  bool operator<(const DocumentMatch & other) const { return pertinence() < other.pertinence(); }
 
 private:
   DocumentTypePtr m_document;
