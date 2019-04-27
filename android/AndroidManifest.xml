@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <manifest package="org.alpine_toolkit" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" android:versionCode="1" android:installLocation="auto">
 
-  <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="26"/>
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="26"/>
 
   <supports-screens android:largeScreens="true" android:normalScreens="true" android:anyDensity="true" android:smallScreens="true"/>
 
@@ -13,21 +13,21 @@
   <!-- INTERNET WRITE_EXTERNAL_STORAGE ACCESS_NETWORK_STATE ACCESS_FINE_LOCATION CAMERA RECORD_AUDIO -->
 
   <!-- INTERNET - Allows applications to open network sockets -->
-  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET"/>
 
   <!-- WRITE_EXTERNAL_STORAGE - Allows an application to write to external storage - DANGEROUS -->
   <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/> -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
   <!-- ACCESS_NETWORK_STATE - Allows applications to access information about networks -->
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
   <!-- ACCESS_FINE_LOCATION - Allows an app to access precise location - DANGEROUS -->
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
   <!-- CAMERA - Required to be able to access the camera device - DANGEROUS -->
-  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.CAMERA"/>
 
   <!-- Removed ??? - GRANTED -->
   <uses-permission android:name="android.permission.FLASHLIGHT"/>
@@ -56,7 +56,7 @@
   <!-- <uses-feature android:name="android.hardware.camera.autofocus" /> -->
   <!-- <uses-feature android:name="android.hardware.camera.flash" /> -->
 
-  <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:hardwareAccelerated="true" android:icon="@drawable/icon" android:installLocation="auto" >
+  <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="-- %%INSERT_APP_NAME%% --" android:hardwareAccelerated="true" android:icon="@drawable/icon" android:installLocation="auto">
 
     <!-- android:name="org.qtproject.qt5.android.bindings.QtActivity" -->
     <activity android:name=".AlpineToolkitActivity" android:label="-- %%INSERT_APP_NAME%% --" android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation" android:screenOrientation="unspecified" android:launchMode="singleTop">
