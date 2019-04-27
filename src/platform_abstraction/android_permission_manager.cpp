@@ -59,7 +59,7 @@ AndroidPermissionManager::from_android_permission(const QString & permission) co
   if (permission.startsWith(prefix))
     return permission.mid(prefix.size());
   else {
-    qATError() << "Invalid permission" << permission;
+    qATWarning() << "Invalid permission" << permission;
     return QString();
   }
 }
