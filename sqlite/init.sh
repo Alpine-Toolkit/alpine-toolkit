@@ -1,10 +1,14 @@
-cp -r /home/scratch/sources/qt5/qt5-git/qtbase/src/plugins/sqldrivers/sqlite/* .
-cp -r /home/scratch/sources/qt5/qt5-git/qtbase/src/plugins/sqldrivers/qsqldriverbase.pri .
-cp -r /home/scratch/sources/qt5/qt5-git/qtbase/src/plugins/sqldrivers/sqldrivers.pro .
+QT_SOURCE='/home/scratch/sources/qt5/qt5-git'
+
+cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/sqlite/* .
+cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/qsqldriverbase.pri .
+cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/sqldrivers.pro .
+
 mv sqlite.json sqlite-at.json
 mv sqlite.pro sqlite-at.pro
 mv qsql_sqlite_p.h qsql_sqlite_at_p.h
 mv qsql_sqlite.cpp qsql_sqlite_at.cpp
+
 sed -e 's/sqlite.json/sqlite-at.json/' -i smain.cpp
 sed -e 's/SQLITE/SQLITE-AT/' -i sqlite-at.json
 sed -e 's/SQLITE/SQLITE-AT/' -i smain.cpp
