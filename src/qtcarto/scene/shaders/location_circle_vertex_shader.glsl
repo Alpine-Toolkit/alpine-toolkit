@@ -1,3 +1,5 @@
+// location_circle_vertex_shader.glsl
+
 /* *********************************************************************************************** */
 
 uniform highp mat4 qt_Matrix;

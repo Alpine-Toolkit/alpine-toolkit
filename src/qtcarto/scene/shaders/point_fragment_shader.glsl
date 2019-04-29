@@ -1,11 +1,13 @@
+// point_fragment_shader.glsl
+
 /**************************************************************************************************/
 
 // #version 120
 
-const float antialias = 1.0;
-const float linewidth = 1.5;
-const float M_PI = 3.14159265358979323846;
-const float SQRT_2 = 1.4142135623730951;
+const lowp float antialias = 1.0;
+const lowp float linewidth = 1.5;
+const lowp float M_PI = 3.14159265358979323846;
+const lowp float SQRT_2 = 1.4142135623730951;
 
 /**************************************************************************************************/
 

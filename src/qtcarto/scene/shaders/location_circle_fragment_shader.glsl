@@ -1,11 +1,13 @@
+// location_circle_fragment_shader.glsl
+
 /**************************************************************************************************/
 
 // #version 120
 
-const float antialias = 1.0;
-const float linewidth = 1.5;
-const float M_PI = 3.14159265358979323846;
-const float SQRT_2 = 1.4142135623730951;
+const lowp float antialias = 1.0;
+const lowp float linewidth = 1.5;
+const lowp float M_PI = 3.14159265358979323846;
+const lowp float SQRT_2 = 1.4142135623730951;
 
 /**************************************************************************************************/
 
@@ -22,7 +24,7 @@ varying highp float angle;
 
 /**************************************************************************************************/
 
-float
+lowp float
 planar_rotation(vec2 P, float angle)
 {
   angle *= M_PI / 180.;
@@ -114,13 +116,13 @@ outline(float distance, float linewidth, float antialias, vec4 stroke, vec4 fill
 
 /**************************************************************************************************/
 
-float
+lowp float
 marker_ring(vec2 P, float radius)
 {
   return length(P) - radius;
 }
 
-float
+lowp float
 location_marker(vec2 P, vec3 radius, float angle)
 {
   float p1 = planar_rotation(P,  30. + angle);

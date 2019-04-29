@@ -1,3 +1,5 @@
+// path_fragment_shader.glsl
+
 /* *********************************************************************************************** */
 
 // #shader_type fragment
@@ -9,7 +11,7 @@
 
 const int cap_type = 1;
 const int line_join = 1;
-const float antialias_diameter = 1.;
+const lowp float antialias_diameter = 1.;
 
 /* *********************************************************************************************** */
 
