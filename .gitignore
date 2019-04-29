@@ -19,7 +19,7 @@ trash
 #
 alpine-toolkit-all.pro.user
 alpine-toolkit.pro.user
-build-*/
+build-cmake*/
 build/
 cmake-build/
 compile_commands.json
@@ -322,6 +322,6 @@ tools/push-to-bleausard.sh
 tools/push-to-vps.sh
 tools/read-rrd.py
 tools/remote-avd.sh
-tools/run-androiddeployqt.sh
+build-scripts/run-androiddeployqt.sh
 tools/set-git-env.sh
 unused-java/
