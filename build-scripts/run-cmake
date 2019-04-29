@@ -44,7 +44,7 @@ if [ -e Makefile ]; then
 fi
 
 # /etc/security/limits.d/00-user.conf
-# -DSANITIZE=O
+# -DSANITIZE=ON
 
 cmake \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \

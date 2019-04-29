@@ -1,3 +1,5 @@
+# prupose ???
+
 third_parties=$HOME/home/developpement/qtcarto-application/alpine-toolkit/third-parties
 
 pushd third-parties/
@@ -11,8 +13,6 @@ fi
 popd
 popd
 
-# QT_VERSION=5.7
-# QT_VERSION=5.8
 QT_VERSION=5.9
 append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
 

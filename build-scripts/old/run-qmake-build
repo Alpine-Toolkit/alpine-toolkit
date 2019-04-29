@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# Purpose ???
+
 source $HOME/.bashrc
 
 # qt_version='5_10_0'

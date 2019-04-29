@@ -10,9 +10,3 @@ mkdir ${QML_PLUGIN_PATH}
 # cp imports/QtCarto/{*.so,qmldir} ${QML_PLUGIN_PATH}
 cp imports/QtCarto/qmldir ${QML_PLUGIN_PATH}
 ln -sf imports/QtCarto/libqmlqtcartoplugin.so ${QML_PLUGIN_PATH}
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

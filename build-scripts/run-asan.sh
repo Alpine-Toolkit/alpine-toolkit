@@ -1,3 +1,9 @@
+############################################################
+#
+# Run Alpin Toolkit
+#
+############################################################
+
 make -j4 && \
 ALPINE_TOOLKIT_MOCKUP=TRUE \
 ALPINE_TOOLKIT_FAKE_ANDROID=TRUE \

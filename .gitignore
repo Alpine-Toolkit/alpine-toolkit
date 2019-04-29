@@ -322,6 +322,7 @@ tools/push-to-bleausard.sh
 tools/push-to-vps.sh
 tools/read-rrd.py
 tools/remote-avd.sh
-build-scripts/run-androiddeployqt.sh
 tools/set-git-env.sh
 unused-java/
+
+build-scripts/old/run-androiddeployqt.sh
