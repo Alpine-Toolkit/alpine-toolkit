@@ -1,0 +1,11 @@
+#! /bin/bash
+
+source_path=`realpath $0`
+sphinx_path=`dirname ${source_path}`
+source_path=`dirname ${sphinx_path}`
+source_path=`dirname ${source_path}`
+
+export LC_ALL=C
+pushd ${sphinx_path}
+source ${source_path}/python-venv/bin/activate
+make html

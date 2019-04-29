@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
 # Configuration file for the Sphinx documentation builder.
 #
-# This file only contains a selection of the most common options. For a full
-# list see the documentation:
+# This file only contains a selection of the most common options.
+#  For a full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 #
 ####################################################################################################
@@ -67,75 +66,14 @@ exclude_patterns = []
 #
 html_theme = 'AlpineToolkitRtd'
 
+# Add any paths that contain custom themes here, relative to this directory.
+html_theme_path = ['_themes']
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-####################################################################################################
-#
-# Options for HTMLHelp output
-#
-
-# Output file base name for HTML help builder.
-htmlhelp_basename = 'AlpineToolkitdoc'
-
-####################################################################################################
-#
-# Options for LaTeX output
-#
-
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
-
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
-
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-}
-
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'AlpineToolkit.tex', 'Alpine Toolkit Documentation',
-     'Fabrice Salvaire', 'manual'),
-]
-
-####################################################################################################
-#
-# Options for manual page output
-#
-
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'alpinetoolkit', 'Alpine Toolkit Documentation',
-     [author], 1)
-]
-
-####################################################################################################
-#
-# Options for Texinfo output
-#
-
-# Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
-#  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'AlpineToolkit', 'Alpine Toolkit Documentation',
-     author, 'AlpineToolkit', 'One line description of project.',
-     'Miscellaneous'),
-]
-
-
-
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = '_static/logo-64.png'
