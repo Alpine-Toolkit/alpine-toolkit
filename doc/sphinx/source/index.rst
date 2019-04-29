@@ -1,9 +1,11 @@
-Welcome to Alpine Toolkit's documentation!
-==========================================
+Alpine Toolkit's Documentation
+==============================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
+
+   design/index
 
 Indices and tables
 ==================
