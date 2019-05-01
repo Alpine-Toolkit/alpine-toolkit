@@ -3,7 +3,7 @@
 #STYLE=Default
 STYLE=Material
 
-QT_VERSION=5.11.0
+QT_VERSION=5.13.0
 
 SOURCE_PATH=`realpath $0`
 SOURCE_PATH=`dirname ${SOURCE_PATH}`

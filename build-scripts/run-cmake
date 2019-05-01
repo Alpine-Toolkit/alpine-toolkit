@@ -56,7 +56,7 @@ cmake \
 make -j4
 
 if [ -e run-asan ]; then
-  ln -sf ../tools/run-asan.sh
+  ln -sf ../build-scripts/run-asan.sh
 fi
 
 # source run-asan.sh

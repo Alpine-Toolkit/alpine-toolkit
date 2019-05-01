@@ -4,6 +4,8 @@
 #
 ############################################################
 
+# QT_GEOCLUE_APP_DESKTOP_ID=alpine-toolkit \
+
 make -j4 && \
 ALPINE_TOOLKIT_MOCKUP=TRUE \
 ALPINE_TOOLKIT_FAKE_ANDROID=TRUE \
