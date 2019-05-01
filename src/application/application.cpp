@@ -121,7 +121,6 @@ QmlApplication::get_wifi_state()
     }
   }
 
-
   qATInfo() << "Wifi is Down";
   return false;
 }
@@ -216,14 +215,13 @@ Application::setup_gui_application()
   QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   // QSurfaceFormat surface_format;
-  // // surface_format.setSamples(4); // max is 8 ?
+  // surface_format.setSamples(4); // max is 8 ?
   // QSurfaceFormat::setDefaultFormat(surface_format);
 }
 
 void
 Application::set_env_variables()
-{
-}
+{}
 
 void
 Application::load_translation()
@@ -239,10 +237,11 @@ Application::load_translation()
   }
 }
 
+/*
 QString
 Application::copy_file_from_asset(const QDir & destination, const QString & filename)
 {
-  // Unused
+  // Unused, done in android/src/org/alpine_toolkit/AssetHelper.java
 
   QString relative_source_path(QLatin1String("assets:/data/") + filename);
   QFileInfo file_info(relative_source_path);
@@ -261,6 +260,7 @@ Application::copy_file_from_asset(const QDir & destination, const QString & file
     return QString();
   }
 }
+*/
 
 void
 Application::write_debug_data() const
@@ -315,11 +315,11 @@ Application::register_qml_types()
 
   QmlRegisterUncreatableType(QcMapEventRouter);
 
-  // qmlRegisterSingletonType  <QmlSensorGlobal             >(package, major, minor, "QmlSensors", global_object_50);
-  // qmlRegisterUncreatableType<QmlSensorRange              >(package, major, minor, "Range",                QLatin1String("Cannot create Range"));
-  // qmlRegisterUncreatableType<QmlSensorOutputRange        >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
-  // qmlRegisterUncreatableType<QmlSensor                   >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
-  // qmlRegisterUncreatableType<QmlSensorReading            >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
+  // qmlRegisterSingletonType  <QmlSensorGlobal      >(package, major, minor, "QmlSensors", global_object_50);
+  // qmlRegisterUncreatableType<QmlSensorRange       >(package, major, minor, "Range",                QLatin1String("Cannot create Range"));
+  // qmlRegisterUncreatableType<QmlSensorOutputRange >(package, major, minor, "OutputRange",          QLatin1String("Cannot create OutputRange"));
+  // qmlRegisterUncreatableType<QmlSensor            >(package, major, minor, "Sensor",               QLatin1String("Cannot create Sensor"));
+  // qmlRegisterUncreatableType<QmlSensorReading     >(package, major, minor, "SensorReading",        QLatin1String("Cannot create SensorReading"));
 
   QmlRegisterUncreatableType(QmlApplication);
   // QmlRegisterUncreatableType(PlatformAbstraction);
@@ -511,7 +511,7 @@ Application::setup_user_directory()
           setup_user_directory_finish();
         } else {
           qATInfo() << "Write permission denied";
-          setup_user_directory_finish(true);
+          setup_user_directory_finish(true); // use fallback mode
         }
       };
       // async call
@@ -526,6 +526,8 @@ Application::setup_user_directory()
 void
 Application::setup_user_directory_finish(bool fallback_mode)
 {
+  // Fixme: fallback_mode is not implemented ???
+
   QString user_directory = m_config->application_user_directory();
   qATInfo() << "Setup user directory" << user_directory;
 

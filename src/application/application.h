@@ -131,7 +131,7 @@ private slots:
   void post_init();
 
 private:
-  QString copy_file_from_asset(const QDir & destination, const QString & filename);
+  // QString copy_file_from_asset(const QDir & destination, const QString & filename);
   void load_qml_main();
   void load_translation();
   void register_qml_types(); // static ???

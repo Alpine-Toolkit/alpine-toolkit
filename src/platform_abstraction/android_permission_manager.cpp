@@ -32,6 +32,7 @@
 #include <QAndroidJniEnvironment>
 #include <QAndroidJniObject>
 
+// Fixme: remove AT implementation
 #define USE_QT_PERMISSION_IMPLEMENTATION
 
 /**************************************************************************************************/
@@ -121,7 +122,7 @@ AndroidPermissionManager::need_explain(const QString & permission)
     rc = QtAndroid::shouldShowRequestPermissionRationale(from_android_permission(permission));
 #else
     // Fixme: optimise ?
-    rc = need_explain().contains(permission); // Fixme: mane clash
+    rc = need_explain().contains(permission); // Fixme: name clash
 #endif
     m_need_explain_cache[permission] = rc;
     return rc;
