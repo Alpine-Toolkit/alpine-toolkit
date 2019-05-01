@@ -7,14 +7,59 @@ Source Map
   Alpine Toolkit Qmake
 * :file:`android/`
   Android sources
+
+  * :file:`assets/`
+  * :file:`res/`
+    icons and logo
+  * :file:`src/org/alpine_toolkit/`
+
+    * :file:`AlpineToolkitActivity.java`
+      Alpine Toolkit Activity
+    * :file:`AlpineToolkitService.java`
+      Alpine Toolkit Service
+    * :file:`AssetHelper.java`
+      Tool to copy asset on filesystem
+    * :file:`BatteryReceiver.java`
+      Battery Event Receiver
+    * :file:`Camera/`
+      Camera Tools
+    * :file:`Constants.java`
+    * :file:`DeviceUserInterfaceHelper.java`
+      User Interface Tools
+    * :file:`FileHelper.java`
+      Tools to delete directory and copy file
+    * :file:`NativeFunctions.java`
+      *purpose ???*
+    * :file:`Permission/`
+      Permission Tools *used ?*
+    * :file:`PhoneHelper.java`
+      Phone Tools
+    * :file:`SdCardHelper.java`
+      Storage Tools
+    * :file:`ServiceHelper.java`
+      Service Tools
+
 * :file:`annexes/`
   Additional contents like fuel-gauge PDF
+* :file:`build-scripts/`
 * :file:`cmake/`
   CMake add-ons
 * :file:`CMakeLists.txt`
   Alpine Toolkit Top Cmakelists
 * :file:`code-generator/`
   Code generator
+
+  * :file:`camptocamp/`
+  * :file:`CodeGenerator/`
+  * :file:`code-generator-templates/`
+  * :file:`Schemas/`
+
+  Scripts
+
+  * :file:`generate`
+  * :file:`generate-all`
+  * :file:`generate-cpp-class`
+
 * :file:`common.pri`
   Common definitions for QMake
 * :file:`compile_commands.json`
@@ -23,6 +68,7 @@ Source Map
   -> :file:`build-cmake/config.h`
 * :file:`config.h.in`
   Template for :file:`config.h`
+* :file:`dev-scripts/`
 * :file:`doc/`
   Alpine Toolkit Documentation
 * :file:`imports/`
@@ -114,7 +160,5 @@ Source Map
   * :file:`sqlite/`
     SQLite source (for Android)
 
-* :file:`tools/`
-  Tools
 * :file:`unit-tests/`
   Unit tests

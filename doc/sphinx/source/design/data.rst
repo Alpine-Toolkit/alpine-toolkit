@@ -6,14 +6,14 @@ Data stored in the Qt Ressource file
 
 These files are:
 
-:file:`data/bleau.json`
-
-:file:`data/refuges.json`
-
-:file:`data/stop-words.json`
-
-:file:`data/third_party_licenses.json`
-      Third party licenses
+* :file:`data/bleau.json`
+  BleauDB data
+* :file:`data/refuges.json`
+  Refuge data
+* :file:`data/stop-words.json`
+  Stop Words data for FTS engine
+* :file:`data/third_party_licenses.json`
+  Third party licenses
 
 Android Assets
 --------------
@@ -22,12 +22,13 @@ Some files are required by third parties when dynamic libraries are loaded at st
 theses files must be made available in the Android device file system before theses libraries are
 loaded during the Qt thread initialisation.  The solution is to copy theses files from the Asset to
 the file system in the private directory :file:`/data/user/0/org.alpine_toolkit/files/assets` when
-the Java application is created first.
+the Java application is created first.  See code in
+:file:`android/src/org/alpine_toolkit/AssetHelper.java`.
 
 Theses files are listed in the file :file:`android/res/values/startup.xml`:
 
-:file:`android/assets/proj4_data/epsg`
-      Proj4 EPSG data file
+* :file:`android/assets/proj4_data/epsg`
+  Proj4 EPSG data file
 
 Data created by the application
 -------------------------------
