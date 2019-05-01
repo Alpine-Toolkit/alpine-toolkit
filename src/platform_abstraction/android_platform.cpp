@@ -150,7 +150,8 @@ AndroidPlatform::stop_lamp_signal() const
 void
 AndroidPlatform::start_lamp_dimmer(int period, int duty_cycle) const
 {
-  QtAndroid::androidActivity().callMethod<void>("perform_lamp_signal", "(I;I)V", period, duty_cycle);
+  qATInfo() << "start_lamp_dimmer" << period << duty_cycle;
+  QtAndroid::androidActivity().callMethod<void>("start_lamp_dimmer", "(I;I)V", period, duty_cycle);
 }
 
 void
