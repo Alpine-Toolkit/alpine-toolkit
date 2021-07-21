@@ -18,6 +18,12 @@ apply plugin: 'com.android.application'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.android.support:support-annotations:26.0.0-alpha1'
+    /*
+	compile 'com.android.support:support-v4:+'
+        compile 'com.android.support:support-annotations:+'
+   */
 }
 
 android {
