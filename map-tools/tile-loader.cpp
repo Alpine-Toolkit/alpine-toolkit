@@ -113,16 +113,16 @@ Application::main_task()
   // double latitude  = 48.924482;
 
   // Bérarde
-  // double longitude =  6.2914;
-  // double latitude  = 44.9328;
+  double longitude =  6.2914;
+  double latitude  = 44.9328;
 
   // Vallouise
   // double longitude =  6.4895;
   // double latitude  = 44.8461;
 
   // Centre
-  double longitude = 3;
-  double latitude = 46.5;
+  // double longitude = 3;
+  // double latitude = 46.5;
 
   // Freissinieres
   // double longitude =  6.5383;
@@ -130,7 +130,7 @@ Application::main_task()
 
   // Mont-dore
   // double longitude =  2.816;
-  //  double latitude = 45.54;
+  // double latitude = 45.54;
 
   // Mont-Blanc
   // double longitude =  6.86;
@@ -142,10 +142,15 @@ Application::main_task()
   // double longitude =  6.51;
   // double latitude  = 45.13;
 
+  // Camping Sollières
+  // double longitude =  6.81;
+  // double latitude  = 45.26;
+
   QcWgsCoordinate center_wsg84(longitude, latitude);
   QcPseudoWebMercatorCoordinate center_mercator = center_wsg84.pseudo_web_mercator();
   QcVectorDouble center = center_mercator.vector();;
-  double radius_m = 500 * 1000;
+  // double radius_m= 500 * 1000;
+  double radius_m = 30 * 1000;
   QcVectorDouble half_diagonal_m(radius_m, radius_m);
 
   QcVectorDouble point1 = center + half_diagonal_m;
@@ -180,7 +185,8 @@ Application::main_task()
   QSet<QcTileSpec> tiles_removed;
 
   // Fixme: level <= 10 : any tiles
-  for (int level = 0; level <= 10; level++) {
+  // 16
+  for (int level = 0; level <= 16; level++) {
     double tile_length_m = tile_matrix_set[level].tile_length_m();
     QcTiledPolygon tiled_polygon = polygon.intersec_with_grid(tile_length_m);
     for (const QcTiledPolygonRun & run:  tiled_polygon.runs()) {
