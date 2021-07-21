@@ -48,6 +48,8 @@ Widgets.Page {
         id: position_source
         active: true
 
+        // nmeaSource: 'nmea-samples.txt'
+
         onValidChanged: {
             var date = new Date();
             var coordinate = position_source.position.coordinate;

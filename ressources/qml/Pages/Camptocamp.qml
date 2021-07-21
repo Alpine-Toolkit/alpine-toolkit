@@ -153,6 +153,9 @@ Widgets.Page {
                     }
                     onClicked: {
 			/* var search_settings = C2cSearchSettings() */
+                        // Fixme:
+                        //   Could not convert argument 1 at
+                        //   Passing incompatible arguments to C++ functions from JavaScript is dangerous and deprecated.
 			c2c_client.search(search_textfield.text, search_settings);
                         // c2c_client.route(570170);
                         busy_indicator.running = true;
