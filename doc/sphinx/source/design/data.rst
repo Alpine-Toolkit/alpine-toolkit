@@ -15,6 +15,27 @@ These files are:
 * :file:`data/third_party_licenses.json`
   Third party licenses
 
+Android Path
+------------
+
+* **Internal Storage Directory** :code:`getDataDir()` :file:`/data/user/0/org.alpine_toolkit/`
+  `link <https://developer.android.com/reference/android/content/Context.html#getDataDir()>`_
+* **Internal Directory** :code:`getFilesDir()` :file:`/data/user/0/org.alpine_toolkit/files`
+  `link <https://developer.android.com/reference/android/content/Context.html#getFilesDir()>`_
+* **Cache Directory** :code:`getCacheDir()`:file:`/data/user/0/org.alpine_toolkit/cache`
+  `link <https://developer.android.com/reference/android/content/Context.html#getCacheDir()>`_
+
+* **External Storage Directory** :code:`Environment.getExternalStorageDirectory()` :file:`/storage/emulated/0`
+* **External Cache Directory**  :code:`getExternalCacheDir()` :file:`/storage/emulated/0/Android/data/org.alpine_toolkit/cache`
+  `link <https://developer.android.com/reference/android/content/Context.html#getExternalCacheDir()>`_
+
+* **External Files Directories** *code:`ContextCompat.getExternalFilesDirs()`
+  `link <https://developer.android.com/reference/android/content/Context.html#getExternalFilesDirs(java.lang.String)>`_
+
+  * :file:`/storage/emulated/0/Android/data/org.alpine_toolkit/files`
+  * :file:`/storage/18F1-3803/Android/data/org.alpine_toolkit/files`
+
+
 Android Assets
 --------------
 

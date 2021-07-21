@@ -10,5 +10,6 @@ Design
    android-compilation
    apk-content
    startup
+   android-release
    android-permission
    data
