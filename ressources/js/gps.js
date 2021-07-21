@@ -70,6 +70,7 @@ function paint_compass(canvas, compass, satellite_model) {
   var x_bubble = - y_tilt / 90 * hemisphere_radius;
   var y_bubble = - x_tilt / 90 * hemisphere_radius;
   var radius_bubble = radius_60 * (90 - Math.max(Math.abs(x_tilt), Math.abs(y_tilt))) / 90;
+  console.info('radius_bubble', x_tilt, y_tilt, radius_bubble);
   ctx.arc(x_bubble, y_bubble, radius_bubble, 0, 2*Math.PI, true);
   ctx.fill();
 

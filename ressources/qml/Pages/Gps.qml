@@ -60,6 +60,9 @@ Widgets.Page {
        //     console.info('Azimuth', azimuth)
        //     canvas.requestPaint();
        // }
+       Component.onCompleted: {
+           console.info('Compass description:', compass.identidier, compass.connectedToBackend)
+       }
    }
 
    TiltSensor {
@@ -104,7 +107,10 @@ Widgets.Page {
        running: true;
        repeat: true
        onTriggered: {
-           var azimuth = compass.reading.azimuth;
+           // TypeError: Cannot read property 'azimuth' of null
+           var azimuth = 0;
+           if (compass.reading)
+               azimuth = compass.reading.azimuth;
            azimuth_label.text = azimuth.toFixed(0) + ' °';
 	   var abs_azimuth = Math.abs(azimuth);
 	   if (abs_azimuth <= 2.5)
