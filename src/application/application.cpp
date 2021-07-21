@@ -384,11 +384,11 @@ Application::set_context_properties()
   // context->setContextProperty("massif_model", QVariant::fromValue(massifs_));
 
   // Create Camptocamp client
-  // qATInfo() << "Camptocamp Cache Path" << m_config->c2c_api_cache_path() << m_config->c2c_media_cache_path();
-  // C2cQmlClient * c2c_client = new C2cQmlClient(m_config->c2c_api_cache_path(), m_config->c2c_media_cache_path());
-  // context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
+  qATInfo() << "Camptocamp Cache Path" << m_config->c2c_api_cache_path() << m_config->c2c_media_cache_path();
+  C2cQmlClient * c2c_client = new C2cQmlClient(m_config->c2c_api_cache_path(), m_config->c2c_media_cache_path());
+  context->setContextProperty(QLatin1String("c2c_client"), c2c_client);
 
-  // m_engine.addImageProvider(QLatin1String("c2c"), new C2cImageProvider(c2c_client));
+  m_engine.addImageProvider(QLatin1String("c2c"), new C2cImageProvider(c2c_client));
 }
 
 void
