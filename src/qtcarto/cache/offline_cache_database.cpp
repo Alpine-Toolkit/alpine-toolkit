@@ -54,6 +54,9 @@ const QString TILE = "tile";
 
 QcOfflineCacheDatabase::QcOfflineCacheDatabase(const QString & sqlite_path)
 {
+  QString message =  QLatin1String("Load offline cache database ") + sqlite_path;
+  qInfo() << message;
+
   bool created = open(sqlite_path);
 
   if (!created)
