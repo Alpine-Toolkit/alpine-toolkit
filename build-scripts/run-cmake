@@ -13,7 +13,7 @@ source_path=`dirname ${source_path}`
 source_path=`dirname ${source_path}`
 build_path=${source_path}/build-cmake
 
-QT_VERSION=5.13.0
+QT_VERSION=5.15.2
 
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"

@@ -1,0 +1,65 @@
+#! /bin/bash
+
+####################################################################################################
+#
+# Build Apline Toolkit on Android Arm
+#
+####################################################################################################
+
+####################################################################################################
+
+source_path=`realpath $0`
+source_path=`dirname ${source_path}`
+source_path=`dirname ${source_path}`
+build_path=${source_path}/build-cmake-android-armeabi-v7a
+
+QT_VERSION=5.15.2
+
+#BUILD_TYPE=Release
+BUILD_TYPE=Debug
+
+API=29 # Android 10.0
+
+# -DANDROID_ABI="armeabi-v7a with NEON"
+# arm64-v8a
+
+####################################################################################################
+
+source $HOME/.bashrc
+
+# append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
+# append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
+
+####################################################################################################
+
+if ! [ -e ${build_path} ]; then
+  mkdir ${build_path}
+fi
+pushd ${build_path}
+
+####################################################################################################
+
+rm -f CMakeCache.txt
+if [ -e Makefile ]; then
+  make clean
+fi
+
+# -DCMAKE_ANDROID_STL_TYPE=gnustl_static \
+#   Android: STL 'gnustl_static' not supported by this NDK.
+
+# -- The C compiler identification is Clang 9.0.8
+# -- The CXX compiler identification is Clang 9.0.8
+
+cmake \
+  -DCMAKE_SYSTEM_NAME=Android \
+  -DCMAKE_SYSTEM_VERSION=${API} \
+  -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a \
+  -DCMAKE_ANDROID_NDK=/opt/Android/ndk/21.3.6528147 \
+  -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+  -DCMAKE_C_FLAGS="-o3" \
+  -DCMAKE_CXX_FLAGS="-o3" \
+  ${source_path}
+
+# cmake --build .
+
+make -j4
