@@ -30,6 +30,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QtDebug>
+#include <QLoggingCategory>
 
 /**************************************************************************************************/
 
@@ -104,17 +105,24 @@ Application::main_task()
 
   // QcTileLoader tile_loader(geoportail_plugin);
 
+  // 7 r jean baillet 95870 Bezons
+  // coordinate changed QcGeoCoordinate<epsg:4326>(2.20624, 48.9246)
+  // coordinate 48° 55' 28.4" N, 2° 12' 22.4" E, 73.2m
+  double longitude =  2.206321;
+  double latitude  = 48.924621;
+
   // Annecy
   // double longitude =  6.311331853277862;
   // double latitude  = 45.956298260767284;
 
-  // Bezons
-  // double longitude =  2.206142;
-  // double latitude  = 48.924482;
-
   // Bérarde
-  double longitude =  6.2914;
-  double latitude  = 44.9328;
+  // double longitude =  6.2914;
+  // double latitude  = 44.9328;
+
+  // ailefroide 05340 Vallouise-Pelvoux
+  // pré de Madame Carle 44.9185 , 6.415823
+  // double longitude =  6.446528;
+  // double latitude  = 44.888335;
 
   // Vallouise
   // double longitude =  6.4895;
@@ -150,7 +158,8 @@ Application::main_task()
   QcPseudoWebMercatorCoordinate center_mercator = center_wsg84.pseudo_web_mercator();
   QcVectorDouble center = center_mercator.vector();;
   // double radius_m= 500 * 1000;
-  double radius_m = 30 * 1000;
+  // double radius_m = 30 * 1000;
+  double radius_m = 10 * 1000;
   QcVectorDouble half_diagonal_m(radius_m, radius_m);
 
   QcVectorDouble point1 = center + half_diagonal_m;
@@ -229,6 +238,9 @@ int
 main(int argc, char *argv[])
 {
   qInstallMessageHandler(message_handler);
+  QLoggingCategory::setFilterRules("*.warning=true");
+  QLoggingCategory::setFilterRules("*.info=true");
+  // QLoggingCategory::setFilterRules("*.debug=true");
   Application application(argc, argv);
   return application.exec();
 }
