@@ -44,6 +44,8 @@
 #include <QString>
 #include <QSharedPointer>
 
+// /usr/include/proj_api.h:37:2: erreur: #error 'To use the proj_api.h you must define the macro ACCEPT_USE_OF_DEPRECATED_PROJ_API_H'
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #include "proj_api.h"
 
 /**************************************************************************************************/
