@@ -83,7 +83,7 @@ INCLUDEPATH += $$PWD/../..
 defined(BUILD_AS_SHARED, var) {
 # Link to alpine_toolkit_common for configuration/configuration.h
 INCLUDEPATH += $$PWD/..
-LIBS += -L$$OUT_PWD/.. -lalpine_toolkit_common
+LIBS += -L$$OUT_PWD/.. -lalpine_toolkit_common_armeabi-v7a
 }
 
 # Link to PROJ4

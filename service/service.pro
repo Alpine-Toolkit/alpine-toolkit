@@ -66,5 +66,5 @@ SOURCES += \
   service_application.cpp \
 
 defined(BUILD_AS_SHARED, var) {
-LIBS += -L$$OUT_PWD/../src -lalpine_toolkit_common
+LIBS += -L$$OUT_PWD/../src -lalpine_toolkit_common_armeabi-v7a
 }

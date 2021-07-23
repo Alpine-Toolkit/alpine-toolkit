@@ -117,8 +117,8 @@ ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 INCLUDEPATH += $$PWD/third-parties/include # local/cmark/include
 
 defined(BUILD_AS_SHARED, var) {
-LIBS += -L$$OUT_PWD/src -lalpine_toolkit_common
-LIBS += -L$$OUT_PWD/src/qtcarto -lqtcarto
+LIBS += -L$$OUT_PWD/src -lalpine_toolkit_common_armeabi-v7a
+LIBS += -L$$OUT_PWD/src/qtcarto -lqtcarto_armeabi-v7a
 }
 
 linux:!android {
@@ -181,8 +181,14 @@ TRANSLATIONS = ressources/translations/alpine-toolkit.fr_FR.ts
 # Fixme: Complete
 DISTFILES += \
     android/AndroidManifest.xml \
+    android/build.gradle \
+    android/gradle.properties \
     android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew \
+    android/gradlew \
+    android/gradlew.bat \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
