@@ -103,4 +103,9 @@ QcGeoportailWmtsLicense::load_json(const QString & json_path)
   QByteArray json_data = json_file.readAll();
   QJsonDocument json_document(QJsonDocument::fromJson(json_data));
   read_json(json_document.object());
+
+  QString message =  QLatin1String("Loaded Geoportail License ") + json_path;
+  qInfo() << message;
+  message =  QLatin1String("API key ") + m_api_key;
+  qInfo() << message;
 }
