@@ -41,7 +41,13 @@
 
 QaAndroidConfig::QaAndroidConfig()
   : QaConfig()
-{}
+{
+  QString path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+  qATInfo() << "GenericDataLocation:" << path;
+  // I Alpine Toolkit: alpine-toolkit: GenericDataLocation: "/storage/emulated/0"
+
+  application_user_directory("/sdcard/org.alpine_toolkit");
+}
 
 QaAndroidConfig::~QaAndroidConfig()
 {}
@@ -57,14 +63,14 @@ QString
 QaAndroidConfig::generic_data_location() const
 {
   QString path = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-  // qATInfo() << "GenericDataLocation:" << generic_data_location_path;
+  // qATInfo() << "GenericDataLocation:" << path;
   return path;
 }
 
+// UNUSED
 QString
 QaAndroidConfig::make_application_user_directory_path(const QString & root_path, bool public_path) const
 {
-
   QString path;
   if (public_path)
     // This directory is destroyed when the application is uninstalled
