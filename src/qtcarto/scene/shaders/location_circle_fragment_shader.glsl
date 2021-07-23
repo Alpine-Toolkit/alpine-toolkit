@@ -25,21 +25,21 @@ varying highp float angle;
 /**************************************************************************************************/
 
 lowp float
-planar_rotation(vec2 P, float angle)
+planar_rotation(highp vec2 P, lowp float angle)
 {
   angle *= M_PI / 180.;
-  vec2 cos_sin = vec2(cos(angle), sin(angle));
+  highp vec2 cos_sin = vec2(cos(angle), sin(angle));
   return dot(cos_sin, P);
 }
 
-vec4
-stroke(float distance, float linewidth, float antialias, vec4 stroke)
+highp vec4
+stroke(lowp float distance, lowp float linewidth, lowp float antialias, lowp vec4 stroke)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   if (border_distance > (linewidth/2.0 + antialias))
@@ -52,14 +52,14 @@ stroke(float distance, float linewidth, float antialias, vec4 stroke)
   return frag_colour;
 }
 
-vec4
-filled(float distance, float linewidth, float antialias, vec4 fill)
+highp vec4
+filled(lowp float distance, lowp float linewidth, lowp float antialias, lowp vec4 fill)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   // if (alpha == .0) discard;
@@ -85,14 +85,14 @@ filled(float distance, float linewidth, float antialias, vec4 fill)
   return frag_colour;
 }
 
-vec4
-outline(float distance, float linewidth, float antialias, vec4 stroke, vec4 fill)
+highp vec4
+outline(lowp float distance, lowp float linewidth, lowp float antialias, lowp vec4 stroke, lowp vec4 fill)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   // Within linestroke
@@ -117,19 +117,19 @@ outline(float distance, float linewidth, float antialias, vec4 stroke, vec4 fill
 /**************************************************************************************************/
 
 lowp float
-marker_ring(vec2 P, float radius)
+marker_ring(highp vec2 P, lowp float radius)
 {
   return length(P) - radius;
 }
 
 lowp float
-location_marker(vec2 P, vec3 radius, float angle)
+location_marker(highp vec2 P, lowp vec3 radius, lowp float angle)
 {
-  float p1 = planar_rotation(P,  30. + angle);
-  float p2 = planar_rotation(P, -30. + angle);
-  float r_cone = marker_ring(P, radius.x);
-  float r_dot = marker_ring(P, radius.y);
-  float cone = max(p1, p2);
+  highp float p1 = planar_rotation(P,  30. + angle);
+  highp float p2 = planar_rotation(P, -30. + angle);
+  highp float r_cone = marker_ring(P, radius.x);
+  highp float r_dot = marker_ring(P, radius.y);
+  highp float cone = max(p1, p2);
   return min(max(cone, r_cone), r_dot);
 }
 
@@ -138,13 +138,13 @@ location_marker(vec2 P, vec3 radius, float angle)
 void
 main() {
   // float d = marker_ring(tex_coord, radius);
-  float d_accuray = marker_ring(tex_coord, radius.z);
-  float d_location = location_marker(tex_coord, radius, angle);
-  vec4 colour;
+  highp float d_accuray = marker_ring(tex_coord, radius.z);
+  highp float d_location = location_marker(tex_coord, radius, angle);
+  highp vec4 colour;
   if (d_accuray < linewidth)
     colour = accuracy_colour;
   else
     colour = cone_colour;
-  vec4 frag_colour = filled(d_location, linewidth, antialias, colour);
+  highp vec4 frag_colour = filled(d_location, linewidth, antialias, colour);
   gl_FragColor = frag_colour * qt_Opacity;
 }

@@ -28,15 +28,15 @@ varying lowp vec4 colour;
 /* *********************************************************************************************** */
 
 // Compute distance to cap
-float
-distance_to_cap(int type, float dx, float dy, float t)
+highp float
+distance_to_cap(highp int type, highp float dx, highp float dy, highp float t)
 {
   return length(vec2(dx, dy));
 }
 
 // Compute distance to join
-float
-join(in vec2 uv, in float line_stop, in float line_width)
+highp float
+join(highp in vec2 uv, highp in float line_stop, highp in float line_width)
 {
   float u = uv.x;
   float d = abs(uv.y);
@@ -57,18 +57,18 @@ void main()
   if (colour.a <= .0)
     discard;
 
-  vec4 frag_colour;
+  highp vec4 frag_colour;
 
-  float u = uv.x;
-  float v = uv.y;
-  float t = line_width/2. - antialias_diameter;
+  highp float u = uv.x;
+  highp float v = uv.y;
+  highp float t = line_width/2. - antialias_diameter;
 
-  float dy = abs(v);
+  highp float dy = abs(v);
 
-  float line_start = .0;
-  float line_stop = line_length;
+  highp float line_start = .0;
+  highp float line_stop = line_length;
 
-  float d = .0;
+  highp float d = .0;
   // start cap
   if (cap == -1.) { //  && u < .0
     d = distance_to_cap(cap_type, abs(u), dy, t);

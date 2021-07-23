@@ -22,14 +22,14 @@ varying lowp vec4 colour;
 
 /**************************************************************************************************/
 
-vec4
-stroke(float distance, float linewidth, float antialias, vec4 stroke)
+highp vec4
+stroke(highp float distance, highp float linewidth, highp float antialias, highp vec4 stroke)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   if (border_distance > (linewidth/2.0 + antialias))
@@ -42,14 +42,14 @@ stroke(float distance, float linewidth, float antialias, vec4 stroke)
   return frag_colour;
 }
 
-vec4
-filled(float distance, float linewidth, float antialias, vec4 fill)
+highp vec4
+filled(highp float distance, highp float linewidth, highp float antialias, highp vec4 fill)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   // if (alpha == .0) discard;
@@ -75,14 +75,14 @@ filled(float distance, float linewidth, float antialias, vec4 fill)
   return frag_colour;
 }
 
-vec4
-outline(float distance, float linewidth, float antialias, vec4 stroke, vec4 fill)
+highp vec4
+outline(highp float distance, highp float linewidth, highp float antialias, highp vec4 stroke, highp vec4 fill)
 {
-  vec4 frag_colour;
-  float t = linewidth/2.0 - antialias;
-  float signed_distance = distance;
-  float border_distance = abs(signed_distance) - t;
-  float alpha = border_distance/antialias;
+  highp vec4 frag_colour;
+  highp float t = linewidth/2.0 - antialias;
+  highp float signed_distance = distance;
+  highp float border_distance = abs(signed_distance) - t;
+  highp float alpha = border_distance/antialias;
   alpha = exp(-alpha*alpha);
 
   // Within linestroke
@@ -104,8 +104,8 @@ outline(float distance, float linewidth, float antialias, vec4 stroke, vec4 fill
   return frag_colour;
 }
 
-float
-marker_ring(vec2 P, float radius)
+highp float
+marker_ring(highp vec2 P, highp float radius)
 {
   return length(P) - radius;
 }
@@ -114,8 +114,8 @@ marker_ring(vec2 P, float radius)
 
 void
 main() {
-  float d = marker_ring(tex_coord, radius);
-  vec4 frag_colour = filled(d, linewidth, antialias, colour);
+  highp float d = marker_ring(tex_coord, radius);
+  highp vec4 frag_colour = filled(d, linewidth, antialias, colour);
 
   gl_FragColor = frag_colour * qt_Opacity;
 }
