@@ -60,6 +60,7 @@ RefugeSchemaManager::RefugeSchemaManager()
 RefugeSchemaManager::RefugeSchemaManager(const QString & json_path)
   : RefugeSchemaManager()
 {
+  // qATInfo() << "Load refuges" << json_path;
   load_json(json_path);
 }
 
@@ -78,7 +79,11 @@ RefugeSchemaManager::load_json_document(const QJsonDocument & json_document)
   QJsonArray array = json_document.array();
 
   for (const auto & json_value : array) {
+    //! Using QCharRef with an index pointing outside the valid range of a QString.
+    //! The corresponding behavior is deprecated, and will be changed in a future version of Qt.
+    //!   where in ???
     RefugePtr refuge(json_value.toObject());
+    //!
     m_refuge_cache.add(refuge);
     TextDocument short_name(QLocale::French, refuge->short_name());
     m_refuge_index.insert(short_name, refuge.ptr());
@@ -123,7 +128,7 @@ RefugeSchemaManager::from_sql(const QString & sqlite_path)
 
   qATInfo() << "Load refuges";
   Refuge::PtrList refuges = refuge_schema.query<Refuge>(false);
-  for (const auto refuge : refuges)
+  for (const auto & refuge : refuges)
     qATInfo() << refuge;
 }
 
