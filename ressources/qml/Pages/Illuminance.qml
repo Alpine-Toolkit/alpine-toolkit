@@ -40,7 +40,7 @@ Widgets.Page {
     id: illuminance_pane
 
     function format_lux(value) {
-        return value + ' lx';
+        return Number(value).toLocaleString() + ' lx';
     }
 
     LightSensor {
@@ -49,7 +49,7 @@ Widgets.Page {
 
         onReadingChanged: {
             var illuminance = light_sensor.reading.illuminance;
-            illuminance_label.text = format_lux(Number(illuminance).toLocaleString());
+            illuminance_label.text = format_lux(illuminance);
         }
     }
 
@@ -71,7 +71,7 @@ Widgets.Page {
         Label {
             id: illuminance_label
             Layout.alignment: Qt.AlignCenter
-            font.pointSize: Style.font_size.huge
+            font.pointSize: 34 // Style.font_size.huge
             font.bold: true
             text: qsTr('No value')
         }
