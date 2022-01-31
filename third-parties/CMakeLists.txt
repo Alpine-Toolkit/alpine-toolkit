@@ -30,7 +30,10 @@
 
 add_subdirectory(cmark)
 add_subdirectory(snowball)
-add_subdirectory(libspatialindex)
+
+# Unused / last commit in 2019
+# cf. third-parties/libspatialindex/test.cpp:
+# add_subdirectory(libspatialindex)
 
 if(ANDROID)
 add_subdirectory(sqlite)
