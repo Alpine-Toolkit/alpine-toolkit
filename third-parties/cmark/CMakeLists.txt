@@ -26,6 +26,8 @@
 #
 ####################################################################################################
 
+cmake_minimum_required(VERSION 3.0)
+
 ####################################################################################################
 
 set(CMARK_SOURCE_PATH "cmark.git")
@@ -33,30 +35,31 @@ set(CMARK_SOURCE_PATH "cmark.git")
 ####################################################################################################
 
 set(PROJECT_VERSION_MAJOR 0)
-set(PROJECT_VERSION_MINOR 27)
-set(PROJECT_VERSION_PATCH 1)
-set(PROJECT_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH} )
-
-configure_file(${CMARK_SOURCE_PATH}/src/cmark_version.h.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmark_version.h)
+set(PROJECT_VERSION_MINOR 29)
+set(PROJECT_VERSION_PATCH 0)
+set(PROJECT_VERSION_GFM 2)
+set(PROJECT_VERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.gfm.${PROJECT_VERSION_GFM})
 
 ####################################################################################################
 
-if (${CMAKE_VERSION} VERSION_GREATER "1.8")
-  set(CMAKE_C_VISIBILITY_PRESET hidden)
-  set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
-elseif(CMAKE_COMPILER_IS_GNUCC OR ${CMAKE_C_COMPILER_ID} STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-endif ()
+if(${CMAKE_VERSION} VERSION_GREATER "3.3")
+    cmake_policy(SET CMP0063 NEW)
+endif()
 
+#! include("FindAsan.cmake")
+#! include("CheckFileOffsetBits.cmake")
 include(GenerateExportHeader)
 
 ####################################################################################################
 
+# -fvisibility=hidden
+set(CMAKE_C_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+
 # Always compile with warnings
-if(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -std=c99 -pedantic")
-endif()
+# if(CMAKE_COMPILER_IS_GNUCC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+#   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -std=c99 -pedantic")
+# endif()
 
 # Check integrity of node structure when compiled as debug:
 # set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DCMARK_DEBUG_NODES -DDEBUG")
@@ -78,125 +81,116 @@ CHECK_C_SOURCE_COMPILES("
   int main() { return 0; }
 " HAVE___ATTRIBUTE__)
 
-CONFIGURE_FILE(
+####################################################################################################
+
+configure_file(
   ${CMARK_SOURCE_PATH}/src/config.h.in
   ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-####################################################################################################
+configure_file(
+  ${CMARK_SOURCE_PATH}/src/cmark-gfm_version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/cmark-gfm_version.h)
+
+####################################################################################################w
 
 include_directories(${CMARK_SOURCE_PATH}/src)
 include_directories(${CMARK_SOURCE_PATH}/extensions)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/extensions)
+
+####################################################################################################
 
 set(EXTENSIONS_HEADERS
-  autolink.h
-  core-extensions.h
-  ext_scanners.h
-  ext_scanners.re
-  strikethrough.h
-  table.h
-  tagfilter.h
   )
 
 set(EXTENSIONS_SOURCES
-    autolink.c
-    core-extensions.c
-    ext_scanners.c
-    ext_scanners.re
-    strikethrough.c
-    table.c
-    tagfilter.c
-    ${EXTENSIONS_HEADERS}
-   )
-
-PREPEND(EXTENSIONS_SOURCES ${CMARK_SOURCE_PATH}/extensions ${EXTENSIONS_SOURCES})
-
-add_library(cmark-extensions
-  STATIC
-  ${EXTENSIONS_SOURCES}
+  core-extensions.c
+  table.c
+  strikethrough.c
+  autolink.c
+  tagfilter.c
+  ext_scanners.c
+  ext_scanners.re
+  ext_scanners.h
+  tasklist.c
+  ${EXTENSIONS_HEADERS}
   )
 
-generate_export_header(cmark-extensions BASE_NAME cmarkextensions)
+prepend(EXTENSIONS_SOURCES ${CMARK_SOURCE_PATH}/extensions ${EXTENSIONS_SOURCES})
+
+add_library(cmark-extensions STATIC ${EXTENSIONS_SOURCES})
+
+# https://cmake.org/cmake/help/latest/module/GenerateExportHeader.html
+generate_export_header(cmark-extensions BASE_NAME cmark-gfm-extensions)
+
+####################################################################################################
 
 set(CORE_HEADERS
-  buffer.h
-  chunk.h
-  cmark.h
-  cmark_ctype.h
-  cmark_extension_api.h
-  houdini.h
-  inlines.h
-  iterator.h
-  node.h
+  cmark-gfm.h
+  cmark-gfm-extension_api.h
   parser.h
-  plugin.h
+  buffer.h
+  node.h
+  iterator.h
+  chunk.h
   references.h
-  registry.h
-  render.h
-  scanners.h
-  syntax_extension.h
+  footnotes.h
+  map.h
   utf8.h
+  scanners.h
+  inlines.h
+  houdini.h
+  cmark_ctype.h
+  render.h
+  registry.h
+  syntax_extension.h
+  plugin.h
   )
 
 set(CORE_SOURCES
-  arena.c
-  blocks.c
-  buffer.c
   cmark.c
-  cmark_ctype.c
+  node.c
+  iterator.c
+  blocks.c
+  inlines.c
+  scanners.c
+  scanners.re
+  utf8.c
+  buffer.c
+  references.c
+  footnotes.c
+  map.c
+  render.c
+  man.c
+  xml.c
+  html.c
   commonmark.c
+  plaintext.c
+  latex.c
   houdini_href_e.c
   houdini_html_e.c
   houdini_html_u.c
-  html.c
-  inlines.c
-  iterator.c
-  latex.c
+  cmark_ctype.c
+  arena.c
   linked_list.c
-  man.c
-  node.c
-  plugin.c
-  references.c
-  registry.c
-  render.c
-  scanners.c
-  scanners.re
   syntax_extension.c
-  utf8.c
-  xml.c
+  registry.c
+  plugin.c
   ${CORE_HEADERS}
   )
 
-PREPEND(CORE_SOURCES ${CMARK_SOURCE_PATH}/src ${CORE_SOURCES})
+prepend(CORE_SOURCES ${CMARK_SOURCE_PATH}/src ${CORE_SOURCES})
 
-add_library(cmark
-  SHARED
-  ${CORE_SOURCES}
-  )
+add_library(cmark SHARED ${CORE_SOURCES})
 add_dependencies(cmark cmark-extensions)
 target_link_libraries(cmark cmark-extensions)
 
-generate_export_header(cmark
-  BASE_NAME cmark)
-
-if(NOT ANDROID)
-  add_executable(test-cmark ${CMARK_SOURCE_PATH}/src/main.c)
-  add_dependencies(test-cmark cmark)
-  target_link_libraries(test-cmark cmark)
-endif(NOT ANDROID)
+generate_export_header(cmark BASE_NAME cmark-gfm)
 
 ####################################################################################################
 
-# install(FILES
-# cmark.h
-# cmark_extension_api.h
-# ${CMAKE_CURRENT_BINARY_DIR}/cmark_export.h
-# ${CMAKE_CURRENT_BINARY_DIR}/cmark_version.h
-# DESTINATION include
-# )
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+# if(NOT ANDROID)
+#   add_executable(test-cmark ${CMARK_SOURCE_PATH}/src/main.c)
+#   add_dependencies(test-cmark cmark)
+#   target_link_libraries(test-cmark cmark)
+# endif(NOT ANDROID)
