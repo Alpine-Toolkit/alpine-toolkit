@@ -12,6 +12,7 @@ moc_*.cpp
 .directory
 du.log
 trash
+no-git
 #
 ####################################################################################################
 #
@@ -20,6 +21,7 @@ trash
 alpine-toolkit-all.pro.user
 alpine-toolkit.pro.user
 build-cmake*/
+build-cmake-android-arm64-v8a
 build/
 cmake-build/
 compile_commands.json
@@ -326,3 +328,9 @@ dev-scripts/set-git-env.sh
 unused-java/
 
 build-scripts/old/run-androiddeployqt.sh
+
+alpine-toolkit-all.pro.user.4.10-pre1
+android/AndroidManifest.xml-template
+map-tools/compare.log
+mapviewer/pages/graphic-test.qml-b
+ressources/qml/Widgets/MapComponent.qml-d
