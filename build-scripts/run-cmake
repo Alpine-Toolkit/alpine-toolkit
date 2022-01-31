@@ -7,41 +7,66 @@
 ####################################################################################################
 
 ####################################################################################################
+#
+# Set source / build path
+#
 
 source_path=`realpath $0`
 source_path=`dirname ${source_path}`
 source_path=`dirname ${source_path}`
 build_path=${source_path}/build-cmake
 
-QT_VERSION=5.15.2
+####################################################################################################
+#
+# Set GCC envs
+#
 
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"
 BUILD_TYPE=DEBUG
 
 # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-# set_gcc_optimisation
 # export CFLAGS="-O3 -march=broadwell -mtune=broadwell -flto"
 # export CXXFLAGS="${CFLAGS}"
 # BUILD_TYPE=RELEASE
 
 ####################################################################################################
+#
+# Qt
+#
 
-source $HOME/.bashrc
+# source ${source_path}/tools/path.sh
+
+QT_VERSION=5.15.2
 
 append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
 append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
+
+####################################################################################################
+#
+# Make build directory
+#
 
 if ! [ -e ${build_path} ]; then
   mkdir ${build_path}
 fi
 pushd ${build_path}
 
-rm -f CMakeCache.txt
-rm -f compile_commands.json
-if [ -e Makefile ]; then
-  make clean
-fi
+####################################################################################################
+#
+# Clean
+#
+
+# rm -f CMakeCache.txt
+# rm -f compile_commands.json
+# if [ -e Makefile ]; then
+#   make clean
+# fi
+
+####################################################################################################
+#
+# Make
+#
 
 # /etc/security/limits.d/00-user.conf
 # -DSANITIZE=ON
@@ -54,6 +79,8 @@ cmake \
   ${source_path}
 
 make -j4
+
+####################################################################################################
 
 if [ -e run-asan ]; then
   ln -sf ../build-scripts/run-asan.sh
