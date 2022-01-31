@@ -44,6 +44,30 @@ Widgets.Page {
     property int font_size: Style.font_size.huge
     property bool has_acquired_position: false
 
+    readonly property string help_text: qsTr('<p>The sunrise and sunset results are theoretically accurate to within a minute for locations between +/- 72° latitude, and within 10 minutes outside of those latitudes. <strong>However, due to variations in atmospheric composition, temperature, pressure and conditions, observed values may vary from calculations.</strong></p>')
+    // <p>The calculations are based on equations from Astronomical Algorithms, by Jean Meeus.</p>
+    // Sunrise/set are accurately derived from celestial mechanics and the local position, but this computation doesn't predict the twilight period which depend of the atmospheric conditions and other parameters.
+
+    function format_longitude(longitude) {
+        return Number(longitude).toLocaleString(Qt.locale(), 'f', 2)
+    }
+
+    function format_latitude(latitude) {
+        return Number(latitude).toLocaleString(Qt.locale(), 'f', 2)
+    }
+
+    function format_coordinate(coordinate) {
+        return format_longitude(coordinate.longitude) + '\n' + format_latitude(coordinate.latitude)
+    }
+
+    function format_date(date) {
+        return date.toLocaleString(Qt.locale(), 'dd/MM/yyyy')
+    }
+
+    function format_time(time) {
+        return time.toLocaleTimeString(Qt.locale(), 'hh:mm')
+    }
+
     PositionSource {
         id: position_source
         active: true
@@ -65,11 +89,11 @@ Widgets.Page {
 
 	    has_acquired_position = coordinate.isValid
 
-            date_label.text = date.toLocaleString(Qt.locale(), 'dd/MM/yyyy');
-            coordinate_label.text = coordinate.longitude + '\n' + coordinate.latitude;
-            sunrise_label.text = ephemeride.sunrise.toLocaleTimeString(Qt.locale(), 'hh:mm');
-            noon_label.text = ephemeride.solar_noon.toLocaleTimeString(Qt.locale(), 'hh:mm');
-            sunset_label.text = ephemeride.sunset.toLocaleTimeString(Qt.locale(), 'hh:mm');
+            date_label.text = format_date(date);
+            coordinate_label.text = format_coordinate(coordinate);
+            sunrise_label.text = format_time(ephemeride.sunrise);
+            noon_label.text = format_time(ephemeride.solar_noon);
+            sunset_label.text = format_time(ephemeride.sunset);
 
             position_source.active = false;
         }
@@ -174,9 +198,7 @@ Widgets.Page {
 		font.pointSize: Style.font_size.small
 		Layout.fillWidth: true
 		readOnly: true
-		text: qsTr('<p>The sunrise and sunset results are theoretically accurate to within a minute for locations between +/- 72° latitude, and within 10 minutes outside of those latitudes. <strong>However, due to variations in atmospheric composition, temperature, pressure and conditions, observed values may vary from calculations.</strong></p>')
-                // <p>The calculations are based on equations from Astronomical Algorithms, by Jean Meeus.</p>
-                // Sunrise/set are accurately derived from celestial mechanics and the local position, but this computation doesn't predict the twilight period which depend of the atmospheric conditions and other parameters.
+		text: help_text
 		textFormat: TextEdit.RichText
 		wrapMode: Text.WordWrap
 		background: null // suppress bottom line
