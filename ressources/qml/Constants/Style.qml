@@ -37,6 +37,7 @@ QtObject {
 	property int base:  12
 	property int large: 18
 	property int huge:  20
+        property int very_huge:  24
     }
 
     property QtObject spacing: QtObject {

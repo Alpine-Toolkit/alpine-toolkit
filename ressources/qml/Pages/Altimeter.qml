@@ -64,6 +64,14 @@ Widgets.Page {
         }
     }
 
+    function format_pressure(pressure) {
+        return Number(pressure).toLocaleString() + ' Pa'
+    }
+
+    function format_altitude(altitude) {
+        return Number(altitude).toLocaleString(Qt.locale(), 'f', 2) + ' m'
+    }
+
     // Fixme: If not available ???
     // PressureSensor
     BarometerAltimeterSensor {
@@ -74,8 +82,8 @@ Widgets.Page {
             // Fixme: Mean Filter
             var pressure = pressure_sensor.reading.pressure // 82500 Pa
             var altitude = pressure_sensor.reading.altitude
-            pressure_label.text = Number(pressure).toLocaleString() + ' Pa'
-            altitude_label.text = Number(altitude).toLocaleString(Qt.locale(), 'f', 2) + ' m'
+            pressure_label.text = format_pressure(pressure)
+            altitude_label.text = format_altitude(altitude)
         }
     }
 
@@ -90,7 +98,9 @@ Widgets.Page {
         onPositionChanged: {
             var position = position_source.position
             var coordinate = position.coordinate
-            gps_altitude_label.text = isNaN(coordinate.altitude) ? 'unknown' : coordinate.altitude; // + ' +- ' + position.verticalAccuracy;
+            var altitude = coordinate.altitude
+            gps_altitude_label.text = isNaN(altitude) ? 'unknown' : format_altitude(altitude);
+            // + ' +- ' + position.verticalAccuracy;
         }
     }
 
@@ -107,32 +117,32 @@ Widgets.Page {
             rowSpacing : 5
 
             Label {
-                font.pointSize: Style.font_size.huge
-                text: qsTr('Altitude')
-            }
-            Label {
-                id: altitude_label
-                font.pointSize: Style.font_size.huge
-                text: 'unknown'
-            }
-
-            Label {
-                font.pointSize: Style.font_size.huge
+                font.pointSize: Style.font_size.very_huge
                 text: 'GPS'
             }
             Label {
                 id: gps_altitude_label
-                font.pointSize: Style.font_size.huge
+                font.pointSize: Style.font_size.very_huge
                 text: 'unknown'
             }
 
             Label {
-                font.pointSize: Style.font_size.huge
+                font.pointSize: Style.font_size.very_huge
+                text: qsTr('Altitude')
+            }
+            Label {
+                id: altitude_label
+                font.pointSize: Style.font_size.very_huge
+                text: 'unknown'
+            }
+
+            Label {
+                font.pointSize: Style.font_size.very_huge
                 text: qsTr('Pressure')
             }
             Label {
                 id: pressure_label
-                font.pointSize: Style.font_size.huge
+                font.pointSize: Style.font_size.very_huge
                 text: 'unknown'
             }
         }
