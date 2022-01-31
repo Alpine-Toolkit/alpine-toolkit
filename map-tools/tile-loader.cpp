@@ -108,8 +108,12 @@ Application::main_task()
   // 7 r jean baillet 95870 Bezons
   // coordinate changed QcGeoCoordinate<epsg:4326>(2.20624, 48.9246)
   // coordinate 48° 55' 28.4" N, 2° 12' 22.4" E, 73.2m
-  double longitude =  2.206321;
-  double latitude  = 48.924621;
+  // double longitude =  2.206321;
+  // double latitude  = 48.924621;
+
+  // Centre de la France
+  // double longitude =  2.43227;
+  // double latitude  = 46.768219;
 
   // Annecy
   // double longitude =  6.311331853277862;
@@ -154,12 +158,16 @@ Application::main_task()
   // double longitude =  6.81;
   // double latitude  = 45.26;
 
+  // Grenoble
+  double longitude = 5.737267;
+  double latitude  = 45.185788;
+
   QcWgsCoordinate center_wsg84(longitude, latitude);
   QcPseudoWebMercatorCoordinate center_mercator = center_wsg84.pseudo_web_mercator();
   QcVectorDouble center = center_mercator.vector();;
-  // double radius_m= 500 * 1000;
-  // double radius_m = 30 * 1000;
-  double radius_m = 10 * 1000;
+  // double radius_m = 500 * 1000;
+  double radius_m = 30 * 1000;
+  // double radius_m = 10 * 1000;
   QcVectorDouble half_diagonal_m(radius_m, radius_m);
 
   QcVectorDouble point1 = center + half_diagonal_m;
@@ -194,8 +202,10 @@ Application::main_task()
   QSet<QcTileSpec> tiles_removed;
 
   // Fixme: level <= 10 : any tiles
-  // 16
-  for (int level = 0; level <= 16; level++) {
+  // from 5
+  // const int level_max = 10; // France = 678 tiles
+  int level_max = 16;
+  for (int level = 0; level <= level_max; level++) {
     double tile_length_m = tile_matrix_set[level].tile_length_m();
     QcTiledPolygon tiled_polygon = polygon.intersec_with_grid(tile_length_m);
     for (const QcTiledPolygonRun & run:  tiled_polygon.runs()) {
