@@ -37,9 +37,11 @@
 int
 main(int argc, char *argv[])
 {
-#ifndef ANDROID
+  // Fixme: Don't work on Android ???
+  //  no logging ???
+  // #ifndef ANDROID
   qInstallMessageHandler(message_handler);
-#endif
+  // #endif
 
   Application & application = Application::create(argc, argv);
 

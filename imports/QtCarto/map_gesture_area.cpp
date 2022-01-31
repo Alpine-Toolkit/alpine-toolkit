@@ -306,7 +306,8 @@ constexpr qreal QML_MAP_FLICK_MAXIMUM_DECELERATION = 10000.;
 constexpr int MINIMUM_PRESS_AND_HOLD_TIME = 1000; // [ms]
 constexpr qreal MAXIMUM_PRESS_AND_HOLD_JITTER = 30.;
 
-constexpr qreal MAXIMUM_DOUBLE_PRESS_TIME = 300.; // [ms]
+constexpr qint64 MINIMUM_DOUBLE_PRESS_TIME = 10; // [ms]
+constexpr qint64 MAXIMUM_DOUBLE_PRESS_TIME = 300; // [ms]
 
 constexpr int QML_MAP_FLICK_VELOCITY_SAMPLE_PERIOD = 50; // [s]
 
@@ -330,7 +331,7 @@ copy_mouse_event(const QMouseEvent * event)
 QTouchEvent::TouchPoint *
 create_touch_point_from_mouse_event(const QMouseEvent * event, Qt::TouchPointState state)
 {
-  // qQCInfo();
+  qQCInfo();
 
   // this is only partially filled. But since it is only partially used it works
   // more robust would be to store a list of QPointFs rather than TouchPoints
@@ -354,7 +355,7 @@ QcMapGestureArea::QcMapGestureArea(QcMapItem * map)
     m_prevent_stealing(false),
     m_pan_enabled(true)
 {
-  // qQCInfo();
+  qQCInfo();
 
   m_flick.m_enabled = true;
   m_flick.m_max_velocity = QML_MAP_FLICK_DEFAULT_MAX_VELOCITY;
@@ -402,7 +403,7 @@ QcMapGestureArea::~QcMapGestureArea()
 
 void QcMapGestureArea::set_prevent_stealing(bool prevent)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (prevent != m_prevent_stealing) {
     m_prevent_stealing = prevent;
@@ -429,7 +430,7 @@ void QcMapGestureArea::set_prevent_stealing(bool prevent)
 void
 QcMapGestureArea::set_accepted_gestures(Accepted_gestures accepted_gestures)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (accepted_gestures != m_accepted_gestures) {
     m_accepted_gestures = accepted_gestures;
@@ -451,7 +452,7 @@ QcMapGestureArea::is_active() const
 void
 QcMapGestureArea::set_enabled(bool enabled)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (enabled != m_enabled) {
     m_enabled = enabled;
@@ -479,7 +480,7 @@ QcMapGestureArea::is_pinch_active() const
 void
 QcMapGestureArea::set_pinch_enabled(bool enabled)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (enabled != m_pinch.m_enabled)
     m_pinch.m_enabled = enabled;
@@ -494,7 +495,7 @@ QcMapGestureArea::is_pan_active() const
 void
 QcMapGestureArea::set_pan_enabled(bool enabled)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (enabled != m_flick.m_enabled) {
     m_pan_enabled = enabled;
@@ -507,7 +508,7 @@ QcMapGestureArea::set_pan_enabled(bool enabled)
 void
 QcMapGestureArea::set_flick_enabled(bool enabled)
 {
-  // qQCInfo();
+  qQCInfo();
 
   if (enabled != m_flick.m_enabled) {
     m_flick.m_enabled = enabled;
@@ -527,7 +528,7 @@ QcMapGestureArea::set_flick_enabled(bool enabled)
 void
 QcMapGestureArea::set_zoom_level_interval(const QcIntervalInt interval)
 {
-  // qQCInfo();
+  qQCInfo();
 
   m_pinch.m_zoom.m_interval = interval;
 }
@@ -541,7 +542,7 @@ QcMapGestureArea::maximum_zoom_level_change() const
 void
 QcMapGestureArea::set_maximum_zoom_level_change(qreal max_change)
 {
-  // qQCInfo();
+  qQCInfo();
 
   // Fixme: !()
   if (max_change == m_pinch.m_zoom.maximum_change or
@@ -555,7 +556,7 @@ QcMapGestureArea::set_maximum_zoom_level_change(qreal max_change)
 void
 QcMapGestureArea::set_flick_deceleration(qreal deceleration)
 {
-  // qQCInfo();
+  qQCInfo();
 
   deceleration = qBound(QML_MAP_FLICK_MINIMUM_DECELERATION, deceleration, QML_MAP_FLICK_MAXIMUM_DECELERATION);
   if (deceleration != m_flick.m_deceleration) {
@@ -567,7 +568,7 @@ QcMapGestureArea::set_flick_deceleration(qreal deceleration)
 void
 QcMapGestureArea::clear_touch_data()
 {
-  // qQCInfo();
+  qQCInfo();
 
   // Fixme: vectorize
   m_current_position.set_x(0);
@@ -583,7 +584,7 @@ QcMapGestureArea::clear_touch_data()
 void
 QcMapGestureArea::update_velocity_list(const QcVectorDouble & position)
 {
-  // qQCInfo();
+  qQCInfo();
 
   // position = m_current_position
 
@@ -674,7 +675,7 @@ QcMapGestureArea::handle_mouse_ungrab_event()
 void
 QcMapGestureArea::handle_touch_ungrab_event()
 {
-  // qQCInfo();
+  qQCInfo();
 
   m_touch_points.clear();
   // this is needed since in some cases mouse release is not delivered
@@ -686,7 +687,7 @@ QcMapGestureArea::handle_touch_ungrab_event()
 void
 QcMapGestureArea::handle_touch_event(QTouchEvent * event)
 {
-  // qQCInfo();
+  qQCInfo();
 
   m_touch_points.clear();
   m_touch_points.append(event->touchPoints());
@@ -789,7 +790,15 @@ QcMapGestureArea::is_double_click()
   if (is_pan_active() or is_pinch_active())
     return false;
 
-  bool status = m_double_press_time.isValid() and m_double_press_time.elapsed() <= MAXIMUM_DOUBLE_PRESS_TIME;
+  // Fixme:
+  bool valid = m_double_press_time.isValid();
+  qint64 elapsed = m_double_press_time.elapsed();
+  if (valid and elapsed <= MINIMUM_DOUBLE_PRESS_TIME) {
+    m_double_press_time.restart();
+    return false;
+  }
+
+  bool status = valid and elapsed <= MAXIMUM_DOUBLE_PRESS_TIME;
   m_double_press_time.restart();
   return status;
 }
@@ -880,7 +889,7 @@ QcMapGestureArea::update_one_touch_point()
 void
 QcMapGestureArea::start_two_touch_points()
 {
-  // qQCInfo();
+  qQCInfo();
 
   m_start_position1 = first_point().pos();
   m_start_position2 = second_point().pos();
@@ -896,7 +905,7 @@ QcMapGestureArea::start_two_touch_points()
 void
 QcMapGestureArea::update_two_touch_points()
 {
-  // qQCInfo();
+  qQCInfo();
 
   QcVectorDouble p1 = first_point().pos();
   QcVectorDouble p2 = second_point().pos();
@@ -916,7 +925,7 @@ QcMapGestureArea::update_two_touch_points()
 void
 QcMapGestureArea::pinch_state_machine()
 {
-  // qQCInfo();
+  qQCInfo();
 
   int number_of_points = m_all_points.count();
 
@@ -981,7 +990,7 @@ QcMapGestureArea::pinch_state_machine()
 bool
 QcMapGestureArea::can_start_pinch()
 {
-  // qQCInfo();
+  qQCInfo();
 
   int number_of_points = m_all_points.count();
   const int start_drag_distance = qApp->styleHints()->startDragDistance();
@@ -1010,7 +1019,7 @@ QcMapGestureArea::can_start_pinch()
 void
 QcMapGestureArea::start_pinch()
 {
-  // qQCInfo();
+   qQCInfo();
 
   m_pinch.m_last_angle = m_two_touch_angle;
   m_pinch.m_last_point1 = first_point().pos();
@@ -1023,7 +1032,7 @@ QcMapGestureArea::start_pinch()
 void
 QcMapGestureArea::update_pinch()
 {
-  // qQCInfo();
+   qQCInfo();
 
   // Calculate the new zoom level if we have distance (>= 2 touchpoints), otherwise stick with old.
   qreal new_zoom_level = m_pinch.m_zoom.m_previous;
@@ -1071,7 +1080,7 @@ QcMapGestureArea::update_pinch()
 void
 QcMapGestureArea::end_pinch()
 {
-  // qQCInfo();
+  qQCInfo();
 
   QcVectorDouble p1 = m_pinch.m_last_point1;
   QcVectorDouble p2 = m_pinch.m_last_point2;

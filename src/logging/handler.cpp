@@ -109,7 +109,7 @@ const QString ANSI_BG_WHITE         = "\e[107m";
 QString
 format_log_with_ansi(const QString & message_type, const QMessageLogContext & context, const QString & message)
 {
-  QString date = QDateTime::currentDateTime().toString(QLatin1Literal("yyyy-MM-dd HH:mm:ss.zzz")); // Qt::ISODate
+  QString date = QDateTime::currentDateTime().toString(QLatin1String("yyyy-MM-dd HH:mm:ss.zzz")); // Qt::ISODate
   QString full_message = QString("%1   %2   %3   %4\n")
     .arg(ANSI_BOLD + ANSI_RED + message_type + ANSI_RESET)
     .arg(ANSI_BOLD + ANSI_BLUE + date + ANSI_RESET)
@@ -120,57 +120,94 @@ format_log_with_ansi(const QString & message_type, const QMessageLogContext & co
 
   if (!message.isEmpty()) {
     QString indented_messaged = message;
-    indented_messaged.replace(QLatin1Literal("\n"), QLatin1Literal("\n  "));
+    indented_messaged.replace(QLatin1String("\n"), QLatin1String("\n  "));
     full_message += "   " + indented_messaged + "\n";
   }
 
   return full_message;
 }
 
+/**************************************************************************************************/
+
 QString
 format_log(const QString & message_type, const QMessageLogContext & context, const QString & message)
 {
-  QString date = QDateTime::currentDateTime().toString(QLatin1Literal("yyyy-MM-dd HH:mm:ss.zzz")); // Qt::ISODate
-  QString full_message = QString("%1   %2   %3")
+  QString date = QDateTime::currentDateTime().toString(QLatin1String("yyyy-MM-dd HH:mm:ss.zzz")); // Qt::ISODate
+  QString full_message = QString(" | %1 | %2 |  %3 | ")
     .arg(message_type)
     .arg(date)
     .arg(context.function);
+  // .arg(context.category);
   // .arg(context.file)
   // .arg(context.line)
-
   full_message += message;
   full_message += '\n';
-
   return full_message;
 }
 
+/**************************************************************************************************/
+
+#ifdef ANDROID
+#include <android/log.h>
+
+// static
+void message_handler(QtMsgType type, const QMessageLogContext &context, const QString &message)
+{
+  android_LogPriority priority = ANDROID_LOG_DEBUG;
+  switch (type) {
+  case QtDebugMsg: priority = ANDROID_LOG_DEBUG; break;
+  case QtWarningMsg: priority = ANDROID_LOG_WARN; break;
+  case QtCriticalMsg: priority = ANDROID_LOG_ERROR; break;
+  case QtFatalMsg: priority = ANDROID_LOG_FATAL; break;
+  };
+
+  QString formated_message;
+  QString (*formater)(const QString & message_type, const QMessageLogContext & context, const QString & message);
+  formater = format_log;
+
+  switch (type) {
+  case QtDebugMsg:
+    formated_message = formater(QLatin1String("Debug"), context, message);
+    break;
+  case QtInfoMsg:
+    formated_message = formater(QLatin1String("Info"), context, message);
+    break;
+  case QtWarningMsg:
+    formated_message = formater(QLatin1String("Warning"), context, message);
+    break;
+  case QtCriticalMsg:
+    formated_message = formater(QLatin1String("Critical"), context, message);
+    break;
+  case QtFatalMsg:
+    formated_message = formater(QLatin1String("Fatal"), context, message);
+  }
+
+  __android_log_print(priority, context.category, "%s", qPrintable(formated_message));
+}
+
+#else
 void
 message_handler(QtMsgType type, const QMessageLogContext & context, const QString & message)
 {
   QString formated_message;
   QString (*formater)(const QString & message_type, const QMessageLogContext & context, const QString & message);
-  // formater = format_log;
-#ifdef ANDROID
-  formater = format_log;
-#else
   formater = format_log_with_ansi;
-#endif
 
   switch (type) {
   case QtDebugMsg:
-    formated_message = formater(QLatin1Literal("Debug"), context, message);
+    formated_message = formater(QLatin1String("Debug"), context, message);
     break;
   case QtInfoMsg:
-    formated_message = formater(QLatin1Literal("Info"), context, message);
+    formated_message = formater(QLatin1String("Info"), context, message);
     break;
   case QtWarningMsg:
-    formated_message = formater(QLatin1Literal("Warning"), context, message);
+    formated_message = formater(QLatin1String("Warning"), context, message);
     break;
   case QtCriticalMsg:
-    formated_message = formater(QLatin1Literal("Critical"), context, message);
+    formated_message = formater(QLatin1String("Critical"), context, message);
     break;
   case QtFatalMsg:
-    formated_message = formater(QLatin1Literal("Fatal"), context, message);
+    formated_message = formater(QLatin1String("Fatal"), context, message);
   }
 
   // stderr
@@ -179,6 +216,7 @@ message_handler(QtMsgType type, const QMessageLogContext & context, const QStrin
   if (type == QtFatalMsg)
     abort();
 }
+#endif
 
 /**************************************************************************************************/
 

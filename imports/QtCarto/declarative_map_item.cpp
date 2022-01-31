@@ -24,6 +24,13 @@
  **
  ***************************************************************************************************/
 
+
+/***************************************************************************************************
+ *
+ * https://doc.qt.io/qt-5/qquickitem.html
+ *
+ **************************************************************************************************/
+
 /**************************************************************************************************/
 
 #include "declarative_map_item.h"
@@ -68,11 +75,12 @@ QcMapItem::QcMapItem(QQuickItem * parent)
   // Created when the map page is loaded (click on map item in the application menu)
   qQCInfo() << "Create QcMapItem";
 
+  // Item will not receive any hover events through the hoverEnterEvent(), hoverMoveEvent() and hoverLeaveEvent() functions
   setAcceptHoverEvents(false);
   setAcceptedMouseButtons(Qt::LeftButton);
   setFlags(QQuickItem::ItemHasContents | QQuickItem::ItemClipsChildrenToShape);
-  // Filter mouse events of child items
-  // childMouseEventFilter() will be called when a mouse event is triggered for a child item.
+  // Filter mouse and touch events of child items
+  //   childMouseEventFilter() will be called when a mouse event is triggered for a child item.
   setFiltersChildMouseEvents(true);
 
   m_map_view = new QcMapView();
@@ -135,7 +143,7 @@ void
 QcMapItem::mousePressEvent(QMouseEvent * event)
 {
   // Never called when a child (MouseArea) should receive th event
-  qQCInfo();
+  qQCInfo() << event;
   if (is_interactive())
     m_gesture_area->handle_mouse_press_event(event);
   else
@@ -146,7 +154,7 @@ void
 QcMapItem::mouseMoveEvent(QMouseEvent * event)
 {
   // Called when mouse is grabbed
-  qQCInfo();
+  qQCInfo() << event;
   if (is_interactive())
     m_gesture_area->handle_mouse_move_event(event);
   else
@@ -157,7 +165,7 @@ void
 QcMapItem::mouseReleaseEvent(QMouseEvent * event)
 {
   // Called when mouse is grabbed
-  qQCInfo();
+  qQCInfo() << event;
   if (is_interactive()) {
     m_gesture_area->handle_mouse_release_event(event);
     ungrabMouse();
@@ -188,7 +196,7 @@ QcMapItem::touchUngrabEvent()
 void
 QcMapItem::touchEvent(QTouchEvent * event)
 {
-  // qQCInfo();
+  qQCInfo() << event;
   if (is_interactive()) {
     m_gesture_area->handle_touch_event(event);
     if (event->type() == QEvent::TouchEnd or
@@ -216,15 +224,28 @@ QcMapItem::wheelEvent(QWheelEvent * event)
 bool
 QcMapItem::childMouseEventFilter(QQuickItem * item, QEvent * event)
 {
-  Q_UNUSED(item);
+  // Return true if the specified event should not be passed onto the specified child item, and false otherwise
 
-  // item is QQuickMouseArea
-  qQCInfo() << item << "\n" << event;
+  QString class_name(item->metaObject()->className());
+  QEvent::Type event_type = event->type();
+  // Fixme: can test for QHoverEvent type ???
+  bool is_hover =
+    event_type == QEvent::HoverEnter ||
+    event_type == QEvent::HoverLeave ||
+    event_type == QEvent::HoverMove;
+  if (!is_hover)
+    qQCInfo() << "  Item:" << class_name << "   " << item << "\n  event:" << event;
+  // Test if event comes from QQuickMouseArea_QML_80
+  if (!class_name.startsWith("QQuickMouseArea")) {
+      if (!is_hover)
+        qQCInfo() << "  pass to item";
+      return false;
+  }
 
   if (!isVisible() or !isEnabled() or !is_interactive())
     return QQuickItem::childMouseEventFilter(item, event);
 
-  switch (event->type()) {
+  switch (event_type) {
   case QEvent::MouseButtonPress:
   case QEvent::MouseMove:
   case QEvent::MouseButtonRelease:
@@ -275,7 +296,7 @@ QcMapItem::send_mouse_event(QMouseEvent * event)
   bool steal_event = m_gesture_area->is_active(); // means pan or pinch is active
 
   // grabber is QQuickMouseArea, steal_event is false first then true
-  // qQCInfo() << event << "\ngrabber" << grabber << "\nsteal_event" << steal_event << is_mouse_area;
+  qQCInfo() << event << "\ngrabber" << grabber << "\nsteal_event" << steal_event << is_mouse_area;
 
   if (is_mouse_area and (steal_event or contains(local_position)) and (!grabber or !grabber->keepMouseGrab())) {
     QScopedPointer<QMouseEvent> mouseEvent(QQuickWindowPrivate::cloneMouseEvent(event, &local_position));
@@ -298,25 +319,29 @@ QcMapItem::send_mouse_event(QMouseEvent * event)
     steal_event = m_gesture_area->is_active(); // recheck value
     // Fixme: duplicated code ???
     grabber = _window ? _window->mouseGrabberItem() : nullptr;
-    // qQCInfo() << "grabber" << grabber << "\nsteal_event" << steal_event;
+    qQCInfo() << "grabber" << grabber << "\nsteal_event" << steal_event;
 
     if (grabber and steal_event and !grabber->keepMouseGrab() and grabber != this) {
-      // qQCInfo() << "grab mouse";
+      qQCInfo() << "grab mouse";
       grabMouse();
     }
 
     if (steal_event) {
       event->setAccepted(true);
+      qQCInfo() << "don't deliver event";
       return true; // do not deliver event
-    } else
+    } else {
+      qQCInfo() << "deliver event";
       return false; // deliver event
-
+    }
   } else {
     // ungrab if necessary and deliver event
     if (event->type() == QEvent::MouseButtonRelease
-        and (_window and _window->mouseGrabberItem() == this))
-      // qQCInfo() << "ungrab mouse";
+        and (_window and _window->mouseGrabberItem() == this)) {
+      qQCInfo() << "ungrab mouse";
       ungrabMouse();
+    }
+    qQCInfo() << "deliver event";
     return false; // deliver event
   }
 }
@@ -436,7 +461,7 @@ QcMapItem::on_press_and_hold_released(const QMouseEvent * event)
 void
 QcMapItem::set_zoom_level(unsigned int new_zoom_level)
 {
-  // qQCInfo() << new_zoom_level;
+  qQCInfo() << new_zoom_level;
 
   if (new_zoom_level == zoom_level())
     return;
@@ -500,6 +525,8 @@ QcMapItem::pan(int dx, int dy)
 void
 QcMapItem::stable_zoom(QPointF position_px, unsigned int new_zoom_level)
 {
+  qQCInfo() << position_px << zoom_level() << new_zoom_level;
+
   if (new_zoom_level == zoom_level())
     return;
 
@@ -516,6 +543,7 @@ QcMapItem::stable_zoom(QPointF position_px, unsigned int new_zoom_level)
 void
 QcMapItem::stable_zoom_by_increment(QPointF position_px, int zoom_increment)
 {
+  qQCInfo() << position_px << zoom_increment;
   int new_zoom_level = zoom_level() + zoom_increment;
   stable_zoom(position_px, new_zoom_level);
 }

@@ -134,6 +134,7 @@ QcMapItem {
         // if (position_locked) {
         //     center = map.cast_QGeoCoordinate(position_source.position.coordinate)
         // }
+        console.info("onZoom_levelChanged " + zoom_level)
         set_scale()
     }
 
