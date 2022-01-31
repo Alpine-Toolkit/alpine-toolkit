@@ -42,7 +42,16 @@ Widgets.Page {
     id: ephemeride_pane
 
     property int font_size: Style.font_size.huge
-    property string emergency_phone_number: '112'
+    property string emergency_phone_number: '112' // Europe
+
+    // Fixme: duplicated...
+    function format_longitude(longitude) {
+        return Number(longitude).toLocaleString(Qt.locale(), 'f', 4)
+    }
+
+    function format_latitude(latitude) {
+        return Number(latitude).toLocaleString(Qt.locale(), 'f', 4)
+    }
 
     PositionSource {
         id: position_source
@@ -50,8 +59,8 @@ Widgets.Page {
 
         onValidChanged: {
             var coordinate = position_source.position.coordinate;
-            latitude_label.text = coordinate.latitude;
-            longitude_label.text = coordinate.longitude;
+            latitude_label.text = format_latitude(coordinate.latitude);
+            longitude_label.text = format_longitude(coordinate.longitude);
         }
     }
 
