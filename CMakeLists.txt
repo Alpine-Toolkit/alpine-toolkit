@@ -209,6 +209,10 @@ if(NOT ANDROID)
     # INCLUDE_DIRECTORIES(${Qt5Core_INCLUDES})
     # ADD_DEFINITIONS(${Qt5Core_DEFINITIONS})
     # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+
+    # https://doc.qt.io/qt-6/portingguide.html
+    # Disable use of C++ API deprecated in Qt 5.15
+    add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 endif(NOT ANDROID)
 
 ####################################################################################################
