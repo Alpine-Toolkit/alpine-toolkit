@@ -409,7 +409,7 @@ QcMapItem::on_wheel_event(const QWheelEvent * event)
   qQCInfo() << event;
 
   int zoom_increment = event->angleDelta().y() > 0 ? 1 : -1;
-  stable_zoom_by_increment(event->posF(), zoom_increment);
+  stable_zoom_by_increment(event->position(), zoom_increment);
 }
 
 void
