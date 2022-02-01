@@ -51,6 +51,7 @@ set(alpine_toolkit_common_library_files
 add_library(alpine_toolkit_common SHARED ${alpine_toolkit_common_library_files})
 target_link_libraries(alpine_toolkit_common
   Qt6::Core
+  Qt6::Core5Compat
   Qt6::Network
   Qt6::Widgets # for platform.cpp
   )
@@ -126,6 +127,7 @@ set(alpine_toolkit_library_files
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit
   Qt6::Core
+  Qt6::Core5Compat
   Qt6::Sql
   Qt6::Positioning
   Qt6::Network

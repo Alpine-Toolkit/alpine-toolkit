@@ -215,6 +215,7 @@ if(NOT ANDROID)
       Svg
       Test
       RemoteObjects
+      Core5Compat
       )
 
     # Not available

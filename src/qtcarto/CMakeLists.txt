@@ -135,6 +135,7 @@ add_library(qtcarto SHARED ${qtcarto_files})
 target_link_libraries(qtcarto
   alpine_toolkit_common
   Qt6::Core
+  Qt6::Core5Compat
   Qt6::Gui
   Qt6::Network
   Qt6::Positioning
