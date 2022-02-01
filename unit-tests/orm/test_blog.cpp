@@ -137,7 +137,7 @@ void TestBlog::constructor()
     // Fixme: iterator ?
     qInfo() << "\n\nLoad Authors";
     Author::PtrList authors = database_schema.query<Author>();
-    for (const auto author : authors)
+    for (const auto &author : authors)
       qInfo() << author;
     // Fixme: load lazily author.blogs()
   }
@@ -147,9 +147,9 @@ void TestBlog::constructor()
     // Fixme: iterator ?
     qInfo() << "\n\nLoad Authors";
     Author::PtrList authors = database_schema.query<Author>(false);
-    for (const auto author : authors) {
+    for (const auto &author : authors) {
       qInfo() << author;
-      for (const auto blog : author->Author::blogs())
+      for (const auto &blog : author->Author::blogs())
         qInfo() << blog;
     }
   }
@@ -158,7 +158,7 @@ void TestBlog::constructor()
     // Feature: Load object and their relations lazily
     qInfo() << "\n\nLoad Blogs";
     Blog::PtrList blogs = database_schema.query<Blog>();
-    for (const auto blog : blogs) {
+    for (const auto &blog : blogs) {
       AuthorPtr author = blog->author();
       qInfo() << blog << "\n" << author;
     }
@@ -168,7 +168,7 @@ void TestBlog::constructor()
     // Feature: Load object and their relations
     qInfo() << "\n\nLoad Blogs";
     Blog::PtrList blogs = database_schema.query<Blog>(false);
-    for (const auto blog : blogs) {
+    for (const auto &blog : blogs) {
       AuthorPtr author = blog->author();
       qInfo() << blog << "\n" << author;
     }
