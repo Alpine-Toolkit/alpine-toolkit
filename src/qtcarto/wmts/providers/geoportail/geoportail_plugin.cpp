@@ -220,7 +220,7 @@ QcGeoportailPlugin::geocode_request(const QcLocationServiceQuery & query)
   QByteArray xml_request;
   QXmlStreamWriter stream(&xml_request);
   stream.setAutoFormatting(true);
-  stream.setCodec("UTF-8");
+  // QXmlStreamWriter always encodes XML in UTF-8
   stream.writeStartDocument();
   stream.writeStartElement(QStringLiteral("XLS"));
   QXmlStreamAttributes xls_attributes;
@@ -282,7 +282,7 @@ QcGeoportailPlugin::reverse_geocode_request(const QcLocationServiceReverseQuery 
   QByteArray xml_request;
   QXmlStreamWriter stream(&xml_request);
   stream.setAutoFormatting(true);
-  stream.setCodec("UTF-8");
+  // QXmlStreamWriter always encodes XML in UTF-8
   stream.writeStartDocument();
   stream.writeStartElement(QStringLiteral("XLS"));
   QXmlStreamAttributes xls_attributes;
