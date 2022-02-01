@@ -69,16 +69,17 @@
 
 QmlApplication::QmlApplication(Application * application)
   : QObject(),
-    m_application(application),
-    m_network_configuration_manager()
+    m_application(application)
+    // m_network_configuration_manager()
 {
-  m_wifi_state = get_wifi_state();
+  // m_wifi_state = get_wifi_state();
 
   // connect(&m_network_configuration_manager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
-  connect(&m_network_configuration_manager, &QNetworkConfigurationManager::onlineStateChanged,
-          this, &QmlApplication::onlineStateChanged);
-  connect(&m_network_configuration_manager, &QNetworkConfigurationManager::configurationChanged,
-          this, &QmlApplication::network_configuration_changed);
+  // Fixme: look at https://doc.qt.io/qt-5/qnetworksession.html
+  // connect(&m_network_configuration_manager, &QNetworkConfigurationManager::onlineStateChanged,
+  //         this, &QmlApplication::onlineStateChanged);
+  // connect(&m_network_configuration_manager, &QNetworkConfigurationManager::configurationChanged,
+  //         this, &QmlApplication::network_configuration_changed);
 }
 
 QmlApplication::~QmlApplication()
@@ -96,6 +97,7 @@ QmlApplication::home_page() const
   return ALPINE_TOOLKIT_URL;
 }
 
+/*
 void
 QmlApplication::network_configuration_changed(const QNetworkConfiguration & config) // unused
 {
@@ -130,6 +132,7 @@ QmlApplication::is_online() const
 {
   return m_network_configuration_manager.isOnline();
 }
+*/
 
 QaConfig *
 QmlApplication::config()

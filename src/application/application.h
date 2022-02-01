@@ -34,7 +34,6 @@
 
 #include <QApplication>
 #include <QDir>
-#include <QNetworkConfigurationManager>
 #include <QQmlApplicationEngine>
 #include <QTimer>
 #include <QTranslator>
@@ -60,8 +59,8 @@ class QmlApplication : public QObject
   Q_PROPERTY(QString version READ version CONSTANT)
   Q_PROPERTY(QUrl home_page READ home_page CONSTANT)
   Q_PROPERTY(QaConfig* config READ config CONSTANT)
-  Q_PROPERTY(bool online_state READ is_online NOTIFY onlineStateChanged)
-  Q_PROPERTY(bool wifi_state READ wifi_state NOTIFY wifiStateChanged)
+  // Q_PROPERTY(bool online_state READ is_online NOTIFY onlineStateChanged)
+  // Q_PROPERTY(bool wifi_state READ wifi_state NOTIFY wifiStateChanged)
 
 public:
   QmlApplication(Application * application);
@@ -71,23 +70,23 @@ public:
   Q_INVOKABLE QString decode_morse(const QString & message);
 
 signals:
-  void onlineStateChanged(bool is_online);
-  void wifiStateChanged(bool wifi_state);
+  // void onlineStateChanged(bool is_online);
+  // void wifiStateChanged(bool wifi_state);
 
 private slots:
-  void network_configuration_changed(const QNetworkConfiguration & config);
+  // void network_configuration_changed(const QNetworkConfiguration & config);
 
 private:
   QString version() const;
   QUrl home_page() const;
   QaConfig * config();
-  bool is_online() const;
-  bool wifi_state() const { return m_wifi_state; }
-  bool get_wifi_state();
+  // bool is_online() const;
+  // bool wifi_state() const { return m_wifi_state; }
+  // bool get_wifi_state();
 
 private:
   Application * m_application;
-  QNetworkConfigurationManager m_network_configuration_manager;
+  // QNetworkConfigurationManager m_network_configuration_manager;
   bool m_wifi_state;
 };
 
