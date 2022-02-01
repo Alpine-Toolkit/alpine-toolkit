@@ -102,7 +102,7 @@ void TestBlog::constructor()
     qInfo() << fabrice->exists_on_database() << fabrice;
     // Feature: List relation one-to-many
     for (const auto & blog_weak_ref : fabrice->blogs()) {
-      Blog * blog = blog_weak_ref.data();
+      Blog * blog = blog_weak_ref.toStrongRef().data();
       qInfo() << blog->exists_on_database() << *blog;
     }
 
@@ -116,7 +116,7 @@ void TestBlog::constructor()
     qInfo() << "\n\nSaved Author -> Blogs";
     qInfo() << fabrice->exists_on_database() << fabrice;
     for (const auto & blog_weak_ref : fabrice->blogs()) {
-      Blog * blog = blog_weak_ref.data();
+      Blog * blog = blog_weak_ref.toStrongRef().data();
       qInfo() << blog->exists_on_database() << *blog;
   }
 
