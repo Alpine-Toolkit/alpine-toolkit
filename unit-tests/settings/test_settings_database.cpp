@@ -124,8 +124,8 @@ void TestSettingsDatabase::constructor()
 void
 TestSettingsDatabase::verify_string_list(const QStringList & list1, const QStringList & list2)
 {
-  QSet<QString> set1 = QSet<QString>::fromList(list1);
-  QSet<QString> set2 = QSet<QString>::fromList(list2);
+  QSet<QString> set1 = QSet<QString>(list1.begin(), list1.end());
+  QSet<QString> set2 = QSet<QString>(list2.begin(), list2.end());
   QVERIFY(set1 == set2);
 }
 
