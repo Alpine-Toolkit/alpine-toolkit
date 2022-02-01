@@ -33,7 +33,7 @@
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
-include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
+include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
 
 ####################################################################################################
 #
@@ -50,9 +50,9 @@ set(alpine_toolkit_common_library_files
   )
 add_library(alpine_toolkit_common SHARED ${alpine_toolkit_common_library_files})
 target_link_libraries(alpine_toolkit_common
-  Qt5::Core
-  Qt5::Network
-  Qt5::Widgets # for platform.cpp
+  Qt6::Core
+  Qt6::Network
+  Qt6::Widgets # for platform.cpp
   )
 
 ####################################################################################################
@@ -125,13 +125,13 @@ set(alpine_toolkit_library_files
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit
-  Qt5::Core
-  Qt5::Sql
-  Qt5::Positioning
-  Qt5::Network
-  Qt5::Qml
-  Qt5::Gui
-  Qt5::Quick
+  Qt6::Core
+  Qt6::Sql
+  Qt6::Positioning
+  Qt6::Network
+  Qt6::Qml
+  Qt6::Gui
+  Qt6::Quick
   cmark
   snowball
   qtcarto
@@ -153,17 +153,17 @@ set(alpine_toolkit_executable_files
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 
-qt5_generate_repc(alpine_toolkit_executable_files ${CMAKE_SOURCE_DIR}/service/service.rep REPLICA)
-qt5_add_resources(ressources ../ressources/alpine-toolkit.qrc)
+qt_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 # Not available
 # qtquick_compiler_add_resources(ressources ../ressources/alpine-toolkit.qrc)
 add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${ressources})
+qt_add_repc_replicas(alpine-toolkit ${CMAKE_SOURCE_DIR}/service/service.rep)
 target_link_libraries(alpine-toolkit
   alpine_toolkit_common
   alpine_toolkit
-  Qt5::Qml
-  Qt5::Sensors
-  Qt5::RemoteObjects
+  Qt6::Qml
+  Qt6::Sensors
+  Qt6::RemoteObjects
   )
 
 if(ANDROID)

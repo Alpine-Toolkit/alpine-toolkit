@@ -14,11 +14,11 @@
 
 add_executable(mapviewer main.cpp mapviewer.qrc)
 target_link_libraries(mapviewer
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Qml
-  Qt5::Quick
-  Qt5::QuickWidgets
-  Qt5::Svg
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Qml
+  Qt6::Quick
+  Qt6::QuickWidgets
+  Qt6::Svg
   alpine_toolkit_common
   )

@@ -177,28 +177,28 @@ if(NOT ANDROID)
     # Instruct CMake to run rcc automatically when needed.
     set(CMAKE_AUTORCC ON) # https://public.kitware.com/Bug/view.php?id=15074
 
-    find_package(Qt5Core REQUIRED)
-    find_package(Qt5Gui REQUIRED)
-    find_package(Qt5Network REQUIRED)
-    find_package(Qt5Positioning REQUIRED)
-    find_package(Qt5Qml REQUIRED)
-    find_package(Qt5Quick REQUIRED)
-    find_package(Qt5QuickWidgets REQUIRED)
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5Sensors REQUIRED)
-    find_package(Qt5Sql REQUIRED)
-    find_package(Qt5Svg REQUIRED)
-    find_package(Qt5Test REQUIRED)
-    find_package(Qt5RemoteObjects REQUIRED)
+    find_package(Qt6Core REQUIRED)
+    find_package(Qt6Gui REQUIRED)
+    find_package(Qt6Network REQUIRED)
+    find_package(Qt6Positioning REQUIRED)
+    find_package(Qt6Qml REQUIRED)
+    find_package(Qt6Quick REQUIRED)
+    find_package(Qt6QuickWidgets REQUIRED)
+    find_package(Qt6Widgets REQUIRED)
+    find_package(Qt6Sensors REQUIRED)
+    find_package(Qt6Sql REQUIRED)
+    find_package(Qt6Svg REQUIRED)
+    find_package(Qt6Test REQUIRED)
+    find_package(Qt6RemoteObjects REQUIRED)
 
     # Not available
-    # find_package(Qt5QuickCompiler)
+    # find_package(Qt6QuickCompiler)
 
     # only available for Android build
-    # find_package(Qt5AndroidExtras REQUIRED)
+    # find_package(Qt6AndroidExtras REQUIRED)
 
-    # find_package(Qt5Xml REQUIRED)
-    # find_package(Qt5WebView REQUIRED)
+    # find_package(Qt6Xml REQUIRED)
+    # find_package(Qt6WebView REQUIRED)
 
     # charts
     # quickcontrols
@@ -206,9 +206,9 @@ if(NOT ANDROID)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_QML_DEBUG") # Fixme: right way to do?
 
-    # INCLUDE_DIRECTORIES(${Qt5Core_INCLUDES})
-    # ADD_DEFINITIONS(${Qt5Core_DEFINITIONS})
-    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Core_EXECUTABLE_COMPILE_FLAGS}")
+    # INCLUDE_DIRECTORIES(${Qt6Core_INCLUDES})
+    # ADD_DEFINITIONS(${Qt6Core_DEFINITIONS})
+    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Core_EXECUTABLE_COMPILE_FLAGS}")
 
     # https://doc.qt.io/qt-6/portingguide.html
     # Disable use of C++ API deprecated in Qt 5.15

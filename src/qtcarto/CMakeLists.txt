@@ -9,7 +9,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
 
-include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
+include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
 
 ####################################################################################################
 
@@ -129,13 +129,13 @@ set(qtcarto_files
 add_library(qtcarto SHARED ${qtcarto_files})
 target_link_libraries(qtcarto
   alpine_toolkit_common
-  Qt5::Core
-  Qt5::Gui
-  Qt5::Network
-  Qt5::Positioning
-  Qt5::Qml
-  Qt5::Quick
-  Qt5::Sql
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Network
+  Qt6::Positioning
+  Qt6::Qml
+  Qt6::Quick
+  Qt6::Sql
   ${PROJ4_LIBRARIES}
   ${ZLIB_LIBRARY}
   ${PROTOBUF_LITE_LIBRARIES}

@@ -19,4 +19,4 @@ target_link_libraries(tile-loader
   )
 
 add_executable(spatialite-test spatialite-test.cpp)
-target_link_libraries(spatialite-test Qt5::Sql)
+target_link_libraries(spatialite-test Qt6::Sql)

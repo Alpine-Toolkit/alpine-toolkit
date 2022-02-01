@@ -7,7 +7,7 @@
 
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-include_directories(${Qt5Quick_PRIVATE_INCLUDE_DIRS})
+include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
 
 ####################################################################################################
 #
@@ -23,4 +23,4 @@ set(qtcarto_files
 )
 add_library(qmlqtcartoplugin SHARED ${qtcarto_files})
 # include QImage requires Qui
-target_link_libraries(qmlqtcartoplugin qtcarto Qt5::Qml Qt5::Quick Qt5::Positioning)
+target_link_libraries(qmlqtcartoplugin qtcarto Qt6::Qml Qt6::Quick Qt6::Positioning)

@@ -47,7 +47,7 @@ set(alpine_toolkit_service_files
   ${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
   )
 
-qt5_generate_repc(alpine_toolkit_service_files service.rep SOURCE)
 # add_library(alpine_toolkit_service SHARED ${alpine_toolkit_service_files})
 add_executable(alpine-toolkit-service ${alpine_toolkit_service_files})
-target_link_libraries(alpine-toolkit-service Qt5::Core Qt5::RemoteObjects)
+qt_add_repc_sources(alpine-toolkit-service service.rep)
+target_link_libraries(alpine-toolkit-service Qt6::Core Qt6::RemoteObjects)
