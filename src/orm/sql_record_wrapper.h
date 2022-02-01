@@ -50,6 +50,7 @@
 #include <QPointF>
 #include <QRect>
 #include <QRectF>
+// #include <QRegExp> // Qt6::Core5Compat
 #include <QRegularExpression>
 #include <QSize>
 #include <QSqlQuery>
@@ -225,9 +226,12 @@ public:
     return value(index).toRectF();
   }
 
+  // Fixme: Qt6
+  /*
   QRegExp toRegExp(int index = 0) const {
     return value(index).toRegExp();
   }
+  */
 
   QRegularExpression toRegularExpression(int index = 0) const {
     return value(index).toRegularExpression();
@@ -435,9 +439,12 @@ public:
     return value(index).toRectF();
   }
 
+  // Fixme: Qt6
+  /*
   QRegExp toRegExp(int index = 0) const {
     return value(index).toRegExp();
   }
+  */
 
   QRegularExpression toRegularExpression(int index = 0) const {
     return value(index).toRegularExpression();
