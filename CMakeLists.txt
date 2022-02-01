@@ -128,6 +128,8 @@ endif(NOT ANDROID)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# Qt 6 requires a compiler supporting C++ version 17 or newer.
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # https://gcc.gnu.org/projects/cxx-status.html
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
@@ -140,8 +142,6 @@ elseif(COMPILER_SUPPORTS_CXX17)
 else()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support.")
 endif()
-
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   set(CMAKE_CXX_FLAGS_COMMON  "-Wall -DSystemLinux -fdiagnostics-color=auto")
@@ -178,6 +178,8 @@ endif(CMAKE_BUILD_TYPE MATCHES "DEBUG")
 # Find Qt
 #
 
+# https://doc.qt.io/qt-6/cmake-get-started.html
+
 if(NOT ANDROID)
     # Find includes in corresponding build directories
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -186,19 +188,21 @@ if(NOT ANDROID)
     # Instruct CMake to run rcc automatically when needed.
     set(CMAKE_AUTORCC ON) # https://public.kitware.com/Bug/view.php?id=15074
 
-    find_package(Qt6Core REQUIRED)
-    find_package(Qt6Gui REQUIRED)
-    find_package(Qt6Network REQUIRED)
-    find_package(Qt6Positioning REQUIRED)
-    find_package(Qt6Qml REQUIRED)
-    find_package(Qt6Quick REQUIRED)
-    find_package(Qt6QuickWidgets REQUIRED)
-    find_package(Qt6Widgets REQUIRED)
-    find_package(Qt6Sensors REQUIRED)
-    find_package(Qt6Sql REQUIRED)
-    find_package(Qt6Svg REQUIRED)
-    find_package(Qt6Test REQUIRED)
-    find_package(Qt6RemoteObjects REQUIRED)
+    find_package(Qt6 REQUIRED COMPONENTS
+      Core
+      Gui
+      Network
+      Positioning
+      Qml
+      Quick
+      QuickWidgets
+      Widgets
+      Sensors
+      Sql
+      Svg
+      Test
+      RemoteObjects
+      )
 
     # Not available
     # find_package(Qt6QuickCompiler)
