@@ -879,9 +879,13 @@ QoSqlQuery::to_sql() const
     // MySQL syntax: LIMIT limit, offset
     // but also support ANSI
     if (m_limit > 0)
-      query += QLatin1String(" LIMIT ") + m_limit; // ?
+      // Fixme: Qt6
+      // query += QLatin1String(" LIMIT ") + m_limit; // ?
+      query += QString(" LIMIT %1").arg(m_limit); // ?
     if (m_offset > 0)
-      query += QLatin1String(" OFFSET ") + m_offset; // ?
+      // Fixme: Qt6
+      // query += QLatin1String(" OFFSET ") + m_offset; // ?
+      query += QString(" OFFSET %1").arg(m_limit); // ?
   }
 
   if (get_flags(Flags::SelectCount) or
