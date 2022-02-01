@@ -105,6 +105,8 @@ PlatformAbstraction::platform_name() const
     return QStringLiteral("FakeAndroid");
   case IOS:
     return QStringLiteral("IOS");
+  default:
+    return QStringLiteral("unknown");
   };
 }
 
