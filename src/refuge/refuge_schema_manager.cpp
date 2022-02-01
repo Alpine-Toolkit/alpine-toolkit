@@ -143,7 +143,7 @@ RefugeSchemaManager::refuge_list_property()
                                   &RefugeSchemaManager::refuge_list_property_at);
 }
 
-int
+qsizetype
 RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 {
   // Called several times
@@ -153,7 +153,7 @@ RefugeSchemaManager::refuge_list_property_count(QQmlListProperty<Refuge> * list)
 }
 
 Refuge *
-RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, int index)
+RefugeSchemaManager::refuge_list_property_at(QQmlListProperty<Refuge> * list, qsizetype index)
 {
   // Called several times
   // qATInfo() << "RefugeSchemaManager::refuge_list_property_at" << index;

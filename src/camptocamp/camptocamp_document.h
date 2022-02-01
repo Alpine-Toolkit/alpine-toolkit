@@ -350,8 +350,8 @@ public:
 
 private:
   void init();
-  static int image_list_property_count(QQmlListProperty<C2cImage> * list);
-  static C2cImage * image_list_property_at(QQmlListProperty<C2cImage> * list, int index);
+  static qsizetype image_list_property_count(QQmlListProperty<C2cImage> * list);
+  static C2cImage * image_list_property_at(QQmlListProperty<C2cImage> * list, qsizetype index);
 
 private:
   QList<C2cImagePtr> m_images;
@@ -384,8 +384,8 @@ public:
   void update(const QJsonDocumentPtr & json_document);
 
 private:
-  static int route_list_property_count(QQmlListProperty<C2cShortRoute> * list);
-  static C2cShortRoute * route_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index);
+  static qsizetype route_list_property_count(QQmlListProperty<C2cShortRoute> * list);
+  static C2cShortRoute * route_list_property_at(QQmlListProperty<C2cShortRoute> * list, qsizetype index);
 
 private:
   QList<C2cShortRoute> m_routes;

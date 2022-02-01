@@ -622,7 +622,7 @@ C2cRoute::image_list_property()
                                     &C2cRoute::image_list_property_at);
 }
 
-int
+qsizetype
 C2cRoute::image_list_property_count(QQmlListProperty<C2cImage> * list)
 {
   C2cRoute * route = qobject_cast<C2cRoute *>(list->object); // Fixme: func
@@ -630,7 +630,7 @@ C2cRoute::image_list_property_count(QQmlListProperty<C2cImage> * list)
 }
 
 C2cImage *
-C2cRoute::image_list_property_at(QQmlListProperty<C2cImage> * list, int index)
+C2cRoute::image_list_property_at(QQmlListProperty<C2cImage> * list, qsizetype index)
 {
   C2cRoute * route = qobject_cast<C2cRoute *>(list->object);
   return route->m_images[index].data();
@@ -698,7 +698,7 @@ C2cSearchResult::route_list_property()
                                          &C2cSearchResult::route_list_property_at);
 }
 
-int
+qsizetype
 C2cSearchResult::route_list_property_count(QQmlListProperty<C2cShortRoute> * list)
 {
   C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
@@ -706,7 +706,7 @@ C2cSearchResult::route_list_property_count(QQmlListProperty<C2cShortRoute> * lis
 }
 
 C2cShortRoute *
-C2cSearchResult::route_list_property_at(QQmlListProperty<C2cShortRoute> * list, int index)
+C2cSearchResult::route_list_property_at(QQmlListProperty<C2cShortRoute> * list, qsizetype index)
 {
   C2cSearchResult * search_result = qobject_cast<C2cSearchResult *>(list->object);
   C2cShortRoute & route = search_result->m_routes[index];

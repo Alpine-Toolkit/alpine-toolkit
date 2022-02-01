@@ -330,7 +330,7 @@ C2cQmlClient::document_on_cache_list_property()
                                        &C2cQmlClient::document_on_cache_list_property_at);
 }
 
-int
+qsizetype
 C2cQmlClient::document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list)
 {
   // Called several times
@@ -340,7 +340,7 @@ C2cQmlClient::document_on_cache_list_property_count(QQmlListProperty<C2cDocument
 }
 
 C2cDocument *
-C2cQmlClient::document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, int index)
+C2cQmlClient::document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, qsizetype index)
 {
   // Called several times
   // qATInfo() << "C2cQmlClient::document_on_cache_list_property_at" << index;

@@ -84,8 +84,8 @@ private:
   // QQmlListProperty can only be used for lists of QObject-derived object pointers.
   // Refuges must be registered
   QQmlListProperty<Refuge> refuge_list_property();
-  static int refuge_list_property_count(QQmlListProperty<Refuge> * list);
-  static Refuge * refuge_list_property_at(QQmlListProperty<Refuge> * list, int index);
+  static qsizetype refuge_list_property_count(QQmlListProperty<Refuge> * list);
+  static Refuge * refuge_list_property_at(QQmlListProperty<Refuge> * list, qsizetype index);
   void sort();
 
 private:

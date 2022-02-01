@@ -117,8 +117,8 @@ private:
   void load_document(unsigned int document_id, bool use_cache, void (C2cClient::*loader)(unsigned int));
 
   QQmlListProperty<C2cDocument> document_on_cache_list_property();
-  static int document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list);
-  static C2cDocument * document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, int index);
+  static qsizetype document_on_cache_list_property_count(QQmlListProperty<C2cDocument> * list);
+  static C2cDocument * document_on_cache_list_property_at(QQmlListProperty<C2cDocument> * list, qsizetype index);
 
 signals:
   void receivedDocument(unsigned int document_id);
