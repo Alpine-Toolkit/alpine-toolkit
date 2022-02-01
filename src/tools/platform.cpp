@@ -85,6 +85,8 @@ QcPlatform::architecture_name() const
     return QStringLiteral("arm");
   case ARM_64:
     return QStringLiteral("arm_64");
+  default:
+    return QStringLiteral("unknown");
   }
   // -Wreturn-type
 }
