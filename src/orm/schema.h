@@ -152,7 +152,8 @@ public:
 
   QoSqlField to_sql_field() const;
 
-  int qt_type_id() const { return QMetaType::type(m_qt_type.toLatin1()); } // Fixme: cache ?
+  // Fixme: https://www.qt.io/blog/whats-new-in-qmetatype-qvariant
+  int qt_type_id() const { return QMetaType::fromName(m_qt_type.toLatin1()).id(); } // Fixme: cache ?
   QVariant * variant() const { return new QVariant(qt_type_id()); };
   // QMetaType qt_metatype() const { return QMetaType(qt_type_id()); } // private ctor ?
   // void * create() const { return QMetaType::create(qt_type_id()); }
