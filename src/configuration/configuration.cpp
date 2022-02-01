@@ -78,7 +78,7 @@ QaConfig::QaConfig()
 {
   load_settings();
 
-  m_is_mockup_enabled = get_env(QLatin1Literal("MOCKUP")) == QLatin1Literal("TRUE");
+  m_is_mockup_enabled = get_env(QLatin1String("MOCKUP")) == QLatin1String("TRUE");
 
   // m_is_storage_enabled = QDir(m_application_user_directory).exists();
 }
@@ -89,7 +89,7 @@ QaConfig::~QaConfig()
 QString
 QaConfig::get_env(const QString name) const
 {
-  QString env_name = QLatin1Literal("ALPINE_TOOLKIT_") + name;
+  QString env_name = QLatin1String("ALPINE_TOOLKIT_") + name;
   QString value = m_env.value(env_name);
   qATInfo() << "Environment variable: " << env_name << "=" << value;
 
@@ -100,8 +100,8 @@ void
 QaConfig::create_application_user_directory()
 {
   // Could require Android permission
-  create_directory(m_application_user_directory, QLatin1Literal("application user"));
-  create_directory(wmts_token_directory(), QLatin1Literal("wmts token"));
+  create_directory(m_application_user_directory, QLatin1String("application user"));
+  create_directory(wmts_token_directory(), QLatin1String("wmts token"));
 
   m_is_storage_enabled = true;
 }
@@ -123,8 +123,8 @@ QaConfig::create_directory(const QString path, const QString label) const
   QDir directory = path;
   if (not directory.exists()) {
     if (not directory.mkpath(directory.absolutePath()))
-      qWarning() << QLatin1Literal("Cannot create") << label << QLatin1Literal("directory") << path;
-    qATInfo() << QLatin1Literal("Created") << label << QLatin1Literal("directory") << path;
+      qWarning() << QLatin1String("Cannot create") << label << QLatin1String("directory") << path;
+    qATInfo() << QLatin1String("Created") << label << QLatin1String("directory") << path;
   }
 }
 
@@ -140,11 +140,11 @@ QaConfig::wmts_cache_directory() const
 {
 #ifdef ON_LINUX
   QString cache_path = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
-  QString path = QDir(cache_path).absoluteFilePath(QLatin1Literal("QtCarto"));
+  QString path = QDir(cache_path).absoluteFilePath(QLatin1String("QtCarto"));
 #endif
 
 #ifdef ON_ANDROID
-  QString path = join_application_user_directory(QLatin1Literal("wmts_cache"));
+  QString path = join_application_user_directory(QLatin1String("wmts_cache"));
 #endif
 
   qATInfo() << "wmts_cache_directory" << path;
@@ -155,7 +155,7 @@ QaConfig::wmts_cache_directory() const
 const QString
 QaConfig::wmts_token_directory() const
 {
-  QString path = join_application_user_directory(QLatin1Literal("wmts_token"));
+  QString path = join_application_user_directory(QLatin1String("wmts_token"));
   qATInfo() << "wmts_token_directory" << path;
   return path;
 }
@@ -164,7 +164,7 @@ const QString
 QaConfig::geoportail_token_path() const
 {
   // Fixme: Hide license
-  QString path = QDir(wmts_token_directory()).absoluteFilePath(QLatin1Literal("geoportail-license.json"));
+  QString path = QDir(wmts_token_directory()).absoluteFilePath(QLatin1String("geoportail-license.json"));
   qATInfo() << "geoportail_token_path";
   return path;
 }

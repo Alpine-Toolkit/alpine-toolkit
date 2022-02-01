@@ -53,8 +53,8 @@ QcAustriaLayer::url(const QcTileSpec & tile_spec) const
 
   return QUrl(QStringLiteral("http://maps.wien.gv.at/basemap/") +
               name() + QLatin1Char('/') +
-              QLatin1Literal("normal/") +
-              QLatin1Literal("google3857/") +
+              QStringLiteral("normal/") +
+              QStringLiteral("google3857/") +
               QString::number(tile_spec.level()) + QLatin1Char('/') +
               QString::number(tile_spec.x()) + QLatin1Char('/') +
               QString::number(tile_spec.y()) +
@@ -76,9 +76,9 @@ QcAustriaPlugin::QcAustriaPlugin()
   add_layer(new QcAustriaLayer(this,
                                ++map_id, // 1
                                1,
-                               QLatin1Literal("Standard Map"),
-                               QLatin1Literal("geolandbasemap"),
-                               QLatin1Literal("png")
+                               QStringLiteral("Standard Map"),
+                               QStringLiteral("geolandbasemap"),
+                               QStringLiteral("png")
                                ));
 }
 

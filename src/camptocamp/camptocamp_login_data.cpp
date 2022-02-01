@@ -115,7 +115,7 @@ QDebug operator<<(QDebug debug, const C2cLoginData & login_data)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("C2cLoginData(") << '\n'; // std::endl
+  debug.nospace() << QStringLiteral("C2cLoginData(") << '\n'; // std::endl
   debug << "  id: " << login_data.id() << '\n';
   debug << "  username: " << login_data.username() << '\n';
   debug << "  expire: " << login_data.expire() << '\n';

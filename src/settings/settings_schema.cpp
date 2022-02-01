@@ -438,11 +438,11 @@ operator<<(QDebug debug, const Directory & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Directory(");
+  debug.nospace() << QStringLiteral("Directory(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.parent();
   debug << ')';
 
@@ -458,11 +458,11 @@ operator<<(QDebug debug, const DirectoryPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DirectoryPtr ->");
+  debug.noquote() << QStringLiteral("DirectoryPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -555,9 +555,9 @@ DirectoryModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[PARENT] = QLatin1Literal("parent").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[PARENT] = QStringLiteral("parent").latin1();
 
   return role_names;
 }
@@ -1031,13 +1031,13 @@ operator<<(QDebug debug, const Key & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Key(");
+  debug.nospace() << QStringLiteral("Key(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.directory_id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.value();
   debug << ')';
 
@@ -1063,11 +1063,11 @@ operator<<(QDebug debug, const KeyPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("KeyPtr ->");
+  debug.noquote() << QStringLiteral("KeyPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -1162,10 +1162,10 @@ KeyModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[DIRECTORY_ID] = QLatin1Literal("directory_id").latin1();
-  role_names[VALUE] = QLatin1Literal("value").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[DIRECTORY_ID] = QStringLiteral("directory_id").latin1();
+  role_names[VALUE] = QStringLiteral("value").latin1();
 
   return role_names;
 }

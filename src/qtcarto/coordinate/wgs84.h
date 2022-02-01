@@ -116,15 +116,15 @@ class QC_EXPORT QcWgs84Projection : public QcProjection
 
  public:
   QcWgs84Projection()
-    : QcProjection(QLatin1Literal("epsg:4326"),
-                   QLatin1Literal("WGS 84"),
+    : QcProjection(QStringLiteral("epsg:4326"),
+                   QStringLiteral("WGS 84"),
                    QcVectorDouble(), // Fixme: not projection, ellipsoidal cs
                    // QcVectorDouble(),
                    // QcVectorDouble(),
                    QcInterval2DDouble(),
                    QcInterval2DDouble(westward_longitude, eastward_longitude,
                                       south_pole_latitude, north_pole_latitude),
-                   QLatin1Literal("degrees"),
+                   QStringLiteral("degrees"),
                    ProjectionSurface::Spherical,
                    PreserveBit::PreserveAll)
     {}

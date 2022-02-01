@@ -166,7 +166,7 @@ QcFileTileCache::QcFileTileCache(const QString & directory)
 
   load_tiles();
 
-  QString offline_cache_directory = m_directory + QDir::separator() + QLatin1Literal("offline");
+  QString offline_cache_directory = m_directory + QDir::separator() + QStringLiteral("offline");
   m_offline_cache = new QcOfflineTileCache(offline_cache_directory);
 }
 
@@ -218,8 +218,8 @@ QcFileTileCache::clear_all()
   m_disk_cache.clear();
 
   QStringList string_list;
-  string_list << QLatin1Literal("*-*-*-*.*"); // tile pattern
-  string_list << QLatin1Literal("queue?");
+  string_list << QStringLiteral("*-*-*-*.*"); // tile pattern
+  string_list << QStringLiteral("queue?");
   QDir directory(m_directory);
   directory.setNameFilters(string_list);
   directory.setFilter(QDir::Files);
@@ -231,14 +231,14 @@ QString
 QcFileTileCache::queue_filename(int i) const
 {
   // queue%u
-  return QDir(m_directory).filePath(QLatin1Literal("queue") + QString::number(i));
+  return QDir(m_directory).filePath(QStringLiteral("queue") + QString::number(i));
 }
 
 void
 QcFileTileCache::load_tiles()
 {
   QStringList formats;
-  formats << QLatin1Literal("*.*");
+  formats << QStringLiteral("*.*");
 
   QDir directory(m_directory);
   QStringList files = directory.entryList(formats, QDir::Files);
@@ -420,7 +420,7 @@ QcFileTileCache::load_from_disk(const QcTileSpec & tile_spec, const QString & fi
     if (tile_texture) // Fixme: when ? memory overflow ?
       return tile_texture;
   } else
-    handle_error(tile_spec, QLatin1Literal("Problem with tile image"));
+    handle_error(tile_spec, QStringLiteral("Problem with tile image"));
 
   // else
   return QSharedPointer<QcTileTexture>(nullptr);
@@ -438,7 +438,7 @@ QcFileTileCache::load_from_memory(const QSharedPointer<QcCachedTileMemory> & til
     if (tile_texture)
       return tile_texture;
   } else
-    handle_error(tile_spec, QLatin1Literal("Problem with tile image"));
+    handle_error(tile_spec, QStringLiteral("Problem with tile image"));
 
   // else
  return QSharedPointer<QcTileTexture>(nullptr);

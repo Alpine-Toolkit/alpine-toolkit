@@ -40,7 +40,7 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcVectorDouble & vector)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcVectorDouble(");
+  debug.nospace() << QStringLiteral("QcVectorDouble(");
   debug << vector.x();
   debug << separator;
   debug << vector.y();
@@ -55,7 +55,7 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcVector3DDouble & vector)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcVector3DDouble(");
+  debug.nospace() << QStringLiteral("QcVector3DDouble(");
   debug << vector.x();
   debug << separator;
   debug << vector.y();
@@ -72,7 +72,7 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcVector4DDouble & vector)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcVector4DDouble(");
+  debug.nospace() << QStringLiteral("QcVector4DDouble(");
   debug << vector.x();
   debug << separator;
   debug << vector.y();

@@ -58,7 +58,7 @@ QcInterval<T>::QcInterval(T inf, T sup)
     m_sup = sup;
   }
   else {
-    qQCCritical() << QLatin1Literal("inf > sup") << inf << sup;
+    qQCCritical() << QStringLiteral("inf > sup") << inf << sup;
     // throw std::invalid_argument("inf > sup");
   }
 }

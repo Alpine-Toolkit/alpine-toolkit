@@ -81,7 +81,7 @@ void
 QcOfflineTileCache::clear_all()
 {
   QStringList formats;
-  formats << QLatin1Literal("*.*");
+  formats << QStringLiteral("*.*");
 
   // Fixme:
   for (int level = 0; level < 20; level++) {
@@ -99,7 +99,7 @@ void
 QcOfflineTileCache::load_tiles()
 {
   QStringList formats;
-  formats << QLatin1Literal("*.*");
+  formats << QStringLiteral("*.*");
 
   // Fixme:
   QDir root_directory(m_directory);

@@ -56,21 +56,21 @@ QcDebugData::to_json() const
   QJsonObject root_object;
 
   QcPlatform & platform = QcPlatform::instance();
-  root_object[QLatin1Literal("platform")] = platform.to_json();
+  root_object[QStringLiteral("platform")] = platform.to_json();
 
   QJsonObject version_object;
-  version_object[QLatin1Literal("alpine_toolkit_version")] = ALPINE_TOOLKIT_VERSION.toString();
+  version_object[QStringLiteral("alpine_toolkit_version")] = ALPINE_TOOLKIT_VERSION.toString();
   QJsonObject qt_object;
-  qt_object[QLatin1Literal("qt_version")] = qVersion();
-  qt_object[QLatin1Literal("prefix_path")] = QLibraryInfo::location(QLibraryInfo::PrefixPath);
-  qt_object[QLatin1Literal("is_debug_build")] = QLibraryInfo::isDebugBuild();
-  version_object[QLatin1Literal("qt")] = qt_object;
-  root_object[QLatin1Literal("version")] = version_object;
+  qt_object[QStringLiteral("qt_version")] = qVersion();
+  qt_object[QStringLiteral("prefix_path")] = QLibraryInfo::location(QLibraryInfo::PrefixPath);
+  qt_object[QStringLiteral("is_debug_build")] = QLibraryInfo::isDebugBuild();
+  version_object[QStringLiteral("qt")] = qt_object;
+  root_object[QStringLiteral("version")] = version_object;
 
   QaConfig * config = QaConfig::instance();
   QJsonObject config_object;
-  config_object[QLatin1Literal("application_user_directory")] = config->application_user_directory();
-  root_object[QLatin1Literal("config")] = config_object;
+  config_object[QStringLiteral("application_user_directory")] = config->application_user_directory();
+  root_object[QStringLiteral("config")] = config_object;
 
   // To add:
   //   locale / translation

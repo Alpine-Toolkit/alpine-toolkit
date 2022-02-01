@@ -37,7 +37,7 @@
 
 constexpr quint8 VERSION = 1;
 constexpr size_t POSITION_SEEK = 1;
-QLatin1Literal HEADER_FORMAT("BHHHHHB");
+QStringLiteral HEADER_FORMAT("BHHHHHB");
 
 size_t
 QcRoundRobinDatabase::compute_slot_size(const QString & slot_format)

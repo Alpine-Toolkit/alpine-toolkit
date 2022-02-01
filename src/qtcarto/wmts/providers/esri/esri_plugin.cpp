@@ -91,10 +91,10 @@ QcEsriPlugin::QcEsriPlugin()
   add_layer(new QcEsriLayer(this,
                             ++map_id, // 1
                             1,
-                            QLatin1Literal("World Topo Map"),
-                            QLatin1Literal("wolrd_topo_map"),
-                            QLatin1Literal("jpeg"), // Fixme
-                            QLatin1Literal("server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS")
+                            QStringLiteral("World Topo Map"),
+                            QStringLiteral("wolrd_topo_map"),
+                            QStringLiteral("jpeg"), // Fixme
+                            QStringLiteral("server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS")
                             ));
 }
 

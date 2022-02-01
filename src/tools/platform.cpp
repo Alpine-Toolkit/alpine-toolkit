@@ -60,13 +60,13 @@ QcPlatform::os_name() const
 {
   switch (m_os_type) {
   case LinuxOS:
-    return QLatin1Literal("linux");
+    return QStringLiteral("linux");
   case AndroidOS:
-    return QLatin1Literal("android");
+    return QStringLiteral("android");
   case WindowsOS:
-    return QLatin1Literal("windows");
+    return QStringLiteral("windows");
   case OsxOS:
-    return QLatin1Literal("osx");
+    return QStringLiteral("osx");
   }
   // -Wreturn-type
 }
@@ -76,13 +76,13 @@ QcPlatform::architecture_name() const
 {
   switch (m_architecture_type) {
   case X86:
-    return QLatin1Literal("x86");
+    return QStringLiteral("x86");
   case X86_64:
-    return QLatin1Literal("x86_64");
+    return QStringLiteral("x86_64");
   case ARM:
-    return QLatin1Literal("arm");
+    return QStringLiteral("arm");
   case ARM_64:
-    return QLatin1Literal("arm_64");
+    return QStringLiteral("arm_64");
   }
   // -Wreturn-type
 }
@@ -91,19 +91,19 @@ QJsonObject
 QcPlatform::to_json() const
 {
   QJsonObject platform_object;
-  platform_object[QLatin1Literal("os")] = os_name();
-  platform_object[QLatin1Literal("architecture")] = architecture_name();
-  platform_object[QLatin1Literal("build_abi")] = QSysInfo::buildAbi();
-  platform_object[QLatin1Literal("build_cpu_architecture")] = QSysInfo::buildCpuArchitecture();
-  platform_object[QLatin1Literal("current_cpu_architecture")] = QSysInfo::currentCpuArchitecture();
-  platform_object[QLatin1Literal("product_type")] = QSysInfo::productType();
-  platform_object[QLatin1Literal("product_version")] = QSysInfo::productVersion();
-  platform_object[QLatin1Literal("pretty_product_name")] = QSysInfo::prettyProductName();
+  platform_object[QStringLiteral("os")] = os_name();
+  platform_object[QStringLiteral("architecture")] = architecture_name();
+  platform_object[QStringLiteral("build_abi")] = QSysInfo::buildAbi();
+  platform_object[QStringLiteral("build_cpu_architecture")] = QSysInfo::buildCpuArchitecture();
+  platform_object[QStringLiteral("current_cpu_architecture")] = QSysInfo::currentCpuArchitecture();
+  platform_object[QStringLiteral("product_type")] = QSysInfo::productType();
+  platform_object[QStringLiteral("product_version")] = QSysInfo::productVersion();
+  platform_object[QStringLiteral("pretty_product_name")] = QSysInfo::prettyProductName();
   if (on_windows())
-    platform_object[QLatin1Literal("windows_version")] = QSysInfo::windowsVersion();
+    platform_object[QStringLiteral("windows_version")] = QSysInfo::windowsVersion();
   if (on_osx())
-    platform_object[QLatin1Literal("osx_version")] = QSysInfo::macVersion();
-  // platform_object[QLatin1Literal("pretty_product_name")] = QSslSocket::supportsSsl();
+    platform_object[QStringLiteral("osx_version")] = QSysInfo::macVersion();
+  // platform_object[QStringLiteral("pretty_product_name")] = QSslSocket::supportsSsl();
 
   // QGuiApplication * application = static_cast<QGuiApplication *>(QGuiApplication::instance());
   QApplication * application = static_cast<QApplication *>(QApplication::instance());
@@ -111,22 +111,22 @@ QcPlatform::to_json() const
   QJsonObject screens_object;
   for (const auto * screen : application->screens()) {
     QJsonObject screen_object;
-    screen_object[QLatin1Literal("device_pixel_ratio")] = screen->devicePixelRatio();
+    screen_object[QStringLiteral("device_pixel_ratio")] = screen->devicePixelRatio();
     QSize resolution = screen->size();
     QSizeF physical_size = screen->physicalSize();
-    screen_object[QLatin1Literal("resolution")] =
-      QString::number(resolution.width()) + 'x' + QString::number(resolution.height()) + QLatin1Literal(" px");
-    screen_object[QLatin1Literal("screen_format_px")] = resolution.width() / float(resolution.height());
-    screen_object[QLatin1Literal("physical_size")] =
-      QString::number(physical_size.width()) + 'x' + QString::number(physical_size.height()) + QLatin1Literal(" mm");
-    screen_object[QLatin1Literal("screen_format_mm")] = physical_size.width() / physical_size.height();
-    screen_object[QLatin1Literal("physical_dots_per_inch_x")] = screen->physicalDotsPerInchX();
-    screen_object[QLatin1Literal("physical_dots_per_inch_y")] = screen->physicalDotsPerInchY();
-    screen_object[QLatin1Literal("logical_dots_per_inch_x")] = screen->logicalDotsPerInchX();
-    screen_object[QLatin1Literal("logical_dots_per_inch_y")] = screen->logicalDotsPerInchY();
+    screen_object[QStringLiteral("resolution")] =
+      QString::number(resolution.width()) + 'x' + QString::number(resolution.height()) + QStringLiteral(" px");
+    screen_object[QStringLiteral("screen_format_px")] = resolution.width() / float(resolution.height());
+    screen_object[QStringLiteral("physical_size")] =
+      QString::number(physical_size.width()) + 'x' + QString::number(physical_size.height()) + QStringLiteral(" mm");
+    screen_object[QStringLiteral("screen_format_mm")] = physical_size.width() / physical_size.height();
+    screen_object[QStringLiteral("physical_dots_per_inch_x")] = screen->physicalDotsPerInchX();
+    screen_object[QStringLiteral("physical_dots_per_inch_y")] = screen->physicalDotsPerInchY();
+    screen_object[QStringLiteral("logical_dots_per_inch_x")] = screen->logicalDotsPerInchX();
+    screen_object[QStringLiteral("logical_dots_per_inch_y")] = screen->logicalDotsPerInchY();
     screens_object[screen->name()] = screen_object;
   }
-  platform_object[QLatin1Literal("screens")] = screens_object;
+  platform_object[QStringLiteral("screens")] = screens_object;
 
   return platform_object;
 }

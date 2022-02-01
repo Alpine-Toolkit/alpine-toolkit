@@ -153,13 +153,13 @@ qHash(const QcTileSpec & tile_spec)
   result += ((tile_spec.x() * 23) % 31) << 15;
   result += ((tile_spec.y() * 29) % 31) << 20;
   // QString filename = tile_spec.plugin();
-  // filename += QLatin1Literal("-");
+  // filename += QStringLiteral("-");
   // filename += QString::number(tile_spec.map_id());
-  // filename += QLatin1Literal("-");
+  // filename += QStringLiteral("-");
   // filename += QString::number(tile_spec.level());
-  // filename += QLatin1Literal("-");
+  // filename += QStringLiteral("-");
   // filename += QString::number(tile_spec.x());
-  // filename += QLatin1Literal("-");
+  // filename += QStringLiteral("-");
   // filename += QString::number(tile_spec.y());
   // unsigned int result = qHash(filename);
   return result;
@@ -170,13 +170,13 @@ operator<<(QDebug debug, const QcTileSpec & tile_spec)
 {
   // Fixme: litteral, arg OR s <<
   QString s = tile_spec.plugin();
-  s += QLatin1Literal("-");
+  s += QStringLiteral("-");
   s += QString::number(tile_spec.map_id());
-  s += QLatin1Literal("-");
+  s += QStringLiteral("-");
   s += QString::number(tile_spec.level());
-  s += QLatin1Literal("-");
+  s += QStringLiteral("-");
   s += QString::number(tile_spec.x());
-  s += QLatin1Literal("-");
+  s += QStringLiteral("-");
   s += QString::number(tile_spec.y());
   debug << s;
   return debug;

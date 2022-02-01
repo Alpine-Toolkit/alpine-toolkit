@@ -266,7 +266,7 @@ void
 Application::write_debug_data() const
 {
   QcDebugData debug_data;
-  debug_data.write_json(m_config->join_application_user_directory(QLatin1Literal("debug_data.json")));
+  debug_data.write_json(m_config->join_application_user_directory(QStringLiteral("debug_data.json")));
   qATInfo() << debug_data.to_json();
 }
 
@@ -359,16 +359,16 @@ Application::set_context_properties()
   context->setContextProperty(QLatin1String("platform_abstraction"), m_platform_abstraction);
 
   context->setContextProperty(QLatin1String("service"), &m_service_client);
-  context->setContextProperty(QLatin1Literal("ephemeride"), &m_ephemeride);
+  context->setContextProperty(QStringLiteral("ephemeride"), &m_ephemeride);
 
   // Lazy loading
   QString third_party_licenses_json = ":/data/third_party_licenses.json"; // embedded in qrc
   m_third_party_license_schema_manager.set_json_path(third_party_licenses_json);
-  context->setContextProperty(QLatin1Literal("third_party_license_schema_manager"), &m_third_party_license_schema_manager);
+  context->setContextProperty(QStringLiteral("third_party_license_schema_manager"), &m_third_party_license_schema_manager);
 
   QString refuge_json = ":/data/refuges.json"; // embedded in qrc
   m_refuge_schema_manager.load_json(refuge_json);
-  context->setContextProperty(QLatin1Literal("refuge_schema_manager"), &m_refuge_schema_manager);
+  context->setContextProperty(QStringLiteral("refuge_schema_manager"), &m_refuge_schema_manager);
 
   // Create Bleau Model
   // BleauDB * bleaudb = new BleauDB();

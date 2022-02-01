@@ -38,7 +38,7 @@
 /**************************************************************************************************/
 
 QcMapPathEditor::QcMapPathEditor(QcMapView * map_view)
-  : QcMapEventClient(QLatin1Literal("path-editor")),
+  : QcMapEventClient(QStringLiteral("path-editor")),
     m_map_view(map_view)
 {}
 

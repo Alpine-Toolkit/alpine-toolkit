@@ -990,31 +990,31 @@ operator<<(QDebug debug, const Refuge & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Refuge(");
+  debug.nospace() << QStringLiteral("Refuge(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.short_name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.altitude();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.description();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.owner();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.guardian();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.picture_path();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.number_of_places();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.region();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.url();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.phone();
   debug << ')';
 
@@ -1030,11 +1030,11 @@ operator<<(QDebug debug, const RefugePtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("RefugePtr ->");
+  debug.noquote() << QStringLiteral("RefugePtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -1149,20 +1149,20 @@ RefugeModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[SHORT_NAME] = QLatin1Literal("short_name").latin1();
-  role_names[ALTITUDE] = QLatin1Literal("altitude").latin1();
-  role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
-  role_names[OWNER] = QLatin1Literal("owner").latin1();
-  role_names[GUARDIAN] = QLatin1Literal("guardian").latin1();
-  role_names[PICTURE_PATH] = QLatin1Literal("picture_path").latin1();
-  role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
-  role_names[NUMBER_OF_PLACES] = QLatin1Literal("number_of_places").latin1();
-  role_names[REGION] = QLatin1Literal("region").latin1();
-  role_names[URL] = QLatin1Literal("url").latin1();
-  role_names[PHONE] = QLatin1Literal("phone").latin1();
-  role_names[FIRST_LETTER] = QLatin1Literal("first_letter").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[SHORT_NAME] = QStringLiteral("short_name").latin1();
+  role_names[ALTITUDE] = QStringLiteral("altitude").latin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
+  role_names[OWNER] = QStringLiteral("owner").latin1();
+  role_names[GUARDIAN] = QStringLiteral("guardian").latin1();
+  role_names[PICTURE_PATH] = QStringLiteral("picture_path").latin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
+  role_names[NUMBER_OF_PLACES] = QStringLiteral("number_of_places").latin1();
+  role_names[REGION] = QStringLiteral("region").latin1();
+  role_names[URL] = QStringLiteral("url").latin1();
+  role_names[PHONE] = QStringLiteral("phone").latin1();
+  role_names[FIRST_LETTER] = QStringLiteral("first_letter").latin1();
 
   return role_names;
 }

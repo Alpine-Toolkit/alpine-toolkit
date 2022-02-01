@@ -36,7 +36,7 @@ QcArticWebMapLayer::QcArticWebMapLayer(QcArticWebMapPlugin * plugin,
                                        int position,
                                        const QString & title,
                                        const QString & name)
-  : QcWmtsPluginLayer(plugin, map_id, position, title, name, QLatin1Literal("png"))
+  : QcWmtsPluginLayer(plugin, map_id, position, title, name, QStringLiteral("png"))
 {}
 
 QcArticWebMapLayer::QcArticWebMapLayer(const QcArticWebMapLayer & other)
@@ -72,7 +72,7 @@ constexpr int TILE_SIZE = 256;
 
 QcArticWebMapPlugin::QcArticWebMapPlugin()
   : QcWmtsPlugin(PLUGIN_NAME, PLUGIN_TITLE,
-                 new  QcTileMatrixSet(QcProjection::by_srid(QLatin1Literal("epsg:3571")),
+                 new  QcTileMatrixSet(QcProjection::by_srid(QStringLiteral("epsg:3571")),
                                       QcVectorDouble(1., -1.),
                                       QcVectorDouble(-HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER), // Fixme: use projection
                                       QcWgsCoordinate(180., 90.),
@@ -83,8 +83,8 @@ QcArticWebMapPlugin::QcArticWebMapPlugin()
   add_layer(new QcArticWebMapLayer(this,
                                    ++map_id, // 1
                                    1,
-                                   QLatin1Literal("Bearing Sea Map ESPG:3571"),
-                                   QLatin1Literal("espg-3571")));
+                                   QStringLiteral("Bearing Sea Map ESPG:3571"),
+                                   QStringLiteral("espg-3571")));
 }
 
 QcArticWebMapPlugin::~QcArticWebMapPlugin()

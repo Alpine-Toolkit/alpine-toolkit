@@ -40,15 +40,15 @@ QString
 tile_spec_to_filename(const QcTileSpec & tile_spec, const QString & format, const QString & directory)
 {
   QString filename = tile_spec.plugin(); // Fixme: litteral, arg
-  filename += QLatin1Literal("-");
+  filename += QStringLiteral("-");
   filename += QString::number(tile_spec.map_id());
-  filename += QLatin1Literal("-");
+  filename += QStringLiteral("-");
   filename += QString::number(tile_spec.level());
-  filename += QLatin1Literal("-");
+  filename += QStringLiteral("-");
   filename += QString::number(tile_spec.x());
-  filename += QLatin1Literal("-");
+  filename += QStringLiteral("-");
   filename += QString::number(tile_spec.y());
-  filename += QLatin1Literal(".");
+  filename += QStringLiteral(".");
   filename += format;
 
   return QDir(directory).filePath(filename);

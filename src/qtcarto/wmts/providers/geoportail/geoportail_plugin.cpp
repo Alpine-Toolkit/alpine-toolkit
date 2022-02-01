@@ -139,41 +139,41 @@ QcGeoportailPlugin::QcGeoportailPlugin(const QcGeoportailWmtsLicense & license)
                                   ++map_id, // 1
                                   2,
                                   QStringLiteral("Carte topographique"),
-                                  QLatin1Literal("GEOGRAPHICALGRIDSYSTEMS.MAPS"), // .SCAN25TOUR
-                                  QLatin1Literal("jpeg"),
-                                  QLatin1Literal("normal")
+                                  QStringLiteral("GEOGRAPHICALGRIDSYSTEMS.MAPS"), // .SCAN25TOUR
+                                  QStringLiteral("jpeg"),
+                                  QStringLiteral("normal")
                                   ));
   add_layer(new QcGeoportailLayer(this,
                                   ++map_id, // 2
                                   3,
                                   QStringLiteral("Vue aérienne"),
-                                  QLatin1Literal("ORTHOIMAGERY.ORTHOPHOTOS"),
-                                  QLatin1Literal("jpeg"),
-                                  QLatin1Literal("normal")
+                                  QStringLiteral("ORTHOIMAGERY.ORTHOPHOTOS"),
+                                  QStringLiteral("jpeg"),
+                                  QStringLiteral("normal")
                                   ));
   add_layer(new QcGeoportailLayer(this,
                                   ++map_id, // 0
                                   1,
                                   QStringLiteral("Carte"),
-                                  QLatin1Literal("GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD"),
-                                  QLatin1Literal("jpeg"),
-                                  QLatin1Literal("normal")
+                                  QStringLiteral("GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD"),
+                                  QStringLiteral("jpeg"),
+                                  QStringLiteral("normal")
                                   ));
   add_layer(new QcGeoportailLayer(this,
                                   ++map_id, // 3
                                   4,
                                   QStringLiteral("Routes"),
-                                  QLatin1Literal("TRANSPORTNETWORKS.ROADS"),
-                                  QLatin1Literal("png"),
-                                  QLatin1Literal("normal")
+                                  QStringLiteral("TRANSPORTNETWORKS.ROADS"),
+                                  QStringLiteral("png"),
+                                  QStringLiteral("normal")
                                   ));
   add_layer(new QcGeoportailLayer(this,
                                   ++map_id, // 4
                                   5,
                                   QStringLiteral("Parcelles cadastrales"),
-                                  QLatin1Literal("CADASTRALPARCELS.PARCELS"),
-                                  QLatin1Literal("png"),
-                                  QLatin1Literal("bdparcellaire")
+                                  QStringLiteral("CADASTRALPARCELS.PARCELS"),
+                                  QStringLiteral("png"),
+                                  QStringLiteral("bdparcellaire")
                                   ));
 
   // QVector<QcWgsCoordinate> coordinates;
@@ -185,18 +185,18 @@ QcGeoportailPlugin::QcGeoportailPlugin(const QcGeoportailWmtsLicense & license)
   // QcLocationServiceQuery query;
   // query.set_request_id(QString::number(1));
   // query.set_maximum_responses(1);
-  // query.set_srs_name(QLatin1Literal("epsg:4326"));
-  // query.set_country_code(QLatin1Literal("StreetAddress"));
-  // // QLatin1Literal("PositionOfInterest")
-  // // QLatin1Literal("Administratif")
-  // // QLatin1Literal("CadastralParcel")
+  // query.set_srs_name(QStringLiteral("epsg:4326"));
+  // query.set_country_code(QStringLiteral("StreetAddress"));
+  // // QStringLiteral("PositionOfInterest")
+  // // QStringLiteral("Administratif")
+  // // QStringLiteral("CadastralParcel")
   // query.set_free_form_address("7 rue jean baillet 95870 bezons");
   // m_location_reply = geocode_request(query);
 
   // QcLocationServiceReverseQuery query;
   // query.set_request_id(QString::number(1));
   // query.set_maximum_responses(1);
-  // // query.set_srs_name(QLatin1Literal("epsg:4326"));
+  // // query.set_srs_name(QStringLiteral("epsg:4326"));
   // query.set_coordinate(QcWgsCoordinate(2.3241667, 48.8033333));
   // m_location_reverse_reply = reverse_geocode_request(query);
 }
@@ -222,37 +222,37 @@ QcGeoportailPlugin::geocode_request(const QcLocationServiceQuery & query)
   stream.setAutoFormatting(true);
   stream.setCodec("UTF-8");
   stream.writeStartDocument();
-  stream.writeStartElement(QLatin1Literal("XLS"));
+  stream.writeStartElement(QStringLiteral("XLS"));
   QXmlStreamAttributes xls_attributes;
-  xls_attributes.append(QLatin1Literal("xmlns:xls"), QLatin1Literal("http://www.opengis.net/xls"));
-  xls_attributes.append(QLatin1Literal("xmlns:gml"), QLatin1Literal("http://www.opengis.net/gml"));
-  xls_attributes.append(QLatin1Literal("xmlns"), QLatin1Literal("http://www.opengis.net/xls"));
-  xls_attributes.append(QLatin1Literal("xmlns:xsi"), QLatin1Literal("http://www.w3.org/2001/XMLSchema-instance"));
-  xls_attributes.append(QLatin1Literal("version"), QLatin1Literal("1.2"));
-  xls_attributes.append(QLatin1Literal("xsi:schemaLocation"), QLatin1Literal("http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd"));
+  xls_attributes.append(QStringLiteral("xmlns:xls"), QStringLiteral("http://www.opengis.net/xls"));
+  xls_attributes.append(QStringLiteral("xmlns:gml"), QStringLiteral("http://www.opengis.net/gml"));
+  xls_attributes.append(QStringLiteral("xmlns"), QStringLiteral("http://www.opengis.net/xls"));
+  xls_attributes.append(QStringLiteral("xmlns:xsi"), QStringLiteral("http://www.w3.org/2001/XMLSchema-instance"));
+  xls_attributes.append(QStringLiteral("version"), QStringLiteral("1.2"));
+  xls_attributes.append(QStringLiteral("xsi:schemaLocation"), QStringLiteral("http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd"));
   stream.writeAttributes(xls_attributes);
-  stream.writeEmptyElement(QLatin1Literal("RequestHeader"));
+  stream.writeEmptyElement(QStringLiteral("RequestHeader"));
   QXmlStreamAttributes header_attributes;
-  header_attributes.append(QLatin1Literal("srsName"), query.srs_name());
-  stream.writeStartElement(QLatin1Literal("Request"));
+  header_attributes.append(QStringLiteral("srsName"), query.srs_name());
+  stream.writeStartElement(QStringLiteral("Request"));
   QXmlStreamAttributes request_attributes;
-  request_attributes.append(QLatin1Literal("maximumResponses"), QString::number(query.maximum_responses()));
-  request_attributes.append(QLatin1Literal("requestID"), query.request_id());
-  request_attributes.append(QLatin1Literal("version"), QLatin1Literal("1.2"));
-  request_attributes.append(QLatin1Literal("methodName"), QLatin1Literal("LocationUtilityService"));
+  request_attributes.append(QStringLiteral("maximumResponses"), QString::number(query.maximum_responses()));
+  request_attributes.append(QStringLiteral("requestID"), query.request_id());
+  request_attributes.append(QStringLiteral("version"), QStringLiteral("1.2"));
+  request_attributes.append(QStringLiteral("methodName"), QStringLiteral("LocationUtilityService"));
   stream.writeAttributes(request_attributes);
 
-  stream.writeStartElement(QLatin1Literal("GeocodeRequest"));
-  stream.writeAttribute(QLatin1Literal("returnFreeForm"), QLatin1Literal("false"));
-  stream.writeStartElement(QLatin1Literal("Address"));
-  stream.writeAttribute(QLatin1Literal("countryCode"), query.country_code());
+  stream.writeStartElement(QStringLiteral("GeocodeRequest"));
+  stream.writeAttribute(QStringLiteral("returnFreeForm"), QStringLiteral("false"));
+  stream.writeStartElement(QStringLiteral("Address"));
+  stream.writeAttribute(QStringLiteral("countryCode"), query.country_code());
   if (!query.free_form_address().isEmpty())
-    stream.writeTextElement(QLatin1Literal("freeFormAddress"), query.free_form_address());
+    stream.writeTextElement(QStringLiteral("freeFormAddress"), query.free_form_address());
   else if (!query.street().isEmpty()) {
-    stream.writeStartElement(QLatin1Literal("StreetAddress"));
-    stream.writeTextElement(QLatin1Literal("Street"), query.street());
+    stream.writeStartElement(QStringLiteral("StreetAddress"));
+    stream.writeTextElement(QStringLiteral("Street"), query.street());
     stream.writeEndElement();
-    stream.writeTextElement(QLatin1Literal("PostalCode"), query.postale_code());
+    stream.writeTextElement(QStringLiteral("PostalCode"), query.postale_code());
     // for (const auto & pair : query.place()) {
     const QMap<QString, QString> & place = query.place();
     QMap<QString, QString>::const_iterator it;
@@ -284,39 +284,39 @@ QcGeoportailPlugin::reverse_geocode_request(const QcLocationServiceReverseQuery 
   stream.setAutoFormatting(true);
   stream.setCodec("UTF-8");
   stream.writeStartDocument();
-  stream.writeStartElement(QLatin1Literal("XLS"));
+  stream.writeStartElement(QStringLiteral("XLS"));
   QXmlStreamAttributes xls_attributes;
-  xls_attributes.append(QLatin1Literal("xmlns:xls"), QLatin1Literal("http://www.opengis.net/xls"));
-  xls_attributes.append(QLatin1Literal("xmlns:gml"), QLatin1Literal("http://www.opengis.net/gml"));
-  xls_attributes.append(QLatin1Literal("xmlns"), QLatin1Literal("http://www.opengis.net/xls"));
-  xls_attributes.append(QLatin1Literal("xmlns:xsi"), QLatin1Literal("http://www.w3.org/2001/XMLSchema-instance"));
-  xls_attributes.append(QLatin1Literal("version"), QLatin1Literal("1.2"));
-  xls_attributes.append(QLatin1Literal("xsi:schemaLocation"), QLatin1Literal("http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd"));
+  xls_attributes.append(QStringLiteral("xmlns:xls"), QStringLiteral("http://www.opengis.net/xls"));
+  xls_attributes.append(QStringLiteral("xmlns:gml"), QStringLiteral("http://www.opengis.net/gml"));
+  xls_attributes.append(QStringLiteral("xmlns"), QStringLiteral("http://www.opengis.net/xls"));
+  xls_attributes.append(QStringLiteral("xmlns:xsi"), QStringLiteral("http://www.w3.org/2001/XMLSchema-instance"));
+  xls_attributes.append(QStringLiteral("version"), QStringLiteral("1.2"));
+  xls_attributes.append(QStringLiteral("xsi:schemaLocation"), QStringLiteral("http://www.opengis.net/xls http://schemas.opengis.net/ols/1.2/olsAll.xsd"));
   stream.writeAttributes(xls_attributes);
-  stream.writeEmptyElement(QLatin1Literal("RequestHeader"));
+  stream.writeEmptyElement(QStringLiteral("RequestHeader"));
   QXmlStreamAttributes header_attributes;
-  // header_attributes.append(QLatin1Literal("srsName"), query.srs_name());
-  stream.writeStartElement(QLatin1Literal("Request"));
+  // header_attributes.append(QStringLiteral("srsName"), query.srs_name());
+  stream.writeStartElement(QStringLiteral("Request"));
   QXmlStreamAttributes request_attributes;
-  request_attributes.append(QLatin1Literal("maximumResponses"), QString::number(query.maximum_responses()));
-  request_attributes.append(QLatin1Literal("requestID"), query.request_id());
-  request_attributes.append(QLatin1Literal("version"), QLatin1Literal("1.2"));
-  request_attributes.append(QLatin1Literal("methodName"), QLatin1Literal("ReverseGeocodeRequest"));
+  request_attributes.append(QStringLiteral("maximumResponses"), QString::number(query.maximum_responses()));
+  request_attributes.append(QStringLiteral("requestID"), query.request_id());
+  request_attributes.append(QStringLiteral("version"), QStringLiteral("1.2"));
+  request_attributes.append(QStringLiteral("methodName"), QStringLiteral("ReverseGeocodeRequest"));
   stream.writeAttributes(request_attributes);
 
-  stream.writeStartElement(QLatin1Literal("ReverseGeocodeRequest"));
-  // stream.writeAttribute(QLatin1Literal("returnFreeForm"), QLatin1Literal("false"));
-  stream.writeTextElement(QLatin1Literal("ReverseGeocodePreference"), QLatin1Literal("StreetAddress"));
-  stream.writeStartElement(QLatin1Literal("Position"));
-  stream.writeStartElement(QLatin1Literal("gml:Point"));
+  stream.writeStartElement(QStringLiteral("ReverseGeocodeRequest"));
+  // stream.writeAttribute(QStringLiteral("returnFreeForm"), QStringLiteral("false"));
+  stream.writeTextElement(QStringLiteral("ReverseGeocodePreference"), QStringLiteral("StreetAddress"));
+  stream.writeStartElement(QStringLiteral("Position"));
+  stream.writeStartElement(QStringLiteral("gml:Point"));
   const QcWgsCoordinate & coordinate = query.coordinate();
   QString coordinate_string = QString::number(coordinate.latitude()) + ' ' + QString::number(coordinate.longitude());
-  stream.writeTextElement(QLatin1Literal("gml:pos"), coordinate_string);
+  stream.writeTextElement(QStringLiteral("gml:pos"), coordinate_string);
   stream.writeEndElement();
   if (query.radius()) {
-    stream.writeStartElement(QLatin1Literal("gml:CircleByCenterPoint"));
-    stream.writeTextElement(QLatin1Literal("gml:pos"), coordinate_string);
-    stream.writeTextElement(QLatin1Literal("gml:radius"), QString::number(query.radius()));
+    stream.writeStartElement(QStringLiteral("gml:CircleByCenterPoint"));
+    stream.writeTextElement(QStringLiteral("gml:pos"), coordinate_string);
+    stream.writeTextElement(QStringLiteral("gml:radius"), QString::number(query.radius()));
   stream.writeEndElement();
   }
   stream.writeEndElement();

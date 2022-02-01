@@ -517,15 +517,15 @@ operator<<(QDebug debug, const BleauPlace & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("BleauPlace(");
+  debug.nospace() << QStringLiteral("BleauPlace(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.category();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.note();
   debug << ')';
 
@@ -541,11 +541,11 @@ operator<<(QDebug debug, const BleauPlacePtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BleauPlacePtr ->");
+  debug.noquote() << QStringLiteral("BleauPlacePtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -642,11 +642,11 @@ BleauPlaceModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[CATEGORY] = QLatin1Literal("category").latin1();
-  role_names[NOTE] = QLatin1Literal("note").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[CATEGORY] = QStringLiteral("category").latin1();
+  role_names[NOTE] = QStringLiteral("note").latin1();
 
   return role_names;
 }
@@ -1511,27 +1511,27 @@ operator<<(QDebug debug, const BleauMassif & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("BleauMassif(");
+  debug.nospace() << QStringLiteral("BleauMassif(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.access();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.alternative_name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.chaos_type();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.note();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.parcelles();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.rdv();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.secteur();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.velo();
   debug << ')';
 
@@ -1547,11 +1547,11 @@ operator<<(QDebug debug, const BleauMassifPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BleauMassifPtr ->");
+  debug.noquote() << QStringLiteral("BleauMassifPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -1660,17 +1660,17 @@ BleauMassifModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[ACCESS] = QLatin1Literal("access").latin1();
-  role_names[ALTERNATIVE_NAME] = QLatin1Literal("alternative_name").latin1();
-  role_names[CHAOS_TYPE] = QLatin1Literal("chaos_type").latin1();
-  role_names[NOTE] = QLatin1Literal("note").latin1();
-  role_names[PARCELLES] = QLatin1Literal("parcelles").latin1();
-  role_names[RDV] = QLatin1Literal("rdv").latin1();
-  role_names[SECTEUR] = QLatin1Literal("secteur").latin1();
-  role_names[VELO] = QLatin1Literal("velo").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[ACCESS] = QStringLiteral("access").latin1();
+  role_names[ALTERNATIVE_NAME] = QStringLiteral("alternative_name").latin1();
+  role_names[CHAOS_TYPE] = QStringLiteral("chaos_type").latin1();
+  role_names[NOTE] = QStringLiteral("note").latin1();
+  role_names[PARCELLES] = QStringLiteral("parcelles").latin1();
+  role_names[RDV] = QStringLiteral("rdv").latin1();
+  role_names[SECTEUR] = QStringLiteral("secteur").latin1();
+  role_names[VELO] = QStringLiteral("velo").latin1();
 
   return role_names;
 }
@@ -2724,33 +2724,33 @@ operator<<(QDebug debug, const BleauCircuit & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("BleauCircuit(");
+  debug.nospace() << QStringLiteral("BleauCircuit(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.colour();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.creation_date();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.gestion();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.grade();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.massif_id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.note();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.number();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.opener();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.refection_date();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.refection_note();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.status();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.topos();
   debug << ')';
 
@@ -2776,11 +2776,11 @@ operator<<(QDebug debug, const BleauCircuitPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BleauCircuitPtr ->");
+  debug.noquote() << QStringLiteral("BleauCircuitPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -2895,20 +2895,20 @@ BleauCircuitModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
-  role_names[COLOUR] = QLatin1Literal("colour").latin1();
-  role_names[CREATION_DATE] = QLatin1Literal("creation_date").latin1();
-  role_names[GESTION] = QLatin1Literal("gestion").latin1();
-  role_names[GRADE] = QLatin1Literal("grade").latin1();
-  role_names[MASSIF_ID] = QLatin1Literal("massif_id").latin1();
-  role_names[NOTE] = QLatin1Literal("note").latin1();
-  role_names[NUMBER] = QLatin1Literal("number").latin1();
-  role_names[OPENER] = QLatin1Literal("opener").latin1();
-  role_names[REFECTION_DATE] = QLatin1Literal("refection_date").latin1();
-  role_names[REFECTION_NOTE] = QLatin1Literal("refection_note").latin1();
-  role_names[STATUS] = QLatin1Literal("status").latin1();
-  role_names[TOPOS] = QLatin1Literal("topos").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
+  role_names[COLOUR] = QStringLiteral("colour").latin1();
+  role_names[CREATION_DATE] = QStringLiteral("creation_date").latin1();
+  role_names[GESTION] = QStringLiteral("gestion").latin1();
+  role_names[GRADE] = QStringLiteral("grade").latin1();
+  role_names[MASSIF_ID] = QStringLiteral("massif_id").latin1();
+  role_names[NOTE] = QStringLiteral("note").latin1();
+  role_names[NUMBER] = QStringLiteral("number").latin1();
+  role_names[OPENER] = QStringLiteral("opener").latin1();
+  role_names[REFECTION_DATE] = QStringLiteral("refection_date").latin1();
+  role_names[REFECTION_NOTE] = QStringLiteral("refection_note").latin1();
+  role_names[STATUS] = QStringLiteral("status").latin1();
+  role_names[TOPOS] = QStringLiteral("topos").latin1();
 
   return role_names;
 }
@@ -3548,19 +3548,19 @@ operator<<(QDebug debug, const BleauBoulder & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("BleauBoulder(");
+  debug.nospace() << QStringLiteral("BleauBoulder(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.coordinate();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.comment();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.grade();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.number();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.circuit_id();
   debug << ')';
 
@@ -3586,11 +3586,11 @@ operator<<(QDebug debug, const BleauBoulderPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BleauBoulderPtr ->");
+  debug.noquote() << QStringLiteral("BleauBoulderPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -3691,13 +3691,13 @@ BleauBoulderModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[COORDINATE] = QLatin1Literal("coordinate").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[COMMENT] = QLatin1Literal("comment").latin1();
-  role_names[GRADE] = QLatin1Literal("grade").latin1();
-  role_names[NUMBER] = QLatin1Literal("number").latin1();
-  role_names[CIRCUIT_ID] = QLatin1Literal("circuit_id").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[COMMENT] = QStringLiteral("comment").latin1();
+  role_names[GRADE] = QStringLiteral("grade").latin1();
+  role_names[NUMBER] = QStringLiteral("number").latin1();
+  role_names[CIRCUIT_ID] = QStringLiteral("circuit_id").latin1();
 
   return role_names;
 }

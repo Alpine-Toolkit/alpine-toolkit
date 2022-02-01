@@ -87,58 +87,58 @@ QcOsmPlugin::QcOsmPlugin()
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 1
                            1,
-                           QLatin1Literal("Map"),
-                           QLatin1Literal("map"),
-                           QLatin1Literal("jpg"),
-                           QLatin1Literal("otile1.mqcdn.com/tiles/1.0.0/map")
+                           QStringLiteral("Map"),
+                           QStringLiteral("map"),
+                           QStringLiteral("jpg"),
+                           QStringLiteral("otile1.mqcdn.com/tiles/1.0.0/map")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 2
                            2,
-                           QLatin1Literal("Satellite"),
-                           QLatin1Literal("satellite"),
-                           QLatin1Literal("jpg"),
-                           QLatin1Literal("otile1.mqcdn.com/tiles/1.0.0/sat")
+                           QStringLiteral("Satellite"),
+                           QStringLiteral("satellite"),
+                           QStringLiteral("jpg"),
+                           QStringLiteral("otile1.mqcdn.com/tiles/1.0.0/sat")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 3
                            3,
-                           QLatin1Literal("Cycle"),
-                           QLatin1Literal("cycle"),
-                           QLatin1Literal("png"),
-                           QLatin1Literal("a.tile.thunderforest.com/cycle")
+                           QStringLiteral("Cycle"),
+                           QStringLiteral("cycle"),
+                           QStringLiteral("png"),
+                           QStringLiteral("a.tile.thunderforest.com/cycle")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 4
                            4,
-                           QLatin1Literal("Transport"),
-                           QLatin1Literal("transport"),
-                           QLatin1Literal("png"),
-                           QLatin1Literal("a.tile.thunderforest.com/transport")
+                           QStringLiteral("Transport"),
+                           QStringLiteral("transport"),
+                           QStringLiteral("png"),
+                           QStringLiteral("a.tile.thunderforest.com/transport")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 5
                            5,
-                           QLatin1Literal("Transport Dark"),
-                           QLatin1Literal("transport_dark"),
-                           QLatin1Literal("png"),
-                           QLatin1Literal("a.tile.thunderforest.com/transport-dark")
+                           QStringLiteral("Transport Dark"),
+                           QStringLiteral("transport_dark"),
+                           QStringLiteral("png"),
+                           QStringLiteral("a.tile.thunderforest.com/transport-dark")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 6
                            6,
-                           QLatin1Literal("Landscape"),
-                           QLatin1Literal("landscape"),
-                           QLatin1Literal("png"),
-                           QLatin1Literal("a.tile.thunderforest.com/landscape")
+                           QStringLiteral("Landscape"),
+                           QStringLiteral("landscape"),
+                           QStringLiteral("png"),
+                           QStringLiteral("a.tile.thunderforest.com/landscape")
                            ));
   add_layer(new QcOsmLayer(this,
                            ++map_id, // 7
                            7,
-                           QLatin1Literal("Outdoors"),
-                           QLatin1Literal("outdoors"),
-                           QLatin1Literal("png"),
-                           QLatin1Literal("a.tile.thunderforest.com/outdoors")
+                           QStringLiteral("Outdoors"),
+                           QStringLiteral("outdoors"),
+                           QStringLiteral("png"),
+                           QStringLiteral("a.tile.thunderforest.com/outdoors")
                            ));
 }
 

@@ -74,7 +74,7 @@ QaAndroidConfig::make_application_user_directory_path(const QString & root_path,
   QString path;
   if (public_path)
     // This directory is destroyed when the application is uninstalled
-    path += QLatin1Literal("Android/data/");
+    path += QStringLiteral("Android/data/");
   // else persistent directory require permission
   path += ANDROID_PACKAGE_NAME;
 

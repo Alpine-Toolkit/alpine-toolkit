@@ -414,11 +414,11 @@ QcGpxWriter::write(const QcGpx & gpx, const QString & gpx_path)
 
   m_writer.writeStartDocument();
   m_writer.writeStartElement(GPX_ELEMENT);
-  m_writer.writeAttribute(QLatin1Literal("xsi:schemaLocation"), QLatin1Literal("http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"));
-  m_writer.writeAttribute(QLatin1Literal("xmlns:xsi"), QLatin1Literal("http://www.w3.org/2001/XMLSchema-instance"));
-  m_writer.writeAttribute(QLatin1Literal("xmlns"), QLatin1Literal("http://www.topografix.com/GPX/1/1"));
-  m_writer.writeAttribute(CREATOR_ATTRIBUTE, QLatin1Literal("Alpine ToolKit")); // gpx.creator()
-  m_writer.writeAttribute(VERSION_ATTRIBUTE, QLatin1Literal("1.1")); // gpx.version()
+  m_writer.writeAttribute(QStringLiteral("xsi:schemaLocation"), QStringLiteral("http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"));
+  m_writer.writeAttribute(QStringLiteral("xmlns:xsi"), QStringLiteral("http://www.w3.org/2001/XMLSchema-instance"));
+  m_writer.writeAttribute(QStringLiteral("xmlns"), QStringLiteral("http://www.topografix.com/GPX/1/1"));
+  m_writer.writeAttribute(CREATOR_ATTRIBUTE, QStringLiteral("Alpine ToolKit")); // gpx.creator()
+  m_writer.writeAttribute(VERSION_ATTRIBUTE, QStringLiteral("1.1")); // gpx.version()
 
   write_metadata(gpx);
 

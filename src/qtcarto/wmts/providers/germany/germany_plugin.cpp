@@ -53,8 +53,8 @@ QcGermanyLayer::url(const QcTileSpec & tile_spec) const
 
   return QUrl(QStringLiteral("http://sg.geodatenzentrum.de/wmts_webatlasde/tile/1.0.0/") +
               name()  + QLatin1Char('/') +
-              QLatin1Literal("default/") +
-              QLatin1Literal("DE_EPSG_25832_ADV/") +
+              QStringLiteral("default/") +
+              QStringLiteral("DE_EPSG_25832_ADV/") +
               QString::number(tile_spec.level()) + QLatin1Char('/') +
               QString::number(tile_spec.x()) + QLatin1Char('/') +
               QString::number(tile_spec.y()) +
@@ -77,9 +77,9 @@ QcGermanyPlugin::QcGermanyPlugin()
   add_layer(new QcGermanyLayer(this,
                                ++map_id, // 1
                                1,
-                               QLatin1Literal("Map"),
-                               QLatin1Literal("webatlasde"),
-                               QLatin1Literal("png")
+                               QStringLiteral("Map"),
+                               QStringLiteral("webatlasde"),
+                               QStringLiteral("png")
                                ));
 }
 

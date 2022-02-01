@@ -53,12 +53,12 @@ QcSwissConfederationLayer::url(const QcTileSpec & tile_spec) const
   // https://wmts20.geo.admin.ch/1.0.0/ch.astra.wanderland/default/20160315/21781/10/527/362.png
   return QUrl(QStringLiteral("https://wmts20.geo.admin.ch/1.0.0/") +
               name()  + QLatin1Char('/') +
-              QLatin1Literal("default/") +
-              // QLatin1Literal("20151231") + QLatin1Char('/') +
-              QLatin1Literal("20160315") + QLatin1Char('/') +
-              // QLatin1Literal("current") + QLatin1Char('/') +
-              // QLatin1Literal("3857/") +
-              QLatin1Literal("21781/") +
+              QStringLiteral("default/") +
+              // QStringLiteral("20151231") + QLatin1Char('/') +
+              QStringLiteral("20160315") + QLatin1Char('/') +
+              // QStringLiteral("current") + QLatin1Char('/') +
+              // QStringLiteral("3857/") +
+              QStringLiteral("21781/") +
               QString::number(tile_spec.level()) + QLatin1Char('/') +
               QString::number(tile_spec.x()) + QLatin1Char('/') +
               QString::number(tile_spec.y()) +
@@ -80,16 +80,16 @@ QcSwissConfederationPlugin::QcSwissConfederationPlugin()
   // add_layer(new QcSwissConfederationLayer(this,
   //                                         ++map_id, // 1
   //                                         1,
-  //                                         QLatin1Literal("Carte nationale 1:25'000 | CN25"),
-  //                                         QLatin1Literal("ch.swisstopo.pixelkarte-farbe"),
-  //                                         QLatin1Literal("jpeg")
+  //                                         QStringLiteral("Carte nationale 1:25'000 | CN25"),
+  //                                         QStringLiteral("ch.swisstopo.pixelkarte-farbe"),
+  //                                         QStringLiteral("jpeg")
   //                                         ));
   add_layer(new QcSwissConfederationLayer(this,
                                           ++map_id, // 1
                                           1,
                                           QStringLiteral("La Suisse à pieds"),
-                                          QLatin1Literal("ch.astra.wanderland"),
-                                          QLatin1Literal("png")
+                                          QStringLiteral("ch.astra.wanderland"),
+                                          QStringLiteral("png")
                                           ));
 }
 

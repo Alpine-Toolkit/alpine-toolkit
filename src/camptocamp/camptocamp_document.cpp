@@ -291,7 +291,7 @@ QDebug operator<<(QDebug debug, const C2cDocument & document)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace().noquote() << QLatin1Literal("C2cDocument<");
+  debug.nospace().noquote() << QStringLiteral("C2cDocument<");
   debug.noquote() << document.type_string();
   debug << ">(";
   debug << document.id();
@@ -484,7 +484,7 @@ QDebug operator<<(QDebug debug, const C2cShortRoute & document)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace().noquote() << QLatin1Literal("C2cShortRoute");
+  debug.nospace().noquote() << QStringLiteral("C2cShortRoute");
   debug << "(";
   debug << document.id();
   debug << ",";

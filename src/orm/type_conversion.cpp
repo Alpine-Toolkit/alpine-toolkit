@@ -58,8 +58,8 @@ namespace orm_type_conversion {
   QGeoCoordinate
   load_json_coordinate(const QJsonObject & json_object)
   {
-    double longitude = json_object[QLatin1Literal("longitude")].toDouble();
-    double latitude = json_object[QLatin1Literal("latitude")].toDouble();
+    double longitude = json_object[QStringLiteral("longitude")].toDouble();
+    double latitude = json_object[QStringLiteral("latitude")].toDouble();
     return QGeoCoordinate(latitude, longitude);
   }
 
@@ -67,8 +67,8 @@ namespace orm_type_conversion {
   dump_json_coordinate(const QGeoCoordinate & coordinate)
   {
     QJsonObject json_object;
-    json_object[QLatin1Literal("longitude")] = coordinate.longitude();
-    json_object[QLatin1Literal("latitude")] = coordinate.latitude();
+    json_object[QStringLiteral("longitude")] = coordinate.longitude();
+    json_object[QStringLiteral("latitude")] = coordinate.latitude();
 
     return json_object;
   }

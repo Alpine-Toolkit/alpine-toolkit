@@ -36,9 +36,9 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcSimdPairDouble & simd)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcSimdDouble(");
+  debug.nospace() << QStringLiteral("QcSimdDouble(");
   debug << simd.x();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << simd.y();
   debug << ')';
 
@@ -51,11 +51,11 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcSimdTripletDouble & simd)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcSimd3DDouble(");
+  debug.nospace() << QStringLiteral("QcSimd3DDouble(");
   debug << simd.x();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << simd.y();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << simd.z();
   debug << ')';
 

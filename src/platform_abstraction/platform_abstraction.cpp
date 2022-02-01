@@ -54,8 +54,8 @@ PlatformAbstraction::instance()
   if (!_instance) {
 #ifdef ON_LINUX
     QProcessEnvironment m_env = QProcessEnvironment::systemEnvironment();
-    QString value = m_env.value(QLatin1Literal("ALPINE_TOOLKIT_FAKE_ANDROID"));
-    if (value == QLatin1Literal("TRUE"))
+    QString value = m_env.value(QStringLiteral("ALPINE_TOOLKIT_FAKE_ANDROID"));
+    if (value == QStringLiteral("TRUE"))
       _instance = new AndroidFakePlatform();
     else
       _instance = new LinuxPlatform();
@@ -94,17 +94,17 @@ PlatformAbstraction::platform_name() const
 {
   switch (platform_type()) {
   case Linux:
-    return QLatin1Literal("Linux");
+    return QStringLiteral("Linux");
   case Windows:
-    return QLatin1Literal("Windows");
+    return QStringLiteral("Windows");
   case OSX:
-    return QLatin1Literal("OSX");
+    return QStringLiteral("OSX");
   case Android:
-    return QLatin1Literal("Android");
+    return QStringLiteral("Android");
   case AndroidFake:
-    return QLatin1Literal("FakeAndroid");
+    return QStringLiteral("FakeAndroid");
   case IOS:
-    return QLatin1Literal("IOS");
+    return QStringLiteral("IOS");
   };
 }
 
@@ -127,7 +127,7 @@ PlatformAbstraction::is_directory_writable(const QString & path) const
   // Create path and try to write a temporary file
   if (not QDir::root().mkpath(path))
     return false;
-  QString filename = QDir(path).filePath(QLatin1Literal(".") + QUuid().toString());
+  QString filename = QDir(path).filePath(QStringLiteral(".") + QUuid().toString());
   QFile tmp_file(filename);
   bool writable = tmp_file.open(QIODevice::WriteOnly);
   if (writable)

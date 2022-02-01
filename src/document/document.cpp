@@ -689,21 +689,21 @@ operator<<(QDebug debug, const Document & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Document(");
+  debug.nospace() << QStringLiteral("Document(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.author();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.version();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.date();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.description();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.url();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.size();
   debug << ')';
 
@@ -719,11 +719,11 @@ operator<<(QDebug debug, const DocumentPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("DocumentPtr ->");
+  debug.noquote() << QStringLiteral("DocumentPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -826,14 +826,14 @@ DocumentModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[AUTHOR] = QLatin1Literal("author").latin1();
-  role_names[VERSION] = QLatin1Literal("version").latin1();
-  role_names[DATE] = QLatin1Literal("date").latin1();
-  role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
-  role_names[URL] = QLatin1Literal("url").latin1();
-  role_names[SIZE] = QLatin1Literal("size").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[AUTHOR] = QStringLiteral("author").latin1();
+  role_names[VERSION] = QStringLiteral("version").latin1();
+  role_names[DATE] = QStringLiteral("date").latin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
+  role_names[URL] = QStringLiteral("url").latin1();
+  role_names[SIZE] = QStringLiteral("size").latin1();
 
   return role_names;
 }

@@ -73,9 +73,9 @@ QDebug operator<<(QDebug debug, const C2cLogin & login)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("C2cLogin(");
+  debug.nospace() << QStringLiteral("C2cLogin(");
   debug << login.username();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << login.password();
   debug << ')';
 

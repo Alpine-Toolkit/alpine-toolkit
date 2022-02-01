@@ -800,25 +800,25 @@ operator<<(QDebug debug, const ThirdPartyLicense & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("ThirdPartyLicense(");
+  debug.nospace() << QStringLiteral("ThirdPartyLicense(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.used();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.show();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.third_party_name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.third_party_url();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.third_party_version();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.license_name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.license_url();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.license_text();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.license_note();
   debug << ')';
 
@@ -834,11 +834,11 @@ operator<<(QDebug debug, const ThirdPartyLicensePtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("ThirdPartyLicensePtr ->");
+  debug.noquote() << QStringLiteral("ThirdPartyLicensePtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -945,16 +945,16 @@ ThirdPartyLicenseModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[USED] = QLatin1Literal("used").latin1();
-  role_names[SHOW] = QLatin1Literal("show").latin1();
-  role_names[THIRD_PARTY_NAME] = QLatin1Literal("third_party_name").latin1();
-  role_names[THIRD_PARTY_URL] = QLatin1Literal("third_party_url").latin1();
-  role_names[THIRD_PARTY_VERSION] = QLatin1Literal("third_party_version").latin1();
-  role_names[LICENSE_NAME] = QLatin1Literal("license_name").latin1();
-  role_names[LICENSE_URL] = QLatin1Literal("license_url").latin1();
-  role_names[LICENSE_TEXT] = QLatin1Literal("license_text").latin1();
-  role_names[LICENSE_NOTE] = QLatin1Literal("license_note").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[USED] = QStringLiteral("used").latin1();
+  role_names[SHOW] = QStringLiteral("show").latin1();
+  role_names[THIRD_PARTY_NAME] = QStringLiteral("third_party_name").latin1();
+  role_names[THIRD_PARTY_URL] = QStringLiteral("third_party_url").latin1();
+  role_names[THIRD_PARTY_VERSION] = QStringLiteral("third_party_version").latin1();
+  role_names[LICENSE_NAME] = QStringLiteral("license_name").latin1();
+  role_names[LICENSE_URL] = QStringLiteral("license_url").latin1();
+  role_names[LICENSE_TEXT] = QStringLiteral("license_text").latin1();
+  role_names[LICENSE_NOTE] = QStringLiteral("license_note").latin1();
 
   return role_names;
 }

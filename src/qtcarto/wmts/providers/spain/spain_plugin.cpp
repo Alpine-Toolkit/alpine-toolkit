@@ -86,18 +86,18 @@ QcSpainPlugin::QcSpainPlugin()
   add_layer(new QcSpainLayer(this,
                              ++map_id, // 1
                              1,
-                             QLatin1Literal("Map"),
-                             QLatin1Literal("IGNBaseTodo"),
-                             QLatin1Literal("ign-base"),
-                             QLatin1Literal("jpeg")
+                             QStringLiteral("Map"),
+                             QStringLiteral("IGNBaseTodo"),
+                             QStringLiteral("ign-base"),
+                             QStringLiteral("jpeg")
                              ));
   add_layer(new QcSpainLayer(this,
                              ++map_id, // 1
                              2,
-                             QLatin1Literal("Orthoimage"),
-                             QLatin1Literal("OI.OrthoimageCoverage"),
-                             QLatin1Literal("pnoa-ma"),
-                             QLatin1Literal("jpeg")
+                             QStringLiteral("Orthoimage"),
+                             QStringLiteral("OI.OrthoimageCoverage"),
+                             QStringLiteral("pnoa-ma"),
+                             QStringLiteral("jpeg")
                              ));
 }
 

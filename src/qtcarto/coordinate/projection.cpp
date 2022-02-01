@@ -101,7 +101,7 @@ QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y, do
   int point_offset = 1;
   int error = pj_transform(m_projection, proj2.m_projection, point_count, point_offset, &x, &y, &z);
   if (error != 0)
-    qQCCritical() << QLatin1Literal("pj_transform error:") << pj_strerrno(error);
+    qQCCritical() << QStringLiteral("pj_transform error:") << pj_strerrno(error);
     // throw; // Fixme: (pj_strerrno(error))
 }
 
@@ -323,7 +323,7 @@ QDebug operator<<(QDebug debug, const QcGeoCoordinateTrait & coordinate)
   QDebugStateSaver saver(debug);
   double x = coordinate.x();
   double y = coordinate.y();
-  QString class_name = QLatin1Literal("QcGeoCoordinate<") + coordinate.projection().srid() + QLatin1Literal(">(");
+  QString class_name = QStringLiteral("QcGeoCoordinate<") + coordinate.projection().srid() + QStringLiteral(">(");
 
   debug.nospace() << class_name.toStdString().c_str();
   if (qIsNaN(x))

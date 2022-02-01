@@ -77,8 +77,8 @@ class QC_EXPORT QcLaeaProjection_3571 : public QcProjection // LaeaProjection
 {
  public:
   QcLaeaProjection_3571()
-    : QcProjection(QLatin1Literal("epsg:3571"),
-                   QLatin1Literal("North Pole LAEA Bering Sea"),
+    : QcProjection(QStringLiteral("epsg:3571"),
+                   QStringLiteral("North Pole LAEA Bering Sea"),
                    QcVectorDouble(180, 90),
                    // QcVector2DDouble(90, 0), // X along 90°W
                    // QcVector2DDouble(0, 0), // Y along 0°E
@@ -86,7 +86,7 @@ class QC_EXPORT QcLaeaProjection_3571 : public QcProjection // LaeaProjection
                                       45, 90),
                    QcInterval2DDouble(-HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER,
                                       -HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER),
-                   QLatin1Literal("m"),
+                   QStringLiteral("m"),
                    ProjectionSurface::Azimuthal,
                    PreserveBit::PreserveArea)
     {}

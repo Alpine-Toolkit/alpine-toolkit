@@ -74,7 +74,7 @@ main(int argc, char *argv[])
   setenv("PROJ_LIB", config->application_user_directory().toStdString().c_str(), 1);
 
   QcDebugData debug_data;
-  debug_data.write_json(config->join_application_user_directory(QLatin1Literal("debug_data.json")));
+  debug_data.write_json(config->join_application_user_directory(QStringLiteral("debug_data.json")));
   qInfo() << debug_data.to_json();
 
   QUrl main_page("qrc:/pages/main.qml");

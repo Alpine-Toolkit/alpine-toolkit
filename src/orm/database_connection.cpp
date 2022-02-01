@@ -91,15 +91,15 @@ operator<<(QDebug debug, const QoDatabaseConnectionData & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QoDatabaseConnectionData(");
+  debug.nospace() << QStringLiteral("QoDatabaseConnectionData(");
   debug << obj.host();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.port();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.database();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.user();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.password();
   debug << ')';
 

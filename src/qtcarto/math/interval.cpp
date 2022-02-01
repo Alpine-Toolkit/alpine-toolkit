@@ -147,9 +147,9 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcIntervalInt & interval)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcIntervalInt(");
+  debug.nospace() << QStringLiteral("QcIntervalInt(");
   debug << interval.inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.sup();
   debug << ')';
 
@@ -163,9 +163,9 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcIntervalDouble & interval)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   debug.nospace().noquote()
-    << QLatin1Literal("QcIntervalDouble(")
+    << QStringLiteral("QcIntervalDouble(")
     << QString::number(interval.inf(), 'f', 2)
-    << QLatin1Literal(", ")
+    << QStringLiteral(", ")
     << QString::number(interval.sup(), 'f', 2)
     << ')';
 
@@ -179,15 +179,15 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcInterval2DInt & interval)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   debug.nospace().noquote()
-    << QLatin1Literal("QcInterval2DInt( [")
+    << QStringLiteral("QcInterval2DInt( [")
     << interval.x().inf()
-    << QLatin1Literal(", ")
+    << QStringLiteral(", ")
     << interval.x().sup()
-    << QLatin1Literal("] , [")
+    << QStringLiteral("] , [")
     << interval.y().inf()
-    << QLatin1Literal(", ")
+    << QStringLiteral(", ")
     << interval.y().sup()
-    << QLatin1Literal("] )");
+    << QStringLiteral("] )");
 
   return debug;
 }
@@ -199,15 +199,15 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcInterval2DDouble & interval)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   debug.nospace().noquote()
-    << QLatin1Literal("QcInterval2DDouble( [")
+    << QStringLiteral("QcInterval2DDouble( [")
     << QString::number(interval.x().inf(), 'f', 2)
-    << QLatin1Literal(", ")
+    << QStringLiteral(", ")
     << QString::number(interval.x().sup(), 'f', 2)
-    << QLatin1Literal("] , [")
+    << QStringLiteral("] , [")
     << QString::number(interval.y().inf(), 'f', 2)
-    << QLatin1Literal(", ")
+    << QStringLiteral(", ")
     << QString::number(interval.y().sup(), 'f', 2)
-    << QLatin1Literal("] )");
+    << QStringLiteral("] )");
 
   return debug;
 }
@@ -218,19 +218,19 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcInterval3DInt & interval)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcInterval3DInt( [");
+  debug.nospace() << QStringLiteral("QcInterval3DInt( [");
   debug << interval.x().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.x().sup();
-  debug << QLatin1Literal("] , [");
+  debug << QStringLiteral("] , [");
   debug << interval.y().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.y().sup();
-  debug << QLatin1Literal("], [");
+  debug << QStringLiteral("], [");
   debug << interval.z().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.z().sup();
-  debug << QLatin1Literal("] )");
+  debug << QStringLiteral("] )");
 
   return debug;
 }
@@ -241,19 +241,19 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcInterval3DDouble & interval)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.nospace() << QLatin1Literal("QcInterval3DDouble( [");
+  debug.nospace() << QStringLiteral("QcInterval3DDouble( [");
   debug << interval.x().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.x().sup();
-  debug << QLatin1Literal("], [");
+  debug << QStringLiteral("], [");
   debug << interval.y().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.y().sup();
-  debug << QLatin1Literal("], [");
+  debug << QStringLiteral("], [");
   debug << interval.z().inf();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << interval.z().sup();
-  debug << QLatin1Literal("] )");
+  debug << QStringLiteral("] )");
 
   return debug;
 }
