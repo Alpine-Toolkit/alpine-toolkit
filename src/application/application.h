@@ -119,7 +119,7 @@ public:
   QaConfig * config() { return m_config; }
   QSettings & settings() { return m_config->settings(); }
 
-  const QVersionNumber & version() const { return ALPINE_TOOLKIT_VERSION; }
+  const QVersionNumber & version() const { return AlpineToolkit_VERSION; }
 
   QString encode_morse(const QString & message, bool use_bit);
   QString decode_morse(const QString & message, bool & succeed);

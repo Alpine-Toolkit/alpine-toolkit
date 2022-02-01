@@ -61,7 +61,19 @@ endif()
 
 ####################################################################################################
 
-project(AlpineToolkit)
+# https://cmake.org/cmake/help/latest/command/project.html
+project(AlpineToolkit VERSION 0.1.0 LANGUAGES CXX C)
+# Set
+#   PROJECT_SOURCE_DIR, AlpineToolkit_SOURCE_DIR
+#   PROJECT_BINARY_DIR, AlpineToolkit_BINARY_DIR
+#   3.21 PROJECT_IS_TOP_LEVEL, AlpineToolkit_IS_TOP_LEVEL
+#
+#   PROJECT_VERSION, AlpineToolkit_VERSION
+#   CMAKE_PROJECT_VERSION
+#   PROJECT_VERSION_MAJOR, AlpineToolkit_VERSION_MAJOR
+#   PROJECT_VERSION_MINOR, AlpineToolkit_VERSION_MINOR
+#   PROJECT_VERSION_PATCH, AlpineToolkit_VERSION_PATCH
+#   PROJECT_VERSION_TWEAK, AlpineToolkit_VERSION_TWEAK
 
 ####################################################################################################
 
@@ -85,17 +97,6 @@ option(INSTRUMENT_FUNTIONS "Compile using -finstrument-functions" OFF)
 if(NOT ANDROID)
   enable_testing()
 endif(NOT ANDROID)
-
-####################################################################################################
-#
-# Version
-#
-
-set(ALPINE_TOOLKIT_VERSION_MAJOR 0)
-set(ALPINE_TOOLKIT_VERSION_MINOR 1)
-set(ALPINE_TOOLKIT_VERSION_PATCH 0)
-
-set(ALPINE_TOOLKIT_VERSION ${ALPINE_TOOLKIT_VERSION_MAJOR}.${ALPINE_TOOLKIT_VERSION_MINOR}.${ALPINE_TOOLKIT_VERSION_PATCH})
 
 ####################################################################################################
 #
