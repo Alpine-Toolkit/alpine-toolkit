@@ -109,7 +109,8 @@ QcMapLayerRootNode::update_tiles(QcMapLayerScene * map_scene,
   map_side_node->setMatrix(space_matrix);
   // qQCInfo() << "map side space matrix" << space_matrix;
 
-  QcTileSpecSet tiles_in_scene = QcTileSpecSet::fromList(map_side_node->texture_nodes.keys()); // Fixme: cf. textured_tiles
+  auto keys = map_side_node->texture_nodes.keys();
+  QcTileSpecSet tiles_in_scene = QcTileSpecSet(keys.begin(), keys.end()); // Fixme: cf. textured_tiles
   QcTileSpecSet to_remove = tiles_in_scene - visible_tiles;
   QcTileSpecSet to_add = visible_tiles - tiles_in_scene;
 
@@ -232,7 +233,8 @@ QcMapLayerScene::remove_tiles(const QcTileSpecSet & old_tiles)
 QcTileSpecSet
 QcMapLayerScene::textured_tiles() const
 {
-  return QcTileSpecSet::fromList(m_tile_textures.keys());
+  auto keys = m_tile_textures.keys();
+  return QcTileSpecSet(keys.begin(), keys.end());
 }
 
 bool
@@ -300,7 +302,8 @@ QcMapLayerScene::update_scene_graph(QcMapLayerRootNode * map_root_node, QQuickWi
   // dirty
 
   // Fixme: duplicated code?
-  QcTileSpecSet textures_in_scene = QcTileSpecSet::fromList(map_root_node->textures.keys()); // cf. textured_tiles
+  auto keys = map_root_node->textures.keys();
+  QcTileSpecSet textures_in_scene = QcTileSpecSet(keys.begin(), keys.end()); // cf. textured_tiles
   QcTileSpecSet to_remove = textures_in_scene - m_visible_tiles;
   QcTileSpecSet to_add = m_visible_tiles - textures_in_scene;
   // qQCInfo() << "textures in scene" << textures_in_scene

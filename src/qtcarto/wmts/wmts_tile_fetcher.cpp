@@ -94,7 +94,7 @@ QcWmtsTileFetcher::update_tile_requests(const QcTileSpecSet & tiles_added,
   QMutexLocker mutex_locker(&m_queue_mutex);
 
   cancel_tile_requests(tiles_removed);
-  m_queue += tiles_added.toList();
+  m_queue += QList<QcTileSpec>(tiles_added.begin(), tiles_added.end());
 
   // Start timer to fetch tiles from queue
   if (m_enabled && !m_queue.isEmpty() && !m_timer.isActive()) {

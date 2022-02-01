@@ -721,7 +721,7 @@ QcMapItem::projections() const
   for (auto * plugin : m_plugin_manager.plugins())
     // Fixme: to func
     projections.insert(plugin->projection().title());
-  return projections.toList();
+  return QStringList(projections.begin(), projections.end());
 }
 
 /**************************************************************************************************/
