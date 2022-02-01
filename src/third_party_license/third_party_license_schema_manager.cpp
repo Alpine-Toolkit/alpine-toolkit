@@ -144,7 +144,7 @@ ThirdPartyLicenseSchemaManager::third_party_license_list_property()
                                   &ThirdPartyLicenseSchemaManager::third_party_license_list_property_at);
 }
 
-int
+qsizetype
 ThirdPartyLicenseSchemaManager::third_party_license_list_property_count(QQmlListProperty<ThirdPartyLicense> * list)
 {
   // Called several times
@@ -154,7 +154,7 @@ ThirdPartyLicenseSchemaManager::third_party_license_list_property_count(QQmlList
 }
 
 ThirdPartyLicense *
-ThirdPartyLicenseSchemaManager::third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, int index)
+ThirdPartyLicenseSchemaManager::third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, qsizetype index)
 {
   // Called several times
   // qATInfo() << "ThirdPartyLicenseSchemaManager::third_party_license_list_property_at" << index;

@@ -84,8 +84,8 @@ private:
   // QQmlListProperty can only be used for lists of QObject-derived object pointers.
   // ThirdPartyLicenses must be registered
   QQmlListProperty<ThirdPartyLicense> third_party_license_list_property();
-  static int third_party_license_list_property_count(QQmlListProperty<ThirdPartyLicense> * list);
-  static ThirdPartyLicense * third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, int index);
+  static qsizetype third_party_license_list_property_count(QQmlListProperty<ThirdPartyLicense> * list);
+  static ThirdPartyLicense * third_party_license_list_property_at(QQmlListProperty<ThirdPartyLicense> * list, qsizetype index);
 
 private:
   QString m_json_path;
