@@ -372,7 +372,7 @@ C2cClient::search(const QString & search_string, const C2cSearchSettings & setti
   for (const auto & key : filters.keys()) { // Fixme: better ? pair ?
     const QVariant & value = filters[key];
     QString string_value;
-    if (value.type() == QVariant::StringList)
+    if (value.typeId() == QVariant::StringList)
       string_value = value.toStringList().join(',');
     else
       string_value = value.toString();

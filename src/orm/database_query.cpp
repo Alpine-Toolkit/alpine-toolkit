@@ -117,7 +117,7 @@ QoSqlExpressionTrait::as(const QString & label) const
 QString
 QoSqlExpressionTrait::to_sql(const QVariant & value)
 {
-  if (value.type() == QVariant::String)
+  if (value.typeId() == QVariant::String)
     return QLatin1String("'") + value.toString() + QLatin1String("'");
   else
     return value.toString();
