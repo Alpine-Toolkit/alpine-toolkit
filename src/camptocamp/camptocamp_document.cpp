@@ -211,7 +211,8 @@ C2cDocument::type() const
     return Type::XReport;
   case 'w':
     return Type::Waypoint;
-  // Fixme: default:
+  default:
+    return Type::Unknown;
   }
 }
 
@@ -219,6 +220,7 @@ QString
 C2cDocument::type_string() const
 {
   switch (type()) {
+    // Fixme: QStringLiteral
   case Type::Area:
     return "Area";
   case Type::Article:
@@ -239,7 +241,8 @@ C2cDocument::type_string() const
     return "XReport";
   case Type::Waypoint:
     return "Waypoint";
-  // Fixme: default:
+  default:
+    return "Unknown";
   }
 }
 
@@ -267,7 +270,9 @@ C2cDocument::cast() const
     return C2cDocumentPtr();
   case Type::Waypoint:
     return C2cDocumentPtr();
-  // Fixme: default:
+  default:
+    // Fixme:
+    return C2cDocumentPtr();
   }
 }
 

@@ -68,7 +68,8 @@ public:
     Route,
     UserProfile,
     XReport,
-    Waypoint
+    Waypoint,
+    Unknown
   };
   Q_ENUMS(Type)
 
