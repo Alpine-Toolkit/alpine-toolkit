@@ -67,6 +67,8 @@ QcPlatform::os_name() const
     return QStringLiteral("windows");
   case OsxOS:
     return QStringLiteral("osx");
+  default:
+    return QStringLiteral("unknown");
   }
   // -Wreturn-type
 }
