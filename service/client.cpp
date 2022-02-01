@@ -76,7 +76,7 @@ ServiceClient::start_service()
   call_service_static_method("start_service");
 #else
     m_service_process = new QProcess(this);
-    m_service_process->start(QStringLiteral("alpine-toolkit-service"));
+    m_service_process->start(QStringLiteral("alpine-toolkit-service"), QStringList());
     // Fixme: connect to signals
 #endif
   qATInfo() << "Connect to Alpine Toolkit Service";
