@@ -50,16 +50,20 @@
 
 ####################################################################################################
 
-project(AlpineToolkit)
-
-####################################################################################################
-
 # check cmake version
-cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20.0 FATAL_ERROR)
 
+# To manage policies without increasing the minimum required CMake version
+# https://cmake.org/cmake/help/v3.4/manual/cmake-policies.7.html
 if(POLICY CMP0990)
   cmake_policy(SET CMP0990 NEW)
 endif()
+
+####################################################################################################
+
+project(AlpineToolkit)
+
+####################################################################################################
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
