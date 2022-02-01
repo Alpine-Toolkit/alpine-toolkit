@@ -140,6 +140,8 @@ else()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support.")
 endif()
 
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   set(CMAKE_CXX_FLAGS_COMMON  "-Wall -DSystemLinux -fdiagnostics-color=auto")
   # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html#Instrumentation-Options
