@@ -201,7 +201,7 @@ QQmlListProperty<QTQmlSensorRange> QTQmlSensor::availableDataRates() const
         range->setMaximum(r.second);
         ret << range;
     }
-    return QQmlListProperty<QTQmlSensorRange>(const_cast<QTQmlSensor*>(this), ret);
+    return QQmlListProperty<QTQmlSensorRange>(const_cast<QTQmlSensor*>(this), &ret);
 }
 
 /*!
@@ -243,7 +243,7 @@ QQmlListProperty<QTQmlSensorOutputRange> QTQmlSensor::outputRanges() const
         range->setAccuracy(r.accuracy);
         ret << range;
     }
-    return QQmlListProperty<QTQmlSensorOutputRange>(const_cast<QTQmlSensor*>(this), ret);
+    return QQmlListProperty<QTQmlSensorOutputRange>(const_cast<QTQmlSensor*>(this), &ret);
 }
 
 /*!
