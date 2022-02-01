@@ -212,7 +212,7 @@ if(NOT ANDROID)
 
     # https://doc.qt.io/qt-6/portingguide.html
     # Disable use of C++ API deprecated in Qt 5.15
-    add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+    #! add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 endif(NOT ANDROID)
 
 ####################################################################################################
