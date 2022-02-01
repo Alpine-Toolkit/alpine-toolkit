@@ -59,21 +59,34 @@ if(POLICY CMP0990)
   cmake_policy(SET CMP0990 NEW)
 endif()
 
+cmake_policy(SET CMP0048 NEW)
+
 ####################################################################################################
 
 # https://cmake.org/cmake/help/latest/command/project.html
-project(AlpineToolkit VERSION 0.1.0 LANGUAGES CXX C)
+project(
+  AlpineToolkit
+  VERSION 0.1.0
+  DESCRIPTION "Apline Toolkit Application"
+  HOMEPAGE_URL "https://github.com/Alpine-Toolkit/alpine-toolkit"
+  LANGUAGES CXX C
+  )
+
 # Set
 #   PROJECT_SOURCE_DIR, AlpineToolkit_SOURCE_DIR
 #   PROJECT_BINARY_DIR, AlpineToolkit_BINARY_DIR
 #   3.21 PROJECT_IS_TOP_LEVEL, AlpineToolkit_IS_TOP_LEVEL
 #
-#   PROJECT_VERSION, AlpineToolkit_VERSION
+#   PROJECT_VERSIO          AlpineToolkit_VERSION ???
 #   CMAKE_PROJECT_VERSION
-#   PROJECT_VERSION_MAJOR, AlpineToolkit_VERSION_MAJOR
-#   PROJECT_VERSION_MINOR, AlpineToolkit_VERSION_MINOR
-#   PROJECT_VERSION_PATCH, AlpineToolkit_VERSION_PATCH
-#   PROJECT_VERSION_TWEAK, AlpineToolkit_VERSION_TWEAK
+#   PROJECT_VERSION_MAJOR   AlpineToolkit_VERSION_MAJOR
+#   PROJECT_VERSION_MINOR   AlpineToolkit_VERSION_MINOR
+#   PROJECT_VERSION_PATCH   AlpineToolkit_VERSION_PATCH
+#   PROJECT_VERSION_TWEAK   AlpineToolkit_VERSION_TWEAK
+
+# Fixme: AlpineToolkit_VERSION_ is not set
+# Fixme: PROJECT_VERSION is not set in c++
+set(ALPINE_TOOLKIT_VERSION ${PROJECT_VERSION})
 
 ####################################################################################################
 

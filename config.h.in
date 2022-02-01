@@ -35,9 +35,9 @@
 
 /**************************************************************************************************/
 
-static const QVersionNumber ALPINE_TOOLKIT_VERSION(@ALPINE_TOOLKIT_VERSION_MAJOR@,
-                                                   @ALPINE_TOOLKIT_VERSION_MINOR@,
-                                                   @ALPINE_TOOLKIT_VERSION_PATCH@);
+static const QVersionNumber ALPINE_TOOLKIT_VERSION(@PROJECT_VERSION_MAJOR@,
+                                                   @PROJECT_VERSION_MINOR@,
+                                                   @PROJECT_VERSION_PATCH@);
 
 static const QUrl ALPINE_TOOLKIT_URL = QUrl(QLatin1String("https://alpine-toolkit.fabrice-salvaire.fr"));
 
