@@ -90,11 +90,19 @@ C2cDocument::operator=(const C2cDocument & other)
   return *this;
 }
 
+/*
+Note: Deprecated in Qt 5.15. The binary JSON encoding is only retained for backwards
+compatibility. It is undocumented and restrictive in the maximum size of JSON documents that can be
+encoded. Qt JSON types can be converted to Qt CBOR types, which can in turn be serialized into the
+CBOR binary format and vice versa. The CBOR format is a well-defined and less restrictive binary
+representation for a superset of JSON.
+
 QByteArray
 C2cDocument::to_binary_data() const
 {
   return QJsonDocument(m_json_object).toBinaryData();
 }
+*/
 
 QByteArray
 C2cDocument::to_json() const

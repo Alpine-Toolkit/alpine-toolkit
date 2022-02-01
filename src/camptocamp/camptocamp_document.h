@@ -103,7 +103,7 @@ public:
 
   const QJsonObject & json_object() const { return m_json_object; }
   QJsonDocument json_document() const { return QJsonDocument(m_json_object); }
-  QByteArray to_binary_data() const;
+  // QByteArray to_binary_data() const;
   QByteArray to_json() const;
   Q_INVOKABLE QString to_json_string() const;
 
