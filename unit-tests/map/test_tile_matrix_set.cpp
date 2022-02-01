@@ -48,7 +48,7 @@ void TestQcTileMatrixSet::constructor()
 {
   QcMercatorTileMatrixSet tile_matrix_set(20, 256);
 
-  for (size_t i = 0; i < tile_matrix_set.number_of_levels(); i++) {
+  for (size_t i = 0; i < tile_matrix_set.number_of_levels(); i++) { // -Wsign-compare
     std::cout << "Level " << tile_matrix_set[i].level() << std::endl;
   }
 

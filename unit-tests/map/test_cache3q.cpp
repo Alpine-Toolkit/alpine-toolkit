@@ -72,9 +72,9 @@ void TestQcCache3Q::constructor()
     QVERIFY(cache[i].data()->value == data_ptr[i]->value);
   }
 
-  QVERIFY(cache.total_cost() == number_of_items);
+  QVERIFY(cache.total_cost() == number_of_items); // -Wsign-compare
   cache.remove(0);
-  QVERIFY(cache.total_cost() == number_of_items - 1);
+  QVERIFY(cache.total_cost() == number_of_items - 1); // -Wsign-compare
   cache.clear();
   QVERIFY(cache.total_cost() == 0);
 }
