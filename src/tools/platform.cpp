@@ -99,10 +99,11 @@ QcPlatform::to_json() const
   platform_object[QStringLiteral("product_type")] = QSysInfo::productType();
   platform_object[QStringLiteral("product_version")] = QSysInfo::productVersion();
   platform_object[QStringLiteral("pretty_product_name")] = QSysInfo::prettyProductName();
-  if (on_windows())
-    platform_object[QStringLiteral("windows_version")] = QSysInfo::windowsVersion();
-  if (on_osx())
-    platform_object[QStringLiteral("osx_version")] = QSysInfo::macVersion();
+  // https://doc.qt.io/qt-5/qsysinfo-obsolete.html
+  // if (on_windows())
+  //   platform_object[QStringLiteral("windows_version")] = QSysInfo::windowsVersion();
+  // if (on_osx())
+  //   platform_object[QStringLiteral("osx_version")] = QSysInfo::macVersion();
   // platform_object[QStringLiteral("pretty_product_name")] = QSslSocket::supportsSsl();
 
   // QGuiApplication * application = static_cast<QGuiApplication *>(QGuiApplication::instance());
