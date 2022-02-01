@@ -185,7 +185,7 @@ QcGpxReader::read(const QString & gpx_path)
 
   while (! m_reader.read_match_end_element(GPX_ELEMENT))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (ename == METADATA_ELEMENT)
         read_metadata(gpx);
       else if (ename == WAYPOINT_ELEMENT)
@@ -211,7 +211,7 @@ QcGpxReader::read_metadata(QcGpx & gpx)
 
   while (! m_reader.read_match_end_element(METADATA_ELEMENT))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (ename == NAME_ELEMENT)
         gpx.set_name(m_reader.readElementText());
       else if (ename == DESCRIPTION_ELEMENT)
@@ -259,7 +259,7 @@ QcGpxReader::read_waypoint(const QString & element)
 
   while (! m_reader.read_match_end_element(element))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (ename == ELEVATION_ELEMENT)
         coordinate.set_elevation(m_reader.read_double());
       else if (ename == TIME_ELEMENT)
@@ -307,7 +307,7 @@ QcGpxReader::read_waypoint(const QString & element)
 }
 
 bool
-QcGpxReader::read_route_metadata(QcRouteMetaData & route, const QStringRef & ename)
+QcGpxReader::read_route_metadata(QcRouteMetaData & route, const QStringView & ename)
 {
   qQCInfo();
 
@@ -342,7 +342,7 @@ QcGpxReader::read_route()
 
   while (! m_reader.read_match_end_element(ROUTE_ELEMENT))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (! read_route_metadata(route, ename)) {
         if (ename == ROUTE_POINT_ELEMENT)
           route.add_waypoint(read_waypoint(ROUTE_POINT_ELEMENT));
@@ -361,7 +361,7 @@ QcGpxReader::read_track()
 
   while (! m_reader.read_match_end_element(TRACK_ELEMENT))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (! read_route_metadata(track, ename)) {
         if (ename == TRACK_SEGMENT_ELEMENT)
           track.add_segment(read_track_segment());
@@ -380,7 +380,7 @@ QcGpxReader::read_track_segment()
 
   while (! m_reader.read_match_end_element(TRACK_SEGMENT_ELEMENT))
     if (m_reader.isStartElement()) {
-      QStringRef ename = m_reader.name();
+      QStringView ename = m_reader.name();
       if (ename == TRACK_POINT_ELEMENT)
           segment.append(read_waypoint(TRACK_POINT_ELEMENT));
       else if (ename == EXTENSIONS_ELEMENT) {

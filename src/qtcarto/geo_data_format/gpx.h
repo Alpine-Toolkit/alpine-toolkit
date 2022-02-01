@@ -36,6 +36,7 @@
 #include <QDateTime>
 #include <QList>
 #include <QString>
+#include <QStringView>
 #include <QXmlStreamWriter>
 
 #include "math/interval.h"
@@ -163,7 +164,7 @@ private:
   void read_metadata(QcGpx & gpx);
   void read_bounds(QcGpx & gpx);
   QcWayPoint read_waypoint(const QString & element);
-  bool read_route_metadata(QcRouteMetaData & route, const QStringRef & ename);
+  bool read_route_metadata(QcRouteMetaData & route, const QStringView & ename);
   QcRoute read_route();
   QcTrack read_track();
   QcWayPointList read_track_segment();
