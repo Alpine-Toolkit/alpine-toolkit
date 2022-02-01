@@ -429,11 +429,11 @@ operator<<(QDebug debug, const Author & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Author(");
+  debug.nospace() << QStringLiteral("Author(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.birthdate();
   debug << ')';
 
@@ -449,11 +449,11 @@ operator<<(QDebug debug, const AuthorPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("AuthorPtr ->");
+  debug.noquote() << QStringLiteral("AuthorPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -546,9 +546,9 @@ AuthorModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[BIRTHDATE] = QLatin1Literal("birthdate").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[BIRTHDATE] = QStringLiteral("birthdate").latin1();
 
   return role_names;
 }
@@ -930,11 +930,11 @@ operator<<(QDebug debug, const Category & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Category(");
+  debug.nospace() << QStringLiteral("Category(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.name();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.description();
   debug << ')';
 
@@ -950,11 +950,11 @@ operator<<(QDebug debug, const CategoryPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("CategoryPtr ->");
+  debug.noquote() << QStringLiteral("CategoryPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -1047,9 +1047,9 @@ CategoryModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[NAME] = QLatin1Literal("name").latin1();
-  role_names[DESCRIPTION] = QLatin1Literal("description").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[NAME] = QStringLiteral("name").latin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
 
   return role_names;
 }
@@ -1521,13 +1521,13 @@ operator<<(QDebug debug, const Blog & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Blog(");
+  debug.nospace() << QStringLiteral("Blog(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.text();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.date();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.author_id();
   debug << ')';
 
@@ -1553,11 +1553,11 @@ operator<<(QDebug debug, const BlogPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("BlogPtr ->");
+  debug.noquote() << QStringLiteral("BlogPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -1652,10 +1652,10 @@ BlogModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[TEXT] = QLatin1Literal("text").latin1();
-  role_names[DATE] = QLatin1Literal("date").latin1();
-  role_names[AUTHOR_ID] = QLatin1Literal("author_id").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[TEXT] = QStringLiteral("text").latin1();
+  role_names[DATE] = QStringLiteral("date").latin1();
+  role_names[AUTHOR_ID] = QStringLiteral("author_id").latin1();
 
   return role_names;
 }
@@ -2096,13 +2096,13 @@ operator<<(QDebug debug, const Comment & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("Comment(");
+  debug.nospace() << QStringLiteral("Comment(");
   debug << obj.id();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.text();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.date();
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
   debug << obj.blog_id();
   debug << ')';
 
@@ -2118,11 +2118,11 @@ operator<<(QDebug debug, const CommentPtr & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("CommentPtr ->");
+  debug.noquote() << QStringLiteral("CommentPtr ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -2217,10 +2217,10 @@ CommentModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QLatin1Literal("id").latin1();
-  role_names[TEXT] = QLatin1Literal("text").latin1();
-  role_names[DATE] = QLatin1Literal("date").latin1();
-  role_names[BLOG_ID] = QLatin1Literal("blog_id").latin1();
+  role_names[ID] = QStringLiteral("id").latin1();
+  role_names[TEXT] = QStringLiteral("text").latin1();
+  role_names[DATE] = QStringLiteral("date").latin1();
+  role_names[BLOG_ID] = QStringLiteral("blog_id").latin1();
 
   return role_names;
 }

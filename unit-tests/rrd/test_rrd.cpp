@@ -53,7 +53,7 @@ public:
     : QcRoundRobinDatabase(path)
   {}
   MyRoundRobinDatabase(const QString & path, size_t number_of_slots)
-    : QcRoundRobinDatabase(path, QLatin1Literal("qdd"), number_of_slots)
+    : QcRoundRobinDatabase(path, QStringLiteral("qdd"), number_of_slots)
   {}
 
   void write (const MyRoundRobinDatabaseSlot & data) {
