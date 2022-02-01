@@ -826,14 +826,14 @@ DocumentModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[AUTHOR] = QStringLiteral("author").latin1();
-  role_names[VERSION] = QStringLiteral("version").latin1();
-  role_names[DATE] = QStringLiteral("date").latin1();
-  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
-  role_names[URL] = QStringLiteral("url").latin1();
-  role_names[SIZE] = QStringLiteral("size").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[AUTHOR] = QStringLiteral("author").toLatin1();
+  role_names[VERSION] = QStringLiteral("version").toLatin1();
+  role_names[DATE] = QStringLiteral("date").toLatin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").toLatin1();
+  role_names[URL] = QStringLiteral("url").toLatin1();
+  role_names[SIZE] = QStringLiteral("size").toLatin1();
 
   return role_names;
 }

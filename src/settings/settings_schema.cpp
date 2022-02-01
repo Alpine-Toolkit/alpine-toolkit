@@ -555,9 +555,9 @@ DirectoryModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[PARENT] = QStringLiteral("parent").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[PARENT] = QStringLiteral("parent").toLatin1();
 
   return role_names;
 }
@@ -1162,10 +1162,10 @@ KeyModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[DIRECTORY_ID] = QStringLiteral("directory_id").latin1();
-  role_names[VALUE] = QStringLiteral("value").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[DIRECTORY_ID] = QStringLiteral("directory_id").toLatin1();
+  role_names[VALUE] = QStringLiteral("value").toLatin1();
 
   return role_names;
 }

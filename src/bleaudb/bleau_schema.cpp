@@ -642,11 +642,11 @@ BleauPlaceModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[CATEGORY] = QStringLiteral("category").latin1();
-  role_names[NOTE] = QStringLiteral("note").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[CATEGORY] = QStringLiteral("category").toLatin1();
+  role_names[NOTE] = QStringLiteral("note").toLatin1();
 
   return role_names;
 }
@@ -1660,17 +1660,17 @@ BleauMassifModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[ACCESS] = QStringLiteral("access").latin1();
-  role_names[ALTERNATIVE_NAME] = QStringLiteral("alternative_name").latin1();
-  role_names[CHAOS_TYPE] = QStringLiteral("chaos_type").latin1();
-  role_names[NOTE] = QStringLiteral("note").latin1();
-  role_names[PARCELLES] = QStringLiteral("parcelles").latin1();
-  role_names[RDV] = QStringLiteral("rdv").latin1();
-  role_names[SECTEUR] = QStringLiteral("secteur").latin1();
-  role_names[VELO] = QStringLiteral("velo").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[ACCESS] = QStringLiteral("access").toLatin1();
+  role_names[ALTERNATIVE_NAME] = QStringLiteral("alternative_name").toLatin1();
+  role_names[CHAOS_TYPE] = QStringLiteral("chaos_type").toLatin1();
+  role_names[NOTE] = QStringLiteral("note").toLatin1();
+  role_names[PARCELLES] = QStringLiteral("parcelles").toLatin1();
+  role_names[RDV] = QStringLiteral("rdv").toLatin1();
+  role_names[SECTEUR] = QStringLiteral("secteur").toLatin1();
+  role_names[VELO] = QStringLiteral("velo").toLatin1();
 
   return role_names;
 }
@@ -2895,20 +2895,20 @@ BleauCircuitModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
-  role_names[COLOUR] = QStringLiteral("colour").latin1();
-  role_names[CREATION_DATE] = QStringLiteral("creation_date").latin1();
-  role_names[GESTION] = QStringLiteral("gestion").latin1();
-  role_names[GRADE] = QStringLiteral("grade").latin1();
-  role_names[MASSIF_ID] = QStringLiteral("massif_id").latin1();
-  role_names[NOTE] = QStringLiteral("note").latin1();
-  role_names[NUMBER] = QStringLiteral("number").latin1();
-  role_names[OPENER] = QStringLiteral("opener").latin1();
-  role_names[REFECTION_DATE] = QStringLiteral("refection_date").latin1();
-  role_names[REFECTION_NOTE] = QStringLiteral("refection_note").latin1();
-  role_names[STATUS] = QStringLiteral("status").latin1();
-  role_names[TOPOS] = QStringLiteral("topos").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").toLatin1();
+  role_names[COLOUR] = QStringLiteral("colour").toLatin1();
+  role_names[CREATION_DATE] = QStringLiteral("creation_date").toLatin1();
+  role_names[GESTION] = QStringLiteral("gestion").toLatin1();
+  role_names[GRADE] = QStringLiteral("grade").toLatin1();
+  role_names[MASSIF_ID] = QStringLiteral("massif_id").toLatin1();
+  role_names[NOTE] = QStringLiteral("note").toLatin1();
+  role_names[NUMBER] = QStringLiteral("number").toLatin1();
+  role_names[OPENER] = QStringLiteral("opener").toLatin1();
+  role_names[REFECTION_DATE] = QStringLiteral("refection_date").toLatin1();
+  role_names[REFECTION_NOTE] = QStringLiteral("refection_note").toLatin1();
+  role_names[STATUS] = QStringLiteral("status").toLatin1();
+  role_names[TOPOS] = QStringLiteral("topos").toLatin1();
 
   return role_names;
 }
@@ -3691,13 +3691,13 @@ BleauBoulderModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[COMMENT] = QStringLiteral("comment").latin1();
-  role_names[GRADE] = QStringLiteral("grade").latin1();
-  role_names[NUMBER] = QStringLiteral("number").latin1();
-  role_names[CIRCUIT_ID] = QStringLiteral("circuit_id").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[COMMENT] = QStringLiteral("comment").toLatin1();
+  role_names[GRADE] = QStringLiteral("grade").toLatin1();
+  role_names[NUMBER] = QStringLiteral("number").toLatin1();
+  role_names[CIRCUIT_ID] = QStringLiteral("circuit_id").toLatin1();
 
   return role_names;
 }

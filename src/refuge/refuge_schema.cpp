@@ -1149,20 +1149,20 @@ RefugeModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[SHORT_NAME] = QStringLiteral("short_name").latin1();
-  role_names[ALTITUDE] = QStringLiteral("altitude").latin1();
-  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
-  role_names[OWNER] = QStringLiteral("owner").latin1();
-  role_names[GUARDIAN] = QStringLiteral("guardian").latin1();
-  role_names[PICTURE_PATH] = QStringLiteral("picture_path").latin1();
-  role_names[COORDINATE] = QStringLiteral("coordinate").latin1();
-  role_names[NUMBER_OF_PLACES] = QStringLiteral("number_of_places").latin1();
-  role_names[REGION] = QStringLiteral("region").latin1();
-  role_names[URL] = QStringLiteral("url").latin1();
-  role_names[PHONE] = QStringLiteral("phone").latin1();
-  role_names[FIRST_LETTER] = QStringLiteral("first_letter").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[SHORT_NAME] = QStringLiteral("short_name").toLatin1();
+  role_names[ALTITUDE] = QStringLiteral("altitude").toLatin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").toLatin1();
+  role_names[OWNER] = QStringLiteral("owner").toLatin1();
+  role_names[GUARDIAN] = QStringLiteral("guardian").toLatin1();
+  role_names[PICTURE_PATH] = QStringLiteral("picture_path").toLatin1();
+  role_names[COORDINATE] = QStringLiteral("coordinate").toLatin1();
+  role_names[NUMBER_OF_PLACES] = QStringLiteral("number_of_places").toLatin1();
+  role_names[REGION] = QStringLiteral("region").toLatin1();
+  role_names[URL] = QStringLiteral("url").toLatin1();
+  role_names[PHONE] = QStringLiteral("phone").toLatin1();
+  role_names[FIRST_LETTER] = QStringLiteral("first_letter").toLatin1();
 
   return role_names;
 }

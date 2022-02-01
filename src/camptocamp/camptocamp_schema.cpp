@@ -459,8 +459,8 @@ C2cAreaAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[AREA_ID] = QStringLiteral("area_id").latin1();
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
+  role_names[AREA_ID] = QStringLiteral("area_id").toLatin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
 
   return role_names;
 }
@@ -898,8 +898,8 @@ C2cAreasModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[AREA_TYPE] = QStringLiteral("area_type").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[AREA_TYPE] = QStringLiteral("area_type").toLatin1();
 
   return role_names;
 }
@@ -1460,10 +1460,10 @@ C2cArticlesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[ARTICLE_TYPE] = QStringLiteral("article_type").latin1();
-  role_names[CATEGORIES] = QStringLiteral("categories").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[ARTICLE_TYPE] = QStringLiteral("article_type").toLatin1();
+  role_names[CATEGORIES] = QStringLiteral("categories").toLatin1();
 
   return role_names;
 }
@@ -2027,10 +2027,10 @@ C2cAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[CHILD_DOCUMENT_ID] = QStringLiteral("child_document_id").latin1();
-  role_names[PARENT_DOCUMENT_ID] = QStringLiteral("parent_document_id").latin1();
-  role_names[CHILD_DOCUMENT_TYPE] = QStringLiteral("child_document_type").latin1();
-  role_names[PARENT_DOCUMENT_TYPE] = QStringLiteral("parent_document_type").latin1();
+  role_names[CHILD_DOCUMENT_ID] = QStringLiteral("child_document_id").toLatin1();
+  role_names[PARENT_DOCUMENT_ID] = QStringLiteral("parent_document_id").toLatin1();
+  role_names[CHILD_DOCUMENT_TYPE] = QStringLiteral("child_document_type").toLatin1();
+  role_names[PARENT_DOCUMENT_TYPE] = QStringLiteral("parent_document_type").toLatin1();
 
   return role_names;
 }
@@ -2957,16 +2957,16 @@ C2cBooksModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[AUTHOR] = QStringLiteral("author").latin1();
-  role_names[BOOK_TYPES] = QStringLiteral("book_types").latin1();
-  role_names[EDITOR] = QStringLiteral("editor").latin1();
-  role_names[ISBN] = QStringLiteral("isbn").latin1();
-  role_names[LANGS] = QStringLiteral("langs").latin1();
-  role_names[NB_PAGES] = QStringLiteral("nb_pages").latin1();
-  role_names[PUBLICATION_DATE] = QStringLiteral("publication_date").latin1();
-  role_names[URL] = QStringLiteral("url").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[AUTHOR] = QStringLiteral("author").toLatin1();
+  role_names[BOOK_TYPES] = QStringLiteral("book_types").toLatin1();
+  role_names[EDITOR] = QStringLiteral("editor").toLatin1();
+  role_names[ISBN] = QStringLiteral("isbn").toLatin1();
+  role_names[LANGS] = QStringLiteral("langs").toLatin1();
+  role_names[NB_PAGES] = QStringLiteral("nb_pages").toLatin1();
+  role_names[PUBLICATION_DATE] = QStringLiteral("publication_date").toLatin1();
+  role_names[URL] = QStringLiteral("url").toLatin1();
 
   return role_names;
 }
@@ -3653,12 +3653,12 @@ C2cDocumentsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[PROTECTED_FLAG] = QStringLiteral("protected_flag").latin1();
-  role_names[QUALITY] = QStringLiteral("quality").latin1();
-  role_names[REDIRECTS_TO] = QStringLiteral("redirects_to").latin1();
-  role_names[TYPE] = QStringLiteral("type").latin1();
-  role_names[VERSION] = QStringLiteral("version").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[PROTECTED_FLAG] = QStringLiteral("protected_flag").toLatin1();
+  role_names[QUALITY] = QStringLiteral("quality").toLatin1();
+  role_names[REDIRECTS_TO] = QStringLiteral("redirects_to").toLatin1();
+  role_names[TYPE] = QStringLiteral("type").toLatin1();
+  role_names[VERSION] = QStringLiteral("version").toLatin1();
 
   return role_names;
 }
@@ -4219,10 +4219,10 @@ C2cDocumentsGeometriesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[GEOM] = QStringLiteral("geom").latin1();
-  role_names[GEOM_DETAIL] = QStringLiteral("geom_detail").latin1();
-  role_names[VERSION] = QStringLiteral("version").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[GEOM] = QStringLiteral("geom").toLatin1();
+  role_names[GEOM_DETAIL] = QStringLiteral("geom_detail").toLatin1();
+  role_names[VERSION] = QStringLiteral("version").toLatin1();
 
   return role_names;
 }
@@ -5031,14 +5031,14 @@ C2cDocumentsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[LANG] = QStringLiteral("lang").latin1();
-  role_names[SUMMARY] = QStringLiteral("summary").latin1();
-  role_names[TITLE] = QStringLiteral("title").latin1();
-  role_names[TYPE] = QStringLiteral("type").latin1();
-  role_names[VERSION] = QStringLiteral("version").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").toLatin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[LANG] = QStringLiteral("lang").toLatin1();
+  role_names[SUMMARY] = QStringLiteral("summary").toLatin1();
+  role_names[TITLE] = QStringLiteral("title").toLatin1();
+  role_names[TYPE] = QStringLiteral("type").toLatin1();
+  role_names[VERSION] = QStringLiteral("version").toLatin1();
 
   return role_names;
 }
@@ -5476,8 +5476,8 @@ C2cDocumentsTopicsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_LOCALE_ID] = QStringLiteral("document_locale_id").latin1();
-  role_names[TOPIC_ID] = QStringLiteral("topic_id").latin1();
+  role_names[DOCUMENT_LOCALE_ID] = QStringLiteral("document_locale_id").toLatin1();
+  role_names[TOPIC_ID] = QStringLiteral("topic_id").toLatin1();
 
   return role_names;
 }
@@ -6225,13 +6225,13 @@ C2cDocumentsVersionsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[DOCUMENT_ARCHIVE_ID] = QStringLiteral("document_archive_id").latin1();
-  role_names[DOCUMENT_GEOMETRY_ARCHIVE_ID] = QStringLiteral("document_geometry_archive_id").latin1();
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[DOCUMENT_LOCALES_ARCHIVE_ID] = QStringLiteral("document_locales_archive_id").latin1();
-  role_names[HISTORY_METADATA_ID] = QStringLiteral("history_metadata_id").latin1();
-  role_names[LANG] = QStringLiteral("lang").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[DOCUMENT_ARCHIVE_ID] = QStringLiteral("document_archive_id").toLatin1();
+  role_names[DOCUMENT_GEOMETRY_ARCHIVE_ID] = QStringLiteral("document_geometry_archive_id").toLatin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[DOCUMENT_LOCALES_ARCHIVE_ID] = QStringLiteral("document_locales_archive_id").toLatin1();
+  role_names[HISTORY_METADATA_ID] = QStringLiteral("history_metadata_id").toLatin1();
+  role_names[LANG] = QStringLiteral("lang").toLatin1();
 
   return role_names;
 }
@@ -7527,22 +7527,22 @@ C2cImagesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[AUTHOR] = QStringLiteral("author").latin1();
-  role_names[CAMERA_NAME] = QStringLiteral("camera_name").latin1();
-  role_names[CATEGORIES] = QStringLiteral("categories").latin1();
-  role_names[DATE_TIME] = QStringLiteral("date_time").latin1();
-  role_names[ELEVATION] = QStringLiteral("elevation").latin1();
-  role_names[EXPOSURE_TIME] = QStringLiteral("exposure_time").latin1();
-  role_names[FILE_SIZE] = QStringLiteral("file_size").latin1();
-  role_names[FILENAME] = QStringLiteral("filename").latin1();
-  role_names[FNUMBER] = QStringLiteral("fnumber").latin1();
-  role_names[FOCAL_LENGTH] = QStringLiteral("focal_length").latin1();
-  role_names[HEIGHT] = QStringLiteral("height").latin1();
-  role_names[IMAGE_TYPE] = QStringLiteral("image_type").latin1();
-  role_names[ISO_SPEED] = QStringLiteral("iso_speed").latin1();
-  role_names[WIDTH] = QStringLiteral("width").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[AUTHOR] = QStringLiteral("author").toLatin1();
+  role_names[CAMERA_NAME] = QStringLiteral("camera_name").toLatin1();
+  role_names[CATEGORIES] = QStringLiteral("categories").toLatin1();
+  role_names[DATE_TIME] = QStringLiteral("date_time").toLatin1();
+  role_names[ELEVATION] = QStringLiteral("elevation").toLatin1();
+  role_names[EXPOSURE_TIME] = QStringLiteral("exposure_time").toLatin1();
+  role_names[FILE_SIZE] = QStringLiteral("file_size").toLatin1();
+  role_names[FILENAME] = QStringLiteral("filename").toLatin1();
+  role_names[FNUMBER] = QStringLiteral("fnumber").toLatin1();
+  role_names[FOCAL_LENGTH] = QStringLiteral("focal_length").toLatin1();
+  role_names[HEIGHT] = QStringLiteral("height").toLatin1();
+  role_names[IMAGE_TYPE] = QStringLiteral("image_type").toLatin1();
+  role_names[ISO_SPEED] = QStringLiteral("iso_speed").toLatin1();
+  role_names[WIDTH] = QStringLiteral("width").toLatin1();
 
   return role_names;
 }
@@ -7981,8 +7981,8 @@ C2cMapAssociationsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[TOPO_MAP_ID] = QStringLiteral("topo_map_id").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[TOPO_MAP_ID] = QStringLiteral("topo_map_id").toLatin1();
 
   return role_names;
 }
@@ -8542,10 +8542,10 @@ C2cMapsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[CODE] = QStringLiteral("code").latin1();
-  role_names[EDITOR] = QStringLiteral("editor").latin1();
-  role_names[SCALE] = QStringLiteral("scale").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[CODE] = QStringLiteral("code").toLatin1();
+  role_names[EDITOR] = QStringLiteral("editor").toLatin1();
+  role_names[SCALE] = QStringLiteral("scale").toLatin1();
 
   return role_names;
 }
@@ -10392,31 +10392,31 @@ C2cOutingsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACCESS_CONDITION] = QStringLiteral("access_condition").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[AVALANCHE_SIGNS] = QStringLiteral("avalanche_signs").latin1();
-  role_names[CONDITION_RATING] = QStringLiteral("condition_rating").latin1();
-  role_names[DATE_END] = QStringLiteral("date_end").latin1();
-  role_names[DATE_START] = QStringLiteral("date_start").latin1();
-  role_names[DISABLE_COMMENTS] = QStringLiteral("disable_comments").latin1();
-  role_names[ELEVATION_ACCESS] = QStringLiteral("elevation_access").latin1();
-  role_names[ELEVATION_DOWN_SNOW] = QStringLiteral("elevation_down_snow").latin1();
-  role_names[ELEVATION_MAX] = QStringLiteral("elevation_max").latin1();
-  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").latin1();
-  role_names[ELEVATION_UP_SNOW] = QStringLiteral("elevation_up_snow").latin1();
-  role_names[FREQUENTATION] = QStringLiteral("frequentation").latin1();
-  role_names[GLACIER_RATING] = QStringLiteral("glacier_rating").latin1();
-  role_names[HEIGHT_DIFF_DOWN] = QStringLiteral("height_diff_down").latin1();
-  role_names[HEIGHT_DIFF_UP] = QStringLiteral("height_diff_up").latin1();
-  role_names[HUT_STATUS] = QStringLiteral("hut_status").latin1();
-  role_names[LENGTH_TOTAL] = QStringLiteral("length_total").latin1();
-  role_names[LIFT_STATUS] = QStringLiteral("lift_status").latin1();
-  role_names[PARTIAL_TRIP] = QStringLiteral("partial_trip").latin1();
-  role_names[PARTICIPANT_COUNT] = QStringLiteral("participant_count").latin1();
-  role_names[PUBLIC_TRANSPORT] = QStringLiteral("public_transport").latin1();
-  role_names[SNOW_QUALITY] = QStringLiteral("snow_quality").latin1();
-  role_names[SNOW_QUANTITY] = QStringLiteral("snow_quantity").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACCESS_CONDITION] = QStringLiteral("access_condition").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[AVALANCHE_SIGNS] = QStringLiteral("avalanche_signs").toLatin1();
+  role_names[CONDITION_RATING] = QStringLiteral("condition_rating").toLatin1();
+  role_names[DATE_END] = QStringLiteral("date_end").toLatin1();
+  role_names[DATE_START] = QStringLiteral("date_start").toLatin1();
+  role_names[DISABLE_COMMENTS] = QStringLiteral("disable_comments").toLatin1();
+  role_names[ELEVATION_ACCESS] = QStringLiteral("elevation_access").toLatin1();
+  role_names[ELEVATION_DOWN_SNOW] = QStringLiteral("elevation_down_snow").toLatin1();
+  role_names[ELEVATION_MAX] = QStringLiteral("elevation_max").toLatin1();
+  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").toLatin1();
+  role_names[ELEVATION_UP_SNOW] = QStringLiteral("elevation_up_snow").toLatin1();
+  role_names[FREQUENTATION] = QStringLiteral("frequentation").toLatin1();
+  role_names[GLACIER_RATING] = QStringLiteral("glacier_rating").toLatin1();
+  role_names[HEIGHT_DIFF_DOWN] = QStringLiteral("height_diff_down").toLatin1();
+  role_names[HEIGHT_DIFF_UP] = QStringLiteral("height_diff_up").toLatin1();
+  role_names[HUT_STATUS] = QStringLiteral("hut_status").toLatin1();
+  role_names[LENGTH_TOTAL] = QStringLiteral("length_total").toLatin1();
+  role_names[LIFT_STATUS] = QStringLiteral("lift_status").toLatin1();
+  role_names[PARTIAL_TRIP] = QStringLiteral("partial_trip").toLatin1();
+  role_names[PARTICIPANT_COUNT] = QStringLiteral("participant_count").toLatin1();
+  role_names[PUBLIC_TRANSPORT] = QStringLiteral("public_transport").toLatin1();
+  role_names[SNOW_QUALITY] = QStringLiteral("snow_quality").toLatin1();
+  role_names[SNOW_QUANTITY] = QStringLiteral("snow_quantity").toLatin1();
 
   return role_names;
 }
@@ -11342,16 +11342,16 @@ C2cOutingsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[ACCESS_COMMENT] = QStringLiteral("access_comment").latin1();
-  role_names[AVALANCHES] = QStringLiteral("avalanches").latin1();
-  role_names[CONDITIONS] = QStringLiteral("conditions").latin1();
-  role_names[CONDITIONS_LEVELS] = QStringLiteral("conditions_levels").latin1();
-  role_names[HUT_COMMENT] = QStringLiteral("hut_comment").latin1();
-  role_names[PARTICIPANTS] = QStringLiteral("participants").latin1();
-  role_names[ROUTE_DESCRIPTION] = QStringLiteral("route_description").latin1();
-  role_names[TIMING] = QStringLiteral("timing").latin1();
-  role_names[WEATHER] = QStringLiteral("weather").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[ACCESS_COMMENT] = QStringLiteral("access_comment").toLatin1();
+  role_names[AVALANCHES] = QStringLiteral("avalanches").toLatin1();
+  role_names[CONDITIONS] = QStringLiteral("conditions").toLatin1();
+  role_names[CONDITIONS_LEVELS] = QStringLiteral("conditions_levels").toLatin1();
+  role_names[HUT_COMMENT] = QStringLiteral("hut_comment").toLatin1();
+  role_names[PARTICIPANTS] = QStringLiteral("participants").toLatin1();
+  role_names[ROUTE_DESCRIPTION] = QStringLiteral("route_description").toLatin1();
+  role_names[TIMING] = QStringLiteral("timing").toLatin1();
+  role_names[WEATHER] = QStringLiteral("weather").toLatin1();
 
   return role_names;
 }
@@ -14355,50 +14355,50 @@ C2cRoutesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[AID_RATING] = QStringLiteral("aid_rating").latin1();
-  role_names[CLIMBING_OUTDOOR_TYPE] = QStringLiteral("climbing_outdoor_type").latin1();
-  role_names[CONFIGURATION] = QStringLiteral("configuration").latin1();
-  role_names[DIFFICULTIES_HEIGHT] = QStringLiteral("difficulties_height").latin1();
-  role_names[DURATIONS] = QStringLiteral("durations").latin1();
-  role_names[ELEVATION_MAX] = QStringLiteral("elevation_max").latin1();
-  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").latin1();
-  role_names[ENGAGEMENT_RATING] = QStringLiteral("engagement_rating").latin1();
-  role_names[EQUIPMENT_RATING] = QStringLiteral("equipment_rating").latin1();
-  role_names[EXPOSITION_ROCK_RATING] = QStringLiteral("exposition_rock_rating").latin1();
-  role_names[GLACIER_GEAR] = QStringLiteral("glacier_gear").latin1();
-  role_names[GLOBAL_RATING] = QStringLiteral("global_rating").latin1();
-  role_names[HEIGHT_DIFF_ACCESS] = QStringLiteral("height_diff_access").latin1();
-  role_names[HEIGHT_DIFF_DIFFICULTIES] = QStringLiteral("height_diff_difficulties").latin1();
-  role_names[HEIGHT_DIFF_DOWN] = QStringLiteral("height_diff_down").latin1();
-  role_names[HEIGHT_DIFF_UP] = QStringLiteral("height_diff_up").latin1();
-  role_names[HIKING_MTB_EXPOSITION] = QStringLiteral("hiking_mtb_exposition").latin1();
-  role_names[HIKING_RATING] = QStringLiteral("hiking_rating").latin1();
-  role_names[ICE_RATING] = QStringLiteral("ice_rating").latin1();
-  role_names[LABANDE_GLOBAL_RATING] = QStringLiteral("labande_global_rating").latin1();
-  role_names[LABANDE_SKI_RATING] = QStringLiteral("labande_ski_rating").latin1();
-  role_names[LIFT_ACCESS] = QStringLiteral("lift_access").latin1();
-  role_names[MAIN_WAYPOINT_ID] = QStringLiteral("main_waypoint_id").latin1();
-  role_names[MIXED_RATING] = QStringLiteral("mixed_rating").latin1();
-  role_names[MTB_DOWN_RATING] = QStringLiteral("mtb_down_rating").latin1();
-  role_names[MTB_HEIGHT_DIFF_PORTAGES] = QStringLiteral("mtb_height_diff_portages").latin1();
-  role_names[MTB_LENGTH_ASPHALT] = QStringLiteral("mtb_length_asphalt").latin1();
-  role_names[MTB_LENGTH_TRAIL] = QStringLiteral("mtb_length_trail").latin1();
-  role_names[MTB_UP_RATING] = QStringLiteral("mtb_up_rating").latin1();
-  role_names[ORIENTATIONS] = QStringLiteral("orientations").latin1();
-  role_names[RISK_RATING] = QStringLiteral("risk_rating").latin1();
-  role_names[ROCK_FREE_RATING] = QStringLiteral("rock_free_rating").latin1();
-  role_names[ROCK_REQUIRED_RATING] = QStringLiteral("rock_required_rating").latin1();
-  role_names[ROCK_TYPES] = QStringLiteral("rock_types").latin1();
-  role_names[ROUTE_LENGTH] = QStringLiteral("route_length").latin1();
-  role_names[ROUTE_TYPES] = QStringLiteral("route_types").latin1();
-  role_names[SKI_EXPOSITION] = QStringLiteral("ski_exposition").latin1();
-  role_names[SKI_RATING] = QStringLiteral("ski_rating").latin1();
-  role_names[SLACKLINE_HEIGHT] = QStringLiteral("slackline_height").latin1();
-  role_names[SLACKLINE_TYPE] = QStringLiteral("slackline_type").latin1();
-  role_names[SNOWSHOE_RATING] = QStringLiteral("snowshoe_rating").latin1();
-  role_names[VIA_FERRATA_RATING] = QStringLiteral("via_ferrata_rating").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[AID_RATING] = QStringLiteral("aid_rating").toLatin1();
+  role_names[CLIMBING_OUTDOOR_TYPE] = QStringLiteral("climbing_outdoor_type").toLatin1();
+  role_names[CONFIGURATION] = QStringLiteral("configuration").toLatin1();
+  role_names[DIFFICULTIES_HEIGHT] = QStringLiteral("difficulties_height").toLatin1();
+  role_names[DURATIONS] = QStringLiteral("durations").toLatin1();
+  role_names[ELEVATION_MAX] = QStringLiteral("elevation_max").toLatin1();
+  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").toLatin1();
+  role_names[ENGAGEMENT_RATING] = QStringLiteral("engagement_rating").toLatin1();
+  role_names[EQUIPMENT_RATING] = QStringLiteral("equipment_rating").toLatin1();
+  role_names[EXPOSITION_ROCK_RATING] = QStringLiteral("exposition_rock_rating").toLatin1();
+  role_names[GLACIER_GEAR] = QStringLiteral("glacier_gear").toLatin1();
+  role_names[GLOBAL_RATING] = QStringLiteral("global_rating").toLatin1();
+  role_names[HEIGHT_DIFF_ACCESS] = QStringLiteral("height_diff_access").toLatin1();
+  role_names[HEIGHT_DIFF_DIFFICULTIES] = QStringLiteral("height_diff_difficulties").toLatin1();
+  role_names[HEIGHT_DIFF_DOWN] = QStringLiteral("height_diff_down").toLatin1();
+  role_names[HEIGHT_DIFF_UP] = QStringLiteral("height_diff_up").toLatin1();
+  role_names[HIKING_MTB_EXPOSITION] = QStringLiteral("hiking_mtb_exposition").toLatin1();
+  role_names[HIKING_RATING] = QStringLiteral("hiking_rating").toLatin1();
+  role_names[ICE_RATING] = QStringLiteral("ice_rating").toLatin1();
+  role_names[LABANDE_GLOBAL_RATING] = QStringLiteral("labande_global_rating").toLatin1();
+  role_names[LABANDE_SKI_RATING] = QStringLiteral("labande_ski_rating").toLatin1();
+  role_names[LIFT_ACCESS] = QStringLiteral("lift_access").toLatin1();
+  role_names[MAIN_WAYPOINT_ID] = QStringLiteral("main_waypoint_id").toLatin1();
+  role_names[MIXED_RATING] = QStringLiteral("mixed_rating").toLatin1();
+  role_names[MTB_DOWN_RATING] = QStringLiteral("mtb_down_rating").toLatin1();
+  role_names[MTB_HEIGHT_DIFF_PORTAGES] = QStringLiteral("mtb_height_diff_portages").toLatin1();
+  role_names[MTB_LENGTH_ASPHALT] = QStringLiteral("mtb_length_asphalt").toLatin1();
+  role_names[MTB_LENGTH_TRAIL] = QStringLiteral("mtb_length_trail").toLatin1();
+  role_names[MTB_UP_RATING] = QStringLiteral("mtb_up_rating").toLatin1();
+  role_names[ORIENTATIONS] = QStringLiteral("orientations").toLatin1();
+  role_names[RISK_RATING] = QStringLiteral("risk_rating").toLatin1();
+  role_names[ROCK_FREE_RATING] = QStringLiteral("rock_free_rating").toLatin1();
+  role_names[ROCK_REQUIRED_RATING] = QStringLiteral("rock_required_rating").toLatin1();
+  role_names[ROCK_TYPES] = QStringLiteral("rock_types").toLatin1();
+  role_names[ROUTE_LENGTH] = QStringLiteral("route_length").toLatin1();
+  role_names[ROUTE_TYPES] = QStringLiteral("route_types").toLatin1();
+  role_names[SKI_EXPOSITION] = QStringLiteral("ski_exposition").toLatin1();
+  role_names[SKI_RATING] = QStringLiteral("ski_rating").toLatin1();
+  role_names[SLACKLINE_HEIGHT] = QStringLiteral("slackline_height").toLatin1();
+  role_names[SLACKLINE_TYPE] = QStringLiteral("slackline_type").toLatin1();
+  role_names[SNOWSHOE_RATING] = QStringLiteral("snowshoe_rating").toLatin1();
+  role_names[VIA_FERRATA_RATING] = QStringLiteral("via_ferrata_rating").toLatin1();
 
   return role_names;
 }
@@ -15263,15 +15263,15 @@ C2cRoutesLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[EXTERNAL_RESOURCES] = QStringLiteral("external_resources").latin1();
-  role_names[GEAR] = QStringLiteral("gear").latin1();
-  role_names[REMARKS] = QStringLiteral("remarks").latin1();
-  role_names[ROUTE_HISTORY] = QStringLiteral("route_history").latin1();
-  role_names[SLACKLINE_ANCHOR1] = QStringLiteral("slackline_anchor1").latin1();
-  role_names[SLACKLINE_ANCHOR2] = QStringLiteral("slackline_anchor2").latin1();
-  role_names[SLOPE] = QStringLiteral("slope").latin1();
-  role_names[TITLE_PREFIX] = QStringLiteral("title_prefix").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[EXTERNAL_RESOURCES] = QStringLiteral("external_resources").toLatin1();
+  role_names[GEAR] = QStringLiteral("gear").toLatin1();
+  role_names[REMARKS] = QStringLiteral("remarks").toLatin1();
+  role_names[ROUTE_HISTORY] = QStringLiteral("route_history").toLatin1();
+  role_names[SLACKLINE_ANCHOR1] = QStringLiteral("slackline_anchor1").toLatin1();
+  role_names[SLACKLINE_ANCHOR2] = QStringLiteral("slackline_anchor2").toLatin1();
+  role_names[SLOPE] = QStringLiteral("slope").toLatin1();
+  role_names[TITLE_PREFIX] = QStringLiteral("title_prefix").toLatin1();
 
   return role_names;
 }
@@ -16640,23 +16640,23 @@ C2cUserModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[BLOCKED] = QStringLiteral("blocked").latin1();
-  role_names[EMAIL] = QStringLiteral("email").latin1();
-  role_names[EMAIL_TO_VALIDATE] = QStringLiteral("email_to_validate").latin1();
-  role_names[EMAIL_VALIDATED] = QStringLiteral("email_validated").latin1();
-  role_names[FEED_FILTER_ACTIVITIES] = QStringLiteral("feed_filter_activities").latin1();
-  role_names[FEED_FOLLOWED_ONLY] = QStringLiteral("feed_followed_only").latin1();
-  role_names[FORUM_USERNAME] = QStringLiteral("forum_username").latin1();
-  role_names[IS_PROFILE_PUBLIC] = QStringLiteral("is_profile_public").latin1();
-  role_names[LANG] = QStringLiteral("lang").latin1();
-  role_names[LAST_MODIFIED] = QStringLiteral("last_modified").latin1();
-  role_names[MODERATOR] = QStringLiteral("moderator").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[PASSWORD] = QStringLiteral("password").latin1();
-  role_names[USERNAME] = QStringLiteral("username").latin1();
-  role_names[VALIDATION_NONCE] = QStringLiteral("validation_nonce").latin1();
-  role_names[VALIDATION_NONCE_EXPIRE] = QStringLiteral("validation_nonce_expire").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[BLOCKED] = QStringLiteral("blocked").toLatin1();
+  role_names[EMAIL] = QStringLiteral("email").toLatin1();
+  role_names[EMAIL_TO_VALIDATE] = QStringLiteral("email_to_validate").toLatin1();
+  role_names[EMAIL_VALIDATED] = QStringLiteral("email_validated").toLatin1();
+  role_names[FEED_FILTER_ACTIVITIES] = QStringLiteral("feed_filter_activities").toLatin1();
+  role_names[FEED_FOLLOWED_ONLY] = QStringLiteral("feed_followed_only").toLatin1();
+  role_names[FORUM_USERNAME] = QStringLiteral("forum_username").toLatin1();
+  role_names[IS_PROFILE_PUBLIC] = QStringLiteral("is_profile_public").toLatin1();
+  role_names[LANG] = QStringLiteral("lang").toLatin1();
+  role_names[LAST_MODIFIED] = QStringLiteral("last_modified").toLatin1();
+  role_names[MODERATOR] = QStringLiteral("moderator").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[PASSWORD] = QStringLiteral("password").toLatin1();
+  role_names[USERNAME] = QStringLiteral("username").toLatin1();
+  role_names[VALIDATION_NONCE] = QStringLiteral("validation_nonce").toLatin1();
+  role_names[VALIDATION_NONCE_EXPIRE] = QStringLiteral("validation_nonce_expire").toLatin1();
 
   return role_names;
 }
@@ -17155,9 +17155,9 @@ C2cUserProfilesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[CATEGORIES] = QStringLiteral("categories").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[CATEGORIES] = QStringLiteral("categories").toLatin1();
 
   return role_names;
 }
@@ -20405,54 +20405,54 @@ C2cWaypointsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACCESS_TIME] = QStringLiteral("access_time").latin1();
-  role_names[BEST_PERIODS] = QStringLiteral("best_periods").latin1();
-  role_names[BLANKET_UNSTAFFED] = QStringLiteral("blanket_unstaffed").latin1();
-  role_names[CAPACITY] = QStringLiteral("capacity").latin1();
-  role_names[CAPACITY_STAFFED] = QStringLiteral("capacity_staffed").latin1();
-  role_names[CHILDREN_PROOF] = QStringLiteral("children_proof").latin1();
-  role_names[CLIMBING_INDOOR_TYPES] = QStringLiteral("climbing_indoor_types").latin1();
-  role_names[CLIMBING_OUTDOOR_TYPES] = QStringLiteral("climbing_outdoor_types").latin1();
-  role_names[CLIMBING_RATING_MAX] = QStringLiteral("climbing_rating_max").latin1();
-  role_names[CLIMBING_RATING_MEDIAN] = QStringLiteral("climbing_rating_median").latin1();
-  role_names[CLIMBING_RATING_MIN] = QStringLiteral("climbing_rating_min").latin1();
-  role_names[CLIMBING_STYLES] = QStringLiteral("climbing_styles").latin1();
-  role_names[CUSTODIANSHIP] = QStringLiteral("custodianship").latin1();
-  role_names[ELEVATION] = QStringLiteral("elevation").latin1();
-  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").latin1();
-  role_names[EQUIPMENT_RATINGS] = QStringLiteral("equipment_ratings").latin1();
-  role_names[EXPOSITION_RATING] = QStringLiteral("exposition_rating").latin1();
-  role_names[GAS_UNSTAFFED] = QStringLiteral("gas_unstaffed").latin1();
-  role_names[GROUND_TYPES] = QStringLiteral("ground_types").latin1();
-  role_names[HEATING_UNSTAFFED] = QStringLiteral("heating_unstaffed").latin1();
-  role_names[HEIGHT_MAX] = QStringLiteral("height_max").latin1();
-  role_names[HEIGHT_MEDIAN] = QStringLiteral("height_median").latin1();
-  role_names[HEIGHT_MIN] = QStringLiteral("height_min").latin1();
-  role_names[LENGTH] = QStringLiteral("length").latin1();
-  role_names[LIFT_ACCESS] = QStringLiteral("lift_access").latin1();
-  role_names[MAPS_INFO] = QStringLiteral("maps_info").latin1();
-  role_names[MATRESS_UNSTAFFED] = QStringLiteral("matress_unstaffed").latin1();
-  role_names[ORIENTATIONS] = QStringLiteral("orientations").latin1();
-  role_names[PARAGLIDING_RATING] = QStringLiteral("paragliding_rating").latin1();
-  role_names[PARKING_FEE] = QStringLiteral("parking_fee").latin1();
-  role_names[PHONE] = QStringLiteral("phone").latin1();
-  role_names[PHONE_CUSTODIAN] = QStringLiteral("phone_custodian").latin1();
-  role_names[PRODUCT_TYPES] = QStringLiteral("product_types").latin1();
-  role_names[PROMINENCE] = QStringLiteral("prominence").latin1();
-  role_names[PUBLIC_TRANSPORTATION_RATING] = QStringLiteral("public_transportation_rating").latin1();
-  role_names[PUBLIC_TRANSPORTATION_TYPES] = QStringLiteral("public_transportation_types").latin1();
-  role_names[RAIN_PROOF] = QStringLiteral("rain_proof").latin1();
-  role_names[ROCK_TYPES] = QStringLiteral("rock_types").latin1();
-  role_names[ROUTES_QUANTITY] = QStringLiteral("routes_quantity").latin1();
-  role_names[SLACKLINE_LENGTH_MAX] = QStringLiteral("slackline_length_max").latin1();
-  role_names[SLACKLINE_LENGTH_MIN] = QStringLiteral("slackline_length_min").latin1();
-  role_names[SLACKLINE_TYPES] = QStringLiteral("slackline_types").latin1();
-  role_names[SLOPE] = QStringLiteral("slope").latin1();
-  role_names[SNOW_CLEARANCE_RATING] = QStringLiteral("snow_clearance_rating").latin1();
-  role_names[URL] = QStringLiteral("url").latin1();
-  role_names[WAYPOINT_TYPE] = QStringLiteral("waypoint_type").latin1();
-  role_names[WEATHER_STATION_TYPES] = QStringLiteral("weather_station_types").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACCESS_TIME] = QStringLiteral("access_time").toLatin1();
+  role_names[BEST_PERIODS] = QStringLiteral("best_periods").toLatin1();
+  role_names[BLANKET_UNSTAFFED] = QStringLiteral("blanket_unstaffed").toLatin1();
+  role_names[CAPACITY] = QStringLiteral("capacity").toLatin1();
+  role_names[CAPACITY_STAFFED] = QStringLiteral("capacity_staffed").toLatin1();
+  role_names[CHILDREN_PROOF] = QStringLiteral("children_proof").toLatin1();
+  role_names[CLIMBING_INDOOR_TYPES] = QStringLiteral("climbing_indoor_types").toLatin1();
+  role_names[CLIMBING_OUTDOOR_TYPES] = QStringLiteral("climbing_outdoor_types").toLatin1();
+  role_names[CLIMBING_RATING_MAX] = QStringLiteral("climbing_rating_max").toLatin1();
+  role_names[CLIMBING_RATING_MEDIAN] = QStringLiteral("climbing_rating_median").toLatin1();
+  role_names[CLIMBING_RATING_MIN] = QStringLiteral("climbing_rating_min").toLatin1();
+  role_names[CLIMBING_STYLES] = QStringLiteral("climbing_styles").toLatin1();
+  role_names[CUSTODIANSHIP] = QStringLiteral("custodianship").toLatin1();
+  role_names[ELEVATION] = QStringLiteral("elevation").toLatin1();
+  role_names[ELEVATION_MIN] = QStringLiteral("elevation_min").toLatin1();
+  role_names[EQUIPMENT_RATINGS] = QStringLiteral("equipment_ratings").toLatin1();
+  role_names[EXPOSITION_RATING] = QStringLiteral("exposition_rating").toLatin1();
+  role_names[GAS_UNSTAFFED] = QStringLiteral("gas_unstaffed").toLatin1();
+  role_names[GROUND_TYPES] = QStringLiteral("ground_types").toLatin1();
+  role_names[HEATING_UNSTAFFED] = QStringLiteral("heating_unstaffed").toLatin1();
+  role_names[HEIGHT_MAX] = QStringLiteral("height_max").toLatin1();
+  role_names[HEIGHT_MEDIAN] = QStringLiteral("height_median").toLatin1();
+  role_names[HEIGHT_MIN] = QStringLiteral("height_min").toLatin1();
+  role_names[LENGTH] = QStringLiteral("length").toLatin1();
+  role_names[LIFT_ACCESS] = QStringLiteral("lift_access").toLatin1();
+  role_names[MAPS_INFO] = QStringLiteral("maps_info").toLatin1();
+  role_names[MATRESS_UNSTAFFED] = QStringLiteral("matress_unstaffed").toLatin1();
+  role_names[ORIENTATIONS] = QStringLiteral("orientations").toLatin1();
+  role_names[PARAGLIDING_RATING] = QStringLiteral("paragliding_rating").toLatin1();
+  role_names[PARKING_FEE] = QStringLiteral("parking_fee").toLatin1();
+  role_names[PHONE] = QStringLiteral("phone").toLatin1();
+  role_names[PHONE_CUSTODIAN] = QStringLiteral("phone_custodian").toLatin1();
+  role_names[PRODUCT_TYPES] = QStringLiteral("product_types").toLatin1();
+  role_names[PROMINENCE] = QStringLiteral("prominence").toLatin1();
+  role_names[PUBLIC_TRANSPORTATION_RATING] = QStringLiteral("public_transportation_rating").toLatin1();
+  role_names[PUBLIC_TRANSPORTATION_TYPES] = QStringLiteral("public_transportation_types").toLatin1();
+  role_names[RAIN_PROOF] = QStringLiteral("rain_proof").toLatin1();
+  role_names[ROCK_TYPES] = QStringLiteral("rock_types").toLatin1();
+  role_names[ROUTES_QUANTITY] = QStringLiteral("routes_quantity").toLatin1();
+  role_names[SLACKLINE_LENGTH_MAX] = QStringLiteral("slackline_length_max").toLatin1();
+  role_names[SLACKLINE_LENGTH_MIN] = QStringLiteral("slackline_length_min").toLatin1();
+  role_names[SLACKLINE_TYPES] = QStringLiteral("slackline_types").toLatin1();
+  role_names[SLOPE] = QStringLiteral("slope").toLatin1();
+  role_names[SNOW_CLEARANCE_RATING] = QStringLiteral("snow_clearance_rating").toLatin1();
+  role_names[URL] = QStringLiteral("url").toLatin1();
+  role_names[WAYPOINT_TYPE] = QStringLiteral("waypoint_type").toLatin1();
+  role_names[WEATHER_STATION_TYPES] = QStringLiteral("weather_station_types").toLatin1();
 
   return role_names;
 }
@@ -20951,9 +20951,9 @@ C2cWaypointsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[ACCESS] = QStringLiteral("access").latin1();
-  role_names[ACCESS_PERIOD] = QStringLiteral("access_period").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[ACCESS] = QStringLiteral("access").toLatin1();
+  role_names[ACCESS_PERIOD] = QStringLiteral("access_period").toLatin1();
 
   return role_names;
 }
@@ -22432,25 +22432,25 @@ C2cXreportsModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[DOCUMENT_ID] = QStringLiteral("document_id").latin1();
-  role_names[ACTIVITIES] = QStringLiteral("activities").latin1();
-  role_names[ACTIVITY_RATE] = QStringLiteral("activity_rate").latin1();
-  role_names[AGE] = QStringLiteral("age").latin1();
-  role_names[AUTHOR_STATUS] = QStringLiteral("author_status").latin1();
-  role_names[AUTONOMY] = QStringLiteral("autonomy").latin1();
-  role_names[AVALANCHE_LEVEL] = QStringLiteral("avalanche_level").latin1();
-  role_names[AVALANCHE_SLOPE] = QStringLiteral("avalanche_slope").latin1();
-  role_names[DATE] = QStringLiteral("date").latin1();
-  role_names[DISABLE_COMMENTS] = QStringLiteral("disable_comments").latin1();
-  role_names[ELEVATION] = QStringLiteral("elevation").latin1();
-  role_names[EVENT_TYPE] = QStringLiteral("event_type").latin1();
-  role_names[GENDER] = QStringLiteral("gender").latin1();
-  role_names[NB_IMPACTED] = QStringLiteral("nb_impacted").latin1();
-  role_names[NB_OUTINGS] = QStringLiteral("nb_outings").latin1();
-  role_names[NB_PARTICIPANTS] = QStringLiteral("nb_participants").latin1();
-  role_names[PREVIOUS_INJURIES] = QStringLiteral("previous_injuries").latin1();
-  role_names[RESCUE] = QStringLiteral("rescue").latin1();
-  role_names[SEVERITY] = QStringLiteral("severity").latin1();
+  role_names[DOCUMENT_ID] = QStringLiteral("document_id").toLatin1();
+  role_names[ACTIVITIES] = QStringLiteral("activities").toLatin1();
+  role_names[ACTIVITY_RATE] = QStringLiteral("activity_rate").toLatin1();
+  role_names[AGE] = QStringLiteral("age").toLatin1();
+  role_names[AUTHOR_STATUS] = QStringLiteral("author_status").toLatin1();
+  role_names[AUTONOMY] = QStringLiteral("autonomy").toLatin1();
+  role_names[AVALANCHE_LEVEL] = QStringLiteral("avalanche_level").toLatin1();
+  role_names[AVALANCHE_SLOPE] = QStringLiteral("avalanche_slope").toLatin1();
+  role_names[DATE] = QStringLiteral("date").toLatin1();
+  role_names[DISABLE_COMMENTS] = QStringLiteral("disable_comments").toLatin1();
+  role_names[ELEVATION] = QStringLiteral("elevation").toLatin1();
+  role_names[EVENT_TYPE] = QStringLiteral("event_type").toLatin1();
+  role_names[GENDER] = QStringLiteral("gender").toLatin1();
+  role_names[NB_IMPACTED] = QStringLiteral("nb_impacted").toLatin1();
+  role_names[NB_OUTINGS] = QStringLiteral("nb_outings").toLatin1();
+  role_names[NB_PARTICIPANTS] = QStringLiteral("nb_participants").toLatin1();
+  role_names[PREVIOUS_INJURIES] = QStringLiteral("previous_injuries").toLatin1();
+  role_names[RESCUE] = QStringLiteral("rescue").toLatin1();
+  role_names[SEVERITY] = QStringLiteral("severity").toLatin1();
 
   return role_names;
 }
@@ -23620,20 +23620,20 @@ C2cXreportsLocalesModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[CONDITIONS] = QStringLiteral("conditions").latin1();
-  role_names[GROUP_MANAGEMENT] = QStringLiteral("group_management").latin1();
-  role_names[INCREASE_IMPACT] = QStringLiteral("increase_impact").latin1();
-  role_names[MODIFICATIONS] = QStringLiteral("modifications").latin1();
-  role_names[MOTIVATIONS] = QStringLiteral("motivations").latin1();
-  role_names[OTHER_COMMENTS] = QStringLiteral("other_comments").latin1();
-  role_names[PLACE] = QStringLiteral("place").latin1();
-  role_names[REDUCE_IMPACT] = QStringLiteral("reduce_impact").latin1();
-  role_names[RISK] = QStringLiteral("risk").latin1();
-  role_names[ROUTE_STUDY] = QStringLiteral("route_study").latin1();
-  role_names[SAFETY] = QStringLiteral("safety").latin1();
-  role_names[TIME_MANAGEMENT] = QStringLiteral("time_management").latin1();
-  role_names[TRAINING] = QStringLiteral("training").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[CONDITIONS] = QStringLiteral("conditions").toLatin1();
+  role_names[GROUP_MANAGEMENT] = QStringLiteral("group_management").toLatin1();
+  role_names[INCREASE_IMPACT] = QStringLiteral("increase_impact").toLatin1();
+  role_names[MODIFICATIONS] = QStringLiteral("modifications").toLatin1();
+  role_names[MOTIVATIONS] = QStringLiteral("motivations").toLatin1();
+  role_names[OTHER_COMMENTS] = QStringLiteral("other_comments").toLatin1();
+  role_names[PLACE] = QStringLiteral("place").toLatin1();
+  role_names[REDUCE_IMPACT] = QStringLiteral("reduce_impact").toLatin1();
+  role_names[RISK] = QStringLiteral("risk").toLatin1();
+  role_names[ROUTE_STUDY] = QStringLiteral("route_study").toLatin1();
+  role_names[SAFETY] = QStringLiteral("safety").toLatin1();
+  role_names[TIME_MANAGEMENT] = QStringLiteral("time_management").toLatin1();
+  role_names[TRAINING] = QStringLiteral("training").toLatin1();
 
   return role_names;
 }

@@ -945,16 +945,16 @@ ThirdPartyLicenseModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[USED] = QStringLiteral("used").latin1();
-  role_names[SHOW] = QStringLiteral("show").latin1();
-  role_names[THIRD_PARTY_NAME] = QStringLiteral("third_party_name").latin1();
-  role_names[THIRD_PARTY_URL] = QStringLiteral("third_party_url").latin1();
-  role_names[THIRD_PARTY_VERSION] = QStringLiteral("third_party_version").latin1();
-  role_names[LICENSE_NAME] = QStringLiteral("license_name").latin1();
-  role_names[LICENSE_URL] = QStringLiteral("license_url").latin1();
-  role_names[LICENSE_TEXT] = QStringLiteral("license_text").latin1();
-  role_names[LICENSE_NOTE] = QStringLiteral("license_note").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[USED] = QStringLiteral("used").toLatin1();
+  role_names[SHOW] = QStringLiteral("show").toLatin1();
+  role_names[THIRD_PARTY_NAME] = QStringLiteral("third_party_name").toLatin1();
+  role_names[THIRD_PARTY_URL] = QStringLiteral("third_party_url").toLatin1();
+  role_names[THIRD_PARTY_VERSION] = QStringLiteral("third_party_version").toLatin1();
+  role_names[LICENSE_NAME] = QStringLiteral("license_name").toLatin1();
+  role_names[LICENSE_URL] = QStringLiteral("license_url").toLatin1();
+  role_names[LICENSE_TEXT] = QStringLiteral("license_text").toLatin1();
+  role_names[LICENSE_NOTE] = QStringLiteral("license_note").toLatin1();
 
   return role_names;
 }

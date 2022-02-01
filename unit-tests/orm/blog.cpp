@@ -546,9 +546,9 @@ AuthorModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[BIRTHDATE] = QStringLiteral("birthdate").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[BIRTHDATE] = QStringLiteral("birthdate").toLatin1();
 
   return role_names;
 }
@@ -1047,9 +1047,9 @@ CategoryModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[NAME] = QStringLiteral("name").latin1();
-  role_names[DESCRIPTION] = QStringLiteral("description").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[NAME] = QStringLiteral("name").toLatin1();
+  role_names[DESCRIPTION] = QStringLiteral("description").toLatin1();
 
   return role_names;
 }
@@ -1652,10 +1652,10 @@ BlogModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[TEXT] = QStringLiteral("text").latin1();
-  role_names[DATE] = QStringLiteral("date").latin1();
-  role_names[AUTHOR_ID] = QStringLiteral("author_id").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[TEXT] = QStringLiteral("text").toLatin1();
+  role_names[DATE] = QStringLiteral("date").toLatin1();
+  role_names[AUTHOR_ID] = QStringLiteral("author_id").toLatin1();
 
   return role_names;
 }
@@ -2217,10 +2217,10 @@ CommentModel::roleNames() const
 {
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;
-  role_names[ID] = QStringLiteral("id").latin1();
-  role_names[TEXT] = QStringLiteral("text").latin1();
-  role_names[DATE] = QStringLiteral("date").latin1();
-  role_names[BLOG_ID] = QStringLiteral("blog_id").latin1();
+  role_names[ID] = QStringLiteral("id").toLatin1();
+  role_names[TEXT] = QStringLiteral("text").toLatin1();
+  role_names[DATE] = QStringLiteral("date").toLatin1();
+  role_names[BLOG_ID] = QStringLiteral("blog_id").toLatin1();
 
   return role_names;
 }
