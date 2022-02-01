@@ -21,6 +21,8 @@ build_path=${source_path}/build-cmake
 # Set GCC envs
 #
 
+export LC_ALL="C"
+
 export CFLAGS="-g -O0"
 export CXXFLAGS="${CFLAGS}"
 BUILD_TYPE=DEBUG
@@ -35,9 +37,9 @@ BUILD_TYPE=DEBUG
 # Qt
 #
 
-# source ${source_path}/tools/path.sh
+source ${source_path}/build-scripts/tools/path.sh
 
-QT_VERSION=5.15.2
+QT_VERSION=6.3.0
 
 append_to_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/bin/
 append_to_ld_library_path_if_not /opt/Qt/${QT_VERSION}/gcc_64/lib/
@@ -80,12 +82,13 @@ cmake \
   -DINSTRUMENT_FUNTIONS=OFF \
   ${source_path}
 
-make -j4
+make -k
+# make -j4
 
 ####################################################################################################
 
-if [ -e run-asan ]; then
-  ln -sf ../build-scripts/run-asan.sh
-fi
+# if [ -e run-asan ]; then
+#   ln -sf ../build-scripts/run-asan.sh
+# fi
 
 # source run-asan.sh
