@@ -28,7 +28,12 @@ endforeach(shader_name)
 # add_subdirectory(openstreetmap)
 # Generate in source !
 # https://cmake.org/cmake/help/v3.6/module/FindProtobuf.html
-PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS openstreetmap/fileformat.proto openstreetmap/osmformat.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS openstreetmap/fileformat.proto openstreetmap/osmformat.proto)
+# cmake --help-policy CMP0071
+set_property(SOURCE fileformat.pb.cc PROPERTY SKIP_AUTOMOC ON)
+set_property(SOURCE fileformat.pb.h  PROPERTY SKIP_AUTOMOC ON)
+set_property(SOURCE osmformat.pb.cc  PROPERTY SKIP_AUTOMOC ON)
+set_property(SOURCE osmformat.pb.h   PROPERTY SKIP_AUTOMOC ON)
 
 ####################################################################################################
 #
