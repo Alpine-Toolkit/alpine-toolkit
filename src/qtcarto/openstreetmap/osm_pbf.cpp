@@ -470,26 +470,26 @@ QcOsmPbfReader::read_nodes(OSMPBF::PrimitiveGroup primitive_group)
 
     int number_of_attributes = node.keys_size();
     QVector<KeyValPair> attributes(number_of_attributes);
-    for (int i = 0; i < number_of_attributes; i++) {
-      int32_t key_id = node.keys(i);
-      int32_t val_id = node.vals(i);
-      // qQCDebug() << "key_val" << node_id << m_string_table[key_id] << m_string_table[val_id];
-    }
+    // for (int i = 0; i < number_of_attributes; i++) {
+    //   int32_t key_id = node.keys(i);
+    //   int32_t val_id = node.vals(i);
+    //   // qQCDebug() << "key_val" << node_id << m_string_table[key_id] << m_string_table[val_id];
+    // }
 
     yield_node(node_id, longitude, latitude, attributes);
 
-    if (m_read_metadatas and node.has_info()) {
-      // qQCDebug().nospace() << "        with meta-info";
-      OSMPBF::Info info = node.info();
-      int32_t version = info.version();
-      int64_t timestamp = to_timestamp(info.timestamp());
-      int64_t changeset = info.changeset();
-      int32_t uid = info.uid();
-      int32_t user_sid = info.user_sid();
-      // bool visible = info.visible();
-      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
-      // yield_node_metadata(node_id, version, timestamp, changeset, uid, user_sid);
-    }
+    // if (m_read_metadatas and node.has_info()) {
+    //   // qQCDebug().nospace() << "        with meta-info";
+    //   OSMPBF::Info info = node.info();
+    //   int32_t version = info.version();
+    //   int64_t timestamp = to_timestamp(info.timestamp());
+    //   int64_t changeset = info.changeset();
+    //   int32_t uid = info.uid();
+    //   int32_t user_sid = info.user_sid();
+    //   // bool visible = info.visible();
+    //   // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+    //   // yield_node_metadata(node_id, version, timestamp, changeset, uid, user_sid);
+    // }
   }
 
   leave_node_transactions();
@@ -540,16 +540,16 @@ QcOsmPbfReader::read_dense_nodes(OSMPBF::PrimitiveGroup primitive_group)
     DeltaCodedInt64 changeset;
     DeltaCodedInt64 uid;
     DeltaCodedInt64 user_sid;
-    for (int i = 0; i < number_of_nodes; i++) {
-      int32_t version = dense_info.version(i);
-      timestamp.update(to_timestamp(dense_info.timestamp(i)));
-      changeset.update(dense_info.changeset(i));
-      uid.update(dense_info.uid(i));
-      user_sid.update(dense_info.user_sid(i));
-      // bool visible = dense_info.visible(i);
-      // qQCDebug() << "Meta information:" << version << timestamp() << changeset() << uid() << user_sid();
-      // yield_node_metadata(i, version, timestamp(), changeset(), uid(), user_sid());
-    }
+    // for (int i = 0; i < number_of_nodes; i++) {
+    //   int32_t version = dense_info.version(i);
+    //   timestamp.update(to_timestamp(dense_info.timestamp(i)));
+    //   changeset.update(dense_info.changeset(i));
+    //   uid.update(dense_info.uid(i));
+    //   user_sid.update(dense_info.user_sid(i));
+    //   // bool visible = dense_info.visible(i);
+    //   // qQCDebug() << "Meta information:" << version << timestamp() << changeset() << uid() << user_sid();
+    //   // yield_node_metadata(i, version, timestamp(), changeset(), uid(), user_sid());
+    // }
   }
 
   leave_node_transactions();
@@ -585,18 +585,18 @@ QcOsmPbfReader::read_ways(OSMPBF::PrimitiveGroup primitive_group)
 
     yield_way(way_id, node_ids, attributes);
 
-    if (m_read_metadatas and way.has_info()) {
-      // qQCDebug().nospace() << "        with meta-info";
-      OSMPBF::Info info = way.info();
-      int32_t version = info.version();
-      int64_t timestamp = to_timestamp(info.timestamp());
-      int64_t changeset = info.changeset();
-      int32_t uid = info.uid();
-      int32_t user_sid = info.user_sid();
-      // bool visible = info.visible();
-      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
-      // yield_way_metadata(way_id, version, timestamp, changeset, uid, user_sid);
-    }
+    // if (m_read_metadatas and way.has_info()) {
+    //   // qQCDebug().nospace() << "        with meta-info";
+    //   OSMPBF::Info info = way.info();
+    //   int32_t version = info.version();
+    //   int64_t timestamp = to_timestamp(info.timestamp());
+    //   int64_t changeset = info.changeset();
+    //   int32_t uid = info.uid();
+    //   int32_t user_sid = info.user_sid();
+    //   // bool visible = info.visible();
+    //   // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+    //   // yield_way_metadata(way_id, version, timestamp, changeset, uid, user_sid);
+    // }
   }
 
   leave_way_transactions();
@@ -638,18 +638,18 @@ QcOsmPbfReader::read_relations(OSMPBF::PrimitiveGroup primitive_group)
 
     yield_relation(relation_id, roles_sid, member_ids, types, attributes);
 
-    if (m_read_metadatas and relation.has_info()) {
-      // qQCDebug().nospace() << "        with meta-info";
-      OSMPBF::Info info = relation.info();
-      int32_t version = info.version();
-      int64_t timestamp = to_timestamp(info.timestamp());
-      int64_t changeset = info.changeset();
-      int32_t uid = info.uid();
-      int32_t user_sid = info.user_sid();
-      // bool visible = info.visible();
-      // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
-      // yield_relation_metadata(way_id, version, timestamp, changeset, uid, user_sid);
-    }
+    // if (m_read_metadatas and relation.has_info()) {
+    //   // qQCDebug().nospace() << "        with meta-info";
+    //   OSMPBF::Info info = relation.info();
+    //   int32_t version = info.version();
+    //   int64_t timestamp = to_timestamp(info.timestamp());
+    //   int64_t changeset = info.changeset();
+    //   int32_t uid = info.uid();
+    //   int32_t user_sid = info.user_sid();
+    //   // bool visible = info.visible();
+    //   // qQCDebug() << "Meta information:" << version << timestamp << changeset << uid << user_sid;
+    //   // yield_relation_metadata(way_id, version, timestamp, changeset, uid, user_sid);
+    // }
   }
 
   leave_relation_transactions();
