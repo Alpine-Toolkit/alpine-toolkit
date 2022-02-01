@@ -29,6 +29,7 @@
 #include "wkb.h"
 #include "qtcarto.h"
 
+#include <QIODevice>
 #include <QtDebug>
 #include <QtEndian>
 
