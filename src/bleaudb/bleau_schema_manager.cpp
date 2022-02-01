@@ -171,7 +171,7 @@ BleauSchemaManager::to_json_document() // const
       json_object[QLatin1String("massif")] = circuit->massif()->name();
       QJsonArray json_boulders;
       for (const auto & boulder : circuit->boulders())
-        json_boulders << boulder.data()->to_json();
+        json_boulders << boulder.toStrongRef().data()->to_json();
       json_object[QLatin1String("boulders")] = json_boulders;
       json_circuits << json_object;
     }

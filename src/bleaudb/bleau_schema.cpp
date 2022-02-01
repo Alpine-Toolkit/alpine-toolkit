@@ -1413,7 +1413,7 @@ BleauMassif::set_insert_id(int id)
   set_id(id);
 
   for (const auto & item_weak_ref : m_circuits)
-    item_weak_ref.data()->set_massif_id(id); // Fixme: check ref
+    item_weak_ref.toStrongRef().data()->set_massif_id(id); // Fixme: check ref
 }
 
 void
@@ -1434,7 +1434,7 @@ BleauMassif::save_relations()
 {
   qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_circuits) {
-    BleauCircuit * item_ptr = item_weak_ref.data();
+    BleauCircuit * item_ptr = item_weak_ref.toStrongRef().data();
     if (not item_ptr->exists_on_database())
       database_schema()->add(*item_ptr);
   }
@@ -2597,7 +2597,7 @@ BleauCircuit::set_insert_id(int id)
   set_id(id);
 
   for (const auto & item_weak_ref : m_boulders)
-    item_weak_ref.data()->set_circuit_id(id); // Fixme: check ref
+    item_weak_ref.toStrongRef().data()->set_circuit_id(id); // Fixme: check ref
 }
 
 bool
@@ -2628,7 +2628,7 @@ BleauCircuit::save_relations()
 {
   qATInfo() << "Save relations of" << *this;
   for (const auto & item_weak_ref : m_boulders) {
-    BleauBoulder * item_ptr = item_weak_ref.data();
+    BleauBoulder * item_ptr = item_weak_ref.toStrongRef().data();
     if (not item_ptr->exists_on_database())
       database_schema()->add(*item_ptr);
   }
