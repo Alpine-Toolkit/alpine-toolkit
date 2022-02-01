@@ -267,7 +267,7 @@ QString
 QoSqlInExpression::to_sql(SqlFlavour flavour) const
 {
   return m_field.to_sql(flavour) +
-    QLatin1String(" IN (") + comma_join(string_values()) + + ')';
+    QLatin1String(" IN (") + comma_join(string_values()) + ')';
 }
 
 /**************************************************************************************************/
