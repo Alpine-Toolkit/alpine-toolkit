@@ -328,7 +328,7 @@ EnglishFilter::strip_possessive(const QString & word) const
 {
   // Strip right part before the first elision sign
   QChar form1 = '\''; // John's
-  QChar form2 = 0x2019; // John’s RIGHT SINGLE QUOTATION MARK
+  QChar form2(0x2019); // John’s RIGHT SINGLE QUOTATION MARK
   int position1 = word.lastIndexOf(form1);
   int position2 = word.lastIndexOf(form2);
   int position = qMin(position1, position2);
@@ -359,7 +359,7 @@ FrenchFilter::strip_elision(const QString & word) const
   // Fixme: can normalize ’ to '
   // Strip left part before the last elision sign
   QChar form1 = '\''; // L'élision
-  QChar form2 = 0x2019; // L’élision RIGHT SINGLE QUOTATION MARK
+  QChar form2(0x2019); // L’élision RIGHT SINGLE QUOTATION MARK
   int position1 = word.lastIndexOf(form1);
   int position2 = word.lastIndexOf(form2);
   int position = qMax(position1, position2);
