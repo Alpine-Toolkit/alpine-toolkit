@@ -556,9 +556,9 @@ QcSeidlerPolygonTriangulation::add_segment(int segment_number)
   int tu, tl, sk, tfirst, tlast, tnext;
   int tfirstr, tlastr, tfirstl, tlastl;
   int i1, i2, t, tn;
-  point_t vper; // unused ???
+  point_t vper; // -Wunused-but-set-variable ???
   point_t tpt;
-  int tritop = 0; // unused ???
+  int tritop = 0; // -Wunused-but-set-variable ???
   int tribot = 0, is_swapped = 0;
   int tmp_trim_segment;
 
@@ -1021,8 +1021,8 @@ QcSeidlerPolygonTriangulation::add_segment(int segment_number)
 
   tfirstl = tfirst;
   tlastl = tlast;
-  merge_trapezoids(segment_number, tfirstl, tlastl, S_LEFT);
-  merge_trapezoids(segment_number, tfirstr, tlastr, S_RIGHT);
+  merge_trapezoids(segment_number, tfirstl, tlastl, S_LEFT);  // tlastr  -Wmaybe-uninitialized
+  merge_trapezoids(segment_number, tfirstr, tlastr, S_RIGHT); // tfirstr -Wmaybe-uninitialized
 
   m_segment[segment_number].is_inserted = true;
   return 0;
@@ -1036,7 +1036,7 @@ int
 QcSeidlerPolygonTriangulation::find_new_roots(int segment_number)
 {
   segment_t *s = &m_segment[segment_number];
-  point_t vper; // unused ???
+  point_t vper; // -Wunused-but-set-variable ???
 
   if (s->is_inserted)
     return 0;
@@ -1248,7 +1248,7 @@ QcSeidlerPolygonTriangulation::traverse_polygon(int mcur, int trnum, int from, i
   int mnew;
   int v0, v1;
   int retval = 0;
-  int do_switch = false; // unused
+  int do_switch = false; // -Wunused-but-set-variable ???
 
   if ((trnum <= 0) || m_visited[trnum])
     return 0;
