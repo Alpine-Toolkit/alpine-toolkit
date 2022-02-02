@@ -215,7 +215,9 @@ Application::setup_gui_application()
   QGuiApplication::setApplicationName(APPLICATION_NAME);
   QGuiApplication::setOrganizationName(ORGANISATION_NAME); // overridden ???
   // QGuiApplication::setOrganizationDomain("alpine-toolkit.org")
-  QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+  // Qt6: High-DPI scaling is always enabled.
+  // QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
   // QSurfaceFormat surface_format;
   // surface_format.setSamples(4); // max is 8 ?
