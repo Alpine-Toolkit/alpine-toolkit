@@ -1,5 +1,10 @@
-http://www.md-software.de/math/DAMM_Quasigruppen.txt
+# Checksum
 
+Function to compute checksum using DAMM algorithm.
+
+See http://www.md-software.de/math/DAMM_Quasigruppen.txt
+
+```
 Quasigruppen für den DAMM Algorithmus, mit den Eigenschaften
   1. (c*x)*y=(c*y)*x  =>  x=y
   2. x*x=0
@@ -4428,5 +4433,4 @@ Ordnung 64: x*y:=2x+y mit Rechnung in GF(2^6)
 57 59 61 63 49 51 53 55 41 43 45 47 33 35 37 39 25 27 29 31 17 19 21 23 09 11 13 15 01 03 05 07 58 56 62 60 50 48 54 52 42 40 46 44 34 32 38 36 26 24 30 28 18 16 22 20 10 08 14 12 02 00 06 04 
 63 61 59 57 55 53 51 49 47 45 43 41 39 37 35 33 31 29 27 25 23 21 19 17 15 13 11 09 07 05 03 01 60 62 56 58 52 54 48 50 44 46 40 42 36 38 32 34 28 30 24 26 20 22 16 18 12 14 08 10 04 06 00 02 
 61 63 57 59 53 55 49 51 45 47 41 43 37 39 33 35 29 31 25 27 21 23 17 19 13 15 09 11 05 07 01 03 62 60 58 56 54 52 50 48 46 44 42 40 38 36 34 32 30 28 26 24 22 20 18 16 14 12 10 08 06 04 02 00 
-
-
+```
