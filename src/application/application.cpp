@@ -295,10 +295,11 @@ Application::register_qml_types()
   qmlRegisterUncreatableType<Type>(package, major, minor, #Name, QLatin1String("Cannot create" #Type))
 
   qRegisterMetaType<QcVectorDouble>();
-  QMetaType::registerEqualsComparator<QcVectorDouble>();
+  // Qt6: registration of comparators, and cQDebug and QDataStream streaming operators is done automatically
+  // QMetaType::registerEqualsComparator<QcVectorDouble>();
 
   qRegisterMetaType<QcWgsCoordinate>();
-  QMetaType::registerEqualsComparator<QcWgsCoordinate>();
+  // QMetaType::registerEqualsComparator<QcWgsCoordinate>();
   // qRegisterAnimationInterpolator<QGeoCoordinate>(q_coordinateInterpolator);
 
   qRegisterMetaType<QcMapEvent>();
