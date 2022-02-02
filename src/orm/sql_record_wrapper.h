@@ -283,15 +283,20 @@ class QoSqlQueryWrapper
 {
 public:
   QoSqlQueryWrapper(QSqlQuery query)
+    // Fixme: Qt6
+    // QSqlQuery is not meant to be copied. Use move construction instead.
+    // used in src/settings/settings_database.cpp
     : m_query(query)
   {}
   QoSqlQueryWrapper(QSqlQuery & query)
+    // Fixme: Qt6
     : m_query(query)
   {}
 
   QoSqlQueryWrapper &
   operator=(const QSqlQuery query)
   {
+    // Fixme: Qt6
     m_query = query;
 
     return *this;
@@ -300,6 +305,7 @@ public:
   QoSqlQueryWrapper &
   operator=(const QSqlQuery & query)
   {
+    // Fixme: Qt6
     m_query = query;
 
     return *this;
@@ -309,6 +315,7 @@ public:
   operator=(const QoSqlQueryWrapper & other)
   {
     if (this != &other) {
+      // Fixme: Qt6
       m_query = other.m_query;
     }
 
