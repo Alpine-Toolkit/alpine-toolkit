@@ -49,12 +49,15 @@ SqlQueryModel::set_query(const QString & query, const QSqlDatabase & db)
   generate_role_names();
 }
 
+/*
 void
 SqlQueryModel::set_query(const QSqlQuery & query)
 {
+  // Fixme: Qt6 setQuery(QSqlQuery &&query)
   QSqlQueryModel::setQuery(query);
   generate_role_names();
 }
+*/
 
 void
 SqlQueryModel::generate_role_names()

@@ -45,7 +45,8 @@ public:
   explicit SqlQueryModel(QObject *parent = 0);
 
   void set_query(const QString & query, const QSqlDatabase & db = QSqlDatabase());
-  void set_query(const QSqlQuery & query);
+  // Fixme: Qt6
+  // void set_query(const QSqlQuery & query);
   QVariant data(const QModelIndex & index, int role) const;
   QHash<int, QByteArray> roleNames() const { return m_role_names; }
 
