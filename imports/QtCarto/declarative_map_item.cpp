@@ -551,10 +551,10 @@ QcMapItem::stable_zoom_by_increment(QPointF position_px, int zoom_increment)
 /**************************************************************************************************/
 
 void
-QcMapItem::geometryChanged(const QRectF & new_geometry, const QRectF & old_geometry)
+QcMapItem::geometryChange(const QRectF & new_geometry, const QRectF & old_geometry)
 {
   // qQCInfo() << old_geometry << "->" << new_geometry;
-  QQuickItem::geometryChanged(new_geometry, old_geometry);
+  QQuickItem::geometryChange(new_geometry, old_geometry);
   QSize viewport_size(new_geometry.width(), new_geometry.height()); // Fixme: QSizeF size()
   // Fixme: pass devicePixelRatio here ?
   m_viewport->set_viewport_size(viewport_size, window()->devicePixelRatio());

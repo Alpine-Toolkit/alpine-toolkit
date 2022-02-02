@@ -162,7 +162,7 @@ protected:
   /* bool sendTouchEvent(QTouchEvent *event); */
 
   void componentComplete() Q_DECL_OVERRIDE ;
-  void geometryChanged(const QRectF & new_geometry, const QRectF & old_geometry) Q_DECL_OVERRIDE ;
+  void geometryChange(const QRectF & new_geometry, const QRectF & old_geometry) Q_DECL_OVERRIDE ;
   QSGNode * updatePaintNode(QSGNode * old_node, UpdatePaintNodeData *) Q_DECL_OVERRIDE ;
 
 private slots:
