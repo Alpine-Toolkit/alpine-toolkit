@@ -32,7 +32,6 @@ class JsonEncoder(json.JSONEncoder):
     ##############################################
 
     def default(self, obj):
-
         if isinstance(obj, JsonAble):
             return obj.__json_interface__
 
@@ -48,7 +47,6 @@ class JsonAble(object):
     ##############################################
 
     # def _jsonify(self, value):
-
     #     if isinstance(value, list):
     #         return [self._jsonify(x) for x in value]
     #     elif isinstance(value, JsonAble):
@@ -59,7 +57,6 @@ class JsonAble(object):
     ##############################################
 
     # def to_dict(self):
-
     #     d = {}
     #     for key, value in self.__dict__.items():
     #         d[key] = self._jsonify(value)
@@ -74,7 +71,6 @@ class JsonAble(object):
     ##############################################
 
     def to_json(self):
-
         kwargs = dict(cls=JsonEncoder, indent=2, ensure_ascii=False, sort_keys=True)
         return json.dumps(self, **kwargs)
 
@@ -85,7 +81,6 @@ class Autoconf(JsonAble):
     ##############################################
 
     def __init__(self, general, layers):
-
         self.general = general # General
         self.layers = layers # [Layer]
 
@@ -96,7 +91,6 @@ class General(JsonAble):
     ##############################################
 
     def __init__(self, window, bounding_box, title, extension):
-
         self.window = window # Window
         self.bounding_box = bounding_box # BoundingBox
         self.title = title # str
@@ -108,9 +102,7 @@ class Extension(JsonAble):
 
     ##############################################
 
-    def __init__(self,
-                 theme, default_GMLGFI_style_url, territories, tile_matrix_sets, resolutions, services):
-
+    def __init__(self, theme, default_GMLGFI_style_url, territories, tile_matrix_sets, resolutions, services):
         self.theme = theme # str
         self.default_GMLGFI_style_url = default_GMLGFI_style_url # str / url
         self.territories = territories # [Territory]
@@ -132,7 +124,6 @@ class Territory(JsonAble):
                  resolution,
                  center,
                  default_layers):
-
         self.default = default
         self.id = id_
         self.name = name # str
@@ -170,7 +161,6 @@ class TileMatrix(JsonAble):
     def __init__(self,
                  identifier, scale_denominator, top_left_corner,
                  tile_width, tile_height, matrix_width, matrix_height):
-
         # Tile matrix identifier
         self.identifier = identifier # int
         # Scale denominator level of this tile matrix
@@ -187,7 +177,6 @@ class TileMatrix(JsonAble):
     ##############################################
 
     def __repr__(self):
-
         template = "[{}] @{} {}x{} tiles {}x{} px "
         return template.format(self.identifier,
                                self.scale_denominator, # * 0.28 mm
@@ -201,7 +190,6 @@ class Server(JsonAble):
     ##############################################
 
     def __init__(self, service, title, version, href):
-
         self.service = service # str
         self.title = title # str
         self.version = version
@@ -210,7 +198,6 @@ class Server(JsonAble):
     ##############################################
 
     def __repr__(self):
-
         return "{} {} {}".format(self.title, self.href, self.service)
 
 ####################################################################################################
@@ -224,7 +211,6 @@ class Format(JsonAble):
     ##############################################
 
     def __init__(self, current, name):
-
         self.current = current
         self.name = name
 
@@ -239,7 +225,6 @@ class Style(JsonAble):
     ##############################################
 
     def __init__(self, current, name, title):
-
         self.current = current
         self.name = name
         self.title = title
@@ -257,7 +242,6 @@ class Dimension(JsonAble):
     def __init__(self,
                  name, unit_symbol, units, user_value,
                  value):
-
         self.name = name
         # Symbol of the units
         self.unit_symbol = unit_symbol
@@ -273,7 +257,6 @@ class Legend(JsonAble):
     ##############################################
 
     def __init__(self, min_scale_denominator, url):
-
         self.min_scale_denominator = min_scale_denominator
         self.url = url
 
@@ -284,7 +267,6 @@ class Constraint(JsonAble):
     ##############################################
 
     def __init__(self, crs, bounding_box, min_scale_denominator, max_scale_denominator):
-
         self.crs = crs
         self.bounding_box = bounding_box
         self.min_scale_denominator = min_scale_denominator
@@ -299,7 +281,6 @@ class Originator(JsonAble):
     def __init__(self,
                  name,
                  attribution, logo, url, constraints):
-
         self.name = name
         self.attribution = attribution
         self.logo = logo
@@ -313,7 +294,6 @@ class Key(JsonAble):
     ##############################################
 
     def __init__(self, id_, url):
-
         self.id = id_
         self.url = url
 
@@ -333,7 +313,6 @@ class Layer(JsonAble):
                  min_scale_denominator, max_scale_denominator,
                  srs,
                  format_list, style_list, dimension_list, extension):
-
         self.hidden = hidden
         self.queryable = queryable
         self.server = server
@@ -357,7 +336,6 @@ class TileMatrixSetLink(JsonAble):
     ##############################################
 
     def __init__(self, name, limits):
-
         self.name = name # str
         self.limits = limits # [TileMatrixLimits]
 
@@ -368,7 +346,6 @@ class TileMatrixLimits(JsonAble):
     ##############################################
 
     def __init__(self, level, min_tile_row, max_tile_row, min_tile_col, max_tile_col):
-
         self.level = level
         self.min_tile_row = min_tile_row
         self.max_tile_row = max_tile_row
@@ -386,7 +363,6 @@ class ExtensionLayer(JsonAble):
                  constraints, thematics, inspire_thematics,
                  bounding_box, additional_crs, originators, legends,
                  quicklook, tile_matrix_set_link, metadata_url, keys):
-
         self.id = id_
         self.constraints = constraints
         self.thematics = thematics
@@ -407,7 +383,6 @@ class Window(JsonAble):
     ##############################################
 
     def __init__(self, width, height):
-
         self.width = width
         self.height = height
 
@@ -418,7 +393,6 @@ class BoundingBox(JsonAble):
     ##############################################
 
     def __init__(self, srs, x_min, y_min, x_max, y_max):
-
         self.srs = srs
         self.x_min = x_min
         self.y_min = y_min
@@ -428,7 +402,6 @@ class BoundingBox(JsonAble):
     ##############################################
 
     def __repr__(self):
-
         return "Bounding Box: {} [{}, {}]*[{}, {}]".format(self.srs,
                                                            self.x_min, self.x_max,
                                                            self.y_min, self.y_max)
@@ -440,12 +413,5 @@ class Center(JsonAble):
     ##############################################
 
     def __init__(self, x, y):
-
         self.x = x
         self.y = y
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################

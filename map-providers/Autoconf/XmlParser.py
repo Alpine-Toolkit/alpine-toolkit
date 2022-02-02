@@ -31,7 +31,6 @@ class XmlParser(object):
     ##############################################
 
     def __init__(self):
-
         self._xml_parser = None
         self._element_stack = []
 
@@ -48,7 +47,6 @@ class XmlParser(object):
     ##############################################
 
     def _raise(self):
-
         xml_parser = self._xml_parser
         template = 'Parse error @ line {} column {} character offset {}'
         raise NameError(template.format(xml_parser.lineNumber(),
@@ -58,14 +56,12 @@ class XmlParser(object):
     ##############################################
 
     def _handle_unknown_element(self, name):
-
         print("Warning: unknown element", name, self._element_stack)
         self._read_until_end_of(name)
 
     ##############################################
 
     def _read_match_start_element(self, name):
-
         xml_parser = self._xml_parser
         return (xml_parser.readNext() == QXmlStreamReader.StartElement
                 and xml_parser.name() == name)
@@ -79,7 +75,6 @@ class XmlParser(object):
     ##############################################
 
     def _read_match_end_element(self, name):
-
         xml_parser = self._xml_parser
         return (xml_parser.readNext() == QXmlStreamReader.EndElement
                 and xml_parser.name() == name)
@@ -93,7 +88,6 @@ class XmlParser(object):
     ##############################################
 
     def _match_start_element(self, name):
-
         xml_parser = self._xml_parser
         # if xml_parser.tokenType() == QXmlStreamReader.StartElement:
         #     self._element_stack.append(xml_parser.name())
@@ -103,7 +97,6 @@ class XmlParser(object):
     ##############################################
 
     def _match_end_element(self, name):
-
         xml_parser = self._xml_parser
         return (xml_parser.tokenType() == QXmlStreamReader.EndElement
                 and xml_parser.name() == name)
@@ -111,7 +104,6 @@ class XmlParser(object):
     ##############################################
 
     def _read_match_empty(self):
-
         xml_parser = self._xml_parser
         return (xml_parser.readNext() == QXmlStreamReader.Characters
                 and xml_parser.isWhitespace())
@@ -119,7 +111,6 @@ class XmlParser(object):
     ##############################################
 
     def _match_empty(self):
-
         xml_parser = self._xml_parser
         return (xml_parser.tokenType() == QXmlStreamReader.Characters
                 and xml_parser.isWhitespace())
@@ -127,7 +118,6 @@ class XmlParser(object):
     ##############################################
 
     def _read_until_start_of(self, name):
-
         xml_parser = self._xml_parser
         while not (xml_parser.readNext() == QXmlStreamReader.StartElement
                    and xml_parser.name() == name):
@@ -136,7 +126,6 @@ class XmlParser(object):
     ##############################################
 
     def _read_until_end_of(self, name):
-
         xml_parser = self._xml_parser
         while not (xml_parser.readNext() == QXmlStreamReader.EndElement
                    and xml_parser.name() == name):
@@ -145,7 +134,6 @@ class XmlParser(object):
     ##############################################
 
     def _read_until_empty(self):
-
         xml_parser = self._xml_parser
         while (xml_parser.readNext() == QXmlStreamReader.Characters
                and xml_parser.isWhitespace()):
@@ -154,45 +142,38 @@ class XmlParser(object):
     ##############################################
 
     def _attribute_to_dict(self, *keys):
-
         attributes = self._xml_parser.attributes()
         return {key:attributes.value(key) for key in keys}
 
     ##############################################
 
     def _read_text(self):
-
         # start must be read
         return self._xml_parser.readElementText()
 
     ##############################################
 
     def _read_int(self):
-
         return int(self._read_text())
 
     ##############################################
 
     def _read_float(self):
-
         return float(self._read_text())
 
     ##############################################
 
     def _read_int_list(self, sep=','):
-
         return [int(x) for x in self._read_text().split(sep)]
 
     ##############################################
 
     def _read_float_list(self, sep=','):
-
         return [float(x) for x in self._read_text().split(sep)]
 
     ##############################################
 
     def parse_document(self, xml_document):
-
         self._xml_parser = QXmlStreamReader(xml_document)
         # xml_parser.setDevice(xml_document)
         data = self.parser_loop()
@@ -205,11 +186,4 @@ class XmlParser(object):
     ##############################################
 
     def parser_loop(self):
-
         raise NotImplementedError
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
