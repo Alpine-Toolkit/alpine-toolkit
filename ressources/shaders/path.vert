@@ -1,26 +1,28 @@
-// path_vertex_shader.glsl
+#version 440
 
 /* *********************************************************************************************** */
 
-uniform highp mat4 qt_Matrix;
+layout(std140, binding = 0) uniform buf {
+  highp mat4 qt_Matrix;
+};
 
 /* *********************************************************************************************** */
 
-// attribute highp vec2 a_vertex;
-attribute highp vec4 a_vertex;
-attribute highp vec2 a_tex_coord;
-attribute highp float a_line_length;
-attribute highp float a_line_width;
-attribute lowp float a_cap;
-attribute lowp vec4 a_colour;
+// highp vec2 a_vertex;
+layout(location = 0) in highp vec4 a_vertex;
+layout(location = 1) in highp vec2 a_tex_coord;
+layout(location = 2) in highp float a_line_length;
+layout(location = 3) in highp float a_line_width;
+layout(location = 4) in lowp float a_cap;
+layout(location = 5) in lowp vec4 a_colour;
 
 /* *********************************************************************************************** */
 
-varying highp vec2 uv;
-varying highp float line_length;
-varying highp float line_width;
-varying lowp float cap;
-varying lowp vec4 colour;
+layout(location = 0) out highp vec2 uv;
+layout(location = 1) out highp float line_length;
+layout(location = 2) out highp float line_width;
+layout(location = 3) out lowp float cap;
+layout(location = 4) out lowp vec4 colour;
 
 /* *********************************************************************************************** */
 

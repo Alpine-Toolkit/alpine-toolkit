@@ -1,8 +1,6 @@
-// location_circle_fragment_shader.glsl
+#version 440
 
 /**************************************************************************************************/
-
-// #version 120
 
 const lowp float antialias = 1.0;
 const lowp float linewidth = 1.5;
@@ -11,16 +9,19 @@ const lowp float SQRT_2 = 1.4142135623730951;
 
 /**************************************************************************************************/
 
-uniform lowp float qt_Opacity;
-
-uniform lowp vec4 cone_colour;
-uniform lowp vec4 accuracy_colour;
+layout(std140, binding = 0) uniform buf {
+  lowp float qt_Opacity;
+  lowp vec4 cone_colour;
+  lowp vec4 accuracy_colour;
+};
 
 /**************************************************************************************************/
 
-varying highp vec2 tex_coord;
-varying highp vec3 radius;
-varying highp float angle;
+layout(location = 0) in highp vec2 tex_coord;
+layout(location = 1) in highp vec3 radius;
+layout(location = 2) in highp float angle;
+
+layout(location = 0) out highp vec4 fragColor;
 
 /**************************************************************************************************/
 
@@ -146,5 +147,5 @@ main() {
   else
     colour = cone_colour;
   highp vec4 frag_colour = filled(d_location, linewidth, antialias, colour);
-  gl_FragColor = frag_colour * qt_Opacity;
+  fragColor = frag_colour * qt_Opacity;
 }

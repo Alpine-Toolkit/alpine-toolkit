@@ -42,6 +42,7 @@ unit-tests/camptocamp/login.h
 #
 # Generated Files
 #
+ressources/shaders/*.qsb
 config.h
 ressources/translations/alpine-toolkit.fr_FR.qm
 #
@@ -307,10 +308,6 @@ src/qtcarto/map/map_area.h
 src/qtcarto/map/mapped_path.cpp
 src/qtcarto/map/mapped_path.h
 src/qtcarto/scene/notes.txt
-src/qtcarto/scene/shaders/location_circle_shader.h
-src/qtcarto/scene/shaders/location_circle_shader.h-2
-src/qtcarto/scene/shaders/path_shader.h
-src/qtcarto/scene/shaders/point_shader.h
 src/qtcarto/wmts/providers/austria/mobile-base3.js
 src/qtcarto/wmts/providers/geoportail/ols.txt
 src/refuge/notes.txt

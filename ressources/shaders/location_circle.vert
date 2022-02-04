@@ -1,21 +1,23 @@
-// location_circle_vertex_shader.glsl
+#version 440
 
 /* *********************************************************************************************** */
 
-uniform highp mat4 qt_Matrix;
+layout(std140, binding = 0) uniform buf {
+  uniform highp mat4 qt_Matrix;
+};
 
 /* *********************************************************************************************** */
 
-attribute highp vec4 a_vertex;
-attribute highp vec2 a_tex_coord;
-attribute highp vec3 a_radius;
-attribute highp float a_angle;
+layout(location = 0) in  highp vec4 a_vertex;
+layout(location = 1) in  highp vec2 a_tex_coord;
+layout(location = 2) in  highp vec3 a_radius;
+layout(location = 3) in  highp float a_angle;
 
 /* *********************************************************************************************** */
 
-varying highp vec2 tex_coord;
-varying highp vec3 radius;
-varying highp float angle;
+layout(location = 0) out highp vec2 tex_coord;
+layout(location = 1) out highp vec3 radius;
+layout(location = 2) out highp float angle;
 
 /* *********************************************************************************************** */
 

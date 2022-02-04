@@ -1,11 +1,4 @@
-// path_fragment_shader.glsl
-
-/* *********************************************************************************************** */
-
-// #shader_type fragment
-
-// error: cannot initialize uniform cap_type in GLSL 1.10 (GLSL 1.20 required)
-// #version 120
+#version 440
 
 /* *********************************************************************************************** */
 
@@ -15,15 +8,19 @@ const lowp float antialias_diameter = 1.;
 
 /* *********************************************************************************************** */
 
-uniform lowp float qt_Opacity;
+layout(std140, binding = 0) uniform buf {
+  lowp float qt_Opacity;
+};
 
 /* *********************************************************************************************** */
 
-varying highp vec2 uv;
-varying highp float line_length;
-varying highp float line_width;
-varying lowp float cap;
-varying lowp vec4 colour;
+layout(location = 0) in highp vec2 uv;
+layout(location = 1) in highp float line_length;
+layout(location = 2) in highp float line_width;
+layout(location = 3) in lowp float cap;
+layout(location = 4) in lowp vec4 colour;
+
+layout(location = 0) out highp vec4 fragColor;
 
 /* *********************************************************************************************** */
 
@@ -91,5 +88,5 @@ void main()
   }
 
   // frag_colour = vec4(0, 0, 0, 1);
-  gl_FragColor = frag_colour * qt_Opacity;
+  fragColor = frag_colour * qt_Opacity;
 }

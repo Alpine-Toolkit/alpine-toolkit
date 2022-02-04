@@ -1,8 +1,6 @@
-// point_fragment_shader.glsl
+#version 440
 
 /**************************************************************************************************/
-
-// #version 120
 
 const lowp float antialias = 1.0;
 const lowp float linewidth = 1.5;
@@ -11,14 +9,17 @@ const lowp float SQRT_2 = 1.4142135623730951;
 
 /**************************************************************************************************/
 
-uniform lowp float qt_Opacity;
-
+layout(std140, binding = 0) uniform buf {
+  lowp float qt_Opacity;
+};
 
 /**************************************************************************************************/
 
-varying highp vec2 tex_coord;
-varying highp float radius;
-varying lowp vec4 colour;
+layout(location = 0) in highp vec2 tex_coord;
+layout(location = 1) in highp float radius;
+layout(location = 2) in lowp vec4 colour;
+
+layout(location = 0) out highp vec4 fragColor;
 
 /**************************************************************************************************/
 
@@ -117,5 +118,5 @@ main() {
   highp float d = marker_ring(tex_coord, radius);
   highp vec4 frag_colour = filled(d, linewidth, antialias, colour);
 
-  gl_FragColor = frag_colour * qt_Opacity;
+  fragColor = frag_colour * qt_Opacity;
 }

@@ -1,21 +1,23 @@
-// point_vertex_shader.glsl
+#version 440
 
 /* *********************************************************************************************** */
 
-uniform highp mat4 qt_Matrix;
+layout(std140, binding = 0) uniform buf {
+  highp mat4 qt_Matrix;
+};
 
 /* *********************************************************************************************** */
 
-attribute highp vec4 a_vertex;
-attribute highp vec2 a_tex_coord;
-attribute highp float a_radius;
-attribute lowp vec4 a_colour;
+layout(location = 0) in highp vec4 a_vertex;
+layout(location = 1) in highp vec2 a_tex_coord;
+layout(location = 2) in highp float a_radius;
+layout(location = 3) in lowp vec4 a_colour;
 
 /* *********************************************************************************************** */
 
-varying highp vec2 tex_coord;
-varying highp float radius;
-varying lowp vec4 colour;
+layout(location = 0) out highp vec2 tex_coord;
+layout(location = 1) out highp float radius;
+layout(location = 2) out lowp vec4 colour;
 
 /* *********************************************************************************************** */
 
