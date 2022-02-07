@@ -150,7 +150,7 @@ void TestBlog::constructor()
     for (const auto &author : authors) {
       qInfo() << author;
       for (const auto &blog : author->Author::blogs())
-        qInfo() << blog;
+        qInfo() << blog.toStrongRef();
     }
   }
 
