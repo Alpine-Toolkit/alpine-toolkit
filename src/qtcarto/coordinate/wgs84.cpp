@@ -263,6 +263,12 @@ QcWgsElevationCoordinate::operator=(const QcWgsElevationCoordinate & other)
   return *this;
 }
 
+bool
+QcWgsElevationCoordinate::operator==(const QcWgsElevationCoordinate & other) const
+{
+  return (QcWgsCoordinate::operator==(other) and QcElevation::operator==(other));
+}
+
 #ifndef QT_NO_DEBUG_STREAM
 QDebug operator<<(QDebug debug, const QcWgsElevationCoordinate & coordinate)
 {
