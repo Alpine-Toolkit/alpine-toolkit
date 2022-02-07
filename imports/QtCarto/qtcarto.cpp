@@ -68,10 +68,8 @@ class QtCartoDeclarativeModule : public QQmlExtensionPlugin
       // Register the 1.0 types
 
       qRegisterMetaType<QcVectorDouble>();
-      QMetaType::registerEqualsComparator<QcVectorDouble>();
 
       qRegisterMetaType<QcWgsCoordinate>();
-      QMetaType::registerEqualsComparator<QcWgsCoordinate>();
       // qRegisterAnimationInterpolator<QGeoCoordinate>(q_coordinateInterpolator);
 
       qRegisterMetaType<QcMapEvent>();
