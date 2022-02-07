@@ -75,14 +75,22 @@ fi
 # /etc/security/limits.d/00-user.conf
 # -DSANITIZE=ON
 
+# https://sarcasm.github.io/notes/dev/compilation-database.html#cmake
+#   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+#     This will create a file name compile_commands.json in the build directory.
+
 cmake \
+  -GNinja \
   -D CMAKE_BUILD_TYPE:STRING=={BUILD_TYPE} \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
   -DSANITIZE=OFF \
   -DINSTRUMENT_FUNTIONS=OFF \
   ${source_path}
 
-make -k
+ninja
+# ninja -C build-cmake -j 4
+
+# make -k
 # make -j4
 
 ####################################################################################################
