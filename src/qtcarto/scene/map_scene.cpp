@@ -112,6 +112,7 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
 {
   // qQCInfo() << old_node;
 
+  // Fixme: qt6 looks wrong
   // QSize viewport_size = m_viewport->viewport_size();
   float width = m_viewport->width();
   float height = m_viewport->height();

@@ -208,6 +208,7 @@ class QC_EXPORT QcElevation
   }
 
   bool operator==(const QcElevation & other) const {
+    // (qIsNaN(elevation()) and qIsNaN(other.elevation())
     return qFuzzyCompare(m_elevation, other.m_elevation);
   }
 
