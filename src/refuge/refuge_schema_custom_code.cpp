@@ -58,6 +58,7 @@ void
 Refuge::set_first_letter()
 {
   // Fixme: to function
-  m_first_letter = m_short_name.normalized(QString::NormalizationForm_D)[0].toUpper();
   // m_short_name[0].toUpper();
+  if (m_short_name.length())
+    m_first_letter = m_short_name.normalized(QString::NormalizationForm_D)[0].toUpper();
 }
