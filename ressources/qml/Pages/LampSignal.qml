@@ -27,8 +27,9 @@
 import QtQml 2.2
 import QtQuick 2.6
 
-import QtGraphicalEffects 1.0
-import QtMultimedia 5.8
+// https://doc.qt.io/qt-6/qtgraphicaleffects5-index.html
+import Qt5Compat.GraphicalEffects
+import QtMultimedia
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.2
 import QtQuick.Layouts 1.1
@@ -40,31 +41,69 @@ import Widgets 1.0 as Widgets
 Widgets.Page {
     id: lamp_signal_pane
 
-    Audio {
-        id: player;
-        playlist: Playlist {
-            id: playlist
-	    // PlaylistItem { source: "qrc:/tones/long-pulse.ogg"; }
-        }
-    }
+    // See https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimediawidgets/player?h=6.2
+    MediaPlayer {
+        id: player
+        audioOutput: AudioOutput {}
 
-    function play_message(encoded_message)
-    {
-	// encoded_message = '...././.-../.-../---'
-	console.info('set_playlist: ' + encoded_message);
-	playlist.clear();
-	for (var i = 0; i < encoded_message.length; i++) {
-	    if (i > 0)
-		playlist.addItem('qrc:/tones/short-pause.ogg');
-	    var c = encoded_message[i];
-	    if (c == '.')
-		playlist.addItem('qrc:/tones/short-pulse.ogg');
-	    else if (c == '-')
-		playlist.addItem('qrc:/tones/long-pulse.ogg');
-	    else if (c == '/')
-		playlist.addItem('qrc:/tones/long-pause.ogg');
-	}
-	player.play();
+        /*
+        Timer {
+            interval: 500
+            running: false
+            repeat: false
+            onTriggered: ...
+        }
+        */
+
+        property string encoded_message : ""
+        property int message_position : 0
+        property bool play_short_pause : false
+
+        onMediaStatusChanged: (status) => {
+            if (status == MediaPlayer.EndOfMedia) {
+                console.info(source, "done")
+                if (message_position < encoded_message.length) {
+                    play_pulse()
+                } else {
+                    console.info("message done")
+                    encoded_message = ""
+                    message_position = 0
+                    play_short_pause = false
+                }
+            }
+        }
+
+        function play_message(encoded_message_)
+        {
+            console.info("play message", encoded_message_)
+            encoded_message = encoded_message_
+            message_position = 0
+            play_pulse()
+        }
+
+        function play_pulse()
+        {
+            // Fixme Qt6: try to use a timer for pause
+	    // encoded_message = '...././.-../.-../---'
+            if (play_short_pause) {
+		player.source = 'qrc:/tones/short-pause.ogg'
+                play_short_pause = false
+            } else {
+	        var c = encoded_message[message_position]
+	        if (c == '.')
+		    player.source = 'qrc:/tones/short-pulse.ogg'
+	        else if (c == '-')
+		    player.source = 'qrc:/tones/long-pulse.ogg'
+	        else if (c == '/')
+		    player.source = 'qrc:/tones/long-pause.ogg'
+                message_position += 1
+                play_short_pause = true
+            }
+            if (player.source) {
+                console.info("play", player.source)
+	        player.play()
+            }
+        }
     }
 
     SwipeView {
@@ -195,16 +234,16 @@ Widgets.Page {
 		    	anchors.horizontalCenter: parent.horizontalCenter
 		    	text: qsTr('Send Message')
 		    	onClicked : {
-                            var message = message_textarea.text;
+                            var message = message_textarea.text
                             if (message) {
-		    		var encoded_message = application.encode_morse(message, false);
-		    		send_encoded_message.text = encoded_message;
+		    		var encoded_message = application.encode_morse(message, false)
+		    		send_encoded_message.text = encoded_message
                                 if (speaker_switch.checked)
-		    		    play_message(encoded_message);
+		    		    player.play_message(encoded_message)
                                 if (torch_switch.checked) {
-		    		    var encoded_message = application.encode_morse(message, true);
-		    		    var rate_ms = rate_ms_spinbox.value;
-		    		    platform_abstraction.perform_lamp_signal(encoded_message, rate_ms);
+		    		    var encoded_message = application.encode_morse(message, true)
+		    		    var rate_ms = rate_ms_spinbox.value
+		    		    platform_abstraction.perform_lamp_signal(encoded_message, rate_ms)
                                 }
                             }
 		    	}
@@ -219,10 +258,10 @@ Widgets.Page {
             id: message_decoder_pane
 
 	    function decode_message() {
-		var _encoded_message = encoded_message.text;
-		if (_encoded_message) {
-                    var raw_message = application.decode_morse(_encoded_message);
-                    var message = raw_message.slice(0, raw_message.length - 2);
+		var encoded_message = encoded_message_label.text
+		if (encoded_message) {
+                    var raw_message = application.decode_morse(encoded_message)
+                    var message = raw_message.slice(0, raw_message.length - 2)
                     if (raw_message.endsWith('@F'))
                         message += ' <span style="color:#F44336">[ERROR]</span>'
                     decoded_message.text = message
@@ -261,14 +300,14 @@ Widgets.Page {
                             padding : 20
                             font.pointSize: Style.font_size.large
                             text: qsTr('Dot')
-                            onClicked: encoded_message.text += '.'
+                            onClicked: encoded_message_label.text += '.'
 			}
 			Button {
                             implicitWidth: message_decoder_content.width * .4
                             padding : 20
                             font.pointSize: Style.font_size.large
                             text: qsTr('Dash')
-                            onClicked: encoded_message.text += '-'
+                            onClicked: encoded_message_label.text += '-'
 			}
 			Button {
                             implicitWidth: message_decoder_content.width * .4
@@ -276,8 +315,8 @@ Widgets.Page {
                             font.pointSize: Style.font_size.large
                             text: qsTr('Letter')
                             onClicked: {
-				encoded_message.text += '/';
-				message_decoder_pane.decode_message();
+				encoded_message_label.text += '/'
+				message_decoder_pane.decode_message()
                             }
 			}
 			Button {
@@ -286,14 +325,14 @@ Widgets.Page {
                             font.pointSize: Style.font_size.large
                             text: qsTr('Word')
                             onClicked: {
-				encoded_message.text += ' ';
-				message_decoder_pane.decode_message();
+				encoded_message_label.text += ' '
+				message_decoder_pane.decode_message()
                             }
 			}
                     }
 
                     Label {
-			id: encoded_message
+			id: encoded_message_label
 			width: parent.width
                         padding: Style.spacing.base
                         background: Rectangle {
@@ -316,12 +355,12 @@ Widgets.Page {
 			anchors.horizontalCenter: parent.horizontalCenter
 			text: qsTr('Delete')
 			onClicked : {
-                            var message = encoded_message.text;
+                            var message = encoded_message_label.text
                             if (message) {
-                                var new_message = message.slice(0, message.length -1);
-				encoded_message.text = new_message;
+                                var new_message = message.slice(0, message.length -1)
+				encoded_message_label.text = new_message
                                 if (new_message.endsWith(' ') || new_message.endsWith('/'))
-				    message_decoder_pane.decode_message();
+				    message_decoder_pane.decode_message()
                                 // Fixme: cursor is not visible
                             }
 			}
@@ -332,7 +371,7 @@ Widgets.Page {
 			anchors.horizontalCenter: parent.horizontalCenter
 			text: qsTr('Clear Message')
 			onClicked : {
-                            encoded_message.text = ''
+                            encoded_message_label.text = ''
                             decoded_message.text = ''
 			}
                     }
