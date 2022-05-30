@@ -51,6 +51,7 @@ def find(matcher, path='.'):
 
 @task
 def flycheck(ctx):
+    # Fixme: ctx.Package must be defined in invoke.yaml
     with ctx.cd(ctx.Package):
         # ctx.run('find . -name "flycheck*.py" -exec /usr/bin/rm {} \;')
         find(lambda filename: filename.suffix == '.py' and filename.stem.startswith('flycheck'))
