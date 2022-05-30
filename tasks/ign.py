@@ -1,7 +1,7 @@
 ####################################################################################################
 #
-# Alpine Toolkit -
-# Copyright (C) 2022 Fabrice Salvaire
+# PySpice - A Spice package for Python
+# Copyright (C) 2019 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,19 +20,32 @@
 
 ####################################################################################################
 
-from types import ModuleType
+from pathlib import Path
+import os
 
-# http://www.pyinvoke.org
-from invoke import Collection
+from invoke import task
 
 ####################################################################################################
 
-from . import build
-from . import clean
-from . import ign
-from . import inspect
+@task()
+def bdalti(ctx):
 
-modules = [obj for name, obj in globals().items() if isinstance(obj, ModuleType)]
-ns = Collection()
-for _ in modules:
-    ns.add_collection(Collection.from_module(_))
+    from .lib.ign.BdAlti import BdAltiRepository, BdAlti
+
+    # repo = BdAltiRepository()
+
+    # path = repo[0]
+    # repo.get(path)
+    # print(f'unzip {path} ...')
+    # ctx.run(f'7z x {path}')
+    # os.unlink(path)
+
+    paths = sorted(BdAlti.find(os.getcwd()))
+    print(f"Number of tiles: {len(paths)}")
+    for path in sorted(paths):
+        tile = BdAlti(path)
+        tile.to_binary_format('mnt-tile.data')
+        tile.pack('mnt-tile-packed.data')
+
+    # number_of_bits = 14
+    # BdAlti.pack(list(range(8)), number_of_bits)
