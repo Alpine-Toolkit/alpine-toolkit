@@ -128,3 +128,4 @@ def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
             ctx.run('make -j4', pty=True)
 
         # run-asan.sh
+        # clear ; ninja -j2 && QT_LOGGING_RULES="*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true" ./src/alpine-toolkit
