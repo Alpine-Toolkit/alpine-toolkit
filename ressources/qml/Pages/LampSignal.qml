@@ -41,16 +41,13 @@ import Widgets 1.0 as Widgets
 Widgets.Page {
     id: lamp_signal_pane
 
-    // Cannot be place inside MediaPlayer
     Timer {
+        // Cannot be place inside MediaPlayer
         id: pulse_timer
         interval: 0
         running: false
         repeat: false
-        onTriggered: {
-            console.info("Timer done")
-            player.play_pulse()
-        }
+        onTriggered: player.play_pulse()
     }
 
     // See https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimediawidgets/player?h=6.2
@@ -72,11 +69,9 @@ Widgets.Page {
 
         onMediaStatusChanged: (status) => {
             if (status == MediaPlayer.EndOfMedia) {
-                console.info(source, "done")
-                if (message_position < encoded_message.length) {
+                if (message_position < encoded_message.length)
                     play_pulse()
-                } else {
-                    console.info("message done")
+                else {
                     encoded_message = ""
                     message_position = 0
                     play_short_pause = false
@@ -86,7 +81,6 @@ Widgets.Page {
 
         function play_message(encoded_message_)
         {
-            console.info("play message", encoded_message_)
             encoded_message = encoded_message_
             message_position = 0
             play_pulse()
@@ -118,13 +112,10 @@ Widgets.Page {
                 message_position += 1
             }
 
-            if (play_song) {
-                console.info("play", player.source)
+            if (play_song)
 	        player.play()
-            } else {
-                console.info("Start timer", pulse_timer.interval)
+            else
                 pulse_timer.start()
-            }
         }
     }
 
