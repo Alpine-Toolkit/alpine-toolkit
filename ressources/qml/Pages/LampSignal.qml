@@ -41,23 +41,34 @@ import Widgets 1.0 as Widgets
 Widgets.Page {
     id: lamp_signal_pane
 
+    // Cannot be place inside MediaPlayer
+    Timer {
+        id: pulse_timer
+        interval: 0
+        running: false
+        repeat: false
+        onTriggered: {
+            console.info("Timer done")
+            player.play_pulse()
+        }
+    }
+
     // See https://code.qt.io/cgit/qt/qtmultimedia.git/tree/examples/multimediawidgets/player?h=6.2
     MediaPlayer {
         id: player
         audioOutput: AudioOutput {}
 
-        /*
-        Timer {
-            interval: 500
-            running: false
-            repeat: false
-            onTriggered: ...
-        }
-        */
+        // short_pulse = 200 ms
+        // long_pulse  = short_pulse * 3
+        // short_pause = short_pulse
+        // long_pause  = short_pause * 5
 
+        // Fixme: could do message -> [c,...].pop()
         property string encoded_message : ""
         property int message_position : 0
         property bool play_short_pause : false
+        readonly property int short_pause : 200
+        readonly property int long_pause : short_pause * 5
 
         onMediaStatusChanged: (status) => {
             if (status == MediaPlayer.EndOfMedia) {
@@ -83,25 +94,36 @@ Widgets.Page {
 
         function play_pulse()
         {
-            // Fixme Qt6: try to use a timer for pause
-	    // encoded_message = '...././.-../.-../---'
+	    // encoded_message = "...././.-../.-../---"
+            player.source = ""
+            // pulse_timer.interval = 0
+            var play_song = false
+
             if (play_short_pause) {
-		player.source = 'qrc:/tones/short-pause.ogg'
+                pulse_timer.interval = short_pause
                 play_short_pause = false
             } else {
 	        var c = encoded_message[message_position]
-	        if (c == '.')
-		    player.source = 'qrc:/tones/short-pulse.ogg'
-	        else if (c == '-')
-		    player.source = 'qrc:/tones/long-pulse.ogg'
-	        else if (c == '/')
-		    player.source = 'qrc:/tones/long-pause.ogg'
+                if (c == '/')
+                    pulse_timer.interval = long_pause
+                else {
+	            if (c == '.')
+		        player.source = "qrc:/tones/short-pulse.ogg"
+                    // else if (c == '-')
+                    else
+		        player.source = "qrc:/tones/long-pulse.ogg"
+                    play_song = true
+                    play_short_pause = true
+                }
                 message_position += 1
-                play_short_pause = true
             }
-            if (player.source) {
+
+            if (play_song) {
                 console.info("play", player.source)
 	        player.play()
+            } else {
+                console.info("Start timer", pulse_timer.interval)
+                pulse_timer.start()
             }
         }
     }
