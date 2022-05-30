@@ -42,4 +42,5 @@ def search(ctx, pattern):
     ):
         # with ctx.cd(path):
         command = f'grep --color=auto --exclude="*~" -r "{pattern}" {path}'
-        ctx.run(command, pty=True)
+         # warn is set else it raises when nothing is found
+        ctx.run(command, pty=True, warn=True)
