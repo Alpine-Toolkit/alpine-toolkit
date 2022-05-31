@@ -143,3 +143,19 @@ target_link_libraries(qtcarto
   ${ZLIB_LIBRARY}
   ${PROTOBUF_LITE_LIBRARIES}
   )
+
+# https://doc-snapshots.qt.io/qt6-dev/qtshadertools-build.html
+qt_add_shaders(qtcarto "qtcarto_shaders"
+  BATCHABLE
+  GLSL "460, 310es, 120es"
+  NOHLSL
+  NOMSL
+  PREFIX "/scene/shaders/"
+  FILES
+  shaders/location_circle.frag
+  shaders/location_circle.vert
+  shaders/path.frag
+  shaders/path.vert
+  shaders/point.frag
+  shaders/point.vert
+)

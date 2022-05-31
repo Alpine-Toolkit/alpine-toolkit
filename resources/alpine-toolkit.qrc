@@ -201,15 +201,6 @@
         <file>icons/volume-white.svg</file>
     </qresource>
 
-    <qresource prefix="/scene">
-        <file>shaders/location_circle.frag.qsb</file>
-        <file>shaders/location_circle.vert.qsb</file>
-        <file>shaders/path.frag.qsb</file>
-        <file>shaders/path.vert.qsb</file>
-        <file>shaders/point.frag.qsb</file>
-        <file>shaders/point.vert.qsb</file>
-    </qresource>
-
     <qresource prefix="/">
 	<file>tones/long-pause.ogg</file>
 	<file>tones/long-pulse.ogg</file>

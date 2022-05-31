@@ -214,6 +214,7 @@ if(NOT ANDROID)
       Test
       RemoteObjects
       Core5Compat
+      ShaderTools
       )
 
     # Not available
