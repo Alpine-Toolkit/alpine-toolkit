@@ -59,9 +59,12 @@ ApplicationWindow {
         // 1920 - 75 px for android bar = 1845
         // 1080*3 = 3240   1845*3 = 5535
         // 5.551839464882943*3*25.4 = 423
-        console.info(Screen.height, Screen.width,
-                     Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
-                     Screen.pixelDensity, Screen.devicePixelRatio)
+        console.info(
+            "Screen info:",
+            Screen.height, Screen.width,
+            Screen.desktopAvailableHeight, Screen.desktopAvailableWidth,
+            Screen.pixelDensity, Screen.devicePixelRatio
+        )
 
 	if (platform_abstraction.on_android() || platform_abstraction.on_android_fake()) {
 	    AndroidPermission.create_explain_permission_dialog()
@@ -194,14 +197,14 @@ ApplicationWindow {
             filterOnGroup: 'enabled'
 
             Component.onCompleted: {
-                var row_count = model.count
-                items.remove(0, row_count)
-                for (var i = 0; i < row_count; i++) {
-                    var page = model.get(i)
+                console.info("Insert pages...")
+                for (var i = 0; i < items.count; i++) {
+                    var item = items.get(i)
+                    var page = item.model
                     if (page.group !== undefined)
                         if ((page.group == 'main') ||
                             (page.group == 'mockup' && application.config.is_mockup_enabled))
-                            items.insert(page, 'enabled')
+                            item.inEnabled = true
                 }
             }
         }
@@ -279,6 +282,7 @@ ApplicationWindow {
     function update_options_menu(item) {
         // Fixme: don't work ???
         // var has_settings = typeof item.settings_dialog !== 'undefined'
+        // Fixme Qt6: TypeError: Property 'has_settings_dialog' of object SplashScreen is not a function
         var has_settings = item.has_settings_dialog()
         options_menu.enable_settings_menu(has_settings)
     }
