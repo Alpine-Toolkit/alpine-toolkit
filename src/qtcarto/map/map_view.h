@@ -55,6 +55,7 @@
 
 class QcMapView;
 
+/// The QcMapViewLayer class implements a layer in a map view.
 class QC_EXPORT QcMapViewLayer : public QObject
 {
   Q_OBJECT
@@ -84,8 +85,8 @@ class QC_EXPORT QcMapViewLayer : public QObject
 
  private:
   const QcWmtsPluginLayer * m_plugin_layer;
-  QcViewport * m_viewport;
-  QcMapLayerScene * m_layer_scene;
+  QcViewport * m_viewport; /// viewport owned by QcMapView
+  QcMapLayerScene * m_layer_scene; /// scene of the layer owned by QcMapScene
 
   QcWmtsRequestManager * m_request_manager;
 
@@ -99,6 +100,8 @@ class QC_EXPORT QcMapViewLayer : public QObject
 
 /**************************************************************************************************/
 
+/// The QcMapView class implements the business logic of the QML map item.
+/// The map view holds the viewport, the layers and the scene.
 class QC_EXPORT QcMapView : public QObject
 {
   Q_OBJECT
@@ -114,9 +117,10 @@ class QC_EXPORT QcMapView : public QObject
   void add_layer(const QcWmtsPluginLayer * plugin_layer);
   void remove_layer(const QcWmtsPluginLayer * plugin_layer);
   void remove_all_layers();
+  QList<const QcWmtsPluginLayer *> layers() const;
+
   float opacity(const QcWmtsPluginLayer * plugin_layer);
   void set_opacity(const QcWmtsPluginLayer * plugin_layer, float opacity);
-  QList<const QcWmtsPluginLayer *> layers() const;
 
   QSGNode * update_scene_graph(QSGNode * old_node, QQuickWindow * window) {
     return m_map_scene->update_scene_graph(old_node, window);
@@ -140,11 +144,11 @@ class QC_EXPORT QcMapView : public QObject
   void update_zoom_level_interval();
 
  private:
-  QcViewport * m_viewport;
-  QcMapScene * m_map_scene;
+  QcViewport * m_viewport; /// viewport of the map
+  QcMapScene * m_map_scene; /// scene of the map
   QcLocationCircleData m_location_circle_data;
-  QList<QcMapViewLayer *> m_layers;
-  QHash<QString, QcMapViewLayer *> m_layer_map;
+  QList<QcMapViewLayer *> m_layers; /// list of map layers
+  QHash<QString, QcMapViewLayer *> m_layer_map; /// hash of map layers
 };
 
 // QC_END_NAMESPACE

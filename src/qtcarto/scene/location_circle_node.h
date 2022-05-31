@@ -44,6 +44,7 @@
 
 /**************************************************************************************************/
 
+/// The QcLocationCircleNode class implements a location circle node
 class QcLocationCircleNode : public QSGOpacityNode
 {
 public:

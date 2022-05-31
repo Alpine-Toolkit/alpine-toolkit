@@ -43,7 +43,13 @@
 
 /**************************************************************************************************/
 
+// https://doc.qt.io/qt-6/qloggingcategory.html#Q_DECLARE_LOGGING_CATEGORY
+// Declares a logging category name.
+// The macro can be used to declare a common logging category shared in different parts of the program.
 Q_DECLARE_LOGGING_CATEGORY(at_logger)
+// cf. Q_LOGGING_CATEGORY in logger.cpp
+
+/**************************************************************************************************/
 
 #define qATCritical() qCCritical(at_logger)
 #define qATDebug()    qCDebug(at_logger)

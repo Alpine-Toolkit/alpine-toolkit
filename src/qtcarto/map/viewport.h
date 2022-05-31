@@ -47,9 +47,12 @@
 
 /**************************************************************************************************/
 
+/// The QcMapScale gadget provides the scale of map to QML.
 class QcMapScale
 {
   Q_GADGET
+
+public:
   Q_PROPERTY(double length READ length CONSTANT)
   Q_PROPERTY(int length_px READ length_px CONSTANT)
 
@@ -69,14 +72,10 @@ public:
 
 /**************************************************************************************************/
 
-/*!
- *
- * Map Resolution unit is [m/px]
- *
- */
+/// The QcMapResolution class holds a map resolution on screen in m/px unit.
 class QC_EXPORT QcMapResolution
 {
- public:
+public:
   QcMapResolution();
   QcMapResolution(double resolution);
   QcMapResolution(const QcMapResolution & other);
@@ -104,17 +103,17 @@ class QC_EXPORT QcMapResolution
     return distance / resolution();
   }
 
- private:
-  double m_resolution;
+private:
+  double m_resolution; /// resolution in [m/px]
 };
 
 /**************************************************************************************************/
 
-// Tool to compute a zoom factor from a pyramid
+/// The QcTiledZoomLevel class implements the computation of the zoom factor for a pyramid of tiles.
 // Fixme: versus tile matrix ???
 class QC_EXPORT QcTiledZoomLevel : public QcMapResolution
 {
- public:
+public:
   QcTiledZoomLevel();
   QcTiledZoomLevel(double map_size, unsigned int tile_size, unsigned int zoom_level = 0); // Fixme: tile_size depends of the map 256, 512 !!!
   QcTiledZoomLevel(const QcTiledZoomLevel & other);
@@ -135,7 +134,7 @@ class QC_EXPORT QcTiledZoomLevel : public QcMapResolution
   unsigned int zoom_level() const { return m_zoom_level; }
   void set_zoom_level(unsigned int zoom_level);
 
- private:
+private:
   unsigned int m_tile_size;
   unsigned int m_zoom_level;
   double m_map_size;
@@ -143,14 +142,16 @@ class QC_EXPORT QcTiledZoomLevel : public QcMapResolution
 
 /**************************************************************************************************/
 
+/// The QcViewportState class holds a viewport state.
+/// The viewport state is defined by the coordinate cente, the zoom level and the bearing.
 class QC_EXPORT QcViewportState
 {
- public:
+public:
   bool is_valid_bearing(double bearing) {
     return -180. <= bearing && bearing <= 180.;
   }
 
- public:
+public:
   QcViewportState();
   // Fixme: QcTiledZoomLevel or QcMapResolution ???
   QcViewportState(const QcWgsCoordinate & coordinate, const QcTiledZoomLevel & tiled_zoom_level, double bearing);
@@ -175,7 +176,7 @@ class QC_EXPORT QcViewportState
   unsigned int zoom_level() const { return m_tiled_zoom_level.zoom_level(); }
   void set_zoom_level(unsigned int zoom_level) { m_tiled_zoom_level.set_zoom_level(zoom_level); }
 
- private:
+private:
   QcWgsCoordinate m_coordinate;
   QcTiledZoomLevel m_tiled_zoom_level;
   double m_bearing;
@@ -228,14 +229,16 @@ QC_EXPORT QDebug operator<<(QDebug debug, const QcViewportPart & viewport_part);
 
 /**************************************************************************************************/
 
+/// The QcViewport class implements the viewport of a map.
+/// The viewport manages the correspondance between the map and screen, providing support to zoom and pan the map.
 class QC_EXPORT QcViewport : public QObject
 {
   Q_OBJECT
 
- public:
+public:
   static QcInterval2DDouble interval_from_center_and_size(const QcVectorDouble & center, const QcVectorDouble & size);
 
- public:
+public:
   QcViewport(const QcViewportState & viewport_state, const QSize & viewport_size); // Fixme : tiled_zoom_level has parameters
 
   const QcViewportState & viewport_state() const { return m_state; }
@@ -306,7 +309,7 @@ class QC_EXPORT QcViewport : public QObject
  signals:
   void viewport_changed();
 
- private:
+private:
   const QcTiledZoomLevel & tiled_zoom_level() const { return m_state.tiled_zoom_level(); }
   void update_zoom_level_interval();
   void update_area_size();
@@ -318,7 +321,7 @@ class QC_EXPORT QcViewport : public QObject
   QcPolygon compute_polygon() const;
   void adjust_center();
 
- private:
+private:
   QcViewportState m_state;
   QcViewportState m_previous_state;
   int m_state_transaction = 0;

@@ -78,6 +78,7 @@ public:
 
 /**************************************************************************************************/
 
+/// The QcMapRootNode class is the top level node of the map scene
 class QcMapRootNode : public QSGClipNode
 {
 public:

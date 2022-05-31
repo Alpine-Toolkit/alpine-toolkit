@@ -125,6 +125,7 @@ private:
 
 /**************************************************************************************************/
 
+// QmlRegisterUncreatableType
 class QcMapEventRouter : public QObject
 {
   Q_OBJECT

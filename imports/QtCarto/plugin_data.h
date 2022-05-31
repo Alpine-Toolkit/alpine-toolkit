@@ -43,10 +43,18 @@
 
 /**************************************************************************************************/
 
+/// The QcWmtsPluginData gadget class provides information on a WMTS plugin to QML,
+/// like the name and the title.
 class QcWmtsPluginData
 {
+  // https://doc.qt.io/qt-6/qobject.html#Q_GADGET
+  // Q_GADGETs can have Q_ENUM, Q_PROPERTY and Q_INVOKABLE, but they cannot have signals or slots
   Q_GADGET
+
+public:
+  /// Name of the plugin
   Q_PROPERTY(QString name READ name CONSTANT)
+  /// Title of the plugin
   Q_PROPERTY(QString title READ title CONSTANT)
 
 public:
@@ -68,13 +76,20 @@ private:
 
 /**************************************************************************************************/
 
+/// The QcWmtsPluginData class provides information on a WMTS plugin layer to QML.
 class QcWmtsPluginLayerData : public QObject
 {
   Q_OBJECT
+
+  /// Name of the WMTS plugin
   Q_PROPERTY(QString plugin READ plugin CONSTANT)
+  /// Title of the WMTS plugin
   Q_PROPERTY(QString title READ title CONSTANT)
+  /// Projection of the layer
   Q_PROPERTY(QString projection READ projection CONSTANT)
+  /// Status to enable/disable the layer
   Q_PROPERTY(bool status READ status WRITE set_status NOTIFY statusChanged)
+  /// Opacity of the layer
   Q_PROPERTY(float opacity READ opacity WRITE set_opacity NOTIFY opacityChanged)
 
 public:
@@ -89,6 +104,7 @@ public:
   QString title() const { return m_plugin_layer->title(); }
   QString projection() const { return m_plugin_layer->projection().title(); }
 
+  // Fixme: status ???
   bool status() const { return m_status; }
   float opacity() const { return m_opacity; }
 
