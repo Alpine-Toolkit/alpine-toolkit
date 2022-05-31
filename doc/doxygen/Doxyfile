@@ -1,3 +1,5 @@
+# -*- mode: Conf; -*-
+
 # Doxyfile 1.8.10
 
 # This file describes the settings to be used by the documentation system
@@ -187,7 +189,7 @@ SHORT_NAMES            = NO
 # description.)
 # The default value is: NO.
 
-JAVADOC_AUTOBRIEF      = NO
+JAVADOC_AUTOBRIEF      = YES
 
 # If the QT_AUTOBRIEF tag is set to YES then doxygen will interpret the first
 # line (until the first dot) of a Qt-style comment as the brief description. If
@@ -319,7 +321,7 @@ AUTOLINK_SUPPORT       = YES
 # diagrams that involve STL classes more complete and accurate.
 # The default value is: NO.
 
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
 
 # If you use Microsoft's C++/CLI language, you should set this option to YES to
 # enable parsing support.
@@ -775,7 +777,11 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = src service
+INPUT                  = README.md \
+                         DOXYGEN-MAINPAGE.md \
+                         src \
+                         service \
+                         imports
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -821,10 +827,6 @@ FILE_PATTERNS          = *.c \
                          *.h++ \
                          *.cs \
                          *.d \
-                         *.php \
-                         *.php4 \
-                         *.php5 \
-                         *.phtml \
                          *.inc \
                          *.m \
                          *.markdown \
@@ -832,12 +834,6 @@ FILE_PATTERNS          = *.c \
                          *.mm \
                          *.dox \
                          *.py \
-                         *.f90 \
-                         *.f \
-                         *.for \
-                         *.tcl \
-                         *.vhd \
-                         *.vhdl \
                          *.ucf \
                          *.qsf \
                          *.as \
@@ -957,7 +953,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = 
+USE_MDFILE_AS_MAINPAGE = DOXYGEN-MAINPAGE.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -970,7 +966,7 @@ USE_MDFILE_AS_MAINPAGE =
 # also VERBATIM_HEADERS is set to NO.
 # The default value is: NO.
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body of functions,
 # classes and enums directly into the documentation.
@@ -1795,61 +1791,6 @@ LATEX_TIMESTAMP        = NO
 
 GENERATE_RTF           = NO
 
-# The RTF_OUTPUT tag is used to specify where the RTF docs will be put. If a
-# relative path is entered the value of OUTPUT_DIRECTORY will be put in front of
-# it.
-# The default directory is: rtf.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-RTF_OUTPUT             = rtf
-
-# If the COMPACT_RTF tag is set to YES, doxygen generates more compact RTF
-# documents. This may be useful for small projects and may help to save some
-# trees in general.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-COMPACT_RTF            = NO
-
-# If the RTF_HYPERLINKS tag is set to YES, the RTF that is generated will
-# contain hyperlink fields. The RTF file will contain links (just like the HTML
-# output) instead of page references. This makes the output suitable for online
-# browsing using Word or some other Word compatible readers that support those
-# fields.
-#
-# Note: WordPad (write) and others do not support links.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-RTF_HYPERLINKS         = NO
-
-# Load stylesheet definitions from file. Syntax is similar to doxygen's config
-# file, i.e. a series of assignments. You only have to provide replacements,
-# missing definitions are set to their default value.
-#
-# See also section "Doxygen usage" for information on how to generate the
-# default style sheet that doxygen normally uses.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-RTF_STYLESHEET_FILE    = 
-
-# Set optional variables used in the generation of an RTF document. Syntax is
-# similar to doxygen's config file. A template extensions file can be generated
-# using doxygen -e rtf extensionFile.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-RTF_EXTENSIONS_FILE    = 
-
-# If the RTF_SOURCE_CODE tag is set to YES then doxygen will include source code
-# with syntax highlighting in the RTF output.
-#
-# Note that which sources are shown also depends on other settings such as
-# SOURCE_BROWSER.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_RTF is set to YES.
-
-RTF_SOURCE_CODE        = NO
-
 #---------------------------------------------------------------------------
 # Configuration options related to the man page output
 #---------------------------------------------------------------------------
@@ -1931,23 +1872,6 @@ XML_PROGRAMLISTING     = YES
 
 GENERATE_DOCBOOK       = NO
 
-# The DOCBOOK_OUTPUT tag is used to specify where the Docbook pages will be put.
-# If a relative path is entered the value of OUTPUT_DIRECTORY will be put in
-# front of it.
-# The default directory is: docbook.
-# This tag requires that the tag GENERATE_DOCBOOK is set to YES.
-
-DOCBOOK_OUTPUT         = docbook
-
-# If the DOCBOOK_PROGRAMLISTING tag is set to YES, doxygen will include the
-# program listings (including syntax highlighting and cross-referencing
-# information) to the DOCBOOK output. Note that enabling this will significantly
-# increase the size of the DOCBOOK output.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_DOCBOOK is set to YES.
-
-DOCBOOK_PROGRAMLISTING = NO
-
 #---------------------------------------------------------------------------
 # Configuration options for the AutoGen Definitions output
 #---------------------------------------------------------------------------
@@ -1971,32 +1895,6 @@ GENERATE_AUTOGEN_DEF   = NO
 # The default value is: NO.
 
 GENERATE_PERLMOD       = NO
-
-# If the PERLMOD_LATEX tag is set to YES, doxygen will generate the necessary
-# Makefile rules, Perl scripts and LaTeX code to be able to generate PDF and DVI
-# output from the Perl module output.
-# The default value is: NO.
-# This tag requires that the tag GENERATE_PERLMOD is set to YES.
-
-PERLMOD_LATEX          = NO
-
-# If the PERLMOD_PRETTY tag is set to YES, the Perl module output will be nicely
-# formatted so it can be parsed by a human reader. This is useful if you want to
-# understand what is going on. On the other hand, if this tag is set to NO, the
-# size of the Perl module output will be much smaller and Perl will parse it
-# just the same.
-# The default value is: YES.
-# This tag requires that the tag GENERATE_PERLMOD is set to YES.
-
-PERLMOD_PRETTY         = YES
-
-# The names of the make variables in the generated doxyrules.make file are
-# prefixed with the string contained in PERLMOD_MAKEVAR_PREFIX. This is useful
-# so different doxyrules.make files included by the same Makefile don't
-# overwrite each other's variables.
-# This tag requires that the tag GENERATE_PERLMOD is set to YES.
-
-PERLMOD_MAKEVAR_PREFIX = 
 
 #---------------------------------------------------------------------------
 # Configuration options related to the preprocessor
