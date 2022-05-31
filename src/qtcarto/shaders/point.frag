@@ -10,6 +10,7 @@ const lowp float SQRT_2 = 1.4142135623730951;
 /**************************************************************************************************/
 
 layout(std140, binding = 0) uniform buf {
+  highp mat4 qt_Matrix;
   lowp float qt_Opacity;
 };
 
