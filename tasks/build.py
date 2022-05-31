@@ -35,14 +35,19 @@ from invoke import task
 ####################################################################################################
 
 @task
-def set_source_path(ctx):
+def _set_source_path(ctx):
     ctx.source_path = Path(__file__).parents[1]
 
 ####################################################################################################
 
 @task
-def set_qt(ctx):
-    ctx.qt_path = Path(os.getenv('QT_PATH'))
+def _set_qt(ctx):
+    qt_path = os.getenv('QT_PATH')
+    if qt_path is None:
+        raise NameError('The "QT_PATH" environment variable must be set to Qt path')
+    print(f'Qt path is {qt_path}')
+
+    ctx.qt_path = Path(qt_path)
     match sys.platform:
         case 'linux':
             arch = 'gcc_64'
@@ -55,7 +60,7 @@ def set_qt(ctx):
 
 ####################################################################################################
 
-@task(set_qt, set_source_path)
+@task(_set_qt, _set_source_path)
 def generate_code(ctx):
     with ctx.cd(ctx.source_path.joinpath('code-generator')):
         ctx.run('generate-all', pty=True)
@@ -63,7 +68,7 @@ def generate_code(ctx):
 
 ####################################################################################################
 
-@task(set_qt)
+@task(_set_qt)
 def qml(ctx, path):
     path = Path(path)
     if not (path.exists() and path.is_dir()):
@@ -78,7 +83,7 @@ def qml(ctx, path):
 
 ####################################################################################################
 
-@task(set_qt, set_source_path)
+@task(_set_qt, _set_source_path)
 def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
 
     build_path = ctx.source_path.joinpath('build-cmake')

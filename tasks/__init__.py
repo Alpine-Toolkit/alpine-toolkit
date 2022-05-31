@@ -26,6 +26,13 @@
 
 ####################################################################################################
 
+import sys
+_version = sys.version_info
+if not (_version.major == 3 and _version.minor >= 10):
+    raise NameError("Require Python 3.10")
+
+####################################################################################################
+
 from types import ModuleType
 
 # http://www.pyinvoke.org
