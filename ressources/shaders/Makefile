@@ -20,15 +20,17 @@ all: \
 	point.frag.qsb \
 	point.vert.qsb
 
-clear:
+clean:
 	rm -f *.vert.qsb *.frag.qsb
+
+rebuild: clean all
 
 ####################################################################################################
 
-GL_VERSION="120es, 310es"
+GL_VERSION="460, 310es, 120es"
 
 %.vert.qsb : %.vert
-	qsb --glsl ${GL_VERSION} -o $@ $^
+	qsb -b --glsl ${GL_VERSION} -o $@ $^
 %.frag.qsb : %.frag
-	qsb --glsl ${GL_VERSION} -o $@ $^
+	qsb -b --glsl ${GL_VERSION} -o $@ $^
 

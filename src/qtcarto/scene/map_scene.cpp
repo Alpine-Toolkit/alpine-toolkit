@@ -38,6 +38,7 @@
 
 /**************************************************************************************************/
 
+/// Constructs a QcMapScene
 QcMapScene::QcMapScene(const QcViewport * viewport,
                        const QcLocationCircleData & location_circle_data,
                        QObject * parent)
@@ -51,6 +52,9 @@ QcMapScene::QcMapScene(const QcViewport * viewport,
     m_location_circle_data(location_circle_data),
     m_dirty_location_circle(false)
 {
+  qQCDebug();
+
+  // Connect signals
   // connect(&m_location_circle_data, QcLocationCircleData::horizontal_precisionChanged,
   //         this, QcMapScene::set_location_circle_data_dirty);
   connect(&m_location_circle_data, &QcLocationCircleData::visible_changed,
@@ -66,18 +70,24 @@ QcMapScene::QcMapScene(const QcViewport * viewport,
 QcMapScene::~QcMapScene()
 {}
 
+/// Add a plugin layer to the scene.
 QcMapLayerScene *
 QcMapScene::add_layer(const QcWmtsPluginLayer * plugin_layer)
 {
+  qQCDebug();
+
   QcMapLayerScene * layer = new QcMapLayerScene(plugin_layer, m_viewport);
   m_layers << layer;
   m_layer_map.insert(plugin_layer->hash_name(), layer);
   return layer;
 }
 
+/// Remove a plugin layer to the scene.
 void
 QcMapScene::remove_layer(const QcWmtsPluginLayer * plugin_layer)
 {
+  qQCDebug();
+
   QString name = plugin_layer->hash_name();
   if (m_layer_map.contains(name)) {
     QcMapLayerScene * layer = m_layer_map[name];
@@ -90,6 +100,8 @@ QcMapScene::remove_layer(const QcWmtsPluginLayer * plugin_layer)
 
 void
 QcMapScene::update_path(const QcDecoratedPathDouble * path) {
+  qQCDebug();
+
   m_path = path;
   m_dirty_path = true;
 }
@@ -97,41 +109,48 @@ QcMapScene::update_path(const QcDecoratedPathDouble * path) {
 void
 QcMapScene::set_dirty_path()
 {
+  qQCDebug();
   m_dirty_path = true;
 }
 
 void
 QcMapScene::set_location_circle_data_dirty()
 {
-  qQCInfo();
+  qQCDebug();
   m_dirty_location_circle = true;
 }
 
+/// Update the scene graph.
+/// This is the top method to build the scene from the QML item, it must be called in
+/// \ref QcMapItem::updatePaintNode(QSGNode *, UpdatePaintNodeData *) via a call to
+/// \ref QcMapView::update_scene_graph(QSGNode *, QQuickWindow *).
 QSGNode *
 QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
 {
-  // qQCInfo() << old_node;
+  qQCDebug() << old_node;
+
+  // QSize viewport_size = m_viewport->viewport_size();
+  // qQCDebug() << "viewport size" << viewport_size;
 
   // Fixme: qt6 looks wrong
-  // QSize viewport_size = m_viewport->viewport_size();
+  // Check viewport has a rectangular shape
   float width = m_viewport->width();
   float height = m_viewport->height();
-  // qQCInfo() << "viewport size" << viewport_size;
-  // Check viewport has a rectangular shape
   if (width <= 0 || height <= 0) {
     delete old_node;
     return nullptr;
   }
 
-  QcMapRootNode * map_root_node = static_cast<QcMapRootNode *>(old_node);
+  auto map_root_node = static_cast<QcMapRootNode *>(old_node);
   if (!map_root_node) {
-    // qQCInfo() << "map_root_node is null";
+    // qQCDebug() << "map_root_node is null";
     map_root_node = new QcMapRootNode(m_viewport);
   }
 
   // Fixme: ok ?
   map_root_node->update_clip_rect();
 
+  // Fixme: useless, set matrix to identity ???
   /* Reset matrix to physical pixel
    * | 2S/W   0     -1 |
    * |  0    2S/H   -1 |
@@ -139,14 +158,16 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
   QMatrix4x4 item_space_matrix;
   // qreal device_pixel_ratio_inverse = 1.; // / window->devicePixelRatio();
   // item_space_matrix.scale(device_pixel_ratio_inverse, device_pixel_ratio_inverse);
+  // root is QSGTransformNode
   map_root_node->root->setMatrix(item_space_matrix);
-  // qQCInfo() << "item_space_matrix" << item_space_matrix;
+  qQCDebug() << "item_space_matrix" << item_space_matrix;
 
   // Remove disabled layers
   for (auto * node : m_scene_graph_nodes_to_remove)
     map_root_node->root->removeChildNode(node);
   m_scene_graph_nodes_to_remove.clear();
 
+  // update map layers
   for (auto * layer : m_layers) {
     QcMapLayerRootNode * layer_node = nullptr;
     QString name = layer->name();
@@ -160,14 +181,16 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
     layer->update_scene_graph(layer_node, window);
   }
 
+  // Update path
   if (m_dirty_path) {
     // Fixme: m_path is null
     map_root_node->path_node->update(m_path);
     m_dirty_path = false;
   }
 
+  // Update location circle
   if (m_dirty_location_circle) {
-    // qQCInfo() << "Location circle is dirty";
+    qQCDebug() << "Location circle is dirty";
     map_root_node->location_circle_node->update(m_location_circle_data);
     m_dirty_location_circle = false;
   }
@@ -179,6 +202,7 @@ QcMapScene::update_scene_graph(QSGNode * old_node, QQuickWindow * window)
 
 /**************************************************************************************************/
 
+/// Constructs a QcMapRootNode instance
 QcMapRootNode::QcMapRootNode(const QcViewport * viewport)
   : m_viewport(viewport),
     geometry(QSGGeometry::defaultAttributes_Point2D(), 4),
@@ -186,11 +210,15 @@ QcMapRootNode::QcMapRootNode(const QcViewport * viewport)
     location_circle_node(new QcLocationCircleNode(viewport)),
     path_node(new QcPathNode(viewport))
 {
-  // qQCInfo();
+  qQCDebug();
+
+  // https://doc.qt.io/qt-6/qsgclipnode.html#setClipRect
+  // This is an optimization hint which means that the renderer
+  // can use scissoring instead of stencil, which is significantly faster.
   setIsRectangular(true);
   setGeometry(&geometry);
-  appendChildNode(root);
 
+  appendChildNode(root);
   root->appendChildNode(location_circle_node);
   root->appendChildNode(path_node);
 }
@@ -201,10 +229,11 @@ QcMapRootNode::~QcMapRootNode()
 void
 QcMapRootNode::update_clip_rect()
 {
+  // Fixme: func
   int width = m_viewport->width();
   int height = m_viewport->height();
   QRect rect = QRect(0, 0, width, height);
-  // qQCInfo() << "clip rect" << rect;
+  qQCDebug() << "clip rect" << rect;
   if (rect != m_clip_rect) {
     QSGGeometry::updateRectGeometry(&geometry, rect);
     QSGClipNode::setClipRect(rect);

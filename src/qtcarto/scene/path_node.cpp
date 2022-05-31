@@ -29,10 +29,10 @@
 #include "path_node.h"
 #include "qtcarto.h"
 
-#include "path_material_shader.h"
-#include "point_material_shader.h"
-
+#include <QColor>
 #include <QSGFlatColorMaterial>
+#include <QSGMaterial>
+#include <QSGMaterialShader>
 #include <QtDebug>
 
 /**************************************************************************************************/
@@ -41,7 +41,102 @@
 
 /**************************************************************************************************/
 
-struct PathPoint2D {
+class PathMaterialShader : public QSGMaterialShader
+{
+public:
+  PathMaterialShader() {
+    setShaderFileName(VertexStage,   QLatin1String(":/scene/shaders/path.vert.qsb"));
+    setShaderFileName(FragmentStage, QLatin1String(":/scene/shaders/path.frag.qsb"));
+  }
+
+  bool updateUniformData(RenderState & state, QSGMaterial * new_material, QSGMaterial * old_material) override;
+};
+
+/**************************************************************************************************/
+
+class PathMaterial : public QSGMaterial
+{
+public:
+  PathMaterial() {
+    setFlag(Blending);
+  }
+
+  QSGMaterialType *type() const override {
+    static QSGMaterialType type;
+    return &type;
+  }
+
+  QSGMaterialShader *createShader(QSGRendererInterface::RenderMode) const override {
+    return new PathMaterialShader;
+  }
+
+  int compare(const QSGMaterial *material) const override {
+    auto other = static_cast<const PathMaterial *>(material);
+
+    // if diff is non-zero
+    if (int diff = int(state.color.rgb()) - int(other->state.color.rgb()))
+      return diff;
+
+    if (int diff = state.cap_type - other->state.cap_type)
+      return diff;
+
+    if (int diff = state.line_join - other->state.line_join)
+      return diff;
+
+    if (int diff = state.antialias_diameter - other->state.antialias_diameter)
+      return diff;
+
+    return 0; // equal
+  }
+
+  // Shader state
+  struct {
+    QColor color;
+    int cap_type;
+    int line_join;
+    float antialias_diameter;
+  } state;
+};
+
+/**************************************************************************************************/
+
+bool
+PathMaterialShader::updateUniformData(RenderState & state, QSGMaterial * new_material, QSGMaterial * old_material)
+{
+  qQCDebug();
+
+  // layout(std140, binding = 0) uniform buf {
+  //   highp mat4 qt_Matrix;
+  //   lowp float qt_Opacity;
+  // };
+
+  constexpr qsizetype stride_opacity = 4;
+  constexpr qsizetype stride_matrix = 4*4*4;
+  constexpr qsizetype stride_uniform = stride_matrix + stride_opacity;
+
+  // auto material = static_cast<PathMaterial *>(new_material);
+
+  QByteArray * buffer = state.uniformData();
+  // qQCDebug() << "buffer size" << buffer->size();
+  Q_ASSERT(buffer->size() >= stride_uniform);
+
+  if (state.isMatrixDirty()) {
+    const QMatrix4x4 matrice = state.combinedMatrix();
+    memcpy(buffer->data(), matrice.constData(), stride_matrix);
+  }
+
+  size_t stride_offset = stride_matrix;
+  if (state.isOpacityDirty()) {
+    const float opacity = state.opacity();
+    memcpy(buffer->data() + stride_offset, &opacity, stride_opacity);
+  }
+
+  return true;
+}
+
+/**************************************************************************************************/
+
+struct PathVertex {
   float x;
   float y;
   float u;
@@ -75,24 +170,117 @@ struct PathPoint2D {
   }
 };
 
-QSGGeometry::Attribute PathPoint2D_Attributes[] = {
-  QSGGeometry::Attribute::create(0, 2, GL_FLOAT, true),  // xy
-  QSGGeometry::Attribute::create(1, 2, GL_FLOAT, false), // uv
-  QSGGeometry::Attribute::create(2, 1, GL_FLOAT, false), // line_length
-  QSGGeometry::Attribute::create(3, 1, GL_FLOAT, false), // line_width
-  QSGGeometry::Attribute::create(4, 1, GL_FLOAT, false), // cap
-  QSGGeometry::Attribute::create(5, 4, GL_FLOAT, false)  // colour
-};
+static const
+QSGGeometry::AttributeSet & path_attributes()
+{
+  static QSGGeometry::Attribute attr[] = {
+    // layout(location = 0) in highp vec4 a_vertex;
+    // layout(location = 1) in highp vec2 a_tex_coord;
+    // layout(location = 2) in highp float a_line_length;
+    // layout(location = 3) in highp float a_line_width;
+    // layout(location = 4) in lowp float a_cap;
+    // layout(location = 5) in lowp vec4 a_colour;
+    QSGGeometry::Attribute::create(0, 2, QSGGeometry::FloatType, true),  // xy
+    QSGGeometry::Attribute::create(1, 2, QSGGeometry::FloatType, false), // uv
+    QSGGeometry::Attribute::create(2, 1, QSGGeometry::FloatType, false), // line_length
+    QSGGeometry::Attribute::create(3, 1, QSGGeometry::FloatType, false), // line_width
+    QSGGeometry::Attribute::create(4, 1, QSGGeometry::FloatType, false), // cap
+    QSGGeometry::Attribute::create(5, 4, QSGGeometry::FloatType, false)  // colour
+  };
 
-QSGGeometry::AttributeSet PathPoint2D_AttributeSet = {
-    6, // count Fixme: ???
-    sizeof(PathPoint2D), // stride
-    PathPoint2D_Attributes
+  static QSGGeometry::AttributeSet set = {
+    6, // count
+    sizeof(PathVertex), // stride
+    attr
+  };
+
+  return set;
+}
+
+/**************************************************************************************************/
+
+class PointMaterialShader : public QSGMaterialShader
+{
+public:
+  PointMaterialShader() {
+    setShaderFileName(VertexStage,   QLatin1String(":/scene/shaders/point.vert.qsb"));
+    setShaderFileName(FragmentStage, QLatin1String(":/scene/shaders/point.frag.qsb"));
+  }
+
+  bool updateUniformData(RenderState & state, QSGMaterial * new_material, QSGMaterial * old_material) override;
 };
 
 /**************************************************************************************************/
 
-struct CirclePoint2D {
+class PointMaterial : public QSGMaterial
+{
+public:
+  PointMaterial() {
+    setFlag(Blending);
+  }
+
+  QSGMaterialType *type() const override {
+    static QSGMaterialType type;
+    return &type;
+  }
+
+  QSGMaterialShader *createShader(QSGRendererInterface::RenderMode) const override {
+    return new PointMaterialShader;
+  }
+
+  int compare(const QSGMaterial *material) const override {
+    auto other = static_cast<const PointMaterial *>(material);
+
+    // if diff is non-zero
+    if (int diff = int(state.color.rgb()) - int(other->state.color.rgb()))
+      return diff;
+
+    return 0; // equal
+  }
+
+  // Shader state
+  struct {
+    QColor color;
+  } state;
+};
+
+bool
+PointMaterialShader::updateUniformData(RenderState & state, QSGMaterial * new_material, QSGMaterial * old_material)
+{
+  qQCDebug();
+
+  // layout(std140, binding = 0) uniform buf {
+  //   highp mat4 qt_Matrix;
+  //   lowp float qt_Opacity;
+  // };
+
+  constexpr qsizetype stride_opacity = 4;
+  constexpr qsizetype stride_matrix = 4*4*4;
+  constexpr qsizetype stride_uniform = stride_matrix + stride_opacity;
+
+  // auto material = static_cast<PointMaterial *>(new_material);
+
+  QByteArray * buffer = state.uniformData();
+  // qQCDebug() << "buffer size" << buffer->size();
+  Q_ASSERT(buffer->size() >= stride_uniform);
+
+  if (state.isMatrixDirty()) {
+    const QMatrix4x4 matrice = state.combinedMatrix();
+    memcpy(buffer->data(), matrice.constData(), stride_matrix);
+  }
+
+  size_t stride_offset = stride_matrix;
+  if (state.isOpacityDirty()) {
+    const float opacity = state.opacity();
+    memcpy(buffer->data() + stride_offset, &opacity, stride_opacity);
+  }
+
+  return true;
+}
+
+/**************************************************************************************************/
+
+struct CircleVertex {
   float x;
   float y;
   float u;
@@ -120,25 +308,39 @@ struct CirclePoint2D {
   }
 };
 
-QSGGeometry::Attribute CirclePoint2D_Attributes[] = {
-  QSGGeometry::Attribute::create(0, 2, GL_FLOAT, true),  // xy
-  QSGGeometry::Attribute::create(1, 2, GL_FLOAT, false), // uv
-  QSGGeometry::Attribute::create(2, 1, GL_FLOAT, false), // radius
-  QSGGeometry::Attribute::create(3, 4, GL_FLOAT, false)  // colour
-};
+static const
+QSGGeometry::AttributeSet & circle_attributes()
+{
+  static QSGGeometry::Attribute attr[] = {
+    // layout(location = 0) in highp vec4 a_vertex;
+    // layout(location = 1) in highp vec2 a_tex_coord;
+    // layout(location = 2) in highp float a_radius;
+    // layout(location = 3) in lowp vec4 a_colour;
+    QSGGeometry::Attribute::create(0, 2, QSGGeometry::FloatType, true),  // xy
+    QSGGeometry::Attribute::create(1, 2, QSGGeometry::FloatType, false), // uv
+    QSGGeometry::Attribute::create(2, 1, QSGGeometry::FloatType, false), // radius
+    QSGGeometry::Attribute::create(3, 4, QSGGeometry::FloatType, false)  // colour
+  };
 
-QSGGeometry::AttributeSet CirclePoint2D_AttributeSet = {
-  4, // count Fixme: ???
-  sizeof(CirclePoint2D), // stride
-  CirclePoint2D_Attributes
-};
+  static QSGGeometry::AttributeSet set = {
+    4, // count
+    sizeof(CircleVertex), // stride
+    attr
+  };
+
+  return set;
+}
 
 /**************************************************************************************************/
 
 QcVectorDouble
-compute_offsets(const QcVectorDouble & dir1, const QcVectorDouble & dir2, double half_width,
+compute_offsets(const QcVectorDouble & dir1,
+                const QcVectorDouble & dir2,
+                double half_width,
                 double & u_offset)
 {
+  qQCDebug();
+
   /* WRONG
   double angle = dir1.atan_with(dir2) * .5;
   // double angle = dir1.radians_with(dir2) * .5;
@@ -170,11 +372,13 @@ QcPathNode::QcPathNode(const QcViewport * viewport)
     m_polygon_geometry_node(new QSGGeometryNode()),
     m_point_geometry_node(new QSGGeometryNode())
 {
+  qQCDebug();
+
   setOpacity(1.); // 1. black
 
   // Polygon
   QSGGeometry * polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
-  polygon_geometry->setDrawingMode(GL_TRIANGLES);
+  polygon_geometry->setDrawingMode(QSGGeometry::DrawTriangles);
   m_polygon_geometry_node->setGeometry(polygon_geometry);
   m_polygon_geometry_node->setFlag(QSGNode::OwnsGeometry);
 
@@ -187,40 +391,29 @@ QcPathNode::QcPathNode(const QcViewport * viewport)
   appendChildNode(m_polygon_geometry_node);
 
   // Path
-  QSGGeometry * path_geometry = new QSGGeometry(PathPoint2D_AttributeSet, 0); // Fixme:
-  path_geometry->setDrawingMode(GL_TRIANGLE_STRIP);
+  QSGGeometry * path_geometry = new QSGGeometry(path_attributes(), 0); // Fixme:
+  path_geometry->setDrawingMode(QSGGeometry::DrawTriangleStrip);
   m_path_geometry_node->setGeometry(path_geometry);
   m_path_geometry_node->setFlag(QSGNode::OwnsGeometry);
 
-  QSGSimpleMaterial<QcPathMaterialShaderState> * path_material = QcPathMaterialShader::createMaterial();
-  // QcPathMaterialShaderState * path_state = path_material->state();
-  // path_state->r = 0;
-  // path_state->g = 0;
-  // path_state->b = 1.;
-  // path_state->a = 1.;
-  // state->cap_type = 1;
-  // state->line_join = 1;
-  // state->antialias_diameter = 1.;
-  path_material->setFlag(QSGMaterial::Blending);
+  auto path_material = new PathMaterial;
+  path_material->state.color = QColor(0, 255, 255, 255);
+  path_material->state.cap_type = 1;
+  path_material->state.line_join = 1;
+  path_material->state.antialias_diameter = 1.;
   m_path_geometry_node->setMaterial(path_material);
   m_path_geometry_node->setFlag(QSGNode::OwnsMaterial);
 
   appendChildNode(m_path_geometry_node);
 
   // Point
-  QSGGeometry * point_geometry = new QSGGeometry(CirclePoint2D_AttributeSet, 0); // Fixme:
-  point_geometry->setDrawingMode(GL_TRIANGLE_STRIP);
+  QSGGeometry * point_geometry = new QSGGeometry(circle_attributes(), 0); // Fixme:
+  point_geometry->setDrawingMode(QSGGeometry::DrawTriangleStrip);
   m_point_geometry_node->setGeometry(point_geometry);
   m_point_geometry_node->setFlag(QSGNode::OwnsGeometry);
 
-  QSGSimpleMaterial<QcPointMaterialShaderState> * point_material = QcPointMaterialShader::createMaterial();
-  // point_material->state()->r = 0; // Fixme: QColor
-  // point_material->state()->g = 0;
-  // point_material->state()->b = 1;
-  // point_material->state()->a = 1.;
-  // QSGFlatColorMaterial * material = new QSGFlatColorMaterial();
-  // material->setColor(QColor("black"));
-  point_material->setFlag(QSGMaterial::Blending);
+  auto point_material = new PointMaterial;
+  point_material->state.color = QColor(0, 0, 255, 255);
   m_point_geometry_node->setMaterial(point_material);
   m_point_geometry_node->setFlag(QSGNode::OwnsMaterial);
 
@@ -228,7 +421,7 @@ QcPathNode::QcPathNode(const QcViewport * viewport)
 }
 
 void
-QcPathNode::set_path_points(PathPoint2D * path_points,
+QcPathNode::set_path_points(PathVertex * path_points,
                             int i,
                             QcVectorDouble & point0,
                             QcVectorDouble & point1,
@@ -238,6 +431,8 @@ QcPathNode::set_path_points(PathPoint2D * path_points,
                             double half_width,
                             const QColor & colour)
 {
+  qQCDebug();
+
   QcVectorDouble dir1 = point2 - point1;
   double segment_length = dir1.magnitude();
   dir1.normalise();
@@ -306,6 +501,8 @@ QcPathNode::set_path_points(PathPoint2D * path_points,
 void
 QcPathNode::update(const QcDecoratedPathDouble * path)
 {
+  qQCDebug();
+
   QList<QcVectorDouble> path_vertexes;
   // Fixme:
   if (path)
@@ -349,7 +546,7 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
     } else
     // Fixme: better
     polygon_geometry = new QSGGeometry(QSGGeometry::defaultAttributes_Point2D(), 0);
-    polygon_geometry->setDrawingMode(GL_TRIANGLES);
+    polygon_geometry->setDrawingMode(QSGGeometry::DrawTriangles);
     m_polygon_geometry_node->setGeometry(polygon_geometry);
     m_polygon_geometry_node->setFlag(QSGNode::OwnsGeometry);
   */
@@ -359,8 +556,8 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
   if (path_closed)
     number_of_segments += 1;
   number_of_vertexes = number_of_segments * 4;
-  QSGGeometry * path_geometry = new QSGGeometry(PathPoint2D_AttributeSet, number_of_vertexes);
-  path_geometry->setDrawingMode(GL_TRIANGLE_STRIP);
+  QSGGeometry * path_geometry = new QSGGeometry(path_attributes(), number_of_vertexes);
+  path_geometry->setDrawingMode(QSGGeometry::DrawTriangleStrip);
   m_path_geometry_node->setGeometry(path_geometry);
   m_path_geometry_node->setFlag(QSGNode::OwnsGeometry);
   if (number_of_segments) {
@@ -369,7 +566,7 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
     // Fixme: linewidth/2.0 + 1.5*antialias;
     double half_width = ceil(1.25*antialias_diameter + line_width) * .5;
 
-    PathPoint2D * path_points = static_cast<PathPoint2D *>(path_geometry->vertexData());
+    PathVertex * path_points = static_cast<PathVertex *>(path_geometry->vertexData());
     int last_i = number_of_path_vertexes -2;
     for (int i = 0; i <= last_i; i++) {
       QcVectorDouble point1 = path_vertexes[i];
@@ -391,12 +588,12 @@ QcPathNode::update(const QcDecoratedPathDouble * path)
 
   // Points
   number_of_vertexes = number_of_path_vertexes * 6;
-  QSGGeometry * point_geometry = new QSGGeometry(CirclePoint2D_AttributeSet, number_of_vertexes);
-  point_geometry->setDrawingMode(GL_TRIANGLES);
+  QSGGeometry * point_geometry = new QSGGeometry(circle_attributes(), number_of_vertexes);
+  point_geometry->setDrawingMode(QSGGeometry::DrawTriangles);
   m_point_geometry_node->setGeometry(point_geometry);
   m_point_geometry_node->setFlag(QSGNode::OwnsGeometry);
   if (number_of_path_vertexes) {
-    CirclePoint2D * circle_points = static_cast<CirclePoint2D *>(point_geometry->vertexData());
+    CircleVertex * circle_points = static_cast<CircleVertex *>(point_geometry->vertexData());
     constexpr float point_radius = 10; // Fixme: setting
     constexpr float margin = 10;
     int path_vertex_index = 0;

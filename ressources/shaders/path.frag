@@ -9,6 +9,7 @@ const lowp float antialias_diameter = 1.;
 /* *********************************************************************************************** */
 
 layout(std140, binding = 0) uniform buf {
+  highp mat4 qt_Matrix;
   lowp float qt_Opacity;
 };
 

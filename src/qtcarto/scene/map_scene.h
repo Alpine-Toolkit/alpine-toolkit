@@ -50,7 +50,6 @@
 #include <QSGClipNode>
 #include <QSGFlatColorMaterial>
 #include <QSGGeometry>
-#include <QSGSimpleMaterial>
 #include <QSGSimpleTextureNode>
 #include <QSGTransformNode>
 #include <QtDebug>
@@ -65,6 +64,7 @@ class QcMapLayerRootNode;
 
 /**************************************************************************************************/
 
+/// The QcMapLayerScene class implements a map layer scene.
 class QcMapLayerScene : public QObject
 {
   Q_OBJECT
@@ -123,6 +123,8 @@ private:
 
 /**************************************************************************************************/
 
+/// The QcMapScene class implements a map scene.
+/// This is the top class of the map scene.
 class QcMapScene : public QObject
 {
   Q_OBJECT

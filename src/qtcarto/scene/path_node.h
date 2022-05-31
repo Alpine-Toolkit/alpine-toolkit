@@ -43,7 +43,7 @@
 
 // QC_BEGIN_NAMESPACE
 
-struct PathPoint2D;
+struct PathVertex;
 
 /**************************************************************************************************/
 
@@ -55,7 +55,7 @@ public:
   void update(const QcDecoratedPathDouble * path);
 
 private:
-  void set_path_points(PathPoint2D * path_points,
+  void set_path_points(PathVertex * path_points,
                        int i,
                        QcVectorDouble & point0,
                        QcVectorDouble & point1,
