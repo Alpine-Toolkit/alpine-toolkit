@@ -1,7 +1,7 @@
 # -*- mode: conf -*-
-#
+
 ####################################################################################################
-#
+
 *.moc
 *.o
 *.qmlc
@@ -20,7 +20,7 @@ __TRASH__
 ####################################################################################################
 #
 # Build
-#
+
 alpine-toolkit-all.pro.user
 alpine-toolkit.pro.user
 build-cmake*/
@@ -31,48 +31,48 @@ compile_commands.json
 sqlite/Qt5.9-gcc_64
 sqlite/qmake-build/
 sqlite/sqlite.pro.user
-#
+
 ####################################################################################################
 #
 # Critical data
-#
+
 unit-tests/camptocamp/login.h
-#
+
 ####################################################################################################
 #
 # Generated Files
-#
+
 ressources/shaders/*.qsb
 config.h
 ressources/translations/alpine-toolkit.fr_FR.qm
-#
+
 ####################################################################################################
 #
 # Code Generator
-#
+
 code-generator/camptocamp/c2corg_api
 code-generator/camptocamp/c2corg_common
 code-generator/camptocamp/v6_api
 code-generator/camptocamp/v6_common
-#
+
 code-generator/camptocamp/camptocamp-*.js
 code-generator/camptocamp/camptocamp-definitions*.json
 code-generator/camptocamp/camptocamp-orm*.json
-#
+
 code-generator/camptocamp/c2corg.sql
 code-generator/camptocamp/tables.txt
-#
+
 ####################################################################################################
 #
 # Notes
-#
+
 doc/html
 notes/
-#
+
 ####################################################################################################
 #
 # Ressources
-#
+
 ressources/fonts/Roboto-Medium.ttf
 ressources/fonts/Roboto-Regular.ttf
 ressources/icon-ressources/camptocamp/c2c-activities.zip
@@ -87,13 +87,13 @@ ressources/js/filter.txt
 ressources/js/filters.html
 ressources/pages/Checklist-dev.qml
 ressources/pages/notes.txt
-#
+
 ressources/tones/*.mp3
 ressources/tones/*.mp4
 ressources/tones/*.ogg
 ressources/tones/*.opus
 ressources/tones/*.wav
-#
+
 annexes/fuel-gauge/auto/
 annexes/fuel-gauge/fuel-gauge.aux
 annexes/fuel-gauge/fuel-gauge.log
@@ -101,18 +101,18 @@ annexes/fuel-gauge/fuel-gauge.out
 annexes/fuel-gauge/fuel-gauge.pdf
 annexes/fuel-gauge/fuel-gauge.png
 annexes/fuel-gauge/fuel-gauge.tex
-#
+
 ####################################################################################################
 #
 # Script
-#
+
 # script/read-rrd.py
 # script/run-androiddeployqt.sh
 scripts/open-doc.sh
 scripts/push-to-bleausard.sh
 scripts/push-to-vps.sh
 scripts/run-cmake-android-old.sh
-#
+
 ####################################################################################################
 #
 # SQLite
@@ -121,14 +121,14 @@ sqlite/orig/
 sqlite/sqlite-amalgamation
 sqlite/sqlite3.c
 sqlite/sqlite3.h
-#
+
 ####################################################################################################
 #
 # Third Parties
-#
+
 third-parties/include/
 third-parties/local/
-#
+
 third-parties/archives/
 third-parties/geos/Android.mk
 third-parties/geos/geos-3.6.1/
@@ -147,22 +147,22 @@ third-parties/spatialite/spatialite-sources
 third-parties/sqlite/Android.mk
 third-parties/sqlite/sqlite-amalgamation
 third-parties/sqlite/sqlite-amalgamation-3180000/
-#
+
 ####################################################################################################
 #
 # Android
-#
+
 android/.build/
 android/.gradle/
 android/.idea/
 android/android.iml
-#
+
 ####################################################################################################
-#
+
 git-archives/
-#
+
 ####################################################################################################
-#
+
 __TRASH__/
 adb-log.txt
 alpine-toolkit-all.pro.user.4.8-pre1
@@ -314,23 +314,53 @@ src/refuge/notes.txt
 src/settings/trash.cpp
 third-parties/libspatialindex/cmake.log
 third-parties/libspatialindex/make.log
-dev-scripts/clean
-dev-scripts/get-class
-dev-scripts/less-used/fix-license-header.sh
-dev-scripts/less-used/run-cmake-android-old.sh
-dev-scripts/lookup-fixme.sh
-dev-scripts/open-doc.sh
-dev-scripts/push-to-bleausard.sh
-dev-scripts/push-to-vps.sh
-dev-scripts/read-rrd.py
-dev-scripts/remote-avd.sh
-dev-scripts/set-git-env.sh
+scripts/dev/clean
+scripts/dev/get-class
+scripts/dev/less-used/fix-license-header.sh
+scripts/dev/less-used/run-cmake-android-old.sh
+scripts/dev/lookup-fixme.sh
+scripts/dev/open-doc.sh
+scripts/dev/push-to-bleausard.sh
+scripts/dev/push-to-vps.sh
+scripts/dev/read-rrd.py
+scripts/dev/remote-avd.sh
+scripts/dev/set-git-env.sh
 unused-java/
 
-build-scripts/old/run-androiddeployqt.sh
+scripts/build/old/run-androiddeployqt.sh
 
 alpine-toolkit-all.pro.user.4.10-pre1
 android/AndroidManifest.xml-template
 map-tools/compare.log
 mapviewer/pages/graphic-test.qml-b
 ressources/qml/Widgets/MapComponent.qml-d
+
+.git-backup/
+__TMP__.txt
+assistant-qt5
+assistant-qt6
+push-android.sh
+review.json
+tmp0.diff
+
+
+# 2022/05
+indent.h
+mapviewer/main.diff
+mapviewer/pages/Layers.diff
+o.txt
+ressources/shaders/#point.frag#
+ressources/shaders/.#point.frag
+tasks/lib/ign/BdAlti.diff
+
+IDEA.md
+android/gradle.properties
+dev-test/
+doc/sphinx/source/design/android-release.rst
+github-repo.md
+linux/
+notes
+private/
+qtlocation/
+setenv.sh
+swisstopo/
