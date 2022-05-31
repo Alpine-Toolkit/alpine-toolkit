@@ -91,13 +91,13 @@ resources/tones/*.ogg
 resources/tones/*.opus
 resources/tones/*.wav
 
-annexes/fuel-gauge/auto/
-annexes/fuel-gauge/fuel-gauge.aux
-annexes/fuel-gauge/fuel-gauge.log
-annexes/fuel-gauge/fuel-gauge.out
-annexes/fuel-gauge/fuel-gauge.pdf
-annexes/fuel-gauge/fuel-gauge.png
-annexes/fuel-gauge/fuel-gauge.tex
+extra/fuel-gauge/auto/
+extra/fuel-gauge/fuel-gauge.aux
+extra/fuel-gauge/fuel-gauge.log
+extra/fuel-gauge/fuel-gauge.out
+extra/fuel-gauge/fuel-gauge.pdf
+extra/fuel-gauge/fuel-gauge.png
+extra/fuel-gauge/fuel-gauge.tex
 
 ####################################################################################################
 #
