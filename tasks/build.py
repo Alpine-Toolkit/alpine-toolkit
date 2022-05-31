@@ -72,6 +72,35 @@ def generate_code(ctx):
 ####################################################################################################
 
 @task()
+def generate_icons(ctx):
+    _set_source_path(ctx)
+    resources_path = ctx.source_path.joinpath('resources')
+    icons_directory = resources_path.joinpath('icons')
+    svg_directory = resources_path.joinpath('icon-resources', 'svg')
+    png_directory = svg_directory.joinpath('png')
+    print(f'SVG path: {svg_directory}')
+    print(f'PNG path: {png_directory}')
+    if not png_directory.exists():
+        png_directory.mkdir()
+    for svg_path in svg_directory.glob('*.svg'):
+        svg_path = Path(svg_path)
+        png_path = png_directory.joinpath(f'{svg_path.stem}-black.png')
+        png3_path = png_directory.joinpath(f'{svg_path.stem}-black@3x.png')
+        # png3_path = str(png_path).replace('.png', '@3x.png')
+        if not png_path.exists():
+            print(f'Generate {png_path.name}')
+            options = '--export-area-page --export-background=white --export-background-opacity=0'
+            # Warning: Option --export-png= is deprecated
+            ctx.run(f'inkscape --export-png={png_path} {options} --export-width=24 --export-height=24 {svg_path}')
+            ctx.run(f'inkscape --export-png={png3_path} {options} --export-width=72 --export-height=72 {svg_path}')
+        for path in (png_path, png3_path):
+            link = icons_directory.joinpath(path)
+            if not link.exists():
+                link.symlink_to(path)
+
+####################################################################################################
+
+@task(post=[generate_icons])
 def init_source(ctx):
     _set_source_path(ctx)
     print("Initialise source ...")
@@ -182,7 +211,7 @@ def build(
     print()
 
     if not build_path.exists():
-        os.mkdir(build_path)
+        build_path.mkdir()
 
     with ctx.cd(build_path):
 

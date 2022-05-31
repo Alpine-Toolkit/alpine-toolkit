@@ -78,7 +78,7 @@ resources/icon-resources/material-design-icons/
 resources/icon-resources/models/
 resources/icon-resources/svg/png/
 resources/icon-resources/svg/ruler_backup.svg
-resources/icons/scripts/copy-all-idea.sh
+tasks/lib/__icons__/scripts/copy-all-idea.sh
 resources/js/attributes.py
 resources/js/filter.txt
 resources/js/filters.html
