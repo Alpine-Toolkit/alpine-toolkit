@@ -85,7 +85,7 @@ QDebug operator<<(QDebug debug, const QaNetworkDownloadRequest & request);
 
 /**************************************************************************************************/
 
-/* The class QaNetworkDownloader manages asynchronous ressource downloads.
+/* The class QaNetworkDownloader manages asynchronous resource downloads.
  *
  */
 class QaNetworkDownloader : public QaNetworkRequestManager

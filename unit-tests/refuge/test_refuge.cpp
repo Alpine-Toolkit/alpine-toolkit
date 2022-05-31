@@ -46,7 +46,7 @@ private slots:
 void
 TestRefugeSchemaManager::test()
 {
-  QString json_path("../ressources/data/ffcam-refuges.json");
+  QString json_path("../resources/data/ffcam-refuges.json");
   RefugeSchemaManager refuge_schema_manager(json_path);
 
   refuge_schema_manager.to_json("ffcam-refuges.json");

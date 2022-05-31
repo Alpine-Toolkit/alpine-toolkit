@@ -77,7 +77,7 @@ QaNetworkRequestManager::add_request(const QaNetworkRequestPtr & request)
   // add to a list
   m_queue += request;
 
-  // Start timer to fetch ressource from queue
+  // Start timer to fetch resource from queue
   if (m_enabled and not m_queue.isEmpty() and not m_timer.isActive())
     m_timer.start(0, this);
 }

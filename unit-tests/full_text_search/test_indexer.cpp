@@ -54,7 +54,7 @@ TestIndexer::test()
   tokenizer << new PreLanguageFilter();
   tokenizer << new CaseFoldingFilter();
   tokenizer << new AccentFoldingFilter(); // Must run language filter before !
-  tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
+  tokenizer << new LocalizedStopWordFilter("../resources/data/stop-words.json");
   tokenizer << new LocalizedStemmerFilter();
 
   QString text1 = "Wikipédia est un projet d’encyclopédie collective en ligne, universelle, multilingue et fonctionnant sur le principe du wiki. Wikipédia a pour objectif d’offrir un contenu librement réutilisable, objectif et vérifiable, que chacun peut modifier et améliorer.";
@@ -93,7 +93,7 @@ TestIndexer::test_phonetic()
   tokenizer << new PreLanguageFilter();
   tokenizer << new CaseFoldingFilter();
   tokenizer << new AccentFoldingFilter(); // Must run language filter before !
-  tokenizer << new LocalizedStopWordFilter("../ressources/data/stop-words.json");
+  tokenizer << new LocalizedStopWordFilter("../resources/data/stop-words.json");
   tokenizer << new LocalizedStemmerFilter();
 
   QString text1 = "Wikipédia est un projet d’encyclopédie collective en ligne, universelle, multilingue et fonctionnant sur le principe du wiki. Wikipédia a pour objectif d’offrir un contenu librement réutilisable, objectif et vérifiable, que chacun peut modifier et améliorer.";

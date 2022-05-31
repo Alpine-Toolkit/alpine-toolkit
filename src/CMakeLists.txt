@@ -155,10 +155,10 @@ set(alpine_toolkit_executable_files
   ${CMAKE_SOURCE_DIR}/service/client.cpp
   )
 
-qt_add_resources(ressources ../ressources/alpine-toolkit.qrc)
+qt_add_resources(resources ../resources/alpine-toolkit.qrc)
 # Not available
-# qtquick_compiler_add_resources(ressources ../ressources/alpine-toolkit.qrc)
-add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${ressources})
+# qtquick_compiler_add_resources(resources ../resources/alpine-toolkit.qrc)
+add_executable(alpine-toolkit ${alpine_toolkit_executable_files} ${resources})
 qt_add_repc_replicas(alpine-toolkit ${CMAKE_SOURCE_DIR}/service/service.rep)
 target_link_libraries(alpine-toolkit
   alpine_toolkit_common

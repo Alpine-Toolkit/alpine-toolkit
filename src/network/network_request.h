@@ -41,7 +41,7 @@
 
 /**************************************************************************************************/
 
-/* The QaNetworkRequest class defines a network ressource request.
+/* The QaNetworkRequest class defines a network resource request.
  *
  */
 class QaNetworkRequest : public QObject

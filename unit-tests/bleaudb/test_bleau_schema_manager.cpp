@@ -44,7 +44,7 @@ private slots:
 
 void TestQcBleauSchemaManager::constructor()
 {
-  QString json_path("../ressources/data/bleau.json");
+  QString json_path("../resources/data/bleau.json");
   BleauSchemaManager bleau_schema_manager(json_path);
 
   bleau_schema_manager.to_json("bleau.json");

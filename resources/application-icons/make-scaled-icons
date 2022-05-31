@@ -1,0 +1,48 @@
+#! /bin/bash
+
+for i in 32 64 48 96 128 256 ; do
+  convert icon-512.png -resize $ix$i icon-$i.png
+  convert icon-transparent-512.png -resize $ix$i icon-transparent-$i.png
+done
+
+pushd ../../android/res
+
+icon_path=../../../resources/application-icons
+
+pushd drawable-hdpi
+s=256
+rm *.png
+ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
+ln -sf ${icon_path}/icon-${s}.png logo.png
+popd
+
+pushd drawable-mdpi
+s=128
+rm *.png
+ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
+ln -sf ${icon_path}/icon-${s}.png logo.png
+popd
+
+pushd drawable-ldpi
+s=64
+rm *.png
+ln -sf ${icon_path}/icon-${s}.png icon.png
+ln -sf ${icon_path}/icon-transparent-${s}.png icon_transparent.png
+ln -sf ${icon_path}/icon-${s}.png logo.png
+popd
+
+popd
+
+# cp icon-256.png ../android/res/drawable-hdpi/icon.png
+# cp icon-256.png ../android/res/drawable-hdpi/logo.png
+# cp icon-128.png ../android/res/drawable-mdpi/icon.png
+# cp icon-128.png ../android/res/drawable-mdpi/logo.png
+# cp icon-64.png ../android/res/drawable-ldpi/icon.png
+# cp icon-64.png ../android/res/drawable-ldpi/logo.png
+
+# mkdir -p ../android/assets/application-icons
+# cp icon.svg ../android/assets/application-icons/icon.svg
+
+# End

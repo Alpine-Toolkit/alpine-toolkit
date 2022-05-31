@@ -45,8 +45,8 @@ private slots:
 void TestQcGpx::constructor()
 {
   QcGpxReader gpx_reader;
-  QString gpx_path = "/home/fabrice/qtcarto-application/ressources/gpx/garmin-track1.gpx";
-   // QString gpx_path = "/home/fabrice/qtcarto-application/ressources/gpx/route2.gpx";
+  QString gpx_path = "/home/fabrice/qtcarto-application/resources/gpx/garmin-track1.gpx";
+   // QString gpx_path = "/home/fabrice/qtcarto-application/resources/gpx/route2.gpx";
   QcGpx gpx = gpx_reader.read(gpx_path);
 
   QcGpxWriter gpx_writer;

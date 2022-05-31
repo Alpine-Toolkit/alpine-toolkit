@@ -158,7 +158,7 @@ ANDROID_EXTRA_LIBS += $$PWD/third-parties/openssl-1.0.2h/libssl.so
 # Resources
 #
 
-RESOURCES += ressources/alpine-toolkit.qrc
+RESOURCES += resources/alpine-toolkit.qrc
 
 ####################################################################################################
 #
@@ -170,7 +170,7 @@ SOURCES += \
   pages/*.qml
 }
 
-TRANSLATIONS = ressources/translations/alpine-toolkit.fr_FR.ts
+TRANSLATIONS = resources/translations/alpine-toolkit.fr_FR.ts
 # \ alpine-toolkit-en.ts
 
 ####################################################################################################
