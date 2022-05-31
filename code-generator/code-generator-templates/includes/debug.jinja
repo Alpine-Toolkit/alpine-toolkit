@@ -40,11 +40,11 @@ operator<<(QDebug debug, const {{class_name}} & obj)
   QDebugStateSaver saver(debug); // Fixme: ???
 
   // Fixme: quote string !
-  debug.nospace() << QLatin1Literal("{{class_name}}(");
+  debug.nospace() << QStringLiteral("{{class_name}}(");
 {% for member in members %}
   debug << obj.{{member.name}}();
 {% if not loop.last %}
-  debug << QLatin1Literal(", ");
+  debug << QStringLiteral(", ");
 {% endif %}
 {% endfor %}
   debug << ')';

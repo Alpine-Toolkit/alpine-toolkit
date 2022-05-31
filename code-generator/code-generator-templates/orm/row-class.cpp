@@ -144,7 +144,7 @@ void
 {% for relation in schema.relations %}{# space #}
 {% if relation.is_one_to_many %}
   for (const auto & item_weak_ref : m_{{relation.name}})
-    item_weak_ref.data()->set_{{relation.peer_relation.foreign_key_name}}(id); // Fixme: check ref
+    item_weak_ref.toStrongRef().data()->set_{{relation.peer_relation.foreign_key_name}}(id); // Fixme: check ref
 {% endif %}
 {% endfor %}
 }
@@ -192,7 +192,7 @@ void
 {% for relation in schema.relations %}
 {% if relation.is_one_to_many %}
   for (const auto & item_weak_ref : m_{{relation.name}}) {
-    {{relation.cls_name}} * item_ptr = item_weak_ref.data();
+    {{relation.cls_name}} * item_ptr = item_weak_ref.toStrongRef().data();
     if (not item_ptr->exists_on_database())
       database_schema()->add(*item_ptr);
   }
@@ -266,11 +266,11 @@ operator<<(QDebug debug, const {{class_name_ptr}} & obj)
 {
   QDebugStateSaver saver(debug); // Fixme: ???
 
-  debug.noquote() << QLatin1Literal("{{class_name_ptr}} ->");
+  debug.noquote() << QStringLiteral("{{class_name_ptr}} ->");
   if (obj)
     debug << *obj;
    else
-  debug  << QLatin1Literal("NULL");
+  debug  << QStringLiteral("NULL");
 
   return debug;
 }
@@ -369,12 +369,12 @@ QHash<int, QByteArray>
   // Fixme: cache ???
   QHash<int, QByteArray> role_names;{# = {
 {% for member in members + schema.computed_members %}
-  {{member.name|upper}}, QLatin1Literal("{{member.name}}").latin1(){% if not loop.last %},{% endif %} 
+  {{member.name|upper}}, QStringLiteral("{{member.name}}").toLatin1(){% if not loop.last %},{% endif %} 
 {% endfor %}
   };#}
 
 {% for member in members + schema.computed_members %}
-  role_names[{{member.name|upper}}] = QLatin1Literal("{{member.name}}").latin1();
+  role_names[{{member.name|upper}}] = QStringLiteral("{{member.name}}").toLatin1();
 {% endfor %}
 
   return role_names;
