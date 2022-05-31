@@ -98,6 +98,7 @@ def init_source(ctx):
     snowball_url = 'https://github.com/snowballstem/snowball'
     if not snowball_source.joinpath('src_c').exists():
         raise NameError("Snowball source are missing")
+        # Fixme: snowball is not up to date
         # git_clone(snowball_url, snowball_source)
         # third-parties/include/snowball
         # libstemmer.h -> ../../snowball/snowball.git/include/libstemmer.h
@@ -215,7 +216,6 @@ def build(
                 f'-D CMAKE_PREFIX_PATH:PATH={ctx.qt_arch_path}',
                 f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.qt_arch_path}',
                 f'-D QT_HOST_PATH:PATH={ctx.qt_host_path}',
-                f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.qmake_path}',
             ]
 
             # -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=/srv/qt/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake
@@ -236,6 +236,7 @@ def build(
                     f'-D CMAKE_CXX_COMPILER:FILEPATH={clang_path}++',
                     f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
                     f'-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
+                    f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.qmake_path}',
                 ]
 
             command += [
@@ -249,7 +250,7 @@ def build(
             ctx.run(command, pty=True, echo=True, env=env)
             ctx.run(f'cmake --build {build_path} --target alpine-toolkit_lupdate', pty=True, echo=True)
 
-        # /usr/bin/cmake --build {build_path} --target all
+        # cmake --build {build_path} --target all
         if ninja:
             # -C build-cmake
             # -j 4
