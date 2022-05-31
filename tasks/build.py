@@ -34,25 +34,27 @@ from invoke import task
 
 ####################################################################################################
 
-@task
 def _set_source_path(ctx):
-    ctx.source_path = Path(__file__).parents[1]
+    if not hasattr(ctx, 'source_path'):
+        ctx.source_path = Path(__file__).parents[1]
 
 ####################################################################################################
 
-@task
-def _set_qt(ctx):
-    qt_path = os.getenv('QT_PATH')
+def _set_qt(ctx, qt_path=None, arch='gcc_64'):
+    if qt_path is None:
+        qt_path = os.getenv('QT_PATH')
     if qt_path is None:
         raise NameError('The "QT_PATH" environment variable must be set to Qt path')
-    print(f'Qt path is {qt_path}')
 
     ctx.qt_path = Path(qt_path)
     match sys.platform:
         case 'linux':
-            arch = 'gcc_64'
-            ctx.qt_path_bin = ctx.qt_path.joinpath(arch, 'bin')
-            ctx.qt_path_lib = ctx.qt_path.joinpath(arch, 'lib')
+            host_arch = 'gcc_64'
+            ctx.qt_host_path = ctx.qt_path.joinpath(host_arch)
+            ctx.qt_path_bin = ctx.qt_host_path.joinpath('bin')
+            ctx.qt_path_lib = ctx.qt_host_path.joinpath('lib')
+            ctx.qt_arch_path = ctx.qt_path.joinpath(arch)
+            ctx.qmake_path = ctx.qt_arch_path.joinpath('bin', 'qmake')
         case 'darwin':
             raise NotImplementedError
         case 'win32':
@@ -60,16 +62,55 @@ def _set_qt(ctx):
 
 ####################################################################################################
 
-@task(_set_qt, _set_source_path)
+@task()
 def generate_code(ctx):
+    _set_source_path(ctx)
     with ctx.cd(ctx.source_path.joinpath('code-generator')):
         ctx.run('generate-all', pty=True)
     # shaders are managed by CMakeLists
 
 ####################################################################################################
 
-@task(_set_qt)
+@task()
+def init_source(ctx):
+    _set_source_path(ctx)
+    print("Initialise source ...")
+
+    def not_source_exists(*args):
+        return not ctx.source_path.joinpath(*args).exists()
+
+    def git_clone(url, path):
+        print(f"Get {url}")
+        with ctx.cd(path.parent):
+            ctx.run(f"git clone --depth=1 {cmark_url} {path}", echo=True)
+
+    if not_source_exists('src', 'third_party_license', 'third_party_license_schema.h'):
+        generate_code(ctx)
+
+    third_parties = ctx.source_path.joinpath('third-parties')
+
+    cmark_source = third_parties.joinpath('cmark', 'cmark.git')
+    cmark_url = 'https://github.com/github/cmark'
+    if not cmark_source.joinpath('src').exists():
+        git_clone(cmark_url, cmark_source)
+
+    snowball_source = third_parties.joinpath('snowball', 'snowball.git')
+    snowball_url = 'https://github.com/snowballstem/snowball'
+    if not snowball_source.joinpath('src_c').exists():
+        raise NameError("Snowball source are missing")
+        # git_clone(snowball_url, snowball_source)
+        # third-parties/include/snowball
+        # libstemmer.h -> ../../snowball/snowball.git/include/libstemmer.h
+
+    # https://github.com/OSGeo/proj.4.git
+    # https://github.com/libspatialindex/libspatialindex.git
+
+####################################################################################################
+
+@task()
 def qml(ctx, path):
+    _set_qt(ctx)
+
     path = Path(path)
     if not (path.exists() and path.is_dir()):
         print(f"Directory {path} doesn't exist")
@@ -83,8 +124,34 @@ def qml(ctx, path):
 
 ####################################################################################################
 
-@task(_set_qt, _set_source_path)
-def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
+@task(
+    pre=[init_source],
+    optional=['qt', 'ndk', 'sdk'],
+)
+def build(
+        ctx,
+
+        qt=None,
+        arch='gcc_64',
+        ndk=None,
+        sdk=None,
+
+        cmake=True,
+        clean=False,
+        ninja=True,
+        make=False,
+):
+
+    ARCH = (
+        'gcc_64',
+        'android_armv7',
+    )
+    if arch not in ARCH:
+        raise NameError(f"arch must be {ARCH}")
+
+    is_android = arch.startswith('android')
+
+    _set_qt(ctx, qt, arch)
 
     build_path = ctx.source_path.joinpath('build-cmake')
 
@@ -97,13 +164,21 @@ def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
         'LC_ALL': 'C',
         'CFLAGS': cflags,
         'CXXFLAGS': cflags,
-        'CMAKE_PREFIX_PATH': str(ctx.qt_path_lib.joinpath('cmake'))
+        # 'CMAKE_PREFIX_PATH': str(ctx.qt_path_lib.joinpath('cmake'))
     }
 
+    print()
     print(f"Source path: {ctx.source_path}")
     print(f"Build path: {build_path}")
-    print(f"Env: {env}")
+    print(f'Qt path: {ctx.qt_path}')
+    print(f"Arch: {arch}")
     print(f"Build type: {build_type}")
+    # print(f"Env: {env}")
+    print(f"CXXFLAGS: {env['CXXFLAGS']}")
+    if is_android:
+        print(f"NDK path: {ndk}")
+        print(f"SDK path: {sdk}")
+    print()
 
     if not build_path.exists():
         os.mkdir(build_path)
@@ -115,7 +190,7 @@ def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
                     'CMakeCache.txt',
                     'compile_commands.json',
             ):
-                ctx.run('rm -f {_}')
+                os.unlink(_)
             if Path('Makefile').exists():
                 ctx.run('make clean')
 
@@ -127,17 +202,53 @@ def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
             #   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
             #     This will create a file name compile_commands.json in the build directory.
 
-            command = ' '.join((
+            command = [
                 'cmake',
-                '-GNinja' if ninja else '',
-                f'-D CMAKE_BUILD_TYPE:STRING=={build_type}',
-                '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON',
-                '-DSANITIZE=OFF',
-                '-DINSTRUMENT_FUNTIONS=OFF',
-                str(ctx.source_path),
-            ))
-            ctx.run(command, pty=True, echo=True)
+                f'-S {ctx.source_path}',
+                f'-B {build_path}',
 
+                '-G Ninja' if ninja else '',
+                # -D CMAKE_GENERATOR:STRING=Ninja
+
+                f'-D CMAKE_BUILD_TYPE:STRING={build_type}',
+
+                f'-D CMAKE_PREFIX_PATH:PATH={ctx.qt_arch_path}',
+                f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.qt_arch_path}',
+                f'-D QT_HOST_PATH:PATH={ctx.qt_host_path}',
+                f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.qmake_path}',
+            ]
+
+            # -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=/srv/qt/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake
+
+            if is_android:
+                ndk = Path(ndk)
+                sdk = Path(sdk)
+                toolchain_path = ndk.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin')
+                cmake_toolchain_path = ndk.joinpath('build', 'cmake', 'android.toolchain.cmake')
+                clang_path = toolchain_path.joinpath('clang')
+                command += [
+                    f'-D ANDROID_NDK:PATH={ndk}',
+                    f'-D ANDROID_SDK_ROOT:PATH={sdk}',
+                    f'-D ANDROID_ABI:STRING=armeabi-v7a',
+                    f'-D ANDROID_NATIVE_API_LEVEL:STRING=23',
+                    f'-D ANDROID_STL:STRING=c++_shared',
+                    f'-D CMAKE_C_COMPILER:FILEPATH={clang_path}',
+                    f'-D CMAKE_CXX_COMPILER:FILEPATH={clang_path}++',
+                    f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
+                    f'-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
+                ]
+
+            command += [
+                '-D CMAKE_EXPORT_COMPILE_COMMANDS:STRING=ON',
+                '-D SANITIZE:STRING=OFF',
+                '-D INSTRUMENT_FUNTIONS:STRING=OFF',
+            ]
+
+            command = ' '.join(command)
+            print(command)
+            ctx.run(command, pty=True, echo=True, env=env)
+
+        # /usr/bin/cmake --build {build_path} --target all
         if ninja:
             # -C build-cmake
             # -j 4
@@ -145,6 +256,13 @@ def build_x86(ctx, cmake=True, clean=False, ninja=True, make=False):
         elif make:
             # -k
             ctx.run('make -j4', pty=True)
+
+        # /srv/qt/Qt/6.3.0/gcc_64/bin/androiddeployqt
+        # --input {build_path}/android-touch-app-deployment-settings.json
+        # --output {build_path}/android-build
+        # --android-platform android-31
+        # --jdk /usr/lib/jvm/java-openjdk
+        # --gradle
 
         # run-asan.sh
         # clear ; ninja -j2 && QT_LOGGING_RULES="*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true" ./src/alpine-toolkit
