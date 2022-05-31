@@ -55,6 +55,14 @@ def set_qt(ctx):
 
 ####################################################################################################
 
+@task(set_qt, set_source_path)
+def generate_code(ctx):
+    with ctx.cd(ctx.source_path.joinpath('code-generator')):
+        ctx.run('generate-all', pty=True)
+    # shaders are managed by CMakeLists
+
+####################################################################################################
+
 @task(set_qt)
 def qml(ctx, path):
     path = Path(path)
