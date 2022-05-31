@@ -201,20 +201,21 @@ if(NOT ANDROID)
 
     find_package(Qt6 REQUIRED COMPONENTS
       Core
+      Core5Compat
       Gui
+      LinguistTools
       Network
       Positioning
       Qml
       Quick
       QuickWidgets
-      Widgets
+      RemoteObjects
       Sensors
+      ShaderTools
       Sql
       Svg
       Test
-      RemoteObjects
-      Core5Compat
-      ShaderTools
+      Widgets
       )
 
     # Not available

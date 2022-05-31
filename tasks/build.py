@@ -247,6 +247,7 @@ def build(
             command = ' '.join(command)
             print(command)
             ctx.run(command, pty=True, echo=True, env=env)
+            ctx.run(f'cmake --build {build_path} --target alpine-toolkit_lupdate', pty=True, echo=True)
 
         # /usr/bin/cmake --build {build_path} --target all
         if ninja:
