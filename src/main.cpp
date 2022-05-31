@@ -45,6 +45,8 @@ main(int argc, char *argv[])
 
   Application & application = Application::create(argc, argv);
 
+  // Fixme: not displayed
+  qATInfo() << "Start event loop...";
   return application.exec();
 
   /*

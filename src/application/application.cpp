@@ -189,11 +189,15 @@ Application::Application(int & argc, char ** argv)
   set_context_properties();
   load_qml_main();
 
+  // defined in test.cpp
+  qATInfo() << "run_before_event_loop";
   run_before_event_loop();
 
   m_startup_timer = new QTimer(this);
   connect(m_startup_timer, &QTimer::timeout, this, &Application::post_init);
   m_startup_timer->start();
+
+  qATInfo() << "Application ctor done";
 }
 
 Application::~Application()
@@ -411,10 +415,13 @@ Application::set_offline_storage_path()
 void
 Application::load_qml_main()
 {
+  qATInfo() << "Load main.qml";
+
   m_engine.addImportPath(QLatin1String("qrc:///qml"));
 
   // ASAN: throw new_delete_type_mismatch
   m_engine.load(QUrl("qrc:/qml/main.qml"));
+  qATInfo() << "main.qml loaded";
 
   QList<QObject *> root_objects = m_engine.rootObjects();
   if (root_objects.size() == 1) {

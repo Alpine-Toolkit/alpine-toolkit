@@ -54,6 +54,8 @@
 
 /**************************************************************************************************/
 
+// https://doc.qt.io/qt-6/qquickitem.html
+/// The QcMapItem class implements a QML map item.
 class QcMapItem : public QQuickItem
 {
   Q_OBJECT
