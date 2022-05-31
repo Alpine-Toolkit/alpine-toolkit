@@ -1,6 +1,0 @@
-#! /usr/bin/bash
-
-doxygen doc/doxygen/Doxyfile
-# firefox doc/doxygen/build/html/index.html
-
-./doc/sphinx/make-html
