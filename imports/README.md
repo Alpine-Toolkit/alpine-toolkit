@@ -1,6 +1,6 @@
-# QML Modules
+# QML Modules {#qml-modules}
 
-This directory contains QMl modules.
+This directory contains QML modules.
 
-* QtCarto
-* QML Settings **not compiled**
+* [QtCarto](@ref qtcarto-qml-module)
+* [QML Settings](@ref settings-qml-module) **not compiled**
