@@ -64,12 +64,12 @@ SettingsDatabaseKey::operator=(const SettingsDatabaseKey & other)
 }
 
 bool
-SettingsDatabaseKey::operator==(const SettingsDatabaseKey & other)
+operator==(const SettingsDatabaseKey & a, const SettingsDatabaseKey & b)
 {
   return
-    m_name == other.m_name and
-    m_value == other.m_value and
-    m_parent == other.m_parent;
+    a.m_name == b.m_name and
+    a.m_value == b.m_value and
+    a.m_parent == b.m_parent;
 }
 
 QString
@@ -119,13 +119,12 @@ SettingsDatabaseDirectory::operator=(const SettingsDatabaseDirectory & other)
 }
 
 bool
-SettingsDatabaseDirectory::operator==(const SettingsDatabaseDirectory & other)
+operator==(const SettingsDatabaseDirectory & a, const SettingsDatabaseDirectory & b)
 {
-  return
-    m_name == other.m_name and
-    m_directories == other.m_directories and
-    m_keys == other.m_keys and
-    m_parent == other.m_parent;
+  return a.m_name == b.m_name and
+    a.m_directories == b.m_directories and
+    a.m_keys == b.m_keys and
+    a.m_parent == b.m_parent;
 }
 
 QString

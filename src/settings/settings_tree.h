@@ -53,8 +53,6 @@ public:
 
   SettingsDatabaseKey & operator=(const SettingsDatabaseKey & other);
 
-  bool operator==(const SettingsDatabaseKey & other);
-
   const QString & name() const { return m_name; }
   void set_name(const QString & name) { m_name = name; }
 
@@ -65,6 +63,9 @@ public:
   void set_parent(const SettingsDatabaseDirectory * parent) { m_parent = parent; }
 
   QString path() const;
+
+public:
+  friend bool operator==(const SettingsDatabaseKey &, const SettingsDatabaseKey &);
 
 private:
   QString m_name;
@@ -86,8 +87,6 @@ public:
 
   SettingsDatabaseDirectory & operator=(const SettingsDatabaseDirectory & other);
 
-  bool operator==(const SettingsDatabaseDirectory & other);
-
   const QString & name() const { return m_name; }
   void set_name(const QString & name) { m_name = name; }
 
@@ -104,6 +103,9 @@ public:
 
   QJsonObject to_json() const;
   void from_json(const QJsonObject & json_dictionary);
+
+public:
+  friend bool operator==(const SettingsDatabaseDirectory &, const SettingsDatabaseDirectory &);
 
 private:
   QString m_name;
