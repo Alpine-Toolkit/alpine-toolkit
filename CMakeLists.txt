@@ -33,9 +33,6 @@
 
 # -D <var>:<type>=<value>: Create a cmake cache entry.
 
-# Ipl path
-# -D IPL_PATH:PATH=
-
 # Install path prefix, prepended onto install directories.
 # -D CMAKE_INSTALL_PREFIX:PATH=/usr/local/stow/bar
 
@@ -117,16 +114,16 @@ endif(NOT ANDROID)
 #
 
 if(ANDROID)
- ADD_DEFINITIONS(-DON_ANDROID)
- # ADD_DEFINITIONS(-DON_ANDROID -DANDROID)
+ add_definitions(-DON_ANDROID)
+ # add_definitions(-DON_ANDROID -DANDROID)
 endif(ANDROID)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  ADD_DEFINITIONS(-DON_LINUX)
+  add_definitions(-DON_LINUX)
 endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  ADD_DEFINITIONS(-DON_WINDOWS)
+  add_definitions(-DON_WINDOWS)
 endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 ####################################################################################################
@@ -145,9 +142,9 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # https://gcc.gnu.org/projects/cxx-status.html
 include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
-# CHECK_CXX_COMPILER_FLAG("-std=c++20" COMPILER_SUPPORTS_CXX20)
-# CHECK_CXX_COMPILER_FLAG("-std=c++23" COMPILER_SUPPORTS_CXX23)
+check_cxx_compiler_flag("-std=c++17" COMPILER_SUPPORTS_CXX17)
+# check_cxx_compiler_flag("-std=c++20" COMPILER_SUPPORTS_CXX20)
+# check_cxx_compiler_flag("-std=c++23" COMPILER_SUPPORTS_CXX23)
 # if(COMPILER_SUPPORTS_CXX23)
 #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23")
 # elseif(COMPILER_SUPPORTS_CXX17)
@@ -232,11 +229,11 @@ if(NOT ANDROID)
     # quickcontrols
     # svg
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_QML_DEBUG") # Fixme: right way to do?
+    add_definitions(-DQT_QML_DEBUG)
 
-    # INCLUDE_DIRECTORIES(${Qt6Core_INCLUDES})
-    # ADD_DEFINITIONS(${Qt6Core_DEFINITIONS})
-    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Core_EXECUTABLE_COMPILE_FLAGS}")
+    # include_directories(${Qt6Core_INCLUDES})
+    # add_definitions(${Qt6Core_DEFINITIONS})
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Core_EXECUTABLE_COMPILE_FLAGS}")
 
     # https://doc.qt.io/qt-6/portingguide.html
     # Disable use of C++ API deprecated in Qt 5.15
