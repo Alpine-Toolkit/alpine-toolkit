@@ -31,6 +31,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlEngine>
 #include <QQuickWindow>
 #include <QStandardPaths>
 #include <QSurfaceFormat>
@@ -42,6 +43,17 @@
 #include "logging/handler.h"
 #include "tools/debug_data.h"
 #include "tools/platform.h"
+
+#include "declarative_map_item.h"
+
+/**************************************************************************************************/
+
+constexpr char * package = "Local";
+constexpr int major = 1;
+constexpr int minor = 0;
+
+#define QmlRegisterType(Type) \
+  qmlRegisterType<Type>(package, major, minor, #Type)
 
 /**************************************************************************************************/
 
@@ -78,6 +90,9 @@ main(int argc, char *argv[])
   qInfo() << debug_data.to_json();
 
   QUrl main_page("qrc:/pages/main.qml");
+
+  // to embed QtCarto Module
+  QmlRegisterType(QcMapItem);
 
   QQmlApplicationEngine engine;
   engine.load(main_page);

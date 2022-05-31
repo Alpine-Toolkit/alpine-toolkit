@@ -22,5 +22,37 @@ set(qtcarto_files
   qtcarto.cpp
 )
 add_library(qmlqtcartoplugin SHARED ${qtcarto_files})
-# include QImage requires Qui
 target_link_libraries(qmlqtcartoplugin qtcarto Qt6::Qml Qt6::Quick Qt6::Positioning)
+
+# https://doc.qt.io/qt-6/qt-add-qml-module.html
+# qt_add_qml_module(
+#     qmlqtcartoplugin
+#     URI QtCarto
+#     VERSION 1.0
+#     [PAST_MAJOR_VERSIONS ...]
+#     [STATIC | SHARED]
+#     [PLUGIN_TARGET plugin_target]
+#     [OUTPUT_DIRECTORY output_dir]
+#     [RESOURCE_PREFIX resource_prefix]
+#     [CLASS_NAME class_name]
+#     [TYPEINFO typeinfo]
+#     [IMPORTS ...]
+#     [OPTIONAL_IMPORTS ...]
+#     [DEPENDENCIES ...]
+#     [IMPORT_PATH ...]
+#     SOURCES ${qtcarto_files}
+#     [QML_FILES ...]
+#     [RESOURCES ...]
+#     [OUTPUT_TARGETS out_targets_var]
+#     [DESIGNER_SUPPORTED]
+#     [FOLLOW_FOREIGN_VERSIONING]
+#     [NO_PLUGIN_OPTIONAL]
+#     [NO_CREATE_PLUGIN_TARGET]
+#     NO_GENERATE_PLUGIN_SOURCE
+#     [NO_GENERATE_QMLTYPES]
+#     [NO_GENERATE_QMLDIR]
+#     [NO_LINT]
+#     [NO_CACHEGEN]
+#     [NO_RESOURCE_TARGET_PATH]
+#     [NO_IMPORT_SCAN]
+# )

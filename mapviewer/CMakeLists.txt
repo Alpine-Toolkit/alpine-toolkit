@@ -7,6 +7,10 @@
 
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+# to embed QtCarto Module
+include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
+include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
+
 ####################################################################################################
 #
 # Executable
@@ -22,4 +26,5 @@ target_link_libraries(mapviewer
   Qt6::QuickWidgets
   Qt6::Svg
   alpine_toolkit_common
+  qtcarto # to embed QtCarto Module
   )

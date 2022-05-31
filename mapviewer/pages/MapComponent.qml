@@ -7,7 +7,9 @@ import QtQuick.Layouts 1.3
 import QtSensors 5.1
 import QtPositioning 5.5
 
-import QtCarto 1.0 // fr.alpine_toolkit.
+// embeded QtCarto Module
+import Local 1.0 // fr.alpine_toolkit.
+//! import QtCarto 1.0 // fr.alpine_toolkit.
 
 QcMapItem {
     id: map
@@ -25,9 +27,9 @@ QcMapItem {
     // opacity: 1.
 
     // Enable pan, flick, and pinch gestures to zoom in and out
-    gesture.accepted_gestures: QcMapGestureArea.PanGesture | QcMapGestureArea.FlickGesture | QcMapGestureArea.PinchGesture
-    gesture.flick_deceleration: 3000
-    gesture.enabled: true
+    //! gesture.accepted_gestures: QcMapGestureArea.PanGesture | QcMapGestureArea.FlickGesture | QcMapGestureArea.PinchGesture
+    //! gesture.flick_deceleration: 3000
+    //! gesture.enabled: true
     focus: true
 
     function enter_path_editor_state() {
