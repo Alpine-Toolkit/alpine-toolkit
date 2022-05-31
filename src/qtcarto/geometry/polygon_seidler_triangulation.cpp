@@ -229,7 +229,7 @@ get_angle(point_t * vp0, point_t * vpnext, point_t * vp1)
 int
 QcSeidlerPolygonTriangulation::generate_random_ordering(int n)
 {
-  register int i;
+  int i;
   int m, st[SEGSIZE], *p;
 
   m_choose_index = 1;
@@ -1057,7 +1057,7 @@ QcSeidlerPolygonTriangulation::find_new_roots(int segment_number)
 void
 QcSeidlerPolygonTriangulation::construct_trapezoids(int nseg, segment_t seg[])
 {
-  register int i;
+  int i;
   int root, h;
 
   m_q_index = m_trapezoid_index = 1;
@@ -1134,7 +1134,7 @@ int
 QcSeidlerPolygonTriangulation::get_vertex_positions(int v0, int v1, int * ip, int * iq)
 {
   vertex_chain_t *vp0, *vp1;
-  register int i;
+  int i;
   double angle, temp;
   int tp, tq;
 
@@ -1458,7 +1458,7 @@ QcSeidlerPolygonTriangulation::traverse_polygon(int mcur, int trnum, int from, i
 int
 QcSeidlerPolygonTriangulation::monotonate_trapezoids(int n)
 {
-  register int i;
+  int i;
   int tr_start;
 
   memset((void *) m_vertex, 0, sizeof(m_vertex));
@@ -1510,7 +1510,7 @@ QcSeidlerPolygonTriangulation::monotonate_trapezoids(int n)
 int
 QcSeidlerPolygonTriangulation::triangulate_single_polygon(int posmax, int side, int op[][3])
 {
-  register int v;
+  int v;
   int rc[SEGSIZE], ri = 0; /* reflex chain */
   int endv, tmp, vpos;
 
@@ -1574,7 +1574,7 @@ QcSeidlerPolygonTriangulation::triangulate_single_polygon(int posmax, int side, 
 void
 QcSeidlerPolygonTriangulation::triangulate_monotone_polygons(int nmonpoly, int op[][3])
 {
-  register int i;
+  int i;
   point_t ymax, ymin;
   int p, vfirst, posmax, posmin, v;
   int vcount;
