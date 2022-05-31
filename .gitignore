@@ -21,8 +21,6 @@ __TRASH__
 #
 # Build
 
-alpine-toolkit-all.pro.user
-alpine-toolkit.pro.user
 build-cmake*/
 build-cmake-android-arm64-v8a
 build/
@@ -30,7 +28,6 @@ cmake-build/
 compile_commands.json
 sqlite/Qt5.9-gcc_64
 sqlite/qmake-build/
-sqlite/sqlite.pro.user
 
 ####################################################################################################
 #
@@ -106,12 +103,14 @@ annexes/fuel-gauge/fuel-gauge.tex
 #
 # Script
 
-# script/read-rrd.py
-# script/run-androiddeployqt.sh
-scripts/open-doc.sh
-scripts/push-to-bleausard.sh
-scripts/push-to-vps.sh
-scripts/run-cmake-android-old.sh
+# tasks/lib/__dev_tools__/read-rrd.py
+# tasks/lib/__dev_tools__/run-androiddeployqt.sh
+tasks/lib/__build_tools__/old/run-androiddeployqt.sh
+
+tasks/lib/__dev_tools__/open-doc.sh
+tasks/lib/__dev_tools__/push-to-bleausard.sh
+tasks/lib/__dev_tools__/push-to-vps.sh
+tasks/lib/__dev_tools__/run-cmake-android-old.sh
 
 ####################################################################################################
 #
@@ -165,7 +164,6 @@ git-archives/
 
 __TRASH__/
 adb-log.txt
-alpine-toolkit-all.pro.user.4.8-pre1
 android-log.txt
 class-def.txt
 class-orm.txt
@@ -314,22 +312,21 @@ src/refuge/notes.txt
 src/settings/trash.cpp
 third-parties/libspatialindex/cmake.log
 third-parties/libspatialindex/make.log
-scripts/dev/clean
-scripts/dev/get-class
-scripts/dev/less-used/fix-license-header.sh
-scripts/dev/less-used/run-cmake-android-old.sh
-scripts/dev/lookup-fixme.sh
-scripts/dev/open-doc.sh
-scripts/dev/push-to-bleausard.sh
-scripts/dev/push-to-vps.sh
-scripts/dev/read-rrd.py
-scripts/dev/remote-avd.sh
-scripts/dev/set-git-env.sh
+tasks/lib/__dev_tools__/clean
+tasks/lib/__dev_tools__/get-class
+tasks/lib/__dev_tools__/less-used/fix-license-header.sh
+tasks/lib/__dev_tools__/less-used/run-cmake-android-old.sh
+tasks/lib/__dev_tools__/lookup-fixme.sh
+tasks/lib/__dev_tools__/open-doc.sh
+tasks/lib/__dev_tools__/push-to-bleausard.sh
+tasks/lib/__dev_tools__/push-to-vps.sh
+tasks/lib/__dev_tools__/read-rrd.py
+tasks/lib/__dev_tools__/remote-avd.sh
+tasks/lib/__dev_tools__/set-git-env.sh
+tasks/lib/__dev_tools__/old/
+tasks/lib/__build_tools__/tools/
 unused-java/
 
-scripts/build/old/run-androiddeployqt.sh
-
-alpine-toolkit-all.pro.user.4.10-pre1
 android/AndroidManifest.xml-template
 map-tools/compare.log
 mapviewer/pages/graphic-test.qml-b
@@ -364,3 +361,7 @@ private/
 qtlocation/
 setenv.sh
 swisstopo/
+
+qmake-files/imports/settings/
+qmake-files/sqlite/orig/
+qmake-files/alpine-toolkit-all.pro.*user*
