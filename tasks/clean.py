@@ -1,7 +1,11 @@
 ####################################################################################################
 #
-# PySpice - A Spice package for Python
-# Copyright (C) 2019 Fabrice Salvaire
+# $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
+#
+# Copyright (C) 2022 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+#
+# This file is part of the Alpine Toolkit software.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +19,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# $ALPINE_TOOLKIT_END_LICENSE$
 #
 ####################################################################################################
 
