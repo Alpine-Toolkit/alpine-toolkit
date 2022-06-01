@@ -143,6 +143,10 @@ def init_source(ctx):
     # https://github.com/OSGeo/proj.4.git
     # https://github.com/libspatialindex/libspatialindex.git
 
+    camptocamp_login = ctx.source_path.joinpath('unit-tests', 'camptocamp', 'login.h')
+    if not camptocamp_login.exists():
+        raise NameError(f"{camptocamp_login} is missing")
+
 ####################################################################################################
 
 @task()
