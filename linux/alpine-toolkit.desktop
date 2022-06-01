@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Alpine Toolkit
+GenericName=Alpine Toolkit
+Comment=Alpine Toolkit Application
+Exec=/usr/local/bin/alpine-toolkit
+Type=Application
+Keywords=
+Icon=
+X-Geoclue-Reason=

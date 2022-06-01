@@ -271,9 +271,6 @@ android/gradle.properties
 __NEW__/
 
 doc/indent.h
-doc/sphinx/source/design/android-release.rst
-
-linux/
 
 map-providers/countries/
 map-providers/init.sh
@@ -288,7 +285,6 @@ mapviewer/pages/Layers.diff
 mapviewer/pages/graphic-test.qml-b
 
 qmake-files/alpine-toolkit-all.pro.user
-qmake-files/imports/settings/
 qmake-files/sqlite/orig/
 
 resources/qml/Pages/image_page_example.qml
@@ -297,12 +293,7 @@ resources/qml/Widgets/MapComponent.qml-d
 src/base/network/network_reply.diff
 src/base/orm/database_query_old.h
 
-src/qml/settings/
-
-src/qtcarto/geo_data_format/wkb_definitions.h
-src/qtcarto/map/map_area.cpp
-src/qtcarto/map/map_area.h
-src/qtcarto/map/mapped_path.cpp
-src/qtcarto/map/mapped_path.h
 src/qtcarto/wmts/providers/austria/mobile-base3.js
 src/qtcarto/wmts/providers/geoportail/ols.txt
+
+src/qml/settings/WHAT_IS_THE_PURPOSE
