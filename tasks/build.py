@@ -37,6 +37,7 @@ from invoke import task
 def _set_source_path(ctx):
     if not hasattr(ctx, 'source_path'):
         ctx.source_path = Path(__file__).parents[1]
+        ctx.resources_path = ctx.source_path.joinpath('resources')
 
 ####################################################################################################
 
@@ -74,9 +75,8 @@ def generate_code(ctx):
 @task()
 def generate_icons(ctx):
     _set_source_path(ctx)
-    resources_path = ctx.source_path.joinpath('resources')
-    icons_directory = resources_path.joinpath('icons')
-    svg_directory = resources_path.joinpath('icon-resources', 'svg')
+    icons_directory = ctx.resources_path.joinpath('icons')
+    svg_directory = ctx.resources_path.joinpath('icon-resources', 'svg')
     png_directory = svg_directory.joinpath('png')
     print(f'SVG path: {svg_directory}')
     print(f'PNG path: {png_directory}')
@@ -100,7 +100,15 @@ def generate_icons(ctx):
 
 ####################################################################################################
 
-@task(post=[generate_icons])
+@task()
+def generate_tones(ctx):
+    _set_source_path(ctx)
+    from .lib.tones.make_tones import make_tones
+    make_tones(ctx)
+
+####################################################################################################
+
+@task(post=[generate_icons, generate_tones])
 def init_source(ctx):
     _set_source_path(ctx)
     print("Initialise source ...")

@@ -1,4 +1,30 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
+#
+# Copyright (C) 2022 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+#
+# This file is part of the Alpine Toolkit software.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# $ALPINE_TOOLKIT_END_LICENSE$
+#
+####################################################################################################
 
 ####################################################################################################
 
@@ -7,7 +33,6 @@
 
 ####################################################################################################
 
-import argparse
 import wave
 
 import numpy as np
@@ -134,7 +159,38 @@ class WavFile:
 
 ####################################################################################################
 
+def generate_wav_tone(
+        filename: str,
+        frequency: float = 440.0,   # LA3 A4
+        amplitude: float = 1.,
+        time: int = 1.,   # ms
+        rise_time: int = 100.,   # ms
+        fall_time: int = 100.,   # ms
+        rate: int = 44100,   # Hz
+        bits: int = 16,
+        channels: int = 2,
+) -> None:
+
+    print(f"Generate {filename}")
+    wav_file = WavFile(
+        sample_rate=rate,
+        number_of_bits=bits,
+        number_of_channels=channels,
+        duration=time / 1000,
+        rise_time=rise_time / 1000,
+        fall_time=fall_time / 1000,
+    )
+    tone_generator = ToneGenerator(
+        frequency=frequency,
+        amplitude=amplitude,
+    )
+    wav_file.make_wave(filename, tone_generator)
+
+####################################################################################################
+
 if __name__ == "__main__":
+
+    import argparse
 
     # cut at 14.7 kHz ???
 
@@ -168,16 +224,14 @@ if __name__ == "__main__":
 
     args = argument_parser.parse_args()
 
-    wav_file = WavFile(
-        sample_rate=args.rate,
-        number_of_bits=args.bits,
-        number_of_channels=args.channels,
-        duration=args.time / 1000,
-        rise_time=args.rise_time / 1000,
-        fall_time=args.fall_time / 1000,
-    )
-    tone_generator = ToneGenerator(
+    generate_wav_tone(
+        args.filename,
         frequency=args.frequency,
         amplitude=args.amplitude,
+        time=args.time,
+        rise_time=args.rise_time,
+        fall_time=args.fall_time,
+        rate=args.rate,
+        bits=args.bits,
+        channels=args.channels,
     )
-    wav_file.make_wave(args.filename, tone_generator)
