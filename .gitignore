@@ -8,40 +8,37 @@
 *~
 __pycache__
 moc_*.cpp
-#
+
 .directory
 du.log
-#
-no-git
+
 __NOGIT__
-trash
 __TRASH__
+no-git
+trash
 
 ####################################################################################################
 #
 # Build
 
-build-gcc_64/
 build-android-arm64-v8a/
+build-gcc_64/
 compile_commands.json
-sqlite/Qt5.9-gcc_64
-sqlite/qmake-build/
+config.h
 doc/doxygen/build/
 doc/sphinx/build/
+sqlite/Qt5.9-gcc_64
+sqlite/qmake-build/
 
 ####################################################################################################
 #
-# Critical data
+# Secret data
 
 unit-tests/camptocamp/login.h
 
 ####################################################################################################
 #
 # Generated Files
-
-resources/shaders/*.qsb
-config.h
-resources/translations/alpine-toolkit.fr_FR.qm
 
 ####################################################################################################
 #
@@ -116,6 +113,7 @@ tasks/lib/__dev_tools__/run-cmake-android-old.sh
 #
 # SQLite
 #
+
 sqlite/orig/
 sqlite/sqlite-amalgamation
 sqlite/sqlite3.c
@@ -340,7 +338,6 @@ push-android.sh
 review.json
 tmp0.diff
 
-
 # 2022/05
 indent.h
 mapviewer/main.diff
@@ -365,3 +362,14 @@ swisstopo/
 qmake-files/imports/settings/
 qmake-files/sqlite/orig/
 qmake-files/alpine-toolkit-all.pro.*user*
+
+src/base/network/network_reply.diff
+src/base/orm/database_query_old.h
+src/qml/settings/
+src/qt/qtcarto/geo_data_format/wkb_definitions.h
+src/qt/qtcarto/map/map_area.cpp
+src/qt/qtcarto/map/map_area.h
+src/qt/qtcarto/map/mapped_path.cpp
+src/qt/qtcarto/map/mapped_path.h
+src/qt/qtcarto/wmts/providers/austria/mobile-base3.js
+src/qt/qtcarto/wmts/providers/geoportail/ols.txt
