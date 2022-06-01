@@ -16,18 +16,18 @@ no-git
 __NOGIT__
 trash
 __TRASH__
-#
+
 ####################################################################################################
 #
 # Build
 
-build-cmake*/
-build-cmake-android-arm64-v8a
-build/
-cmake-build/
+build-gcc_64/
+build-android-arm64-v8a/
 compile_commands.json
 sqlite/Qt5.9-gcc_64
 sqlite/qmake-build/
+doc/doxygen/build/
+doc/sphinx/build/
 
 ####################################################################################################
 #
