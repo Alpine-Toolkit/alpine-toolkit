@@ -30,7 +30,8 @@ from pathlib import Path
 import os
 import sys
 
-from invoke import task
+import invoke
+from invoke import task, call
 
 ####################################################################################################
 
@@ -150,6 +151,13 @@ def init_source(ctx):
 ####################################################################################################
 
 @task()
+def linguist(ctx):
+    ts_path = ctx.source_path.joinpath('translations', 'alpine-toolkit.fr_FR.ts')
+    ctx.run(f'linguist {ts_path}')
+
+####################################################################################################
+
+@task()
 def qml(ctx, path):
     _set_qt(ctx)
 
@@ -195,6 +203,7 @@ def build(
 
     _set_qt(ctx, qt, arch)
 
+    # Fixme:_arch
     build_path = ctx.source_path.joinpath('build-cmake')
 
     cflags = '-g -O0'
@@ -238,11 +247,6 @@ def build(
 
         if cmake:
             # /etc/security/limits.d/00-user.conf
-            # -DSANITIZE=ON
-
-            # https://sarcasm.github.io/notes/dev/compilation-database.html#cmake
-            #   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-            #     This will create a file name compile_commands.json in the build directory.
 
             command = [
                 'cmake',
@@ -281,7 +285,12 @@ def build(
                 ]
 
             command += [
+                # https://sarcasm.github.io/notes/dev/compilation-database.html#cmake
+                #     This will create a file name compile_commands.json in the build directory.
                 '-D CMAKE_EXPORT_COMPILE_COMMANDS:STRING=ON',
+            ]
+
+            command += [
                 '-D SANITIZE:STRING=OFF',
                 '-D INSTRUMENT_FUNTIONS:STRING=OFF',
             ]
@@ -307,5 +316,68 @@ def build(
         # --jdk /usr/lib/jvm/java-openjdk
         # --gradle
 
-        # run-asan.sh
-        # clear ; ninja -j2 && QT_LOGGING_RULES="*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true" ./src/alpine-toolkit
+####################################################################################################
+
+@task()
+def unit_test(ctx):
+    _set_source_path(ctx)
+    build_path = ctx.source_path.joinpath('build-cmake')
+    unit_test_path = build_path.joinpath('unit-tests')
+
+    print('Run unit tests...')
+    tests = []
+    failed = []
+    for root, _, filenames in os.walk(unit_test_path):
+        root = Path(root)
+        for filename in filenames:
+            filename = root.joinpath(filename)
+            if os.access(filename, os.X_OK):   # Fixme: Unix
+                filename_part = str(filename).replace(str(build_path.parent), '.')
+                print()
+                print('='*100)
+                print(f'Run {filename_part}')
+                try:
+                    tests.append(filename_part)
+                    ctx.run(str(filename))
+                except invoke.exceptions.UnexpectedExit:
+                    failed.append(filename_part)
+
+    if failed:
+        print()
+        rule = '!'*100
+        print(rule)
+        print(f'Failures {len(failed)}/{len(tests)}:')
+        for _ in failed:
+            print(' '*4, _)
+        print(rule)
+
+    # rm unit_tests_log.txt
+    # rm unit_test_failure.txt
+    #   ${unit_test} &>> unit_tests_log.txt
+
+####################################################################################################
+
+@task(
+#    pre=[call(build, qt=qt)],
+)
+def run(ctx,
+        qt=None,
+        ):
+    _set_source_path(ctx)
+    build_path = ctx.source_path.joinpath('build-cmake')
+
+    env = {
+        'QT_LOGGING_RULES': '*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true',
+
+        # QT_GEOCLUE_APP_DESKTOP_ID=alpine-toolkit
+
+        # ALPINE_TOOLKIT_MOCKUP=TRUE
+        # ALPINE_TOOLKIT_FAKE_ANDROID=TRUE
+        # QML_IMPORT_TRACE=1
+        # ASAN_OPTIONS=new_delete_type_mismatch=0
+        # QT_QUICK_CONTROLS_STYLE=material
+    }
+
+    # clear ; ninja -j2 &&
+    command = build_path.joinpath('src', 'alpine-toolkit')
+    ctx.run(command, env=env)
