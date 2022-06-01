@@ -35,10 +35,11 @@ using namespace c2c;
 #include <QJsonArray>
 #include <QJsonObject>
 
-#include "cmark/cmark.h"
+// #include "cmark/cmark.h"
 
 /**************************************************************************************************/
 
+/*
 QString
 markdown_to_html(const QString & markdown)
 {
@@ -54,6 +55,7 @@ markdown_to_html(const QString & markdown)
   // qATInfo() << "markdown_to_html" << '\n' << markdown_fixed << '\n' << html;
   return html;
 }
+*/
 
 /**************************************************************************************************/
 
@@ -486,7 +488,8 @@ C2cShortRoute::description(const QString & language) const
   for (const auto & ref : locales) {
       const QJsonObject locale = ref.toObject();
       if (locale[LANG].toString() == language)
-        return markdown_to_html(locale[DESCRIPTION].toString());
+        // return markdown_to_html(locale[DESCRIPTION].toString());
+        return locale[DESCRIPTION].toString();
   }
 
   return QString();

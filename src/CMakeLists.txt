@@ -134,7 +134,7 @@ target_link_libraries(alpine_toolkit
   Qt6::Qml
   Qt6::Gui
   Qt6::Quick
-  cmark
+  # cmark
   snowball
   qtcarto
   )

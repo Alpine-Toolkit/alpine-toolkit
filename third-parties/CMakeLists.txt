@@ -28,7 +28,7 @@
 
 ####################################################################################################
 
-add_subdirectory(cmark)
+# add_subdirectory(cmark) # Qt6
 add_subdirectory(snowball)
 
 # Unused / last commit in 2019

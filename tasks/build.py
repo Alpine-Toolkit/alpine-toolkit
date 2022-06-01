@@ -126,10 +126,10 @@ def init_source(ctx):
 
     third_parties = ctx.source_path.joinpath('third-parties')
 
-    cmark_source = third_parties.joinpath('cmark', 'cmark.git')
-    cmark_url = 'https://github.com/github/cmark'
-    if not cmark_source.joinpath('src').exists():
-        git_clone(cmark_url, cmark_source)
+    # cmark_source = third_parties.joinpath('cmark', 'cmark.git')
+    # cmark_url = 'https://github.com/github/cmark'
+    # if not cmark_source.joinpath('src').exists():
+    #     git_clone(cmark_url, cmark_source)
 
     snowball_source = third_parties.joinpath('snowball', 'snowball.git')
     snowball_url = 'https://github.com/snowballstem/snowball'
