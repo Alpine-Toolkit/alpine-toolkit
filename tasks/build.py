@@ -172,6 +172,10 @@ def init_source(ctx):
     # cmark_url = 'https://github.com/github/cmark'
     # if not cmark_source.joinpath('src').exists():
     #     git_clone(cmark_url, cmark_source)
+    #
+    #!# ../camptocamp/camptocamp_document.cpp:38:10: erreur fatale: cmark/cmark.h : Aucun fichier ou dossier de ce type
+    #!#    38 | #include "cmark/cmark.h"
+    #!# ./third-parties/include/cmark/cmark.h
 
     snowball_source = third_parties.joinpath('snowball', 'snowball.git')
     snowball_url = 'https://github.com/snowballstem/snowball'
@@ -187,7 +191,13 @@ def init_source(ctx):
 
     camptocamp_login = ctx.build.source.joinpath('unit-tests', 'camptocamp', 'login.h')
     if not camptocamp_login.exists():
-        raise NameError(f"{camptocamp_login} is missing")
+        with open(camptocamp_login, 'w') as fh:
+            data = [
+                'QString username = "...";'
+                'QString password = "...";'
+            ]
+            fh.write(os.linesep.join(data))
+        raise NameError(f"Created a template for {camptocamp_login}")
 
 ####################################################################################################
 
