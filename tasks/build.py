@@ -320,6 +320,12 @@ def build(
             ctx.run(command, echo=True, env=env)
             ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
 
+            for _ in ('compile_commands.json', 'config.h'):
+                target = ctx.build.source.joinpath(_)
+                if not target.exists():
+                    source = ctx.build.path.joinpath(_)
+                    source.symlink_to(target)
+
         if make:
             # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
             if use_ninja:
