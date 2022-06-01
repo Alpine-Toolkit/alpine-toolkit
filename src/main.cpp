@@ -26,16 +26,16 @@
 
 /**************************************************************************************************/
 
+#include "alpine_toolkit.h"
 #include "application/application.h"
 #include "logging/handler.h"
-#include "alpine_toolkit.h"
 
 #include <QDate>
 
 /**************************************************************************************************/
 
 int
-main(int argc, char *argv[])
+main(int argc, char * argv[])
 {
   // Fixme: Don't work on Android ???
   //  no logging ???
