@@ -1,0 +1,26 @@
+build:
+  # generator: make
+  generator: ninja
+
+  qt: /opt/Qt/6.3.0
+  arch: gcc_64
+
+  # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+  cflags: -g -O0
+  # cflags: -O3 -march=broadwell -mtune=broadwell -flto
+
+  build_type: DEBUG
+  # build_type: RELEASE
+
+run_env:
+  QT_LOGGING_RULES: '*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true'
+  # QML_IMPORT_TRACE=1
+
+  # ASAN_OPTIONS=new_delete_type_mismatch=0
+
+  # ALPINE_TOOLKIT_MOCKUP=TRUE
+  # ALPINE_TOOLKIT_FAKE_ANDROID=TRUE
+
+  # QT_QUICK_CONTROLS_STYLE=material
+
+  # QT_GEOCLUE_APP_DESKTOP_ID=alpine-toolkit

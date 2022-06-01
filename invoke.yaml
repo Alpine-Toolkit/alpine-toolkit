@@ -1,3 +1,17 @@
 # https://docs.pyinvoke.org/en/0.23.0/concepts/configuration.html
-QT_VERSION: 6.3.0
-QT_QML_STYLE: Material
+build:
+  # generator: make
+  generator: ninja
+
+  qt: .../Qt
+  arch: gcc_64
+
+  # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+  cflags: -g -O0
+  # cflags: -O3 -march=... -mtune=... -flto
+
+  build_type: DEBUG
+  # build_type: RELEASE
+
+# run_env:
+#   QT_QUICK_CONTROLS_STYLE: material

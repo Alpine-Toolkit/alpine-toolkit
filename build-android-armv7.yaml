@@ -1,0 +1,5 @@
+build:
+  qt: /opt/Qt/6.3.0
+  arch: android_armv7
+  ndk: /srv/qt/Android/ndk-bundle
+  sdk: /srv/qt/Android

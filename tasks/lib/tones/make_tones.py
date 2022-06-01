@@ -45,7 +45,7 @@ AMPLITUDE = .3
 
 def make_tones(ctx, force=False) -> None:
 
-    tones_directory = ctx.resources_path.joinpath('tones')
+    tones_directory = ctx.build.resources_path.joinpath('tones')
     if not force and tones_directory.exists():
         return
     tones_directory.mkdir(exist_ok=True)

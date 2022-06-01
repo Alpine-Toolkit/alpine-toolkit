@@ -28,35 +28,57 @@
 
 from pathlib import Path
 import os
+import pathlib
 import sys
 
 import invoke
 from invoke import task, call
 
-####################################################################################################
-
-def _set_source_path(ctx):
-    if not hasattr(ctx, 'source_path'):
-        ctx.source_path = Path(__file__).parents[1]
-        ctx.resources_path = ctx.source_path.joinpath('resources')
+import yaml
 
 ####################################################################################################
 
-def _set_qt(ctx, qt_path=None, arch='gcc_64'):
-    if qt_path is None:
-        qt_path = os.getenv('QT_PATH')
-    if qt_path is None:
-        raise NameError('The "QT_PATH" environment variable must be set to Qt path')
+def _init_config(ctx) -> None:
+    if hasattr(ctx.build, 'source_path'):
+        return
 
-    ctx.qt_path = Path(qt_path)
+    ARCH = (
+        'gcc_64',
+        'android_x86',
+        'android_x86_64',
+        'android_armv7',
+        'android_arm64_v8a',
+    )
+    if ctx.build.arch not in ARCH:
+        raise NameError(f"arch must be {ARCH}")
+
+    ctx.build['source'] = Path(__file__).parents[1]
+    ctx.build['resources_path'] = ctx.build.source.joinpath('resources')
+    ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
+
+    _set_qt(ctx)
+
+####################################################################################################
+
+# def _set_qt(ctx, qt_path=None, arch='gcc_64'):
+#     if qt_path is None:
+#         qt_path = os.getenv('QT_PATH')
+#     if qt_path is None:
+#         raise NameError('The "QT_PATH" environment variable must be set to Qt path')
+#     ctx.qt_path = Path(qt_path)
+
+def _set_qt(ctx) -> None:
+    ctx.build.qt = Path(ctx.build.qt)
+    if not ctx.build.qt.exists():
+        raise NameError("Qt not found {ctx.build.qt}")
     match sys.platform:
         case 'linux':
             host_arch = 'gcc_64'
-            ctx.qt_host_path = ctx.qt_path.joinpath(host_arch)
-            ctx.qt_path_bin = ctx.qt_host_path.joinpath('bin')
-            ctx.qt_path_lib = ctx.qt_host_path.joinpath('lib')
-            ctx.qt_arch_path = ctx.qt_path.joinpath(arch)
-            ctx.qmake_path = ctx.qt_arch_path.joinpath('bin', 'qmake')
+            ctx.build['qt_host_path'] = ctx.build.qt.joinpath(host_arch)
+            ctx.build['qt_bin_path'] = ctx.build.qt_host_path.joinpath('bin')
+            ctx.build['qt_lib_path'] = ctx.build.qt_host_path.joinpath('lib')
+            ctx.build['qt_arch_path'] = ctx.build.qt.joinpath(ctx.build.arch)
+            ctx.build['qmake_path'] = ctx.build.qt_arch_path.joinpath('bin', 'qmake')
         case 'darwin':
             raise NotImplementedError
         case 'win32':
@@ -65,19 +87,38 @@ def _set_qt(ctx, qt_path=None, arch='gcc_64'):
 ####################################################################################################
 
 @task()
+def dump_config(ctx):
+
+    def to_dict(d):
+        return {key: value for key, value in d.items()}
+
+    _init_config(ctx)
+    config = ctx.config
+    config = to_dict(config)
+
+    def path_representer(dumper, data):
+        return dumper.represent_scalar('!PATH', str(data))
+
+    yaml.add_representer(pathlib.PosixPath, path_representer)
+
+    print(yaml.dump(config))
+
+####################################################################################################
+
+@task()
 def generate_code(ctx):
-    _set_source_path(ctx)
-    with ctx.cd(ctx.source_path.joinpath('code-generator')):
-        ctx.run('generate-all', pty=True)
+    _init_config(ctx)
+    with ctx.cd(ctx.build.source.joinpath('code-generator')):
+        ctx.run('generate-all')
     # shaders are managed by CMakeLists
 
 ####################################################################################################
 
 @task()
 def generate_icons(ctx):
-    _set_source_path(ctx)
-    icons_directory = ctx.resources_path.joinpath('icons')
-    svg_directory = ctx.resources_path.joinpath('icon-resources', 'svg')
+    _init_config(ctx)
+    icons_directory = ctx.build.resources_path.joinpath('icons')
+    svg_directory = ctx.build.resources_path.joinpath('icon-resources', 'svg')
     png_directory = svg_directory.joinpath('png')
     print(f'SVG path: {svg_directory}')
     print(f'PNG path: {png_directory}')
@@ -103,7 +144,7 @@ def generate_icons(ctx):
 
 @task()
 def generate_tones(ctx):
-    _set_source_path(ctx)
+    _init_config(ctx)
     from .lib.tones.make_tones import make_tones
     make_tones(ctx)
 
@@ -111,11 +152,11 @@ def generate_tones(ctx):
 
 @task(post=[generate_icons, generate_tones])
 def init_source(ctx):
-    _set_source_path(ctx)
+    _init_config(ctx)
     print("Initialise source ...")
 
     def not_source_exists(*args):
-        return not ctx.source_path.joinpath(*args).exists()
+        return not ctx.build.source.joinpath(*args).exists()
 
     def git_clone(url, path):
         print(f"Get {url}")
@@ -125,7 +166,7 @@ def init_source(ctx):
     if not_source_exists('src', 'third_party_license', 'third_party_license_schema.h'):
         generate_code(ctx)
 
-    third_parties = ctx.source_path.joinpath('third-parties')
+    third_parties = ctx.build.source.joinpath('third-parties')
 
     # cmark_source = third_parties.joinpath('cmark', 'cmark.git')
     # cmark_url = 'https://github.com/github/cmark'
@@ -144,7 +185,7 @@ def init_source(ctx):
     # https://github.com/OSGeo/proj.4.git
     # https://github.com/libspatialindex/libspatialindex.git
 
-    camptocamp_login = ctx.source_path.joinpath('unit-tests', 'camptocamp', 'login.h')
+    camptocamp_login = ctx.build.source.joinpath('unit-tests', 'camptocamp', 'login.h')
     if not camptocamp_login.exists():
         raise NameError(f"{camptocamp_login} is missing")
 
@@ -152,19 +193,19 @@ def init_source(ctx):
 
 @task()
 def linguist(ctx):
-    ts_path = ctx.source_path.joinpath('translations', 'alpine-toolkit.fr_FR.ts')
+    ts_path = ctx.build.source.joinpath('translations', 'alpine-toolkit.fr_FR.ts')
     ctx.run(f'linguist {ts_path}')
 
 ####################################################################################################
 
 @task()
 def qml(ctx, path):
-    _set_qt(ctx)
+    _init_config(ctx)
 
     path = Path(path)
     if not (path.exists() and path.is_dir()):
         print(f"Directory {path} doesn't exist")
-    qml_path = ctx.qt_path_bin.joinpath('qml')
+    qml_path = ctx.build.qt_bin_path.joinpath('qml')
     main_qml = 'main.qml'
     includes = ' '.join([f'-I {_}' for _ in ('qml',)])
     command = f'{qml_path} {includes} {main_qml}'
@@ -176,65 +217,43 @@ def qml(ctx, path):
 
 @task(
     pre=[init_source],
-    optional=['qt', 'ndk', 'sdk'],
+    optional=[],
 )
 def build(
         ctx,
-
-        qt=None,
-        arch='gcc_64',
-        ndk=None,
-        sdk=None,
-
         cmake=True,
         clean=False,
-        ninja=True,
-        make=False,
+        make=True,
+        deploy=False,
 ):
-
-    ARCH = (
-        'gcc_64',
-        'android_armv7',
-    )
-    if arch not in ARCH:
-        raise NameError(f"arch must be {ARCH}")
-
-    is_android = arch.startswith('android')
-
-    _set_qt(ctx, qt, arch)
-
-    # Fixme:_arch
-    build_path = ctx.source_path.joinpath('build-cmake')
-
-    cflags = '-g -O0'
-    # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-    # '-O3 -march=broadwell -mtune=broadwell -flto'
-    build_type = 'DEBUG' # 'RELEASE'
+    _init_config(ctx)
+    is_android = ctx.build.arch.startswith('android')
+    use_ninja = ctx.build.generator == 'ninja'
 
     env = {
         'LC_ALL': 'C',
-        'CFLAGS': cflags,
-        'CXXFLAGS': cflags,
-        # 'CMAKE_PREFIX_PATH': str(ctx.qt_path_lib.joinpath('cmake'))
+        'CFLAGS': ctx.build.cflags,
+        'CXXFLAGS': ctx.build.cflags,
+        # 'CMAKE_PREFIX_PATH': str(ctx.build.qt_lib_path.joinpath('cmake'))
     }
 
     print()
-    print(f"Source path: {ctx.source_path}")
-    print(f"Build path: {build_path}")
-    print(f'Qt path: {ctx.qt_path}')
-    print(f"Arch: {arch}")
-    print(f"Build type: {build_type}")
+    print(f"Source path: {ctx.build.source}")
+    print(f"Build path: {ctx.build.path}")
+    print(f'Qt path: {ctx.build.qt}')
+    print(f"Arch: {ctx.build.arch}")
+    print(f"Build type: {ctx.build.build_type}")
     # print(f"Env: {env}")
     print(f"CXXFLAGS: {env['CXXFLAGS']}")
     if is_android:
-        print(f"NDK path: {ndk}")
-        print(f"SDK path: {sdk}")
+        print(f"NDK path: {ctx.build.ndk}")
+        print(f"SDK path: {ctx.build.sdk}")
     print()
 
-    if not build_path.exists():
-        build_path.mkdir()
+    if not ctx.build.path.exists():
+        ctx.build.path.mkdir()
 
-    with ctx.cd(build_path):
+    with ctx.cd(ctx.build.path):
 
         if clean:
             for _ in (
@@ -242,32 +261,33 @@ def build(
                     'compile_commands.json',
             ):
                 os.unlink(_)
-            if Path('Makefile').exists():
-                ctx.run('make clean')
+            ctx.run('cmake --build {ctx.build.path} --target clean')
+            # if Path('Makefile').exists():
+            #     ctx.run('make clean')
 
         if cmake:
             # /etc/security/limits.d/00-user.conf
 
             command = [
                 'cmake',
-                f'-S {ctx.source_path}',
-                f'-B {build_path}',
+                f'-S {ctx.build.source}',
+                f'-B {ctx.build.path}',
 
-                '-G Ninja' if ninja else '',
+                '-G Ninja' if use_ninja else '',
                 # -D CMAKE_GENERATOR:STRING=Ninja
 
-                f'-D CMAKE_BUILD_TYPE:STRING={build_type}',
+                f'-D CMAKE_BUILD_TYPE:STRING={ctx.build.build_type}',
 
-                f'-D CMAKE_PREFIX_PATH:PATH={ctx.qt_arch_path}',
-                f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.qt_arch_path}',
-                f'-D QT_HOST_PATH:PATH={ctx.qt_host_path}',
+                f'-D CMAKE_PREFIX_PATH:PATH={ctx.build.qt_arch_path}',
+                f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.build.qt_arch_path}',
+                f'-D QT_HOST_PATH:PATH={ctx.build.qt_host_path}',
             ]
 
             # -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=/srv/qt/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake
 
             if is_android:
-                ndk = Path(ndk)
-                sdk = Path(sdk)
+                ndk = Path(ctx.build.ndk)
+                sdk = Path(ctx.build.sdk)
                 toolchain_path = ndk.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin')
                 cmake_toolchain_path = ndk.joinpath('build', 'cmake', 'android.toolchain.cmake')
                 clang_path = toolchain_path.joinpath('clang')
@@ -281,7 +301,7 @@ def build(
                     f'-D CMAKE_CXX_COMPILER:FILEPATH={clang_path}++',
                     f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
                     f'-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
-                    f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.qmake_path}',
+                    f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.build.qmake_path}',
                 ]
 
             command += [
@@ -297,32 +317,39 @@ def build(
 
             command = ' '.join(command)
             print(command)
-            ctx.run(command, pty=True, echo=True, env=env)
-            ctx.run(f'cmake --build {build_path} --target alpine-toolkit_lupdate', pty=True, echo=True)
+            ctx.run(command, echo=True, env=env)
+            ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
 
-        # cmake --build {build_path} --target all
-        if ninja:
-            # -C build-cmake
-            # -j 4
-            ctx.run('ninja', pty=True)
-        elif make:
-            # -k
-            ctx.run('make -j4', pty=True)
+        if make:
+            # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
+            if use_ninja:
+                # -C build-cmake
+                ctx.run('ninja -j2')
+            else:
+                # -k
+                ctx.run('make -j4')
 
-        # /srv/qt/Qt/6.3.0/gcc_64/bin/androiddeployqt
-        # --input {build_path}/android-touch-app-deployment-settings.json
-        # --output {build_path}/android-build
-        # --android-platform android-31
-        # --jdk /usr/lib/jvm/java-openjdk
-        # --gradle
+        if is_android and deploy:
+            command = [
+                str(ctx.build.qt_bin_path.joinpath('androiddeployqt')),
+                '--input {ctx.build.path}/android-touch-app-deployment-settings.json',
+                '--output {ctx.build.path}/android-build',
+                f'--android-platform {ctx.build.android_plaform}',
+                f'--jdk {ctx.build.jdk}',
+                '--gradle',
+            ]
+            command = ' '.join(command)
+            print(command)
+            ctx.run(command, echo=True)
 
 ####################################################################################################
 
-@task()
+@task(
+    pre=[call(build, cmake=False)]
+)
 def unit_test(ctx):
-    _set_source_path(ctx)
-    build_path = ctx.source_path.joinpath('build-cmake')
-    unit_test_path = build_path.joinpath('unit-tests')
+    # _init_config(ctx)
+    unit_test_path = ctx.build.path.joinpath('unit-tests')
 
     print('Run unit tests...')
     tests = []
@@ -332,7 +359,7 @@ def unit_test(ctx):
         for filename in filenames:
             filename = root.joinpath(filename)
             if os.access(filename, os.X_OK):   # Fixme: Unix
-                filename_part = str(filename).replace(str(build_path.parent), '.')
+                filename_part = str(filename).replace(str(ctx.build.path.parent), '.')
                 print()
                 print('='*100)
                 print(f'Run {filename_part}')
@@ -358,26 +385,17 @@ def unit_test(ctx):
 ####################################################################################################
 
 @task(
-#    pre=[call(build, qt=qt)],
+    pre=[call(build, cmake=False)]
 )
-def run(ctx,
-        qt=None,
-        ):
-    _set_source_path(ctx)
-    build_path = ctx.source_path.joinpath('build-cmake')
+def run(ctx):
+    # _init_config(ctx)
 
-    env = {
-        'QT_LOGGING_RULES': '*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true',
-
-        # QT_GEOCLUE_APP_DESKTOP_ID=alpine-toolkit
-
-        # ALPINE_TOOLKIT_MOCKUP=TRUE
-        # ALPINE_TOOLKIT_FAKE_ANDROID=TRUE
-        # QML_IMPORT_TRACE=1
-        # ASAN_OPTIONS=new_delete_type_mismatch=0
-        # QT_QUICK_CONTROLS_STYLE=material
-    }
-
-    # clear ; ninja -j2 &&
-    command = build_path.joinpath('src', 'alpine-toolkit')
-    ctx.run(command, env=env)
+    print()
+    rule = '='*100
+    print(rule)
+    print('Run Environment:')
+    _ = yaml.dump(dict(ctx.run_env)).strip()
+    print(_)
+    print(rule)
+    command = str(ctx.build.path.joinpath('src', 'alpine-toolkit'))
+    ctx.run(command, env=ctx.run_env)

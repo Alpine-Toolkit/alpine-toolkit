@@ -1,0 +1,7 @@
+build:
+  qt: /opt/Qt/6.3.0
+  arch: android_x86_64
+  ndk: /srv/qt/Android/ndk-bundle
+  sdk: /srv/qt/Android
+  android_platform: android-31
+  jdk: /usr/lib/jvm/java-openjdk
