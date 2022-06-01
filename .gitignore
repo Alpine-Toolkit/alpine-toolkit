@@ -1,25 +1,45 @@
 # -*- mode: conf -*-
 
 ####################################################################################################
+#
+# Secret data
 
-*.moc
-*.o
-*.qmlc
+notes
+private/
+setenv.sh
+unit-tests/camptocamp/login.h
+
+####################################################################################################
+
+__NOGIT__
+no-git
+
+assistant-qt6
+
+####################################################################################################
+#
+# Backup Trash ...
+#
+
 *~
-__pycache__
-moc_*.cpp
 
 .directory
 du.log
 
-__NOGIT__
 __TRASH__
-no-git
-trash
 
 ####################################################################################################
 #
 # Build
+
+__pycache__
+
+*.moc
+*.o
+*.qmlc
+moc_*.cpp
+
+review.json
 
 build-android-arm64-v8a/
 build-gcc_64/
@@ -30,15 +50,13 @@ doc/sphinx/build/
 sqlite/Qt5.9-gcc_64
 sqlite/qmake-build/
 
-####################################################################################################
-#
-# Secret data
-
-unit-tests/camptocamp/login.h
-
-####################################################################################################
-#
 # Generated Files
+resources/icon-resources/svg/png/
+resources/tones/*.mp3
+resources/tones/*.mp4
+resources/tones/*.ogg
+resources/tones/*.opus
+resources/tones/*.wav
 
 ####################################################################################################
 #
@@ -53,15 +71,15 @@ code-generator/camptocamp/camptocamp-*.js
 code-generator/camptocamp/camptocamp-definitions*.json
 code-generator/camptocamp/camptocamp-orm*.json
 
-code-generator/camptocamp/c2corg.sql
-code-generator/camptocamp/tables.txt
+code-generator/camptocamp/bug-weakref.txt
+code-generator/camptocamp/notes/
+
+# code-generator/camptocamp/c2corg.sql
+# code-generator/camptocamp/tables.txt
 
 ####################################################################################################
 #
 # Notes
-
-doc/html
-notes/
 
 ####################################################################################################
 #
@@ -69,24 +87,16 @@ notes/
 
 resources/fonts/Roboto-Medium.ttf
 resources/fonts/Roboto-Regular.ttf
+
 resources/icon-resources/camptocamp/c2c-activities.zip
 resources/icon-resources/camptocamp/fonts-from-c2c/
 resources/icon-resources/material-design-icons/
 resources/icon-resources/models/
-resources/icon-resources/svg/png/
 resources/icon-resources/svg/ruler_backup.svg
-tasks/lib/__icons__/scripts/copy-all-idea.sh
+
 resources/js/attributes.py
 resources/js/filter.txt
 resources/js/filters.html
-resources/pages/Checklist-dev.qml
-resources/pages/notes.txt
-
-resources/tones/*.mp3
-resources/tones/*.mp4
-resources/tones/*.ogg
-resources/tones/*.opus
-resources/tones/*.wav
 
 extra/fuel-gauge/auto/
 extra/fuel-gauge/fuel-gauge.aux
@@ -100,14 +110,20 @@ extra/fuel-gauge/fuel-gauge.tex
 #
 # Script
 
-# tasks/lib/__dev_tools__/read-rrd.py
-# tasks/lib/__dev_tools__/run-androiddeployqt.sh
 tasks/lib/__build_tools__/old/run-androiddeployqt.sh
+tasks/lib/__build_tools__/push-android.sh
+tasks/lib/__build_tools__/tools/
 
-tasks/lib/__dev_tools__/open-doc.sh
-tasks/lib/__dev_tools__/push-to-bleausard.sh
+tasks/lib/__dev_tools__/get-class
+tasks/lib/__dev_tools__/less-used/fix-license-header.sh
+tasks/lib/__dev_tools__/lookup-fixme.sh
+tasks/lib/__dev_tools__/old/
 tasks/lib/__dev_tools__/push-to-vps.sh
-tasks/lib/__dev_tools__/run-cmake-android-old.sh
+tasks/lib/__dev_tools__/read-rrd.py
+
+tasks/lib/__icons__/scripts/copy-all-idea.sh
+
+tasks/lib/ign/BdAlti.diff
 
 ####################################################################################################
 #
@@ -127,20 +143,29 @@ third-parties/include/
 third-parties/local/
 
 third-parties/archives/
+
 third-parties/geos/Android.mk
 third-parties/geos/geos-3.6.1/
 third-parties/geos/geos-sources
+
 third-parties/libiconv/Android.mk
 third-parties/libiconv/dist.cmake
 third-parties/libiconv/libiconv-1.13.1/
 third-parties/libiconv/libiconv-sources
+
+third-parties/libspatialindex/cmake.log
 third-parties/libspatialindex/libspatialindex.git/
+third-parties/libspatialindex/make.log
+
 third-parties/openssl
 third-parties/openssl-1.0.2h-old/
 third-parties/openssl-1.0.2h/
+
 third-parties/proj4
+
 third-parties/spatialite/libspatialite-4.4.0-RC1/
 third-parties/spatialite/spatialite-sources
+
 third-parties/sqlite/Android.mk
 third-parties/sqlite/sqlite-amalgamation
 third-parties/sqlite/sqlite-amalgamation-3180000/
@@ -149,54 +174,42 @@ third-parties/sqlite/sqlite-amalgamation-3180000/
 #
 # Android
 
-android/.build/
 android/.gradle/
 android/.idea/
-android/android.iml
+android/AndroidManifest.xml-template
+android/gradle.properties
 
 ####################################################################################################
 
-git-archives/
+__NEW__/
 
-####################################################################################################
+dev-test/
 
-__TRASH__/
-adb-log.txt
-android-log.txt
-class-def.txt
-class-orm.txt
-class-src.txt
-code-generator/camptocamp/bug-weakref.txt
-code-generator/class-def.txt
-code-generator/jinja-test/
-code-generator/jinja-whitespace-test.py
-code-generator/sqlalchemy/
-code-generator/test/
-cpp-test/
-doc/sphinx/__ACTUALLY_EMPTY__
-doc/sphinx/source/data.rst
-doc/sphinx/source/themes/sphinx_rtd_theme
-doc/sphinx/source/themes/sphinx_rtd_theme-dev
-doc/sphinx/source/themes/sphinx_rtd_theme-venv
-firefox-tabs.png
-geoportail-urls.txt
-gitignore-old.txt
-imports/QtCarto/compilation-errors.txt
-imports/QtCarto/qmldir-orig
-imports/settings/
-linux-directories/
+doc/indent.h
+doc/sphinx/source/design/android-release.rst
+
+linux/
+
 map-providers/countries/
 map-providers/init.sh
 map-providers/wmts-specifications/
+
+map-tools/compare.log
+
 mapviewer/main-bis.cpp
+mapviewer/main.diff
 mapviewer/pages/Layers-v2.qml
-mapviewer/pages/graphic-test.qml
-qml-test/
-qtcarto-devel/
-qtcarto-notes/
+mapviewer/pages/Layers.diff
+mapviewer/pages/graphic-test.qml-b
+
+qmake-files/alpine-toolkit-all.pro.user
+qmake-files/imports/settings/
+qmake-files/sqlite/orig/
+
 resources/icon-resources/glyphicons/
 resources/icon-resources/svg/ic_volume_mute_48px.svg
 resources/icon-resources/svg/ic_volume_off_48px.svg
+
 resources/icons/comment-black.png
 resources/icons/comment-black@2x.png
 resources/icons/comment-black@3x.png
@@ -253,14 +266,6 @@ resources/icons/screen-rotation-white.png
 resources/icons/screen-rotation-white@2x.png
 resources/icons/screen-rotation-white@3x.png
 resources/icons/screen-rotation-white@4x.png
-resources/icons/sd-card-black.png
-resources/icons/sd-card-black@2x.png
-resources/icons/sd-card-black@3x.png
-resources/icons/sd-card-black@4x.png
-resources/icons/sd-card-white.png
-resources/icons/sd-card-white@2x.png
-resources/icons/sd-card-white@3x.png
-resources/icons/sd-card-white@4x.png
 resources/icons/tune-black.png
 resources/icons/tune-black@2x.png
 resources/icons/tune-black@3x.png
@@ -277,7 +282,6 @@ resources/icons/volume-off-white.png
 resources/icons/volume-off-white@2x.png
 resources/icons/volume-off-white@3x.png
 resources/icons/volume-off-white@4x.png
-resources/icons/volume-white.svg
 resources/icons/wifi-black.png
 resources/icons/wifi-black@2x.png
 resources/icons/wifi-black@3x.png
@@ -286,90 +290,19 @@ resources/icons/wifi-white.png
 resources/icons/wifi-white@2x.png
 resources/icons/wifi-white@3x.png
 resources/icons/wifi-white@4x.png
-resources/js/trash.js
+
 resources/qml/Pages/image_page_example.qml
-src/application/trash.cpp
-src/bleaudb/notes.cpp
-src/bleaudb/tmp/
-src/network/network_reply.diff
-src/orm/database_query_old.h
-src/orm/list-api.txt
-src/orm/qvariant-notes.txt
-src/platform_abstraction/android_notes.cpp
-src/platform_abstraction/trash.cpp
+resources/qml/Widgets/MapComponent.qml-d
+
+src/base/network/network_reply.diff
+src/base/orm/database_query_old.h
+
+src/qml/settings/
+
 src/qtcarto/geo_data_format/wkb_definitions.h
-src/qtcarto/geometry/devel-test/
 src/qtcarto/map/map_area.cpp
 src/qtcarto/map/map_area.h
 src/qtcarto/map/mapped_path.cpp
 src/qtcarto/map/mapped_path.h
-src/qtcarto/scene/notes.txt
 src/qtcarto/wmts/providers/austria/mobile-base3.js
 src/qtcarto/wmts/providers/geoportail/ols.txt
-src/refuge/notes.txt
-src/settings/trash.cpp
-third-parties/libspatialindex/cmake.log
-third-parties/libspatialindex/make.log
-tasks/lib/__dev_tools__/clean
-tasks/lib/__dev_tools__/get-class
-tasks/lib/__dev_tools__/less-used/fix-license-header.sh
-tasks/lib/__dev_tools__/less-used/run-cmake-android-old.sh
-tasks/lib/__dev_tools__/lookup-fixme.sh
-tasks/lib/__dev_tools__/open-doc.sh
-tasks/lib/__dev_tools__/push-to-bleausard.sh
-tasks/lib/__dev_tools__/push-to-vps.sh
-tasks/lib/__dev_tools__/read-rrd.py
-tasks/lib/__dev_tools__/remote-avd.sh
-tasks/lib/__dev_tools__/set-git-env.sh
-tasks/lib/__dev_tools__/old/
-tasks/lib/__build_tools__/tools/
-unused-java/
-
-android/AndroidManifest.xml-template
-map-tools/compare.log
-mapviewer/pages/graphic-test.qml-b
-resources/qml/Widgets/MapComponent.qml-d
-
-.git-backup/
-__TMP__.txt
-assistant-qt5
-assistant-qt6
-push-android.sh
-review.json
-tmp0.diff
-
-# 2022/05
-indent.h
-mapviewer/main.diff
-mapviewer/pages/Layers.diff
-o.txt
-resources/shaders/#point.frag#
-resources/shaders/.#point.frag
-tasks/lib/ign/BdAlti.diff
-
-IDEA.md
-android/gradle.properties
-dev-test/
-doc/sphinx/source/design/android-release.rst
-github-repo.md
-linux/
-notes
-private/
-qtlocation/
-setenv.sh
-swisstopo/
-
-qmake-files/imports/settings/
-qmake-files/sqlite/orig/
-qmake-files/alpine-toolkit-all.pro.*user*
-
-src/base/network/network_reply.diff
-src/base/orm/database_query_old.h
-src/qml/settings/
-src/qt/qtcarto/geo_data_format/wkb_definitions.h
-src/qt/qtcarto/map/map_area.cpp
-src/qt/qtcarto/map/map_area.h
-src/qt/qtcarto/map/mapped_path.cpp
-src/qt/qtcarto/map/mapped_path.h
-src/qt/qtcarto/wmts/providers/austria/mobile-base3.js
-src/qt/qtcarto/wmts/providers/geoportail/ols.txt
