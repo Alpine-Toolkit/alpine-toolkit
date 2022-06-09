@@ -25,29 +25,27 @@
 ####################################################################################################
 
 ####################################################################################################
-
-import sys
-_version = sys.version_info
-if not (_version.major == 3 and _version.minor >= 10):
-    raise NameError("Require Python 3.10")
+#
+# // clang-format off
+# // clang-format on
+#
+####################################################################################################
 
 ####################################################################################################
 
-from types import ModuleType
-
-# http://www.pyinvoke.org
-from invoke import Collection
+from invoke import task
 
 ####################################################################################################
 
-from . import build
-from . import clean
-from . import doc
-from . import ign
-from . import indent
-from . import inspect
+@task()
+def clang_format(ctx):
+    # preview the changes done by the formatter"
+    command = 'git clang-format --diff'
+    ctx.run(command, pty=True)  # pty to get ANSI colors
 
-modules = [obj for name, obj in globals().items() if isinstance(obj, ModuleType)]
-ns = Collection()
-for _ in modules:
-    ns.add_collection(Collection.from_module(_))
+    # format the changed parts
+    # 'git clang-format --force'
+
+    # clang-format -n src/main.cpp
+    # clang-format src/main.cpp
+    # clang-format -i src/main.cpp
