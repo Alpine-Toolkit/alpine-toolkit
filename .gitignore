@@ -41,6 +41,8 @@ __pycache__
 *.qmlc
 moc_*.cpp
 
+.cache
+
 review.json
 
 build-android-arm64-v8a/
@@ -297,3 +299,13 @@ src/qtcarto/wmts/providers/austria/mobile-base3.js
 src/qtcarto/wmts/providers/geoportail/ols.txt
 
 src/qml/settings/WHAT_IS_THE_PURPOSE
+
+.projectile-disabled
+clang-format-llvm.txt
+clang-format-webkit.txt
+doc/indent.cpp
+dot-emacs.elc
+sandbox/
+src/qml/QtCarto/map_gesture_area.new.cpp
+src/qml/QtCarto/map_gesture_area.new.h
+tmp.el
