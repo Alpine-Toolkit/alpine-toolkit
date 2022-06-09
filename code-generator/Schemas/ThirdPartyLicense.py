@@ -26,7 +26,7 @@
 
 ####################################################################################################
 
-output = ('src', 'third_party_license', 'third_party_license_schema')
+output = ('src', 'data_sources', 'third_party_license', 'third_party_license_schema')
 
 ####################################################################################################
 
