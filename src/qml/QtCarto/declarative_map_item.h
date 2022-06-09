@@ -160,8 +160,8 @@ protected:
   void touchUngrabEvent() Q_DECL_OVERRIDE;
   void wheelEvent(QWheelEvent * event) Q_DECL_OVERRIDE ;
 
-  /* bool sendMouseEvent(QMouseEvent *event); */
-  /* bool sendTouchEvent(QTouchEvent *event); */
+  // bool sendMouseEvent(QMouseEvent *event);
+  // bool sendTouchEvent(QTouchEvent *event);
 
   void componentComplete() Q_DECL_OVERRIDE ;
   void geometryChange(const QRectF & new_geometry, const QRectF & old_geometry) Q_DECL_OVERRIDE ;

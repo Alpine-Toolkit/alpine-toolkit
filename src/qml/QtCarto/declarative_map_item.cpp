@@ -130,13 +130,19 @@ QcMapItem::componentComplete()
 bool
 QcMapItem::is_interactive()
 {
-  return (m_gesture_area->enabled() and m_gesture_area->accepted_gestures()) or m_gesture_area->is_active();
+  // clang-format off
+  return (
+          ( m_gesture_area->enabled() and m_gesture_area->accepted_gestures() )
+          or
+          m_gesture_area->is_active()
+          );
+  // clang-format on
 }
 
 void
 QcMapItem::mousePressEvent(QMouseEvent * event)
 {
-  // Never called when a child (MouseArea) should receive th event
+  // Never called when a child (MouseArea) should receive the event
   qQCDebug() << event;
   if (is_interactive())
     m_gesture_area->handle_mouse_press_event(event);
