@@ -1,0 +1,184 @@
+#! /usr/bin/env python3
+
+# ; https://github.com/akicho8/string-inflection
+# (require 'string-inflection)
+# (global-set-key (kbd "M-n")  'string-inflection-underscore)
+
+# (global-set-key (kbd "C-c i") 'string-inflection-cycle)
+# (global-set-key (kbd "C-c C") 'string-inflection-camelcase)        ;; Force to CamelCase
+# (global-set-key (kbd "C-c L") 'string-inflection-lower-camelcase)  ;; Force to lowerCamelCase
+# (global-set-key (kbd "C-c J") 'string-inflection-java-style-cycle) ;; Cycle through Java styles
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+def uncamel(identifier: str ) -> str:
+    new_id = ''
+    for c in identifier:
+        if c.isupper():
+            new_id += '_' + c.lower()
+        else:
+            new_id += c
+    return new_id
+
+####################################################################################################
+
+class Extractor:
+
+    ##############################################
+
+    def __init__(self) -> None:
+        self._identifiers = set()
+        self._indentifier_position = {}
+
+    ##############################################
+
+    def parse(self, path: str) -> None:
+        with open(path) as fh:
+            for line_number, line in enumerate(fh.readlines()):
+                self._tokenize_line(line, line_number)
+
+    ##############################################
+
+    def _tokenize_line(self, line: str, line_number: int) -> None:
+        # print(line.rstrip())
+        identifier = None
+        for c in line:
+            if c.isalpha() or c in ('_',):
+                if identifier is None:
+                    identifier = c
+                else:
+                    identifier += c
+            else:
+                if identifier is not None:
+                    self._identifiers.add(identifier)
+                    if identifier not in self._indentifier_position:
+                        position = len(self._identifiers)
+                        self._indentifier_position[identifier] = position
+                identifier = None
+
+    ##############################################
+
+    def is_camel(self, identifier: str) -> True:
+        if len(identifier) < 3:
+            return False
+        first = identifier[0]
+        if first == 'Q':
+            return False
+        is_camel = False
+        camel_count = 0
+        for c in identifier:
+            if c.isupper():
+                is_camel = True
+                camel_count += 1
+        if first.isupper():
+            is_camel = False
+        return is_camel
+
+    ##############################################
+
+    @property
+    def camel_identifiers(self):
+        identifiers = sorted(self._identifiers, key=lambda identifier: self._indentifier_position[identifier])
+        for identifier in identifiers:
+            if self.is_camel(identifier):
+                yield identifier
+
+    ##############################################
+
+    def dump_identifiers(self):
+        for identifier in self.camel_identifiers:
+            if identifier.startswith('m_'):
+                print(identifier)
+            else:
+                print('#', identifier)
+
+####################################################################################################
+
+class Uncamel:
+
+    ##############################################
+
+    def __init__(self, identifiers_path: str) -> None:
+
+        self._map = {}
+        with open(identifiers_path) as fh:
+            for line in fh.readlines():
+                line = line.strip()
+                if not line:
+                    continue
+                if line.startswith('#'):
+                    continue
+                if '>' in line:
+                    from_id, to_id = [_.strip() for _ in line.split('>')]
+                else:
+                    from_id, to_id = line, uncamel(line)
+                self._map[from_id] = to_id
+        self._identifiers = sorted(self._map.keys(), reverse=True)
+
+    ##############################################
+
+    def process(self, source_path: str) -> None:
+        lines = []
+        with open(source_path) as fh:
+            for line in fh.readlines():
+                new_line = line
+                for identifier in self._identifiers:
+                    new_line = new_line.replace(identifier, self._map[identifier])
+                lines.append(new_line)
+                if line != new_line:
+                    print('-'*100)
+                    print(line.rstrip())
+                    print('->')
+                    print(new_line.rstrip())
+        with open(source_path, 'w') as fh:
+            for line in lines:
+                fh.write(line)
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='')
+
+parser.add_argument(
+    '--extract',
+    action='store_true',
+    help='',
+)
+
+parser.add_argument(
+    '--replace',
+    action='store_true',
+    help='',
+)
+
+parser.add_argument(
+    'source_path',
+    metavar='FILE',
+    nargs='+',
+    type=str,
+    help='',
+)
+
+# parser.add_argument(
+#     '--identifiers',
+#     type=str,
+#     help='',
+# )
+
+args = parser.parse_args()
+
+if args.extract:
+    extractor = Extractor()
+    for path in args.source_path:
+        extractor.parse(path)
+    extractor.dump_identifiers()
+elif args.replace:
+    if len(args.source_path) < 2:
+        raise ValueError()
+    identifier_paths, *sources = args.source_path
+    uncamel = Uncamel(identifier_paths)
+    for path in sources:
+        uncamel.process(path)
