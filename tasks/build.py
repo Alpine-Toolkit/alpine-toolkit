@@ -163,7 +163,7 @@ def init_source(ctx):
         with ctx.cd(path.parent):
             ctx.run(f"git clone --depth=1 {cmark_url} {path}", echo=True)
 
-    if not_source_exists('src', 'third_party_license', 'third_party_license_schema.h'):
+    if not_source_exists('src', 'data_sources', 'third_party_license', 'third_party_license_schema.h'):
         generate_code(ctx)
 
     third_parties = ctx.build.source.joinpath('third-parties')
@@ -178,9 +178,9 @@ def init_source(ctx):
     #!# ./third-parties/include/cmark/cmark.h
 
     snowball_source = third_parties.joinpath('snowball', 'snowball.git')
-    snowball_url = 'https://github.com/snowballstem/snowball'
     if not snowball_source.joinpath('src_c').exists():
         raise NameError("Snowball source are missing")
+        snowball_url = 'https://github.com/snowballstem/snowball'
         # Fixme: snowball is not up to date
         # git_clone(snowball_url, snowball_source)
         # third-parties/include/snowball
