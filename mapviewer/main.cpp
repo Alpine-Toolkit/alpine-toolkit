@@ -41,8 +41,8 @@
 
 #include "configuration/configuration.h"
 #include "logging/handler.h"
-#include "tools/debug_data.h"
-#include "tools/platform.h"
+#include "debug_data/debug_data.h"
+#include "platform/platform.h"
 
 #include "declarative_map_item.h"
 

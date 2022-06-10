@@ -32,8 +32,17 @@
 #
 
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/base)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/data_sources)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/qml)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/utils)
+include_directories(${CMAKE_SOURCE_DIR}/src/qml/QtCarto)
 include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
+
+####################################################################################################
+
+add_subdirectory(service)
+# add_subdirectory(qml)
 
 ####################################################################################################
 #
@@ -41,12 +50,12 @@ include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
 #
 
 set(alpine_toolkit_common_library_files
+  base/logging/handler.cpp
+  base/logging/logger.cpp
   configuration/configuration.cpp
   configuration/linux_configuration.cpp
-  logging/handler.cpp
-  logging/logger.cpp
-  tools/debug_data.cpp
-  tools/platform.cpp
+  utils/debug_data/debug_data.cpp
+  utils/platform/platform.cpp
   )
 add_library(alpine_toolkit_common SHARED ${alpine_toolkit_common_library_files})
 target_link_libraries(alpine_toolkit_common
@@ -69,60 +78,63 @@ add_subdirectory(qtcarto)
 #
 
 set(alpine_toolkit_library_files
-  #document/document_manager.cpp
-  bleaudb/bleau_schema.cpp
-  bleaudb/bleau_schema_manager.cpp
-  bleaudb/bleau_sqlite_database.cpp
-  checksum/checksum.cpp
-  camptocamp/camptocamp_api_cache.cpp
-  camptocamp/camptocamp_client.cpp
-  camptocamp/camptocamp_document.cpp
-  camptocamp/camptocamp_login.cpp
-  camptocamp/camptocamp_login_data.cpp
-  camptocamp/camptocamp_media_cache.cpp
-  camptocamp/camptocamp_qml.cpp
-  camptocamp/camptocamp_search_settings.cpp
-  camptocamp/camptocamp_schema.cpp
-  document/document.cpp
-  document/document_database.cpp
-  ephemeride/ephemeride.cpp
-  full_text_search/text_document.cpp
-  full_text_search/phonetic_encoder.cpp
-  full_text_search/stemmer.cpp
-  full_text_search/token.cpp
-  full_text_search/tokenizer.cpp
-  international_morse_code_engine/international_morse_code_engine.cpp
-  network/network_downloader.cpp
-  network/network_reply.cpp
-  network/network_request.cpp
-  network/network_request_manager.cpp
-  orm/database.cpp
-  orm/database_connection.cpp
-  orm/database_query.cpp
-  orm/database_schema.cpp
-  orm/database_table.cpp
-  orm/json_adaptator.cpp
-  orm/network_database.cpp
-  orm/schema.cpp
-  orm/schema_manager.cpp
-  orm/sql_query_model.cpp
-  orm/sqlite_database.cpp
-  orm/type_conversion.cpp
-  platform_abstraction/android_fake_permission_manager.cpp
-  platform_abstraction/android_fake_platform.cpp
-  platform_abstraction/linux_platform.cpp
-  platform_abstraction/permission_manager.cpp
-  platform_abstraction/platform_abstraction.cpp
-  refuge/refuge_schema.cpp
-  refuge/refuge_schema_custom_code.cpp
-  refuge/refuge_schema_manager.cpp
-  refuge/refuge_sqlite_database.cpp
-  rrd/rrd.cpp
-  settings/settings_database.cpp
-  settings/settings_tree.cpp
-  third_party_license/third_party_license_schema.cpp
-  third_party_license/third_party_license_schema_manager.cpp
-  third_party_license/third_party_license_sqlite_database.cpp
+  base/network/network_downloader.cpp
+  base/network/network_reply.cpp
+  base/network/network_request.cpp
+  base/network/network_request_manager.cpp
+
+  base/orm/database.cpp
+  base/orm/database_connection.cpp
+  base/orm/database_query.cpp
+  base/orm/database_schema.cpp
+  base/orm/database_table.cpp
+  base/orm/json_adaptator.cpp
+  base/orm/network_database.cpp
+  base/orm/schema.cpp
+  base/orm/schema_manager.cpp
+  base/orm/sql_query_model.cpp
+  base/orm/sqlite_database.cpp
+  base/orm/type_conversion.cpp
+  base/platform_abstraction/android_fake_permission_manager.cpp
+  base/platform_abstraction/android_fake_platform.cpp
+  base/platform_abstraction/linux_platform.cpp
+  base/platform_abstraction/permission_manager.cpp
+  base/platform_abstraction/platform_abstraction.cpp
+
+  data_sources/bleaudb/bleau_schema.cpp
+  data_sources/bleaudb/bleau_schema_manager.cpp
+  data_sources/bleaudb/bleau_sqlite_database.cpp
+  data_sources/camptocamp/camptocamp_api_cache.cpp
+  data_sources/camptocamp/camptocamp_client.cpp
+  data_sources/camptocamp/camptocamp_document.cpp
+  data_sources/camptocamp/camptocamp_login.cpp
+  data_sources/camptocamp/camptocamp_login_data.cpp
+  data_sources/camptocamp/camptocamp_media_cache.cpp
+  data_sources/camptocamp/camptocamp_qml.cpp
+  data_sources/camptocamp/camptocamp_schema.cpp
+  data_sources/camptocamp/camptocamp_search_settings.cpp
+  data_sources/document/document.cpp
+  data_sources/document/document_database.cpp
+  #data_sources/document/document_manager.cpp
+  data_sources/refuge/refuge_schema.cpp
+  data_sources/refuge/refuge_schema_custom_code.cpp
+  data_sources/refuge/refuge_schema_manager.cpp
+  data_sources/refuge/refuge_sqlite_database.cpp
+  data_sources/settings/settings_database.cpp
+  data_sources/settings/settings_tree.cpp
+  data_sources/third_party_license/third_party_license_schema.cpp
+  data_sources/third_party_license/third_party_license_schema_manager.cpp
+  data_sources/third_party_license/third_party_license_sqlite_database.cpp
+
+  utils/checksum/checksum.cpp
+  utils/ephemeride/ephemeride.cpp
+  utils/full_text_search/phonetic_encoder.cpp
+  utils/full_text_search/stemmer.cpp
+  utils/full_text_search/text_document.cpp
+  utils/full_text_search/token.cpp
+  utils/full_text_search/tokenizer.cpp
+  utils/international_morse_code_engine/international_morse_code_engine.cpp
+  utils/rrd/rrd.cpp
   )
 add_library(alpine_toolkit SHARED ${alpine_toolkit_library_files})
 target_link_libraries(alpine_toolkit
@@ -148,11 +160,11 @@ set(alpine_toolkit_executable_files
   main.cpp
   application/application.cpp
   application/test.cpp
-  satellite_model/satellite_model.cpp
-  sensors/qml_barimeter_altimeter_sensor.cpp
-  sensors/qmlsensor.cpp
-  sensors/qmlsensorrange.cpp
-  ${CMAKE_SOURCE_DIR}/service/client.cpp
+  qml/satellite_model/satellite_model.cpp
+  qml/sensors/qml_barimeter_altimeter_sensor.cpp
+  qml/sensors/qmlsensor.cpp
+  qml/sensors/qmlsensorrange.cpp
+  service/client.cpp
   )
 
 add_executable(alpine-toolkit ${alpine_toolkit_executable_files})
@@ -162,7 +174,7 @@ add_subdirectory(resources)
 # Not available
 # qtquick_compiler_add_resources(resources ../resources/alpine-toolkit.qrc)
 
-qt_add_repc_replicas(alpine-toolkit ${CMAKE_SOURCE_DIR}/service/service.rep)
+qt_add_repc_replicas(alpine-toolkit service/service.rep)
 target_link_libraries(alpine-toolkit
   alpine_toolkit_common
   alpine_toolkit
@@ -172,5 +184,5 @@ target_link_libraries(alpine-toolkit
   )
 
 if(ANDROID)
-  target_sources(alpine-toolkit PRIVATE platform_abstraction/android_native.cpp)
+  target_sources(alpine-toolkit PRIVATE base/platform_abstraction/android_native.cpp)
 endif()

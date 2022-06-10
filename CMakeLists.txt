@@ -299,12 +299,9 @@ if(NOT ANDROID)
   include_directories(third-parties/include)
 
   # add_subdirectory(cpp-test)
-  add_subdirectory(service)
   add_subdirectory(src)
   add_subdirectory(unit-tests)
-  # add_subdirectory(imports)
 
   add_subdirectory(map-tools)
-  add_subdirectory(imports)
   add_subdirectory(mapviewer)
 endif(NOT ANDROID)

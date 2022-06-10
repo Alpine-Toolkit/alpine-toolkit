@@ -123,10 +123,10 @@ set(qtcarto_files
   wmts/wmts_request_manager.cpp
   wmts/wmts_tile_fetcher.cpp
 
-  ../../imports/QtCarto/declarative_map_item.cpp
-  ../../imports/QtCarto/geo_coordinate_animation.cpp
-  ../../imports/QtCarto/map_gesture_area.cpp
-  ../../imports/QtCarto/plugin_data.cpp
+  ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/declarative_map_item.cpp
+  ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/geo_coordinate_animation.cpp
+  ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/map_gesture_area.cpp
+  ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/plugin_data.cpp
   )
 add_library(qtcarto SHARED ${qtcarto_files})
 target_link_libraries(qtcarto

@@ -6,9 +6,11 @@
 #
 
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
+include_directories(${CMAKE_SOURCE_DIR}/src/base)
+include_directories(${CMAKE_SOURCE_DIR}/src/data_sources)
+include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 # to embed QtCarto Module
-include_directories(${CMAKE_SOURCE_DIR}/imports/QtCarto/)
+include_directories(${CMAKE_SOURCE_DIR}/src/qml/QtCarto/)
 include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
 
 ####################################################################################################

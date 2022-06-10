@@ -5,6 +5,4 @@
 # Sub directories
 #
 
-INCLUDE_DIRECTORIES(src)
-
 add_subdirectory(QtCarto)

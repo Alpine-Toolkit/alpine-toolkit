@@ -52,7 +52,7 @@
 #include "platform_abstraction/platform_abstraction.h"
 #include "satellite_model/satellite_model.h"
 #include "sensors/qml_barimeter_altimeter_sensor.h"
-#include "tools/debug_data.h"
+#include "debug_data/debug_data.h"
 
 #include "declarative_map_item.h"
 #include "map_gesture_area.h"

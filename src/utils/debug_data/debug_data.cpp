@@ -30,7 +30,7 @@
 #include "alpine_toolkit.h"
 
 #include "configuration/configuration.h"
-#include "tools/platform.h"
+#include "platform/platform.h"
 
 #include <QFile>
 #include <QJsonDocument>

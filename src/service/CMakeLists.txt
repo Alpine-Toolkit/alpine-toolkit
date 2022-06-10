@@ -44,7 +44,7 @@ set(alpine_toolkit_service_files
   main.cpp
   service.cpp
   service_application.cpp
-  ${CMAKE_SOURCE_DIR}/src/logging/logger.cpp
+  ${CMAKE_SOURCE_DIR}/src/base/logging/logger.cpp
   )
 
 # add_library(alpine_toolkit_service SHARED ${alpine_toolkit_service_files})

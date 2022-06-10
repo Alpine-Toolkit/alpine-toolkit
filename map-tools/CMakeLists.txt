@@ -6,6 +6,9 @@
 #
 
 # include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/src/base)
+include_directories(${CMAKE_SOURCE_DIR}/src/data_sources)
+include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 
 ####################################################################################################
 #
