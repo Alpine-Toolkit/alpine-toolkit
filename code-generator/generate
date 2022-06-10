@@ -72,8 +72,8 @@ for obj in schema_module.__dict__.values():
         schema_repository_cls = obj
 
 if schema_repository_cls is not None:
-    logging.info("Found SchemaRepository {}".format(schema_repository_cls))
-    logging.info("Ouput\n  {0}.h\n  {0}.cpp".format(path))
+    logging.info(f"Found SchemaRepository {schema_repository_cls}")
+    logging.info(f"Ouput\n  {path}.h\n  {path}.cpp")
     schema_repository = schema_repository_cls()
     template_path = os.path.join(code_generator_path, 'code-generator-templates')
     template_environment = TemplateEnvironment(template_path)
