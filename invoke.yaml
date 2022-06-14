@@ -3,7 +3,10 @@ build:
   # generator: make
   generator: ninja
 
-  qt: .../Qt
+  # openssl: openssl-1.1.1o
+  openssl: openssl-1.1.1.git
+
+  # qt: .../Qt
   arch: gcc_64
 
   # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html

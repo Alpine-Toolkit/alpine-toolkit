@@ -1,0 +1,15 @@
+build:
+    # generator: make
+  generator: ninja
+
+  # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+  cflags: -g -O0
+  # cflags: -O3 -march=... -mtune=... -flto
+
+  build_type: DEBUG
+
+  qt: /opt/Qt/6.3.1
+  sdk: /opt/Android
+  ndk: /opt/Android/ndk/24.0.8215888
+  arch: android_armv7
+  android_api: 29

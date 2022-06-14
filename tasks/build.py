@@ -27,8 +27,11 @@
 ####################################################################################################
 
 from pathlib import Path
+import glob
 import os
 import pathlib
+import tempfile
+import shutil
 import sys
 
 import invoke
@@ -42,6 +45,22 @@ def _init_config(ctx) -> None:
     if hasattr(ctx.build, 'source_path'):
         return
 
+    ctx.build['source'] = Path(__file__).parents[1]
+    ctx.build['resources_path'] = ctx.build.source.joinpath('resources')
+    ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
+
+    ctx.build['third_parties'] = ctx.build.source.joinpath('third-parties')
+    ctx.build['openssl_source'] = ctx.build.third_parties.joinpath(ctx.build.openssl)
+
+    if not hasattr(ctx.build, 'qt'):
+        config_files = glob.glob(str(ctx.build.source.joinpath("build*.yaml")))
+        print("Usage: inv -f build-XXX.yaml build.XXX")
+        print("Available config files:")
+        for _ in config_files:
+            print(_)
+        print()
+        raise NameError("Config file is missing")
+
     ARCH = (
         'gcc_64',
         'android_x86',
@@ -51,10 +70,6 @@ def _init_config(ctx) -> None:
     )
     if ctx.build.arch not in ARCH:
         raise NameError(f"arch must be {ARCH}")
-
-    ctx.build['source'] = Path(__file__).parents[1]
-    ctx.build['resources_path'] = ctx.build.source.joinpath('resources')
-    ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
 
     _set_qt(ctx)
 
@@ -88,13 +103,9 @@ def _set_qt(ctx) -> None:
 
 @task()
 def dump_config(ctx):
-
-    def to_dict(d):
-        return {key: value for key, value in d.items()}
-
     _init_config(ctx)
-    config = ctx.config
-    config = to_dict(config)
+
+    config = dict(ctx.config.items())
 
     def path_representer(dumper, data):
         return dumper.represent_scalar('!PATH', str(data))
@@ -102,6 +113,25 @@ def dump_config(ctx):
     yaml.add_representer(pathlib.PosixPath, path_representer)
 
     print(yaml.dump(config))
+
+####################################################################################################
+
+@task()
+def dump_android(ctx):
+    _init_config(ctx)
+
+    sdk = Path(ctx.build.sdk)
+    ndk = Path(ctx.build.ndk)
+    print(f'SDK {sdk}')
+
+    sdkmanager = sdk.joinpath('cmdline-tools', 'latest', 'bin', 'sdkmanager')
+    ctx.run(f'{sdkmanager} --list_installed', echo=True)
+
+    with open(ndk.joinpath('source.properties')) as fh:
+        for line in fh.readlines():
+            if line.startswith('Pkg.Revision ='):
+                ndk_revision = line.split('=')[1].strip()
+                print(f'NDK {ndk_revision}   {ndk}')
 
 ####################################################################################################
 
@@ -158,31 +188,53 @@ def init_source(ctx):
     def not_source_exists(*args):
         return not ctx.build.source.joinpath(*args).exists()
 
-    def git_clone(url, path):
-        print(f"Get {url}")
+    def git_clone(url, path, branch=None):
+        print(f"Clone repository {url}")
         with ctx.cd(path.parent):
-            ctx.run(f"git clone --depth=1 {cmark_url} {path}", echo=True)
+            command = f"git clone --depth=1"
+            if branch:
+                command += f" --branch {branch}"
+            command += f" {url} {path}"
+            ctx.run(command, echo=True)
 
     if not_source_exists('src', 'data_sources', 'third_party_license', 'third_party_license_schema.h'):
         generate_code(ctx)
 
-    third_parties = ctx.build.source.joinpath('third-parties')
+    if not ctx.build.openssl_source.exists():
+        if ctx.build.openssl.endswith('.git'):
+            url = "https://github.com/openssl/openssl"
+            branch = "OpenSSL_1_1_1-stable"
+            git_clone(url, ctx.build.openssl_source, branch=branch)
+        else:
+            tar_filename = ctx.build.openssl + '.tar.gz'
+            url = f'https://www.openssl.org/source/{tar_filename}'
+            import requests
+            print(f"Get {url} ...")
+            req = requests.get(url)
+            tar_path = ctx.build.third_parties.joinpath(tar_filename)
+            with open(tar_path, 'wb') as fh:
+                fh.write(req.content)
+                print(f"  extract in {filename} ...")
+                import tarfile
+                tar = tarfile.open(tar_path)
+                tar.extractall(path=ctx.build.third_parties)
+                tar.close()
 
-    # cmark_source = third_parties.joinpath('cmark', 'cmark.git')
+    # cmark_source = ctx.build.third_parties.joinpath('cmark', 'cmark.git')
     # cmark_url = 'https://github.com/github/cmark'
     # if not cmark_source.joinpath('src').exists():
     #     git_clone(cmark_url, cmark_source)
     #
-    #!# ../camptocamp/camptocamp_document.cpp:38:10: erreur fatale: cmark/cmark.h : Aucun fichier ou dossier de ce type
-    #!#    38 | #include "cmark/cmark.h"
-    #!# ./third-parties/include/cmark/cmark.h
+    ### ../camptocamp/camptocamp_document.cpp:38:10: erreur fatale: cmark/cmark.h : Aucun fichier ou dossier de ce type
+    ###    38 | #include "cmark/cmark.h"
+    ### ./third-parties/include/cmark/cmark.h
 
-    snowball_source = third_parties.joinpath('snowball', 'snowball.git')
+    snowball_source = ctx.build.third_parties.joinpath('snowball', 'snowball.git')
     if not snowball_source.joinpath('src_c').exists():
         raise NameError("Snowball source are missing")
-        snowball_url = 'https://github.com/snowballstem/snowball'
+        # url = 'https://github.com/snowballstem/snowball'
         # Fixme: snowball is not up to date
-        # git_clone(snowball_url, snowball_source)
+        # git_clone(url, snowball_source)
         # third-parties/include/snowball
         # libstemmer.h -> ../../snowball/snowball.git/include/libstemmer.h
 
@@ -191,7 +243,7 @@ def init_source(ctx):
 
     camptocamp_login = ctx.build.source.joinpath('unit-tests', 'camptocamp', 'login.h')
     if not camptocamp_login.exists():
-        with open(camptocamp_login, 'w') as fh:
+        with open(camptocamp_login, 'w', encoding='utf8') as fh:
             data = [
                 'QString username = "...";'
                 'QString password = "...";'
@@ -304,13 +356,13 @@ def build(
                 command += [
                     f'-D ANDROID_NDK:PATH={ndk}',
                     f'-D ANDROID_SDK_ROOT:PATH={sdk}',
-                    f'-D ANDROID_ABI:STRING=armeabi-v7a',
-                    f'-D ANDROID_NATIVE_API_LEVEL:STRING=23',
-                    f'-D ANDROID_STL:STRING=c++_shared',
+                    '-D ANDROID_ABI:STRING=armeabi-v7a',
+                    '-D ANDROID_NATIVE_API_LEVEL:STRING=23',
+                    '-D ANDROID_STL:STRING=c++_shared',
                     f'-D CMAKE_C_COMPILER:FILEPATH={clang_path}',
                     f'-D CMAKE_CXX_COMPILER:FILEPATH={clang_path}++',
                     f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
-                    f'-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
+                    '-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
                     f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.build.qmake_path}',
                 ]
 
@@ -350,7 +402,7 @@ def build(
                 str(ctx.build.qt_bin_path.joinpath('androiddeployqt')),
                 '--input {ctx.build.path}/android-touch-app-deployment-settings.json',
                 '--output {ctx.build.path}/android-build',
-                f'--android-platform {ctx.build.android_plaform}',
+                f'--android-platform android-{ctx.build.android_api}',
                 f'--jdk {ctx.build.jdk}',
                 '--gradle',
             ]
@@ -415,3 +467,66 @@ def run(ctx):
     print(rule)
     command = str(ctx.build.path.joinpath('src', 'alpine-toolkit'))
     ctx.run(command, env=ctx.run_env)
+
+####################################################################################################
+
+@task()
+def build_openssl(ctx, clean=False):
+    # https://doc-snapshots.qt.io/qt6-dev/android-openssl-support.html
+    #
+    # https://github.com/KDAB/android_openssl is no longer maintained for Qt6
+    #
+    # https://doc.qt.io/qt-6/ssl.html
+    #
+    # See NOTES.ANDROID
+    # target are: android-arm android-arm64 / android-x86 android-x86_64
+    # export ANDROID_NDK_HOME=/home/whoever/Android/android-sdk/ndk/20.0.5594570
+    # PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$ANDROID_NDK_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin:$PATH
+    # ./Configure android-arm64 -D__ANDROID_API__=29
+    # make
+    _init_config(ctx)
+    openssl_build_path = ctx.build.path.joinpath('openssl')
+    if clean:
+        shutil.rmtree(openssl_build_path)
+    if not openssl_build_path.exists():
+        ctx.build.path.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(ctx.build.openssl_source, openssl_build_path)
+    with ctx.cd(openssl_build_path):
+        ndk_path = Path(ctx.build.ndk)
+        env_path = ':'.join([str(_) for _ in (
+            ndk_path.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin'),
+            ndk_path.joinpath('toolchains', 'arm-linux-androideabi-4.9', 'prebuilt', 'linux-x86_64', 'bin'),
+            os.getenv('PATH'),
+        )])
+        env = {
+            'ANDROID_NDK_HOME': ctx.build.ndk,
+            'PATH': env_path,
+        }
+        arch = ctx.build.arch.replace('_', '-')
+        command = f"./Configure shared {arch} -D__ANDROID_API__={ctx.build.android_api}"
+        print(env)
+        print(command)
+        ctx.run(command, env=env)
+        # ctx.run('make clean', env=env)
+        # ctx.run('make', env=env)
+        # build libcrypto and libssl shared libraries that are not versioned, but with an _1_1 suffix
+        ctx.run('make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so', env=env)
+        # lib_path = openssl_build_path.joinpath('libssl_1_1.so')
+
+####################################################################################################
+
+@task()
+def list_avd(ctx):
+    _init_config(ctx)
+    avdmanager = Path(ctx.build.sdk).joinpath('cmdline-tools', 'latest', 'bin', 'avdmanager')
+    command = f"{avdmanager} list avd"
+    ctx.run(command)
+
+####################################################################################################
+
+@task()
+def start_emulator(ctx, name):
+    _init_config(ctx)
+    emulator = Path(ctx.build.sdk).joinpath('emulator', 'emulator')
+    command = f"{emulator} @{name}"
+    ctx.run(command)

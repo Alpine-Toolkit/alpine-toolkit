@@ -2,9 +2,6 @@ build:
   # generator: make
   generator: ninja
 
-  qt: /opt/Qt/6.3.0
-  arch: gcc_64
-
   # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
   cflags: -g -O0
   # cflags: -O3 -march=broadwell -mtune=broadwell -flto
@@ -12,7 +9,11 @@ build:
   build_type: DEBUG
   # build_type: RELEASE
 
+  qt: /opt/Qt/6.3.1
+  arch: gcc_64
+
 run_env:
+  # see also $HOME/.config/QtProject/qtlogging.ini
   QT_LOGGING_RULES: '*.debug=false;*.info=true;alpine-toolkit.qtcarto.debug=true'
   # QML_IMPORT_TRACE=1
 
