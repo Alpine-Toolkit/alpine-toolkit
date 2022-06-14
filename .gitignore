@@ -47,6 +47,7 @@ review.json
 
 build-android-arm64-v8a/
 build-gcc_64/
+build-android_x86/
 compile_commands.json
 config.h
 doc/doxygen/build/
@@ -246,9 +247,8 @@ third-parties/libspatialindex/cmake.log
 third-parties/libspatialindex/libspatialindex.git/
 third-parties/libspatialindex/make.log
 
-third-parties/openssl
-third-parties/openssl-1.0.2h-old/
-third-parties/openssl-1.0.2h/
+third-parties/openssl-1.1.1.git/
+third-parties/openssl-1.1.1o/
 
 third-parties/proj4
 
