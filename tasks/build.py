@@ -39,6 +39,8 @@ from invoke import task, call
 
 import yaml
 
+from .lib.build import git_clone, download, untar
+
 ####################################################################################################
 
 def _init_config(ctx) -> None:
@@ -73,6 +75,9 @@ def _init_config(ctx) -> None:
 
     _set_qt(ctx)
 
+    for _ in ('CFLAGS', 'CXXFLAGS'):
+        os.environ.pop(_, None)
+
 ####################################################################################################
 
 # def _set_qt(ctx, qt_path=None, arch='gcc_64'):
@@ -102,7 +107,7 @@ def _set_qt(ctx) -> None:
 ####################################################################################################
 
 @task()
-def dump_config(ctx):
+def show_config(ctx):
     _init_config(ctx)
 
     config = dict(ctx.config.items())
@@ -114,10 +119,33 @@ def dump_config(ctx):
 
     print(yaml.dump(config))
 
+
+####################################################################################################
+
+@task
+def install_qt(ctx):
+    print('Download Qt installer https://www.qt.io/download-qt-installer')
+    # https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run.mirrorlist
+    qt_installer_url = 'https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run'
+    qt_installer_path = Path('qt_installer')
+    download(qt_installer_url, qt_installer_path, executable=True)
+
+####################################################################################################
+
+@task
+def install_android_sdk(ctx):
+    # https://doc.qt.io/qt-6/android-getting-started.html
+    # https://developer.android.com/studio
+    # https://dl.google.com/android/repository
+    commandlinetools_url = 'https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip'
+
+    # sdkmanager --sdk_root=<ANDROID_SDK_ROOT> --install "cmdline-tools;latest" "platform-tools" "platforms;android-31" "build-tools;31.0.0" "ndk;22.1.7171670"
+    # sdkmanager --sdk_root=<ANDROID_SDK_ROOT> --install "emulator" "patcher;v4"
+
 ####################################################################################################
 
 @task()
-def dump_android(ctx):
+def show_android(ctx):
     _init_config(ctx)
 
     sdk = Path(ctx.build.sdk)
@@ -185,61 +213,82 @@ def init_source(ctx):
     _init_config(ctx)
     print("Initialise source ...")
 
+    #########################
+    # Code Generator
     def not_source_exists(*args):
         return not ctx.build.source.joinpath(*args).exists()
-
-    def git_clone(url, path, branch=None):
-        print(f"Clone repository {url}")
-        with ctx.cd(path.parent):
-            command = f"git clone --depth=1"
-            if branch:
-                command += f" --branch {branch}"
-            command += f" {url} {path}"
-            ctx.run(command, echo=True)
-
     if not_source_exists('src', 'data_sources', 'third_party_license', 'third_party_license_schema.h'):
         generate_code(ctx)
 
+    #########################
+    # OpenSSL
     if not ctx.build.openssl_source.exists():
         if ctx.build.openssl.endswith('.git'):
             url = "https://github.com/openssl/openssl"
             branch = "OpenSSL_1_1_1-stable"
-            git_clone(url, ctx.build.openssl_source, branch=branch)
+            git_clone(ctx, url, ctx.build.openssl_source, branch=branch)
         else:
             tar_filename = ctx.build.openssl + '.tar.gz'
             url = f'https://www.openssl.org/source/{tar_filename}'
-            import requests
-            print(f"Get {url} ...")
-            req = requests.get(url)
             tar_path = ctx.build.third_parties.joinpath(tar_filename)
-            with open(tar_path, 'wb') as fh:
-                fh.write(req.content)
-                print(f"  extract in {filename} ...")
-                import tarfile
-                tar = tarfile.open(tar_path)
-                tar.extractall(path=ctx.build.third_parties)
-                tar.close()
+            download(url, tar_path)
+            print(f"  extract in {filename} ...")
+            untar(tar_path, ctx.build.third_parties)
 
-    # cmark_source = ctx.build.third_parties.joinpath('cmark', 'cmark.git')
-    # cmark_url = 'https://github.com/github/cmark'
-    # if not cmark_source.joinpath('src').exists():
-    #     git_clone(cmark_url, cmark_source)
+    #########################
+    # CMark (in Qt6)
+    # ../camptocamp/camptocamp_document.cpp:38:10: erreur fatale: cmark/cmark.h : Aucun fichier ou dossier de ce type
+    #    38 | #include "cmark/cmark.h"
+    # ./third-parties/include/cmark/cmark.h
     #
-    ### ../camptocamp/camptocamp_document.cpp:38:10: erreur fatale: cmark/cmark.h : Aucun fichier ou dossier de ce type
-    ###    38 | #include "cmark/cmark.h"
-    ### ./third-parties/include/cmark/cmark.h
+    # cmark_source = ctx.build.third_parties.joinpath('cmark', 'cmark.git')
+    # if not cmark_source.joinpath('src').exists():
+    #     cmark_url = 'https://github.com/github/cmark'
+    #     git_clone(ctx, cmark_url, cmark_source)
 
+    #########################
+    # Snowball
     snowball_source = ctx.build.third_parties.joinpath('snowball', 'snowball.git')
     if not snowball_source.joinpath('src_c').exists():
         raise NameError("Snowball source are missing")
         # url = 'https://github.com/snowballstem/snowball'
         # Fixme: snowball is not up to date
-        # git_clone(url, snowball_source)
+        # git_clone(ctx, url, snowball_source)
         # third-parties/include/snowball
         # libstemmer.h -> ../../snowball/snowball.git/include/libstemmer.h
 
-    # https://github.com/OSGeo/proj.4.git
+    #########################
+    # SQLite
+    sqlite_source = ctx.build.third_parties.joinpath('sqlite')
+    sqlite_amalgamation_source = sqlite_source.joinpath('sqlite-amalgamation')
+    if not sqlite_amalgamation_source.exists():
+        version = '3380500'
+        url_base = "https://www.sqlite.org/2022"
+        url = f"{url_base}/sqlite-amalgamation-{version}.zip"
+        # url = f"{url_base}/sqlite-src-{version}.zip"
+        zip_path = sqlite_source.joinpath('sqlite-amalgamation.zip')
+        download(url, zip_path)
+        print(f"  Unzip {zip_path} ...")
+        unzip(zip_path, sqlite_source)
+        sqlite_amalgamation_source.symlink_to(f'sqlite-amalgamation-{version}')
+        zip_path.unlink()
+
+    #########################
+    # Proj4
+    proj4_source = ctx.build.third_parties.joinpath('proj4', 'proj4.git')
+    if not proj4_source.exists():
+        proj4_url = 'https://github.com/OSGeo/proj.4.git'
+        git_clone(ctx, proj4_url, proj4_source)
+
+    #########################
+    # Spatialite
     # https://github.com/libspatialindex/libspatialindex.git
+
+    #########################
+    # Sqlite
+
+    #########################
+    # C2C Login
 
     camptocamp_login = ctx.build.source.joinpath('unit-tests', 'camptocamp', 'login.h')
     if not camptocamp_login.exists():
@@ -294,9 +343,6 @@ def build(
 
     env = {
         'LC_ALL': 'C',
-        'CFLAGS': ctx.build.cflags,
-        'CXXFLAGS': ctx.build.cflags,
-        # 'CMAKE_PREFIX_PATH': str(ctx.build.qt_lib_path.joinpath('cmake'))
     }
 
     print()
@@ -305,8 +351,7 @@ def build(
     print(f'Qt path: {ctx.build.qt}')
     print(f"Arch: {ctx.build.arch}")
     print(f"Build type: {ctx.build.build_type}")
-    # print(f"Env: {env}")
-    print(f"CXXFLAGS: {env['CXXFLAGS']}")
+    print(f"CFLAGS: {ctx.build.cflags}")
     if is_android:
         print(f"NDK path: {ctx.build.ndk}")
         print(f"SDK path: {ctx.build.sdk}")
@@ -342,27 +387,54 @@ def build(
 
                 f'-D CMAKE_PREFIX_PATH:PATH={ctx.build.qt_arch_path}',
                 f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.build.qt_arch_path}',
+
+                f'-DCMAKE_C_FLAGS:STRING="{ctx.build.cflags}"',
+                f'-DCMAKE_CXX_FLAGS:STRING="{ctx.build.cflags}"',
+
                 f'-D QT_HOST_PATH:PATH={ctx.build.qt_host_path}',
             ]
 
             # -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=/srv/qt/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake
 
             if is_android:
+                # https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html#cross-compiling-for-android
+                # https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
                 ndk = Path(ctx.build.ndk)
                 sdk = Path(ctx.build.sdk)
                 toolchain_path = ndk.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin')
                 cmake_toolchain_path = ndk.joinpath('build', 'cmake', 'android.toolchain.cmake')
                 clang_path = toolchain_path.joinpath('clang')
                 command += [
-                    f'-D ANDROID_NDK:PATH={ndk}',
-                    f'-D ANDROID_SDK_ROOT:PATH={sdk}',
-                    '-D ANDROID_ABI:STRING=armeabi-v7a',
-                    '-D ANDROID_NATIVE_API_LEVEL:STRING=23',
-                    '-D ANDROID_STL:STRING=c++_shared',
+                    # This variable is specified on the command line when cross-compiling with
+                    # CMake. It is the path to a file which is read early in the CMake run and which
+                    # specifies locations for compilers and toolchain utilities, and other target
+                    # platform and compiler related information.
+                    # https://cmake.org/cmake/help/latest/variable/CMAKE_TOOLCHAIN_FILE.html
+                    f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
+
+                    # Done
+                    #   Must be specified to enable cross compiling for Android.
+                    #   https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_NAME.html#variable:CMAKE_SYSTEM_NAME
+                    #   '-DCMAKE_SYSTEM_NAME=Android',
+                    #   Set to the Android API level
+                    #   https://cmake.org/cmake/help/latest/variable/CMAKE_ANDROID_NDK.html#variable:CMAKE_ANDROID_NDK
+                    #   f'-D CMAKE_ANDROID_NDK:PATH={ndk}',
+                    #   https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_VERSION.html
+                    #   '-DCMAKE_SYSTEM_VERSION=...',
+                    #   https://cmake.org/cmake/help/latest/variable/CMAKE_ANDROID_ARCH_ABI.html
+                    #   '-DCMAKE_ANDROID_ARCH_ABI=x86',
+
                     f'-D CMAKE_C_COMPILER:FILEPATH={clang_path}',
                     f'-D CMAKE_CXX_COMPILER:FILEPATH={clang_path}++',
-                    f'-D CMAKE_TOOLCHAIN_FILE:FILEPATH={cmake_toolchain_path}',
-                    '-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
+
+                    f'-D ANDROID_NDK:PATH={ndk}',
+                    f'-D ANDROID_SDK_ROOT:PATH={sdk}',
+                    # '-D ANDROID_ABI:STRING=armeabi-v7a',
+                    '-D ANDROID_ABI:STRING=x86',
+                    '-D ANDROID_NATIVE_API_LEVEL:STRING=23',
+                    '-D ANDROID_STL:STRING=c++_shared',
+
+                   '-D QT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON',
                     f'-D QT_QMAKE_EXECUTABLE:FILEPATH={ctx.build.qmake_path}',
                 ]
 
@@ -380,7 +452,8 @@ def build(
             command = ' '.join(command)
             print(command)
             ctx.run(command, echo=True, env=env)
-            ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
+            if not is_android:
+                ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
 
             for _ in ('compile_commands.json', 'config.h'):
                 target = ctx.build.source.joinpath(_)
@@ -470,7 +543,9 @@ def run(ctx):
 
 ####################################################################################################
 
-@task()
+@task(
+    pre=[init_source],
+)
 def build_openssl(ctx, clean=False):
     # https://doc-snapshots.qt.io/qt6-dev/android-openssl-support.html
     #
@@ -489,9 +564,11 @@ def build_openssl(ctx, clean=False):
     if clean:
         shutil.rmtree(openssl_build_path)
     if not openssl_build_path.exists():
+        print("Copy OpenSSL source ...")
         ctx.build.path.mkdir(parents=True, exist_ok=True)
         shutil.copytree(ctx.build.openssl_source, openssl_build_path)
     with ctx.cd(openssl_build_path):
+        print("Build OpenSSL ...")
         ndk_path = Path(ctx.build.ndk)
         env_path = ':'.join([str(_) for _ in (
             ndk_path.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin'),
@@ -502,7 +579,11 @@ def build_openssl(ctx, clean=False):
             'ANDROID_NDK_HOME': ctx.build.ndk,
             'PATH': env_path,
         }
-        arch = ctx.build.arch.replace('_', '-')
+        ARCH_MAP = {
+            'android_armv7': 'android-arm',
+            'android_x86': 'android-x86',
+        }
+        arch = ARCH_MAP[ctx.build.arch]
         command = f"./Configure shared {arch} -D__ANDROID_API__={ctx.build.android_api}"
         print(env)
         print(command)
