@@ -1,11 +1,22 @@
-QT_SOURCE='/home/scratch/sources/qt5/qt5-git'
+QT_SOURCE='/home/scratch/sources/qt-sources/qt6'
+
+# .../qtbase/src/plugins/sqldrivers/sqlite/
+#   CMakeLists.txt
+#   README
+#   configure.cmake
+#   qt_cmdline.cmake
+#
+# .../qtbase/src/plugins/sqldrivers/sqlite/
+#   CMakeLists.txt
+#   README
+#   qsql_sqlite.cpp
+#   qsql_sqlite_p.h
+#   smain.cpp
+#   sqlite.json
 
 cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/sqlite/* .
-cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/qsqldriverbase.pri .
-cp -r ${QT_SOURCE}/qtbase/src/plugins/sqldrivers/sqldrivers.pro .
 
 mv sqlite.json sqlite-at.json
-mv sqlite.pro sqlite-at.pro
 mv qsql_sqlite_p.h qsql_sqlite_at_p.h
 mv qsql_sqlite.cpp qsql_sqlite_at.cpp
 
