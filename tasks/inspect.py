@@ -37,16 +37,22 @@ from invoke import task
 @task()
 def search(ctx, pattern):
     for path in (
-            'imports',
+            'CMakeLists.txt',
+            'android',
+            'build-config',
+            'cmake',
             'code-generator',
+            'config.h.in',
             'map-tools',
             'mapviewer',
-            'service',
+            'resources',
+            # 'sqlite',
             'src',
+            'tasks',
+            # 'third-parties',
             'unit-tests',
-            'config.h.in',
     ):
         # with ctx.cd(path):
         command = f'grep --color=auto --exclude="*~" -r "{pattern}" {path}'
-         # warn is set else it raises when nothing is found
+        # warn is set else it raises when nothing is found
         ctx.run(command, pty=True, warn=True)
