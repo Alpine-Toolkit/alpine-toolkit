@@ -1,0 +1,52 @@
+diff --git a/src/pj_log.c b/src/pj_log.c
+index 5b59e7a..5496020 100644
+--- a/src/pj_log.c
++++ b/src/pj_log.c
+@@ -34,12 +34,21 @@
+ /*                          pj_stderr_logger()                          */
+ /************************************************************************/
+ 
++#ifdef ANDROID
++#include <android/log.h>
++#endif
++
+ void pj_stderr_logger( void *app_data, int level, const char *msg )
+ 
+ {
+     (void) app_data;
+     (void) level;
++#ifdef ANDROID
++    __android_log_print(ANDROID_LOG_INFO, "PROJ4", msg);
++#else
+     fprintf( stderr, "%s\n", msg );
++#endif
++
+ }
+ 
+ /************************************************************************/
+diff --git a/src/pj_open_lib.c b/src/pj_open_lib.c
+index 99f3f69..67cd3c3 100644
+--- a/src/pj_open_lib.c
++++ b/src/pj_open_lib.c
+@@ -34,6 +34,10 @@
+ #include <string.h>
+ #include <errno.h>
+ 
++#ifdef ANDROID
++#include <android/log.h>
++#endif
++
+ static const char *(*pj_finder)(const char *) = NULL;
+ static int path_count = 0;
+ static char **search_path = NULL;
+@@ -178,6 +182,10 @@ pj_open_lib_ex(projCtx ctx, const char *name, const char *mode,
+     if( ctx->last_errno == 0 && errno != 0 )
+         pj_ctx_set_errno( ctx, errno );
+ 
++    __android_log_print(ANDROID_LOG_INFO, "PROJ4", "pj_open_lib(%s): call fopen(%s) - %s\n",
++                        name, sysname,
++                        fid == NULL ? "failed" : "succeeded" );
++
+     pj_log( ctx, PJ_LOG_DEBUG_MAJOR, 
+             "pj_open_lib(%s): call fopen(%s) - %s\n",
+             name, sysname,
