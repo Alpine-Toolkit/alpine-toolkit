@@ -45,15 +45,17 @@ moc_*.cpp
 
 review.json
 
-build-android-arm64-v8a/
-build-gcc_64/
-build-android_x86/
+build-android-arm64-v8a
+build-android_armv7
+build-android_x86
+build-gcc_64
 compile_commands.json
 config.h
 doc/doxygen/build/
 doc/sphinx/build/
-sqlite/Qt5.9-gcc_64
-sqlite/qmake-build/
+# sqlite-driver/Qt5.9-gcc_64
+sqlite-driver/qmake-build/
+sqlite-driver/qt6-sqldrivers
 
 # Generated Files
 resources/icon-resources/svg/png/
@@ -217,13 +219,13 @@ tasks/lib/ign/BdAlti.diff
 
 ####################################################################################################
 #
-# SQLite
+# SQLite Driver
 #
 
-sqlite/orig/
-sqlite/sqlite-amalgamation
-sqlite/sqlite3.c
-sqlite/sqlite3.h
+sqlite-driver/orig/
+sqlite-driver/sqlite-amalgamation
+sqlite-driver/sqlite3.c
+sqlite-driver/sqlite3.h
 
 ####################################################################################################
 #
@@ -255,9 +257,10 @@ third-parties/proj4
 third-parties/spatialite/libspatialite-4.4.0-RC1/
 third-parties/spatialite/spatialite-sources
 
-third-parties/sqlite/Android.mk
+third-parties/sqlite/__NOTES__.md
 third-parties/sqlite/sqlite-amalgamation
-third-parties/sqlite/sqlite-amalgamation-3180000/
+third-parties/sqlite/sqlite-amalgamation-3380500/
+third-parties/sqlite/sqlite-src-3380500/
 
 ####################################################################################################
 #
