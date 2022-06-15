@@ -173,12 +173,12 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 if(CMAKE_BUILD_TYPE MATCHES "DEBUG")
   if(SANITIZE MATCHES "ON")
     # -fsanitize=thread
-    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fsanitize=leak -fsanitize=undefined -fstack-protector-all")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fsanitize=leak -fsanitize=undefined -fstack-protector-all")
     message(STATUS "GCC Sanitize: ${CMAKE_CXX_FLAGS_DEBUG}")
   endif(SANITIZE MATCHES "ON")
 
   if(INSTRUMENT_FUNTIONS MATCHES "ON")
-    set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -finstrument-functions")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -finstrument-functions")
     # Fixme: -Wl,-Map=alpine-tookit.map => same name for all targets
     message(STATUS "GCC Profiling: -finstrument-funtions enabled")
   endif(INSTRUMENT_FUNTIONS MATCHES "ON")
