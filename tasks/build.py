@@ -39,7 +39,7 @@ from invoke import task, call
 
 import yaml
 
-from .lib.build import git_clone, download, untar
+from .lib.build import git_clone, download, untar, unzip
 
 ####################################################################################################
 
@@ -52,7 +52,7 @@ def _init_config(ctx) -> None:
     ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
 
     ctx.build['third_parties'] = ctx.build.source.joinpath('third-parties')
-    ctx.build['openssl_source'] = ctx.build.third_parties.joinpath(ctx.build.openssl)
+    ctx.build['openssl_source'] = ctx.build.third_parties.joinpath('openssl', ctx.build.openssl)
 
     if not hasattr(ctx.build, 'qt'):
         config_files = glob.glob(str(ctx.build.source.joinpath("build*.yaml")))
@@ -274,11 +274,27 @@ def init_source(ctx):
         zip_path.unlink()
 
     #########################
-    # Proj4
-    proj4_source = ctx.build.third_parties.joinpath('proj4', 'proj4.git')
-    if not proj4_source.exists():
-        proj4_url = 'https://github.com/OSGeo/proj.4.git'
-        git_clone(ctx, proj4_url, proj4_source)
+    # Proj
+    proj_directory = ctx.build.third_parties.joinpath('proj')
+    proj_source = proj_directory.joinpath('proj.git')
+    if not proj_source.exists():
+        version = '9.0.0'
+        data_version = '1.9'
+        url_base = 'https://download.osgeo.org/proj'
+        tar_filename = f'proj-{version}.tar.gz'
+        tar_data_filename = f'proj-data-{data_version}.tar.gz'
+        tar_url = f'{url_base}/{tar_filename}'
+        tar_data_url = f'{url_base}/{tar_data_filename}'
+        git_url = 'https://github.com/OSGeo/Proj'
+        git_data_url = 'https://github.com/OSGeo/PROJ-data'   # contains the cloud-optimized GeoTIFF files
+        # git_clone(ctx, proj_url, proj_source)
+        tar_path = proj_directory.joinpath(tar_filename)
+        tar_data_path = proj_directory.joinpath(tar_data_filename)
+        download(tar_url, tar_path)
+        untar(tar_path, proj_directory)
+        proj_source.symlink_to(f'proj-{version}')
+        tar_path.unlink()
+        # download(tar_data_url, tar_data_path) # 563 MB
 
     #########################
     # Spatialite

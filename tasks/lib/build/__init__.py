@@ -43,14 +43,24 @@ import requests
 
 ####################################################################################################
 
-def git_clone(ctx, url, path, branch=None):
+def git_clone(ctx, url, path, branch=None, depth=1):
     print(f"Clone repository {url}")
     with ctx.cd(path.parent):
-        command = f"git clone --depth=1"
+        command = f"git clone"
+        if depth:
+            command += f" --depth={depth}"
         if branch:
             command += f" --branch {branch}"
         command += f" {url} {path}"
         ctx.run(command, echo=True)
+
+####################################################################################################
+
+def git_fetch_tags(ctx):
+    ctx.run('git fetch --all --tag')
+
+def git_checkout_tags(ctx, tag):
+    ctx.run('git checkout tags/{tag}')
 
 ####################################################################################################
 
