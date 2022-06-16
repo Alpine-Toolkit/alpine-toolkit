@@ -4,12 +4,10 @@ build:
   # generator: make
   generator: ninja
 
-  # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-  cflags: -g -O0
-  # cflags: -O3 -march=broadwell -mtune=broadwell -flto
-
   build_type: DEBUG
   # build_type: RELEASE
+
+  # cflags: -O3 -march=broadwell -mtune=broadwell -flto
 
   qt: /opt/Qt/6.3.1
   arch: gcc_64
