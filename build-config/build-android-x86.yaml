@@ -1,13 +1,16 @@
 build:
-    # generator: make
+  path: /srv/qt/__build__/build-android_x86/
+
+  # generator: make
   generator: ninja
 
   # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-  cflags: -g -O0
-  # cflags: -O3 -march=... -mtune=... -flto
+  # cflags: -g -O0
+  # To force 32-bit arch
+  cflags: -o3 -m32
 
   build_type: DEBUG
-
+  
   qt: /opt/Qt/6.3.1
   sdk: /opt/Android
   ndk: /opt/Android/ndk/24.0.8215888

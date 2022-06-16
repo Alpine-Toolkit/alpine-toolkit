@@ -1,4 +1,6 @@
 build:
+  path: /srv/qt/__build__/build-x86/
+
   # generator: make
   generator: ninja
 
