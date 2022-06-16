@@ -325,6 +325,8 @@ def init_source(ctx):
         proj_source.symlink_to(f'proj-{version}')
         tar_path.unlink()
         # download(tar_data_url, tar_data_path) # 563 MB
+        with ctx.cd(proj_source):
+            ctx.run('patch -p1 -i patch.diff')
 
     #########################
     # Spatialite

@@ -4,7 +4,7 @@
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
 #
-# Copyright (C) 2017 Fabrice Salvaire
+# Copyright (C) 2022 Fabrice Salvaire
 # Contact: http://www.fabrice-salvaire.fr
 #
 # This file is part of the QtCarto library.
@@ -39,6 +39,11 @@ ExternalProject_Add(proj
 
   # URL ${PROJ_SOURCE_URL}
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proj.git
+
+  PATCH_COMMAND
+  # see make-patch.sh
+  # Fixme: cannot be run twice
+  # patch -p1 -N -i ${CMAKE_CURRENT_SOURCE_DIR}/patch.diff
 
   CMAKE_ARGS
   # -S${CMAKE_CURRENT_SOURCE_DIR}/proj.git

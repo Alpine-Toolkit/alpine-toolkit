@@ -1,52 +1,36 @@
-diff --git a/src/pj_log.c b/src/pj_log.c
-index 5b59e7a..5496020 100644
---- a/src/pj_log.c
-+++ b/src/pj_log.c
-@@ -34,12 +34,21 @@
+--- proj.git/src/log.cpp	2022-02-23 19:51:04.000000000 +0100
++++ proj.git/src/log.cpp	2022-06-16 20:47:17.420427109 +0200
+@@ -37,12 +37,19 @@
  /*                          pj_stderr_logger()                          */
  /************************************************************************/
  
-+#ifdef ANDROID
+-void pj_stderr_logger( void *app_data, int level, const char *msg )
++#ifdef ON_ANDROID
 +#include <android/log.h>
 +#endif
-+
- void pj_stderr_logger( void *app_data, int level, const char *msg )
  
++void pj_stderr_logger( void *app_data, int level, const char *msg )
  {
      (void) app_data;
      (void) level;
-+#ifdef ANDROID
-+    __android_log_print(ANDROID_LOG_INFO, "PROJ4", msg);
++#ifdef ON_ANDROID
++    __android_log_print(ANDROID_LOG_INFO, "PROJ", msg);
 +#else
      fprintf( stderr, "%s\n", msg );
 +#endif
-+
  }
  
  /************************************************************************/
-diff --git a/src/pj_open_lib.c b/src/pj_open_lib.c
-index 99f3f69..67cd3c3 100644
---- a/src/pj_open_lib.c
-+++ b/src/pj_open_lib.c
-@@ -34,6 +34,10 @@
- #include <string.h>
- #include <errno.h>
+--- proj.git/src/lib_proj.cmake	2022-02-23 19:51:04.000000000 +0100
++++ proj.git/src/lib_proj.cmake	2022-06-16 20:51:42.472055007 +0200
+@@ -444,6 +444,10 @@
+   target_link_libraries(proj PRIVATE ${CMAKE_THREAD_LIBS_INIT})
+ endif()
  
-+#ifdef ANDROID
-+#include <android/log.h>
-+#endif
++if(ANDROID)
++  target_link_libraries(proj PRIVATE -llog)
++endif(ANDROID)
 +
- static const char *(*pj_finder)(const char *) = NULL;
- static int path_count = 0;
- static char **search_path = NULL;
-@@ -178,6 +182,10 @@ pj_open_lib_ex(projCtx ctx, const char *name, const char *mode,
-     if( ctx->last_errno == 0 && errno != 0 )
-         pj_ctx_set_errno( ctx, errno );
+ target_include_directories(proj PRIVATE ${SQLITE3_INCLUDE_DIR})
+ target_link_libraries(proj PRIVATE ${SQLITE3_LIBRARY})
  
-+    __android_log_print(ANDROID_LOG_INFO, "PROJ4", "pj_open_lib(%s): call fopen(%s) - %s\n",
-+                        name, sysname,
-+                        fid == NULL ? "failed" : "succeeded" );
-+
-     pj_log( ctx, PJ_LOG_DEBUG_MAJOR, 
-             "pj_open_lib(%s): call fopen(%s) - %s\n",
-             name, sysname,
