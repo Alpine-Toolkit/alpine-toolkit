@@ -33,8 +33,10 @@ set(PROJ_VERSION "9.0.0")
 set(PROJ_SOURCE_URL "${PROJ_BASE_URL}/proj-{PROJ_VERSION}.tar.gz")
 unset(PROJ_BASE_URL)
 
+set(PROJ_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/local")
+
 # CMake is run by ninja
-ExternalProject_Add(proj
+ExternalProject_Add(proj_project
   DEPENDS sqlite
 
   # URL ${PROJ_SOURCE_URL}
@@ -70,7 +72,7 @@ ExternalProject_Add(proj
   -DSQLITE3_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/third-parties/sqlite/sqlite-amalgamation/
   -DSQLITE3_LIBRARY=${CMAKE_BINARY_DIR}/third-parties/sqlite/libsqlite.so
 
-  -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/local/
+  -DCMAKE_INSTALL_PREFIX=${PROJ_PREFIX}
 
   #? -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
   # /!\ output is only dumped when everything is done
@@ -83,3 +85,21 @@ ExternalProject_Add(proj
 )
 
 # add_dependencies(... proj-build)
+
+# https://cmake.org/cmake/help/latest/module/ExternalProject.html#obtaining-project-properties
+# ExternalProject_Get_property(proj_project SOURCE_DIR)
+
+# see also ${PROJ_PREFIX}/lib64/cmake/proj-targets.cmake
+add_library(proj_lib SHARED IMPORTED)
+set_target_properties(proj_lib PROPERTIES
+  IMPORTED_LOCATION "${PROJ_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libproj.so"
+  INTERFACE_INCLUDE_DIRECTORIES "${PROJ_PREFIX}/include"
+)
+target_link_libraries(proj_lib INTERFACE sqlite)
+
+####################################################################################################
+
+if(NOT ANDROID)
+  add_executable(test_proj4 test.c)
+  target_link_libraries(test_proj4 proj_lib)
+endif(NOT ANDROID)

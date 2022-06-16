@@ -27,36 +27,80 @@
 /**************************************************************************************************/
 
 #include <stdio.h>
-#include "proj_api.h"
+#include <stdlib.h>
+#include <proj.h>
 
 /**************************************************************************************************/
 
 int
 main(int argc, char *argv[])
 {
-  projCtx context = pj_get_default_ctx();
-  // context = pj_ctx_alloc();
+  // https://proj.org/development/quickstart.html
+  // https://proj.org/development/reference/index.html
 
-  projPJ projection_4326 = pj_init_plus_ctx(context, "+init=epsg:4326");
-  projPJ projection_3857 = pj_init_plus_ctx(context, "+init=epsg:3857");
+  // PJ *proj_create(PJ_CONTEXT *ctx, const char *definition)
+  // PJ *proj_create_crs_to_crs(PJ_CONTEXT *ctx, const char *source_crs, const char *target_crs, PJ_AREA *area)
+  // PJ *proj_create_crs_to_crs_from_pj(PJ_CONTEXT *ctx, PJ *source_crs, PJ *target_crs, PJ_AREA *area, const char *const *options)
+  // int proj_trans_array(PJ *P, PJ_DIRECTION direction, size_t n, PJ_COORD *coord)
+  // PJ_COORD proj_coord(double x, double y, double z, double t)
 
-  // projPJ projection_4326 = pj_init_plus_ctx(context, "+proj=longlat +datum=WGS84 +no_defs");
-  // projPJ projection_3857 = pj_init_plus_ctx(context, "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs");
+  // or you may set context=PJ_DEFAULT_CTX
+  // if you are sure you will use PJ objects from only one thread
+  PJ_CONTEXT * context = proj_context_create();
 
-  long point_count = 1;
-  int point_offset = 1;
-  double x = .1; // rad
-  double y = .2;
-  double z = 0;
-  printf("input: %e %e\n", x, y, z);
-  int error = pj_transform(projection_4326, projection_3857, point_count, point_offset, &x, &y, &z);
-  if (error == 0)
-    printf("output: %e %e\n", x, y, z);
-  else
-    printf("Transform failed: %i %s\n", error, pj_strerrno(error));
+  PJ * projection;
 
-  pj_free(projection_4326);
-  pj_free(projection_3857);
+  projection = proj_create_crs_to_crs(context,
+                                      "EPSG:4326", // WGS 84 - World Geodetic System 1984, used in GPS
+                                      "EPSG:3857", // WGS 84 / Pseudo-Mercator
+                                      // "+proj=utm +zone=32 +datum=WGS84", // or EPSG:32632
+                                      // an optional description of the area of use.
+                                      NULL);
+  if (projection == NULL) {
+    fprintf(stderr, "Failed to create transformation object.\n");
+    return EXIT_FAILURE;
+  }
 
-  return 0;
+  // 4326 "+proj=longlat +datum=WGS84 +no_defs"
+  PJ * projection_4326 = proj_create(context, "EPSG:4326");
+  // 3857 "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs"
+  PJ * projection_3857 = proj_create(context, "EPSG:3857");
+  projection = proj_create_crs_to_crs_from_pj(context, projection_4326, projection_3857, NULL,NULL);
+
+  // For geographic CRS defined by the EPSG authority, the order of coordinates is latitude first, longitude second.
+  // When using a PROJ string, the order is the reverse; longitude first, latitude second.
+
+  // For projected CRS defined by the EPSG authority, and with EAST / NORTH directions,
+  // the order might be easting first, northing second, or the reverse.
+  // When using a PROJ string, the order will be easting first, northing second,
+  // except if the +axis parameter modifies it.
+
+  // This will ensure that the order of coordinates for the input CRS will be longitude, latitude,
+  // whereas EPSG:4326 mandates latitude, longitude
+  //   PJ * normalised_projection = proj_normalize_for_visualization(context, projection);
+  //   if (normalised_projection == NULL) {
+  //     fprintf(stderr, "Failed to normalize transformation object.\n");
+  //     return EXIT_FAILURE;
+  //   }
+  //   proj_destroy(projection);
+  //   projection = normalised_projection;
+
+  // creates a coordinate for Paris
+  //   latitude: 48.85°N longitude: 2.34°E
+  //   web mercator: x=261_315 y=6_250_834 m
+  //   https://epsg.io/transform#s_srs=4326&t_srs=3857&x=2.3515530&y=48.8559390
+  double latitude  = 48.855939; // N
+  double longitude =  2.351553; // E
+  // PJ_COORD coordinate_4326 = proj_coord(longitude, latitude, 0, 0);
+  PJ_COORD coordinate_4326 = proj_coord(latitude, longitude, 0, 0);
+  PJ_COORD coordinate_3857 = proj_trans(projection, PJ_FWD, coordinate_4326);
+  printf("easting: %.3f, northing: %.3f\n", coordinate_4326.enu.e, coordinate_4326.enu.n);
+  printf("x: %.3f, y: %.3f\n", coordinate_3857.xy.x, coordinate_3857.xy.y);
+  // easting: 48.856, northing: 2.352
+  // x: 261773.683, y: 6250452.514
+
+  proj_destroy(projection);
+  proj_context_destroy(context); // may be omitted in the single threaded case
+
+  return EXIT_SUCCESS;
 }
