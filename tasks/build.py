@@ -39,7 +39,30 @@ from invoke import task, call
 
 import yaml
 
+# https://github.com/tartley/colorama
+from colorama import init, Fore
+from termcolor import colored
+# use Colorama to make Termcolor work on Windows too
+init(autoreset=True)
+
 from .lib.build import git_clone, download, untar, unzip
+
+####################################################################################################
+
+def print_colored(message: str, color: str) -> None:
+    print(colored(message, color))
+
+def print_error(message: str) -> None:
+    print_colored(message, 'red')
+
+def print_section(message: str) -> None:
+    print_colored(message, 'blue')
+
+def print_info(message: str) -> None:
+    print_colored(message, 'green')
+
+def print_section_rule() -> None:
+    print_colored('─'*100, 'blue')
 
 ####################################################################################################
 
@@ -48,6 +71,17 @@ def _init_config(ctx) -> None:
         return
 
     ctx.build['source'] = Path(__file__).parents[1]
+
+    if not hasattr(ctx.build, 'qt'):
+        config_files = glob.glob(str(ctx.build.source.joinpath('build-config', '*.yaml')))
+        print_error("Usage: inv -f build-XXX.yaml build.XXX")
+        print("Available config files:")
+        for _ in config_files:
+            _ = Path(_).relative_to(ctx.build.source)
+            print(' '*4, _)
+        sys.exit(1)
+        # raise NameError("Config file is missing")
+
     ctx.build['resources_path'] = ctx.build.source.joinpath('resources')
 
     if hasattr(ctx.build, 'path'):
@@ -57,15 +91,6 @@ def _init_config(ctx) -> None:
 
     ctx.build['third_parties'] = ctx.build.source.joinpath('third-parties')
     ctx.build['openssl_source'] = ctx.build.third_parties.joinpath('openssl', ctx.build.openssl)
-
-    if not hasattr(ctx.build, 'qt'):
-        config_files = glob.glob(str(ctx.build.source.joinpath("build*.yaml")))
-        print("Usage: inv -f build-XXX.yaml build.XXX")
-        print("Available config files:")
-        for _ in config_files:
-            print(_)
-        print()
-        raise NameError("Config file is missing")
 
     ARCH = (
         'gcc_64',
@@ -122,7 +147,6 @@ def show_config(ctx):
     yaml.add_representer(pathlib.PosixPath, path_representer)
 
     print(yaml.dump(config))
-
 
 ####################################################################################################
 
@@ -182,8 +206,8 @@ def generate_icons(ctx):
     icons_directory = ctx.build.resources_path.joinpath('icons')
     svg_directory = ctx.build.resources_path.joinpath('icon-resources', 'svg')
     png_directory = svg_directory.joinpath('png')
-    print(f'SVG path: {svg_directory}')
-    print(f'PNG path: {png_directory}')
+    print_info(f'SVG path: {svg_directory}')
+    print_info(f'PNG path: {png_directory}')
     if not png_directory.exists():
         png_directory.mkdir()
     for svg_path in svg_directory.glob('*.svg'):
@@ -192,7 +216,7 @@ def generate_icons(ctx):
         png3_path = png_directory.joinpath(f'{svg_path.stem}-black@3x.png')
         # png3_path = str(png_path).replace('.png', '@3x.png')
         if not png_path.exists():
-            print(f'Generate {png_path.name}')
+            print_section(f'Generate {png_path.name}', 'blue')
             options = '--export-area-page --export-background=white --export-background-opacity=0'
             # Warning: Option --export-png= is deprecated
             ctx.run(f'inkscape --export-png={png_path} {options} --export-width=24 --export-height=24 {svg_path}')
@@ -216,7 +240,8 @@ def generate_tones(ctx):
 @task(post=[generate_icons, generate_tones])
 def init_source(ctx):
     _init_config(ctx)
-    print("Initialise source ...")
+    print_section_rule()
+    print_section("Initialise source ...")
 
     #########################
     # Code Generator
@@ -237,7 +262,7 @@ def init_source(ctx):
             url = f'https://www.openssl.org/source/{tar_filename}'
             tar_path = ctx.build.third_parties.joinpath(tar_filename)
             download(url, tar_path)
-            print(f"  extract in {filename} ...")
+            print_info(f"  extract in {filename} ...")
             untar(tar_path, ctx.build.third_parties)
 
     #########################
@@ -273,7 +298,7 @@ def init_source(ctx):
         # url = f"{url_base}/sqlite-src-{version}.zip"
         zip_path = sqlite_source.joinpath('sqlite-amalgamation.zip')
         download(url, zip_path)
-        print(f"  Unzip {zip_path} ...")
+        print_info(f"  Unzip {zip_path} ...")
         unzip(zip_path, sqlite_source)
         sqlite_amalgamation_source.symlink_to(f'sqlite-amalgamation-{version}')
         zip_path.unlink()
@@ -336,7 +361,7 @@ def qml(ctx, path):
 
     path = Path(path)
     if not (path.exists() and path.is_dir()):
-        print(f"Directory {path} doesn't exist")
+        print_error(f"Directory {path} doesn't exist")
     qml_path = ctx.build.qt_bin_path.joinpath('qml')
     main_qml = 'main.qml'
     includes = ' '.join([f'-I {_}' for _ in ('qml',)])
@@ -359,6 +384,7 @@ def build(
         deploy=False,
         verbose=True,
 ):
+    print_section_rule()
     _init_config(ctx)
     is_android = ctx.build.arch.startswith('android')
     use_ninja = ctx.build.generator == 'ninja'
@@ -367,17 +393,15 @@ def build(
         'LC_ALL': 'C',
     }
 
-    print()
-    print(f"Source path: {ctx.build.source}")
-    print(f"Build path: {ctx.build.path}")
-    print(f'Qt path: {ctx.build.qt}')
-    print(f"Arch: {ctx.build.arch}")
-    print(f"Build type: {ctx.build.build_type}")
-    print(f"CFLAGS: {ctx.build.cflags}")
+    print_info(f"Source path: {ctx.build.source}")
+    print_info(f"Build path: {ctx.build.path}")
+    print_info(f'Qt path: {ctx.build.qt}')
+    print_info(f"Arch: {ctx.build.arch}")
+    print_info(f"Build type: {ctx.build.build_type}")
+    print_info(f"CFLAGS: {ctx.build.cflags}")
     if is_android:
-        print(f"NDK path: {ctx.build.ndk}")
-        print(f"SDK path: {ctx.build.sdk}")
-    print()
+        print_info(f"NDK path: {ctx.build.ndk}")
+        print_info(f"SDK path: {ctx.build.sdk}")
 
     if not ctx.build.path.exists():
         ctx.build.path.mkdir()
@@ -480,9 +504,14 @@ def build(
             ]
 
             command = ' '.join(command)
-            print(command)
+            print_section_rule()
+            print_section('Run CMake ...')
+            print_section(command.replace(' -', os.linesep + '  -'))
             ctx.run(command, echo=True, env=env)
+
             if not is_android:
+                print_section_rule()
+                print_section('Run lupdate ...')
                 ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
 
             if not is_android:
@@ -495,6 +524,8 @@ def build(
                         link.symlink_to(target)
 
         if make:
+            print_section_rule()
+            print_section('Run Ninja ...')
             # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
             if use_ninja:
                 # -C build-cmake
@@ -507,6 +538,7 @@ def build(
                 ctx.run('make -j4')
 
         if is_android and deploy:
+            print_section_rule()
             command = [
                 str(ctx.build.qt_bin_path.joinpath('androiddeployqt')),
                 '--input {ctx.build.path}/android-touch-app-deployment-settings.json',
@@ -516,7 +548,7 @@ def build(
                 '--gradle',
             ]
             command = ' '.join(command)
-            print(command)
+            print_section(command)
             ctx.run(command, echo=True)
 
 ####################################################################################################
@@ -528,7 +560,7 @@ def unit_test(ctx):
     # _init_config(ctx)
     unit_test_path = ctx.build.path.joinpath('unit-tests')
 
-    print('Run unit tests...')
+    print_section('Run unit tests...')
     tests = []
     failed = []
     for root, _, filenames in os.walk(unit_test_path):
@@ -538,8 +570,8 @@ def unit_test(ctx):
             if os.access(filename, os.X_OK):   # Fixme: Unix
                 filename_part = str(filename).replace(str(ctx.build.path.parent), '.')
                 print()
-                print('='*100)
-                print(f'Run {filename_part}')
+                print_section('='*100)
+                print_section(f'Run {filename_part}')
                 try:
                     tests.append(filename_part)
                     ctx.run(str(filename))
@@ -550,9 +582,9 @@ def unit_test(ctx):
         print()
         rule = '!'*100
         print(rule)
-        print(f'Failures {len(failed)}/{len(tests)}:')
+        print_error(f'Failures {len(failed)}/{len(tests)}:')
         for _ in failed:
-            print(' '*4, _)
+            print_error(' '*4, _)
         print(rule)
 
     # rm unit_tests_log.txt
@@ -567,13 +599,11 @@ def unit_test(ctx):
 def run(ctx):
     # _init_config(ctx)
 
-    print()
-    rule = '='*100
-    print(rule)
+    print_section_rule()
     print('Run Environment:')
     _ = yaml.dump(dict(ctx.run_env)).strip()
     print(_)
-    print(rule)
+    print_section_rule()
     command = str(ctx.build.path.joinpath('src', 'alpine-toolkit'))
     ctx.run(command, env=ctx.run_env)
 
