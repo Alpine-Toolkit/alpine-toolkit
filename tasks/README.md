@@ -1,4 +1,7 @@
-# Tasks
+# Invoke Tasks
+
+* https://www.pyinvoke.org
+* https://docs.pyinvoke.org/en/stable
 
 ## To list available tasks
 
@@ -15,9 +18,10 @@ inv build.dump-config -f build-x86.yaml
 ## To build and run
 
 ```
-inv build.build -f build-x86.yaml
+inv -f build-x86.yaml build.build
 
-inv build.unit-tests -f build-x86.yaml
+inv -f build-x86.yaml build.unit-tests
 
-inv build.run -f build-x86.yaml   # run ninja before to run
+inv -f build-x86.yaml build.run   # run ninja before to run
 ```
+
