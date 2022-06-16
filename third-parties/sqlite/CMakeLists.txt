@@ -90,7 +90,10 @@ target_link_libraries(sqlite
   # and the load_extension() SQL function. If these features are not required, then they can be
   # omitted using SQLITE_OMIT_LOAD_EXTENSION compile-time option.
   dl
-
-  # ???
-  log
 )
+
+if(ANDROID)
+  target_link_libraries(sqlite
+    log
+  )
+endif(ANDROID)
