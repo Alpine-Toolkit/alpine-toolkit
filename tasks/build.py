@@ -198,9 +198,10 @@ def generate_icons(ctx):
             ctx.run(f'inkscape --export-png={png_path} {options} --export-width=24 --export-height=24 {svg_path}')
             ctx.run(f'inkscape --export-png={png3_path} {options} --export-width=72 --export-height=72 {svg_path}')
         for path in (png_path, png3_path):
-            link = icons_directory.joinpath(path)
+            link = icons_directory.joinpath(path.name)
             if not link.exists():
-                link.symlink_to(path)
+                target = Path('..', 'icon-resources', 'svg', 'png', path.name)
+                link.symlink_to(target)
 
 ####################################################################################################
 
@@ -484,11 +485,14 @@ def build(
             if not is_android:
                 ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
 
-            for _ in ('compile_commands.json', 'config.h'):
-                target = ctx.build.source.joinpath(_)
-                if not target.exists():
-                    source = ctx.build.path.joinpath(_)
-                    source.symlink_to(target)
+            if not is_android:
+                for _ in ('compile_commands.json', 'config.h'):
+                    link = ctx.build.source.joinpath(_)
+                    if link.exists():
+                        link.unlink()
+                    if not link.exists():
+                        target = ctx.build.path.joinpath(_)
+                        link.symlink_to(target)
 
         if make:
             # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
