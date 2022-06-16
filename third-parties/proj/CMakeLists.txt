@@ -1,315 +1,80 @@
 # -*- CMake -*-
 
 ####################################################################################################
-
-set(PROJ4_SOURCE_PATH "proj4.git")
-set(LIBPROJ_SOURCE_PATH "${PROJ4_SOURCE_PATH}/src")
-
-####################################################################################################
-
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJ4_SOURCE_PATH}/cmake" ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${PROJ4_SOURCE_PATH}/cmake/modules" ${CMAKE_MODULE_PATH})
-
-include(ProjUtilities)
-
-####################################################################################################
-
-set(PROJECT_INTERN_NAME PROJ)
-
-include(ProjVersion)
-# Fixme: -- AlpineToolkit_VERSION          = 9.1.0
-proj_version(MAJOR 9 MINOR 1 PATCH 0)
-
-####################################################################################################
-
-include("proj4_config.cmake")
-
-####################################################################################################
 #
-# threading configuration
+# $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
 #
-
-find_package(Threads)
-include(CheckIncludeFiles)
-include(CheckSymbolExists)
-
-set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-
-CHECK_SYMBOL_EXISTS(PTHREAD_MUTEX_RECURSIVE pthread.h HAVE_PTHREAD_MUTEX_RECURSIVE_DEFN)
-if (HAVE_PTHREAD_MUTEX_RECURSIVE_DEFN)
-  add_definitions(-DHAVE_PTHREAD_MUTEX_RECURSIVE=1)
-endif()
-
-option(USE_THREAD "Build libproj with thread/mutex support " ON)
-
-if(NOT USE_THREAD)
-   add_definitions(-DMUTEX_stub)
-endif(NOT USE_THREAD)
-
-# if(USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT )
-#    add_definitions(-DMUTEX_win32)
-# endif(USE_THREAD AND Threads_FOUND AND CMAKE_USE_WIN32_THREADS_INIT )
-
-if(USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
-   add_definitions(-DMUTEX_pthread)
-endif(USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
-
-if(USE_THREAD AND NOT Threads_FOUND)
-  message(FATAL_ERROR "No thread library found and thread/mutex support is required by USE_THREAD option")
-endif(USE_THREAD AND NOT Threads_FOUND)
+# Copyright (C) 2017 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+#
+# This file is part of the QtCarto library.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# $ALPINE_TOOLKIT_END_LICENSE$
+#
+####################################################################################################
 
 ####################################################################################################
 
-if(ANDROID)
- ADD_DEFINITIONS(-DANDROID)
-endif(ANDROID)
+set(PROJ_BASE_URL "https://download.osgeo.org/proj")
+set(PROJ_VERSION "9.0.0")
+set(PROJ_SOURCE_URL "${PROJ_BASE_URL}/proj-{PROJ_VERSION}.tar.gz")
+unset(PROJ_BASE_URL)
 
-add_definitions(-Dproj_EXPORTS)
-# add_definitions(-DNDEBUG)
+# CMake is run by ninja
+ExternalProject_Add(proj
+  DEPENDS sqlite
 
-# Embed PROJ_LIB data files location
-# add_definitions(-DPROJ_LIB="${CMAKE_INSTALL_PREFIX}/${DATADIR}")
+  # URL ${PROJ_SOURCE_URL}
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proj.git
 
-if(ANDROID)
-  add_definitions(-DPROJ_LIB="file:///android_asset/proj4_data")
-else(ANDROID)
-  add_definitions(-DPROJ_LIB="${CMAKE_CURRENT_SOURCE_DIR}/${PROJ4_SOURCE_PATH}/nad")
-endif(ANDROID)
+  CMAKE_ARGS
+  # -S${CMAKE_CURRENT_SOURCE_DIR}/proj.git
+  # -B${CMAKE_CURRENT_SOURCE_DIR}/build
+  # -GNinja
+  -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+  -DCMAKE_C_FLAGS:STRING=${CMAKE_C_FLAGS}
+  -DCMAKE_CXX_FLAGS:STRING=${CMAKE_CXX_FLAGS}
+  -DCMAKE_TOOLCHAIN_FILE:FILEPATH=${CMAKE_TOOLCHAIN_FILE}
+  -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
+  -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
+  -DANDROID_NDK:PATH=${ANDROID_NDK}
+  -DANDROID_SDK_ROOT:PATH=${ANDROID_SDK}
+  -DANDROID_ABI:STRING=${ANDROID_ABI}
+  -DANDROID_NATIVE_API_LEVEL:STRING=${ANDROID_NATIVE_API_LEVEL}
+  -DANDROID_STL:STRING=${ANDROID_STL}
+  -DBUILD_APPS=OFF
+  -DBUILD_SHARED_LIBS=ON
+  -DBUILD_TESTING=OFF
+  -DENABLE_CURL=OFF
+  -DENABLE_TIFF=OFF
+  -DENABLE_IPO=OFF
+  -DUSE_CCACHE=OFF
+  -DSQLITE3_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/third-parties/sqlite/sqlite-amalgamation/
+  -DSQLITE3_LIBRARY=${CMAKE_BINARY_DIR}/third-parties/sqlite/libsqlite.so
 
-####################################################################################################
+  -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/local/
 
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/${PROJ4_SOURCE_PATH}/src)
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+  #? -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+  # /!\ output is only dumped when everything is done
+  BUILD_COMMAND ninja -v
 
-####################################################################################################
+  # https://stackoverflow.com/questions/37838786/how-to-not-make-install-step-when-building-external-project-with-cmake
+  # INSTALL_COMMAND cmake -E echo "Skipping install step."
+  # STEP_TARGETS build
+  # EXCLUDE_FROM_ALL TRUE
+)
 
-SET(SRC_LIBPROJ_PJ
-  nad_init.c
-  PJ_aea.c
-  PJ_aeqd.c
-  PJ_airy.c
-  PJ_aitoff.c
-  PJ_august.c
-  PJ_bacon.c
-  PJ_bipc.c
-  PJ_boggs.c
-  PJ_bonne.c
-  PJ_calcofi.c
-  PJ_cart.c
-  PJ_cass.c
-  PJ_cc.c
-  PJ_cea.c
-  PJ_chamb.c
-  PJ_collg.c
-  PJ_comill.c
-  PJ_crast.c
-  PJ_denoy.c
-  PJ_eck1.c
-  PJ_eck2.c
-  PJ_eck3.c
-  PJ_eck4.c
-  PJ_eck5.c
-  PJ_eqc.c
-  PJ_eqdc.c
-  PJ_fahey.c
-  PJ_fouc_s.c
-  PJ_gall.c
-  PJ_geos.c
-  PJ_gins8.c
-  PJ_gnom.c
-  PJ_gn_sinu.c
-  PJ_goode.c
-  PJ_gstmerc.c
-  PJ_hammer.c
-  PJ_hatano.c
-  PJ_helmert.c
-  PJ_hgridshift.c
-  PJ_horner.c
-  PJ_igh.c
-  PJ_isea.c
-  PJ_imw_p.c
-  PJ_krovak.c
-  PJ_labrd.c
-  PJ_laea.c
-  PJ_lagrng.c
-  PJ_larr.c
-  PJ_lask.c
-  PJ_lcca.c
-  PJ_lcc.c
-  PJ_loxim.c
-  PJ_lsat.c
-  PJ_misrsom.c
-  PJ_mbt_fps.c
-  PJ_mbtfpp.c
-  PJ_mbtfpq.c
-  PJ_merc.c
-  PJ_mill.c
-  PJ_mod_ster.c
-  PJ_moll.c
-  PJ_natearth.c
-  PJ_natearth2.c
-  PJ_nell.c
-  PJ_nell_h.c
-  PJ_nocol.c
-  PJ_nsper.c
-  PJ_nzmg.c
-  PJ_ob_tran.c
-  PJ_ocea.c
-  PJ_oea.c
-  PJ_omerc.c
-  PJ_ortho.c
-  PJ_patterson.c
-  PJ_pipeline.c
-  PJ_poly.c
-  PJ_putp2.c
-  PJ_putp3.c
-  PJ_putp4p.c
-  PJ_putp5.c
-  PJ_putp6.c
-  PJ_qsc.c
-  PJ_robin.c
-  PJ_rpoly.c
-  PJ_sch.c
-  PJ_sconics.c
-  PJ_somerc.c
-  PJ_sterea.c
-  PJ_stere.c
-  PJ_sts.c
-  PJ_tcc.c
-  PJ_tcea.c
-  PJ_times.c
-  PJ_tmerc.c
-  PJ_tpeqd.c
-  PJ_urm5.c
-  PJ_urmfps.c
-  PJ_vandg.c
-  PJ_vandg2.c
-  PJ_vandg4.c
-  PJ_vgridshift.c
-  PJ_wag2.c
-  PJ_wag3.c
-  PJ_wag7.c
-  PJ_wink1.c
-  PJ_wink2.c
-  proj_etmerc.c
-  )
-
-SET(SRC_LIBPROJ_CORE
-  aasincos.c
-  adjlon.c
-  bch2bps.c
-  bchgen.c
-  biveval.c
-  dmstor.c
-  emess.c
-  emess.h
-  geocent.c
-  geocent.h
-  geodesic.c
-  mk_cheby.c
-  nad_cvt.c
-  nad_init.c
-  nad_intr.c
-  pj_apply_gridshift.c
-  pj_apply_vgridshift.c
-  pj_auth.c
-  pj_ctx.c
-  pj_fileapi.c
-  pj_datum_set.c
-  pj_datums.c
-  pj_deriv.c
-  pj_ell_set.c
-  pj_ellps.c
-  pj_errno.c
-  pj_factors.c
-  pj_fwd.c
-  pj_fwd3d.c
-  pj_gauss.c
-  pj_gc_reader.c
-  pj_generic_selftest.c
-  pj_geocent.c
-  pj_gridcatalog.c
-  pj_gridinfo.c
-  pj_gridlist.c
-  PJ_healpix.c
-  pj_init.c
-  pj_initcache.c
-  pj_inv.c
-  pj_inv3d.c
-  pj_latlong.c
-  pj_list.c
-  pj_list.h
-  pj_log.c
-  pj_malloc.c
-  pj_mlfn.c
-  pj_msfn.c
-  pj_mutex.c
-  pj_obs_api.c
-  pj_open_lib.c
-  pj_param.c
-  pj_phi2.c
-  pj_pr_list.c
-  pj_qsfn.c
-  pj_release.c
-  pj_run_selftests.c
-  pj_strerrno.c
-  pj_transform.c
-  pj_tsfn.c
-  pj_units.c
-  pj_utils.c
-  pj_zpoly1.c
-  proj_mdist.c
-  proj_rouss.c
-  rtodms.c
-  vector1.c
-  pj_strtod.c
-  )
-
-set(HEADERS_LIBPROJ
-  projects.h
-  proj_api.h
-  proj.h
-  geodesic.h
-  )
-
-set(ALL_LIBPROJ_SOURCES ${SRC_LIBPROJ_PJ} ${SRC_LIBPROJ_CORE})
-set(ALL_LIBPROJ_HEADERS ${HEADERS_LIBPROJ} )
-
-PREPEND(ALL_LIBPROJ_SOURCES ${LIBPROJ_SOURCE_PATH} ${ALL_LIBPROJ_SOURCES})
-PREPEND(ALL_LIBPROJ_HEADERS ${LIBPROJ_SOURCE_PATH} ${ALL_LIBPROJ_HEADERS})
-
-set(PROJ_CORE_TARGET qtcarto_proj4)
-set(PROJ_LIBRARY_TYPE SHARED)
-# set(PROJ_LIBRARY_TYPE STATIC)
-
-add_library(${PROJ_CORE_TARGET}
-  ${PROJ_LIBRARY_TYPE}
-  ${ALL_LIBPROJ_SOURCES}
-  ${ALL_LIBPROJ_HEADERS}
-  ${CMAKE_CURRENT_BINARY_DIR}/proj_config.h
-  # ${PROJ_RESOURCES}
-  )
-
-if(ANDROID)
-  set(ANDROID_LIBRARIES "-llog")
-else(ANDROID)
-  set(ANDROID_LIBRARIES "")
-endif(ANDROID)
-
-set(PROJ_LIBRARIES ${PROJ_CORE_TARGET} )
-if(UNIX)
-  find_library(M_LIB m)
-  if(M_LIB)
-    TARGET_LINK_LIBRARIES(${PROJ_CORE_TARGET} -lm ${ANDROID_LIBRARIES})
-  endif()
-endif(UNIX)
-if(USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
-  TARGET_LINK_LIBRARIES(${PROJ_CORE_TARGET} ${CMAKE_THREAD_LIBS_INIT})
-endif(USE_THREAD AND Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
-
-####################################################################################################
-
-if(!ANDROID)
-  add_executable(test_proj4 test.c)
-  target_link_libraries(test_proj4 ${PROJ_CORE_TARGET})
-endif(!ANDROID)
+# add_dependencies(... proj-build)
