@@ -186,6 +186,15 @@ resources/icons/wifi-white@2x.png
 resources/icons/wifi-white@3x.png
 resources/icons/wifi-white@4x.png
 
+resources/icons/ic_volume_mute_48px-black.png
+resources/icons/ic_volume_mute_48px-black@3x.png
+resources/icons/ic_volume_off_48px-black.png
+resources/icons/ic_volume_off_48px-black@3x.png
+resources/icons/volume-black.png
+resources/icons/volume-black@3x.png
+resources/icons/volume-white-black.png
+resources/icons/volume-white-black@3x.png
+
 resources/js/attributes.py
 resources/js/filter.txt
 resources/js/filters.html
