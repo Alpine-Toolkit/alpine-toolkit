@@ -4,7 +4,7 @@
 #
 # $ALPINE_TOOLKIT_BEGIN_LICENSE:GPL3$
 #
-# Copyright (C) 2017 Fabrice Salvaire
+# Copyright (C) 2022 Fabrice Salvaire
 # Contact: http://www.fabrice-salvaire.fr
 #
 # This file is part of the QtCarto library.
@@ -44,6 +44,13 @@ if (${ANDROID_ABI} STREQUAL "armeabi-v7a")
 elseif (${ANDROID_ABI} STREQUAL "x86")
   set(ARCH "android-x86")
 endif()
+
+# Sets environment variables
+#   it affects only the current CMake process
+#   https://cmake.org/cmake/help/latest/command/set.html
+# Note: don't work, workaround use cmake -E env variable=value command
+#  set(ENV{PATH} ${ENV_PATH})
+#  set(ENV{ANDROID_NDK_HOME} ${ANDROID_NDK})
 
 # CMake is run by ninja
 ExternalProject_Add(openssl
