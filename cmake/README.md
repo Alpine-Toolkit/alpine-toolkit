@@ -3,7 +3,7 @@
 This directory contain custom CMake macros.
 
 **Macros**:
-* `FUNCTION(PREPEND var prefix)`
+* `function(prepend var prefix)`
 
 **Modules**:
 
