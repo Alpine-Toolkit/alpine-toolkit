@@ -253,6 +253,10 @@ third-parties/openssl/openssl-1.1.1.git/
 third-parties/openssl/openssl-1.1.1o/
 
 # third-parties/proj
+third-parties/proj/build/
+third-parties/proj/old-CMakeLists.txt
+third-parties/proj/proj-9.0.0/
+third-parties/proj/proj.git
 
 third-parties/spatialite/libspatialite-4.4.0-RC1/
 third-parties/spatialite/spatialite-sources
