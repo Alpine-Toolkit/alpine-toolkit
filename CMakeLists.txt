@@ -115,6 +115,26 @@ option(SANITIZE "Compile using sanitize options" OFF)
 option(INSTRUMENT_FUNTIONS "Compile using -finstrument-functions" OFF)
 
 ####################################################################################################
+#
+# Target Platform
+#
+
+if(ANDROID)
+  message("Build for Android")
+  add_compile_definitions(ON_ANDROID)
+endif(ANDROID)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+  message("Build for Linux")
+  add_compile_definitions(ON_LINUX)
+endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  message("Build for Windows")
+  add_compile_definitions(ON_WINDOWS)
+endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+
+####################################################################################################
 
 # https://github.com/ninja-build/ninja/issues/900 — How to make build verbose by default
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON" FORCE)
@@ -124,23 +144,6 @@ if(NOT ANDROID)
   #   https://cmake.org/cmake/help/latest/command/enable_testing.html
   enable_testing()
 endif(NOT ANDROID)
-
-####################################################################################################
-#
-# Target Platform
-#
-
-if(ANDROID)
- add_compile_definitions(ON_ANDROID)
-endif(ANDROID)
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  add_compile_definitions(ON_LINUX)
-endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
-
-if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-  add_compile_definitions(ON_WINDOWS)
-endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 ####################################################################################################
 #
