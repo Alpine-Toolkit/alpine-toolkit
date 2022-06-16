@@ -49,7 +49,11 @@ def _init_config(ctx) -> None:
 
     ctx.build['source'] = Path(__file__).parents[1]
     ctx.build['resources_path'] = ctx.build.source.joinpath('resources')
-    ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
+
+    if hasattr(ctx.build, 'path'):
+        ctx.build.path = Path(ctx.build.path)
+    else:
+        ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
 
     ctx.build['third_parties'] = ctx.build.source.joinpath('third-parties')
     ctx.build['openssl_source'] = ctx.build.third_parties.joinpath('openssl', ctx.build.openssl)
@@ -352,6 +356,7 @@ def build(
         clean=False,
         make=True,
         deploy=False,
+        verbose=True,
 ):
     _init_config(ctx)
     is_android = ctx.build.arch.startswith('android')
@@ -404,13 +409,17 @@ def build(
                 f'-D CMAKE_PREFIX_PATH:PATH={ctx.build.qt_arch_path}',
                 f'-D CMAKE_FIND_ROOT_PATH:PATH={ctx.build.qt_arch_path}',
 
-                f'-DCMAKE_C_FLAGS:STRING="{ctx.build.cflags}"',
-                f'-DCMAKE_CXX_FLAGS:STRING="{ctx.build.cflags}"',
+                f'-D CMAKE_C_FLAGS:STRING="{ctx.build.cflags}"',
+                f'-D CMAKE_CXX_FLAGS:STRING="{ctx.build.cflags}"',
 
                 f'-D QT_HOST_PATH:PATH={ctx.build.qt_host_path}',
             ]
 
             # -DCMAKE_PROJECT_INCLUDE_BEFORE:FILEPATH=/srv/qt/Qt/Tools/QtCreator/share/qtcreator/package-manager/auto-setup.cmake
+
+            if verbose:
+                # cf. main CMakeLists.txt
+                command.append("-D CMAKE_VERBOSE_MAKEFILE:BOOL=ON")
 
             if is_android:
                 # https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html#cross-compiling-for-android
@@ -420,6 +429,11 @@ def build(
                 toolchain_path = ndk.joinpath('toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin')
                 cmake_toolchain_path = ndk.joinpath('build', 'cmake', 'android.toolchain.cmake')
                 clang_path = toolchain_path.joinpath('clang')
+                ABI_MAP = {
+                    'android_armv7': 'armeabi-v7a',
+                    'android_x86': 'x86',
+                }
+                abi = ABI_MAP[ctx.build.arch]
                 command += [
                     # This variable is specified on the command line when cross-compiling with
                     # CMake. It is the path to a file which is read early in the CMake run and which
@@ -445,8 +459,7 @@ def build(
 
                     f'-D ANDROID_NDK:PATH={ndk}',
                     f'-D ANDROID_SDK_ROOT:PATH={sdk}',
-                    # '-D ANDROID_ABI:STRING=armeabi-v7a',
-                    '-D ANDROID_ABI:STRING=x86',
+                    f'-D ANDROID_ABI:STRING={abi}',
                     '-D ANDROID_NATIVE_API_LEVEL:STRING=23',
                     '-D ANDROID_STL:STRING=c++_shared',
 
@@ -481,7 +494,10 @@ def build(
             # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
             if use_ninja:
                 # -C build-cmake
-                ctx.run('ninja -j2')
+                command = 'ninja -j2'
+                if verbose:
+                    command += ' -v'
+                ctx.run(command)
             else:
                 # -k
                 ctx.run('make -j4')
@@ -559,9 +575,10 @@ def run(ctx):
 
 ####################################################################################################
 
-@task(
-    pre=[init_source],
-)
+# Disabled
+# @task(
+#     pre=[init_source],
+# )
 def build_openssl(ctx, clean=False):
     # https://doc-snapshots.qt.io/qt6-dev/android-openssl-support.html
     #
@@ -576,13 +593,14 @@ def build_openssl(ctx, clean=False):
     # ./Configure android-arm64 -D__ANDROID_API__=29
     # make
     _init_config(ctx)
-    openssl_build_path = ctx.build.path.joinpath('openssl')
+    openssl_build_path = ctx.build.path.joinpath('third-parties', 'openssl')
     if clean:
         shutil.rmtree(openssl_build_path)
     if not openssl_build_path.exists():
         print("Copy OpenSSL source ...")
         ctx.build.path.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(ctx.build.openssl_source, openssl_build_path)
+        # shutil.copytree(ctx.build.openssl_source, openssl_build_path)
+        openssl_build_path.mkdir(parents=True)
     with ctx.cd(openssl_build_path):
         print("Build OpenSSL ...")
         ndk_path = Path(ctx.build.ndk)
@@ -600,7 +618,7 @@ def build_openssl(ctx, clean=False):
             'android_x86': 'android-x86',
         }
         arch = ARCH_MAP[ctx.build.arch]
-        command = f"./Configure shared {arch} -D__ANDROID_API__={ctx.build.android_api}"
+        command = f"{ctx.build.openssl_source}/Configure shared {arch} -D__ANDROID_API__={ctx.build.android_api}"
         print(env)
         print(command)
         ctx.run(command, env=env)
