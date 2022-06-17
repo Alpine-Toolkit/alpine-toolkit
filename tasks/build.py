@@ -330,10 +330,22 @@ def init_source(ctx):
 
     #########################
     # Spatialite
-    # https://github.com/libspatialindex/libspatialindex.git
 
-    #########################
-    # Sqlite
+    spatialite_directory = ctx.build.third_parties.joinpath('spatialite')
+    spatialite_source = spatialite_directory.joinpath('spatialite.git')
+    if not spatialite_source.exists():
+        version = '5.0.1'
+        url_base = 'https://www.gaia-gis.it/gaia-sins'
+        tar_filename = f'libspatialite-{version}.tar.gz'
+        tar_url = f'{url_base}/{tar_filename}'
+        # git_clone(ctx, spatialite_url, spatialite_source)
+        tar_path = spatialite_directory.joinpath(tar_filename)
+        download(tar_url, tar_path)
+        untar(tar_path, spatialite_directory)
+        spatialite_source.symlink_to(f'libspatialite-{version}')
+        tar_path.unlink()
+
+    # git_url = 'https://github.com/libspatialindex/libspatialindex.git'
 
     #########################
     # C2C Login
