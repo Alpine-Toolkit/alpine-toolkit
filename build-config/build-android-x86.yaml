@@ -11,7 +11,8 @@ build:
   # To force 32-bit arch
   cflags: -m32
 
-  qt: /opt/Qt/6.3.1
+  # qt: /opt/Qt/6.3.1
+  qt: /opt/Qt/6.4.0
   # arch: android_x86_64
   arch: android_x86
   sdk: /opt/Android
