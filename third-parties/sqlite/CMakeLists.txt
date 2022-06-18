@@ -14,17 +14,17 @@ set(SQLITE_SOURCE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/sqlite-amalgamation")
 ####################################################################################################
 
 # Always compile with warnings
-if(CMAKE_COMPILER_IS_GNUCC)
-  # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -std=c99 -pedantic")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter -Wno-int-to-pointer-cast -Wno-maybe-uninitialized -Wno-parentheses")
-endif()
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter -Wno-int-to-pointer-cast -Wno-uninitialized -Wno-parentheses")
-endif()
+# if(CMAKE_COMPILER_IS_GNUCC)
+#   # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter -std=c99 -pedantic")
+#   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter -Wno-int-to-pointer-cast -Wno-maybe-uninitialized -Wno-parentheses")
+# endif()
+# if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+#   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter -Wno-int-to-pointer-cast -Wno-uninitialized -Wno-parentheses")
+# endif()
 
 ####################################################################################################
 
-# use "_at" prefix to be sure we don't confuse with system SQLite
+# use "_at" suffix to be sure we don't confuse with system SQLite
 add_library(sqlite_at SHARED)
 
 target_include_directories(sqlite_at
@@ -33,18 +33,13 @@ target_include_directories(sqlite_at
   # $<INSTALL_INTERFACE:include/mylib>  # <prefix>/include/mylib
 )
 
-target_sources(sqlite_at
-  PRIVATE
-    ${SQLITE_SOURCE_PATH}/sqlite3.c
-)
+target_sources(sqlite_at PRIVATE ${SQLITE_SOURCE_PATH}/sqlite3.c)
 
 target_compile_definitions(sqlite_at
   PUBLIC
     # -DSQLITE_THREADSAFE=0
     # -DSQLITE_OMIT_LOAD_EXTENSION
     # -DSQLITE_ENABLE_FTS4 or -DSQLITE_ENABLE_FTS5 for full-text search
-    # -DSQLITE_ENABLE_RTREE for the R*Tree search engine extension
-    # -DSQLITE_ENABLE_JSON1 to include JSON SQL functions
     # -DSQLITE_ENABLE_DBSTAT_VTAB for the dbstat virtual table.
     # In order to see extra commentary in EXPLAIN listings, add the -DSQLITE_ENABLE_EXPLAIN_COMMENTS option
     # On unix systems, add -DHAVE_USLEEP=1 if the host machine supports the usleep() system call.
@@ -73,12 +68,6 @@ if(ANDROID)
       # writable temp directory, if this is not defined the application throws an exception when it
       # tries to create a temp file.
       SQLITE_TEMP_STORE=3
-
-    # ???
-    # HAVE_STRCHRNUL=0
-
-    # ???
-    # "PACKED=__attribute__ ((packed))"
     )
 endif(ANDROID)
 
