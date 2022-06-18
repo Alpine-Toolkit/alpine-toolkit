@@ -70,7 +70,7 @@ ExternalProject_Add(proj_project
   -DENABLE_IPO=OFF
   -DUSE_CCACHE=OFF
   -DSQLITE3_INCLUDE_DIR=${CMAKE_SOURCE_DIR}/third-parties/sqlite/sqlite-amalgamation/
-  -DSQLITE3_LIBRARY=${CMAKE_BINARY_DIR}/third-parties/sqlite/libsqlite.so
+  -DSQLITE3_LIBRARY=${CMAKE_BINARY_DIR}/third-parties/sqlite/libsqlite_at.so
 
   -DCMAKE_INSTALL_PREFIX=${PROJ_PREFIX}
 
