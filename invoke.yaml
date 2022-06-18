@@ -11,7 +11,7 @@ build:
   cflags: ""
 
   # openssl: openssl-1.1.1o
-  openssl: openssl-1.1.1.git
+  # openssl: openssl-1.1.1.git
 
   # qt: .../Qt
   # arch:
