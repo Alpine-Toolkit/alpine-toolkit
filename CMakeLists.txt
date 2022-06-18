@@ -249,7 +249,7 @@ find_package(Qt6 REQUIRED COMPONENTS
   Svg
   Test
   Widgets
-  )
+)
 
 # only available for Android build
 # find_package(Qt6AndroidExtras REQUIRED)
@@ -312,6 +312,8 @@ endif(NOT ANDROID)
 #
 
 add_subdirectory(third-parties)
+
+add_subdirectory(sqlite-driver)
 
 # if(NOT ANDROID)
 #   include_directories(src)
