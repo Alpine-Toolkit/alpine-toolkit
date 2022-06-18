@@ -37,7 +37,7 @@ set(PROJ_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/local")
 
 # CMake is run by ninja
 ExternalProject_Add(proj_project
-  DEPENDS sqlite
+  DEPENDS sqlite_at
 
   # URL ${PROJ_SOURCE_URL}
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proj-source
@@ -95,7 +95,7 @@ set_target_properties(proj_lib PROPERTIES
   IMPORTED_LOCATION "${PROJ_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libproj.so"
   INTERFACE_INCLUDE_DIRECTORIES "${PROJ_PREFIX}/include"
 )
-target_link_libraries(proj_lib INTERFACE sqlite)
+target_link_libraries(proj_lib INTERFACE sqlite_at)
 
 ####################################################################################################
 

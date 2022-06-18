@@ -37,7 +37,7 @@ set(GEOS_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/local")
 
 # CMake is run by ninja
 ExternalProject_Add(geos_project
-  DEPENDS sqlite
+  DEPENDS sqlite_at
 
   # URL ${GEOS_SOURCE_URL}
   SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/geos-source

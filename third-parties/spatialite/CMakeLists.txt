@@ -366,5 +366,5 @@ add_library(spatialite
   ${SPATIALITE_SOURCES}
 )
 # missing function crc32 : z
-target_link_libraries(spatialite sqlite iconv qtcarto_proj4 geos z)
+target_link_libraries(spatialite sqlite_at iconv qtcarto_proj4 geos z)
 # libljson-c liblwgeom libxml2
