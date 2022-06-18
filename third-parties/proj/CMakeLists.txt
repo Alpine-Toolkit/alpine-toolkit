@@ -36,7 +36,7 @@ unset(PROJ_BASE_URL)
 set(PROJ_PREFIX "${CMAKE_CURRENT_BINARY_DIR}/local")
 
 # CMake is run by ninja
-ExternalProject_Add(proj_project
+ExternalProject_Add(proj_build
   DEPENDS sqlite_at
 
   # URL ${PROJ_SOURCE_URL}
@@ -84,22 +84,26 @@ ExternalProject_Add(proj_project
   # EXCLUDE_FROM_ALL TRUE
 )
 
-# add_dependencies(... proj-build)
-
 # https://cmake.org/cmake/help/latest/module/ExternalProject.html#obtaining-project-properties
-# ExternalProject_Get_property(proj_project SOURCE_DIR)
+# ExternalProject_Get_Property(proj_build INSTALL_DIR)
 
 # see also ${PROJ_PREFIX}/lib64/cmake/proj-targets.cmake
 add_library(proj_lib SHARED IMPORTED)
+add_dependencies(proj_lib proj_build)
+# cf. https://gitlab.kitware.com/cmake/cmake/-/issues/15052
+set(PROJ_INCLUDE_DIRECTORY "${PROJ_PREFIX}/include")
+set(PROJ_LIB "${PROJ_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libproj.so")
+file(MAKE_DIRECTORY ${PROJ_INCLUDE_DIRECTORY}) # else INTERFACE_INCLUDE_DIRECTORIES complain...
+file(WRITE ${PROJ_LIB} "") # else target_link_libraries complain...
 set_target_properties(proj_lib PROPERTIES
-  IMPORTED_LOCATION "${PROJ_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libproj.so"
-  INTERFACE_INCLUDE_DIRECTORIES "${PROJ_PREFIX}/include"
+  IMPORTED_LOCATION ${PROJ_LIB}
+  INTERFACE_INCLUDE_DIRECTORIES ${PROJ_INCLUDE_DIRECTORY}
 )
 target_link_libraries(proj_lib INTERFACE sqlite_at)
 
 ####################################################################################################
 
 if(NOT ANDROID)
-  add_executable(test_proj4 test.c)
-  target_link_libraries(test_proj4 proj_lib)
+  add_executable(test_proj test.c)
+  target_link_libraries(test_proj proj_lib)
 endif(NOT ANDROID)
