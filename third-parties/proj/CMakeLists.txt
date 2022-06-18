@@ -40,7 +40,7 @@ ExternalProject_Add(proj_project
   DEPENDS sqlite
 
   # URL ${PROJ_SOURCE_URL}
-  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proj.git
+  SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/proj-source
 
   PATCH_COMMAND
   # see make-patch.sh
@@ -48,7 +48,7 @@ ExternalProject_Add(proj_project
   # patch -p1 -N -i ${CMAKE_CURRENT_SOURCE_DIR}/patch.diff
 
   CMAKE_ARGS
-  # -S${CMAKE_CURRENT_SOURCE_DIR}/proj.git
+  # -S${CMAKE_CURRENT_SOURCE_DIR}/proj-source
   # -B${CMAKE_CURRENT_SOURCE_DIR}/build
   # -GNinja
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}

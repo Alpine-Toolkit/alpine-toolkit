@@ -90,7 +90,7 @@ def _init_config(ctx) -> None:
         ctx.build['path'] = ctx.build.source.joinpath(f'build-{ctx.build.arch}')
 
     ctx.build['third_parties'] = ctx.build.source.joinpath('third-parties')
-    ctx.build['openssl_source'] = ctx.build.third_parties.joinpath('openssl', ctx.build.openssl)
+    # ctx.build['openssl_source'] = ctx.build.third_parties.joinpath('openssl', 'openssl-source')
 
     ARCH = (
         'gcc_64',
@@ -252,18 +252,19 @@ def init_source(ctx):
 
     #########################
     # OpenSSL
-    if not ctx.build.openssl_source.exists():
-        if ctx.build.openssl.endswith('.git'):
-            url = "https://github.com/openssl/openssl"
-            branch = "OpenSSL_1_1_1-stable"
-            git_clone(ctx, url, ctx.build.openssl_source, branch=branch)
-        else:
-            tar_filename = ctx.build.openssl + '.tar.gz'
-            url = f'https://www.openssl.org/source/{tar_filename}'
-            tar_path = ctx.build.third_parties.joinpath(tar_filename)
-            download(url, tar_path)
-            print_info(f"  extract in {filename} ...")
-            untar(tar_path, ctx.build.third_parties)
+    openssl_directory = ctx.build.third_parties.joinpath('openssl')
+    openssl_source = openssl_directory.joinpath('openssl-source')
+    if not openssl_source.exists():
+        # if ctx.build.openssl.endswith('.git'):
+        url = "https://github.com/openssl/openssl"
+        branch = "OpenSSL_1_1_1-stable"
+        git_clone(ctx, url, openssl_source, branch=branch)
+        # else:
+        #     tar_filename = ctx.build.openssl + '.tar.gz'
+        #     url = f'https://www.openssl.org/source/{tar_filename}'
+        #     tar_path = ctx.build.third_parties.joinpath(tar_filename)
+        #     download(url, tar_path)
+        #     untar(tar_path, ctx.build.third_parties)
 
     #########################
     # CMark (in Qt6)
@@ -271,42 +272,43 @@ def init_source(ctx):
     #    38 | #include "cmark/cmark.h"
     # ./third-parties/include/cmark/cmark.h
     #
-    # cmark_source = ctx.build.third_parties.joinpath('cmark', 'cmark.git')
+    # cmark_source = ctx.build.third_parties.joinpath('cmark', 'cmark-source')
     # if not cmark_source.joinpath('src').exists():
     #     cmark_url = 'https://github.com/github/cmark'
     #     git_clone(ctx, cmark_url, cmark_source)
 
     #########################
     # Snowball
-    snowball_source = ctx.build.third_parties.joinpath('snowball', 'snowball.git')
+    snowball_dirctory = ctx.build.third_parties.joinpath('snowball')
+    snowball_source = snowball_dirctory.joinpath('snowball-source')
     if not snowball_source.joinpath('src_c').exists():
         raise NameError("Snowball source are missing")
         # url = 'https://github.com/snowballstem/snowball'
         # Fixme: snowball is not up to date
         # git_clone(ctx, url, snowball_source)
         # third-parties/include/snowball
-        # libstemmer.h -> ../../snowball/snowball.git/include/libstemmer.h
+        # libstemmer.h -> ../../snowball/snowball-source/include/libstemmer.h
 
     #########################
     # SQLite
-    sqlite_source = ctx.build.third_parties.joinpath('sqlite')
-    sqlite_amalgamation_source = sqlite_source.joinpath('sqlite-amalgamation')
+    sqlite_directory = ctx.build.third_parties.joinpath('sqlite')
+    sqlite_amalgamation_source = sqlite_directory.joinpath('sqlite-amalgamation')
     if not sqlite_amalgamation_source.exists():
         version = '3380500'
         url_base = "https://www.sqlite.org/2022"
         url = f"{url_base}/sqlite-amalgamation-{version}.zip"
         # url = f"{url_base}/sqlite-src-{version}.zip"
-        zip_path = sqlite_source.joinpath('sqlite-amalgamation.zip')
+        zip_path = sqlite_directory.joinpath('sqlite-amalgamation.zip')
         download(url, zip_path)
         print_info(f"  Unzip {zip_path} ...")
-        unzip(zip_path, sqlite_source)
+        unzip(zip_path, sqlite_directory)
         sqlite_amalgamation_source.symlink_to(f'sqlite-amalgamation-{version}')
         zip_path.unlink()
 
     #########################
     # Proj
     proj_directory = ctx.build.third_parties.joinpath('proj')
-    proj_source = proj_directory.joinpath('proj.git')
+    proj_source = proj_directory.joinpath('proj-source')
     if not proj_source.exists():
         version = '9.0.0'
         data_version = '1.9'
@@ -329,10 +331,44 @@ def init_source(ctx):
             ctx.run('patch -p1 -i patch.diff')
 
     #########################
+    # libiconv
+    #  https://www.gnu.org/software/libiconv
+
+    libiconv_directory = ctx.build.third_parties.joinpath('libiconv')
+    libiconv_source = libiconv_directory.joinpath('libiconv-source')
+    if not libiconv_source.exists():
+        version = '1.17'
+        url_base = 'https://ftp.gnu.org/pub/gnu/libiconv'
+        tar_filename = f'libiconv-{version}.tar.gz'
+        tar_url = f'{url_base}/{tar_filename}'
+        tar_path = libiconv_directory.joinpath(tar_filename)
+        download(tar_url, tar_path)
+        untar(tar_path, libiconv_directory)
+        libiconv_source.symlink_to(f'libiconv-{version}')
+        tar_path.unlink()
+
+    #########################
+    # geos
+    #  https://libgeos.org
+
+    geos_directory = ctx.build.third_parties.joinpath('geos')
+    geos_source = geos_directory.joinpath('geos-source')
+    if not geos_source.exists():
+        version = '3.10.3'
+        url_base = 'http://download.osgeo.org/geos'
+        tar_filename = f'geos-{version}.tar.bz2'
+        tar_url = f'{url_base}/{tar_filename}'
+        tar_path = geos_directory.joinpath(tar_filename)
+        download(tar_url, tar_path)
+        untar(tar_path, geos_directory)
+        geos_source.symlink_to(f'geos-{version}')
+        tar_path.unlink()
+
+    #########################
     # Spatialite
 
     spatialite_directory = ctx.build.third_parties.joinpath('spatialite')
-    spatialite_source = spatialite_directory.joinpath('spatialite.git')
+    spatialite_source = spatialite_directory.joinpath('spatialite-source')
     if not spatialite_source.exists():
         version = '5.0.1'
         url_base = 'https://www.gaia-gis.it/gaia-sins'
@@ -345,7 +381,7 @@ def init_source(ctx):
         spatialite_source.symlink_to(f'libspatialite-{version}')
         tar_path.unlink()
 
-    # git_url = 'https://github.com/libspatialindex/libspatialindex.git'
+    # git_url = 'https://github.com/libspatialindex/libspatialindex-source'
 
     #########################
     # C2C Login
@@ -392,6 +428,7 @@ def qml(ctx, path):
 )
 def build(
         ctx,
+        wipe=False,
         cmake=True,
         clean=False,
         make=True,
@@ -417,6 +454,10 @@ def build(
         print_info(f"NDK path: {ctx.build.ndk}")
         print_info(f"SDK path: {ctx.build.sdk}")
 
+    if wipe:
+        print_section(f'Wipe {ctx.build.path}')
+        shutil.rmtree(ctx.build.path)
+
     if not ctx.build.path.exists():
         ctx.build.path.mkdir()
 
@@ -427,10 +468,10 @@ def build(
                     'CMakeCache.txt',
                     'compile_commands.json',
             ):
-                os.unlink(_)
-            ctx.run('cmake --build {ctx.build.path} --target clean')
-            # if Path('Makefile').exists():
-            #     ctx.run('make clean')
+                _ = Path(_)
+                if _.exists():
+                    _.unlink()
+            ctx.run(f'cmake --build {ctx.build.path} --target clean')
 
         if cmake:
             # /etc/security/limits.d/00-user.conf
@@ -526,7 +567,7 @@ def build(
             if not is_android:
                 print_section_rule()
                 print_section('Run lupdate ...')
-                ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True)
+                ctx.run(f'cmake --build {ctx.build.path} --target alpine-toolkit_lupdate', echo=True, warn=True)
 
             if not is_android:
                 for _ in ('compile_commands.json', 'config.h'):

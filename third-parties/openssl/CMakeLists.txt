@@ -33,7 +33,8 @@ set(OPENSSL_VERSION "1.1.1")
 # set(OPENSSL_SOURCE_URL "${OPENSSL_BASE_URL}/")
 # unset(OPENSSL_BASE_URL)
 
-set(OPENSSL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/openssl-${OPENSSL_VERSION}.git")
+# set(OPENSSL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/openssl-${OPENSSL_VERSION}-source")
+set(OPENSSL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/openssl-source")
 
 set(PATH1 "${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/bin")
 set(PATH2 "${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin")
