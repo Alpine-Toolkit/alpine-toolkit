@@ -28,22 +28,37 @@
 
 ####################################################################################################
 
-# add_subdirectory(cmark) # is available in Qt6
 add_subdirectory(snowball)
 
-# libspatialindex is unused / last commit in 2019
-# cf. third-parties/libspatialindex/test.cpp:
-# add_subdirectory(libspatialindex)
-
 if(ANDROID)
+  # build as external project
   add_subdirectory(openssl)
 endif(ANDROID)
 
 # build libsqlite.so
 add_subdirectory(sqlite)
 
-add_subdirectory(proj) # x86: android log
+# build as external project
+# require sqlite
+add_subdirectory(proj)
 
-#add_subdirectory(geos) # x86: compilation errors ???
-#add_subdirectory(libiconv)
+####################################################################################################
+
+add_subdirectory(geos) # x86: compilation errors ???
+
+add_subdirectory(libiconv)
+
+# require geos and libiconv
+# used by
+#  src/base/orm/sqlite_database.cpp:
+#  src/application/test.cpp
+#  unit-tests/sqlite/test_spatialite.cpp
 #add_subdirectory(spatialite) # x86: dependencies
+
+####################################################################################################
+
+# add_subdirectory(cmark) # is available in Qt6
+
+# libspatialindex is unused / last commit in 2019
+# cf. third-parties/libspatialindex/test.cpp:
+# add_subdirectory(libspatialindex)

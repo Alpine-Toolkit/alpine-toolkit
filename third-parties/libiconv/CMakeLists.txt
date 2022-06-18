@@ -30,7 +30,7 @@
 
 ####################################################################################################
 
-set(LIBICONV_SOURCE_PATH "libiconv-sources")
+set(LIBICONV_SOURCE_PATH "libiconv-source")
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}" ${CMAKE_MODULE_PATH})
 
@@ -56,22 +56,22 @@ endmacro()
 
 # -Wno-multichar
 
-ADD_DEFINITIONS(
-  -D_ANDROID
-  -DBUILDING_LIBICONV
-  -DIN_LIBRARY
-  )
+add_compile_definitions(
+  __ANDROID__
+  BUILDING_LIBICONV
+  IN_LIBRARY
+)
 
 ####################################################################################################
 
 include(CheckIncludeFiles)
 include(CheckFunctionExists)
 
-CHECK_INCLUDE_FILES(whar.h HAVE_WCHAR_T)
+check_include_files(whar.h HAVE_WCHAR_T)
 
 set(CMAKE_REQUIRED_INCLUDES wchar.h)
 #set(CMAKE_REQUIRED_LIBRARIES )
-CHECK_FUNCTION_EXISTS(wcrtomb USE_MBSTATE_T) # mbrtowc
+check_function_exists(wcrtomb USE_MBSTATE_T) # mbrtowc
 
 set(ICONV_CONST const)
 
@@ -136,21 +136,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 ####################################################################################################
 
-SET(LIBICONV_SOURCES
+set(LIBICONV_SOURCES
   lib/iconv.c
   lib/relocatable.c
   libcharset/lib/localcharset.c
-  )
+)
 
-PREPEND(LIBICONV_SOURCES ${LIBICONV_SOURCE_PATH} ${LIBICONV_SOURCES})
+prepend(LIBICONV_SOURCES ${LIBICONV_SOURCE_PATH} ${LIBICONV_SOURCES})
 
 add_library(iconv
   STATIC
   ${LIBICONV_SOURCES}
-  )
-
-####################################################################################################
-#
-# End
-#
-####################################################################################################
+)
