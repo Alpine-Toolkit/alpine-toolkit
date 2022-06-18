@@ -57,6 +57,7 @@ if(ANDROID)
     )
 endif(ANDROID)
 
+# use "_at" prefix to be sure we don't confuse with system SQLite
 add_library(sqlite_at
   SHARED
   ${SQLITE_SOURCE_PATH}/sqlite3.c
