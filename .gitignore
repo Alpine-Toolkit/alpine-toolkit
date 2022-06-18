@@ -48,7 +48,7 @@ review.json
 build-android-arm64-v8a
 build-android_armv7
 build-android_x86
-build-gcc_64
+build-x86
 compile_commands.json
 config.h
 doc/doxygen/build/
@@ -245,32 +245,31 @@ third-parties/local/
 
 third-parties/archives/
 
-third-parties/geos/Android.mk
-third-parties/geos/geos-3.6.1/
-third-parties/geos/geos-sources
+third-parties/cmark/cmark-source/
 
-third-parties/libiconv/Android.mk
-third-parties/libiconv/dist.cmake
-third-parties/libiconv/libiconv-1.13.1/
-third-parties/libiconv/libiconv-sources
+third-parties/geos/geos-3.10.3/
+third-parties/geos/geos-source
+
+third-parties/libiconv/libiconv-1.17/
+third-parties/libiconv/libiconv-source
 
 third-parties/libspatialindex/cmake.log
-third-parties/libspatialindex/libspatialindex.git/
+third-parties/libspatialindex/libspatialindex-source/
 third-parties/libspatialindex/make.log
 
-third-parties/openssl/openssl-1.1.1.git/
+third-parties/openssl/openssl-1.1.1-source/
 third-parties/openssl/openssl-1.1.1o/
+third-parties/openssl/openssl-source/
 
-# third-parties/proj
 third-parties/proj/build/
 third-parties/proj/old-CMakeLists.txt
 third-parties/proj/proj-9.0.0/
-third-parties/proj/proj.git
+third-parties/proj/proj-source
 
-third-parties/spatialite/libspatialite-4.4.0-RC1/
-third-parties/spatialite/spatialite-sources
+third-parties/snowball/snowball-source/
+third-parties/spatialite/libspatialite-5.0.1/
+third-parties/spatialite/spatialite-source
 
-third-parties/sqlite/__NOTES__.md
 third-parties/sqlite/sqlite-amalgamation
 third-parties/sqlite/sqlite-amalgamation-3380500/
 third-parties/sqlite/sqlite-src-3380500/
@@ -325,3 +324,19 @@ sandbox/
 src/qml/QtCarto/map_gesture_area.new.cpp
 src/qml/QtCarto/map_gesture_area.new.h
 tmp.el
+
+sqlite-driver/__OLD__
+
+third-parties/libiconv/build-libiconv-on-android.sh
+third-parties/libiconv/build/
+third-parties/libiconv/c-files.txt
+third-parties/libiconv/configure.log
+third-parties/libiconv/libiconv-libicu-android/
+third-parties/libiconv/make.log
+third-parties/spatialite/build-tets/
+third-parties/spatialite/build/
+third-parties/spatialite/configure.log
+third-parties/spatialite/make-install.log
+third-parties/spatialite/make.log
+
+third-parties/sqlite/__NOTES__.md
