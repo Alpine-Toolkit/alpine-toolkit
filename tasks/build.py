@@ -192,6 +192,39 @@ def show_android(ctx):
 ####################################################################################################
 
 @task()
+def make_sqlite_driver(ctx, qt_source_path):
+    from .lib.sed import sed
+
+    _init_config(ctx)
+
+    qt_source_path = Path(qt_source_path).joinpath('qtbase', 'src', 'plugins', 'sqldrivers', 'sqlite')
+    driver_path = ctx.build.source.joinpath('sqlite-driver')
+
+    for from_, to in (
+            # 'CMakeLists.txt'
+            # 'README',
+            ('qsql_sqlite.cpp', 'qsql_sqlite_at.cpp'),
+            ('qsql_sqlite_p.h', 'qsql_sqlite_at_p.h'),
+            ('smain.cpp',       'smain.cpp'),
+            ('sqlite.json',       'sqlite-at.json'),
+    ):
+        shutil.copy(qt_source_path.joinpath(from_), driver_path.joinpath(to))
+
+    def _sed(filename: Path, replacements: list) -> None:
+        sed(driver_path.joinpath(filename), replacements)
+
+    _sed('smain.cpp', ('sqlite.json', 'sqlite-at.json'))
+    for _ in ('sqlite-at.json', 'smain.cpp'):
+        _sed(_, ('SQLITE', 'SQLITE-AT'))
+    for _ in ('smain.cpp', 'qsql_sqlite_at.cpp', 'qsql_sqlite_at_p.h'):
+        _sed(_, ('QSQLite', 'QSQLiteAT'))
+    _sed('qsql_sqlite_at_p.h', ('QSQL_SQLITE_H', 'QSQL_SQLITE_AT_H'))
+    for _ in ('smain.cpp', 'qsql_sqlite_at.cpp'):
+        _sed(_, ('qsql_sqlite_p', 'qsql_sqlite_at_p'))
+
+####################################################################################################
+
+@task()
 def generate_code(ctx):
     _init_config(ctx)
     with ctx.cd(ctx.build.source.joinpath('code-generator')):
