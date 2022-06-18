@@ -24,8 +24,12 @@ SpatiaLite is an open source library intended to extend the SQLite core to suppo
 * FreeXL
   Spreadsheet input support [.xls format]
 
+**iconv is used in**
+* `src/gaiaaux/gg_utf8.c`
+* `src/gaiageo/gg_shape.c`
+* `src/spatialite/spatialite.c`
 ```
-../spatialite.git/configure --disable-freexl --disable-rttopo --disable-minizip
+../spatialite-source/configure --disable-freexl --disable-rttopo --disable-minizip
 
 --disable-libxml2
 --disable-rttopo --disable-gcp # imply GPLv2+
@@ -36,7 +40,7 @@ SpatiaLite is an open source library intended to extend the SQLite core to suppo
 ```
 `configure' configures libspatialite 5.0.1 to adapt to many kinds of systems.
 
-Usage: ../spatialite.git/configure [OPTION]... [VAR=VALUE]...
+Usage: ../spatialite-source/configure [OPTION]... [VAR=VALUE]...
 
 To assign environment variables (e.g., CC, CFLAGS...), specify them as
 VAR=VALUE.  See below for descriptions of some of the useful variables.
