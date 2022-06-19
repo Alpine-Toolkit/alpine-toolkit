@@ -94,7 +94,9 @@ add_dependencies(proj_lib proj_build)
 set(PROJ_INCLUDE_DIRECTORY "${PROJ_PREFIX}/include")
 set(PROJ_LIB "${PROJ_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libproj.so")
 file(MAKE_DIRECTORY ${PROJ_INCLUDE_DIRECTORY}) # else INTERFACE_INCLUDE_DIRECTORIES complain...
-file(WRITE ${PROJ_LIB} "") # else target_link_libraries complain...
+if(NOT EXISTS ${PROJ_LIB}) # else overwrite symlink target
+  file(WRITE ${PROJ_LIB} "") # else target_link_libraries complain...
+endif()
 set_target_properties(proj_lib PROPERTIES
   IMPORTED_LOCATION ${PROJ_LIB}
   INTERFACE_INCLUDE_DIRECTORIES ${PROJ_INCLUDE_DIRECTORY}
