@@ -57,10 +57,15 @@ endmacro()
 # -Wno-multichar
 
 add_compile_definitions(
-  __ANDROID__
   BUILDING_LIBICONV
   IN_LIBRARY
 )
+
+if(ANDROID)
+  add_compile_definitions(
+    __ANDROID__
+  )
+endif()
 
 ####################################################################################################
 
