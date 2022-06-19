@@ -1,1 +1,0 @@
-../../snowball/snowball.git/include/libstemmer.h
