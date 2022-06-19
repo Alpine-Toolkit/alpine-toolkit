@@ -139,6 +139,15 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 # https://github.com/ninja-build/ninja/issues/900 — How to make build verbose by default
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON" FORCE)
 
+# https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#property-origin-debugging
+set(CMAKE_DEBUG_TARGET_PROPERTIES
+  INCLUDE_DIRECTORIES
+  COMPILE_DEFINITIONS
+  POSITION_INDEPENDENT_CODE
+  CONTAINER_SIZE_REQUIRED
+  LIB_VERSION
+)
+
 if(NOT ANDROID)
   # Enable testing for current directory and below
   #   https://cmake.org/cmake/help/latest/command/enable_testing.html
@@ -276,7 +285,7 @@ if(NOT ANDROID)
   include(FindProtobuf)
   find_package(Protobuf REQUIRED)
   #! include_directories(${PROTOBUF_INCLUDE_DIR})
-endif(NOT ANDROID)
+endif()
 
 ####################################################################################################
 #
@@ -286,15 +295,12 @@ endif(NOT ANDROID)
 if(NOT ANDROID)
   find_package(ZLIB REQUIRED)
   #! include_directories(${ZLIB_INCLUDE_DIR})
-endif(NOT ANDROID)
+endif()
 
 ####################################################################################################
 
-# Fixme: clash with third parties
-if(NOT ANDROID)
-  configure_file(config.h.in config.h @ONLY)
-  #! include_directories(${CMAKE_CURRENT_BINARY_DIR})
-endif(NOT ANDROID)
+configure_file(config.h.in config.h @ONLY)
+#! include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 ####################################################################################################
 #
@@ -302,18 +308,19 @@ endif(NOT ANDROID)
 #
 
 add_subdirectory(third-parties)
-
 add_subdirectory(sqlite-driver)
 
-# if(NOT ANDROID)
-#   include_directories(src)
-#   include_directories(src/qtcarto)
-#   include_directories(third-parties/include)
+#! include_directories(src)
+#! include_directories(src/qtcarto)
+#! include_directories(third-parties/include)
 
-#   # add_subdirectory(cpp-test)
-#   add_subdirectory(src)
-#   add_subdirectory(unit-tests)
+add_subdirectory(src)
 
-#   add_subdirectory(map-tools)
-#   add_subdirectory(mapviewer)
-# endif(NOT ANDROID)
+if(NOT ANDROID)
+  #! add_subdirectory(unit-tests)
+
+  #! add_subdirectory(map-tools)
+  #! add_subdirectory(mapviewer)
+endif()
+
+# add_subdirectory(cpp-test)
