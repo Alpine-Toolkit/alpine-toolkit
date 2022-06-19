@@ -175,7 +175,6 @@ endif()
 
 # For Linux using GCC
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  add_compile_definitions(SystemLinux)
   set(CMAKE_CXX_FLAGS_COMMON  "-Wall -fdiagnostics-color=auto")
   # https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html#Instrumentation-Options
   # -O0
@@ -203,7 +202,8 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 
 # For DEBUG build
 if(CMAKE_BUILD_TYPE MATCHES "DEBUG")
-  add_compile_definitions(DEBUG)
+  # Fixme: could clash
+  add_compile_definitions(AT_DEBUG)
 
   if(SANITIZE MATCHES "ON")
     # -fsanitize=thread
@@ -226,11 +226,7 @@ endif(CMAKE_BUILD_TYPE MATCHES "DEBUG")
 # https://doc.qt.io/qt-6/cmake-get-started.html
 
 # Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-# Instruct CMake to run moc automatically when needed.
-set(CMAKE_AUTOMOC ON)
-# Instruct CMake to run rcc automatically when needed.
-set(CMAKE_AUTORCC ON) # https://public.kitware.com/Bug/view.php?id=15074
+#! set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt6 REQUIRED COMPONENTS
   Core
@@ -254,15 +250,9 @@ find_package(Qt6 REQUIRED COMPONENTS
 # only available for Android build
 # find_package(Qt6AndroidExtras REQUIRED)
 
-add_compile_definitions(QT_QML_DEBUG)
-
 # include_directories(${Qt6Core_INCLUDES})
 # add_definitions(${Qt6Core_DEFINITIONS})
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt6Core_EXECUTABLE_COMPILE_FLAGS}")
-
-# https://doc.qt.io/qt-6/portingguide.html
-# Disable use of C++ API deprecated in Qt 5.15
-#! add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
 
 ####################################################################################################
 #
@@ -285,7 +275,7 @@ add_compile_definitions(QT_QML_DEBUG)
 if(NOT ANDROID)
   include(FindProtobuf)
   find_package(Protobuf REQUIRED)
-  include_directories(${PROTOBUF_INCLUDE_DIR})
+  #! include_directories(${PROTOBUF_INCLUDE_DIR})
 endif(NOT ANDROID)
 
 ####################################################################################################
@@ -295,15 +285,15 @@ endif(NOT ANDROID)
 
 if(NOT ANDROID)
   find_package(ZLIB REQUIRED)
-  include_directories(${ZLIB_INCLUDE_DIR})
+  #! include_directories(${ZLIB_INCLUDE_DIR})
 endif(NOT ANDROID)
 
 ####################################################################################################
 
 # Fixme: clash with third parties
 if(NOT ANDROID)
-configure_file(config.h.in config.h @ONLY)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+  configure_file(config.h.in config.h @ONLY)
+  #! include_directories(${CMAKE_CURRENT_BINARY_DIR})
 endif(NOT ANDROID)
 
 ####################################################################################################

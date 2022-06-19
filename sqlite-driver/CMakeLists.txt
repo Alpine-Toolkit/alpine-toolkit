@@ -10,17 +10,24 @@
 # Qt is compiled on Linux using system SQLite
 # It crashes if we compile SQLite source in the plugin.
 
+set(CMAKE_AUTOMOC ON)
+
 qt_add_plugin(qsqlite-at
   SHARED
   CLASS_NAME QSQLiteATDriverPlugin
 )
 
-target_sources(qsqlite-at
-  PRIVATE
-    qsql_sqlite_at.cpp
-    qsql_sqlite_at_p.h
-    smain.cpp
+set(SOURCES
+  qsql_sqlite_at.cpp
+  qsql_sqlite_at_p.h
+  smain.cpp
 )
+
+# Fixme: use AUTOMOC
+# target_include_directories(qsqlite-at PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+# qt_wrap_cpp(SOURCES ${SOURCES} TARGET qsqlite-at DEPENDS sqlite-at.json)
+
+target_sources(qsqlite-at PRIVATE ${SOURCES})
 
 target_link_libraries(qsqlite-at
   Qt6::Core

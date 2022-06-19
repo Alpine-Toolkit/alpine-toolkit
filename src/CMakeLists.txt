@@ -27,6 +27,24 @@
 ####################################################################################################
 
 ####################################################################################################
+
+# Instruct CMake to run moc automatically when needed.
+#  https://cmake.org/cmake/help/latest/prop_tgt/AUTOMOC.html
+#  https://doc.qt.io/qt-6/qt-wrap-cpp.html
+set(CMAKE_AUTOMOC ON)
+
+# Instruct CMake to run rcc automatically when needed.
+# set(CMAKE_AUTORCC ON) # https://public.kitware.com/Bug/view.php?id=15074
+
+if(CMAKE_BUILD_TYPE MATCHES "DEBUG")
+  add_compile_definitions(QT_QML_DEBUG)
+endif()
+
+# https://doc.qt.io/qt-6/portingguide.html
+# Disable use of C++ API deprecated in Qt 5.15
+#! add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
+
+####################################################################################################
 #
 # Include directories
 #
