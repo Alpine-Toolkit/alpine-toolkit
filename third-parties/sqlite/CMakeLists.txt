@@ -36,7 +36,7 @@ target_include_directories(sqlite_at
 target_sources(sqlite_at PRIVATE ${SQLITE_SOURCE_PATH}/sqlite3.c)
 
 target_compile_definitions(sqlite_at
-  PUBLIC
+  PRIVATE
     # -DSQLITE_THREADSAFE=0
     # -DSQLITE_OMIT_LOAD_EXTENSION
     # -DSQLITE_ENABLE_FTS4 or -DSQLITE_ENABLE_FTS5 for full-text search
@@ -62,7 +62,7 @@ target_compile_definitions(sqlite_at
 
 if(ANDROID)
   target_compile_definitions(sqlite_at
-    PUBLIC
+    PRIVATE
       # https://www.sqlite.org/tempfiles.html
       # This is important - it causes SQLite to use memory for temp files. Since Android has no globally
       # writable temp directory, if this is not defined the application throws an exception when it
@@ -72,12 +72,13 @@ if(ANDROID)
 endif(ANDROID)
 
 target_link_libraries(sqlite_at
-  # The -ldl library is needed to support dynamic loading, the sqlite3_load_extension() interface
-  # and the load_extension() SQL function. If these features are not required, then they can be
-  # omitted using SQLITE_OMIT_LOAD_EXTENSION compile-time option.
-  dl
+  PRIVATE
+    # The -ldl library is needed to support dynamic loading, the sqlite3_load_extension() interface
+    # and the load_extension() SQL function. If these features are not required, then they can be
+    # omitted using SQLITE_OMIT_LOAD_EXTENSION compile-time option.
+    dl
 )
 
 if(ANDROID)
-  target_link_libraries(sqlite_at log)
+  target_link_libraries(sqlite_at PRIVATE log)
 endif(ANDROID)
