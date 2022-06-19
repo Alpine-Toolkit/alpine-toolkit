@@ -35,7 +35,7 @@ if(ANDROID)
   add_subdirectory(openssl)
 endif(ANDROID)
 
-# build libsqlite.so
+# build libsqlite-at.so
 add_subdirectory(sqlite)
 
 # build as external project
@@ -44,7 +44,7 @@ add_subdirectory(proj)
 
 ####################################################################################################
 
-add_subdirectory(geos) # x86: compilation errors ???
+add_subdirectory(geos)
 
 add_subdirectory(libiconv)
 
