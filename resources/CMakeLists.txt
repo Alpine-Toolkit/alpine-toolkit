@@ -70,7 +70,7 @@ set(alpine_toolkit_qml_files
 ####################################################################################################
 
 # https://doc.qt.io/qt-6/qtlinguist-cmake-qt-add-translations.html
-qt_add_translations(alpine-toolkit
+qt6_add_translations(alpine-toolkit
   TS_FILES translations/alpine-toolkit.fr_FR.ts
   RESOURCE_PREFIX "/translations"
   SOURCES ${alpine_toolkit_qml_files}
@@ -80,7 +80,7 @@ qt_add_translations(alpine-toolkit
 
 # https://doc.qt.io/qt-6/qt-add-resources.html
 
-qt_add_resources(alpine-toolkit "qml_files"
+qt6_add_resources(alpine-toolkit "qml_files"
   PREFIX "/"
   FILES
   qml/qmldir
@@ -92,7 +92,7 @@ qt_add_resources(alpine-toolkit "qml_files"
   ${alpine_toolkit_qml_files}
 )
 
-qt_add_resources(alpine-toolkit "js_files"
+qt6_add_resources(alpine-toolkit "js_files"
   PREFIX "/"
   FILES
   js/android_permission.js
@@ -105,19 +105,19 @@ qt_add_resources(alpine-toolkit "js_files"
   js/set.js
 )
 
-qt_add_resources(alpine-toolkit "conf_files"
+qt6_add_resources(alpine-toolkit "conf_files"
   PREFIX "/"
   FILES
   qtquickcontrols2.conf
 )
 
-qt_add_resources(alpine-toolkit "fonts"
+qt6_add_resources(alpine-toolkit "fonts"
   PREFIX "/"
   FILES
   fonts/c2c-activities.ttf
 )
 
-qt_add_resources(alpine-toolkit "icons"
+qt6_add_resources(alpine-toolkit "icons"
   PREFIX "/"
   FILES
   application-icons/icon-512.png
@@ -233,7 +233,7 @@ qt_add_resources(alpine-toolkit "icons"
   icons/volume-white.svg
 )
 
-qt_add_resources(alpine-toolkit "tone"
+qt6_add_resources(alpine-toolkit "tone"
   PREFIX "/"
   FILES
   tones/long-pause.ogg
@@ -242,7 +242,7 @@ qt_add_resources(alpine-toolkit "tone"
   tones/short-pulse.ogg
 )
 
-qt_add_resources(alpine-toolkit "data"
+qt6_add_resources(alpine-toolkit "data"
   PREFIX "/"
   FILES
   data/bleau.json

@@ -48,14 +48,14 @@ if(LINUX)
     PRIVATE
       configuration/linux_configuration.cpp
   )
-endif(LINUX)
+endif()
 
 if(ANDROID)
   target_sources(alpine-toolkit-common
     PRIVATE
       configuration/android_configuration.cpp
   )
-endif(LINUX)
+endif()
 
 target_include_directories(alpine-toolkit-common
   PRIVATE
