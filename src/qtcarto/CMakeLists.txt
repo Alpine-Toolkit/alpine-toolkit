@@ -9,24 +9,6 @@
 
 ####################################################################################################
 
-# https://doc-snapshots.qt.io/qt6-dev/qtshadertools-build.html
-qt_add_shaders(qtcarto "qtcarto_shaders"
-  BATCHABLE
-  GLSL "460, 310es, 120es"
-  NOHLSL
-  NOMSL
-  PREFIX "/scene/shaders/"
-  FILES
-  shaders/location_circle.frag
-  shaders/location_circle.vert
-  shaders/path.frag
-  shaders/path.vert
-  shaders/point.frag
-  shaders/point.vert
-)
-
-####################################################################################################
-
 # add_subdirectory(openstreetmap)
 
 # Generate in source !
@@ -128,6 +110,22 @@ target_sources(qtcarto
     ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/geo_coordinate_animation.cpp
     ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/map_gesture_area.cpp
     ${CMAKE_SOURCE_DIR}/src/qml/QtCarto/plugin_data.cpp
+)
+
+# https://doc-snapshots.qt.io/qt6-dev/qtshadertools-build.html
+qt6_add_shaders(qtcarto "qtcarto_shaders"
+  BATCHABLE
+  GLSL "460, 310es, 120es"
+  NOHLSL
+  NOMSL
+  PREFIX "/scene/shaders/"
+  FILES
+  shaders/location_circle.frag
+  shaders/location_circle.vert
+  shaders/path.frag
+  shaders/path.vert
+  shaders/point.frag
+  shaders/point.vert
 )
 
 target_include_directories(qtcarto
