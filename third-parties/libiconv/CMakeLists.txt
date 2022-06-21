@@ -132,14 +132,7 @@ iconv_configure_file(LIBRARY_NAME charset
 
 ####################################################################################################
 
-include_directories(${LIBICONV_SOURCE_PATH})
-include_directories(${LIBICONV_SOURCE_PATH}/include)
-include_directories(${LIBICONV_SOURCE_PATH}/lib)
-include_directories(${LIBICONV_SOURCE_PATH}/libcharset/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-
-####################################################################################################
+add_library(iconv STATIC)
 
 set(LIBICONV_SOURCES
   lib/iconv.c
@@ -149,7 +142,14 @@ set(LIBICONV_SOURCES
 
 prepend(LIBICONV_SOURCES ${LIBICONV_SOURCE_PATH} ${LIBICONV_SOURCES})
 
-add_library(iconv
-  STATIC
-  ${LIBICONV_SOURCES}
+target_sources(iconv PRIVATE ${LIBICONV_SOURCES})
+
+target_include_directories(iconv
+  PRIVATE
+    ${LIBICONV_SOURCE_PATH}
+    ${LIBICONV_SOURCE_PATH}/included
+    ${LIBICONV_SOURCE_PATH}/lib
+    ${LIBICONV_SOURCE_PATH}/libcharset/include
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/include
 )

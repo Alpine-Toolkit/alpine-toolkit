@@ -1,5 +1,3 @@
-# -*- CMake -*-
-
 ####################################################################################################
 #
 # This file is part of the Alpine Toolkit software.
@@ -9,19 +7,7 @@
 #
 ####################################################################################################
 
-####################################################################################################
-#
-# Include directories
-#
-
-include_directories(${CMAKE_SOURCE_DIR}/src/base)
-include_directories(${CMAKE_SOURCE_DIR}/src/data_sources)
-include_directories(${CMAKE_SOURCE_DIR}/src/utils)
-
-####################################################################################################
-#
-# Sub directories
-#
+set(CMAKE_AUTOMOC ON)
 
 add_subdirectory(bleaudb)
 add_subdirectory(cache)

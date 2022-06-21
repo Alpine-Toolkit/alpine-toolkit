@@ -34,7 +34,9 @@
 
 #include "full_text_search/language.h"
 
-#include "snowball/libstemmer.h"
+// third-parties/snowball/snowball-source/include
+// #include "snowball/libstemmer.h"
+#include "libstemmer.h"
 
 #include <QList>
 #include <QLocale>

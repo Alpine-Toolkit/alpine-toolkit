@@ -126,6 +126,7 @@ endif(ANDROID)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   message("Build for Linux")
+  set(LINUX true)
   add_compile_definitions(ON_LINUX)
 endif(CMAKE_SYSTEM_NAME MATCHES "Linux")
 
@@ -140,13 +141,13 @@ endif(CMAKE_SYSTEM_NAME MATCHES "Windows")
 set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON" FORCE)
 
 # https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#property-origin-debugging
-set(CMAKE_DEBUG_TARGET_PROPERTIES
-  INCLUDE_DIRECTORIES
-  COMPILE_DEFINITIONS
-  POSITION_INDEPENDENT_CODE
-  CONTAINER_SIZE_REQUIRED
-  LIB_VERSION
-)
+# set(CMAKE_DEBUG_TARGET_PROPERTIES
+#   INCLUDE_DIRECTORIES
+#   COMPILE_DEFINITIONS
+#   POSITION_INDEPENDENT_CODE
+#   CONTAINER_SIZE_REQUIRED
+#   LIB_VERSION
+# )
 
 if(NOT ANDROID)
   # Enable testing for current directory and below
@@ -310,16 +311,12 @@ configure_file(config.h.in config.h @ONLY)
 add_subdirectory(third-parties)
 add_subdirectory(sqlite-driver)
 
-#! include_directories(src)
-#! include_directories(src/qtcarto)
-#! include_directories(third-parties/include)
-
 add_subdirectory(src)
 
 if(NOT ANDROID)
-  #! add_subdirectory(unit-tests)
+  add_subdirectory(unit-tests)
 
-  #! add_subdirectory(map-tools)
+  add_subdirectory(map-tools)
   #! add_subdirectory(mapviewer)
 endif()
 

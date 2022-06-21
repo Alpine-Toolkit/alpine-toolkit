@@ -1,5 +1,3 @@
-# -*- CMake -*-
-
 ####################################################################################################
 #
 # This file is part of the Alpine Toolkit software.
@@ -9,22 +7,10 @@
 #
 ####################################################################################################
 
-####################################################################################################
-#
-# Include directories
-#
-
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-####################################################################################################
-#
-# Executable
-#
-
 foreach(name
     settings_database
     )
   add_executable(test_${name} test_${name}.cpp)
-  target_link_libraries(test_${name} Qt6::Test alpine_toolkit)
+  target_link_libraries(test_${name} Qt6::Test alpine-toolkit)
   add_test(NAME ${name} COMMAND test_${name})
 endforeach(name)

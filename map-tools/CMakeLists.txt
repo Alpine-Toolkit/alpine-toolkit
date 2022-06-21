@@ -1,25 +1,20 @@
-# -*- CMake -*-
-
 ####################################################################################################
 #
-# Include directories
+# This file is part of the Alpine Toolkit software.
+# Copyright (C) 2017 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+# SPDX-License-Identifier: GPL-3.0-only
 #
-
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/src/base)
-include_directories(${CMAKE_SOURCE_DIR}/src/data_sources)
-include_directories(${CMAKE_SOURCE_DIR}/src/utils)
-
 ####################################################################################################
-#
-# Executable
-#
+
+set(CMAKE_AUTOMOC ON)
 
 add_executable(tile-loader tile-loader.cpp)
 target_link_libraries(tile-loader
-  alpine_toolkit_common
+  Qt6::Core
+  # alpine-toolkit-common
   qtcarto
-  )
+)
 
 add_executable(spatialite-test spatialite-test.cpp)
 target_link_libraries(spatialite-test Qt6::Sql)

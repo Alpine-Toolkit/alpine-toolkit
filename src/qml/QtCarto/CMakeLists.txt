@@ -1,28 +1,39 @@
-# -*- CMake -*-
-
 ####################################################################################################
 #
-# Include directories
+# This file is part of the Alpine Toolkit software.
+# Copyright (C) 2022 Fabrice Salvaire
+# Contact: http://www.fabrice-salvaire.fr
+# SPDX-License-Identifier: GPL-3.0-only
 #
-
-# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-
-include_directories(${Qt6Quick_PRIVATE_INCLUDE_DIRS})
-
 ####################################################################################################
-#
-# Library
-#
 
-set(qtcarto_files
-  declarative_map_item.cpp
-  geo_coordinate_animation.cpp
-  map_gesture_area.cpp
-  plugin_data.cpp
-  qtcarto.cpp
+add_library(qmlqtcartoplugin SHARED)
+
+target_sources(qmlqtcartoplugin
+  PRIVATE
+    declarative_map_item.cpp
+    geo_coordinate_animation.cpp
+    map_gesture_area.cpp
+    plugin_data.cpp
+    qtcarto.cpp
 )
-add_library(qmlqtcartoplugin SHARED ${qtcarto_files})
-target_link_libraries(qmlqtcartoplugin qtcarto Qt6::Qml Qt6::Quick Qt6::Positioning)
+
+target_include_directories(qmlqtcartoplugin
+  PUBLIC
+    ${Qt6Quick_PRIVATE_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(qmlqtcartoplugin
+  PRIVATE
+    Qt6::Qml
+    Qt6::Quick
+    Qt6::Positioning
+
+    qtcarto
+)
+
+####################################################################################################
 
 # https://doc.qt.io/qt-6/qt-add-qml-module.html
 # qt_add_qml_module(
