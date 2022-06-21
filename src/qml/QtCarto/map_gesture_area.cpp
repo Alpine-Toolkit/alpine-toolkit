@@ -1194,7 +1194,7 @@ QcMapGestureArea::update_pan()
 
   QcVectorDouble start_point = m_map->from_coordinate(m_start_coordinate, false);
   // Fixme: start_coordinate is no longer in the viewport
-  if (isnan(start_point.x())) {
+  if (qIsNaN(start_point.x())) {
     qWarning() << "Screen coordinate are nan";
     return;
   }

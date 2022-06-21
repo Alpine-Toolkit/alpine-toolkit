@@ -479,17 +479,17 @@ QcViewport::stable_zoom(const QcVectorDouble & screen_position, unsigned int zoo
   // Fixme: ???
   QcWgsCoordinate coordinate = screen_to_coordinate(screen_position, false);
   QcVectorDouble pre_zoom_point = coordinate_to_screen(coordinate, false);
-  if (!isnan(pre_zoom_point.x()))
+  if (!qIsNaN(pre_zoom_point.x()))
     qWarning() << "pre is undefined";
 
   set_zoom_level(zoom_level);
 
   QcVectorDouble post_zoom_point = coordinate_to_screen(coordinate, false);
-  if (!isnan(post_zoom_point.x()))
+  if (!qIsNaN(post_zoom_point.x()))
     qWarning() << "post is undefined";
 
   // qQCInfo() << coordinate << screen_position << '\n' << pre_zoom_point << '\n' << post_zoom_point;
-  if (!isnan(pre_zoom_point.x()) and !isnan(post_zoom_point.x()) and pre_zoom_point != post_zoom_point) {
+  if (!qIsNaN(pre_zoom_point.x()) and !qIsNaN(post_zoom_point.x()) and pre_zoom_point != post_zoom_point) {
     // Keep location under pointer
     QcVectorDouble delta_px = post_zoom_point - pre_zoom_point;
     // Fixme: improve
@@ -793,7 +793,7 @@ QcWgsCoordinate
 QcViewport::screen_to_coordinate(const QcVectorDouble & screen_position, bool clip_to_viewport) const
 {
   QcVectorDouble projected_position = screen_to_projected_coordinate(screen_position, clip_to_viewport);
-  if (isnan(projected_position.x()))
+  if (qIsNaN(projected_position.x()))
     return QcWgsCoordinate();
   else
     return from_projected_coordinate(projected_position);
