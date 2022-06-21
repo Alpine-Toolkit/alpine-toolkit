@@ -597,18 +597,19 @@ def build(
         if make:
             print_section_rule()
             print_section('Run Ninja ...')
-            # ctx.run('cmake --build {ctx.build.path} --parallel 2 --target all')
-            if use_ninja:
-                # -C build-cmake
-                command = 'ninja -j2'
-                if verbose:
-                    command += ' -v'
-                ctx.run(command)
-            else:
-                # -k
-                ctx.run('make -j4')
+            import multiprocessing
+            number_of_cpus = multiprocessing.cpu_count()
+            number_of_cpus = 2
+            # --target all
+            # --clean-first
+            # cmake --build [<dir> | --preset <preset>] [<options>] [-- <build-tool-options>]
+            command = f'cmake --build {ctx.build.path} --parallel {number_of_cpus}'
+            if verbose:
+                command += ' --verbose'
+            ctx.run(command)
 
         if is_android and deploy:
+            # --target install
             print_section_rule()
             command = [
                 str(ctx.build.qt_bin_path.joinpath('androiddeployqt')),
