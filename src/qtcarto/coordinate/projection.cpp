@@ -36,6 +36,8 @@
 
 #include <QtMath>
 
+#include <proj.h>
+
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
@@ -50,30 +52,43 @@ proj4_logger(void * context, int error, const char * message)
 }
 */
 
-QcProjection4::QcProjection4(const QString & definition, projCtx context)
-  : m_definition(definition),
-    m_projection(nullptr)
+class QC_EXPORT QcProjection4
+{
+ public:
+  QcProjection4(const QString & definition);
+  ~QcProjection4();
+
+  void transform(const QcProjection4 & proj2, double & x, double & y) const;
+  void transform(const QcProjection4 & proj2, double & x, double & y, double & z) const;
+
+ private:
+  QString m_definition;
+  PJ * m_crs;
+};
+
+QcProjection4::QcProjection4(const QString & definition)
+  : m_definition(definition)
+  , m_crs(nullptr)
 {
   // cf. https://trac.osgeo.org/proj/wiki/ThreadSafety
 
-  if (!context) {
 #ifdef ON_ANDROID
     // Set search path so as to find (epsg) date files
     // setenv("PROJ_LIB", proj4_data_path, 1); // must be set before to load the proj4 library
     const char *paths[] = { PROJ4_DATA_PATH };
-    pj_set_searchpath(1, paths);
+    // void proj_context_set_search_paths(PJ_CONTEXT * ctx, int count_paths, const char *const * paths)
+    proj_context_set_search_paths((PJ_DEFAULT_CTX, 1, paths);
 #endif
-
-    context = pj_get_default_ctx();
-    // context = pj_ctx_alloc();
-  }
 
   // pj_ctx_set_logger(context, proj4_logger);
 
-  qQCInfo() << "Proj4 initialisation for" << definition;
-  m_projection = pj_init_plus_ctx(context, definition.toStdString().c_str());
-  if (!m_projection)
-    qWarning() << "Proj4 initialisation failed for" << definition;
+  qQCInfo() << "Create proj crs for" << definition;
+  auto str_definition = definition.toStdString();
+  const char * c_definition = str_definition.c_str();
+  // PJ * proj_create(PJ_CONTEXT * ctx, const char * definition)
+  m_crs = proj_create(PJ_DEFAULT_CTX, c_definition);
+  if (!m_crs)
+    qWarning() << "Proj crs creation failed for" << definition;
 }
 
 QcProjection4::~QcProjection4()
@@ -94,20 +109,30 @@ QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y) co
 void
 QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y, double & z) const
 {
-  // int pj_transform(projPJ src, projPJ dst, long point_count, int point_offset,
-  //                  double *x, double *y, double *z);
+  // PJ * proj_create_crs_to_crs_from_pj(PJ_CONTEXT * ctx, PJ * source_crs, PJ * target_crs, PJ_AREA * area, const char * const * options)
+  PJ * transformation = proj_create_crs_to_crs_from_pj(PJ_DEFAULT_CTX, m_crs, proj2.m_crs, NULL,NULL);
+  if (!transformation) {
+    qWarning() << "Proj transformation creation failed";
+    return;
+  }
+  // Fixme: always required ???
+  // This will ensure that the order of coordinates for the input CRS will be longitude, latitude,
+  //   whereas EPSG:4326 mandates latitude, longitude
+  PJ * normalised_transformation = proj_normalize_for_visualization(PJ_DEFAULT_CTX, transformation);
+  if (normalised_transformation == NULL) {
+    qWarning() << "Failed to normalize transformation object";
+    return;
+  }
+  proj_destroy(transformation);
+  transformation = normalised_transformation;
 
-  long point_count = 1;
-  int point_offset = 1;
-  int error = pj_transform(m_projection, proj2.m_projection, point_count, point_offset, &x, &y, &z);
-  if (error != 0)
-    qQCCritical() << QStringLiteral("pj_transform error:") << pj_strerrno(error);
-    // throw; // Fixme: (pj_strerrno(error))
-}
+  PJ_COORD coordinate1 = proj_coord(x, y, z, 0);
+  PJ_COORD coordinate2 = proj_trans(transformation, PJ_FWD, coordinate1);
+  proj_destroy(transformation);
 
-bool
-QcProjection4::is_latlong() const {
-  return pj_is_latlong(m_projection);
+  x = coordinate2.xy.x;
+  y = coordinate2.xy.y;
+  z = coordinate2.xyz.z;
 }
 
 /**************************************************************************************************/
@@ -233,7 +258,8 @@ QcProjection::coordinate(double x, double y) const
 QString
 QcProjection::proj4_definition() const
 {
-  return QString("+init=") + srid();
+  // Fixme: still required since new Proj API ?
+  return srid();
 }
 
 /**************************************************************************************************/
@@ -281,17 +307,9 @@ QcGeoCoordinateTrait::transform(const QcProjection & projection_to, double & to_
   const QcProjection4 * projection4_from = projection().projection4();
   const QcProjection4 * projection4_to = projection_to.projection4();
   if (projection4_from and projection4_to) {
-    double _x = x();
-    double _y = y();
-    if (projection4_from->is_latlong()) {
-      _x = qDegreesToRadians(_x);
-      _y = qDegreesToRadians(_y);
-    }
+    double _x = x(); // longitude fro WGS84
+    double _y = y(); // latitude
     projection4_from->transform(*projection4_to, _x, _y);
-    if (projection4_to->is_latlong()) {
-      _x = qRadiansToDegrees(_x);
-      _y = qRadiansToDegrees(_y);
-    }
     to_x = _x;
     to_y = _y;
   } else {
@@ -314,7 +332,7 @@ QcGeoCoordinateTrait::transform(const QcProjection & projection_to) const
 {
   double x, y;
   transform(projection_to, x, y);
-  return QcVectorDouble(x, y);
+  return {x, y};
 }
 
 #ifndef QT_NO_DEBUG_STREAM
@@ -372,8 +390,8 @@ QcGeoCoordinate::QcGeoCoordinate(const QcProjection * projection, double x, doub
     set_y(y);
   } else {
     qQCCritical() << "Invalid coordinate" << projection->srid()
-                << static_cast<int>(x) << m_projection->is_valid_x(x)
-                << static_cast<int>(y) << m_projection->is_valid_y(y);
+                  << static_cast<int>(x) << m_projection->is_valid_x(x)
+                  << static_cast<int>(y) << m_projection->is_valid_y(y);
     // Fixme: nan ?
     // throw std::invalid_argument("Invalid coordinate");
   }

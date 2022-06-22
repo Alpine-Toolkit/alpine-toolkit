@@ -44,10 +44,6 @@
 #include <QString>
 #include <QSharedPointer>
 
-// /usr/include/proj_api.h:37:2: erreur: #error 'To use the proj_api.h you must define the macro ACCEPT_USE_OF_DEPRECATED_PROJ_API_H'
-#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
-#include "proj_api.h"
-
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
@@ -61,24 +57,8 @@ class QcGeoCoordinate;
 
 /**************************************************************************************************/
 
-/*! Proj4 Interface
- *
- */
-class QC_EXPORT QcProjection4
-{
- public:
-  QcProjection4(const QString & definition, projCtx context = nullptr);
-  ~QcProjection4();
-
-  void transform(const QcProjection4 & proj2, double & x, double & y) const;
-  void transform(const QcProjection4 & proj2, double & x, double & y, double & z) const;
-
-  bool is_latlong() const;
-
- private:
-  QString m_definition;
-  projPJ m_projection;
-};
+/// Proj Interface
+class QcProjection4;
 
 /**************************************************************************************************/
 
@@ -108,9 +88,11 @@ class QC_EXPORT QcProjection
   };
 
  public:
+ // public projection registry API
   static const QcProjection * by_srid(const QString & srid);
 
  private:
+  // private projection registry API
   static void init();
   static void register_projection(QcProjection * projection);
   static QMap<QString, QcProjection *> m_instances; // QSharedPointer<>

@@ -168,14 +168,16 @@ class QC_EXPORT QcWgsCoordinate : public QcGeoCoordinateTemplate<QcWgs84Projecti
     : QcWgsCoordinate(coordinate.longitude(), coordinate.latitude()) {}
   inline QGeoCoordinate to_qt() const { return QGeoCoordinate(latitude(), longitude()); }
 
+  // For geographic CRS defined by the EPSG authority, the order of coordinates is latitude first, longitude second.
+  // When using a PROJ string, the order is the reverse; longitude first, latitude second.
   inline void set_longitude(double longitude) { set_x(longitude); }
+  inline void set_latitude(double latitude) { set_y(latitude); }
   inline double longitude() const { return x(); }
+  inline double latitude() const { return y(); }
+
   inline QcGeoSexagesimalAngle sexagesimal_longitude() const {
     return QcGeoSexagesimalAngle(longitude());
   }
-
-  inline void set_latitude(double latitude) { set_y(latitude); }
-  inline double latitude() const { return y(); }
   inline QcGeoSexagesimalAngle sexagesimal_latitude() const {
     return QcGeoSexagesimalAngle(latitude());
   }
