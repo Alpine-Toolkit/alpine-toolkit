@@ -118,7 +118,7 @@ qt6_add_shaders(qtcarto "qtcarto_shaders"
   GLSL "460, 310es, 120es"
   NOHLSL
   NOMSL
-  PREFIX "/scene/shaders/"
+  PREFIX "/scene"
   FILES
   shaders/location_circle.frag
   shaders/location_circle.vert
