@@ -43,7 +43,7 @@ Contact: http://www.fabrice-salvaire.fr
 SPDX-License-Identifier: GPL-3.0-only
 """.rstrip()
 
-SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp')
+SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx')
 
 C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp')
 
