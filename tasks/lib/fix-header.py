@@ -43,18 +43,19 @@ Contact: http://www.fabrice-salvaire.fr
 SPDX-License-Identifier: GPL-3.0-only
 """.rstrip()
 
-SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx')
+SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx', '.cmake', '.js', '.qml', '.java')
 
-C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp', '.hxx')
+C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp', '.hxx', '.js', '.qml', '.java')
 
 ####################################################################################################
 
 def process_file(absolut_file_name: Path, dry_run=False) -> None:
     if absolut_file_name.suffix in C_SUFFIXES:
-        COMMENT = '**'
+        COMMENT = ' *'
     else:
         COMMENT = '#'
     new_license = NEW_LICENSE.replace(os.linesep, os.linesep + COMMENT + ' ').lstrip()
+    new_license = ' ' + new_license
     year = None
     # print(new_license)
     BEFORE_LICENSE, IN_LICENSE, AFTER_LICENSE = list(range(3))
@@ -98,7 +99,9 @@ THIS_FILE = Path(__file__).absolute()
 
 def filter_file(file_name: Path) -> bool:
     # return True
-    return file_name != THIS_FILE and (file_name.name == 'CMakeLists.txt' or file_name.suffix in SUFFIXES)
+    return (file_name.resolve().exists() and
+            file_name != THIS_FILE and
+            (file_name.name == 'CMakeLists.txt' or file_name.suffix in SUFFIXES))
 
 ####################################################################################################
 
@@ -106,7 +109,7 @@ def walk(source_path: Path) -> None:
     for path, directories, files in os.walk(source_path):
         path = Path(path)
         for file_name in files:
-            file_name = Path(file_name)
+            file_name = path.joinpath(file_name)
             if filter_file(file_name):
                 absolut_file_name = path.joinpath(file_name)
                 process_file(absolut_file_name, dry_run=args.dry_run)
