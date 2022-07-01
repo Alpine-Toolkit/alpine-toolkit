@@ -76,9 +76,10 @@ QcWgsCoordinate::web_mercator() const
 
   double x = qDegreesToRadians(longitude());
   double y = log(tan(qDegreesToRadians(latitude())/2 + M_PI/4));
+  // double sin_latitude = sin(qDegreesToRadians(latitude()));
+  // double y = log((1 + sin_latitude)/(1 - sin_latitude)) / 2;
   x *= EQUATORIAL_RADIUS;
   y *= EQUATORIAL_RADIUS;
-  // y = R/2 * math.log((1 + sin(latitude))/(1 - sin(latitude))
 
   return QcWebMercatorCoordinate(x, y);
 }

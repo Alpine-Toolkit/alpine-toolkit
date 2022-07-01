@@ -2,27 +2,10 @@
 
 /***************************************************************************************************
 **
-** $QTCARTO_BEGIN_LICENSE:GPL3$
-**
-** Copyright (C) 2016 Fabrice Salvaire
-** Contact: http://www.fabrice-salvaire.fr
-**
 ** This file is part of the Alpine Toolkit software.
-**
-** This program is free software: you can redistribute it and/or modify
-** it under the terms of the GNU General Public License as published by
-** the Free Software Foundation, either version 3 of the License, or
-** (at your option) any later version.
-**
-** This program is distributed in the hope that it will be useful,
-** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-** GNU General Public License for more details.
-**
-** You should have received a copy of the GNU General Public License
-** along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**
-** $QTCARTO_END_LICENSE$
+** Copyright (C) 2017 Fabrice Salvaire
+** Contact: http://www.fabrice-salvaire.fr
+** SPDX-License-Identifier: GPL-3.0-only
 **
 ***************************************************************************************************/
 
@@ -57,14 +40,14 @@ class QcGeoCoordinate;
 
 /**************************************************************************************************/
 
+// Fixme: rename Projection4 to ???
+
 /// Proj Interface
 class QcProjection4;
 
 /**************************************************************************************************/
 
-// bounds : limites
-// extent : étendue
-
+/// The QcProjection class implements a projection
 class QC_EXPORT QcProjection
 {
  public:
@@ -88,15 +71,15 @@ class QC_EXPORT QcProjection
   };
 
  public:
- // public projection registry API
-  static const QcProjection * by_srid(const QString & srid);
+   // public projection registry API
+   static const QcProjection * by_srid(const QString & srid);
 
  private:
   // private projection registry API
   static void init();
   static void register_projection(QcProjection * projection);
   static QMap<QString, QcProjection *> m_instances; // QSharedPointer<>
-  static QMap<QString, QcProjection4 *> m_projection4_instances;
+  // static QMap<QString, QcProjection4 *> m_projection4_instances;
 
  public:
   QcProjection();
@@ -132,8 +115,8 @@ class QC_EXPORT QcProjection
   inline const QString & srid() const { return m_srid; }
   inline const QString & title() const { return m_title; }
 
+  // used by QcGeoCoordinateTrait::transform()
   inline QcProjection4 * projection4() const { return m_projection4; }
-  virtual QString proj4_definition() const;
 
   inline const QcVectorDouble wgs84_origin() const { return m_wgs84_origin; }
   inline const QcInterval2DDouble wgs84_interval() const { return m_wgs84_interval; }
@@ -181,6 +164,7 @@ inline bool QcProjection::test_preserve_bit(PreserveBit preserve_bit) const {
 
 /**************************************************************************************************/
 
+/// The QcGeoCoordinateTrait class implements a coordinate trait
 class QC_EXPORT QcGeoCoordinateTrait
 {
  public:
@@ -213,7 +197,8 @@ class QC_EXPORT QcGeoCoordinateTrait
   QcVectorDouble transform(const QcProjection & projection) const;
 
  private:
-  void transform(const QcProjection & projection_to, double & to_x, double & to_y) const;
+  typedef struct {double x; double y;} double_pair;
+  void transform(const QcProjection & projection_to, double_pair & pair) const;
 
  private:
   // double[2] coordinates
@@ -234,21 +219,31 @@ QC_EXPORT QDataStream &operator>>(QDataStream & stream, QcGeoCoordinateTrait & c
 
 // Fixme: use singleton, *, static instance for projection class ???
 
+/// The QcGeoCoordinateTemplate is the base class for a CRS coordinate .
+///
+/// For example:
+///
+///     class_EXPORT QcWgsCoordinate : public QcGeoCoordinateTemplate<QcWgs84Projection>
 template <typename Projection>
 class QC_EXPORT QcGeoCoordinateTemplate : public QcGeoCoordinateTrait
 {
  public:
-  static const Projection cls_projection; // class
-  inline const QcProjection & projection() const { return cls_projection; }; // instance
+  static const Projection cls_projection; ///< Projection of the class
 
  public:
   QcGeoCoordinateTemplate() : QcGeoCoordinateTrait() {}
   QcGeoCoordinateTemplate(double x, double y);
   QcGeoCoordinateTemplate(const QcVectorDouble & vector);
+
+  /// Return the projection of a coordinate instance
+  inline const QcProjection & projection() const { return cls_projection; };
 };
 
 /**************************************************************************************************/
 
+/// The QcGeoCoordinate class implements a generic CRS coordinate.
+///
+/// This class is a more generic alternative to the QcGeoCoordinateTemplate
 class QC_EXPORT QcGeoCoordinate : public QcGeoCoordinateTrait
 {
  public:

@@ -95,6 +95,10 @@ void TestQcWgsCoordinate::constructor()
   // QVERIFY(qFuzzyCompare(web_mercator_coordinate1.y(),
   // web_mercator_coordinate2.y()));
 
+  // Fixme: test
+  //   coordinate2.transform(projection2)
+  //   Coordinate2 coordinate(coordinate1);
+
   QcNormalisedWebMercatorCoordinate normalised_coordinate1 = wgs84_coordinate1.normalised_web_mercator();
   QcNormalisedWebMercatorCoordinate normalised_coordinate2 = web_mercator_coordinate1.normalised_web_mercator();
   QVERIFY(normalised_coordinate1 == normalised_coordinate2);

@@ -52,60 +52,9 @@ class QcNormalisedWebMercatorCoordinate;
 
 /**************************************************************************************************/
 
-/*
- * Definitions:
- *
- *   Longitude (λ) is a geographic coordinate that specifies the
- *   east-west position of a point on the Earth's surface. Meridians
- *   (lines running from the North Pole to the South Pole) connect
- *   points with the same longitude. By convention, one of these, the
- *   Prime Meridian, which passes through the Royal Observatory,
- *   Greenwich, England, was allocated the position of zero degrees
- *   longitude. The longitude of other places is measured as the angle
- *   east or west from the Prime Meridian, ranging from 0° at the
- *   Prime Meridian to +180° eastward and −180° westward.
- *
- *  Latitude (φ) is a geographic coordinate that specifies the
- *  north-south position of a point on the Earth's surface. Latitude
- *  is an angle which ranges from 0° at the Equator to 90° (North or
- *  South) at the poles. Lines of constant latitude, or parallels, run
- *  east-west as circles parallel to the equator. The North Pole has a
- *  latitude of 90° north (written 90° N or +90°), and the South Pole
- *  has a latitude of 90° south (written 90° S or −90°).
- *
- */
-
-/**************************************************************************************************/
-
-/*!
- *
- * Unit: degree (supplier to define representation)
- * Geodetic CRS: WGS 84
- * Datum: World Geodetic System 1984
- * Ellipsoid: WGS 84
- * Prime meridian: Greenwich
- * Data source: OGP
- * Information source: EPSG. See 3D CRS for original information source.
- * Revision date: 2007-08-27
- * Scope: Horizontal component of 3D system. Used by the GPS satellite navigation system and for NATO military geodetic surveying.
- * Area of use: World.
- * Coordinate system: Ellipsoidal 2D CS. Axes: latitude, longitude. Orientations: north, east. UoM: degree
- * Center coordinates
- *   0.00000000 0.00000000
- * WGS84 bounds:
- *  -180.0 -90.0
- *   180.0  90.0
- */
-
+/// The QcWgs84Projection class implements the WGS 84 projection (EPSG:4326)
 class QC_EXPORT QcWgs84Projection : public QcProjection
 {
-  /*
-  const char *proj4_definition() {
-    return "+init=epsg:4326";
-    // return "+proj=longlat +datum=WGS84 +no_defs";
-  };
-  */
-
  public:
   static constexpr double westward_longitude = -180.;
   static constexpr double eastward_longitude =  180.;
@@ -148,6 +97,7 @@ class QC_EXPORT QcWgs84Projection : public QcProjection
 
 /**************************************************************************************************/
 
+/// The QcWgsCoordinate class implements the WGS 84 coordinate (EPSG:4326)
 class QC_EXPORT QcWgsCoordinate : public QcGeoCoordinateTemplate<QcWgs84Projection>
 {
   Q_GADGET;
@@ -257,10 +207,13 @@ QC_EXPORT QDataStream &operator>>(QDataStream & stream, QcWgsElevationCoordinate
 
 /**************************************************************************************************/
 
-/* WGS coordinate stored as an int32 pair (8 bytes) with a resolution of 1e-7 degree, roughly 1 cm
- *   1e-7 is the largest scale fitting the int32 range for 180 degrees
- *   resolution = 6 371 000 * 2 * π / 360 * 1e-7 for an earth perimeter of 6 371 km
- */
+// used in  QcWgsCoordinateSmallFootprint
+
+///  The QcWgsCoordinateSmallFootprint class implements a small footprint WGS 84 coodinate.
+///
+/// WGS coordinate stored as an int32 pair (8 bytes) with a resolution of 1e-7 degree,
+/// roughly 1 cm 1e-7 is the largest scale fitting the int32 range
+/// for 180 degrees resolution = 6 371 000 * 2 * π / 360 * 1e-7 for an earth perimeter of 6 371 km.
 class QC_EXPORT QcWgsCoordinateSmallFootprint
 {
  public:
