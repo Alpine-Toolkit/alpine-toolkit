@@ -57,16 +57,14 @@ def process_file(absolut_file_name: Path, dry_run=False) -> None:
     new_license = NEW_LICENSE.replace(os.linesep, os.linesep + COMMENT + ' ').lstrip()
     year = None
     # print(new_license)
-    BEFORE_LICENSE = 0
-    IN_LICENSE = 1
-    AFTER_LICENSE = 2
+    BEFORE_LICENSE, IN_LICENSE, AFTER_LICENSE = list(range(3))
     state = BEFORE_LICENSE
     lines = []
     with open(absolut_file_name) as fh:
         for line in fh.readlines():
             # continue is used to ged first lines
             if state == BEFORE_LICENSE:
-                if 'ALPINE_TOOLKIT_BEGIN_LICENSE' in line:
+                if '_BEGIN_LICENSE' in line:
                     # print("IN_LICENSE")
                     state = IN_LICENSE
                     continue
@@ -75,7 +73,7 @@ def process_file(absolut_file_name: Path, dry_run=False) -> None:
                     i = line.find('(C) ')
                     i += 4
                     year = line[i:i+4]
-                if 'ALPINE_TOOLKIT_END_LICENSE' in line:
+                if '_END_LICENSE' in line:
                     state = AFTER_LICENSE
                     # print("AFTER_LICENSE")
                     lines.append(new_license.format(year=year) + os.linesep)
