@@ -43,7 +43,7 @@ Contact: http://www.fabrice-salvaire.fr
 SPDX-License-Identifier: GPL-3.0-only
 """.rstrip()
 
-SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx', '.cmake', '.js', '.qml', '.java')
+SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx', '.cmake', '.js', '.qml', '.java', '.jinja')
 
 C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp', '.hxx', '.js', '.qml', '.java')
 
@@ -53,9 +53,10 @@ def process_file(absolut_file_name: Path, dry_run=False) -> None:
     if absolut_file_name.suffix in C_SUFFIXES:
         COMMENT = ' *'
     else:
+        # COMMENT = ' #'
         COMMENT = '#'
     new_license = NEW_LICENSE.replace(os.linesep, os.linesep + COMMENT + ' ').lstrip()
-    new_license = ' ' + new_license
+    # new_license = ' ' + new_license
     year = None
     # print(new_license)
     BEFORE_LICENSE, IN_LICENSE, AFTER_LICENSE = list(range(3))
@@ -122,5 +123,6 @@ if args.source_path:
         print(source_path)
         if source_path.is_dir():
             walk(source_path)
-        elif filter_file(source_path):
+        # elif filter_file(source_path):
+        else:
             process_file(source_path, dry_run=args.dry_run)
