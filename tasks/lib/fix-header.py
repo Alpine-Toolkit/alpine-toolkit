@@ -32,6 +32,13 @@ argument_parser.add_argument(
     help='dry run mode'
 )
 
+argument_parser.add_argument(
+    '--check-c',
+    default=False,
+    action='store_true',
+    help='check C header'
+)
+
 args = argument_parser.parse_args()
 
 ####################################################################################################
@@ -49,7 +56,7 @@ C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp', '.hxx', '.js', '.qml', '.java')
 
 ####################################################################################################
 
-def process_file(absolut_file_name: Path, dry_run=False) -> None:
+def change_to_spdx(absolut_file_name: Path, dry_run=False) -> None:
     if absolut_file_name.suffix in C_SUFFIXES:
         COMMENT = ' *'
     else:
@@ -96,6 +103,61 @@ def process_file(absolut_file_name: Path, dry_run=False) -> None:
 
 ####################################################################################################
 
+def check_c_header(absolut_file_name: Path, dry_run=False) -> None:
+    if absolut_file_name.suffix not in C_SUFFIXES:
+        return
+
+    with open(absolut_file_name) as fh:
+        lines = fh.readlines()
+    number_of_lines = len(lines)
+
+    spdx_line_number = None
+    for i, line in enumerate(lines):
+        if 'SPDX-License-Identifier:' in line:
+            spdx_line_number = i
+            break
+
+    if spdx_line_number and spdx_line_number < 10:
+        # print(f"> {absolut_file_name}")
+        header_start = spdx_line_number -1
+        while header_start > 0:
+            if '/*' in lines[header_start]:
+                break
+            header_start -= 1
+        header_stop = spdx_line_number +1
+        while header_stop < number_of_lines:
+            if '*/' in lines[header_stop]:
+                break
+            header_stop += 1
+
+        # print(header_start, spdx_line_number, header_stop)
+
+        changed = False
+        for i in range(header_start+1, header_stop+1):
+        # for i in range(header_start, header_stop+1):
+            line = lines[i].strip()
+            if line.startswith('* ') or line == '*':
+                line = '*' + line
+            line += os.linesep
+            if lines[i] != line:
+                lines[i] = line
+                changed = True
+                
+        if changed:
+            print(f"> {absolut_file_name}")
+            content = ''.join(lines)
+            if dry_run:
+                rule = '/' * 100
+                print(rule)
+                print(content)
+                print(rule)
+            else:
+                absolut_file_name.rename(str(absolut_file_name) + '~')
+                with open(absolut_file_name, 'w') as fh:
+                    fh.write(content)
+    
+####################################################################################################
+
 THIS_FILE = Path(__file__).absolute()
 
 def filter_file(file_name: Path) -> bool:
@@ -106,7 +168,7 @@ def filter_file(file_name: Path) -> bool:
 
 ####################################################################################################
 
-def walk(source_path: Path) -> None:
+def walk(source_path: Path, process_file) -> None:
     for path, directories, files in os.walk(source_path):
         path = Path(path)
         for file_name in files:
@@ -121,8 +183,16 @@ if args.source_path:
     source_path = Path(args.source_path).absolute()
     if source_path.exists():
         print(source_path)
+
+        if args.check_c:
+            process_file = check_c_header
+        else:
+            process_file = change_to_spdx
+
         if source_path.is_dir():
-            walk(source_path)
+            walk(source_path, process_file)
         # elif filter_file(source_path):
         else:
             process_file(source_path, dry_run=args.dry_run)
+
+
