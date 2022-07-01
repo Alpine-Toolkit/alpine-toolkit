@@ -45,7 +45,7 @@ SPDX-License-Identifier: GPL-3.0-only
 
 SUFFIXES = ('.py', '.c', '.h', '.cpp', '.hpp', '.hxx')
 
-C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp')
+C_SUFFIXES = ('.c', '.h', '.cpp', '.hpp', '.hxx')
 
 ####################################################################################################
 
