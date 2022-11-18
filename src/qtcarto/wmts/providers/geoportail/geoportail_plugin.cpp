@@ -12,7 +12,6 @@
 #include "geoportail_plugin.h"
 #include "qtcarto.h"
 
-#include <QString>
 #include <QXmlStreamWriter>
 
 /**************************************************************************************************/
@@ -24,13 +23,13 @@ QcGeoportailLayer::QcGeoportailLayer(QcGeoportailPlugin * plugin,
                                      const QString & name,
                                      const QString & image_format,
                                      const QString & style)
-  : QcWmtsPluginLayer(plugin, map_id, position, title, name, image_format),
-    m_style(style)
+  : QcWmtsPluginLayer(plugin, map_id, position, title, name, image_format)
+  , m_style(style)
 {}
 
 QcGeoportailLayer::QcGeoportailLayer(const QcGeoportailLayer & other)
-  : QcWmtsPluginLayer(other),
-    m_style(other.m_style)
+  : QcWmtsPluginLayer(other)
+  , m_style(other.m_style)
 {}
 
 QcGeoportailLayer::~QcGeoportailLayer()
@@ -102,7 +101,7 @@ QcGeoportailLayer::url(const QcTileSpec & tile_spec) const
 /**************************************************************************************************/
 
 const QString QcGeoportailPlugin::PLUGIN_NAME = "geoportail";
-const QString PLUGIN_TITLE = "Géoportail";
+const QString PLUGIN_TITLE = "IGN Géoportail";
 constexpr int NUMBER_OF_LEVELS = 20;
 constexpr int TILE_SIZE = 256;
 
