@@ -50,8 +50,9 @@ QcMapItem {
     ]
 
     Component.onCompleted: {
-        /* map.plugin_layers('osm')[0].status = true */
-        map.plugin_layers('geoportail')[0].status = true
+        // map.plugin_layers('osm')[0].status = true
+        // map.plugin_layers('geoportail')[0].status = true
+        map.plugin_layers('swiss-topo')[0].status = true
         // map.plugin_layers('artic-web-map')[0].status = true
         map.zoom_level = 16; // set after layer
         set_scale()

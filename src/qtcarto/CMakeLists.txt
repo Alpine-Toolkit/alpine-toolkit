@@ -93,7 +93,7 @@ target_sources(qtcarto
     wmts/providers/germany/germany_plugin.cpp
     wmts/providers/osm/osm_plugin.cpp
     wmts/providers/spain/spain_plugin.cpp
-    wmts/providers/swiss_confederation/swiss_confederation_plugin.cpp
+    wmts/providers/swiss_topo/swiss_topo_plugin.cpp
     wmts/tile_matrix_index.cpp
     wmts/tile_matrix_set.cpp
     wmts/tile_spec.cpp

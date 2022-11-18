@@ -3,7 +3,7 @@
 /***************************************************************************************************
 **
 ** This file is part of the Alpine Toolkit software.
-** Copyright (C) 2016 Fabrice Salvaire
+** Copyright (C) 2022 Fabrice Salvaire
 ** Contact: http://www.fabrice-salvaire.fr
 ** SPDX-License-Identifier: GPL-3.0-only
 **
@@ -11,40 +11,47 @@
 
 /**************************************************************************************************/
 
-#ifndef __QC_SWISS_CONFEDERATION_PLUGIN_H__
-#define __QC_SWISS_CONFEDERATION_PLUGIN_H__
+#ifndef __QC_SWISS_TOPO_PLUGIN_H__
+#define __QC_SWISS_TOPO_PLUGIN_H__
 
 /**************************************************************************************************/
 
 #include "wmts/wmts_plugin.h"
-#include "wmts/wmts_network_tile_fetcher.h"
-
-#include <QString>
 
 /**************************************************************************************************/
 
 // QC_BEGIN_NAMESPACE
 
-class QcSwissConfederationPlugin;
+class QcSwissTopoPlugin;
 
 /**************************************************************************************************/
 
-class QcSwissConfederationLayer : public QcWmtsPluginLayer
+class QcSwissTopoLayer : public QcWmtsPluginLayer
 {
 public:
-  QcSwissConfederationLayer(QcSwissConfederationPlugin * plugin,
-                              int map_id,
-                              int position,
-                              const QString & title,
-                              const QString & name,
-                              const QString & image_format);
+  QcSwissTopoLayer(QcSwissTopoPlugin * plugin,
+                   int map_id,
+                   int position,
+                   const QString & title,
+                   const QString & name,
+                   const QString & image_format);
+  // const QString & style
+  QcSwissTopoLayer(const QcSwissTopoLayer & other);
+  ~QcSwissTopoLayer();
+
+  QcSwissTopoLayer & operator=(const QcSwissTopoLayer & other);
+
+  // const QString & style() const { return m_style; }
 
   QUrl url(const QcTileSpec & tile_spec) const override;
+
+private:
+  // QString m_style;
 };
 
 /**************************************************************************************************/
 
-class QcSwissConfederationPlugin : public QcWmtsPlugin
+class QcSwissTopoPlugin : public QcWmtsPlugin
 {
   Q_OBJECT
 
@@ -52,8 +59,13 @@ public:
   static const QString PLUGIN_NAME;
 
 public:
-  QcSwissConfederationPlugin();
-  ~QcSwissConfederationPlugin();
+  QcSwissTopoPlugin();
+  ~QcSwissTopoPlugin();
+
+  bool has_location_service() override { return false; }
+
+  bool has_coordinate_elevation_service() override { return false; }
+  bool has_sampling_elevation_service() override { return false; }
 };
 
 /**************************************************************************************************/
@@ -62,4 +74,4 @@ public:
 
 /**************************************************************************************************/
 
-#endif /* __QC_SWISS_CONFEDERATION_PLUGIN_H__ */
+#endif /* __QC_SWISS_TOPO_PLUGIN_H__ */

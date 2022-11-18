@@ -20,7 +20,7 @@
 #include "providers/germany/germany_plugin.h"
 #include "providers/osm/osm_plugin.h"
 #include "providers/spain/spain_plugin.h"
-#include "providers/swiss_confederation/swiss_confederation_plugin.h"
+#include "providers/swiss_topo/swiss_topo_plugin.h"
 
 #include <QtDebug>
 
@@ -37,7 +37,7 @@ QcWmtsPluginManager::QcWmtsPluginManager()
     << QcGermanyPlugin::PLUGIN_NAME
     << QcOsmPlugin::PLUGIN_NAME
     << QcSpainPlugin::PLUGIN_NAME
-    << QcSwissConfederationPlugin::PLUGIN_NAME
+    << QcSwissTopoPlugin::PLUGIN_NAME
     ;
 }
 
@@ -65,8 +65,8 @@ QcWmtsPluginManager::operator[](const QString & name)
       plugin = new QcOsmPlugin();
     else if (name == QcArticWebMapPlugin::PLUGIN_NAME)
       plugin = new QcArticWebMapPlugin();
-    else if (name == QcSwissConfederationPlugin::PLUGIN_NAME)
-      plugin = new QcSwissConfederationPlugin();
+    else if (name == QcSwissTopoPlugin::PLUGIN_NAME)
+      plugin = new QcSwissTopoPlugin();
     else if (name == QcSpainPlugin::PLUGIN_NAME)
       plugin = new QcSpainPlugin();
     else if (name == QcAustriaPlugin::PLUGIN_NAME)
