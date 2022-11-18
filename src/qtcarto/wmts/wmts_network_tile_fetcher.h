@@ -27,7 +27,9 @@ class QcWmtsPlugin; // circular
 /**************************************************************************************************/
 
 // Fixme: QcWmtsTileFetcher isn't networking aware, excepted QcWmtsReply relies on QNetworkReply
+//  It just implments get_tile_image
 
+/// The QcWmtsNetworkTileFetcher class implements a WMTS Tile Fetcher for WMTS providers.
 class QcWmtsNetworkTileFetcher : public QcWmtsTileFetcher
 {
   Q_OBJECT

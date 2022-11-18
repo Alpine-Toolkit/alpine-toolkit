@@ -31,6 +31,7 @@
 
 // was QcNetworkReply
 
+/// The QcNetworkFuture class implements a base class for network future.
 class QC_EXPORT QcNetworkFuture : public QObject
 {
   Q_OBJECT
@@ -98,6 +99,9 @@ class QC_EXPORT QcNetworkFuture : public QObject
 
 /**************************************************************************************************/
 
+/// The QcNetworkReply class implements a base class for network reply.
+///
+/// The process_payload method must be defined in subclasses.
 class QcNetworkReply : public QcNetworkFuture
 {
   Q_OBJECT

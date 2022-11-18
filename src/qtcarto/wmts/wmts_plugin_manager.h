@@ -27,6 +27,8 @@
 
 /**************************************************************************************************/
 
+/// The QcWmtsPluginManager singleton class implements a WMTS plugin manager.
+/// It provides the list of available plugins and to lazy instantiate a plugin.
 class QcWmtsPluginManager : QObject
 {
 public:

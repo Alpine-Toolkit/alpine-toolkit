@@ -26,6 +26,8 @@
 
 /**************************************************************************************************/
 
+/// The QcTileMatrixIndex class implements a tile matrix index.
+/// A tile matrix index is a pair (x, y).
 class QC_EXPORT QcTileMatrixIndex
 {
  public:
@@ -37,6 +39,7 @@ class QC_EXPORT QcTileMatrixIndex
   QcTileMatrixIndex &operator=(const QcTileMatrixIndex & other);
 
   bool operator==(const QcTileMatrixIndex & other) const;
+  // Fixme: auto generated
   inline bool operator!=(const QcTileMatrixIndex & other) const {
     return !operator==(other);
   }

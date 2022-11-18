@@ -153,7 +153,7 @@ PROJCS["WGS 84 / Pseudo-Mercator",
 * 48° 51′ 12.24845″ N / 2° 20′ 55.62563″ E
 * Latitude: 48.85340 Longitude: 2.34878
 * Lambert9312: X = 652 215.52 ; Y = 6 861 681.77 ; Z = 35.64 [m]
- 
+
 ## Glossary
 
 * **CRS** : Coordinate Reference Systems

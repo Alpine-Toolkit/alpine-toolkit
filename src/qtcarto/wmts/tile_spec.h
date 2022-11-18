@@ -27,6 +27,7 @@
 
 // QC_BEGIN_NAMESPACE
 
+/// The QcTileSpec class permits to identify a tile
 class QC_EXPORT QcTileSpec : public QcTileMatrixIndex
 {
  public:
@@ -62,7 +63,7 @@ class QC_EXPORT QcTileSpec : public QcTileMatrixIndex
   // bool operator<(const QcTileSpec & rhs) const;
 
  private:
-  QString m_plugin;
+  QString m_plugin; // Fixme: memory inefficient -> plugin id ?
   int m_map_id;
   int m_level;
 };

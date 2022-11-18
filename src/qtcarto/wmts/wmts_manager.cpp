@@ -32,9 +32,7 @@ QcWmtsManager::QcWmtsManager(const QString & plugin_name)
     m_tile_fetcher(nullptr) // must call set_tile_fetcher() !!!
 {}
 
-/*!
-  Destroys this mapping manager.
-*/
+/// Destroys this mapping manager.
 QcWmtsManager::~QcWmtsManager()
 {
   if (m_tile_cache)

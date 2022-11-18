@@ -63,6 +63,7 @@ class QC_EXPORT QcTileMatrixSetIterator
 
 /**************************************************************************************************/
 
+// The QcTileMatrixSet class defines a pyramid
 class QC_EXPORT QcTileMatrixSet
 {
  public:
@@ -134,6 +135,7 @@ class QC_EXPORT QcTileMatrixSet
 
 /**************************************************************************************************/
 
+// The QcTileMatrix class defines a level of the pyramid
 class QC_EXPORT QcTileMatrix
 {
  public:
@@ -172,6 +174,7 @@ class QC_EXPORT QcTileMatrix
 
 /**************************************************************************************************/
 
+// The QcMercatorTileMatrixSet class implements a Mercator pyramid
 class QC_EXPORT QcMercatorTileMatrixSet : public QcTileMatrixSet
 {
  public:

@@ -38,13 +38,12 @@ typedef QSet<QcMapViewLayer *> QcMapViewLayerPointerSet;
 
 /**************************************************************************************************/
 
-/*! This class implements a WMTS Manager for a WTMS provide.
- *
- * It manages requests from several concurrent map views and dispatch
- * them to the WTMS Tile Fetcher and store tile images in a cache.
- *
- * It notify the WTMS Request Manager when a tile is fetched or failed.
- */
+/// The QcWmtsManager class implements a WMTS Manager for a WTMS provider.
+///
+/// It manages requests from several concurrent map views and dispatch
+/// them to the WTMS Tile Fetcher and store tile images in a cache.
+///
+/// It notify the WTMS Request Manager when a tile is fetched or failed.
 class QC_EXPORT QcWmtsManager : public QObject
 {
   Q_OBJECT

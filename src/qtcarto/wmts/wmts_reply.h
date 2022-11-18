@@ -32,9 +32,9 @@
 
 /**************************************************************************************************/
 
-// QcWmtsReply is a kind of future
-
-class QC_EXPORT QcWmtsReply : public QcNetworkReply // QcNetworkFuture
+/// The QcWmtsReply class implements an abstract class to manage a tile fetch operation
+/// started by an instance of.
+class QC_EXPORT QcWmtsReply : public QcNetworkReply
 {
   Q_OBJECT
 
@@ -42,18 +42,18 @@ class QC_EXPORT QcWmtsReply : public QcNetworkReply // QcNetworkFuture
   QcWmtsReply(QNetworkReply * reply, const QcTileSpec & tile_spec);
   virtual ~QcWmtsReply();
 
-  //! Returns the request which corresponds to this reply.
+  /// Returns the request which corresponds to this reply.
   QcTileSpec tile_spec() const { return m_tile_spec; }
 
-  //!   Returns the tile image data.
+  /// Returns the tile image data.
   QByteArray map_image_data() const { return m_map_image_data; }
-  // Returns the format of the tile image.
+  /// Returns the format of the tile image.
   QString map_image_format() const { return m_map_image_format; }
 
  protected:
-  //! Sets the tile image data to \a data.
+  /// Sets the tile image data to \a data.
   void set_map_image_data(const QByteArray & data) { m_map_image_data = data; }
-  //! Sets the format of the tile image to \a format.
+  /// Sets the format of the tile image to \a format.
   void set_map_image_format(const QString & format) { m_map_image_format = format; }
 
  private:

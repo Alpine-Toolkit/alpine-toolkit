@@ -38,7 +38,7 @@ class QcMapViewLayer; // circular
 
 /**************************************************************************************************/
 
-// Represents a tile that needs to be retried after a certain period of time
+/// The QcRetryFuture class represents a tile that needs to be retried after a certain period of time.
 class QcRetryFuture : public QObject
 {
   Q_OBJECT
@@ -55,11 +55,11 @@ class QcRetryFuture : public QObject
   QPointer<QcWmtsManager> m_wmts_manager;
 };
 
-/*! This class implements a WMTS Request Manager for a map view.
- *
- * It works as a proxy between the map view and WTMS Request Manager.
- *
- */
+/**************************************************************************************************/
+
+/// The QcWmtsRequestManager class implements a WMTS Request Manager for a map view.
+///
+/// It works as a proxy between the map view and WTMS Request Manager.
 class QcWmtsRequestManager : public QObject
 {
   Q_OBJECT;

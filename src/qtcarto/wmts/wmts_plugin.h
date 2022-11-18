@@ -38,6 +38,7 @@ class QcWmtsPlugin;
 
 /**************************************************************************************************/
 
+/// The QcWmtsPluginLayer class represents a layer of a WMTS plugin.
 class QcWmtsPluginLayer
 {
 public:
@@ -78,6 +79,7 @@ private:
 
 /**************************************************************************************************/
 
+/// The QcWmtsPlugin class implements a WMTS plugin.
 class QcWmtsPlugin : public QObject
 {
   Q_OBJECT
@@ -133,6 +135,7 @@ private:
   QList<const QcWmtsPluginLayer *> m_layers;
   QHash<int, const QcWmtsPluginLayer *> m_layer_map;
   QSharedPointer<QcTileMatrixSet> m_tile_matrix_set;
+
   QByteArray m_user_agent;
   QNetworkAccessManager * m_network_manager; // share network manager for all requests: tile, ols, ...
   QcWmtsNetworkTileFetcher m_tile_fetcher;

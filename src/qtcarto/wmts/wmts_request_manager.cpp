@@ -47,15 +47,14 @@ QcWmtsRequestManager::QcWmtsRequestManager(QcMapViewLayer * map_view_layer, QcWm
 QcWmtsRequestManager::~QcWmtsRequestManager()
 {}
 
-/*! Request a new tile sets.
- *
- *  It performs 3 actions:
- *   - compute the canceled tiles sets
- *   - ask the WMTS Manager for cached tiles
- *   - update the tile request to the WTMS Manager
- *
- *  It returns cached tile textures.
- */
+/// Request a new tile sets.
+///
+///  It performs 3 actions:
+///   - compute the canceled tiles sets
+///   - ask the WMTS Manager for cached tiles
+///   - update the tile request to the WTMS Manager
+///
+///  It returns cached tile textures.
 QList<QSharedPointer<QcTileTexture> >
 QcWmtsRequestManager::request_tiles(const QcTileSpecSet & tile_specs)
 {
@@ -99,9 +98,7 @@ QcWmtsRequestManager::request_tiles(const QcTileSpecSet & tile_specs)
   return cached_textures;
 }
 
-/*! Notify the map view that a tile is fetched.
- *
- */
+/// Notify the map view that a tile is fetched.
 void
 QcWmtsRequestManager::tile_fetched(const QcTileSpec & tile_spec)
 {
@@ -112,9 +109,7 @@ QcWmtsRequestManager::tile_fetched(const QcTileSpec & tile_spec)
   m_futures.remove(tile_spec);
 }
 
-/*! Retry to fetch an errored tile request.
- *
- */
+/// Retry to fetch an errored tile request.
 void
 QcWmtsRequestManager::tile_error(const QcTileSpec & tile_spec, const QString & error_string)
 {
@@ -142,9 +137,7 @@ QcWmtsRequestManager::tile_error(const QcTileSpec & tile_spec, const QString & e
   }
 }
 
-/*! Get the tile texture from the WTMS Manager cache.
- *
- */
+/// Get the tile texture from the WTMS Manager cache.
 QSharedPointer<QcTileTexture>
 QcWmtsRequestManager::tile_texture(const QcTileSpec & tile_spec)
 {

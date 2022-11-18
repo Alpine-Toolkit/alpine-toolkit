@@ -27,11 +27,14 @@
 
 /**************************************************************************************************/
 
+/// The QcGeoportailWmtsLicense class defines a Geoportail license
 class QC_EXPORT QcGeoportailWmtsLicense
 {
  public:
   QcGeoportailWmtsLicense(const QString & json_path);
-  QcGeoportailWmtsLicense(const QString & user, const QString & password, const QString & api_key,
+  QcGeoportailWmtsLicense(const QString & user,
+                          const QString & password,
+                          const QString & api_key,
 			  unsigned int offline_cache_limit);
   QcGeoportailWmtsLicense(const QcGeoportailWmtsLicense & other);
 

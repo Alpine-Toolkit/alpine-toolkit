@@ -24,8 +24,7 @@ QcWmtsNetworkReply::QcWmtsNetworkReply(QNetworkReply * reply,
 QcWmtsNetworkReply::~QcWmtsNetworkReply()
 {}
 
-/*! Handle a successful request : store image data
- */
+/// Handle a successful request : store image data
 void
 QcWmtsNetworkReply::process_payload()
 {

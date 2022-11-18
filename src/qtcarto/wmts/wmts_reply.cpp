@@ -18,16 +18,11 @@
 
 /*!
     \class QcWmtsReply
-    \inmodule QtLocation
-    \ingroup QtLocation-impl
-    \since 5.6
-    \internal
 
     \brief The QcWmtsReply class manages a tile fetch operation started
     by an instance of QGeoTiledManagerEngine.
 
-    Instances of QcWmtsReply manage the state and results of these
-    operations.
+    Instances of QcWmtsReply manage the state and results of these operations.
 
     The isFinished(), error() and errorString() methods provide information
     on whether the operation has completed and if it completed successfully.
@@ -46,33 +41,13 @@
     mapImageData() and mapImageFormat().
 */
 
-/*!
-    \enum QcWmtsReply::Error
-
-    Describes an error which prevented the completion of the operation.
-
-    \value NoError
-        No error has occurred.
-    \value CommunicationError
-        An error occurred while communicating with the service provider.
-    \value ParseError
-        The response from the service provider was in an unrecognizable format
-        supported by the service provider.
-    \value UnknownError
-        An error occurred which does not fit into any of the other categories.
-*/
-
-/*!
-    Constructs a tiled map reply object based on \a request,  with parent \a parent.
-*/
+/// Constructs a tiled map reply object based on \a request, with parent \a parent.
 QcWmtsReply::QcWmtsReply(QNetworkReply * reply, const QcTileSpec & tile_spec)
   : QcNetworkReply(reply),
     m_tile_spec(tile_spec)
 {}
 
-/*!
-  Destroys this tiled map reply object.
-*/
+/// Destroys this tiled map reply object.
 QcWmtsReply::~QcWmtsReply()
 {}
 

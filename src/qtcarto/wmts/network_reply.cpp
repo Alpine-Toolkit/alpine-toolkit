@@ -26,8 +26,7 @@
 
     \brief The QcNetworkFuture class manages a ...
 
-    Instances of QcNetworkFuture manage the state and results of these
-    operations.
+    Instances of QcNetworkFuture manage the state and results of these operations.
 
     The isFinished(), error() and errorString() methods provide information
     on whether the operation has completed and if it completed successfully.
@@ -59,9 +58,7 @@
         An error occurred which does not fit into any of the other categories.
 */
 
-/*!
-    Constructs a tiled map reply object based on \a request,  with parent \a parent.
-*/
+/// Constructs a reply object based on \a request, with parent \a parent.
 QcNetworkFuture::QcNetworkFuture()
   : QObject(),
     m_error(QcNetworkFuture::NoError),
@@ -69,9 +66,7 @@ QcNetworkFuture::QcNetworkFuture()
     m_is_cached(false)
 {}
 
-/*!
-  Constructs a tiled map reply object with a given \a error and \a errorString and the specified \a parent.
-*/
+/// Constructs a reply object with a given \a error and \a errorString and the specified \a parent.
 QcNetworkFuture::QcNetworkFuture(Error error, const QString & error_string)
   : QObject(),
     m_error(error),
@@ -80,23 +75,17 @@ QcNetworkFuture::QcNetworkFuture(Error error, const QString & error_string)
     m_is_cached(false)
 {}
 
-/*!
-  Destroys this tiled map reply object.
-*/
+/// Destroys this reply object.
 QcNetworkFuture::~QcNetworkFuture()
 {}
 
-/*!
-  Sets whether or not this reply has finished to \a finished.
-
-  If \a finished is true, this will cause the finished() signal to be
-  emitted.
-
-  If the operation completed successfully,
-  QcNetworkFuture::setMapImageData() should be called before this
-  function. If an error occurred, QcNetworkFuture::setError() should be used
-  instead.
-*/
+///Sets whether or not this reply has finished to \a finished.
+///
+///If \a finished is true, this will cause the finished() signal to be emitted.
+///
+///If the operation completed successfully,
+///QcNetworkFuture::setMapImageData() should be called before this
+///function. If an error occurred, QcNetworkFuture::setError() should be used instead.
 void
 QcNetworkFuture::set_finished(bool finished)
 {
@@ -105,13 +94,9 @@ QcNetworkFuture::set_finished(bool finished)
     emit this->finished();
 }
 
-/*!
-  Sets the error state of this reply to \a error and the textual
-  representation of the error to \a errorString.
-
-  This will also cause error() and finished() signals to be emitted, in that
-  order.
-*/
+/// Sets the error state of this reply to \a error and the textual representation of the error to \a errorString.
+///
+/// This will also cause error() and finished() signals to be emitted, in that order.
 void
 QcNetworkFuture::set_error(QcNetworkFuture::Error error, const QString & error_string)
 {
@@ -121,11 +106,9 @@ QcNetworkFuture::set_error(QcNetworkFuture::Error error, const QString & error_s
   set_finished(true);
 }
 
-/*!
-  Cancels the operation immediately.
-
-  This will do nothing if the reply is finished.
-*/
+// Cancels the operation immediately.
+//
+// This will do nothing if the reply is finished.
 void
 QcNetworkFuture::abort()
 {
@@ -176,7 +159,7 @@ QcNetworkReply::cleanup()
   m_reply = nullptr;
 }
 
-// Handle a successful request : store image data
+/// Handle a successful request : process payload
 void
 QcNetworkReply::network_reply_finished()
 {
@@ -191,7 +174,7 @@ QcNetworkReply::network_reply_finished()
   cleanup();
 }
 
-// Handle an unsuccessful request : set error message
+/// Handle an unsuccessful request : set error message
 void
 QcNetworkReply::network_reply_error(QNetworkReply::NetworkError error)
 {

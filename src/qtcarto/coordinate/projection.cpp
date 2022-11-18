@@ -143,6 +143,7 @@ QcProjection4::transform(const QcProjection4 & proj2, double & x, double & y, do
 QMap<QString, QcProjection *> QcProjection::m_instances;
 // QMap<QString, QcProjection4 *> QcProjection::m_projection4_instances;
 
+// Fixme: *
 const QcProjection *
 QcProjection::by_srid(const QString & srid)
 {
@@ -162,6 +163,7 @@ QcProjection::init()
 {
   init_proj();
 
+  // Fixme: new -> delete
   register_projection(new QcWgs84Projection());
   register_projection(new QcWebMercatorProjection());
   register_projection(new QcLaeaProjection_3571());
