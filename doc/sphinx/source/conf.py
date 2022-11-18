@@ -46,6 +46,7 @@ release = '1.0'
 extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.ifconfig'
+    'myst_parser',    # for Markdown
 ]
 
 # Add any paths that contain templates here, relative to this directory.
