@@ -59,7 +59,7 @@ class QC_EXPORT QcWebMercatorProjection : public QcProjection
                    QcInterval2DDouble(-180, 180,
                                       -LATITUDE_MAX, LATITUDE_MAX),
                    QcInterval2DDouble(-HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER,
-                                      -HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER,
+                                      -HALF_EQUATORIAL_PERIMETER, HALF_EQUATORIAL_PERIMETER),
                    QStringLiteral("m"),
                    ProjectionSurface::Cylindrical,
                    PreserveBit::PreserveDirection)
