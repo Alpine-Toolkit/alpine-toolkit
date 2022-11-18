@@ -7,21 +7,9 @@
 ** Contact: http://www.fabrice-salvaire.fr
 ** SPDX-License-Identifier: GPL-3.0-only
 **
-***************************************************************************************************/
-
-/****************************************************************************
-**
 ** Copyright (C) 2015 The Qt Company Ltd.
-** Contact: http://www.qt.io/licensing/
 **
-** This file is part of the QtLocation module of the Qt Toolkit.
-**
-** This file is part of the Alpine Toolkit software.
-** Copyright (C) None Fabrice Salvaire
-** Contact: http://www.fabrice-salvaire.fr
-** SPDX-License-Identifier: GPL-3.0-only
-**
-****************************************************************************/
+***************************************************************************************************/
 
 /**************************************************************************************************/
 
