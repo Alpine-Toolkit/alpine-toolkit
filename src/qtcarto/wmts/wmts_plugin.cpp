@@ -20,21 +20,21 @@ QcWmtsPluginLayer::QcWmtsPluginLayer(QcWmtsPlugin * plugin,
                                      const QString & title,
                                      const QString & name,
                                      const QString & image_format)
-  : m_plugin(plugin),
-    m_map_id(map_id),
-    m_position(position),
-    m_title(title),
-    m_name(name),
-    m_image_format(image_format)
+  : m_plugin(plugin)
+  , m_map_id(map_id)
+  , m_position(position)
+  , m_title(title)
+  , m_name(name)
+  , m_image_format(image_format)
 {}
 
 QcWmtsPluginLayer::QcWmtsPluginLayer(const QcWmtsPluginLayer & other)
-  : m_plugin(other.m_plugin),
-    m_map_id(other.m_map_id),
-    m_position(other.m_position),
-    m_title(other.m_title),
-    m_name(other.m_name),
-    m_image_format(other.m_image_format)
+  : m_plugin(other.m_plugin)
+  , m_map_id(other.m_map_id)
+  , m_position(other.m_position)
+  , m_title(other.m_title)
+  , m_name(other.m_name)
+  , m_image_format(other.m_image_format)
 {}
 
 QcWmtsPluginLayer::~QcWmtsPluginLayer()
@@ -81,14 +81,14 @@ QcWmtsPluginLayer::create_tile_spec(int level, int x, int y) const
 /**************************************************************************************************/
 
 QcWmtsPlugin::QcWmtsPlugin(const QString & name, const QString & title, QcTileMatrixSet * tile_matrix_set)
-  : QObject(),
-    m_name(name),
-    m_title(title),
-    m_tile_matrix_set(tile_matrix_set),
-    m_user_agent("QtCarto based application"),
-    m_network_manager(new QNetworkAccessManager()), // Fixme: delete ?, segfault if this is parent
-    m_tile_fetcher(this),
-    m_wmts_manager(name)
+  : QObject()
+  , m_name(name)
+  , m_title(title)
+  , m_tile_matrix_set(tile_matrix_set)
+  , m_network_manager(new QNetworkAccessManager()) // Fixme: delete ?, segfault if this is parent
+  , m_user_agent("QtCarto based application")
+  , m_wmts_manager(name)
+  , m_tile_fetcher(this) // Fixme: this could be passe to wmts_manager and then to tile_fetcher
 {
   wmts_manager()->set_tile_fetcher(&m_tile_fetcher);
   wmts_manager()->tile_cache(); // create a file tile cache

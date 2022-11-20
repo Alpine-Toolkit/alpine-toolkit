@@ -27,7 +27,7 @@
 
 /**************************************************************************************************/
 
-/// The QcGeoportailWmtsLicense class defines a Geoportail license
+/// The QcGeoportailWmtsLicense class defines a Geoportail license.
 class QC_EXPORT QcGeoportailWmtsLicense
 {
  public:
@@ -40,9 +40,9 @@ class QC_EXPORT QcGeoportailWmtsLicense
 
   QcGeoportailWmtsLicense & operator=(const QcGeoportailWmtsLicense & other);
 
-  inline const QString & user() const { return m_user; }
-  inline const QString & password() const { return m_password; }
-  inline const QString & api_key() const { return m_api_key; }
+  const QString & user() const { return m_user; }
+  const QString & password() const { return m_password; }
+  const QString & api_key() const { return m_api_key; }
   inline unsigned int offline_cache_limit() const { return m_offline_cache_limit; }
 
   bool operator==(const QcGeoportailWmtsLicense & rhs) const;

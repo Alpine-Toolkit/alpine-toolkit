@@ -28,9 +28,10 @@
 
 // Fixme: clarify API
 //        why ??? QcWmtsNetworkReply > QcWmtsReply  >> QcNetworkReply > QcNetworkFuture
+//        Merge QcWmtsNetworkReply in QcWmtsReply
 // It just implements process_payload
 
-/// The QcWmtsNetworkReply class manages a tile fetch operation started by an instance of.
+/// The QcWmtsNetworkReply class manages a tile fetch operation started by the tile fetcher.
 class QcWmtsNetworkReply : public QcWmtsReply
 {
   Q_OBJECT

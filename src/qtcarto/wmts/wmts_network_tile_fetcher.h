@@ -27,7 +27,7 @@ class QcWmtsPlugin; // circular
 /**************************************************************************************************/
 
 // Fixme: QcWmtsTileFetcher isn't networking aware, excepted QcWmtsReply relies on QNetworkReply
-//  It just implments get_tile_image
+//        Merge QcWmtsNetworkTileFetcher in QcWmtsTileFetcher ?
 
 /// The QcWmtsNetworkTileFetcher class implements a WMTS Tile Fetcher for WMTS providers.
 class QcWmtsNetworkTileFetcher : public QcWmtsTileFetcher
@@ -42,7 +42,7 @@ private:
   QcWmtsReply * get_tile_image(const QcTileSpec & tile_spec);
 
 private:
-  QcWmtsPlugin * m_plugin;
+  QcWmtsPlugin * m_plugin; // circular
 };
 
 /**************************************************************************************************/

@@ -39,7 +39,7 @@
 /// The QcWmtsTileFetcher class implements a WMTS Tile Fetcher abstract class for WMTS providers.
 ///
 /// It must be subclassed for each provider in order to provide an implementation for the get_tile_image method.
-/// It manages a request queue, schedule requests and emit a signal when a request finishes or failes.
+/// It manages a request queue, schedule requests and emit a signal when a request finishes or fails.
 class QC_EXPORT QcWmtsTileFetcher : public QObject
 {
   Q_OBJECT
@@ -49,6 +49,7 @@ class QC_EXPORT QcWmtsTileFetcher : public QObject
   virtual ~QcWmtsTileFetcher();
 
  public slots:
+  // Fixme: why ???
   // void update_tile_requests(const QcTileSpecSet & tiles_added, const QcTileSpecSet & tiles_removed);
   void update_tile_requests(const QSet<QcTileSpec> & tiles_added, const QSet<QcTileSpec> & tiles_removed);
 
@@ -66,6 +67,7 @@ class QC_EXPORT QcWmtsTileFetcher : public QObject
   // QGeoTiledMappingManagerEngine::CacheAreas cache_hint() const;
 
  private:
+  /// abstract method to return a future for the tile request
   virtual QcWmtsReply * get_tile_image(const QcTileSpec & tile_spec) = 0;
   void handle_reply(QcWmtsReply * wmts_reply, const QcTileSpec & tile_spec);
 

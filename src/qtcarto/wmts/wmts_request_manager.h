@@ -68,11 +68,15 @@ class QcWmtsRequestManager : public QObject
   explicit QcWmtsRequestManager(QcMapViewLayer * map_view_layer, QcWmtsManager * wmts_manager);
   ~QcWmtsRequestManager();
 
+  /// Request a new tile sets
   QList<QSharedPointer<QcTileTexture> > request_tiles(const QcTileSpecSet & tile_specs);
 
+  /// Notify the map view that a tile is fetched.
   void tile_fetched(const QcTileSpec & tile_spec);
+  /// Retry to fetch an errored tile request.
   void tile_error(const QcTileSpec & tile_spec, const QString & error_string);
 
+  /// Get the tile texture from the WTMS Manager cache.
   QSharedPointer<QcTileTexture> tile_texture(const QcTileSpec & tile_spec);
 
  private:
@@ -81,9 +85,9 @@ class QcWmtsRequestManager : public QObject
  private:
   QcMapViewLayer * m_map_view_layer;
   QPointer<QcWmtsManager> m_wmts_manager;
+  QcTileSpecSet m_requested;
   QHash<QcTileSpec, int> m_retries;
   QHash<QcTileSpec, QSharedPointer<QcRetryFuture> > m_futures;
-  QcTileSpecSet m_requested;
 };
 
 // QC_END_NAMESPACE

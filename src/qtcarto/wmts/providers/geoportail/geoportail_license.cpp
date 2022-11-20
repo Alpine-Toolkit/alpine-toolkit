@@ -26,18 +26,29 @@
 /**************************************************************************************************/
 
 QcGeoportailWmtsLicense::QcGeoportailWmtsLicense(const QString & json_path)
-  : m_user(), m_password(), m_api_key(), m_offline_cache_limit()
+  : m_user()
+  , m_password()
+  , m_api_key()
+  , m_offline_cache_limit()
 {
   load_json(json_path);
 }
 
-QcGeoportailWmtsLicense::QcGeoportailWmtsLicense(const QString & user, const QString & password, const QString & api_key,
+QcGeoportailWmtsLicense::QcGeoportailWmtsLicense(const QString & user,
+                                                 const QString & password,
+                                                 const QString & api_key,
 						 unsigned int offline_cache_limit)
-  : m_user(user), m_password(password), m_api_key(api_key), m_offline_cache_limit(offline_cache_limit)
+  : m_user(user)
+  , m_password(password)
+  , m_api_key(api_key)
+  , m_offline_cache_limit(offline_cache_limit)
 {}
 
 QcGeoportailWmtsLicense::QcGeoportailWmtsLicense(const QcGeoportailWmtsLicense & other)
-  : m_user(other.m_user), m_password(other.m_password), m_api_key(other.m_api_key), m_offline_cache_limit(other.m_offline_cache_limit)
+  : m_user(other.m_user)
+  , m_password(other.m_password)
+  , m_api_key(other.m_api_key)
+  , m_offline_cache_limit(other.m_offline_cache_limit)
 {}
 
 QcGeoportailWmtsLicense &

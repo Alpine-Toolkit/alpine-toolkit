@@ -74,9 +74,15 @@ QC_EXPORT QDebug operator<<(QDebug, const QcTileSpec & tile_spec);
 
 typedef QSet<QcTileSpec> QcTileSpecSet;
 
+/**************************************************************************************************/
+
 // QC_END_NAMESPACE
+
+/**************************************************************************************************/
 
 Q_DECLARE_METATYPE(QcTileSpec)
 // Q_DECLARE_METATYPE(QcTileSpecSet)
+
+/**************************************************************************************************/
 
 #endif /* __QC_TILE_SPEC_H__ */

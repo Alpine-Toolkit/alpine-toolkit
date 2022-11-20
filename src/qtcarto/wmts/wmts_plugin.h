@@ -90,15 +90,10 @@ public:
 
   const QString & name() const { return m_name; }
   const QString & title() const { return m_title; }
+
+  /// Return the pyramid
   QcTileMatrixSet & tile_matrix_set() { return *m_tile_matrix_set; } // Fixme: const ?
   const QcProjection & projection() const { return m_tile_matrix_set->projection(); }
-
-  // Fixme: & or *
-  QNetworkAccessManager * network_manager() { return m_network_manager; }
-  QcWmtsNetworkTileFetcher * tile_fetcher() { return &m_tile_fetcher; }
-  QcWmtsManager * wmts_manager() { return &m_wmts_manager; }
-
-  void set_user_agent(const QByteArray & user_agent) { m_user_agent = user_agent; }
 
   void add_layer(const QcWmtsPluginLayer * layer);
   const QList<const QcWmtsPluginLayer *> & layers() const { return m_layers; }
@@ -111,7 +106,20 @@ public:
   QcTileSpec create_tile_spec(int map_id, int level, int x, int y) const {
     return QcTileSpec(m_name, map_id, level, x, y);
   }
-  // Fixme: usefull ?
+
+  // Fixme: networking could be moved in a dedicated class (QcWmtsNetworkTileFetcher but ols)
+  //   tile_fetcher -> plugin in order to have an implementation for the WTMS provider get/post
+  // Fixme: & or *
+  QNetworkAccessManager * network_manager() { return m_network_manager; }
+  void set_user_agent(const QByteArray & user_agent) { m_user_agent = user_agent; }
+  // Fixme: protect ?
+  QNetworkReply * get(const QUrl & url);
+  QNetworkReply * post(const QUrl & url, const QByteArray & data);
+
+  QcWmtsNetworkTileFetcher * tile_fetcher() { return &m_tile_fetcher; }
+  QcWmtsManager * wmts_manager() { return &m_wmts_manager; }
+
+  // Fixme: unused, usefull ?
   QUrl make_layer_url(const QcTileSpec & tile_spec) const;
 
   virtual bool has_location_service() { return false; }
@@ -122,24 +130,21 @@ public:
   virtual bool has_sampling_elevation_service() { return false; }
   virtual QSharedPointer<QcElevationServiceReply> coordinate_elevations(const QVector<QcWgsCoordinate> & coordinates);
 
-  // Fixme: protect ?
-  // Fixme: networking could be moved in a dedicated class (QcWmtsNetworkTileFetcher but ols)
-  QNetworkReply * get(const QUrl & url);
-  QNetworkReply * post(const QUrl & url, const QByteArray & data);
-
   // off-line cache : load tiles from a polygon
 
 private:
   QString m_name;
   QString m_title;
+
+  QSharedPointer<QcTileMatrixSet> m_tile_matrix_set;
   QList<const QcWmtsPluginLayer *> m_layers;
   QHash<int, const QcWmtsPluginLayer *> m_layer_map;
-  QSharedPointer<QcTileMatrixSet> m_tile_matrix_set;
 
-  QByteArray m_user_agent;
   QNetworkAccessManager * m_network_manager; // share network manager for all requests: tile, ols, ...
-  QcWmtsNetworkTileFetcher m_tile_fetcher;
+  QByteArray m_user_agent;
+
   QcWmtsManager m_wmts_manager;
+  QcWmtsNetworkTileFetcher m_tile_fetcher;
 };
 
 /**************************************************************************************************/

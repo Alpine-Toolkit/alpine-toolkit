@@ -34,6 +34,7 @@ QcWmtsNetworkTileFetcher::~QcWmtsNetworkTileFetcher()
 QcWmtsReply *
 QcWmtsNetworkTileFetcher::get_tile_image(const QcTileSpec & tile_spec)
 {
+  // Fixme: use QcWmtsPlugin::make_layer_url ?
   const QcWmtsPluginLayer * layer = m_plugin->layer(tile_spec);
   QUrl url = layer->url(tile_spec);
   qQCInfo() << url.toEncoded();

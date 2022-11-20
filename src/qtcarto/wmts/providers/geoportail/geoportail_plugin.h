@@ -33,9 +33,10 @@ class QcGeoportailPlugin;
 
 /**************************************************************************************************/
 
+// The QcGeoportailLayer class implements a IGN Geoportail WMTS layer.
 class QcGeoportailLayer : public QcWmtsPluginLayer
 {
-public:
+ public:
   QcGeoportailLayer(QcGeoportailPlugin * plugin,
                     int map_id,
                     int position,
@@ -52,20 +53,22 @@ public:
 
   QUrl url(const QcTileSpec & tile_spec) const;
 
-private:
+ private:
   QString m_style;
 };
 
 /**************************************************************************************************/
 
+/// The QcGeoportailPlugin class implements a IGN Geoportail WMTS plugin.
 class QcGeoportailPlugin : public QcWmtsPlugin
 {
   Q_OBJECT
 
-public:
+ public:
   static const QString PLUGIN_NAME;
+  static QcWmtsPlugin * instantiate();
 
-public:
+ public:
   QcGeoportailPlugin(const QcGeoportailWmtsLicense & license);
   ~QcGeoportailPlugin();
 
@@ -80,10 +83,10 @@ public:
   QSharedPointer<QcElevationServiceReply> coordinate_elevations(const QVector<QcWgsCoordinate> & coordinates) override;
   QSharedPointer<QcLocationServiceReverseReply> reverse_geocode_request(const QcLocationServiceReverseQuery & query) override;
 
-private Q_SLOTS:
+ private Q_SLOTS:
   void on_authentication_request_slot(QNetworkReply * reply, QAuthenticator * authenticator);
 
-private:
+ private:
   QcGeoportailWmtsLicense m_license;
 
   QSharedPointer<QcLocationServiceReply> m_location_reply;
