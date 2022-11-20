@@ -22,6 +22,7 @@
 #include <QMetaType>
 #include <QPixmap>
 #include <QStandardPaths>
+#include <QtCore/qglobal.h>
 
 // Q_DECLARE_METATYPE(QList<QcTileSpec>)
 // Q_DECLARE_METATYPE(QcTileSpecSet)
@@ -38,6 +39,8 @@ QcTileTexture::QcTileTexture()
 
 QcTileTexture::~QcTileTexture()
 {}
+
+/**************************************************************************************************/
 
 class QcCachedTileMemory
 {
@@ -82,9 +85,9 @@ QcCachedTileDisk::~QcCachedTileDisk()
 /**************************************************************************************************/
 
 // Fixme: export
-constexpr int KILO = 1000;
+// constexpr int KILO = 1000;
+// constexpr int MEGA = KILO * KILO;
 constexpr int KILO2 = 1024;
-constexpr int MEGA = KILO * KILO;
 constexpr int MEGA2 = KILO2 * KILO2;
 
 constexpr int MAX_DISK_USAGE = 512 * MEGA2;
@@ -96,16 +99,15 @@ constexpr int NUMBER_OF_QUEUES = 4;
 /**************************************************************************************************/
 
 QcFileTileCache::QcFileTileCache(const QString & directory)
-  : QObject(),
-    m_offline_cache(nullptr),
-    m_directory(directory), m_min_texture_usage(0), m_extra_texture_usage(0)
+  : QObject()
+  , m_directory(directory)
+  , m_min_texture_usage(0)
+  , m_extra_texture_usage(0)
+  , m_offline_cache(nullptr)
 {
-  const QString base_path = base_cache_directory();
-
-  if (m_directory.isEmpty()) {
-    m_directory = base_path;
-  }
-
+  if (m_directory.isEmpty())
+    m_directory = base_cache_directory();
+  // ensure directory exists
   QDir::root().mkpath(m_directory);
 
   // default values
@@ -156,9 +158,7 @@ QcFileTileCache::base_cache_directory()
   return QaConfig::instance()->wmts_cache_directory();
 }
 
-/*! Clear the cache and remove cached files on disk
- *
- */
+/// Clear the cache and remove cached files on disk
 void
 QcFileTileCache::clear_all()
 {
@@ -204,7 +204,7 @@ QcFileTileCache::load_tiles()
     while (!file.atEnd()) {
       QByteArray line = file.readLine().trimmed();
       QString filename = QString::fromLatin1(line.constData(), line.length());
-      if (directory.exists(filename)){
+      if (directory.exists(filename)) {
 	files.removeOne(filename);
 	QcTileSpec tile_spec = filename_to_tile_spec(filename);
 	// qQCInfo() << "Load" << tile_spec;
@@ -372,7 +372,7 @@ QcFileTileCache::load_from_disk(const QcTileSpec & tile_spec, const QString & fi
     handle_error(tile_spec, QStringLiteral("Problem with tile image"));
 
   // else
-  return QSharedPointer<QcTileTexture>(nullptr);
+  return QSharedPointer<QcTileTexture>();
 }
 
 QSharedPointer<QcTileTexture>
@@ -390,7 +390,7 @@ QcFileTileCache::load_from_memory(const QSharedPointer<QcCachedTileMemory> & til
     handle_error(tile_spec, QStringLiteral("Problem with tile image"));
 
   // else
- return QSharedPointer<QcTileTexture>(nullptr);
+ return QSharedPointer<QcTileTexture>();
 }
 
 void
@@ -411,22 +411,24 @@ QcFileTileCache::insert(const QcTileSpec & tile_spec, const QByteArray & bytes, 
   add_to_memory_cache(tile_spec, bytes, format);
   // }
 
-  /* Inserts do not hit the texture cache -- this actually reduces overall
-   * cache hit rates because many tiles come too late to be useful
-   * and act as a poison
-   */
+  // Inserts do not hit the texture cache -- this actually reduces overall
+  // cache hit rates because many tiles come too late to be useful
+  // and act as a poison
 }
 
 void
-QcFileTileCache::evict_from_disk_cache(QcCachedTileDisk * tile_directory) // unused parameter
+QcFileTileCache::evict_from_disk_cache(QcCachedTileDisk * tile_directory)
 {
+  Q_UNUSED(tile_directory);
   qWarning() << "evict_from_disk_cache disabled";
   // QFile::remove(tile_directory->filename);
 }
 
 void
-QcFileTileCache::evict_from_memory_cache(QcCachedTileMemory * /* tile_memory  */)
-{}
+QcFileTileCache::evict_from_memory_cache(QcCachedTileMemory * tile_memory)
+{
+  Q_UNUSED(tile_memory);
+}
 
 QSharedPointer<QcCachedTileDisk>
 QcFileTileCache::add_to_disk_cache(const QcTileSpec & tile_spec, const QString  & filename)
@@ -471,7 +473,5 @@ QcFileTileCache::add_to_texture_cache(const QcTileSpec & tile_spec, const QImage
 }
 
 /**************************************************************************************************/
-
-// #include "file_tile_cache.moc"
 
 // QC_END_NAMESPACE

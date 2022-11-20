@@ -27,17 +27,27 @@
 
 /**************************************************************************************************/
 
+// Fixme: implement a filesystem scan to fix/update the database
+
+/// The QcOfflineCacheDatabase class implements a database to query if a tile is cached.
+///
+/// It purpose is to provide a fast way to know if a tile is available on disk.
+///
+/// Alternative Solutions:
+/// * query the filesystem: could be slow if there is a lot of entries in a directory
+/// * scan the filesystem and build an index: slower startup ?
+/// * load the SQL database in an index: faster indexing vs memory ???
 class QcOfflineCacheDatabase : public QcSqliteDatabase
 {
-public:
+ public:
   QcOfflineCacheDatabase(const QString & sqlite_path);
   ~QcOfflineCacheDatabase();
 
   void insert_tile(const QcTileSpec & tile_spec);
-  int has_tile(const QcTileSpec & tile_spec);
+  int has_tile(const QcTileSpec & tile_spec); // Fixme: bool ? offline_count purpose ???
   void delete_tile(const QcTileSpec & tile_spec);
 
-private:
+ private:
   void create_tables();
 
   void init_cache();
@@ -49,7 +59,7 @@ private:
   int get_map_level_id(const QcTileSpec & tile_spec);
   QString tile_where_clause(const QcTileSpec & tile_spec);
 
-private:
+ private:
   QHash<QString, int> m_providers;
   QHash<unsigned int, int> m_map_levels;
 };

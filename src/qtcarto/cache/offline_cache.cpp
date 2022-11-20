@@ -22,15 +22,15 @@
 /**************************************************************************************************/
 
 QcOfflineCachedTileDisk::QcOfflineCachedTileDisk()
-  : tile_spec(),
-    filename(),
-    format()
+  : tile_spec()
+  , filename()
+  , format()
 {}
 
 QcOfflineCachedTileDisk::QcOfflineCachedTileDisk(const QcOfflineCachedTileDisk & other)
-  : tile_spec(other.tile_spec),
-    filename(other.filename),
-    format(other.format)
+  : tile_spec(other.tile_spec)
+  , filename(other.filename)
+  , format(other.format)
 {}
 
 QcOfflineCachedTileDisk &
@@ -48,8 +48,8 @@ QcOfflineCachedTileDisk::operator=(const QcOfflineCachedTileDisk & other)
 /**************************************************************************************************/
 
 QcOfflineTileCache::QcOfflineTileCache(const QString & directory)
-  : m_directory(directory),
-    m_database(nullptr)
+  : m_directory(directory)
+  , m_database(nullptr)
 {
   QDir::root().mkpath(m_directory);
   QString sqlite_file_path = QDir(directory).absoluteFilePath(QStringLiteral("offline_cache.sqlite"));
@@ -109,9 +109,7 @@ bool
 QcOfflineTileCache::contains(const QcTileSpec & tile_spec) const
 {
   qQCInfo() << tile_spec;
-
   return m_database->has_tile(tile_spec) > 0;
-
   // return m_offline_cache.contains(tile_spec);
 }
 

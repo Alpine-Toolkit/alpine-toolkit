@@ -11,6 +11,8 @@
 **
 ***************************************************************************************************/
 
+// Fixme: move to common lib ???
+
 /**************************************************************************************************/
 
 #ifndef __QC_QCACHE3Q_H__
@@ -44,7 +46,7 @@ protected:
  *
  * A cache template class for managing QSharedPointers to objects with an
  * associated key. It's a lot like QCache, but uses an alternative algorithm
- * '3Q' -- which is the '2Q' algorithm plus an extra queue for previously popular
+ * '3Q', which is the '2Q' algorithm plus an extra queue for previously popular
  * but evicted nodes, and a 'ghost' list of recent evictions to make a better
  * placement choice if they are requested again.
  *
@@ -76,7 +78,13 @@ private:
   class Node
   {
   public:
-    inline explicit Node() : queue(nullptr), next(nullptr), previous(nullptr), pop(0), cost(0) {}
+    inline explicit Node()
+      : queue(nullptr)
+      , next(nullptr)
+      , previous(nullptr)
+      , pop(0)
+      , cost(0)
+      {}
 
     Queue * queue;
     Node * next;
@@ -90,19 +98,25 @@ private:
   class Queue
   {
   public:
-    inline explicit Queue() : first(nullptr), last(nullptr), cost(0), pop(0), size(0) {}
+    inline explicit Queue()
+      : first(nullptr)
+      , last(nullptr)
+      , cost(0)
+      , pop(0)
+      , size(0)
+      {}
 
     Node *first;
     Node *last;
-    int cost; // total cost of nodes on the queue
-    quint64 pop; // sum of popularity values on the queue
-    int size; // size of the queue
+    int cost; ///< total cost of nodes on the queue
+    quint64 pop; ///< sum of popularity values on the queue
+    int size; ///< size of the queue
   };
 
-  Queue * m_q1; // "newbies": seen only once, evicted LRA (least-recently-added)
-  Queue * m_q2; // regular nodes, promoted from newbies, evicted LRU
-  Queue * m_q3; // "hobos": evicted from q2 but were very popular (above mean)
-  Queue * m_q1_evicted; // ghosts of recently evicted newbies and regulars
+  Queue * m_q1; ///< "newbies": seen only once, evicted LRA (least-recently-added)
+  Queue * m_q2; ///< regular nodes, promoted from newbies, evicted LRU
+  Queue * m_q3; ///< "hobos": evicted from q2 but were very popular (above mean)
+  Queue * m_q1_evicted; ///< ghosts of recently evicted newbies and regulars
   QHash<Key, Node *> m_lookup;
 
 public:
@@ -119,17 +133,16 @@ public:
 
   void clear();
   bool insert(const Key & key, QSharedPointer<T> object, int cost = 1);
+  void remove(const Key & key);
   QSharedPointer<T> object(const Key & key) const;
   QSharedPointer<T> operator[](const Key & key) const;
 
-  void remove(const Key & key);
-
   void print_stats();
 
-  // Copy data directly into a queue. Designed for single use after construction
+  /// Copy data directly into a queue. Designed for single use after construction
   void deserialize_queue(int queue_number, const QList<Key> & keys,
 			 const QList<QSharedPointer<T> > & values, const QList<int> & costs);
-  // Copy data from specific queue into list
+  /// Copy data from specific queue into list
   void serialize_queue(int queue_number, QList<QSharedPointer<T> > & buffer);
 
 private:

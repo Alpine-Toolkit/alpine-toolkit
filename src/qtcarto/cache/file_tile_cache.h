@@ -1,4 +1,4 @@
-// -*- mode: c++ -*-
+`// -*- mode: c++ -*-
 
 /***************************************************************************************************
 **
@@ -40,6 +40,9 @@ class QcFileTileCache;
 
 /**************************************************************************************************/
 
+// Fixme: QcTileTexture -> QcTextureImage ???
+
+/// The QcTileTexture class encapsulates a tile spec and its image.
 class QC_EXPORT QcTileTexture
 {
  public:
@@ -54,9 +57,7 @@ class QC_EXPORT QcTileTexture
 
 /**************************************************************************************************/
 
-/* This would be internal to qgeofiletilecache.cpp except that the
- * eviction policy can't be defined without it being concrete here
- */
+/// This would be internal except that the eviction policy can't be defined without it being concrete here
 class QcCachedTileDisk
 {
  public:
@@ -70,7 +71,7 @@ class QcCachedTileDisk
 
 /**************************************************************************************************/
 
-// Custom eviction policy for the disk cache, to avoid deleting all the files when the application closes
+/// Custom eviction policy for the disk cache, to avoid deleting all the files when the application closes
 class QCache3QTileEvictionPolicy : public QcCache3QDefaultEvictionPolicy<QcTileSpec, QcCachedTileDisk>
 {
  protected:
@@ -80,6 +81,13 @@ class QCache3QTileEvictionPolicy : public QcCache3QDefaultEvictionPolicy<QcTileS
 
 /**************************************************************************************************/
 
+/// The QcFileTileCache class implements a tile cache.
+///
+/// The cache implements 3 + 1 levels:
+/// * texture
+/// * encoded image
+/// * image on disk
+/// * as well as a persistent offline cache on disk.
 class QC_EXPORT QcFileTileCache : public QObject
 {
   Q_OBJECT
@@ -87,6 +95,8 @@ class QC_EXPORT QcFileTileCache : public QObject
  public:
   QcFileTileCache(const QString & directory = QString());
   ~QcFileTileCache();
+
+  static QString base_cache_directory();
 
   void set_max_disk_usage(int disk_usage);
   int max_disk_usage() const;
@@ -104,30 +114,34 @@ class QC_EXPORT QcFileTileCache : public QObject
 
   void clear_all();
 
+  QcOfflineTileCache * offline_cache() { return m_offline_cache; }
+
+  // Fixme: encapsulate
+  void insert(const QcTileSpec & tile_spec, const QByteArray & bytes, const QString & format);
+
   QSharedPointer<QcTileTexture> get(const QcTileSpec & tile_spec);
+
+  // Fixme: public ???
   // QSharedPointer<QcTileTexture> load_from_disk(const QSharedPointer<QcCachedTileDisk> & tile_directory);
   QSharedPointer<QcTileTexture> load_from_disk(const QcTileSpec & tile_spec, const QString & filename);
 
+  void handle_error(const QcTileSpec & tile_spec, const QString & error);
+
+  // Fixme: public ???
   // can be called without a specific tileCache pointer
   static void evict_from_disk_cache(QcCachedTileDisk * td);
   static void evict_from_memory_cache(QcCachedTileMemory * tm);
 
-  void insert(const QcTileSpec & tile_spec,
-	      const QByteArray & bytes,
-	      const QString & format);
+  // ???
   // QcTiledMappingManagerEngine::CacheAreas areas = QcTiledMappingManagerEngine::AllCaches
-  void handle_error(const QcTileSpec & tile_spec, const QString & error);
-
-  static QString base_cache_directory();
-
-  QcOfflineTileCache * offline_cache() { return m_offline_cache; }
 
  private:
-  void print_stats();
-  void load_tiles();
-
   QString directory() const { return m_directory; } // Fixme: ???
   QString queue_filename(int i) const;
+
+  void load_tiles();
+
+  void print_stats();
 
   QSharedPointer<QcTileTexture> load_from_memory(const QSharedPointer<QcCachedTileMemory> & tile_memory);
 
@@ -136,13 +150,18 @@ class QC_EXPORT QcFileTileCache : public QObject
   QSharedPointer<QcTileTexture> add_to_texture_cache(const QcTileSpec & tile_spec, const QImage & image);
 
  private:
-  QcOfflineTileCache * m_offline_cache;
-  QcCache3Q<QcTileSpec, QcCachedTileDisk, QCache3QTileEvictionPolicy > m_disk_cache; // Store image on disk
-  QcCache3Q<QcTileSpec, QcCachedTileMemory > m_memory_cache; // Store encoded images on memory : PNG, JPEG
-  QcCache3Q<QcTileSpec, QcTileTexture > m_texture_cache; // Store decoded images
   QString m_directory;
   int m_min_texture_usage;
   int m_extra_texture_usage;
+
+  QcOfflineTileCache * m_offline_cache;
+
+  /// Store image on disk
+  QcCache3Q<QcTileSpec, QcCachedTileDisk, QCache3QTileEvictionPolicy > m_disk_cache;
+  /// Store encoded images on memory : PNG, JPEG
+  QcCache3Q<QcTileSpec, QcCachedTileMemory > m_memory_cache;
+  /// Store decoded images
+  QcCache3Q<QcTileSpec, QcTileTexture > m_texture_cache;
 };
 
 // QC_END_NAMESPACE

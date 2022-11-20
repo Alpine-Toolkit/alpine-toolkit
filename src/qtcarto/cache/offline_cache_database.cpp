@@ -21,23 +21,23 @@
 
 /**************************************************************************************************/
 
-const QString COLUMN = "column";
-const QString LEVEL = "level";
-const QString MAP_ID = "map_id";
-const QString MAP_LEVEL = "map_level";
-const QString MAP_LEVEL_ID = "map_level_id";
-const QString NAME = "name";
-const QString OFFLINE_COUNT = "offline_count";
-const QString PROVIDER = "provider";
-const QString PROVIDER_ID = "provider_id";
-const QString ROW = "row";
-const QString TILE = "tile";
+const QString COLUMN = QStringLiteral("column");
+const QString LEVEL = QStringLiteral("level");
+const QString MAP_ID = QStringLiteral("map_id");
+const QString MAP_LEVEL = QStringLiteral("map_level");
+const QString MAP_LEVEL_ID = QStringLiteral("map_level_id");
+const QString NAME = QStringLiteral("name");
+const QString OFFLINE_COUNT = QStringLiteral("offline_count");
+const QString PROVIDER = QStringLiteral("provider");
+const QString PROVIDER_ID = QStringLiteral("provider_id");
+const QString ROW = QStringLiteral("row");
+const QString TILE = QStringLiteral("tile");
 
 /**************************************************************************************************/
 
 QcOfflineCacheDatabase::QcOfflineCacheDatabase(const QString & sqlite_path)
 {
-  QString message =  QLatin1String("Load offline cache database ") + sqlite_path;
+  QString message =  QStringLiteral("Load offline cache database ") + sqlite_path;
   qInfo() << message;
 
   bool created = open(sqlite_path);
@@ -80,7 +80,8 @@ QcOfflineCacheDatabase::create_tables()
     ")";
   schemas << map_level_schema;
 
-  //  PRIMARY KEY (map_level_id, row, column),
+  // PRIMARY KEY (map_level_id, row, column),
+  // Fixme: what is is the purpose of offline count ???
   const QString tile_schema =
     "CREATE TABLE tile ("
     "map_level_id INTEGER, "

@@ -22,7 +22,7 @@
 QString
 tile_spec_to_filename(const QcTileSpec & tile_spec, const QString & format, const QString & directory)
 {
-  QString filename = tile_spec.plugin(); // Fixme: litteral, arg
+  auto filename = tile_spec.plugin(); // Fixme: litteral, arg
   filename += QStringLiteral("-");
   filename += QString::number(tile_spec.map_id());
   filename += QStringLiteral("-");
@@ -42,12 +42,12 @@ filename_to_tile_spec(const QString & filename)
 {
   QcTileSpec tile_spec;
 
-  QStringList parts = filename.split('.');
+  auto parts = filename.split('.');
   if (parts.length() != 2)
     return tile_spec;
-  QString name = parts.at(0);
+  auto name = parts.at(0);
 
-  QStringList fields = name.split('-');
+  auto fields = name.split('-');
   int length = fields.length();
   if (length != 5)
     return tile_spec;
@@ -86,7 +86,7 @@ read_tile_image(const QString & filename)
   QFile file(filename);
   file.open(QIODevice::ReadOnly);
   // Fixme: efficient ?
-  QByteArray data = file.readAll();
+  auto data = file.readAll();
   file.close();
   return data;
 }
