@@ -95,7 +95,7 @@ class QC_EXPORT QcWebMercatorCoordinate : public QcGeoCoordinateTemplate<QcWebMe
 ///
 /// \f[
 /// \begin{align}
-///   x\prime &= x + \frac{\mathtext{EQUATORIAL PERIMETER}}{2}; \\
+///   x\prime &= x + \frac{\mathtext{EQUATORIAL PERIMETER}}{2}; \\{}
 ///   y\prime &= \frac{\mathtext{EQUATORIAL PERIMETER}}{2} - y
 /// \end{align}
 /// \f]
