@@ -606,7 +606,7 @@ def build(
             command = f'cmake --build {ctx.build.path} --parallel {number_of_cpus}'
             if verbose:
                 command += ' --verbose'
-            ctx.run(command)
+            ctx.run(command, echo=True, env=env)
 
         if is_android and deploy:
             # --target install
