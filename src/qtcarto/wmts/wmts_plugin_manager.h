@@ -27,35 +27,42 @@
 
 /**************************************************************************************************/
 
+// Fixme: QcWmtsPluginManager -> QcWmtsPluginRegistry ?
+
 /// The QcWmtsPluginManager singleton class implements a WMTS plugin manager.
-/// It provides the list of available plugins and to lazy instantiate a plugin.
-class QcWmtsPluginManager : QObject
+/// It provides the list of available plugins and permits to lazily instantiate a plugin.
+class QcWmtsPluginManager
 {
-public:
+ public:
   static QcWmtsPluginManager & instance() {
     // Thread-safe in C++11
     static QcWmtsPluginManager m_instance;
     return m_instance;
   }
 
+ public:
+  const QList<QString> & plugin_names() const { return m_plugin_names; }
+  /// Return the loaded plugins
+  QList<QcWmtsPlugin *> plugins() const { return m_plugins.values(); }
+
+  /// Fixme: * ok ?
+  QcWmtsPlugin * operator[](const QString & name);
+
+ private:
+  QcWmtsPluginManager();
+  ~QcWmtsPluginManager();
+
   // Delete copy and move constructors and assign operators
+  // Fixme: error: 'QcWmtsPluginManager::QcWmtsPluginManager(const QcWmtsPluginManager&)' cannot be overloaded with
+  //               'QcWmtsPluginManager::QcWmtsPluginManager(const QcWmtsPluginManager&)
+  // Q_DISABLE_COPY(QcWmtsPluginManager)
+  // Q_DISABLE_COPY_MOVE(QcWmtsPluginManager)
   QcWmtsPluginManager(QcWmtsPluginManager const &) = delete;             // Copy construct
   QcWmtsPluginManager & operator=(QcWmtsPluginManager const &) = delete; // Copy assign
   QcWmtsPluginManager(QcWmtsPluginManager &&) = delete;                  // Move construct
   QcWmtsPluginManager & operator=(QcWmtsPluginManager &&) = delete;      // Move assign
 
-  QList<QcWmtsPlugin *> plugins() const { return m_plugins.values(); }
-  const QList<QString> & plugin_names() const { return m_plugin_names; }
-
-  QcWmtsPlugin * operator[](const QString & name);
-
-private:
-  QcWmtsPluginManager();
-  ~QcWmtsPluginManager();
-
-  QcWmtsPlugin * create_plugin_geoportail();
-
-private:
+ private:
   QList<QString> m_plugin_names;
   QHash<QString, QcWmtsPlugin *> m_plugins;
 };

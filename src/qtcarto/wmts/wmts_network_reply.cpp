@@ -28,6 +28,6 @@ QcWmtsNetworkReply::~QcWmtsNetworkReply()
 void
 QcWmtsNetworkReply::process_payload()
 {
-  set_map_image_data(network_reply()->readAll());
-  set_map_image_format(m_format);
+  set_image_data(network_reply()->readAll());
+  set_image_format(m_format);
 }

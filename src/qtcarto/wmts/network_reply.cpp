@@ -122,18 +122,11 @@ QcNetworkReply::QcNetworkReply(QNetworkReply * reply)
   : QcNetworkFuture(),
     m_reply(reply)
 {
-  connect(m_reply, SIGNAL(finished()),
-          this, SLOT(network_reply_finished()));
+  connect(m_reply, &QNetworkReply::finished,
+          this, &QcNetworkReply::network_reply_finished);
 
-  connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-          this, SLOT(network_reply_error(QNetworkReply::NetworkError)));
-
-  // connect(m_reply, &QNetworkReply::finished,
-  //         this, &QcNetworkReply::network_reply_finished);
-
-  // qOverload<QNetworkReply::NetworkError>(&QNetworkReply::error)
-  // connect(m_reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
-  //         this, &QcNetworkReply::network_reply_error);
+  connect(m_reply, &QNetworkReply::errorOccurred,
+          this, &QcNetworkReply::network_reply_error);
 }
 
 QcNetworkReply::~QcNetworkReply()

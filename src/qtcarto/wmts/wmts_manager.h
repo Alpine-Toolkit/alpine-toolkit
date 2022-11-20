@@ -62,13 +62,14 @@ class QC_EXPORT QcWmtsManager : public QObject
 
   void release_map(QcMapViewLayer * map_view_layer);
 
-  QcWmtsTileFetcher * tile_fetcher();
+  QcWmtsTileFetcher * tile_fetcher() { return m_tile_fetcher; }
   QcFileTileCache * tile_cache();
 
   void update_tile_requests(QcMapViewLayer * map_view_layer,
 			    const QcTileSpecSet & tiles_added,
 			    const QcTileSpecSet & tiles_removed);
 
+  /// Return a tile texture from the tile cache
   QSharedPointer<QcTileTexture> get_tile_texture(const QcTileSpec & tile_spec);
 
   void dump() const;
@@ -85,6 +86,7 @@ class QC_EXPORT QcWmtsManager : public QObject
   // protected:
  public:
   void set_tile_fetcher(QcWmtsTileFetcher * tile_fetcher);
+  // Fixme: unused
   void set_tile_cache(QcFileTileCache * cache);
 
  private:
@@ -96,10 +98,12 @@ class QC_EXPORT QcWmtsManager : public QObject
 
  private:
   QString m_plugin_name; // needed by cache directory
-  QHash<QcMapViewLayer *, QcTileSpecSet > m_map_view_layer_hash;
-  QHash<QcTileSpec, QcMapViewLayerPointerSet > m_tile_hash;
   QcFileTileCache * m_tile_cache;
   QcWmtsTileFetcher * m_tile_fetcher;
+  /// Dictionary to store the list of requested tiles by map view
+  QHash<QcMapViewLayer *, QcTileSpecSet > m_map_view_layer_dict;
+  /// Dictionary to store the list of map view using a tile
+  QHash<QcTileSpec, QcMapViewLayerPointerSet > m_tile_dict;
 };
 
 // Q_DECLARE_OPERATORS_FOR_FLAGS(QcWmtsManager::CacheAreas)

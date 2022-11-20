@@ -12,7 +12,6 @@
 #include "wmts_plugin_manager.h"
 #include "qtcarto.h"
 
-#include "configuration/configuration.h"
 #include "providers/artic_web_map/artic_web_map_plugin.h"
 #include "providers/austria/austria_plugin.h"
 #include "providers/esri/esri_plugin.h"
@@ -58,7 +57,7 @@ QcWmtsPluginManager::operator[](const QString & name)
     // bool QMetaObject::invokeMethod(QObject *obj, const char *member
     QcWmtsPlugin * plugin = nullptr;
     if (name == QcGeoportailPlugin::PLUGIN_NAME)
-      plugin = create_plugin_geoportail();
+      plugin = QcGeoportailPlugin::instantiate();
     else if (name == QcEsriPlugin::PLUGIN_NAME)
       plugin = new QcEsriPlugin();
     else if (name == QcOsmPlugin::PLUGIN_NAME)
@@ -79,15 +78,6 @@ QcWmtsPluginManager::operator[](const QString & name)
 
     return plugin;
   }
-}
-
-QcWmtsPlugin *
-QcWmtsPluginManager::create_plugin_geoportail()
-{
-  QString json_path = QaConfig::instance()->geoportail_token_path();
-  QcGeoportailWmtsLicense geoportail_license(json_path);
-
-  return new QcGeoportailPlugin(geoportail_license);
 }
 
 /**************************************************************************************************/

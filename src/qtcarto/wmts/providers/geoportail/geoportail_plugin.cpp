@@ -10,7 +10,9 @@
 /**************************************************************************************************/
 
 #include "geoportail_plugin.h"
+
 #include "qtcarto.h"
+#include "configuration/configuration.h"
 
 #include <QXmlStreamWriter>
 
@@ -105,15 +107,22 @@ const QString PLUGIN_TITLE = "IGN Géoportail";
 constexpr int NUMBER_OF_LEVELS = 20;
 constexpr int TILE_SIZE = 256;
 
+QcWmtsPlugin *
+QcGeoportailPlugin::instantiate()
+{
+  QString json_path = QaConfig::instance()->geoportail_token_path();
+  QcGeoportailWmtsLicense geoportail_license(json_path);
+
+  return new QcGeoportailPlugin(geoportail_license);
+}
+
 QcGeoportailPlugin::QcGeoportailPlugin(const QcGeoportailWmtsLicense & license)
   : QcWmtsPlugin(PLUGIN_NAME, PLUGIN_TITLE,
                  new QcMercatorTileMatrixSet(NUMBER_OF_LEVELS, TILE_SIZE)),
     m_license(license)
 {
-  connect(network_manager(),
-          SIGNAL(authenticationRequired(QNetworkReply*, QAuthenticator*)),
-	  this,
-	  SLOT(on_authentication_request_slot(QNetworkReply*, QAuthenticator*)));
+  connect(network_manager(), &QNetworkAccessManager::authenticationRequired,
+	  this, &QcGeoportailPlugin::on_authentication_request_slot);
 
   // Fixme: to json
   int map_id = -1;

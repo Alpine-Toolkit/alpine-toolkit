@@ -6,6 +6,7 @@
 ** SPDX-License-Identifier: GPL-3.0-only
 **
 ** Copyright (C) 2015 The Qt Company Ltd.
+** Qt Manager QGeoTileRequestManager qgeotilerequestmanager.cpp
 **
 ***************************************************************************************************/
 
@@ -21,10 +22,10 @@
 /**************************************************************************************************/
 
 QcRetryFuture::QcRetryFuture(const QcTileSpec & tile_spec, QcMapViewLayer * map_view_layer, QcWmtsManager * wmts_manager)
-  : QObject(),
-    m_tile_spec(tile_spec),
-    m_map_view_layer(map_view_layer),
-    m_wmts_manager(wmts_manager)
+  : QObject()
+  , m_tile_spec(tile_spec)
+  , m_map_view_layer(map_view_layer)
+  , m_wmts_manager(wmts_manager)
 {}
 
 void
@@ -40,8 +41,8 @@ QcRetryFuture::retry()
 /**************************************************************************************************/
 
 QcWmtsRequestManager::QcWmtsRequestManager(QcMapViewLayer * map_view_layer, QcWmtsManager * wmts_manager)
-  : m_map_view_layer(map_view_layer),
-    m_wmts_manager(wmts_manager)
+  : m_map_view_layer(map_view_layer)
+  , m_wmts_manager(wmts_manager)
 {}
 
 QcWmtsRequestManager::~QcWmtsRequestManager()
@@ -68,11 +69,28 @@ QcWmtsRequestManager::request_tiles(const QcTileSpecSet & tile_specs)
   QList<QSharedPointer<QcTileTexture> > cached_textures;
   if (!m_wmts_manager.isNull()) {
     for (auto & tile_spec : requested_tiles) {
-      QSharedPointer<QcTileTexture> texture = m_wmts_manager->get_tile_texture(tile_spec);
+      auto texture = m_wmts_manager->get_tile_texture(tile_spec);
       if (texture) {
 	cached_tiles.insert(tile_spec);
 	cached_textures << texture;
       }
+      // Fixme: check map code
+      // else {
+      //   // Try to use textures from lower zoom levels, but still request the proper tile
+      //   auto spec = tile_spec;
+      //   const int stop_level = qMax(0, tile_spec.level() - 4); // Using up to 4 zoom levels up. 4 is arbitrary.
+      //   for (auto level = tile_spec.level() - 1; level >= stop_level; level--) {
+      //     int denominator = 1 << (tile_spec.level() - level); // Fixme: /= 2
+      //     spec.set_level(level);
+      //     spec.set_x(tile_spec.x() / denominator);
+      //     spec.set_y(tile_spec.y() / denominator);
+      //     auto texture = m_wmts_manager->get_tile_texture(spec);
+      //     if (texture) {
+      //       cached_textures << texture;
+      //       break;
+      //     }
+      //   }
+      // }
     }
   }
   requested_tiles -= cached_tiles;
@@ -82,8 +100,7 @@ QcWmtsRequestManager::request_tiles(const QcTileSpecSet & tile_specs)
 
   // qQCInfo() << "currently requested" << m_requested << "\ncached" << cached_tiles << "\n+" << requested_tiles << "\n-" << canceled_tiles;
 
-  if ((!requested_tiles.isEmpty() || !canceled_tiles.isEmpty())
-      && (!m_wmts_manager.isNull())) {
+  if (not((requested_tiles.isEmpty() and canceled_tiles.isEmpty()) or m_wmts_manager.isNull())) {
     m_wmts_manager->update_tile_requests(m_map_view_layer, requested_tiles, canceled_tiles);
 
     // Fixme: ??? place ???
@@ -113,6 +130,8 @@ QcWmtsRequestManager::tile_fetched(const QcTileSpec & tile_spec)
 void
 QcWmtsRequestManager::tile_error(const QcTileSpec & tile_spec, const QString & error_string)
 {
+  // Fixme: move the retry code in the tile fetcher
+
   // qQCInfo();
   if (m_requested.contains(tile_spec)) {
     int count = m_retries.value(tile_spec, 0);

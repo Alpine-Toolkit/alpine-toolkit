@@ -6,6 +6,7 @@
 ** SPDX-License-Identifier: GPL-3.0-only
 **
 ** Copyright (C) 2015 The Qt Company Ltd.
+** Qt Location QGeoTileFetcher qgeotilefetcher.cpp
 **
 ***************************************************************************************************/
 
@@ -21,8 +22,8 @@
 /**************************************************************************************************/
 
 QcWmtsTileFetcher::QcWmtsTileFetcher()
-  : QObject(),
-    m_enabled(true)
+  : QObject()
+  , m_enabled(true)
 {
   // Fixme: useless ?
   // if (!m_queue.isEmpty())
@@ -43,7 +44,7 @@ QcWmtsTileFetcher::update_tile_requests(const QcTileSpecSet & tiles_added,
   QMutexLocker mutex_locker(&m_queue_mutex);
 
   cancel_tile_requests(tiles_removed);
-  m_queue += QList<QcTileSpec>(tiles_added.begin(), tiles_added.end());
+  std::copy(tiles_added.cbegin(), tiles_added.cend(), std::back_inserter(m_queue));
 
   // Start timer to fetch tiles from queue
   if (m_enabled && !m_queue.isEmpty() && !m_timer.isActive()) {
@@ -88,8 +89,8 @@ QcWmtsTileFetcher::request_next_tile()
   if (wmts_reply->is_finished()) {
     handle_reply(wmts_reply, tile_spec);
   } else {
-    connect(wmts_reply, SIGNAL(finished()),
-	    this, SLOT(finished()),
+    connect(wmts_reply, &QcWmtsReply::finished,
+	    this, &QcWmtsTileFetcher::finished,
 	    Qt::QueuedConnection);
     m_invmap.insert(tile_spec, wmts_reply);
   }
@@ -148,7 +149,7 @@ QcWmtsTileFetcher::handle_reply(QcWmtsReply * wmts_reply, const QcTileSpec & til
   // emit signal according to the reply status
   if (wmts_reply->error() == QcWmtsReply::NoError) {
     // qQCInfo() << "emit tile_finished" << tile_spec;
-    emit tile_finished(tile_spec, wmts_reply->map_image_data(), wmts_reply->map_image_format());
+    emit tile_finished(tile_spec, wmts_reply->image_data(), wmts_reply->image_format());
   } else {
     // qQCInfo() << "emit tile_error" << tile_spec;
     emit tile_error(tile_spec, wmts_reply->error_string());
@@ -158,5 +159,3 @@ QcWmtsTileFetcher::handle_reply(QcWmtsReply * wmts_reply, const QcTileSpec & til
 }
 
 /**************************************************************************************************/
-
-// #include "wmts_tile_fetcher.moc"
