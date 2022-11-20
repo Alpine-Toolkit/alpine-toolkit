@@ -1,3 +1,6 @@
+# Fixme: purpose ???
+#  scan tiles and report the number of tiles and the (r, c) interval
+
 ####################################################################################################
 
 import os

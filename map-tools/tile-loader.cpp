@@ -182,7 +182,6 @@ Application::main_task()
   int map_id = geoportail_plugin->layer(layer_title)->map_id();
 
   QSet<QcTileSpec> tiles_added;
-  QSet<QcTileSpec> tiles_removed;
 
   // Fixme: level <= 10 : any tiles
   // from 5
@@ -216,9 +215,11 @@ Application::main_task()
   //   just save
   //   don't count in online cache
 
+  // Fixme: API
+  QSet<QcTileSpec> tiles_removed;
   tile_fetcher->update_tile_requests(tiles_added, tiles_removed);
   while (tile_fetcher_helper.number_of_received_tiles() != number_of_tiles) {
-    processEvents();
+    processEvents(); // Fixme: required ???
     // QThread::msleep(10);
   }
 
